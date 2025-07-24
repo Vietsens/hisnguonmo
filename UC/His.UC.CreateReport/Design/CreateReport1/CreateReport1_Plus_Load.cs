@@ -506,10 +506,10 @@ namespace His.UC.CreateReport.Design.CreateReport1
                                         int realH = (h > 0 ? h : (control.Height + 5));
 
                                         item1.Control = control;
+                                        item1.Control.Tag = generate != null ? generate.DynamicFilter != null ? generate.DynamicFilter.ID : null : null;
                                         item1.TextVisible = false;
                                         item1.Name = Guid.NewGuid().ToString();// String.Format("lciForItemControlTemp{0}", (item.DESCRIPTION ?? "XtraUserControl" + DateTime.Now.ToString("yyyyMMddHHmmss")));
                                         item1.SizeConstraintsType = SizeConstraintsType.Custom;
-                                        item1.Tag = generate != null ? generate.DynamicFilter != null ? generate.DynamicFilter.ID : null : null;
                                         item1.Height = realH;
                                         item1.MaxSize = new System.Drawing.Size(0, realH);
                                         item1.MinSize = new System.Drawing.Size(w, realH);
@@ -601,8 +601,8 @@ namespace His.UC.CreateReport.Design.CreateReport1
                             // Bind a control to the layout item.
 
 
-                            item1.Tag = generate != null ? generate.DynamicFilter != null ? generate.DynamicFilter.ID : null : null;
                             item1.Control = control;
+                            item1.Control.Tag = generate != null ? generate.DynamicFilter != null ? generate.DynamicFilter.ID : null : null;
                             item1.TextVisible = false;
                             item1.Name = Guid.NewGuid().ToString();// String.Format("lciForItemControlTemp{0}", (item.DESCRIPTION ?? "XtraUserControl" + DateTime.Now.ToString("yyyyMMddHHmmss")));
                             item1.SizeConstraintsType = SizeConstraintsType.Custom;
@@ -680,22 +680,27 @@ namespace His.UC.CreateReport.Design.CreateReport1
             {
                 if (IdControl == null)
                     return;
-                foreach (System.Windows.Forms.Control item in lcGenerateReportField.Controls)
+                foreach (var layoutItem in layoutControlItemAll)
                 {
-                    if (item != null && (item is System.Windows.Forms.UserControl || item is DevExpress.XtraEditors.XtraUserControl) && item.Tag != null)
+                    var layoutControlItem = layoutItem as DevExpress.XtraLayout.LayoutControlItem;
+                    if (layoutControlItem != null && layoutControlItem.Control != null)
                     {
-                        var IdRe = item.Tag as long?;
-                        if (IdRe != null && IdControl != null)
+                        var item = layoutControlItem.Control;
+                        if (item != null && (item is System.Windows.Forms.UserControl || item is DevExpress.XtraEditors.XtraUserControl) && item.Tag != null)
                         {
-                            long idReValue;
-                            long idControlValue;
-                            if (long.TryParse(IdRe.ToString(), out idReValue) && long.TryParse(IdControl.ToString(), out idControlValue))
+                            var IdRe = item.Tag as long?;
+                            if (IdRe != null && IdControl != null)
                             {
-                                if (idReValue == idControlValue)
+                                long idReValue;
+                                long idControlValue;
+                                if (long.TryParse(IdRe.ToString(), out idReValue) && long.TryParse(IdControl.ToString(), out idControlValue))
                                 {
-                                    if (!ReceiveData(item, ValueTransfer))
+                                    if (idReValue == idControlValue)
                                     {
-                                        Inventec.Common.Logging.LogSystem.Error("Khong gui duoc du lieu sang Id Control" + IdRe + " gia tri " + ValueTransfer);
+                                        if (!ReceiveData(item, ValueTransfer))
+                                        {
+                                            Inventec.Common.Logging.LogSystem.Error("Khong gui duoc du lieu sang Id Control" + IdRe + " gia tri " + ValueTransfer);
+                                        }
                                     }
                                 }
                             }
