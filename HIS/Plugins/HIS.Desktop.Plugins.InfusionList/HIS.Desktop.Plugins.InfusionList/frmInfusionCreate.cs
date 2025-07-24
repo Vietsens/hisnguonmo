@@ -15,6 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 using ACS.EFMODEL.DataModels;
 using DevExpress.Data;
 using DevExpress.Utils.Menu;
@@ -25,6 +32,7 @@ using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
 using EMR.EFMODEL.DataModels;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
@@ -48,13 +56,6 @@ using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
 using SDA.EFMODEL.DataModels;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.InfusionCreate
 {
@@ -239,6 +240,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                 this.SetDefaultDataToInfusionMedicine();
                 LoadConfigHisAcc();
                 InitMenuToButtonPrint();
+                InitControlState();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -2184,15 +2186,43 @@ namespace HIS.Desktop.Plugins.InfusionCreate
 
         private void chkSign_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkSign.Checked == true)
+            try
             {
-                chkPrintDocumentSigned.Enabled = true;
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSign.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = chkSign.Checked ? "1" : "0";
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkSign.Name;
+                    csAddOrUpdate.VALUE = chkSign.Checked ? "1" : "0";
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                if (chkSign.Checked == true)
+                {
+                    chkPrintDocumentSigned.Enabled = true;
+                }
+                else
+                {
+                    chkPrintDocumentSigned.Checked = false;
+                    chkPrintDocumentSigned.Enabled = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                chkPrintDocumentSigned.Checked = false;
-                chkPrintDocumentSigned.Enabled = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            
         }
 
         private void txtMixedMedicine_KeyDown(object sender, KeyEventArgs e)
@@ -2214,15 +2244,43 @@ namespace HIS.Desktop.Plugins.InfusionCreate
         // Thêm chức năng in
         private void chkSignForPrint_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkSignForPrint.Checked == true)
+            try
             {
-                chkPrintDocumentSignedForPrint.Enabled = true;
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSignForPrint.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = chkSignForPrint.Checked ? "1" : "0";
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkSignForPrint.Name;
+                    csAddOrUpdate.VALUE = chkSignForPrint.Checked ? "1" : "0";
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                if (chkSignForPrint.Checked == true)
+                {
+                    chkPrintDocumentSignedForPrint.Enabled = true;
+                }
+                else
+                {
+                    chkPrintDocumentSignedForPrint.Checked = false;
+                    chkPrintDocumentSignedForPrint.Enabled = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                chkPrintDocumentSignedForPrint.Checked = false;
-                chkPrintDocumentSignedForPrint.Enabled = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            
         }
 
         private void btnCboPrint_Click(object sender, EventArgs e)
@@ -3073,8 +3131,150 @@ namespace HIS.Desktop.Plugins.InfusionCreate
             }
 
         }
+        private void InitControlState()
+        {
+            isNotLoadWhileChangeControlStateInFirst = true;
+            try
+            {
+                this.controlStateWorker = new Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(moduleLink);
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    // 1. Xử lý các control ảnh hưởng tới trạng thái của control khác
+                    foreach (var item in currentControlStateRDO)
+                    {
+                        if (item.KEY == chkSign.Name)
+                        {
+                            chkSign.Checked = item.VALUE == "1";
+                            if (chkSign.Checked)
+                                chkPrintDocumentSigned.Enabled = true;
+                        }
+                        else if (item.KEY == chkSignForPrint.Name)
+                        {
+                            chkSignForPrint.Checked = item.VALUE == "1";
+                            if (chkSignForPrint.Checked)
+                                chkPrintDocumentSignedForPrint.Enabled = true;
+                        }
+                    }
 
+                    // 2. Xử lý các control còn lại, đã có trạng thái `Checked` phụ thuộc trước đó
+                    foreach (var item in currentControlStateRDO)
+                    {
+                        if (item.KEY == chkPrintDocumentSigned.Name && chkSign.Checked)
+                        {
+                            chkPrintDocumentSigned.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == chkPrintDocumentSignedForPrint.Name && chkSignForPrint.Checked)
+                        {
+                            chkPrintDocumentSignedForPrint.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == chkPrint.Name)
+                        {
+                            chkPrint.Checked = item.VALUE == "1";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            isNotLoadWhileChangeControlStateInFirst = false;
+        }
 
+        private void chkPrintDocumentSignedForPrint_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkPrintDocumentSignedForPrint.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = chkPrintDocumentSignedForPrint.Checked ? "1" : "0";
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkPrintDocumentSignedForPrint.Name;
+                    csAddOrUpdate.VALUE = chkPrintDocumentSignedForPrint.Checked ? "1" : "0";
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
+        private void chkPrintDocumentSigned_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkPrintDocumentSigned.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = chkPrintDocumentSigned.Checked ? "1" : "0";
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkPrintDocumentSigned.Name;
+                    Inventec.Common.Logging.LogSystem.Info("csAddOrUpdate.KEY:" + csAddOrUpdate.KEY);
+
+                    csAddOrUpdate.VALUE = chkPrintDocumentSigned.Checked ? "1" : "0";
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkPrint_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkPrint.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = chkPrint.Checked ? "1" : "0";
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkPrint.Name;
+                    csAddOrUpdate.VALUE = chkPrint.Checked ? "1" : "0";
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
