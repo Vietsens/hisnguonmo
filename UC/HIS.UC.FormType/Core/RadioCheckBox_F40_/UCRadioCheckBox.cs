@@ -17,18 +17,13 @@
  */
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
-using DevExpress.XtraSpreadsheet.Utils;
-using His.UC.LibraryMessage;
 using HIS.UC.FormType.Core.RadioCheckBox.Validation;
-using HIS.UC.FormType.Core.TrueOrFalse.Validation;
+using Inventec.Core;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace HIS.UC.FormType.Core.RadioCheckBox
@@ -43,17 +38,12 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
         string Output0 = "";
         string JsonOutput = "";
         DynamicFilterRDO DynamicFilter;
-
-
         public UCRadioCheckBox(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO)
         {
             try
             {
                 InitializeComponent();
-                //
-                //FormTypeConfig.ReportHight += 30;
                 this.config = config;
-
                 if (paramRDO is GenerateRDO generateRDO)
                 {
                     this.report = generateRDO.Report;
@@ -81,7 +71,6 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                     radio.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
                     radio.CheckedChanged += Radio_CheckedChanged;
                     //radio.Properties.RadioGroupIndex = (int)this.DynamicFilter.ID;
-
                 }
                 else
                 {
@@ -104,30 +93,20 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
         }
         private void Radio_CheckedChanged(object sender, EventArgs e)
         {
-            CheckEdit radio = sender as CheckEdit;
-            if (radio != null && radio.Properties.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Radio)
+            var radio = sender as CheckEdit;
+            if (radio == null || radio.Properties.CheckStyle != DevExpress.XtraEditors.Controls.CheckStyles.Radio || !radio.Checked)
             {
-                if (radio.Checked)
-                {
-                    foreach (var item in radioDict)
-                    {
-                        if (item.Value == radio)
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            item.Value.Checked = false;
-                        }
-                    }
-                }
+                return;
+            }
+            foreach (var kvp in radioDict.Where(w => w.Value.Checked && !ReferenceEquals(w.Value, radio)))
+            {
+                kvp.Value.Checked = false;
             }
         }
         void Init()
         {
             try
             {
-                //
                 if (this.DynamicFilter != null && this.DynamicFilter.Propeties != null && this.DynamicFilter.Propeties.DefaultSource != null)
                 {
                     radioDict = new Dictionary<int, CheckEdit>();
@@ -183,7 +162,6 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                 }
                 JsonOutput = this.config.JSON_OUTPUT;
                 RemoveStrOutput0(ref JsonOutput);
-                
                 if (this.report != null)
                 {
                     SetValue();
@@ -199,7 +177,6 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
         {
             try
             {
-                //string JSON_OUTPUT = "sdfsdf_OUTPUT0:2x";
                 int lastIndex = JSON_OUTPUT.LastIndexOf(StrOutput0);
                 if (lastIndex >= 0)
                 {
@@ -223,7 +200,6 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
         {
             try
             {
-                //string JSON_OUTPUT = "sdfsdf_OUTPUT0:2x";
                 int lastIndex = JsonOutput.LastIndexOf(StrOutput0);
                 if (lastIndex >= 0)
                 {
@@ -243,8 +219,10 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                 if (this.config != null && !String.IsNullOrEmpty(this.config.DESCRIPTION))
                 {
                     layoutControlItem4.Text = this.config.DESCRIPTION;
-                    //radTrue.Text = this.config.DESCRIPTION.Split(',').ToList().First();
-                    //radFalse.Text = this.config.DESCRIPTION.Split(',').ToList().Last();
+                    if (this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
+                    {
+                        layoutControlItem4.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    }
                 }
             }
             catch (Exception ex)
@@ -258,8 +236,8 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
             {
                 var selectedIds = radioDict.Where(x => x.Value.Checked)
                                            .Select(x => x.Key);
-                var TrueOrFalseId = Newtonsoft.Json.JsonConvert.SerializeObject(selectedIds);
-                return String.Format(this.JsonOutput, ConvertUtils.ConvertToObjectFilter(TrueOrFalseId));
+                var val = Newtonsoft.Json.JsonConvert.SerializeObject(selectedIds);
+                return String.Format(this.JsonOutput, val);
             }
             catch (Exception ex)
             {
@@ -274,14 +252,12 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
             {
                 if (this.JsonOutput != null && this.report.JSON_FILTER != null)
                 {
-                    string value = HIS.UC.FormType.CopyFilter.CopyFilter.CopyFilterProcess(this.config, this.JsonOutput, this.report.JSON_FILTER);
-                    //if (value == "true") radTrue.Checked = true;
-                    //else if (value == "false") radFalse.Checked = true;
-                    foreach (var item in radioDict)
+                    List<int> value = Newtonsoft.Json.JsonConvert.DeserializeObject<List<int>>(HIS.UC.FormType.CopyFilter.CopyFilter.CopyFilterProcess(this.config, this.JsonOutput, this.report.JSON_FILTER));
+                    if (value != null && value.Count > 0)
                     {
-                        if (Output0.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries).Contains(item.Key.ToString()))
+                        foreach (var item in radioDict)
                         {
-                            item.Value.Checked = true;
+                            item.Value.Checked = value.Contains(item.Key);
                         }
                     }
                 }
@@ -299,11 +275,10 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
             try
             {
                 RadioCheckBoxValidationRule validRule = new RadioCheckBoxValidationRule();
-                //validRule.radTrue = radTrue;
-                //validRule.radFalse = radFalse;
-                //validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(Message.Enum.ThieuTruongDuLieuBatBuoc);
-                //validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                //dxValidationProvider1.SetValidationRule(radTrue, validRule);
+                validRule.radTrue = radioDict;
+                validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.ThieuTruongDuLieuBatBuoc);
+                validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProvider1.SetValidationRule(radioDict[0], validRule);
             }
             catch (Exception ex)
             {

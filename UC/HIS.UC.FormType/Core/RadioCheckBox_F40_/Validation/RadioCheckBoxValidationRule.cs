@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,15 +26,14 @@ namespace HIS.UC.FormType.Core.RadioCheckBox.Validation
 {
     class RadioCheckBoxValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
-        internal System.Windows.Forms.RadioButton radTrue;
-        internal System.Windows.Forms.RadioButton radFalse;
+        internal Dictionary<int, CheckEdit> radTrue;
         public override bool Validate(System.Windows.Forms.Control control, object value)
         {
             bool valid = false;
             try
             {
-                if (radTrue == null&&radFalse ==null) return valid;
-                if (radTrue.Checked == false && radFalse.Checked == false) return valid;
+                if (radTrue == null) return valid;
+                if (radTrue.All(a => !a.Value.Checked)) return valid;
                 valid = true;
             }
             catch (Exception ex)
