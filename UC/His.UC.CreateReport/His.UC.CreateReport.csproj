@@ -38,73 +38,41 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="HID.EFMODEL">
-      <HintPath>..\..\..\..\..\GitLab\histest\x64\ReferencedAssemblies\HID.EFMODEL.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.ApiConsumer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ApiConsumer.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Common, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null" />
-    <Reference Include="HIS.Desktop.LocalStorage.ConfigSystem">
-      <HintPath>..\..\..\..\..\GitLab\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.ConfigSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.HisConfig">
-      <HintPath>..\..\..\..\..\GitLab\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
-    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
-      <HintPath>..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+      <HintPath>..\..\..\lib\MPSv2\MPS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.SAR_RS">
-      <HintPath>..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.SAR_RS\IMSys.DbConfig.SAR_RS.dll</HintPath>
+      <HintPath>..\..\..\lib\MPSv2\MPS.ProcessorBase\IMSys.DbConfig.SAR_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.DateTime">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.FlexCelPrint">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Print\Inventec.Common.FlexCelPrint.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Print">
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Print\Inventec.Common.Print.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Resource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\RELEASE\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.WebApiClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Desktop.Common.Message">
-      <HintPath>..\..\..\RELEASE\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+      <HintPath>..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Fss.Client">
-      <HintPath>..\..\..\RELEASE\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
+      <HintPath>..\..\..\lib\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\RELEASE\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\lib\MRS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MRS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\mrs\LIB\MRSv3\MRS.SDO.dll</HintPath>
+    <Reference Include="MRS.SDO">
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\MRS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SAR.EFMODEL">
-      <HintPath>..\..\..\RELEASE\SAR\SAR.EFMODEL.dll</HintPath>
-    </Reference>
-    <Reference Include="SAR.Filter">
-      <HintPath>..\..\..\RELEASE\SAR\SAR.Filter.dll</HintPath>
+      <HintPath>..\..\..\lib\SAR\SAR.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -151,6 +119,7 @@
     <Compile Include="Design\CheckValid\CheckValidMediStockPereiodByMediStockBehavior.cs" />
     <Compile Include="Design\CheckValid\CheckValidMultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartmentBeHavior.cs" />
     <Compile Include="Design\CheckValid\CheckValidF21Behavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidNumeric39Behavior.cs" />
     <Compile Include="Design\CheckValid\CheckValidNumericBehavior.cs" />
     <Compile Include="Design\CheckValid\CheckValidRoleUserBehavior.cs" />
     <Compile Include="Design\CheckValid\CheckValidServiceGroupComboBehavior.cs" />
@@ -241,6 +210,7 @@
     <Compile Include="Design\JsonOutput\JsonOutputMultiMedicineGridCheckFilterByMediStockPeriodByMediStockByDepartmentBehavior.cs" />
     <Compile Include="Design\JsonOutput\JsonOutputMultipleRoomComboCheckFilterByDepartmentComboCheckBehavior.cs" />
     <Compile Include="Design\JsonOutput\JsonOutputF21Behavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputNumeric39Behavior.cs" />
     <Compile Include="Design\JsonOutput\JsonOutputNumericBehavior.cs" />
     <Compile Include="Design\JsonOutput\JsonOutputPatientTypeComboBehavior.cs" />
     <Compile Include="Design\JsonOutput\JsonOutputRoleUserBehavior.cs" />
@@ -328,15 +298,35 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="His.UC.CreateReport.sln" />
     <Content Include="Lib\AutoMapper.dll" />
     <Content Include="Lib\log4net.dll" />
     <Content Include="Lib\Newtonsoft.Json.dll" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="His.UC.CreateReport.v11.suo" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.csproj">
+      <Project>{a9e46128-5af1-4bbd-b318-854517fc26ab}</Project>
+      <Name>Inventec.Common.FlexCelPrint</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
+      <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
+      <Name>Inventec.Common.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.Print\Inventec.Common.Print.csproj">
+      <Project>{9ded67a4-7fc4-451a-b30e-12333a464b9f}</Project>
+      <Name>Inventec.Common.Print</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.csproj">
+      <Project>{2ef2ca8c-b308-4d64-86cd-86ba479c2664}</Project>
+      <Name>Inventec.Desktop.Common.Message</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
+      <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
+      <Name>HIS.Desktop.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.ConfigSystem\HIS.Desktop.LocalStorage.ConfigSystem.csproj">
+      <Project>{48d25a6a-11bc-4f0f-8dd7-15e03a2bcada}</Project>
+      <Name>HIS.Desktop.LocalStorage.ConfigSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HIS.UC.FormType\HIS.UC.FormType.csproj">
       <Project>{a61418d7-2d72-4c4d-9e99-e0adf913fc4e}</Project>
       <Name>HIS.UC.FormType</Name>

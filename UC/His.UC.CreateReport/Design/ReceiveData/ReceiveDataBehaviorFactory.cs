@@ -31,13 +31,13 @@ namespace DCV.APP.Report.ReceiveData
             bool result = false;
             try
             {
-                if (dataItem is HIS.UC.FormType.TreatmentTypeGridCheckBox.UCTreatmentTypeGridCheckBox)
+                if (dataItem is HIS.UC.FormType.GridCheckBox.UCGridCheckBox)
                 {
-                    result = ((HIS.UC.FormType.TreatmentTypeGridCheckBox.UCTreatmentTypeGridCheckBox)dataItem).GetValueReceive(value);
+                    result = ((HIS.UC.FormType.GridCheckBox.UCGridCheckBox)dataItem).GetValueReceive(value);
                 }
-                if (dataItem is HIS.UC.FormType.DepartmentCombo.UCDepartmentCombo)
+                if (dataItem is HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit)
                 {
-                    result = ((HIS.UC.FormType.DepartmentCombo.UCDepartmentCombo)dataItem).GetValueReceive(value);
+                    result = ((HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit)dataItem).GetValueReceive(value);
                 }
 
                 if (result == null) throw new NullReferenceException();

@@ -15,30 +15,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.UC.FormType.Numericft;
+using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
+using System.IO;
 
-namespace HIS.UC.FormType.Numericft
+namespace HIS.UC.FormType.Numeric
 {
-    class NumericValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
+    class NumericProcessor : ProcessorBase, IProcessorGenerate
     {
-        //internal DevExpress.XtraEditors.GridLookUpEdit cboTreatmentType;
-        public DevExpress.XtraEditors.SpinEdit numericUpDown1;
-        public override bool Validate(System.Windows.Forms.Control control, object value)
+        object generateRDO;
+        internal NumericProcessor(V_SAR_RETY_FOFI config, object generateRDO)
+            : base(config)
         {
-            bool result = false;
+            this.generateRDO = generateRDO;
+        }
+
+        object IProcessorGenerate.Run()
+        {
+            object result = null;
             try
             {
-                if (numericUpDown1 == null) return result;
-                if (numericUpDown1.EditValue == null) return result;
-                result = true;
+                result = new UCNumeric(config, generateRDO);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                result = null;
             }
             return result;
         }

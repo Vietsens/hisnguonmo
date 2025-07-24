@@ -39,6 +39,7 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
         const string StrOutput0 = "_OUTPUT0:";
         string Output0 = "";
         string JsonOutput = "";
+        DynamicFilterRDO DynamicFilter;
 
 
         public UCTrueOrFalse(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO)
@@ -47,12 +48,17 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
             {
                 InitializeComponent();
                 //FormTypeConfig.ReportHight += 30;
-
-                if (paramRDO is GenerateRDO)
-                {
-                    this.report = (paramRDO as GenerateRDO).Report;
-                }
                 this.config = config;
+
+                if (paramRDO is GenerateRDO generateRDO)
+                {
+                    this.report = generateRDO.Report;
+                    this.DynamicFilter = generateRDO.DynamicFilter;
+                    if (this.DynamicFilter != null)
+                    {
+                        this.config = this.DynamicFilter.Fofi;
+                    }
+                }
                 Init();
             }
             catch (Exception ex)
@@ -99,6 +105,13 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
                 if (lastIndex >= 0)
                 {
                     Output0 = JSON_OUTPUT.Substring(lastIndex + StrOutput0.Length);
+                }
+                if (string.IsNullOrWhiteSpace(Output0))
+                {
+                    if (this.DynamicFilter != null && this.DynamicFilter.Propeties != null && this.DynamicFilter.Propeties.DefaultValue != null)
+                    {
+                        Output0 = this.DynamicFilter.Propeties.DefaultValue.ToString();
+                    }
                 }
             }
             catch (Exception ex)
