@@ -31,9 +31,9 @@ namespace DCV.APP.Report.ReceiveData
             bool result = false;
             try
             {
-                if (dataItem is HIS.UC.FormType.GridCheckBox.UCGridCheckBox)
+                if (dataItem is HIS.UC.FormType.GridCheckBox.UCGridCheckBox )
                 {
-                    result = ((HIS.UC.FormType.GridCheckBox.UCGridCheckBox)dataItem).GetValueReceive(value);
+                    result = ((HIS.UC.FormType.GridCheckBox.UCGridCheckBox )dataItem).GetValueReceive(value);
                 }
                 if (dataItem is HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit)
                 {

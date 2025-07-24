@@ -92,6 +92,7 @@ namespace DCV.APP.Report.CheckValid
                     result = new CheckValidTreatmentTypeComboCheckBehavior(param, (HIS.UC.FormType.TreatmentTypeComboCheck.UCTreatmentTypeComboCheck)dataItem);
                 }
                 else if (dataItem is HIS.UC.FormType.GridCheckBox.UCGridCheckBox)
+                else if (dataItem is HIS.UC.FormType.GridCheckBox.UCGridCheckBox )
                 {
                     result = new CheckValidTreatmentTypeGridCheckBoxBehavior(param, (HIS.UC.FormType.GridCheckBox.UCGridCheckBox)dataItem);
                 }

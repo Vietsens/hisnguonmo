@@ -87,9 +87,9 @@ namespace DCV.APP.Report.JsonOutput
                 {
                     result = new JsonOutputTreatmentTypeComboCheckBehavior(param, (HIS.UC.FormType.TreatmentTypeComboCheck.UCTreatmentTypeComboCheck)dataItem);
                 }
-                else if (dataItem is HIS.UC.FormType.GridCheckBox.UCGridCheckBox)
+                else if (dataItem is HIS.UC.FormType.GridCheckBox.UCGridCheckBox )
                 {
-                    result = new JsonOutputTreatmentTypeGridCheckBoxBehavior(param, (HIS.UC.FormType.GridCheckBox.UCGridCheckBox)dataItem);
+                    result = new JsonOutputTreatmentTypeGridCheckBoxBehavior(param, (HIS.UC.FormType.GridCheckBox.UCGridCheckBox )dataItem);
                 }
                 else if (dataItem is HIS.UC.FormType.DateTime.UCDateTime)
                 {
