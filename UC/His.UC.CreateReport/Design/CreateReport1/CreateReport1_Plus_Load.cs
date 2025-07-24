@@ -363,33 +363,7 @@ namespace His.UC.CreateReport.Design.CreateReport1
                 this.currentFormFields = CreateReportConfig.RetyFofis.Where(o => o.REPORT_TYPE_ID == reportType.ID).OrderBy(o => o.NUM_ORDER).ToList();
                 //this.currentFormFields = CreateReportConfig.RetyFofis.Where(o => o.REPORT_TYPE_ID == reportType.ID).OrderBy(o => o.NUM_ORDER).ToList();
                 //nếu là tự khai báo sẽ tạo ra retyfofi để gen control.
-                if (reportType.REPORT_TYPE_CODE.ToUpper().StartsWith("TKB2") && this.currentFormFields.Count == 0)
-                {
-                    ReportTemplateFile reportTemplateFile = JsonConvert.DeserializeObject<ReportTemplateFile>(reportTemplate.REPORT_TEMPLATE_URL);
-                    MemoryStream file = FileDownload.GetFile(reportTemplateFile.URL);
-                    excelWorker = new ExcelWorker();
-                    excelWorker.InitData(reportTemplate.REPORT_TEMPLATE_URL);
-                    dynamicFilterConfigs = excelWorker.InitDynamicFilterConfig();
-                    LogSystem.Info("DynamicFilterConfig count: " + dynamicFilterConfigs.Count);
-                    LogSystem.Info("DynamicFilterConfig: " + JsonConvert.SerializeObject(dynamicFilterConfigs));
-                    foreach (var item in dynamicFilterConfigs)
-                    {
-                        V_SAR_RETY_FOFI fofi = new V_SAR_RETY_FOFI
-                        {
-                            REPORT_TYPE_ID = reportType.ID,
-                            REPORT_TYPE_CODE = reportType.REPORT_TYPE_CODE,
-                            REPORT_TYPE_NAME = reportType.REPORT_TYPE_NAME,
-                            NUM_ORDER = item.NUM_ORDER,
-                            IS_REQUIRE = item.IS_REQUIRE.HasValue ? (short?)(item.IS_REQUIRE.Value ? 1 : 0) : null,
-                            FORM_FIELD_CODE = item.FormType,
-                            DESCRIPTION = item.Title,
-                            JSON_OUTPUT = item.JSON_OUTPUT
-                        };
-                        if (currentFormFields == null) currentFormFields = new List<V_SAR_RETY_FOFI>();
-                        currentFormFields.Add(fofi);
-                    }
-                }
-                else if (reportType.REPORT_TYPE_CODE.ToUpper().StartsWith("TKB") && reportType.SQL != null && this.currentFormFields.Count == 0)
+                if (reportType.REPORT_TYPE_CODE.ToUpper().StartsWith("TKB") && reportType.SQL != null && this.currentFormFields.Count == 0)
                 {
                     var querry = System.Text.Encoding.UTF8.GetString(reportType.SQL);
                     querry = querry.Replace(":", " :").Replace("&", " :");
