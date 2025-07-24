@@ -908,22 +908,33 @@ namespace HIS.UC.FormType.GridLookUpTextEdit
                     var arrGoc = PropetiesFilter.ValueTransfer.ToArray();
                     if (obj != null)
                     {
-                        if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToString().ToUpper() == VALUE_MEMBER))
+                        for (int i = 0; i < arrGoc.Length; i++)
                         {
-                            arrGoc = ReplaceValueMember(arrGoc, VALUE_MEMBER, obj.ID.ToString());
-                        }
-                        if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToString().ToUpper() == DISPLAY_CODE_MEMBER))
-                        {
-                            arrGoc = ReplaceValueMember(arrGoc, DISPLAY_CODE_MEMBER, obj.CODE.ToString());
-                        }
-                        if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToString().ToUpper() == DISPLAY_NAME_MEMBER))
-                        {
-                            arrGoc = ReplaceValueMember(arrGoc, DISPLAY_NAME_MEMBER, obj.NAME.ToString());
+                            var arrItem = arrGoc[i];
+                            string propertyName = arrItem.ToString();
+                            // Check if the property exists in the DataGet class
+                            var propertyInfo = typeof(DataGet).GetProperty(propertyName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                            if (propertyInfo != null)
+                            {
+                                // Select only the value of the matching property
+                                var propertyValue = propertyInfo.GetValue(obj);
+
+                                arrGoc = ReplaceValueMember(arrGoc, propertyName, propertyValue);
+
+                                // Log or process the property values as needed
+                                Inventec.Common.Logging.LogSystem.Info($"Values for property '{propertyName}': {propertyValue}");
+                            }
+                            else
+                            {
+                                // Nếu tên trường không có trong DataGet thì bỏ qua không xử lý
+                                Inventec.Common.Logging.LogSystem.Warn($"Property '{propertyName}' does not exist in DataGet.");
+                            }
                         }
                     }
                     else
                         arrGoc = null;
-                        delegateSelectDatas(PropetiesFilter.IdReference, arrGoc);
+
+                    delegateSelectDatas(PropetiesFilter.IdReference, arrGoc);
                 }
             }
             catch (Exception ex)
@@ -933,7 +944,7 @@ namespace HIS.UC.FormType.GridLookUpTextEdit
 
         }
 
-        public object[] ReplaceValueMember(object[] arr, string member, string value)
+        public object[] ReplaceValueMember(object[] arr, string member, object value)
         {
             if (arr == null || arr.Length == 0 || string.IsNullOrEmpty(member))
                 return arr;

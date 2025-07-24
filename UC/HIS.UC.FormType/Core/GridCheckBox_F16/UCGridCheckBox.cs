@@ -515,22 +515,38 @@ namespace HIS.UC.FormType.GridCheckBox
                 {
                     selectedFilters.Add(rv);
                 }
-                if (delegateSelectDatas != null && PropetiesFilter != null && PropetiesFilter.ValueTransfer != null && PropetiesFilter.ValueTransfer.Length > 0 && PropetiesFilter.IdReference > 0)
+                if (PropetiesFilter.ValueTransfer != null && PropetiesFilter.ValueTransfer.Count() > 0)
                 {
                     var arrGoc = PropetiesFilter.ValueTransfer.ToArray();
-                    if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToString().ToUpper() == VALUE_MEMBER))
+                    if (delegateSelectDatas != null && PropetiesFilter != null && PropetiesFilter.ValueTransfer != null && PropetiesFilter.ValueTransfer.Length > 0 && PropetiesFilter.IdReference > 0)
                     {
-                        arrGoc = ReplaceValueMember(arrGoc, VALUE_MEMBER, string.Join(",", selectedFilters.Select(o => o.ID)));
+                        for (int i = 0; i < arrGoc.Length; i++)
+                        {
+                            var arrItem = arrGoc[i];
+                            string propertyName = arrItem.ToString();
+                            // Check if the property exists in the DataGet class
+                            var propertyInfo = typeof(DataGet).GetProperty(propertyName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                            if (propertyInfo != null)
+                            {
+                                // Select only the values of the matching property
+                                var propertyValues = selectedFilters
+                                    .Select(o => propertyInfo.GetValue(o))
+                                    .Where(value => value != null)
+                                    .ToArray();
+
+                                arrGoc = ReplaceValueMember(arrGoc, propertyName, string.Join(",", propertyValues));
+
+                                // Log or process the property values as needed
+                                Inventec.Common.Logging.LogSystem.Info($"Values for property '{propertyName}': {string.Join(",", propertyValues)}");
+                            }
+                            else
+                            {
+                                // Nếu tên trường không có trong DataGet thì bỏ qua không xử lý
+                                Inventec.Common.Logging.LogSystem.Warn($"Property '{propertyName}' does not exist in DataGet.");
+                            }
+                        }
+                        delegateSelectDatas(PropetiesFilter.IdReference, arrGoc);
                     }
-                    if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToString().ToUpper() == DISPLAY_CODE_MEMBER))
-                    {
-                        arrGoc = ReplaceValueMember(arrGoc, DISPLAY_CODE_MEMBER, string.Join(",", selectedFilters.Select(o => o.CODE)));
-                    }
-                    if (PropetiesFilter.ValueTransfer.ToList().Exists(o => o.ToString().ToUpper() == DISPLAY_NAME_MEMBER))
-                    {
-                        arrGoc = ReplaceValueMember(arrGoc, DISPLAY_NAME_MEMBER, string.Join(",", selectedFilters.Select(o => o.NAME)));
-                    }
-                    delegateSelectDatas(PropetiesFilter.IdReference, arrGoc);
                 }
             }
             catch (Exception ex)
