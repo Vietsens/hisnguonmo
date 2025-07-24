@@ -173,6 +173,9 @@ namespace HIS.UC.FormType
                         case "FTHIS000039":
                             result = new HIS.UC.FormType.Numeric.NumericProcessor(data, generateRDO);
                             break;
+                        case "FTHIS000040":
+                            result = new HIS.UC.FormType.Core.RadioCheckBox.RadioCheckBoxProcessor(data, generateRDO);
+                            break;
                         default:
                             break;
                     }

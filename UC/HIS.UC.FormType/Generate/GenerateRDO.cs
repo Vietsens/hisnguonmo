@@ -75,6 +75,10 @@ namespace HIS.UC.FormType
         /// </summary>
         public object DefaultValue { get; set; }
         /// <summary>
+        /// 
+        /// </summary>
+        public object DefaultSource { get; set; }
+        /// <summary>
         /// Loại dữ liệu:
         /// DateTime: Thời gian trong tháng, thời gian hiện tại, ...
         /// </summary>

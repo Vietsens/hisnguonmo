@@ -126,6 +126,7 @@
     <Compile Include="Design\CheckValid\CheckValidSqlBehavior.cs" />
     <Compile Include="Design\CheckValid\CheckValidStrBehavior.cs" />
     <Compile Include="Design\CheckValid\CheckValidTreatmentTypeComboBehavior.cs" />
+    <Compile Include="Design\CheckValid\CheckValidRadioCheckBoxBehavior.cs" />
     <Compile Include="Design\CheckValid\CheckValidTrueOrFalseBehavior.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -161,9 +162,7 @@
     <Compile Include="Design\CreateReport1\CreateReport1_Plus_Control.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Design\CreateReport1\CreateReport1_Plus_Load.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Design\CreateReport1\CreateReport1_Plus_Load.cs" />
     <Compile Include="Design\CreateReport1\CreateReport1_Plus_Set.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -223,6 +222,7 @@
     <Compile Include="Design\JsonOutput\JsonOutputTreatmentTypeComboBehavior.cs" />
     <Compile Include="Design\JsonOutput\JsonOutputTreatmentTypeComboCheckBehavior.cs" />
     <Compile Include="Design\JsonOutput\JsonOutputTreatmentTypeGridCheckBoxBehavior.cs" />
+    <Compile Include="Design\JsonOutput\JsonOutputRadioCheckBoxBehavior.cs" />
     <Compile Include="Design\JsonOutput\JsonOutputTrueOrFalseBehavior.cs" />
     <Compile Include="Design\JsonOutput\JsonOutputUserNameComboBehavior.cs" />
     <Compile Include="Design\JsonOutput\OutputMediStockComboFilterByDepartmentComboBehavior.cs" />
@@ -287,7 +287,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MessageLang\MessageEnResource.resx" />
     <EmbeddedResource Include="MessageLang\MessageViResource.resx" />
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

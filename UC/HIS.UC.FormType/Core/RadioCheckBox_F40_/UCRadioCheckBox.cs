@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -17,7 +17,9 @@
  */
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraSpreadsheet.Utils;
 using His.UC.LibraryMessage;
+using HIS.UC.FormType.Core.RadioCheckBox.Validation;
 using HIS.UC.FormType.Core.TrueOrFalse.Validation;
 using System;
 using System.Collections.Generic;
@@ -29,11 +31,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace HIS.UC.FormType.Core.TrueOrFalse
+namespace HIS.UC.FormType.Core.RadioCheckBox
 {
-    public partial class UCTrueOrFalse : System.Windows.Forms.UserControl
+    public partial class UCRadioCheckBox : System.Windows.Forms.UserControl
     {
-        TrueOrFalseFDO generateRDO;
+        RadioCheckBoxFDO generateRDO;
         SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config;
         int positionHandleControl = -1;
         SAR.EFMODEL.DataModels.V_SAR_REPORT report;
@@ -43,11 +45,12 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
         DynamicFilterRDO DynamicFilter;
 
 
-        public UCTrueOrFalse(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO)
+        public UCRadioCheckBox(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO)
         {
             try
             {
                 InitializeComponent();
+                //
                 //FormTypeConfig.ReportHight += 30;
                 this.config = config;
 
@@ -67,25 +70,120 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private Dictionary<int, CheckEdit> radioDict = new Dictionary<int, CheckEdit>();
+        CheckEdit addRadioButton(string text, int index)
+        {
+            CheckEdit radio = new CheckEdit();
+            try
+            {
+                if (this.DynamicFilter != null && this.DynamicFilter.Propeties != null && this.DynamicFilter.Propeties.Type == 1)
+                {
+                    radio.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+                    radio.CheckedChanged += Radio_CheckedChanged;
+                    //radio.Properties.RadioGroupIndex = (int)this.DynamicFilter.ID;
+
+                }
+                else
+                {
+                    radio.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Standard;
+                }
+                radio.Dock = System.Windows.Forms.DockStyle.Top;
+                radio.Location = new System.Drawing.Point(96, 2);
+                radio.Name = "radio" + index;
+                radio.Properties.AutoWidth = true;
+                radio.Properties.Caption = text;
+                radio.Size = new System.Drawing.Size(52, 19);
+                radio.TabIndex = index;
+                radio.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return radio;
+        }
+        private void Radio_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckEdit radio = sender as CheckEdit;
+            if (radio != null && radio.Properties.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Radio)
+            {
+                if (radio.Checked)
+                {
+                    foreach (var item in radioDict)
+                    {
+                        if (item.Value == radio)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            item.Value.Checked = false;
+                        }
+                    }
+                }
+            }
+        }
         void Init()
         {
             try
             {
+                //
+                if (this.DynamicFilter != null && this.DynamicFilter.Propeties != null && this.DynamicFilter.Propeties.DefaultSource != null)
+                {
+                    radioDict = new Dictionary<int, CheckEdit>();
+                    var items = this.DynamicFilter.Propeties.DefaultSource.ToString().Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    for (int i = 0; i < items.Length; i++)
+                    {
+                        CheckEdit radio = addRadioButton(items[i], i);
+                        radioDict[i] = radio;
+                        int col = i % 3;
+                        if (col == 0)
+                        {
+                            panel1.Controls.Add(radio);
+                            panel1.Controls.SetChildIndex(radio, 0);
+                        }
+                        else if (col == 1)
+                        {
+                            panel2.Controls.Add(radio);
+                            panel2.Controls.SetChildIndex(radio, 0);
+                        }
+                        else // col == 2
+                        {
+                            panel3.Controls.Add(radio);
+                            panel3.Controls.SetChildIndex(radio, 0);
+                        }
+                    }
+                    int chieuCao = 0;
+                    foreach (Control item in panel1.Controls)
+                    {
+                        if (item is CheckEdit check)
+                        {
+                            chieuCao += check.Height;
+                        }
+                    }
+                    this.ClientSize = new Size(ClientSize.Width, chieuCao + 10);
+                }
                 if (this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
                 {
                     SetValidation();
-                    
                 }
                 SetTitle();
                 //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => report), report));
                 GetValueOutput0(this.config.JSON_OUTPUT, ref Output0);
-                JsonOutput = this.config.JSON_OUTPUT;
-                RemoveStrOutput0(ref JsonOutput);
+                //radio.EditValue = true;
                 if (!string.IsNullOrWhiteSpace(Output0))
                 {
-                    if (Output0 == "true") radTrue.Checked = true;
-                    else if (Output0 == "false") radFalse.Checked = true;
+                    foreach (var item in radioDict)
+                    {
+                        if (Output0.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries).Contains(item.Key.ToString()))
+                        {
+                            item.Value.Checked = true;
+                        }
+                    }
                 }
+                JsonOutput = this.config.JSON_OUTPUT;
+                RemoveStrOutput0(ref JsonOutput);
+                
                 if (this.report != null)
                 {
                     SetValue();
@@ -136,25 +234,17 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        } 
+        }
 
         void SetTitle()
         {
             try
             {
-                if (this.DynamicFilter != null && this.DynamicFilter.Propeties != null && this.DynamicFilter.Propeties.DefaultSource != null)
+                if (this.config != null && !String.IsNullOrEmpty(this.config.DESCRIPTION))
                 {
-                    var items = this.DynamicFilter.Propeties.DefaultSource.ToString().Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    radTrue.Text = items.First();
-                    radFalse.Text = items.Last();
-                }
-                else
-                {
-                    if (this.config != null && !String.IsNullOrEmpty(this.config.DESCRIPTION))
-                    {
-                        radTrue.Text = this.config.DESCRIPTION.Split(',').ToList().First();
-                        radFalse.Text = this.config.DESCRIPTION.Split(',').ToList().Last();
-                    }
+                    layoutControlItem4.Text = this.config.DESCRIPTION;
+                    //radTrue.Text = this.config.DESCRIPTION.Split(',').ToList().First();
+                    //radFalse.Text = this.config.DESCRIPTION.Split(',').ToList().Last();
                 }
             }
             catch (Exception ex)
@@ -164,22 +254,18 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
         }
         public string GetValue()
         {
-            string value = "";
             try
             {
-                string TrueOrFalseId ="";
-                if (radTrue.Checked) TrueOrFalseId = "true";
-                else if (radFalse.Checked) TrueOrFalseId = "false";
-                else TrueOrFalseId = "null";
-                value = String.Format(this.JsonOutput, TrueOrFalseId);
+                var selectedIds = radioDict.Where(x => x.Value.Checked)
+                                           .Select(x => x.Key);
+                var TrueOrFalseId = Newtonsoft.Json.JsonConvert.SerializeObject(selectedIds);
+                return String.Format(this.JsonOutput, ConvertUtils.ConvertToObjectFilter(TrueOrFalseId));
             }
             catch (Exception ex)
             {
-                value = null;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
             }
-
-            return value;
         }
 
         public void SetValue()
@@ -189,8 +275,15 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
                 if (this.JsonOutput != null && this.report.JSON_FILTER != null)
                 {
                     string value = HIS.UC.FormType.CopyFilter.CopyFilter.CopyFilterProcess(this.config, this.JsonOutput, this.report.JSON_FILTER);
-                    if (value == "true") radTrue.Checked = true;
-                    else if (value == "false") radFalse.Checked = true;
+                    //if (value == "true") radTrue.Checked = true;
+                    //else if (value == "false") radFalse.Checked = true;
+                    foreach (var item in radioDict)
+                    {
+                        if (Output0.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries).Contains(item.Key.ToString()))
+                        {
+                            item.Value.Checked = true;
+                        }
+                    }
                 }
 
             }
@@ -205,12 +298,12 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
         {
             try
             {
-                TrueOrFalseValidationRule validRule = new TrueOrFalseValidationRule();
-                validRule.radTrue = radTrue;
-                validRule.radFalse = radFalse;
-                validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.ThieuTruongDuLieuBatBuoc);
-                validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                dxValidationProvider1.SetValidationRule(radTrue, validRule);
+                RadioCheckBoxValidationRule validRule = new RadioCheckBoxValidationRule();
+                //validRule.radTrue = radTrue;
+                //validRule.radFalse = radFalse;
+                //validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(Message.Enum.ThieuTruongDuLieuBatBuoc);
+                //validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                //dxValidationProvider1.SetValidationRule(radTrue, validRule);
             }
             catch (Exception ex)
             {
@@ -285,7 +378,7 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
-        
+
         }
     }
 }

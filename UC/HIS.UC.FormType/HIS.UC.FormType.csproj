@@ -515,6 +515,15 @@
       <DependentUpon>UCPatientTypeCombo.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\PatientTypeCombo_F13__\Validation\PatientTypeValidationRule.cs" />
+    <Compile Include="Core\RadioCheckBox_F40_\RadioCheckBoxFDO.cs" />
+    <Compile Include="Core\RadioCheckBox_F40_\RadioCheckBoxProcessor.cs" />
+    <Compile Include="Core\RadioCheckBox_F40_\UCRadioCheckBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\RadioCheckBox_F40_\UCRadioCheckBox.Designer.cs">
+      <DependentUpon>UCRadioCheckBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\RadioCheckBox_F40_\Validation\RadioCheckBoxValidationRule.cs" />
     <Compile Include="Core\RoleUserGrid_F36__\ADO\HisMestInveUserAdo.cs" />
     <Compile Include="Core\RoleUserGrid_F36__\ADO\RoleUserADO.cs" />
     <Compile Include="Core\RoleUserGrid_F36__\config.cs" />
@@ -760,6 +769,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Core\PatientTypeCombo_F13__\UCPatientTypeCombo.resx">
       <DependentUpon>UCPatientTypeCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\RadioCheckBox_F40_\UCRadioCheckBox.resx">
+      <DependentUpon>UCRadioCheckBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Core\RoleUserGrid_F36__\UCRoleUser.resx">
       <DependentUpon>UCRoleUser.cs</DependentUpon>

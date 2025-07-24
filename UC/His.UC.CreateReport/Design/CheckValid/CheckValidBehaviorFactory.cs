@@ -181,6 +181,10 @@ namespace DCV.APP.Report.CheckValid
                 {
                     result = new CheckValidNumeric39Behavior(param, (HIS.UC.FormType.Numeric.UCNumeric)dataItem);
                 }
+                else if (dataItem is HIS.UC.FormType.Core.RadioCheckBox.UCRadioCheckBox)
+                {
+                    result = new CheckValidRadioCheckBoxBehavior(param, (HIS.UC.FormType.Core.RadioCheckBox.UCRadioCheckBox)dataItem);
+                }
                 if (result == null) throw new NullReferenceException();
             }
             catch (NullReferenceException ex)

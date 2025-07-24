@@ -179,6 +179,10 @@ namespace DCV.APP.Report.JsonOutput
                 {
                     result = new JsonOutputNumeric39Behavior(param, (HIS.UC.FormType.Numeric.UCNumeric)dataItem);
                 }
+                else if (dataItem is HIS.UC.FormType.Core.RadioCheckBox.UCRadioCheckBox)
+                {
+                    result = new JsonOutputRadioCheckBoxBehavior(param, (HIS.UC.FormType.Core.RadioCheckBox.UCRadioCheckBox)dataItem);
+                }
                 if (result == null) throw new NullReferenceException();
             }
             catch (NullReferenceException ex)
