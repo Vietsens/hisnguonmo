@@ -56,6 +56,8 @@ namespace HIS.UC.Sick
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.txtFather = new DevExpress.XtraEditors.TextEdit();
+            this.txtMother = new DevExpress.XtraEditors.TextEdit();
             this.btnCheckBhxhCode = new DevExpress.XtraEditors.SimpleButton();
             this.dtePregnancyTermination = new DevExpress.XtraEditors.DateEdit();
             this.memTreatmentMethod = new DevExpress.XtraEditors.MemoEdit();
@@ -104,7 +106,6 @@ namespace HIS.UC.Sick
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -123,14 +124,15 @@ namespace HIS.UC.Sick
             this.lciGestationalAge = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciIsPregnancyTermination = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.txtMother = new DevExpress.XtraEditors.TextEdit();
-            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.txtFather = new DevExpress.XtraEditors.TextEdit();
-            this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtFather.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtMother.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtePregnancyTermination.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtePregnancyTermination.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memTreatmentMethod.Properties)).BeginInit();
@@ -174,7 +176,6 @@ namespace HIS.UC.Sick
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
@@ -193,12 +194,11 @@ namespace HIS.UC.Sick
             ((System.ComponentModel.ISupportInitialize)(this.lciGestationalAge)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsPregnancyTermination)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtMother.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtFather.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -235,6 +235,22 @@ namespace HIS.UC.Sick
             this.layoutControl1.Size = new System.Drawing.Size(500, 347);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // txtFather
+            // 
+            this.txtFather.Location = new System.Drawing.Point(344, 74);
+            this.txtFather.Name = "txtFather";
+            this.txtFather.Size = new System.Drawing.Size(137, 20);
+            this.txtFather.StyleController = this.layoutControl1;
+            this.txtFather.TabIndex = 28;
+            // 
+            // txtMother
+            // 
+            this.txtMother.Location = new System.Drawing.Point(107, 74);
+            this.txtMother.Name = "txtMother";
+            this.txtMother.Size = new System.Drawing.Size(138, 20);
+            this.txtMother.StyleController = this.layoutControl1;
+            this.txtMother.TabIndex = 27;
             // 
             // btnCheckBhxhCode
             // 
@@ -829,19 +845,6 @@ namespace HIS.UC.Sick
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
-            // layoutControlItem2
-            // 
-            this.layoutControlItem2.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem2.Control = this.dtSickLeaveFromTime;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 48);
-            this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(247, 24);
-            this.layoutControlItem2.Text = "Nghỉ từ:";
-            this.layoutControlItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem2.TextSize = new System.Drawing.Size(105, 20);
-            this.layoutControlItem2.TextToControlDistance = 0;
-            // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -1085,21 +1088,18 @@ namespace HIS.UC.Sick
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
-            // dxValidationProvider1
+            // layoutControlItem16
             // 
-            this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
-            // 
-            // dxErrorProvider1
-            // 
-            this.dxErrorProvider1.ContainerControl = this;
-            // 
-            // txtMother
-            // 
-            this.txtMother.Location = new System.Drawing.Point(107, 74);
-            this.txtMother.Name = "txtMother";
-            this.txtMother.Size = new System.Drawing.Size(138, 20);
-            this.txtMother.StyleController = this.layoutControl1;
-            this.txtMother.TabIndex = 27;
+            this.layoutControlItem16.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem16.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem16.Control = this.txtFather;
+            this.layoutControlItem16.Location = new System.Drawing.Point(247, 72);
+            this.layoutControlItem16.Name = "layoutControlItem16";
+            this.layoutControlItem16.Size = new System.Drawing.Size(236, 24);
+            this.layoutControlItem16.Text = "Họ tên bố:";
+            this.layoutControlItem16.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem16.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem16.TextToControlDistance = 5;
             // 
             // layoutControlItem15
             // 
@@ -1114,26 +1114,26 @@ namespace HIS.UC.Sick
             this.layoutControlItem15.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem15.TextToControlDistance = 5;
             // 
-            // txtFather
+            // layoutControlItem2
             // 
-            this.txtFather.Location = new System.Drawing.Point(344, 74);
-            this.txtFather.Name = "txtFather";
-            this.txtFather.Size = new System.Drawing.Size(137, 20);
-            this.txtFather.StyleController = this.layoutControl1;
-            this.txtFather.TabIndex = 28;
+            this.layoutControlItem2.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem2.Control = this.dtSickLeaveFromTime;
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 48);
+            this.layoutControlItem2.Name = "layoutControlItem2";
+            this.layoutControlItem2.Size = new System.Drawing.Size(247, 24);
+            this.layoutControlItem2.Text = "Nghỉ từ:";
+            this.layoutControlItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem2.TextSize = new System.Drawing.Size(105, 20);
+            this.layoutControlItem2.TextToControlDistance = 0;
             // 
-            // layoutControlItem16
+            // dxValidationProvider1
             // 
-            this.layoutControlItem16.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem16.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem16.Control = this.txtFather;
-            this.layoutControlItem16.Location = new System.Drawing.Point(247, 72);
-            this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(236, 24);
-            this.layoutControlItem16.Text = "Họ tên bố:";
-            this.layoutControlItem16.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem16.TextSize = new System.Drawing.Size(90, 20);
-            this.layoutControlItem16.TextToControlDistance = 5;
+            this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
+            // 
+            // dxErrorProvider1
+            // 
+            this.dxErrorProvider1.ContainerControl = this;
             // 
             // UCSick
             // 
@@ -1145,6 +1145,8 @@ namespace HIS.UC.Sick
             this.Load += new System.EventHandler(this.UCSick_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtFather.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtMother.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtePregnancyTermination.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtePregnancyTermination.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memTreatmentMethod.Properties)).EndInit();
@@ -1188,7 +1190,6 @@ namespace HIS.UC.Sick
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
@@ -1207,12 +1208,11 @@ namespace HIS.UC.Sick
             ((System.ComponentModel.ISupportInitialize)(this.lciGestationalAge)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsPregnancyTermination)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtMother.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtFather.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             this.ResumeLayout(false);
 
         }

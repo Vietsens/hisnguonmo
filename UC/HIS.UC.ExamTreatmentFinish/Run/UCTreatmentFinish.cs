@@ -59,11 +59,13 @@ using HIS.UC.ExamTreatmentFinish.Resources;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using Inventec.Common.Logging;
 using DevExpress.XtraExport;
+using HIS.Desktop.Common;
 
 namespace HIS.UC.ExamTreatmentFinish.Run
 {
     public partial class UCExamTreatmentFinish : UserControl
     {
+        HIS.Desktop.Common.DelegateSelectData dlgSendTreatmentMethod;
         private Desktop.Plugins.Library.CheckIcd.CheckIcdManager checkIcdManager { get; set; }
         string icdSubCodeScreeen { get; set; }
         frmICDInformation frmICDInformation = null;
@@ -113,6 +115,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         internal UserControl ucSecondaryIcd;
         List<HIS_DEPARTMENT> listDepartment;
         List<HIS_BRANCH> listBranch;
+        public string TreatmentInstruction;
+        public Action<string> OnTreatmentInstructionChanged;
         public UCExamTreatmentFinish(TreatmentFinishInitADO _ExamTreatmentFinishInitADO,HIS_TREATMENT_EXT _treatmentExt)
         {
             InitializeComponent();
@@ -830,7 +834,6 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                         surSdoResult = null;
                         frmPopUpSick frm = new frmPopUpSick(surgeryInitADO, ActionGetSdoSurResult);
                         frm.ShowDialog();
-
                         //surgeryAppointmentProcessor = new SurgeryAppointmentProcessor();
                         //this.ucSurgeryAppointment = (UserControl)surgeryAppointmentProcessor.Run(surgeryInitADO);
                         //this.ucSurgeryAppointment.Dock = DockStyle.Fill;
@@ -857,6 +860,21 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 {
                     panelExamTreatmentFinish.Controls.Clear();
                     //EnableControlAppoinment(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public void SetDelegateSendTeatmentMethod(DelegateSelectData dlg)
+        {
+            try
+            {
+                if (dlg != null)
+                {
+                    this.dlgSendTreatmentMethod = dlg;
                 }
             }
             catch (Exception ex)
@@ -906,6 +924,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 sickInitADO.CurrentHisTreatment.PREGNANCY_TERMINATION_TIME = sickSdoResult.PregnancyTerminationTime;
                 sickInitADO.CurrentHisTreatment.TDL_PATIENT_MOTHER_NAME = sickSdoResult.MotherName;
                 sickInitADO.CurrentHisTreatment.TDL_PATIENT_FATHER_NAME = sickSdoResult.FatherName;
+                this.dlgSendTreatmentMethod(sickInitADO.CurrentHisTreatment.TREATMENT_METHOD);
             }
             catch (Exception ex)
             {

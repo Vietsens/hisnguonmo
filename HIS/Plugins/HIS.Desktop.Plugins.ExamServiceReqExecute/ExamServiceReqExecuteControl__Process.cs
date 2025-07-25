@@ -42,6 +42,7 @@ using HIS.UC.Hospitalize.ADO;
 using HIS.UC.Icd;
 using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Common.ThreadCustom;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
@@ -2514,6 +2515,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 WaitingManager.Show();
                 serviceReqExamUpdateSDO.RequestRoomId = moduleData.RoomId;
+                Inventec.Common.Logging.LogSystem.Info("serviceReqExamUpdateSDO: " + LogUtil.TraceData("serviceReqExamUpdateSDO: ", serviceReqExamUpdateSDO));
                 HisServiceReqResult = new BackendAdapter(param)
                     .Post<HisServiceReqExamUpdateResultSDO>("api/HisServiceReq/ExamUpdate", ApiConsumers.MosConsumer, serviceReqExamUpdateSDO, param);
 

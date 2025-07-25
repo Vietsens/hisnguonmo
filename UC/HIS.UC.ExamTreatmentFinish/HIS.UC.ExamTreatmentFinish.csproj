@@ -82,8 +82,9 @@
     <Reference Include="HIS.UC.SecondaryIcd">
       <HintPath>..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.Sick">
-      <HintPath>..\..\..\lib\HIS\HIS.UC.Sick\HIS.UC.Sick.dll</HintPath>
+    <Reference Include="HIS.UC.Sick, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.Sick.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SurgeryAppointment">
       <HintPath>..\..\..\lib\HIS\HIS.UC.SurgeryAppointment\HIS.UC.SurgeryAppointment.dll</HintPath>
