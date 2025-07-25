@@ -50,22 +50,17 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
+            this.checkedListBoxControl1 = new DevExpress.XtraEditors.CheckedListBoxControl();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.checkedListBoxControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -89,86 +84,55 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
             // 
             // layoutControl2
             // 
-            this.layoutControl2.Controls.Add(this.panel2);
-            this.layoutControl2.Controls.Add(this.panel1);
-            this.layoutControl2.Controls.Add(this.panel3);
+            this.layoutControl2.Controls.Add(this.checkedListBoxControl1);
             this.layoutControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl2.Location = new System.Drawing.Point(0, 0);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.layoutControlGroup2;
-            this.layoutControl2.Size = new System.Drawing.Size(660, 30);
+            this.layoutControl2.Size = new System.Drawing.Size(800, 27);
             this.layoutControl2.TabIndex = 3;
             this.layoutControl2.Text = "layoutControl2";
+            // 
+            // checkedListBoxControl1
+            // 
+            this.checkedListBoxControl1.CheckOnClick = true;
+            this.checkedListBoxControl1.ItemAutoHeight = true;
+            this.checkedListBoxControl1.Location = new System.Drawing.Point(97, 4);
+            this.checkedListBoxControl1.MultiColumn = true;
+            this.checkedListBoxControl1.Name = "checkedListBoxControl1";
+            this.checkedListBoxControl1.ShowFocusRect = false;
+            this.checkedListBoxControl1.Size = new System.Drawing.Size(701, 19);
+            this.checkedListBoxControl1.StyleController = this.layoutControl2;
+            this.checkedListBoxControl1.TabIndex = 4;
             // 
             // layoutControlGroup2
             // 
             this.layoutControlGroup2.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.layoutControlGroup2.GroupBordersVisible = false;
             this.layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem3,
-            this.layoutControlItem4,
-            this.layoutControlItem5});
+            this.layoutControlItem1});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(660, 30);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(800, 27);
             this.layoutControlGroup2.TextVisible = false;
             // 
-            // panel3
+            // layoutControlItem1
             // 
-            this.panel3.Location = new System.Drawing.Point(459, 2);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(199, 26);
-            this.panel3.TabIndex = 4;
-            // 
-            // layoutControlItem3
-            // 
-            this.layoutControlItem3.Control = this.panel3;
-            this.layoutControlItem3.Location = new System.Drawing.Point(457, 0);
-            this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(203, 30);
-            this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem3.TextVisible = false;
-            // 
-            // panel1
-            // 
-            this.panel1.Location = new System.Drawing.Point(97, 2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(185, 26);
-            this.panel1.TabIndex = 5;
-            // 
-            // layoutControlItem4
-            // 
-            this.layoutControlItem4.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem4.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem4.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            this.layoutControlItem4.Control = this.panel1;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem4.MinSize = new System.Drawing.Size(234, 24);
-            this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(284, 30);
-            this.layoutControlItem4.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.layoutControlItem4.Text = "Tùy chọn:";
-            this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem4.TextLocation = DevExpress.Utils.Locations.Left;
-            this.layoutControlItem4.TextSize = new System.Drawing.Size(90, 20);
-            this.layoutControlItem4.TextToControlDistance = 5;
-            // 
-            // panel2
-            // 
-            this.panel2.Location = new System.Drawing.Point(286, 2);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(169, 26);
-            this.panel2.TabIndex = 6;
-            // 
-            // layoutControlItem5
-            // 
-            this.layoutControlItem5.Control = this.panel2;
-            this.layoutControlItem5.Location = new System.Drawing.Point(284, 0);
-            this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(173, 30);
-            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem5.TextVisible = false;
+            this.layoutControlItem1.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem1.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem1.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            this.layoutControlItem1.Control = this.checkedListBoxControl1;
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem1.MinSize = new System.Drawing.Size(109, 4);
+            this.layoutControlItem1.Name = "layoutControlItem1";
+            this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 4, 4);
+            this.layoutControlItem1.Size = new System.Drawing.Size(800, 27);
+            this.layoutControlItem1.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem1.Text = "Tùy chọn:";
+            this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem1.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem1.TextToControlDistance = 5;
             // 
             // UCRadioCheckBox
             // 
@@ -177,16 +141,17 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
             this.Controls.Add(this.layoutControl2);
             this.Controls.Add(this.layoutControl1);
             this.Name = "UCRadioCheckBox";
-            this.Size = new System.Drawing.Size(660, 30);
+            this.Size = new System.Drawing.Size(800, 27);
+            this.Load += new System.EventHandler(this.UCRadioCheckBox_Load);
+            this.Resize += new System.EventHandler(this.UCRadioCheckBox_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.checkedListBoxControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -198,11 +163,7 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
         private DevExpress.XtraLayout.LayoutControl layoutControl2;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup2;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel3;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
+        private DevExpress.XtraEditors.CheckedListBoxControl checkedListBoxControl1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
     }
 }
