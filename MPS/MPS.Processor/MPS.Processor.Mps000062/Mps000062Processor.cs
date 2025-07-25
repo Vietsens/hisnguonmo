@@ -5989,7 +5989,7 @@ namespace MPS.Processor.Mps000062
 
                     var serviceReqDDTs = (ServiceReq != null && ServiceReq.Count > 0) ?
                        ServiceReq.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
-                           && o.INTRUCTION_DATE < Inventec.Common.TypeConvert.Parse.ToInt64(dtTrackingDate.ToString("yyyyMMdd") + "000000")
+                           && o.INTRUCTION_TIME < Inventec.Common.TypeConvert.Parse.ToInt64(dtTrackingDate.ToString("yyyyMMdd") + "000000")
                            && o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT).ToList()
                        : null;
                     LogSystem.Info("serviceReqDDTs: " + LogUtil.TraceData("serviceReqDDTs: ", serviceReqDDTs));
@@ -6973,39 +6973,40 @@ namespace MPS.Processor.Mps000062
         {
             try
             {
+
                 var groupIntructionTime = SortIntructionTime.GroupBy(o => o.INTRUCTION_TIME);
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => SortIntructionTime.Select(o => o.TDL_SERVICE_REQ_ID)), SortIntructionTime.Select(o => o.TDL_SERVICE_REQ_ID)));
+
+                List<Mps62ADO> lstAdo = new List<Mps62ADO>();
                 foreach (var it in groupIntructionTime)
                 {
-                    List<string> dtTimes = it.ToList().OrderBy(o => o.USE_TIME ?? o.INTRUCTION_TIME).Select(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.USE_TIME ?? o.INTRUCTION_TIME)).ToList();
-                    var inStrTime = it.GroupBy(o => string.Format("{0}", o.MEDICINE_TYPE_CODE)).Where(o => o.Count() == dtTimes.Distinct().Count()).SelectMany(g => g).ToList();
-                    var plusStrTime = it.GroupBy(o => string.Format("{0}", o.MEDICINE_TYPE_CODE)).Where(o => o.Count() != dtTimes.Distinct().Count()).SelectMany(g => g).Select(x => x.TDL_SERVICE_REQ_ID ?? 0).Distinct().ToList();
-                    if (plusStrTime != null && plusStrTime.Count > 0)
+                    var groupMedicineType = it.GroupBy(o => o.MEDICINE_TYPE_CODE);
+                    foreach (var itMedicineType in groupMedicineType)
                     {
-                        if (plusStrTime.Count == dtTimes.Distinct().Count())
-                        {
-                            foreach (var date in dtTimes)
-                            {
-                                var srl = it.Where(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.USE_TIME ?? o.INTRUCTION_TIME) == date && plusStrTime.Exists(p => p == o.TDL_SERVICE_REQ_ID)).ToList();
-                                ProcessAddKeyMergeDay(SortIntructionTime.ToList().Where(o => srl.Exists(p => p.TDL_SERVICE_REQ_ID == o.TDL_SERVICE_REQ_ID)).ToList(), item);
-                            }
-                        }
-                        else if (dtTimes.Distinct().Count() > 1)
-                        {
-                            ProcessAddKeyMergeDay(SortIntructionTime.ToList().Where(o => plusStrTime.Exists(p => p == o.TDL_SERVICE_REQ_ID)).ToList(), item);
-                        }
+                        Mps62ADO ado = new Mps62ADO();
+                        ado.MedicineTypeCode = itMedicineType.Key;
+                        ado.List = itMedicineType.ToList();
+                        ado.Dates = BuildDateString(itMedicineType.Select(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.USE_TIME ?? o.INTRUCTION_DATE)).Distinct().ToList());
+                        ado.TotalDateNumber = itMedicineType.Select(o => o.USE_TIME ?? o.INTRUCTION_DATE).Distinct().ToList().Sum();
+                        lstAdo.Add(ado);
                     }
-                    var itServiceReq = it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID).Where(o => inStrTime.Select(x => x.TDL_SERVICE_REQ_ID).Distinct().ToList().Exists(p => p == o.TDL_SERVICE_REQ_ID)).Select(o => o.TDL_SERVICE_REQ_ID).Distinct().ToList();
-                    if (itServiceReq == null || itServiceReq.Count == 0)
-                        continue;
-                    item.MEDICINES_MERGE_DAY___DATA += BuildDateString(dtTimes);
+                }
+                lstAdo = lstAdo.OrderBy(o => o.TotalDateNumber).ToList();
+                var groupDates = lstAdo.GroupBy(o => new { o.Dates, o.TotalDateNumber }).ToList();
+                foreach (var inStrTime in groupDates)
+                {
+                    item.MEDICINES_MERGE_DAY___DATA += inStrTime.Key.Dates;
                     item.MEDICINES_MERGE_DAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-                    item.MEDICINES_MERGE_DAY_HTU___DATA += BuildDateString(dtTimes);
+                    item.MEDICINES_MERGE_DAY_HTU___DATA += inStrTime.Key.Dates;
                     item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-                    item.MEDICINES_MERGE_DAY___DATA += string.Join("", inStrTime.Select(o => o.DATA_DAY_REPX).Distinct());
-                    item.MEDICINES_MERGE_DAY_HTU___DATA += string.Join("", inStrTime.Select(o => o.DATA_DAY_REPX).Distinct());
-
+                    List<ExpMestMetyReqADO> it = new List<ExpMestMetyReqADO>();
+                    foreach (var il in inStrTime)
+                    {
+                        it.AddRange(il.List);
+                    }
+                    item.MEDICINES_MERGE_DAY___DATA += string.Join("", it.Select(o => o.DATA_DAY_REPX).Distinct());
+                    item.MEDICINES_MERGE_DAY_HTU___DATA += string.Join("", it.Select(o => o.DATA_DAY_REPX).Distinct());
                     long? sthang = it.GroupBy(o => new { o.TDL_SERVICE_REQ_ID, o.REMEDY_COUNT }).Sum(o => o.Key.REMEDY_COUNT ?? 0);
                     if (sthang > 0)
                     {
@@ -7024,9 +7025,8 @@ namespace MPS.Processor.Mps000062
                         item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + rdo._DicServiceReqs[it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0].ADVISE, FontStyle.Italic);
                         item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                     }
-
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.MEDICINES_MERGE_DAY___DATA), item.MEDICINES_MERGE_DAY___DATA));
                 }
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.MEDICINES_MERGE_DAY___DATA), item.MEDICINES_MERGE_DAY___DATA));
             }
             catch (Exception ex)
             {
@@ -7617,5 +7617,20 @@ namespace MPS.Processor.Mps000062
 
 
 
+    }
+
+
+    public class Compare : IEqualityComparer<ExpMestMetyReqADO>
+    {
+        public bool Equals(ExpMestMetyReqADO x, ExpMestMetyReqADO y)
+        {
+            return
+                x.MEDICINE_TYPE_CODE == y.MEDICINE_TYPE_CODE;
+        }
+
+        public int GetHashCode(ExpMestMetyReqADO x)
+        {
+            return (!string.IsNullOrEmpty(x.MEDICINE_TYPE_CODE) ? x.MEDICINE_TYPE_CODE.GetHashCode() : 0);
+        }
     }
 }
