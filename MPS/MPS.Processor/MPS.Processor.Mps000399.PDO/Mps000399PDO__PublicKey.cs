@@ -29,6 +29,7 @@ namespace MPS.Processor.Mps000399.PDO
     {
         public HIS_TREATMENT Treatment { get; set; }
         public V_HIS_PATIENT _currentPatient { get; set; }
+        public HIS_TRACKING Tracking { get; set; }
     }
 
     public class PatientADO : V_HIS_PATIENT

@@ -52,6 +52,7 @@ using HIS.Desktop.Plugins.TreatmentList.Config;
 using HIS.UC.UCCauseOfDeath.ADO;
 using HIS.Desktop.Plugins.TreatmentList.ADO;
 using HIS.Desktop.Plugins.TreatmentList.Popup;
+
 using static DevExpress.Data.Helpers.ExpressiveSortInfo;
 
 namespace HIS.Desktop.Plugins.TreatmentList
