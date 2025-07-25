@@ -18,7 +18,6 @@
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
 using HIS.UC.FormType.Core.RadioCheckBox.Validation;
-using Inventec.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -60,87 +59,28 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private Dictionary<int, CheckEdit> radioDict = new Dictionary<int, CheckEdit>();
-        CheckEdit addRadioButton(string text, int index)
-        {
-            CheckEdit radio = new CheckEdit();
-            try
-            {
-                if (this.DynamicFilter != null && this.DynamicFilter.Propeties != null && this.DynamicFilter.Propeties.Type == 1)
-                {
-                    radio.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-                    radio.CheckedChanged += Radio_CheckedChanged;
-                    //radio.Properties.RadioGroupIndex = (int)this.DynamicFilter.ID;
-                }
-                else
-                {
-                    radio.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Standard;
-                }
-                radio.Dock = System.Windows.Forms.DockStyle.Top;
-                radio.Location = new System.Drawing.Point(96, 2);
-                radio.Name = "radio" + index;
-                radio.Properties.AutoWidth = true;
-                radio.Properties.Caption = text;
-                radio.Size = new System.Drawing.Size(52, 19);
-                radio.TabIndex = index;
-                radio.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            return radio;
-        }
-        private void Radio_CheckedChanged(object sender, EventArgs e)
-        {
-            var radio = sender as CheckEdit;
-            if (radio == null || radio.Properties.CheckStyle != DevExpress.XtraEditors.Controls.CheckStyles.Radio || !radio.Checked)
-            {
-                return;
-            }
-            foreach (var kvp in radioDict.Where(w => w.Value.Checked && !ReferenceEquals(w.Value, radio)))
-            {
-                kvp.Value.Checked = false;
-            }
-        }
         void Init()
         {
             try
             {
                 if (this.DynamicFilter != null && this.DynamicFilter.Propeties != null && this.DynamicFilter.Propeties.DefaultSource != null)
                 {
-                    radioDict = new Dictionary<int, CheckEdit>();
+                    if (this.DynamicFilter.Propeties.Type == 1)
+                    {
+                        this.checkedListBoxControl1.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+                        this.checkedListBoxControl1.ItemCheck += checkedListBoxControl1_ItemCheck;
+                    }
+                    else
+                    {
+                        this.checkedListBoxControl1.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Standard;
+                    }
                     var items = this.DynamicFilter.Propeties.DefaultSource.ToString().Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
                     for (int i = 0; i < items.Length; i++)
                     {
-                        CheckEdit radio = addRadioButton(items[i], i);
-                        radioDict[i] = radio;
-                        int col = i % 3;
-                        if (col == 0)
+                        this.checkedListBoxControl1.Items.AddRange(new DevExpress.XtraEditors.Controls.CheckedListBoxItem[]
                         {
-                            panel1.Controls.Add(radio);
-                            panel1.Controls.SetChildIndex(radio, 0);
-                        }
-                        else if (col == 1)
-                        {
-                            panel2.Controls.Add(radio);
-                            panel2.Controls.SetChildIndex(radio, 0);
-                        }
-                        else // col == 2
-                        {
-                            panel3.Controls.Add(radio);
-                            panel3.Controls.SetChildIndex(radio, 0);
-                        }
+                            new DevExpress.XtraEditors.Controls.CheckedListBoxItem(i, items[i]) });
                     }
-                    int chieuCao = 0;
-                    foreach (Control item in panel1.Controls)
-                    {
-                        if (item is CheckEdit check)
-                        {
-                            chieuCao += check.Height;
-                        }
-                    }
-                    this.ClientSize = new Size(ClientSize.Width, chieuCao + 10);
                 }
                 if (this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
                 {
@@ -149,14 +89,13 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                 SetTitle();
                 //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => report), report));
                 GetValueOutput0(this.config.JSON_OUTPUT, ref Output0);
-                //radio.EditValue = true;
                 if (!string.IsNullOrWhiteSpace(Output0))
                 {
-                    foreach (var item in radioDict)
+                    for (int i = 0; i < this.checkedListBoxControl1.Items.Count; i++)
                     {
-                        if (Output0.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries).Contains(item.Key.ToString()))
+                        if (Output0.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries).Contains(i.ToString()))
                         {
-                            item.Value.Checked = true;
+                            this.checkedListBoxControl1.Items[i].CheckState = CheckState.Checked;
                         }
                     }
                 }
@@ -170,6 +109,19 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void checkedListBoxControl1_ItemCheck(object sender, DevExpress.XtraEditors.Controls.ItemCheckEventArgs e)
+        {
+            if (checkedListBoxControl1.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Radio && e.State == CheckState.Checked)
+            {
+                for (int i = 0; i < checkedListBoxControl1.Items.Count; i++)
+                {
+                    if (i != e.Index)
+                    {
+                        checkedListBoxControl1.Items[i].CheckState = CheckState.Unchecked;
+                    }
+                }
             }
         }
 
@@ -218,10 +170,10 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
             {
                 if (this.config != null && !String.IsNullOrEmpty(this.config.DESCRIPTION))
                 {
-                    layoutControlItem4.Text = this.config.DESCRIPTION;
+                    layoutControlItem1.Text = this.config.DESCRIPTION;
                     if (this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
                     {
-                        layoutControlItem4.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        layoutControlItem1.AppearanceItemCaption.ForeColor = Color.Maroon;
                     }
                 }
             }
@@ -234,8 +186,8 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
         {
             try
             {
-                var selectedIds = radioDict.Where(x => x.Value.Checked)
-                                           .Select(x => x.Key);
+                var selectedIds = this.checkedListBoxControl1.Items.Where(x => x.CheckState == CheckState.Checked)
+                                           .Select(x => x.Value);
                 var val = Newtonsoft.Json.JsonConvert.SerializeObject(selectedIds);
                 return String.Format(this.JsonOutput, val);
             }
@@ -255,9 +207,10 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                     List<int> value = Newtonsoft.Json.JsonConvert.DeserializeObject<List<int>>(HIS.UC.FormType.CopyFilter.CopyFilter.CopyFilterProcess(this.config, this.JsonOutput, this.report.JSON_FILTER));
                     if (value != null && value.Count > 0)
                     {
-                        foreach (var item in radioDict)
+                        for (int i = 0; i < this.checkedListBoxControl1.Items.Count; i++)
                         {
-                            item.Value.Checked = value.Contains(item.Key);
+                            this.checkedListBoxControl1.Items[i].CheckState = value.Contains(i) ? CheckState.Checked : CheckState.Unchecked;
+
                         }
                     }
                 }
@@ -268,17 +221,15 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        #region Validation
         private void SetValidateRad()
         {
             try
             {
                 RadioCheckBoxValidationRule validRule = new RadioCheckBoxValidationRule();
-                validRule.radTrue = radioDict;
+                validRule.radTrue = this.checkedListBoxControl1;
                 validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.ThieuTruongDuLieuBatBuoc);
                 validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                dxValidationProvider1.SetValidationRule(radioDict[0], validRule);
+                dxValidationProvider1.SetValidationRule(this.checkedListBoxControl1, validRule);
             }
             catch (Exception ex)
             {
@@ -334,8 +285,6 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        #endregion
-
         public bool Valid()
         {
             bool result = true;
@@ -354,6 +303,40 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
             }
             return result;
 
+        }
+        private void BestFitHeight(CheckedListBoxControl listBox)
+        {
+            CheckedListBoxViewInfo viewInfo = listBox.GetViewInfo() as CheckedListBoxViewInfo;
+            // Tính toán số cột và hàng mới khi thu hẹp cửa sổ
+            var tongChieuDai = viewInfo.ColumnWidth * viewInfo.ColumnCount;
+            while (tongChieuDai > listBox.Width)
+            {
+                this.ClientSize = new Size(ClientSize.Width, ClientSize.Height + viewInfo.ItemHeight);
+                listBox.PerformLayout();
+                viewInfo = listBox.GetViewInfo() as CheckedListBoxViewInfo;
+                tongChieuDai = viewInfo.ColumnWidth * viewInfo.ColumnCount;
+            }
+            // Tính toán số cột và hàng mới khi kéo rộng cửa sổ (Hình như không cần dùng ý trên vẫn được)
+            viewInfo = listBox.GetViewInfo() as CheckedListBoxViewInfo;
+            int columnCount_new = (int)Math.Floor((double)listBox.Width / viewInfo.ColumnWidth);
+            int columnCount_current = viewInfo.ColumnCount;
+            int rowCount_new = (int)Math.Ceiling((double)listBox.Items.Count / columnCount_new);
+            int rowCount_current = (int)Math.Ceiling((double)listBox.Items.Count / viewInfo.ColumnCount);
+            if (columnCount_new > columnCount_current && rowCount_new < rowCount_current || (rowCount_new == rowCount_current && rowCount_new == 1))
+            {
+                int newHeight = rowCount_new * viewInfo.ItemHeight;
+                this.ClientSize = new Size(ClientSize.Width, newHeight + 10);
+            }
+        }
+
+        private void UCRadioCheckBox_Resize(object sender, EventArgs e)
+        {
+            this.BestFitHeight(this.checkedListBoxControl1);
+        }
+
+        private void UCRadioCheckBox_Load(object sender, EventArgs e)
+        {
+            this.BestFitHeight(this.checkedListBoxControl1);
         }
     }
 }
