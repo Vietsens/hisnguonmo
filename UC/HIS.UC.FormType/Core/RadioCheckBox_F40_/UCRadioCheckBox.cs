@@ -307,14 +307,17 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
         private void BestFitHeight(CheckedListBoxControl listBox)
         {
             CheckedListBoxViewInfo viewInfo = listBox.GetViewInfo() as CheckedListBoxViewInfo;
-            // Tính toán số cột và hàng mới khi thu hẹp cửa sổ
+            // Sửa lỗi vòng lặp vô tận khi tính toán chiều cao phù hợp cho CheckedListBoxControl
             var tongChieuDai = viewInfo.ColumnWidth * viewInfo.ColumnCount;
-            while (tongChieuDai > listBox.Width)
+            int maxIterations = 100; // Giới hạn số lần lặp để tránh vòng lặp vô tận
+            int iteration = 0;
+            while (tongChieuDai > listBox.Width && iteration < maxIterations)
             {
                 this.ClientSize = new Size(ClientSize.Width, ClientSize.Height + viewInfo.ItemHeight);
                 listBox.PerformLayout();
                 viewInfo = listBox.GetViewInfo() as CheckedListBoxViewInfo;
                 tongChieuDai = viewInfo.ColumnWidth * viewInfo.ColumnCount;
+                iteration++;
             }
             // Tính toán số cột và hàng mới khi kéo rộng cửa sổ (Hình như không cần dùng ý trên vẫn được)
             viewInfo = listBox.GetViewInfo() as CheckedListBoxViewInfo;
