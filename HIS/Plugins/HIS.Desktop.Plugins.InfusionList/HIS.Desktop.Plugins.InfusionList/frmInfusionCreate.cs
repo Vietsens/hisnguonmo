@@ -483,9 +483,9 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                 spinEditConvertVolumnRatio.Enabled = true;
                 dxErrorProvider1.ClearErrors();
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProvider1, dxErrorProvider1);
-                chkSignForPrint.Checked = false;
-                chkPrintDocumentSignedForPrint.Enabled = false;
-                chkPrintDocumentSignedForPrint.Checked = false;
+                //chkSignForPrint.Checked = false;
+                //chkPrintDocumentSignedForPrint.Enabled = false;
+                //chkPrintDocumentSignedForPrint.Checked = false;
 
             }
             catch (Exception ex)
