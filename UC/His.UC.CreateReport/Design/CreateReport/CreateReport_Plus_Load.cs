@@ -115,6 +115,8 @@ namespace His.UC.CreateReport.Design.CreateReport
 
                     };
                     System.Windows.Forms.UserControl control = GenerateControl(fofi, generateRDO);
+                    if (control == null)
+                        continue;
                     control.Name = (item.DESCRIPTION ?? "XtraUserControl" + DateTime.Now.ToString("yyyyMMddHHmmss"));
                     //control.Tag = item;
                     control.Tag = item.ID;

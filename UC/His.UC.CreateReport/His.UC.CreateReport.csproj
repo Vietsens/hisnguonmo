@@ -162,7 +162,9 @@
     <Compile Include="Design\CreateReport1\CreateReport1_Plus_Control.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Design\CreateReport1\CreateReport1_Plus_Load.cs" />
+    <Compile Include="Design\CreateReport1\CreateReport1_Plus_Load.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Design\CreateReport1\CreateReport1_Plus_Set.cs">
       <SubType>UserControl</SubType>
     </Compile>

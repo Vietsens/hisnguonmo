@@ -132,6 +132,7 @@ namespace HIS.Desktop.Plugins.ReportAll
                         }
                     }
                 };
+                this.Height = height;
                 this.Controls.Add(formCreate);
                 WaitingManager.Hide();
             }
