@@ -76,6 +76,18 @@ namespace HIS.Desktop.Plugins.TreatmentList
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject37 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject38 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject39 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject40 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject41 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -164,18 +176,6 @@ namespace HIS.Desktop.Plugins.TreatmentList
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject126 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject127 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject128 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject37 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject38 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject39 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject40 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject129 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject130 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject131 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -342,8 +342,11 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.grEditTreatment = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItembtnEditTreatment = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.grAIViewChatUrlFormat = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItembtnAIViewChatUrlFormat = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.grBeneficiaryInfo = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItembtnBeneficiaryInfo = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.grAiMedicalAnalysis = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItembtnAiMedicalAnalysis = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.grMergePatient = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItembtnMergePatient = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.grInfantInformation = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -408,9 +411,6 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.ButtonEditIsAutoDiscount = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ButtonDeleteEndInfo = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ButtonEndInfoDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.repositoryItembtnBeneficiaryInfo = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.repositoryItembtnAiMedicalAnalysis = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.repositoryItembtnAIViewChatUrlFormat = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
             this.layoutView1 = new DevExpress.XtraGrid.Views.Layout.LayoutView();
             this.layoutViewColumn1 = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
@@ -591,6 +591,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnServiceReq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnServiceReqList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnEditTreatment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnAIViewChatUrlFormat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnBeneficiaryInfo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnAiMedicalAnalysis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnMergePatient)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnInfantInformation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnActionHurt)).BeginInit();
@@ -613,9 +616,6 @@ namespace HIS.Desktop.Plugins.TreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEditIsAutoDiscount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonDeleteEndInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEndInfoDisable)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnBeneficiaryInfo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnAiMedicalAnalysis)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnAIViewChatUrlFormat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_ORDER)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_STATUST)).BeginInit();
@@ -2588,6 +2588,15 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.grAIViewChatUrlFormat.OptionsColumn.ShowCaption = false;
             this.grAIViewChatUrlFormat.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             // 
+            // repositoryItembtnAIViewChatUrlFormat
+            // 
+            this.repositoryItembtnAIViewChatUrlFormat.AutoHeight = false;
+            this.repositoryItembtnAIViewChatUrlFormat.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItembtnAIViewChatUrlFormat.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Xem lịch sử hỏi bệnh", null, null, true)});
+            this.repositoryItembtnAIViewChatUrlFormat.Name = "repositoryItembtnAIViewChatUrlFormat";
+            this.repositoryItembtnAIViewChatUrlFormat.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItembtnAIViewChatUrlFormat.Click += new System.EventHandler(this.repositoryItembtnAIViewChatUrlFormat_Click);
+            // 
             // grBeneficiaryInfo
             // 
             this.grBeneficiaryInfo.Caption = "Thông tin thụ hưởng";
@@ -2597,6 +2606,15 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.grBeneficiaryInfo.Name = "grBeneficiaryInfo";
             this.grBeneficiaryInfo.OptionsColumn.ShowCaption = false;
             this.grBeneficiaryInfo.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            // 
+            // repositoryItembtnBeneficiaryInfo
+            // 
+            this.repositoryItembtnBeneficiaryInfo.AutoHeight = false;
+            this.repositoryItembtnBeneficiaryInfo.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItembtnBeneficiaryInfo.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Thông tin thụ hưởng", null, null, true)});
+            this.repositoryItembtnBeneficiaryInfo.Name = "repositoryItembtnBeneficiaryInfo";
+            this.repositoryItembtnBeneficiaryInfo.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItembtnBeneficiaryInfo.Click += new System.EventHandler(this.repositoryItembtnBeneficiaryInfo_Click);
             // 
             // grAiMedicalAnalysis
             // 
@@ -2608,6 +2626,15 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.grAiMedicalAnalysis.OptionsColumn.ShowCaption = false;
             this.grAiMedicalAnalysis.ToolTip = "Phân tích hình ảnh y khoa AI";
             this.grAiMedicalAnalysis.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            // 
+            // repositoryItembtnAiMedicalAnalysis
+            // 
+            this.repositoryItembtnAiMedicalAnalysis.AutoHeight = false;
+            this.repositoryItembtnAiMedicalAnalysis.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItembtnAiMedicalAnalysis.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Phân tích hình ảnh y khoa AI", null, null, true)});
+            this.repositoryItembtnAiMedicalAnalysis.Name = "repositoryItembtnAiMedicalAnalysis";
+            this.repositoryItembtnAiMedicalAnalysis.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItembtnAiMedicalAnalysis.Click += new System.EventHandler(this.repositoryItembtnAiMedicalAnalysis_Click);
             // 
             // grMergePatient
             // 
@@ -3276,33 +3303,6 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     "ng tin ra viện khác", null, null, true)});
             this.ButtonEndInfoDisable.Name = "ButtonEndInfoDisable";
             this.ButtonEndInfoDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            // 
-            // repositoryItembtnBeneficiaryInfo
-            // 
-            this.repositoryItembtnBeneficiaryInfo.AutoHeight = false;
-            this.repositoryItembtnBeneficiaryInfo.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItembtnBeneficiaryInfo.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Thông tin thụ hưởng", null, null, true)});
-            this.repositoryItembtnBeneficiaryInfo.Name = "repositoryItembtnBeneficiaryInfo";
-            this.repositoryItembtnBeneficiaryInfo.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.repositoryItembtnBeneficiaryInfo.Click += new System.EventHandler(this.repositoryItembtnBeneficiaryInfo_Click);
-            // 
-            // repositoryItembtnAiMedicalAnalysis
-            // 
-            this.repositoryItembtnAiMedicalAnalysis.AutoHeight = false;
-            this.repositoryItembtnAiMedicalAnalysis.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItembtnAiMedicalAnalysis.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Phân tích hình ảnh y khoa AI", null, null, true)});
-            this.repositoryItembtnAiMedicalAnalysis.Name = "repositoryItembtnAiMedicalAnalysis";
-            this.repositoryItembtnAiMedicalAnalysis.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.repositoryItembtnAiMedicalAnalysis.Click += new System.EventHandler(this.repositoryItembtnAiMedicalAnalysis_Click);
-            // 
-            // repositoryItembtnAIViewChatUrlFormat
-            // 
-            this.repositoryItembtnAIViewChatUrlFormat.AutoHeight = false;
-            this.repositoryItembtnAIViewChatUrlFormat.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItembtnAIViewChatUrlFormat.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Xem lịch sử hỏi bệnh", null, null, true)});
-            this.repositoryItembtnAIViewChatUrlFormat.Name = "repositoryItembtnAIViewChatUrlFormat";
-            this.repositoryItembtnAIViewChatUrlFormat.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.repositoryItembtnAIViewChatUrlFormat.Click += new System.EventHandler(this.repositoryItembtnAIViewChatUrlFormat_Click);
             // 
             // toolTipController1
             // 
@@ -4312,6 +4312,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnServiceReq)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnServiceReqList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnEditTreatment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnAIViewChatUrlFormat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnBeneficiaryInfo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnAiMedicalAnalysis)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnMergePatient)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnInfantInformation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnActionHurt)).EndInit();
@@ -4334,9 +4337,6 @@ namespace HIS.Desktop.Plugins.TreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEditIsAutoDiscount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonDeleteEndInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEndInfoDisable)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnBeneficiaryInfo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnAiMedicalAnalysis)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnAIViewChatUrlFormat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_ORDER)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_STATUST)).EndInit();

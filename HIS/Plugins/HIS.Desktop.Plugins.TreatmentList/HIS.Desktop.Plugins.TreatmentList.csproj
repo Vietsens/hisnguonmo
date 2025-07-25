@@ -77,10 +77,13 @@
     </Reference>
     <Reference Include="HIS.Desktop.ADO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.IsAdmin">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.IsAdmin.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.AnalyzeMedicalImage">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\Plugins\Module\HIS.Desktop.Plugins.AnalyzeMedicalImage.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.InformationAllowGoHome">
       <HintPath>..\..\..\..\histest\x64\Plugins\Module\HIS.Desktop.Plugins.InformationAllowGoHome.dll</HintPath>
@@ -254,17 +257,14 @@
     <Reference Include="LIS.Filter">
       <HintPath>..\..\..\..\LIB\LIS\LIS.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.864.35, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\AIViewChatUrlFormat\frmAIViewChatUrlFormat\frmAIViewChatUrlFormat\bin\Debug\Microsoft.Web.WebView2.Core.dll</HintPath>
+    <Reference Include="Microsoft.Web.WebView2.Core">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\Microsoft.Web.WebView2.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.WebView2.WinForms, Version=1.0.864.35, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\AIViewChatUrlFormat\frmAIViewChatUrlFormat\frmAIViewChatUrlFormat\bin\Debug\Microsoft.Web.WebView2.WinForms.dll</HintPath>
+    <Reference Include="Microsoft.Web.WebView2.WinForms">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\Microsoft.Web.WebView2.WinForms.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.WebView2.Wpf, Version=1.0.864.35, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\AIViewChatUrlFormat\frmAIViewChatUrlFormat\frmAIViewChatUrlFormat\bin\Debug\Microsoft.Web.WebView2.Wpf.dll</HintPath>
+    <Reference Include="Microsoft.Web.WebView2.Wpf">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\Microsoft.Web.WebView2.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -327,8 +327,9 @@
     <Reference Include="MPS.Processor.Mps000389.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000389.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000399.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000399.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000399.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000399.PDO\bin\Debug\MPS.Processor.Mps000399.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000434.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000434.PDO.dll</HintPath>

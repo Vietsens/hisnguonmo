@@ -1040,6 +1040,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
                 treatmentFilter.ID = treatment4.ID;
 
+
                 var currentTreatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param).FirstOrDefault();
 
                 MPS.Processor.Mps000399.PDO.SingleKeyValue singleKeyValue = new MPS.Processor.Mps000399.PDO.SingleKeyValue();
@@ -1052,11 +1053,43 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 {
                     singleKeyValue.Icd_Name = currentTreatment.ICD_NAME;
                 }
+                if (currentTreatment.END_DEPARTMENT_ID.HasValue)
+                {
+
+                   
+
+                    var endDept = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>()
+                        .Where(o => o.ID == currentTreatment.END_DEPARTMENT_ID.Value).FirstOrDefault();
+
+                    if (endDept != null)
+                        singleKeyValue.END_DEPARTMENT_NAME = endDept.DEPARTMENT_NAME;
+                }
+
+                if (currentTreatment.LAST_DEPARTMENT_ID.HasValue)
+                {
+                    var execDept = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>()
+                        .Where(o => o.ID == currentTreatment.LAST_DEPARTMENT_ID.Value).FirstOrDefault();
+
+                    if (execDept != null)
+                        singleKeyValue.ExecuteDepartmentName = execDept.DEPARTMENT_NAME;
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("execDept Filter input:", execDept));
+                }
+
+
 
                 MOS.Filter.HisPatientViewFilter patientFilter = new HisPatientViewFilter();
                 patientFilter.ID = currentTreatment.PATIENT_ID;
                 var currentPatient = new BackendAdapter(param)
                           .Get<List<V_HIS_PATIENT>>("api/HisPatient/GetView", ApiConsumers.MosConsumer, patientFilter, param).FirstOrDefault();
+
+
+                var trackingFilter = new MOS.Filter.HisTrackingFilter { TREATMENT_ID = currentTreatment.ID };
+                var lastTracking = new BackendAdapter(param)
+                    .Get<List<HIS_TRACKING>>("api/HisTracking/Get", ApiConsumers.MosConsumer, trackingFilter, param)
+                    .OrderByDescending(t => t.TRACKING_TIME) 
+                    .FirstOrDefault();
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("lastTracking input:", lastTracking));
 
                 WaitingManager.Hide();
 
@@ -1064,7 +1097,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 MPS.Processor.Mps000399.PDO.Mps000399PDO mps000007RDO = new MPS.Processor.Mps000399.PDO.Mps000399PDO(
                     currentPatient,
                     currentTreatment,
-                    singleKeyValue
+                    singleKeyValue,
+                    lastTracking
+
                     );
 
                 string printerName = "";
