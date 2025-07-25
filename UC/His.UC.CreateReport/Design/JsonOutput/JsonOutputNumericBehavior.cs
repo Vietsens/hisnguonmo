@@ -26,10 +26,10 @@ using System.Linq;
 namespace DCV.APP.Report.JsonOutput
 
 {
-    class JsonOutputNumericBehavior : BussinessBase, IJsonOutput
+    class JsonOutputNumericFromToBehavior : BussinessBase, IJsonOutput
     {
         HIS.UC.FormType.Numericft.UCNumeric entity;
-        internal JsonOutputNumericBehavior(CommonParam param, HIS.UC.FormType.Numericft.UCNumeric filter)
+        internal JsonOutputNumericFromToBehavior(CommonParam param, HIS.UC.FormType.Numericft.UCNumeric filter)
             : base(param)
         {
             this.entity = filter;

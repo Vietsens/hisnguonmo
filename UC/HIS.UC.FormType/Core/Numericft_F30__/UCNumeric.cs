@@ -37,7 +37,8 @@ namespace HIS.UC.FormType.Numericft
         SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config;
         // public static bool exitclick = false;
         SAR.EFMODEL.DataModels.V_SAR_REPORT report;
-       
+        DynamicFilterRDO DynamicFilter;
+
         public UCNumeric(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO)
         {
             try
@@ -46,9 +47,14 @@ namespace HIS.UC.FormType.Numericft
                 //FormTypeConfig.ReportHight += 25;
                 
                 this.config = config;
-                if (paramRDO is GenerateRDO)
+                if (paramRDO is GenerateRDO generateRDO)
                 {
-                    this.report = (paramRDO as GenerateRDO).Report;
+                    this.report = generateRDO.Report;
+                    this.DynamicFilter = generateRDO.DynamicFilter;
+                    if (this.DynamicFilter != null)
+                    {
+                        this.config = this.DynamicFilter.Fofi;
+                    }
                 }
                 this.isValidData = (this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE);
                 Init();

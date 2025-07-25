@@ -63,7 +63,6 @@ namespace HIS.Desktop.Plugins.ReportAll
             {
                 this.reportType = data;
                 this.SetDelegateForUCFormType();
-                this.MainPrint_Load();
                 InitializeComponent();
                 vlCustomFormType = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ReportCreate.CustomFormType");
                 if (vlCustomFormType == "1")
@@ -79,6 +78,7 @@ namespace HIS.Desktop.Plugins.ReportAll
                     }
                     this.Height = height;
                 }
+                this.MainPrint_Load();
             }
             catch (Exception ex)
             {
@@ -132,6 +132,7 @@ namespace HIS.Desktop.Plugins.ReportAll
                         }
                     }
                 };
+                this.Height = height;
                 this.Controls.Add(formCreate);
                 WaitingManager.Hide();
             }

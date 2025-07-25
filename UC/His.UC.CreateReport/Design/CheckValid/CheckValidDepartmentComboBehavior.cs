@@ -27,8 +27,8 @@ namespace DCV.APP.Report.CheckValid
 {
     class CheckValidDepartmentComboBehavior : BussinessBase, ICheckValid
     {
-        HIS.UC.FormType.DepartmentCombo.UCDepartmentCombo entity;
-        internal CheckValidDepartmentComboBehavior(CommonParam param, HIS.UC.FormType.DepartmentCombo.UCDepartmentCombo filter)
+        HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit entity;
+        internal CheckValidDepartmentComboBehavior(CommonParam param, HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit filter)
             : base(param)
         {
             this.entity = filter;

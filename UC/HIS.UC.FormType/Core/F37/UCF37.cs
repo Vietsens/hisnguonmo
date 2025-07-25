@@ -48,6 +48,7 @@ namespace HIS.UC.FormType.Core.F37
         SAR.EFMODEL.DataModels.V_SAR_REPORT report;
         List<DataGet> Availables = new List<DataGet>();
         List<DataGet> Selecteds = new List<DataGet>();
+        DynamicFilterRDO DynamicFilter;
 
         public UCF37(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO)
         {
@@ -56,9 +57,14 @@ namespace HIS.UC.FormType.Core.F37
                 InitializeComponent();
 
                 this.config = config;
-                if (paramRDO is GenerateRDO)
+                if (paramRDO is GenerateRDO generateRDO)
                 {
-                    this.report = (paramRDO as GenerateRDO).Report;
+                    this.report = generateRDO.Report;
+                    this.DynamicFilter = generateRDO.DynamicFilter;
+                    if (this.DynamicFilter != null)
+                    {
+                        this.config = this.DynamicFilter.Fofi;
+                    }
                 }
                 this.isValidData = (this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE);
                 Init();
@@ -126,9 +132,8 @@ namespace HIS.UC.FormType.Core.F37
             try
             {
                 FormTypeConfig.ReportTypeCode = this.config.REPORT_TYPE_CODE;
-                
                 List<DataGet> dataSource = HisMultiGetByString.GetByString(FilterConfig.HisFilterTypes(this.config.JSON_OUTPUT.Replace("CODE", "ID")), null);
-                if (dataSource != null && dataSource.Count>0)
+                if (dataSource != null && dataSource.Count > 0)
                 {
                     result = dataSource.ToList();
                 }
@@ -165,8 +170,8 @@ namespace HIS.UC.FormType.Core.F37
             {
                 if (this.config != null && !String.IsNullOrEmpty(this.config.DESCRIPTION))
                 {
-                    lcAvailable.Text = lcAvailable.Text + this.config.DESCRIPTION;
-                    lcSelected.Text = lcSelected.Text + this.config.DESCRIPTION;
+                    lcAvailable.Text = lcAvailable.Text + " " + this.config.DESCRIPTION;
+                    lcSelected.Text = lcSelected.Text + " " + this.config.DESCRIPTION;
                 }
             }
             catch (Exception ex)

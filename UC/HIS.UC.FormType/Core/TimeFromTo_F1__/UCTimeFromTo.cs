@@ -35,6 +35,8 @@ namespace HIS.UC.FormType.TimeFromTo
         int positionHandleControl = -1;
         bool isValidData = false;
         TimeFromToFDO generateRDO;
+        DynamicFilterRDO DynamicFilter;
+
         SAR.EFMODEL.DataModels.V_SAR_REPORT report;
 
         public UCTimeFromTo(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO)
@@ -44,9 +46,14 @@ namespace HIS.UC.FormType.TimeFromTo
             try
             {
                 this.config = config;
-                if (paramRDO is GenerateRDO)
+                if (paramRDO is GenerateRDO generateRDO)
                 {
-                    this.report = (paramRDO as GenerateRDO).Report;
+                    this.report = generateRDO.Report;
+                    this.DynamicFilter = generateRDO.DynamicFilter;
+                    if (this.DynamicFilter != null)
+                    {
+                        this.config = this.DynamicFilter.Fofi;
+                    }
                 }
                 isValidData = (this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE);
                 Init();
@@ -89,32 +96,49 @@ namespace HIS.UC.FormType.TimeFromTo
             try
             {
                 string js = "";
-
-                if (this.config.JSON_OUTPUT.Contains("ONLY_DATE_FROM") && this.config.JSON_OUTPUT.Contains("ONLY_DATE_TO"))
+                if (this.DynamicFilter != null && this.DynamicFilter.Propeties != null && this.DynamicFilter.Propeties.Format != null)
                 {
-                    this.dtTimeFrom.Properties.VistaCalendarViewStyle = DevExpress.XtraEditors.VistaCalendarViewStyle.MonthView;
-                    this.dtTimeTo.Properties.VistaCalendarViewStyle = DevExpress.XtraEditors.VistaCalendarViewStyle.MonthView;
+                    js = this.DynamicFilter.Propeties.Format;
+                    this.dtTimeFrom.Properties.Mask.UseMaskAsDisplayFormat = true;
+                    this.dtTimeTo.Properties.Mask.UseMaskAsDisplayFormat = true;
+                }
+                else if(this.config.JSON_OUTPUT.Contains("ONLY_DATE_FROM") && this.config.JSON_OUTPUT.Contains("ONLY_DATE_TO"))
+                {
                     js = "dd/MM/yyyy";
                 }
                 else if (this.config.JSON_OUTPUT.Contains("ONLY_MONTH_FROM") && this.config.JSON_OUTPUT.Contains("ONLY_MONTH_TO"))
                 {
-                    this.dtTimeFrom.Properties.VistaCalendarViewStyle = DevExpress.XtraEditors.VistaCalendarViewStyle.YearView;
-                    this.dtTimeTo.Properties.VistaCalendarViewStyle = DevExpress.XtraEditors.VistaCalendarViewStyle.YearView;
                     js = "MM/yyyy";
                 }
                 else if (this.config.JSON_OUTPUT.Contains("ONLY_YEAR_FROM") && this.config.JSON_OUTPUT.Contains("ONLY_YEAR_TO"))
                 {
+                    js = "yyyy";
+                }
+                else
+                {
+                    js = "dd/MM/yyyy HH:mm:ss";
+                }
+                //
+                if (js == "dd/MM/yyyy")
+                {
+                    this.dtTimeFrom.Properties.VistaCalendarViewStyle = DevExpress.XtraEditors.VistaCalendarViewStyle.MonthView;
+                    this.dtTimeTo.Properties.VistaCalendarViewStyle = DevExpress.XtraEditors.VistaCalendarViewStyle.MonthView;
+                }
+                else if (js == "MM/yyyy")
+                {
+                    this.dtTimeFrom.Properties.VistaCalendarViewStyle = DevExpress.XtraEditors.VistaCalendarViewStyle.YearView;
+                    this.dtTimeTo.Properties.VistaCalendarViewStyle = DevExpress.XtraEditors.VistaCalendarViewStyle.YearView;
+                }
+                else if (js == "yyyy")
+                {
                     this.dtTimeFrom.Properties.VistaCalendarViewStyle = DevExpress.XtraEditors.VistaCalendarViewStyle.YearsGroupView;
                     this.dtTimeTo.Properties.VistaCalendarViewStyle = DevExpress.XtraEditors.VistaCalendarViewStyle.YearsGroupView;
-                    js = "yyyy";
                 }
                 else
                 {
                     this.dtTimeFrom.Properties.VistaCalendarViewStyle = DevExpress.XtraEditors.VistaCalendarViewStyle.All;
                     this.dtTimeTo.Properties.VistaCalendarViewStyle = DevExpress.XtraEditors.VistaCalendarViewStyle.All;
-                    js = "dd/MM/yyyy HH:mm:ss";
                 }
-
                 this.dtTimeFrom.Properties.DisplayFormat.FormatString = js;
                 this.dtTimeFrom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
                 this.dtTimeFrom.Properties.EditFormat.FormatString = js;

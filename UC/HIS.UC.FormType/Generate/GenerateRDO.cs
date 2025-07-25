@@ -30,6 +30,10 @@ namespace HIS.UC.FormType
         public GenerateRDO() { }
 
         public object DetailData { get; set; }
+        public Action<object,string> DelegateForChangeValue { get; set; }
+        public object PropetiesConfig { get; set; }
+        public string ControlId { get; set; }
+        public string Sql { get; set; }
         public SAR.EFMODEL.DataModels.V_SAR_REPORT Report { get; set; }
         public DynamicFilterRDO DynamicFilter { get; set; }
     }
@@ -70,6 +74,10 @@ namespace HIS.UC.FormType
         /// DateEdit: Thời gian
         /// </summary>
         public object DefaultValue { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public object DefaultSource { get; set; }
         /// <summary>
         /// Loại dữ liệu:
         /// DateTime: Thời gian trong tháng, thời gian hiện tại, ...

@@ -15,18 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HIS.UC.FormType.Core.TrueOrFalse.Validation;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
 using His.UC.LibraryMessage;
+using HIS.UC.FormType.Core.TrueOrFalse.Validation;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.UC.FormType.Core.TrueOrFalse
 {
@@ -39,6 +40,7 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
         const string StrOutput0 = "_OUTPUT0:";
         string Output0 = "";
         string JsonOutput = "";
+        DynamicFilterRDO DynamicFilter;
 
 
         public UCTrueOrFalse(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO)
@@ -47,12 +49,17 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
             {
                 InitializeComponent();
                 //FormTypeConfig.ReportHight += 30;
-
-                if (paramRDO is GenerateRDO)
-                {
-                    this.report = (paramRDO as GenerateRDO).Report;
-                }
                 this.config = config;
+
+                if (paramRDO is GenerateRDO generateRDO)
+                {
+                    this.report = generateRDO.Report;
+                    this.DynamicFilter = generateRDO.DynamicFilter;
+                    if (this.DynamicFilter != null)
+                    {
+                        this.config = this.DynamicFilter.Fofi;
+                    }
+                }
                 Init();
             }
             catch (Exception ex)
@@ -100,6 +107,13 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
                 {
                     Output0 = JSON_OUTPUT.Substring(lastIndex + StrOutput0.Length);
                 }
+                if (string.IsNullOrWhiteSpace(Output0))
+                {
+                    if (this.DynamicFilter != null && this.DynamicFilter.Propeties != null && this.DynamicFilter.Propeties.DefaultValue != null)
+                    {
+                        Output0 = this.DynamicFilter.Propeties.DefaultValue.ToString();
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -128,10 +142,19 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
         {
             try
             {
-                if (this.config != null && !String.IsNullOrEmpty(this.config.DESCRIPTION))
+                if (this.DynamicFilter != null && this.DynamicFilter.Propeties != null && this.DynamicFilter.Propeties.DefaultSource != null)
                 {
-                    radTrue.Text = this.config.DESCRIPTION.Split(',').ToList().First();
-                    radFalse.Text = this.config.DESCRIPTION.Split(',').ToList().Last();
+                    var items = this.DynamicFilter.Propeties.DefaultSource.ToString().Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    radTrue.Text = items.First();
+                    radFalse.Text = items.Last();
+                }
+                else
+                {
+                    if (this.config != null && !String.IsNullOrEmpty(this.config.DESCRIPTION))
+                    {
+                        radTrue.Text = this.config.DESCRIPTION.Split(',').ToList().First();
+                        radFalse.Text = this.config.DESCRIPTION.Split(',').ToList().Last();
+                    }
                 }
             }
             catch (Exception ex)
@@ -185,7 +208,7 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
                 TrueOrFalseValidationRule validRule = new TrueOrFalseValidationRule();
                 validRule.radTrue = radTrue;
                 validRule.radFalse = radFalse;
-                validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(Message.Enum.ThieuTruongDuLieuBatBuoc);
+                validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.ThieuTruongDuLieuBatBuoc);
                 validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProvider1.SetValidationRule(radTrue, validRule);
             }
