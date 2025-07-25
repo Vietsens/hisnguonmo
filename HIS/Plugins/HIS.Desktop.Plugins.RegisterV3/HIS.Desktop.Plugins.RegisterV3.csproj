@@ -479,14 +479,71 @@
     <Compile Include="ValidationRule\PatientDob__ValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< Updated upstream
+=======
+    <ProjectReference Include="..\..\..\..\..\..\HISUTIL\His.Bhyt\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.csproj">
+      <Project>{c2fa385e-f0c5-4b17-88e3-e6c3e53e2b38}</Project>
+      <Name>His.Bhyt.InsuranceExpertise</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.AddressCombo\HIS.UC.AddressCombo.csproj">
+      <Project>{38f82de7-3ecd-442b-91d6-ca54a5b954e0}</Project>
+      <Name>HIS.UC.AddressCombo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.KskContract\HIS.UC.KskContract.csproj">
+      <Project>{cbd388f9-a64b-4302-acd6-d43ca07096e2}</Project>
+      <Name>HIS.UC.KskContract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.PlusInfo\HIS.UC.PlusInfo.csproj">
+      <Project>{38ecddb9-08e6-4697-90e5-af731792b90d}</Project>
+      <Name>HIS.UC.PlusInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.RoomExamService\HIS.UC.RoomExamService.csproj">
+      <Project>{2770fe74-96ea-4bfd-ab55-a04b07a04989}</Project>
+      <Name>HIS.UC.RoomExamService</Name>
+    </ProjectReference>
+>>>>>>> Stashed changes
     <ProjectReference Include="..\..\..\UC\HIS.UC.ServiceRoom\HIS.UC.ServiceRoom.csproj">
       <Project>{c02ada96-015b-4edb-b944-9183e1087224}</Project>
       <Name>HIS.UC.ServiceRoom</Name>
     </ProjectReference>
+<<<<<<< Updated upstream
+=======
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCHeniInfo\HIS.UC.UCHeniInfo.csproj">
+      <Project>{7e49c257-4e48-4456-9053-68ea77e46e53}</Project>
+      <Name>HIS.UC.UCHeniInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCImageInfo\HIS.UC.UCImageInfo.csproj">
+      <Project>{17b3d00e-ee47-4c3d-903d-68dbaf5951d7}</Project>
+      <Name>HIS.UC.UCImageInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCOtherServiceReqInfo\HIS.UC.UCOtherServiceReqInfo.csproj">
+      <Project>{3fe38a92-0c75-475c-aaea-f1c3a647963a}</Project>
+      <Name>HIS.UC.UCOtherServiceReqInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCPatientRaw\HIS.UC.UCPatientRaw.csproj">
+      <Project>{e3891201-0493-4164-b1dc-d99277ba6291}</Project>
+      <Name>HIS.UC.UCPatientRaw</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.UCRelativeInfo\HIS.UC.UCRelativeInfo.csproj">
+      <Project>{c5a20f34-8afa-47f2-b8d5-a8eb0b3d67b0}</Project>
+      <Name>HIS.UC.UCRelativeInfo</Name>
+    </ProjectReference>
+>>>>>>> Stashed changes
     <ProjectReference Include="..\..\..\UC\HIS.UC.UCServiceRoomInfo\HIS.UC.UCServiceRoomInfo.csproj">
       <Project>{b4750acf-9857-4837-844a-a439e7f82571}</Project>
       <Name>HIS.UC.UCServiceRoomInfo</Name>
     </ProjectReference>
+<<<<<<< Updated upstream
+=======
+    <ProjectReference Include="..\..\..\UC\HIS.UC.UCTransPati\HIS.UC.UCTransPati.csproj">
+      <Project>{173bf142-9e08-494e-924e-fcb61fedcf94}</Project>
+      <Name>HIS.UC.UCTransPati</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.WorkPlace\HIS.UC.WorkPlace.csproj">
+      <Project>{9a64eb39-e849-43d4-a47a-8c02ea5183e7}</Project>
+      <Name>HIS.UC.WorkPlace</Name>
+    </ProjectReference>
+>>>>>>> Stashed changes
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
