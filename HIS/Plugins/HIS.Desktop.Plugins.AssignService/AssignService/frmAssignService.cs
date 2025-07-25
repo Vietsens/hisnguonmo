@@ -496,8 +496,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 							isCheckAssignServiceSimultaneityOption = true;
 							btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
 						}
-					}
-				}
+                    }
+                    Inventec.Common.Logging.LogSystem.Info("CheckAssignServiceSimultaneityOption - isCheckAssignServiceSimultaneityOption: " + isCheckAssignServiceSimultaneityOption);
+                }
 			}
 			catch (Exception ex)
 			{
@@ -1517,7 +1518,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 				var allDatas = this.ServiceIsleafADOs != null && this.ServiceIsleafADOs.Count > 0 ? this.ServiceIsleafADOs.AsQueryable() : null;
 				this.gridControlServiceProcess.DataSource = allDatas.ToList();
 				this.toggleSwitchDataChecked.EditValue = false;
-				isCheckAssignServiceSimultaneityOption = false;
 				this.SetEnableButtonControl(this.actionType);
 				Inventec.Common.Logging.LogSystem.Debug("ResetDefaultGridData. 3");
 			}
@@ -3495,8 +3495,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 		private void SetEnableButtonControl(int actionType)
 		{
 			try
-			{
-				if (this.actionType == GlobalVariables.ActionAdd)
+            {
+                Inventec.Common.Logging.LogSystem.Info("SetEnableButtonControl - isCheckAssignServiceSimultaneityOption: " + isCheckAssignServiceSimultaneityOption);
+                if (this.actionType == GlobalVariables.ActionAdd)
 				{
 					List<SereServADO> serviceCheckeds__Send = this.ServiceIsleafADOs.FindAll(o => o.IsChecked);
 					this.btnSave.Enabled = this.btnSaveAndPrint.Enabled = this.btnCreateServiceGroup.Enabled = isCheckAssignServiceSimultaneityOption ? false : (serviceCheckeds__Send != null && serviceCheckeds__Send.Count > 0);
@@ -5792,7 +5793,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 				if (this.actionType == GlobalVariables.ActionEdit)
 					return;
 
-				this.btnSave.Enabled = isCheckAssignServiceSimultaneityOption ? false : isLock;
+                Inventec.Common.Logging.LogSystem.Info("ChangeLockButtonWhileProcess - isCheckAssignServiceSimultaneityOption: " + isCheckAssignServiceSimultaneityOption);
+                this.btnSave.Enabled = isCheckAssignServiceSimultaneityOption ? false : isLock;
 				this.btnSaveAndPrint.Enabled = isCheckAssignServiceSimultaneityOption ? false : isLock;
 				this.btnCreateServiceGroup.Enabled = isLock;
 			}
@@ -5861,7 +5863,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 			{
 				WaitingManager.Show();
 				this.isCheckAssignServiceSimultaneityOption = false;
-				this.SetDefaultData();
+                Inventec.Common.Logging.LogSystem.Info("btnNew_Click - isCheckAssignServiceSimultaneityOption: " + isCheckAssignServiceSimultaneityOption);
+                this.SetDefaultData();
 				this.LoadIcdDefault();
 				this.DisablecheckEmergencyPriorityByConfig();
 				this.treeService.UncheckAll();
