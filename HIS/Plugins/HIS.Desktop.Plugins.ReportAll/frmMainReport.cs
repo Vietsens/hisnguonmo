@@ -117,22 +117,8 @@ namespace HIS.Desktop.Plugins.ReportAll
                     {
                         height = 165; //reset lai chieu cao ban dau
                         CalHeightForm(frm);
-                        if (vlCustomFormType == "1")
-                        {
-                            this.WindowState = FormWindowState.Maximized;
-                        }
-                        else
-                        {
-                            //neu cao hon man hinh se thu nho lai vua nhin
-                            if (height >= SystemInformation.WorkingArea.Size.Height)
-                            {
-                                height = SystemInformation.WorkingArea.Size.Height - 100;
-                            }
-                            this.Height = height;
-                        }
                     }
                 };
-                this.Height = height;
                 this.Controls.Add(formCreate);
                 WaitingManager.Hide();
             }
@@ -190,6 +176,21 @@ namespace HIS.Desktop.Plugins.ReportAll
                             }
                         }
                     }
+                }
+
+
+                if (vlCustomFormType == "1")
+                {
+                    this.WindowState = FormWindowState.Maximized;
+                }
+                else
+                {
+                    //neu cao hon man hinh se thu nho lai vua nhin
+                    if (height >= SystemInformation.WorkingArea.Size.Height - 200)
+                    {
+                        height = SystemInformation.WorkingArea.Size.Height - 300;
+                    }
+                    this.Height = height;
                 }
             }
             catch (Exception ex)

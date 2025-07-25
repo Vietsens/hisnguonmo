@@ -71,7 +71,7 @@ namespace His.UC.CreateReport.Design.CreateReport
             {
                 totalHeight += ctrl.Height;
             }
-            xtraScrollTabContainerReportControl.Size = new System.Drawing.Size(xtraScrollTabContainerReportControl.Size.Width, xtraScrollTabContainerReportControl.Size.Height - totalHeight);
+            //xtraScrollTabContainerReportControl.Size = new System.Drawing.Size(xtraScrollTabContainerReportControl.Size.Width, xtraScrollTabContainerReportControl.Size.Height - totalHeight);
             xtraScrollTabContainerReportControl.Controls.Clear();
             if (CreateReportDelegate.DelegateInitDesignReportTemplate != null)
                 CreateReportDelegate.DelegateInitDesignReportTemplate(new System.Drawing.Size(this.Width, this.Height - xtraScrollTabContainerReportControl.Size.Height + 50));
@@ -86,6 +86,7 @@ namespace His.UC.CreateReport.Design.CreateReport
                     return;
                 }
                 currentFormFields = new List<V_SAR_RETY_FOFI>();
+                dynamicFilterConfigSDOs = dynamicFilterConfigSDOs.OrderByDescending(o => o.NUM_ORDER ?? 0).ThenByDescending(o => o.ID).ToList();
                 foreach (var item in dynamicFilterConfigSDOs)
                 {
                     V_SAR_RETY_FOFI fofi = new V_SAR_RETY_FOFI();
@@ -120,12 +121,12 @@ namespace His.UC.CreateReport.Design.CreateReport
                     control.Name = (item.DESCRIPTION ?? "XtraUserControl" + DateTime.Now.ToString("yyyyMMddHHmmss"));
                     //control.Tag = item;
                     control.Tag = item.ID;
-                    control.Dock = System.Windows.Forms.DockStyle.Bottom;
+                    control.Dock = System.Windows.Forms.DockStyle.Top;
                     control.AutoSize = false;
                     xtraScrollTabContainerReportControl.Controls.Add(control);
                 }
                 if (CreateReportDelegate.DelegateCalHeightDesignReportTemplate != null)
-                    CreateReportDelegate.DelegateCalHeightDesignReportTemplate(this);
+                  CreateReportDelegate.DelegateCalHeightDesignReportTemplate(this);
             }
             catch (Exception ex)
             {
