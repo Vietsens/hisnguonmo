@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using MOS.EFMODEL.DataModels;
+using MPS.Processor.Mps000276.PDO.ADO;
 using MPS.ProcessorBase.Core;
 using System;
 using System.Collections.Generic;
@@ -104,6 +105,38 @@ namespace MPS.Processor.Mps000276.PDO
             this._CashierRooms = cashierRooms;
             this._ServiceNumOrder = serviceNumOrders;
             this._Desks = desks;
+        }
+
+        public Mps000276PDO(
+            List<V_HIS_SERVICE_REQ> _vserviceReqs,
+            HIS_TREATMENT _treatment,
+            V_HIS_PATIENT_TYPE_ALTER _patientTypeAlter,
+            V_HIS_ROOM _vhisRoom,
+            List<HIS_SERE_SERV> sereServs,
+            List<V_HIS_SERVICE> services,
+            List<V_HIS_ROOM> rooms,
+            List<V_HIS_CASHIER_ROOM> cashierRooms,
+             List<HIS_SERVICE_NUM_ORDER> serviceNumOrders,
+            List<V_HIS_DESK> desks,
+            List<HIS_CONFIG> lstConfig,
+            HIS_TRANS_REQ transReq,
+            List<HIS_SERE_SERV_EXT> ext,
+            ServiceReqADO ado)
+        {
+            this.lstConfig = lstConfig;
+            this.transReq = transReq;
+            this._vServiceReqs = _vserviceReqs;
+            this._Treatment = _treatment;
+            this._PatientTypeAlter = _patientTypeAlter;
+            this._vHisRoom = _vhisRoom;
+            this._SereServs = sereServs;
+            this._Services = services;
+            this._Rooms = rooms;
+            this._CashierRooms = cashierRooms;
+            this._ServiceNumOrder = serviceNumOrders;
+            this._Desks = desks;
+            this._ext = ext;
+            this.aDO = ado;
         }
     }
 }

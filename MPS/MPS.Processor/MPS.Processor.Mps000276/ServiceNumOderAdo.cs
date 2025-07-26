@@ -33,5 +33,7 @@ namespace MPS.Processor.Mps000276
         public string ASSIGN_TURN_CODE { get; set; }
         public string SERVICE_REQ_CODE { get; set; }
         public string SERVICE_TYPE_CODE { get; set; }
+        public string EXECUTE_ROOM_NAME { get; set; }
+        public long? CALL_SAMPLE_ORDER { get; set; }
     }
 }

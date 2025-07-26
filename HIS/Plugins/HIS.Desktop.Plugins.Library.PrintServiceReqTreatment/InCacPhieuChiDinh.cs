@@ -19,6 +19,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
 using Inventec.Common.SignLibrary.DTO;
 using MOS.EFMODEL.DataModels;
+using MPS.Processor.Mps000276.PDO.ADO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
 {
     class InCacPhieuChiDinh
     {
-        public InCacPhieuChiDinh(string printTypeCode, string fileName, List<V_HIS_SERVICE_REQ> _lstServiceReqs, List<HIS_SERE_SERV> _lstSereServ, List<HIS_TREATMENT> _lstTreatment, List<V_HIS_PATIENT_TYPE_ALTER> _LstPatientTypeAlter, V_HIS_ROOM _vHisRoom, bool printNow, ref bool result,List<HIS_CONFIG> configs,HIS_TRANS_REQ tranReq, Action<DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned, MPS.ProcessorBase.PrintConfig.PreviewType? previewType)
+        public InCacPhieuChiDinh(string printTypeCode, string fileName, List<V_HIS_SERVICE_REQ> _lstServiceReqs, List<HIS_SERE_SERV> _lstSereServ, List<HIS_TREATMENT> _lstTreatment, List<V_HIS_PATIENT_TYPE_ALTER> _LstPatientTypeAlter, V_HIS_ROOM _vHisRoom, bool printNow, ref bool result,List<HIS_CONFIG> configs,HIS_TRANS_REQ tranReq, Action<DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned, MPS.ProcessorBase.PrintConfig.PreviewType? previewType, List<HIS_SERE_SERV_EXT> _ext, ServiceReqADO serviceReqADO)
         {
             try
             {
@@ -53,7 +54,9 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                             BackendDataWorker.Get<HIS_SERVICE_NUM_ORDER>(),
                             BackendDataWorker.Get<V_HIS_DESK>(),
                             configs,
-                            tranReq
+                            tranReq,
+                            _ext,
+                            serviceReqADO
                             );
                         Print.PrintData(_vHisRoom.ID, printTypeCode, fileName, mps000276RDO, printNow, ref result, DlgSendResultSigned, previewType);
                     }

@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\HIS\Plugins\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\bin\Debug\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.DateTime">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
@@ -57,9 +61,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\ServiceReqADO.cs" />
     <Compile Include="Mps000276PDO.cs" />
     <Compile Include="Mps000276PDO_PublicKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MPS.Processor.Mps000315\MPS.Processor.Mps000315.csproj">
+      <Project>{0EE7E127-02FD-4243-8FBA-05FACD5AC4F5}</Project>
+      <Name>MPS.Processor.Mps000315</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
