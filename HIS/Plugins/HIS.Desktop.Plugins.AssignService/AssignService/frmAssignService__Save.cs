@@ -2062,6 +2062,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                             var checkQR = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_3");
 
+                            var checkTH = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_4");
+
                             if (checkHDBN != null)
                             {
                                 if (!isPrinted) InTamUng(isSaveAndShow, previewType);
@@ -2073,14 +2075,19 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             {
                                 if (!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InPhieuYeuCauDichVu(isSaveAndShow, previewType);
-
                             }
 
                             if (checkQR != null)
                             {
                                 if (!isPrinted) InTamUng(isSaveAndShow, previewType);
                                 InYeuCauThanhToanQR(isSaveAndPrint, isSign, isPrintPreview);
+                            }
 
+                            if (checkTH != null)
+                            {
+                                //if (chkSign.Checked == true) previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
+                                if (!isPrinted) InTamUng(isSaveAndShow, previewType);
+                                DelegateRunPrinter(PrintTypeCodeStore.PRINT_TYPE_CODE__IN__PHIEU_YEU_CAU_CHI_DINH_TONG_HOP__MPS000037, isSaveAndShow, previewType);
                             }
                         }
 
