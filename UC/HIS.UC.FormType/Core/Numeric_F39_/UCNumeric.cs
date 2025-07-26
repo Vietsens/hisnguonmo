@@ -64,6 +64,7 @@ namespace HIS.UC.FormType.Numeric
         {
             try
             {
+                this.numericUpDown1.EditValue = null;
                 SetTitle();//Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => report), report));
                 if (this.report != null)
                 {

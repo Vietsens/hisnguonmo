@@ -84,6 +84,7 @@ namespace HIS.UC.FormType.Numericft
             0});
             this.numericUpDown2.Location = new System.Drawing.Point(416, 2);
             this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.numericUpDown2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.numericUpDown2.Size = new System.Drawing.Size(242, 20);
@@ -99,6 +100,7 @@ namespace HIS.UC.FormType.Numericft
             0});
             this.numericUpDown1.Location = new System.Drawing.Point(97, 2);
             this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.numericUpDown1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.numericUpDown1.Size = new System.Drawing.Size(220, 20);

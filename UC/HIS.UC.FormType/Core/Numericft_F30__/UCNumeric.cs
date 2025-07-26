@@ -69,6 +69,8 @@ namespace HIS.UC.FormType.Numericft
         {
             try
             {
+                this.numericUpDown1.EditValue = null;
+                this.numericUpDown2.EditValue = null;
                 SetTitle();//Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => report), report));
                 if (this.report != null)
                 {
