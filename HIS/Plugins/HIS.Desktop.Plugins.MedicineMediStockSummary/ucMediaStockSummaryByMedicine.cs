@@ -20,6 +20,7 @@ using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Utilities.Extensions;
 using HIS.UC.HisMaterialInStock.ADO;
 using HIS.UC.HisMedicineInStock.ADO;
 using Inventec.Common.Adapter;
@@ -50,6 +51,7 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
         string fileNameMedicine = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.IO.Path.Combine("ModuleDesign", "HIS.Desktop.Plugins.MedicineMediStockSummary.gridViewMediMateStockSum1.xml"));
         string fileNameMaterial = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.IO.Path.Combine("ModuleDesign", "HIS.Desktop.Plugins.MedicineMediStockSummary.gridViewMediMateStockSum2.xml"));
 
+        List<MOS.EFMODEL.DataModels.V_HIS_USER_ROOM> lstV_UserRoom;
         HIS_MEDI_STOCK mediStock;
         MedicineTypeInHospitalSDO lstMediInStocks = new MedicineTypeInHospitalSDO();
         MaterialTypeInHospitalSDO lstMateInStocks = new MaterialTypeInHospitalSDO();
@@ -66,12 +68,14 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             try
             {
                 WaitingManager.Show();
+                lstV_UserRoom = new List<V_HIS_USER_ROOM>();
+
                 var rooms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
 
-                var userRoomByUsers = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_USER_ROOM>().Where(o => o.LOGINNAME == loginName && (o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)).ToList();
-                if (userRoomByUsers != null)
-                    roomIds = userRoomByUsers.Select(o => o.ROOM_ID).Distinct().ToList();
+                lstV_UserRoom = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_USER_ROOM>().Where(o => o.LOGINNAME == loginName && (o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)).ToList();
+                if (lstV_UserRoom != null)
+                    roomIds = lstV_UserRoom.Select(o => o.ROOM_ID).Distinct().ToList();
 
                 //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => roomIds), roomIds));
                 var _WorkPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.RoomId);
@@ -85,6 +89,9 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                     ShowGridControl(loadFirst);
                 }
 
+
+                InitComboBranhCheck();
+                InitComboBranh();  
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -106,6 +113,14 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                 CommonParam param = new CommonParam();
                 if (chkMedicine.Checked)
                 {
+                    
+                    if (cboBrach.EditValue != null)
+                    {
+                        var selectedBranchIds = cboBrach.EditValue as IEnumerable<object>;
+                        var branchIdList = selectedBranchIds.Select(id => Convert.ToDecimal(id)).ToList();
+                        roomIds = lstV_UserRoom.Where(o => branchIdList.Contains(o.BRANCH_ID)).Select(o => o.ROOM_ID).Distinct().ToList(); ;
+                    }
+
                     txtKeyword.Focus();
                     MOS.Filter.HisMedicineTypeHospitalViewFilter mediFilter = new MOS.Filter.HisMedicineTypeHospitalViewFilter();
                     if (mediStock.IS_BUSINESS == 1)
@@ -135,6 +150,7 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                     lstMediInStocks = new MedicineTypeInHospitalSDO();
                     List<MedicineTypeInHospitalSDO> MediHosList = new List<MedicineTypeInHospitalSDO>();
                     int count = 0;
+                    
                     while (MediStock.Count - count > 0)
                     {
                         mediFilter.MEDI_STOCK_IDs = MediStock.Select(o => o.ID).Skip(count).Take(100).ToList();
@@ -712,6 +728,93 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             catch (Exception ex)
             {
                 LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboBranh()
+        {
+            try
+            {
+                var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                var userRoomByUsers = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_USER_ROOM>().Where(o => o.LOGINNAME == loginName && (o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)).ToList();
+                
+                cboBrach.Properties.DataSource = userRoomByUsers;
+                cboBrach.Properties.DisplayMember = "BRANCH_NAME";
+                cboBrach.Properties.ValueMember = "BRANCH_ID";
+                DevExpress.XtraGrid.Columns.GridColumn column = cboBrach.Properties.View.Columns.AddField("BRANCH_NAME");
+                column.VisibleIndex = 1;
+                column.Width = 200;
+                column.Caption = "Tất cả";
+                cboBrach.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cboBrach.Properties.View.OptionsSelection.MultiSelect = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboBranhCheck()
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboBrach.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_Check);
+                cboBrach.Properties.Tag = gridCheck;
+                cboBrach.Properties.View.OptionsSelection.MultiSelect = true;
+                GridCheckMarksSelection gridCheckMark = cboBrach.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboBrach.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void Event_Check(object sender, EventArgs e)
+        {
+
+            try
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                lstV_UserRoom = new List<V_HIS_USER_ROOM>();
+                if (gridCheckMark != null)
+                {
+                    List<V_HIS_USER_ROOM> erSelectedNews = new List<V_HIS_USER_ROOM>();
+                    foreach (V_HIS_USER_ROOM er in (sender as GridCheckMarksSelection).Selection)
+                    {
+                        if (er != null)
+                        {
+                            if (sb.ToString().Length > 0) { sb.Append(", "); }
+                            sb.Append(er.BRANCH_NAME);
+                            erSelectedNews.Add(er);
+                        }
+                    }
+                    this.lstV_UserRoom = new List<V_HIS_USER_ROOM>();
+                    this.lstV_UserRoom.AddRange(erSelectedNews);
+                }
+                this.cboBrach.Text = sb.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnSerach_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ShowGridControl(loadFirst);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }
