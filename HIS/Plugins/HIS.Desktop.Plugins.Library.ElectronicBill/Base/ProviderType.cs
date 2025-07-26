@@ -38,12 +38,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
         public const string MOBIFONE = "MOBIFONE";
         public const string CYBERBILL = "CYBERBILL";
         public const string MINVOICE = "MINVOICE";
+        //qtcode
+        public const string BDBill = "BDBill"; 
         //thêm đối tác cần add thêm vào type
         public static List<string> TYPE
         {
             get
             {
-                return new List<string>() { VNPT, VIETSENS, BKAV, VIETTEL, CongThuong, SoftDream, MISA, safecert, CTO, BACH_MAI, MOBIFONE, CYBERBILL, MINVOICE };
+                return new List<string>() { VNPT, VIETSENS, BKAV, VIETTEL, CongThuong, SoftDream, MISA, safecert, CTO, BACH_MAI, MOBIFONE, CYBERBILL, MINVOICE , BDBill };
             }
         }
 

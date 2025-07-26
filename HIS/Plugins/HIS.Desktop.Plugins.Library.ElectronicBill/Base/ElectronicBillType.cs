@@ -34,7 +34,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
             CONVERT_INVOICE,
             CREATE_INVOICE_DATA,
             GET_INVOICE_INFO,
-            GET_INVOICE_SHOW
+            GET_INVOICE_SHOW, 
+            REPLACE_INVOICE, 
+            RESEARCH_INVOICE
             //ImportAndPublishInv,
             //downloadInvPDFFkeyNoPay
         }

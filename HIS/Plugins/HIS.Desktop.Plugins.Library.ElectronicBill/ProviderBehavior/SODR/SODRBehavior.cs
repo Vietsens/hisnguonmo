@@ -24,11 +24,13 @@ using Inventec.Common.EBillSoftDreams.Model;
 using Inventec.Common.EBillSoftDreams.ModelXml;
 using Inventec.Common.Logging;
 using Inventec.Core;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
@@ -86,7 +88,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                             switch (_electronicBillTypeEnum)
                             {
                                 case ElectronicBillType.ENUM.CREATE_INVOICE:
-                                    result = this.ProcessCreateInvoiceV2();
+                                    if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
+                                    {
+                                        result = this.ProcessReplaceInvoiceV2();
+                                    }
+                                    else
+                                    {
+                                        result = this.ProcessCreateInvoiceV2();
+                                    }
                                     break;
                                 case ElectronicBillType.ENUM.GET_INVOICE_LINK:
                                     result = this.ProcessGetInvoiceV2();
@@ -94,6 +103,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                                 case ElectronicBillType.ENUM.DELETE_INVOICE:
                                 case ElectronicBillType.ENUM.CANCEL_INVOICE:
                                     result = this.ProcessCancelInvoiceV2();
+                                    break;
+                                case ElectronicBillType.ENUM.REPLACE_INVOICE:
                                     break;
                             }
                         }
@@ -151,7 +162,6 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
             }
             return result;
         }
-
         #region MyRegion v1
         private void ProcessCreateInvoice(Inventec.Common.EBillSoftDreams.DataInitApi login, ref ElectronicBillResult result)
         {
@@ -369,6 +379,53 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
         #endregion
 
         #region MyRegion v2
+
+        private ReplaceInvoiceV2 GetDataReplace()
+        {   ReplaceInvoiceV2 rp = new ReplaceInvoiceV2();
+            try 
+            {
+                IssueCreateV2 issueCreate = GetInvoiceDetailV2();
+                rp.Pattern = issueCreate.Pattern;
+                rp.Invoices = issueCreate.Invoices;
+                rp.Ikey = ElectronicBillDataInput.Transaction.TDL_ORIGINAL_EI_CODE.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                throw;
+            }
+            return rp;
+        }
+        private ElectronicBillResult ProcessReplaceInvoiceV2()
+        {
+            ElectronicBillResult electronicBillResult = new ElectronicBillResult
+            {
+                InvoiceSys = ProviderType.SoftDream
+            };
+            try
+            {
+                ReplaceInvoiceV2 input = this.GetDataReplace();
+                ResultDataV2 response = this.processV2.ReplaceInvoice(input);
+                if (response != null && response.InvoiceResult != null && response.InvoiceResult.Count == 1)
+                {
+                    electronicBillResult.Success = true;
+                    electronicBillResult.InvoiceCode = response.InvoiceResult.First().Ikey;
+                    electronicBillResult.InvoiceNumOrder = response.InvoiceResult.First().No;
+                }
+                else
+                {
+                    LogSystem.Error("Thay the va phat hanh hoa don that bai. " + LogUtil.TraceData(LogUtil.GetMemberName<ResultDataV2>(() => response), response) + LogUtil.TraceData(LogUtil.GetMemberName<ReplaceInvoiceV2>(() => input), input));
+                    ElectronicBillResultUtil.Set(ref electronicBillResult, false, "Thay thế và phát hành hóa thất bại");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+            }
+            return electronicBillResult;
+        }
+
         private ElectronicBillResult ProcessCreateInvoiceV2()
         {
             ElectronicBillResult electronicBillResult = new ElectronicBillResult
@@ -400,7 +457,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
             return electronicBillResult;
         }
 
-        private IssueCreateV2 GetInvoiceDetailV2()
+        private IssueCreateV2 GetInvoiceDetailV2() //gọi để lấy ra đối tượng IssueCreateV2, đối tượng này có 1 list InvoiceV2
         {
             IssueCreateV2 issueCreateV = new IssueCreateV2();
             try
@@ -411,7 +468,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                     issueCreateV.Pattern = this.ElectronicBillDataInput.TemplateCode + this.ElectronicBillDataInput.SymbolCode;
                     issueCreateV.Invoices = new List<InvoiceV2>();
                     InvoiceV2 invoiceV = new InvoiceV2();
-                    InvoiceInfo.InvoiceInfoADO data = InvoiceInfo.InvoiceInfoProcessor.GetData(this.ElectronicBillDataInput, this.TempType != TemplateEnum.TYPE.Template10);
+                    InvoiceInfo.InvoiceInfoADO data = InvoiceInfo.InvoiceInfoProcessor.GetData(this.ElectronicBillDataInput, this.TempType != TemplateEnum.TYPE.Template10); // GetData để lấy dữ liệu gán cho InvoiceV2
                     invoiceV.CusAddress = data.BuyerAddress;
                     invoiceV.CusBankName = "";
                     invoiceV.CusBankNo = data.BuyerAccountNumber;
@@ -585,6 +642,106 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
             }
             return electronicBillResult;
         }
+        //private string GenerateInvoiceXml()
+        //{
+        //    try
+        //    {
+        //        IssueCreateV2 invoiceData = this.GetInvoiceDetailV2();
+        //        if (invoiceData == null || invoiceData.Invoices == null || invoiceData.Invoices.Count == 0)
+        //        {
+        //            throw new Exception("Không tạo được dữ liệu hóa đơn để thay thế.");
+        //        }
+
+        //        InvoiceV2 invoice = invoiceData.Invoices[0];
+        //        InvoiceInfo.InvoiceInfoADO adoInfo = InvoiceInfo.InvoiceInfoProcessor.GetData(this.ElectronicBillDataInput, this.TempType != TemplateEnum.TYPE.Template10);
+        //        if (!invoice.Products.Any(p => !string.IsNullOrEmpty(p.Name)))
+        //        {
+        //            throw new Exception("Hóa đơn phải có ít nhất một sản phẩm với tên không rỗng.");
+        //        }
+
+        //        XElement replaceInv = new XElement("ReplaceInv",
+        //            new XElement("Ikey", invoice.Ikey),
+        //            new XElement("CusCode", adoInfo.BuyerCode ?? ""),
+        //            new XElement("Buyer", Config.HisConfigCFG.IsSwapNameOption ? (adoInfo.BuyerName ?? adoInfo.BuyerOrganization ?? "") : ""),
+        //            new XElement("CusName", Config.HisConfigCFG.IsSwapNameOption ? "" : (adoInfo.BuyerName ?? adoInfo.BuyerOrganization ?? "")),
+        //            //new XElement("Buyer", adoInfo.BuyerName ?? adoInfo.BuyerOrganization ?? ""),
+        //            //new XElement("CusName", adoInfo.BuyerName ?? adoInfo.BuyerOrganization ?? ""),
+        //            new XElement("Email", invoice.Email ?? ""),
+        //            new XElement("EmailCC", ""),
+        //            new XElement("CusAddress", invoice.CusAddress ?? ""),
+        //            new XElement("CusBankName", invoice.CusBankName ?? ""),
+        //            new XElement("CusBankNo", invoice.CusBankNo ?? ""),
+        //            new XElement("CusPhone", invoice.CusPhone ?? ""),
+        //            new XElement("CusTaxCode", invoice.CusTaxCode ?? ""),
+        //            new XElement("PaymentMethod", invoice.PaymentMethod ?? "T/M"),
+        //            new XElement("ArisingDate", Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.ElectronicBillDataInput.TransactionTime > 0 ? this.ElectronicBillDataInput.TransactionTime : Inventec.Common.DateTime.Get.Now() ?? 0)),
+        //            new XElement("ExchangeRate", ""),
+        //            new XElement("CurrencyUnit", "VND"),
+        //            new XElement("Extra", "{}"));
+
+        //        // Tạo danh sách sản phẩm
+        //        XElement productsElement = new XElement("Products");
+        //        decimal totalAmount = 0;
+        //        decimal totalVATAmount = 0;
+        //        foreach (var product in invoice.Products)
+        //        {
+        //            string prodName = product.Name;
+        //            if (!string.IsNullOrEmpty(prodName) && prodName.Length > 300)
+        //            {
+        //                prodName = prodName.Substring(0, 300);
+        //                LogSystem.Warn($"Tên sản phẩm '{product.Name}' vượt quá 300 ký tự, đã cắt ngắn thành '{prodName}'.");
+        //            }
+
+        //            float vatRate = product.VATRate;
+        //            if (vatRate != -1 && vatRate != 0 && vatRate != 5 && vatRate != 10)
+        //            {
+        //                LogSystem.Warn(string.Format("Thuế suất không hợp lệ {0} cho sản phẩm {1}, đặt mặc định -1.", vatRate, prodName));
+        //                vatRate = -1;
+        //            }
+
+        //            string pos = product.No;
+        //            if (!string.IsNullOrEmpty(pos) && !int.TryParse(pos, out int posNumber))
+        //            {
+        //                LogSystem.Warn(string.Format("Pos không hợp lệ {0} cho sản phẩm {1}, đặt mặc định rỗng.", pos, prodName));
+        //                pos = "";
+        //            }
+
+        //            XElement productElement = new XElement("Product",
+        //                new XElement("Code", product.Code ?? ""),
+        //                new XElement("ProdName", prodName ?? ""),
+        //                new XElement("ProdUnit", product.Unit ?? ""),
+        //                new XElement("ProdQuantity", product.Quantity),
+        //                new XElement("ProdPrice", product.Price),
+        //                new XElement("Total", product.Total),
+        //                new XElement("VATRate", vatRate),
+        //                new XElement("VATAmount", product.VATAmount),
+        //                new XElement("Amount", product.Amount),
+        //                new XElement("Extra", JsonConvert.SerializeObject(new { Pos = pos }))
+        //            );
+        //            productsElement.Add(productElement);
+        //            totalAmount += product.Amount;
+        //            totalVATAmount += product.VATAmount;
+        //        }
+        //        replaceInv.Add(productsElement);
+
+        //        replaceInv.Add(
+        //            new XElement("Total", totalAmount),
+        //            new XElement("VATRate", invoice.Products.Any() ? invoice.Products.First().VATRate : -1),
+        //            new XElement("VATAmount", totalVATAmount),
+        //            new XElement("Amount", totalAmount),
+        //            new XElement("AmountInWords", Inventec.Common.String.Convert.CurrencyToVneseString(totalAmount.ToString("0.##")) + " đồng")
+        //        );
+
+        //        string xmlData = replaceInv.ToString();
+        //        LogSystem.Info("XML Data generated: " + xmlData);
+        //        return xmlData;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogSystem.Error(ex);
+        //        throw new Exception("Lỗi khi tạo XML hóa đơn: " + ex.Message);
+        //    }
+        //}
         #endregion
     }
 }
