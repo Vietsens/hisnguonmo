@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
 using Inventec.Common.Adapter;
@@ -25,6 +26,7 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using MPS.Processor.Mps000276.PDO.ADO;
 using MPS.ProcessorBase;
 using System;
 using System.Collections.Generic;
@@ -49,6 +51,8 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
         private List<HIS_SERE_SERV> _SereServs { get; set; }
         private List<HIS_CONFIG> lstConfig { get; set; }
         private HIS_TRANS_REQ transReq { get; set; }
+        private List<HIS_SERE_SERV_EXT> _SereServExts { get; set; }
+        ServiceReqADO _ServiceReqADO { get; set; }
         MPS.ProcessorBase.PrintConfig.PreviewType? previewType { get; set; }
         public PrintServiceReqTreatmentProcessor(List<V_HIS_SERVICE_REQ> _vhisServiceReqs, long roomId)
         {
@@ -196,7 +200,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                     switch (printTypeCode)
                     {
                         case PrintTypeCodeStore.IN__HUONG_DAN_CLS__KHAM:
-                            new InCacPhieuChiDinh(printTypeCode, fileName, this._ServiceReqs, this._SereServs, this._ListTreatment, this._PatientTypeAlter, this._vHisRoom, printNow, ref result, lstConfig, transReq, DlgSendResultSigned, this.previewType);
+                            new InCacPhieuChiDinh(printTypeCode, fileName, this._ServiceReqs, this._SereServs, this._ListTreatment, this._PatientTypeAlter, this._vHisRoom, printNow, ref result, lstConfig, transReq, DlgSendResultSigned, this.previewType, this._SereServExts, this._ServiceReqADO);
                             break;
 
                         default:
@@ -215,6 +219,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
         }
         private bool ProcessDataBeforePrint()
         {
+
             bool result = false;
             try
             {
@@ -307,6 +312,66 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                            && p.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT
                            ).ToList();
                 }
+                if (this._SereServs != null && this._SereServs.Count > 0)
+                {
+                    var sereServIds = this._SereServs.Select(s => s.ID).ToList();
+                    var extFilter = new HisSereServExtFilter()
+                    {
+                        SERE_SERV_IDs = sereServIds
+                    };
+                    var sereServExts = new BackendAdapter(new CommonParam())
+                        .Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumer.ApiConsumers.MosConsumer, extFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+
+                    this._SereServExts = sereServExts;
+                }
+
+                var treatmentId = _ListTreatment?.FirstOrDefault()?.ID ?? _TreatmentId;
+                var dhstFilter = new HisDhstFilter { TREATMENT_ID = treatmentId };
+                var dhsts = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>(
+                    "api/HisDhst/Get", ApiConsumers.MosConsumer,
+                    dhstFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+
+                var lastDhst = dhsts?
+                                .Where(d => d.WEIGHT.HasValue && d.WEIGHT > 0)
+                                .OrderByDescending(d => d.EXECUTE_TIME)
+                                .FirstOrDefault();
+                var lastWeight = lastDhst?.WEIGHT;
+
+                var req = _ServiceReqs.FirstOrDefault();
+                ServiceReqADO serviceReqADO = null;
+
+                if (req != null)
+                {
+                    var allEmployees = BackendDataWorker.Get<HIS_EMPLOYEE>();
+
+                    string requestMobile = null;
+                    if (!string.IsNullOrEmpty(req.REQUEST_LOGINNAME))
+                    {
+                        var requestEmp = allEmployees
+                            .FirstOrDefault(e => string.Equals(e.LOGINNAME, req.REQUEST_LOGINNAME, StringComparison.OrdinalIgnoreCase));
+                        requestMobile = requestEmp?.TDL_MOBILE;
+                    }
+
+                    string executeMobile = null;
+                    if (!string.IsNullOrEmpty(req.EXECUTE_LOGINNAME))
+                    {
+                        var executeEmp = allEmployees
+                            .FirstOrDefault(e => string.Equals(e.LOGINNAME, req.EXECUTE_LOGINNAME, StringComparison.OrdinalIgnoreCase));
+                        executeMobile = executeEmp?.TDL_MOBILE;
+                    }
+
+                    serviceReqADO = new ServiceReqADO
+                    {
+                        WEIGHT = lastWeight,
+                        REQUEST_DOCTOR_MOBILE = requestMobile,
+                        EXECUTE_DOCTOR_MOBILE = executeMobile
+                    };
+                }
+
+                this._ServiceReqADO = serviceReqADO;
+
+
+
 
                 if (this._ServiceReqs != null && this._ServiceReqs.Count > 0)
                 {
