@@ -15,5 +15,6 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR.Proce
         internal static string EinvoiceCancel = "/api/einvoice/cancel";
 
         internal static string EinvoiceDownload = "/api/einvoice/download";
+        internal static string EinvoiceReplace = "/api/einvoice/replace";
     }
 }

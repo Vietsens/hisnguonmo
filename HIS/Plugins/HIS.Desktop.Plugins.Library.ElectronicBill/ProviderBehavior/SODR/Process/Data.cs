@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR.Process
 {
-    public class IssueCreateV2
+    public class IssueCreateV2 // input gửi lên api
     {
         public string Pattern { get; set; }
 
@@ -50,6 +50,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR.Proce
         public string PaymentMethod { get; set; }
 
         public List<ProductV2> Products { get; set; }
+        //qtcode
+        public string BuyerName { get; set; }
     }
     public class ProductV2
     {
@@ -94,4 +96,18 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR.Proce
 
         public string AccessToken { get; set; }
     }
+    #region replace
+    public class ReplaceInvoiceV2 // input đầu vào gửi lên api
+    {
+        public string Pattern { get; set; }
+        public string Ikey { get; set; }
+        public List<InvoiceV2> Invoices { get; set; }
+    }
+    //public class ResultReplaceInvoiceV2
+    //{
+    //    public string Status { get; set; }
+    //    public string Message { get; set; }
+    //    public DataInfo Data { get; set; }
+    //}
+    #endregion
 }

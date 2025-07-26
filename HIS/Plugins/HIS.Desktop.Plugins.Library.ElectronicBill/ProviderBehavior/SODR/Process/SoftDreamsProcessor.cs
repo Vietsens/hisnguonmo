@@ -59,6 +59,27 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR.Proce
             throw new Exception("Tạo hóa đơn điện tử thất bại");
         }
 
+
+        public ResultDataV2 ReplaceInvoice(ReplaceInvoiceV2 data)
+        {
+            bool flag = data != null;
+            if (!flag)
+            {
+                throw new Exception("Thông tin hóa đơn không hợp lệ vui lòng kiểm tra lại.");
+            }
+            string fullapi = Base.RequestUriStore.CombileUrl(this.Api, UriStore.EinvoiceReplace);
+            ResultDataV2 result = ApiConsumer.CreateRequest<ResultDataV2>(fullapi, this.Token, data);
+
+            bool flag2 = result != null && result.Status == "1" && result.InvoiceResult != null;
+            if (flag2)
+            {
+                return result;
+            }
+            string errorMessage = result?.Message ?? "Thay thế hóa đơn điện tử thất bại";
+            throw new Exception(errorMessage);
+        }
+
+
         public bool DeleteInvoice(string pattern, string key)
         {
             bool flag = !string.IsNullOrEmpty(pattern) && !string.IsNullOrEmpty(key);
