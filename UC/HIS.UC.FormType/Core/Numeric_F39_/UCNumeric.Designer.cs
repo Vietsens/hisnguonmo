@@ -79,6 +79,7 @@ namespace HIS.UC.FormType.Numeric
             0});
             this.numericUpDown1.Location = new System.Drawing.Point(97, 2);
             this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.numericUpDown1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.numericUpDown1.Size = new System.Drawing.Size(177, 20);

@@ -183,7 +183,7 @@ namespace HIS.UC.FormType.DateTime
             bool result = true;
             try
             {
-                if (this.generateRDO != null && this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
+                if (this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
                 {
                     this.positionHandleControl = -1;
                     result = dxValidationProvider1.Validate();
