@@ -27,13 +27,14 @@ namespace HIS.UC.FormType.Numericft
     {
         //internal DevExpress.XtraEditors.GridLookUpEdit cboTreatmentType;
         public DevExpress.XtraEditors.SpinEdit numericUpDown1;
+        public DevExpress.XtraEditors.SpinEdit numericUpDown2;
         public override bool Validate(System.Windows.Forms.Control control, object value)
         {
             bool result = false;
             try
             {
-                if (numericUpDown1 == null) return result;
-                if (numericUpDown1.EditValue == null) return result;
+                if (numericUpDown1 == null || numericUpDown2 == null) return result;
+                if (numericUpDown1.EditValue == null || numericUpDown2.EditValue == null) return result;
                 result = true;
             }
             catch (Exception ex)

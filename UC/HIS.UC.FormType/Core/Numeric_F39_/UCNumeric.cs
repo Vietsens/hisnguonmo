@@ -39,8 +39,8 @@ namespace HIS.UC.FormType.Numeric
         public UCNumeric(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO)
         {
             try
-            { 
-                InitializeComponent();               
+            {
+                InitializeComponent();
                 this.config = config;
                 if (paramRDO is GenerateRDO generateRDO)
                 {
@@ -74,13 +74,8 @@ namespace HIS.UC.FormType.Numeric
                 {
                     Validation();
                     layoutControlItem1.AppearanceItemCaption.ForeColor = Color.Maroon;
-                    numericUpDown1.EditValue = 0;
                 }
-                else
-                {
-                    numericUpDown1.EditValue = null;
-                }
-                }
+            }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
@@ -102,14 +97,14 @@ namespace HIS.UC.FormType.Numeric
             }
         }
 
-       
-        
+
+
         public string GetValue()
         {
             string value = "";
             try
             {
-                long? fromnum=null;
+                long? fromnum = null;
                 if (numericUpDown1.EditValue != null) fromnum = Inventec.Common.TypeConvert.Parse.ToInt64(numericUpDown1.Value.ToString());
                 value = String.Format(this.config.JSON_OUTPUT, ConvertUtils.ConvertToObjectFilter(fromnum));
             }
@@ -130,7 +125,7 @@ namespace HIS.UC.FormType.Numeric
                 {
                     var jsOutputSub = this.config.JSON_OUTPUT.Split(new string[] { "," }, StringSplitOptions.None);
 
-                    string value = HIS.UC.FormType.CopyFilter.CopyFilter.CopyFilterProcess(this.config,jsOutputSub[0], this.report.JSON_FILTER);
+                    string value = HIS.UC.FormType.CopyFilter.CopyFilter.CopyFilterProcess(this.config, jsOutputSub[0], this.report.JSON_FILTER);
                     if (value != null && value != "null" && Inventec.Common.TypeConvert.Parse.ToInt64(value) > 0)
                         numericUpDown1.EditValue = Inventec.Common.TypeConvert.Parse.ToInt64(value);
                 }
@@ -146,7 +141,7 @@ namespace HIS.UC.FormType.Numeric
             bool result = true;
             try
             {
-                if (this.isValidData != null && this.isValidData)
+                if (this.isValidData)
                 {
                     this.positionHandleControl = -1;
                     result = dxValidationProvider1.Validate();
@@ -166,12 +161,11 @@ namespace HIS.UC.FormType.Numeric
             try
             {
                 HIS.UC.FormType.Numeric.NumericValidationRule validRule = new HIS.UC.FormType.Numeric.NumericValidationRule();
-                //validRule.txtTreatmentTypeCode = txtTreatmentTypeCode;
                 validRule.numericUpDown1 = numericUpDown1;
-               validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(Message.Enum.ThieuTruongDuLieuBatBuoc);
+                validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(Message.Enum.ThieuTruongDuLieuBatBuoc);
                 validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProvider1.SetValidationRule(numericUpDown1, validRule);
-              
+
             }
             catch (Exception ex)
             {
