@@ -115,35 +115,21 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        public bool hideWaring(bool result)
+        public void hideWaring(bool result)
         {
-            this.lciTitle.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.lciTitle.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            //
-            this.txtTitle.Properties.ReadOnly = true;
-            this.txtTitle.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             if (result)
             {
-                this.lciTitle.Size = new System.Drawing.Size(95, 27);
-                this.lciTitle.TextSize = new System.Drawing.Size(90, this.lciTitle.TextSize.Height);
-                this.lciTitle.TextToControlDistance = 5;
+                this.txtTitle.Visible = false;
             }
             else
             {
-                this.lciTitle.Size = new System.Drawing.Size(95, 27);
-                this.lciTitle.TextSize = new System.Drawing.Size(90 - 16, this.lciTitle.TextSize.Height);
-                this.lciTitle.TextToControlDistance = 0;
+                this.txtTitle.Visible = true;
             }
-            this.lciTitle.MinSize = this.lciTitle.Size;
-            this.lciTitle.MaxSize = this.lciTitle.Size;
-            return result;
-
         }
         private void checkedListBoxControl1_ItemCheck(object sender, DevExpress.XtraEditors.Controls.ItemCheckEventArgs e)
         {
             if (e.State == CheckState.Checked)
             {
-                this.hideWaring(true);
                 if (this.checkedListBoxControl1.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Radio)
                 {
                     for (int i = 0; i < checkedListBoxControl1.Items.Count; i++)
@@ -359,7 +345,7 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                 || (boxRowCount == viewRowCount && boxRowCount == 1))
             {
                 var newHeight = boxRowCount * viewInfo.ItemHeight;
-                this.ClientSize = new Size(ClientSize.Width, (int)newHeight + 10);
+                this.ClientSize = new Size(ClientSize.Width, (int)newHeight + 6);
             }
         }
 

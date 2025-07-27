@@ -18,7 +18,6 @@
 //using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
-using His.UC.LibraryMessage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,6 +26,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.UC.FormType.DateTime
 {
@@ -204,7 +204,7 @@ namespace HIS.UC.FormType.DateTime
             {
                 HIS.UC.FormType.DateTime.Validation.TimeValidationRule validRule = new HIS.UC.FormType.DateTime.Validation.TimeValidationRule();
                 validRule.dtTime = dtTime;
-                validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(Message.Enum.ThieuTruongDuLieuBatBuoc);
+                validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.ThieuTruongDuLieuBatBuoc);
                 validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProvider1.SetValidationRule(dtTime, validRule);
             }
