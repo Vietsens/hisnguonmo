@@ -29,6 +29,19 @@ namespace MPS.Processor.Mps000151.PDO
 {
     public partial class Mps000151PDO : RDOBase
     {
+        public Mps000151PDO(
+                HIS_CARE_SUM hisCareSum
+            )
+        {
+            try
+            {
+                this.HisCareSum = hisCareSum;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         public Mps000151PDO() { }
 
         public Mps000151PDO(

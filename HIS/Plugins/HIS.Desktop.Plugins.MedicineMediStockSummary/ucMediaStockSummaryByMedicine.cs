@@ -15,14 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using AutoMapper;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraExport;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Utilities.Extensions;
-using HIS.UC.HisMaterialInStock.ADO;
-using HIS.UC.HisMedicineInStock.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Core;
@@ -89,9 +88,9 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                     ShowGridControl(loadFirst);
                 }
 
-
+                InitComboBranh();
                 InitComboBranhCheck();
-                InitComboBranh();  
+                  
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -113,12 +112,11 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                 CommonParam param = new CommonParam();
                 if (chkMedicine.Checked)
                 {
-                    
-                    if (cboBrach.EditValue != null)
+                    if (lstV_UserRoom != null)
                     {
                         var selectedBranchIds = cboBrach.EditValue as IEnumerable<object>;
-                        var branchIdList = selectedBranchIds.Select(id => Convert.ToDecimal(id)).ToList();
-                        roomIds = lstV_UserRoom.Where(o => branchIdList.Contains(o.BRANCH_ID)).Select(o => o.ROOM_ID).Distinct().ToList(); ;
+                        var branchIdList = lstV_UserRoom.Select(o => o.BRANCH_ID).ToList();
+                        roomIds = lstV_UserRoom.Where(o => branchIdList.Contains(o.BRANCH_ID)).Select(o => o.ROOM_ID).Distinct().ToList();
                     }
 
                     txtKeyword.Focus();
@@ -391,24 +389,30 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                 gridViewMediMateStockSum.Columns.Add(colUnit);
 
                 int index = 9;
-                for (int i = 0; i < medicineTypeInHospitalSDO.MediStockCodes.Count; i++)
+                if (medicineTypeInHospitalSDO != null && 
+                    medicineTypeInHospitalSDO.MedicineTypeDatas != null && 
+                    medicineTypeInHospitalSDO.MediStockCodes != null && 
+                    medicineTypeInHospitalSDO.MediStockNames != null)
                 {
-                    Inventec.Common.Logging.LogSystem.Info(medicineTypeInHospitalSDO.MediStockNames[i] + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeInHospitalSDO.MediStockNames[i]), medicineTypeInHospitalSDO.MediStockNames[i]));
-                    Inventec.Common.Logging.LogSystem.Info(medicineTypeInHospitalSDO.MediStockCodes[i] + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeInHospitalSDO.MediStockCodes[i]), medicineTypeInHospitalSDO.MediStockCodes[i]));
-                    GridColumn colKho = new GridColumn();
-                    colKho.Caption = medicineTypeInHospitalSDO.MediStockNames[i];
-                    colKho.FieldName = medicineTypeInHospitalSDO.MediStockCodes[i];
-                    colKho.VisibleIndex = index;
-                    colKho.Width = 150;
-                    if (Inventec.Common.String.Convert.UnSignVNese(medicineTypeInHospitalSDO.MediStockNames[i].Trim().ToLower()).Equals(tenkhoHientai))
+                    for (int i = 0; i < medicineTypeInHospitalSDO.MediStockCodes.Count; i++)
                     {
-                        colTotal.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                        Inventec.Common.Logging.LogSystem.Info(medicineTypeInHospitalSDO.MediStockNames[i] + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeInHospitalSDO.MediStockNames[i]), medicineTypeInHospitalSDO.MediStockNames[i]));
+                        Inventec.Common.Logging.LogSystem.Info(medicineTypeInHospitalSDO.MediStockCodes[i] + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeInHospitalSDO.MediStockCodes[i]), medicineTypeInHospitalSDO.MediStockCodes[i]));
+                        GridColumn colKho = new GridColumn();
+                        colKho.Caption = medicineTypeInHospitalSDO.MediStockNames[i];
+                        colKho.FieldName = medicineTypeInHospitalSDO.MediStockCodes[i];
+                        colKho.VisibleIndex = index;
+                        colKho.Width = 150;
+                        if (Inventec.Common.String.Convert.UnSignVNese(medicineTypeInHospitalSDO.MediStockNames[i].Trim().ToLower()).Equals(tenkhoHientai))
+                        {
+                            colTotal.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                        }
+                        colKho.OptionsColumn.AllowEdit = false;
+                        colKho.DisplayFormat.FormatString = "#,##0";
+                        colKho.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+                        gridViewMediMateStockSum.Columns.Add(colKho);
+                        index++;
                     }
-                    colKho.OptionsColumn.AllowEdit = false;
-                    colKho.DisplayFormat.FormatString = "#,##0";
-                    colKho.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-                    gridViewMediMateStockSum.Columns.Add(colKho);
-                    index++;
                 }
             }
             catch (Exception ex)
@@ -737,23 +741,33 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             {
                 var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 var userRoomByUsers = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_USER_ROOM>().Where(o => o.LOGINNAME == loginName && (o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)).ToList();
-                
+
                 cboBrach.Properties.DataSource = userRoomByUsers;
                 cboBrach.Properties.DisplayMember = "BRANCH_NAME";
                 cboBrach.Properties.ValueMember = "BRANCH_ID";
+
+                cboBrach.Properties.View.Columns.Clear();
+
+                DevExpress.XtraGrid.Columns.GridColumn branchIdColumn = cboBrach.Properties.View.Columns.AddField("BRANCH_ID");
+                branchIdColumn.VisibleIndex = 0;
+                branchIdColumn.Width = 50;
+                branchIdColumn.Visible = false;
+                branchIdColumn.OptionsColumn.ShowInCustomizationForm = false;
+
                 DevExpress.XtraGrid.Columns.GridColumn column = cboBrach.Properties.View.Columns.AddField("BRANCH_NAME");
                 column.VisibleIndex = 1;
                 column.Width = 200;
                 column.Caption = "Tất cả";
                 cboBrach.Properties.View.OptionsView.ShowColumnHeaders = true;
                 cboBrach.Properties.View.OptionsSelection.MultiSelect = true;
+
+                cboBrach.Properties.View.RefreshData();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void InitComboBranhCheck()
         {
             try
@@ -763,9 +777,29 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                 cboBrach.Properties.Tag = gridCheck;
                 cboBrach.Properties.View.OptionsSelection.MultiSelect = true;
                 GridCheckMarksSelection gridCheckMark = cboBrach.Properties.Tag as GridCheckMarksSelection;
+
                 if (gridCheckMark != null)
                 {
                     gridCheckMark.ClearSelection(cboBrach.Properties.View);
+                    cboBrach.EditValue = null;
+                    cboBrach.Focus();
+
+                    var currentBranchId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId();
+                    if (currentBranchId != null)
+                    {
+                        var dataSource = cboBrach.Properties.DataSource as List<V_HIS_USER_ROOM>;
+                        if (dataSource != null)
+                        {
+                            var matchingBranch = dataSource.FirstOrDefault(x => x.BRANCH_ID == currentBranchId);
+                            if (matchingBranch != null)
+                            {
+                                lstV_UserRoom = new List<V_HIS_USER_ROOM>();
+                                lstV_UserRoom.Add(matchingBranch);
+                                gridCheckMark.SelectAll(lstV_UserRoom);
+                                cboBrach.EditValue = matchingBranch.BRANCH_NAME;
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -773,7 +807,6 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void Event_Check(object sender, EventArgs e)
         {
 
@@ -797,7 +830,7 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                     this.lstV_UserRoom = new List<V_HIS_USER_ROOM>();
                     this.lstV_UserRoom.AddRange(erSelectedNews);
                 }
-                this.cboBrach.Text = sb.ToString();
+                this.cboBrach.EditValue = sb.ToString();
 
             }
             catch (Exception ex)
@@ -805,7 +838,6 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void btnSerach_Click(object sender, EventArgs e)
         {
             try
@@ -815,6 +847,49 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboBrach_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    GridCheckMarksSelection gridCheckMark = cboBrach.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboBrach.Properties.View);
+                    }
+                    this.cboBrach.EditValue = null;
+                    this.cboBrach.Text = "";
+                    lstV_UserRoom = new List<V_HIS_USER_ROOM>();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboBrach_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string roomName = "";
+                if (this.lstV_UserRoom != null && this.lstV_UserRoom.Count > 0)
+                {
+                    foreach (var item in this.lstV_UserRoom)
+                    {
+                        roomName += item.BRANCH_NAME + ", ";
+
+                    }
+                }
+                e.DisplayText = roomName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+
             }
         }
     }

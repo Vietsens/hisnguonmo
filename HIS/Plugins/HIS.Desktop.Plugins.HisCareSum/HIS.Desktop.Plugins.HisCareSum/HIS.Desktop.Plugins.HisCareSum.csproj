@@ -36,7 +36,7 @@
     </Reference>
     <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\LIB\HIS\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\..\lib\MRS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Charts.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
@@ -179,7 +179,7 @@
     </Reference>
     <Reference Include="MPS.Processor.Mps000151.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000151.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000151.PDO\bin\Debug\MPS.Processor.Mps000151.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000229.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

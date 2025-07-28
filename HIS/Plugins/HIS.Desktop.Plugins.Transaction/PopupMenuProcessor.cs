@@ -73,7 +73,8 @@ namespace HIS.Desktop.Plugins.Transaction
             CLS,
             InPhieuThanhToan,
             YCTU,
-            InDonTongHopPhongKham
+            InDonTongHopPhongKham,
+            QrThanhToan
         }
 
         internal void InitMenu(bool allowUnlock, string loginname)
@@ -215,6 +216,11 @@ namespace HIS.Desktop.Plugins.Transaction
 
                 #region Giao dịch
                 BarSubItem sub1 = new BarSubItem(this._BarManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_TRANSACTION__POPUP_MENU__ITEM_TRANSACTION", Base.ResourceLangManager.LanguageUCTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 4);
+
+                BarButtonItem bbtnListQr = new BarButtonItem(this._BarManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_TRANSACTION__POPUP_MENU__ITEM_DANH_SACH_QR", Base.ResourceLangManager.LanguageUCTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 7);
+                bbtnListQr.Tag = ItemType.QrThanhToan;
+                bbtnListQr.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                sub1.ItemLinks.Add(bbtnListQr);
 
                 if (this.PopupItemStatusAdo.TransactionDepositStt)
                 {

@@ -45,14 +45,13 @@ namespace HIS.UC.FormType.Numericft
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.numericUpDown2 = new DevExpress.XtraEditors.SpinEdit();
             this.numericUpDown1 = new DevExpress.XtraEditors.SpinEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2.Properties)).BeginInit();
@@ -84,6 +83,7 @@ namespace HIS.UC.FormType.Numericft
             0});
             this.numericUpDown2.Location = new System.Drawing.Point(416, 2);
             this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.numericUpDown2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.numericUpDown2.Size = new System.Drawing.Size(242, 20);
@@ -99,6 +99,7 @@ namespace HIS.UC.FormType.Numericft
             0});
             this.numericUpDown1.Location = new System.Drawing.Point(97, 2);
             this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.numericUpDown1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.numericUpDown1.Size = new System.Drawing.Size(220, 20);

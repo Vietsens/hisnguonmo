@@ -18,7 +18,6 @@
 //using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
-using His.UC.LibraryMessage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,6 +26,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.UC.FormType.DateTime
 {
@@ -183,7 +183,7 @@ namespace HIS.UC.FormType.DateTime
             bool result = true;
             try
             {
-                if (this.generateRDO != null && this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
+                if (this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
                 {
                     this.positionHandleControl = -1;
                     result = dxValidationProvider1.Validate();
@@ -204,7 +204,7 @@ namespace HIS.UC.FormType.DateTime
             {
                 HIS.UC.FormType.DateTime.Validation.TimeValidationRule validRule = new HIS.UC.FormType.DateTime.Validation.TimeValidationRule();
                 validRule.dtTime = dtTime;
-                validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(Message.Enum.ThieuTruongDuLieuBatBuoc);
+                validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.ThieuTruongDuLieuBatBuoc);
                 validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProvider1.SetValidationRule(dtTime, validRule);
             }

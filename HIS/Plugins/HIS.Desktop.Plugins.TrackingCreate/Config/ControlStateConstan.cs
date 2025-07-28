@@ -30,5 +30,6 @@ namespace HIS.Desktop.Plugins.TrackingCreate.Config
         internal const string chkPrintDocumentSigned = "chkPrintDocumentSigned";
         internal const string chkChiLayYLTuBB = "chkChiLayYLTuBB";
         internal const string chkUpdateTimeDHST = "chkUpdateTimeDHST";
+        internal const string chkLastDHSTByPatient = "IsCheckedGetLastDHSTByPatient";
     }
 }
