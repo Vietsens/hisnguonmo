@@ -32,6 +32,7 @@ namespace MPS.Processor.Mps000151.PDO
         public Mps000151PDO() { }
 
         public Mps000151PDO(
+            HIS_CARE_SUM hisCareSum,
             V_HIS_PATIENT patient,
             Mps000151ADO mps000151ADO,
             List<HIS_CARE> listHisCareByTreatment,
@@ -45,6 +46,7 @@ namespace MPS.Processor.Mps000151.PDO
         {
             try
             {
+                this.HisCareSum = hisCareSum;
                 this.Patient = patient;
                 this.mps000151ADO = mps000151ADO;
                 this.ListHisCareByTreatment = listHisCareByTreatment;
@@ -62,6 +64,7 @@ namespace MPS.Processor.Mps000151.PDO
         }
 
         public Mps000151PDO(
+            HIS_CARE_SUM hisCareSum,
             V_HIS_PATIENT patient,
             Mps000151ADO mps000151ADO,
             List<HIS_CARE> listHisCareByTreatment,
@@ -77,6 +80,7 @@ namespace MPS.Processor.Mps000151.PDO
         {
             try
             {
+                this.HisCareSum = hisCareSum;
                 this.Patient = patient;
                 this.mps000151ADO = mps000151ADO;
                 this.ListHisCareByTreatment = listHisCareByTreatment;
