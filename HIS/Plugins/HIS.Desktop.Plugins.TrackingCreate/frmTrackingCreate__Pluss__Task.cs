@@ -255,17 +255,37 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         dhstFilter.TRACKING_ID = currentTracking.ID;
                         rsDhstTracking = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>(HisRequestUriStore.HIS_DHST_GET, ApiConsumers.MosConsumer, dhstFilter, new CommonParam());
                     }
+                    if (IsCheckedGetLastDHSTByPatient)
+                    {
+                        CommonParam param = new CommonParam();
+                        var lastDHSTview1 = new BackendAdapter(param).Get<MOS.EFMODEL.DataModels.V_HIS_DHST_1>
+                            ("api/HisDhst/GetLastByPatient", ApiConsumers.MosConsumer, this._Treatment.PATIENT_ID, param);
+                        if (lastDHSTview1 != null)
+                        {
+                            var lastDHST = new HIS_DHST();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_DHST>(lastDHST, lastDHSTview1);
+                            if (lastDHST != null)
+                            {
+                                rsDhst = new List<HIS_DHST>() { lastDHST };
+                            }
+                        }
+                    }
+                    else
+                    {
+                        HIS_DHST rs = new HIS_DHST();
+                        MOS.Filter.HisDhstFilter dhstFilter1 = new MOS.Filter.HisDhstFilter();
+                        dhstFilter1.TREATMENT_ID = treatmentId;
+                        rsDhst = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>(HisRequestUriStore.HIS_DHST_GET, ApiConsumers.MosConsumer, dhstFilter1, new CommonParam());
 
-                    HIS_DHST rs = new HIS_DHST();
-                    MOS.Filter.HisDhstFilter dhstFilter1 = new MOS.Filter.HisDhstFilter();
-                    dhstFilter1.TREATMENT_ID = treatmentId;
-                    rsDhst = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>(HisRequestUriStore.HIS_DHST_GET, ApiConsumers.MosConsumer, dhstFilter1, new CommonParam());
+                    }
                 };
                 Task task = new Task(myaction);
                 task.Start();
 
                 await task;
-                if (Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_SHOWLASTEST_DHST)) == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && treatmentId > 0)
+
+                bool showLastestDhst = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_SHOWLASTEST_DHST)) == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                if ((showLastestDhst || IsCheckedGetLastDHSTByPatient) && treatmentId > 0)
                 {
                     if (rsDhst != null && rsDhst.Count > 0)
                     {
@@ -295,7 +315,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             try
