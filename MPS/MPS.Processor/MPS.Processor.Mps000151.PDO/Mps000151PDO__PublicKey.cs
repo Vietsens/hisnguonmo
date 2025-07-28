@@ -31,7 +31,6 @@ namespace MPS.Processor.Mps000151.PDO
     {
         public V_HIS_PATIENT Patient { get; set; }
         public HIS_CARE_SUM HisCareSum { get; set; }
-
         public Mps000151ADO mps000151ADO;
         public string genderCode__Male;
         public string genderCode__FeMale;
