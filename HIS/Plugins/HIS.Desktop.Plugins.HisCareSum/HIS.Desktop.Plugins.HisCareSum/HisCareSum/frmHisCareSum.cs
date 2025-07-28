@@ -667,6 +667,7 @@ namespace HIS.Desktop.Plugins.HisCareSum
         {
             try
             {
+                MPS.Processor.Mps000151.PDO.Mps000151PDO mps000151RDO = new MPS.Processor.Mps000151.PDO.Mps000151PDO(data);
                 HIS.UC.Icd.ADO.IcdInputADO inputAdo = new UC.Icd.ADO.IcdInputADO();
                 inputAdo.ICD_NAME = data.ICD_NAME;
                 inputAdo.ICD_CODE = data.ICD_CODE;
