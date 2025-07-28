@@ -105,12 +105,11 @@
     <Reference Include="HIS.Desktop.Plugins.Library.PrintBordereau">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintBordereau\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment">
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
@@ -131,7 +130,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.MenuPrint\HIS.UC.MenuPrint.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.PatientSelect">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.PatientSelect.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.PatientSelect.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SecondaryIcd">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>

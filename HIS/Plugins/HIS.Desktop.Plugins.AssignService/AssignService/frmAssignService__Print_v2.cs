@@ -226,7 +226,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
             return result;
         }
-
+           
         private void InPhieuHuoangDanBenhNhan(bool isSaveAndShow, PrintConfig.PreviewType? preview = null)
         {
             try
