@@ -1002,7 +1002,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                             product.ThTien = Math.Round(item.Amount, 0, MidpointRounding.AwayFromZero).ToString();
                             product.TSThue = Math.Round(item.Amount, 0, MidpointRounding.AwayFromZero).ToString();
                             product.TSuat = "";
-                            product.TThue = "-4";
+                            //product.TThue = "-4";
+                            product.TThue = "-1";
                         }
                         else
                         {
@@ -1069,7 +1070,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                             if (notShowTaxBreakdown)
                             {
                                 product.TSuat = "";
-                                product.TThue = "-4";
+                                //product.TThue = "-4";
+                                product.TThue = "-1";
                             }
                             totalAmount += item.Amount;
 
@@ -1101,7 +1103,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                                 product.ThTien = Math.Round(item.Amount, 0, MidpointRounding.AwayFromZero).ToString();
                                 product.TSThue = Math.Round(item.Amount, 0, MidpointRounding.AwayFromZero).ToString();
                                 product.TSuat = "";
-                                product.TThue = "-4";
+                                //product.TThue = "-4";
+                                product.TThue = "-1";
                             }
                             else
                             {
@@ -1163,7 +1166,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                 invoice.dLHDon.nDHDon.tToan.TgTCThue = invoice.dLHDon.nDHDon.hHDVu.Sum(s => Parse.ToDecimal(s.ThTien)) + "";
                 if (notShowTaxBreakdown)
                 {
-                    invoice.dLHDon.nDHDon.tToan.TgTThue = "-4";
+                    //invoice.dLHDon.nDHDon.tToan.TgTThue = "-4";
+                    invoice.dLHDon.nDHDon.tToan.TgTThue = "-1";
                 }
                 else
                 {
