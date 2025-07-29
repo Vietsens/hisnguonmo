@@ -76,6 +76,9 @@
     <Reference Include="EMR.EFMODEL">
       <HintPath>..\..\..\lib\EMR\EMR.EFMODEL.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
+      <HintPath>..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.SAR_RS">
       <HintPath>..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.SAR_RS\IMSys.DbConfig.SAR_RS.dll</HintPath>
     </Reference>
@@ -88,8 +91,9 @@
     <Reference Include="Inventec.Common.FileConvert">
       <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.FileConvert\Inventec.Common.FileConvert.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.FlexCelExport">
-      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
+    <Reference Include="Inventec.Common.FlexCelExport, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\Inventec.Common\Inventec.Common.FlexCelExport\bin\Debug\Inventec.Common.FlexCelExport.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.FlexCelPrint">
       <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
@@ -132,6 +136,10 @@
     </Reference>
     <Reference Include="Inventec.UC.Login">
       <HintPath>..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.MANAGER">
       <HintPath>..\..\..\lib\MRS\MOS.MANAGER.dll</HintPath>
