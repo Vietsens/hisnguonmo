@@ -5010,6 +5010,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     this.IsCheckedGetLastDHSTByPatient = !IsCheckedGetLastDHSTByPatient;
                     this.SetImageDHST();
                     this.InitDhst();
+                    if (!this.IsCheckedGetLastDHSTByPatient)
+                    {
+                        FillDataDhstToControl(new HIS_DHST());
+                    }
                     //HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = this.currentControlStateRDO != null ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstan.chkLastDHSTByPatient).FirstOrDefault() : null;
                     //if (csAddOrUpdate != null)
                     //{

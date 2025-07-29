@@ -258,16 +258,14 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     if (IsCheckedGetLastDHSTByPatient)
                     {
                         CommonParam param = new CommonParam();
-                        var lastDHSTview1 = new BackendAdapter(param).Get<MOS.EFMODEL.DataModels.V_HIS_DHST_1>
-                            ("api/HisDhst/GetLastByPatient", ApiConsumers.MosConsumer, this._Treatment.PATIENT_ID, param);
+                        MOS.Filter.HisDhstView1Filter dhstFilter1 = new MOS.Filter.HisDhstView1Filter();
+                        dhstFilter1.PATIENT_ID = this._Treatment.PATIENT_ID;
+                        var lastDHSTview1 = new BackendAdapter(param).Get<List<V_HIS_DHST_1>>
+                            ("api/HisDhst/GetView1", ApiConsumers.MosConsumer, dhstFilter1, param);
                         if (lastDHSTview1 != null)
                         {
-                            var lastDHST = new HIS_DHST();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_DHST>(lastDHST, lastDHSTview1);
-                            if (lastDHST != null)
-                            {
-                                rsDhst = new List<HIS_DHST>() { lastDHST };
-                            }
+                            AutoMapper.Mapper.CreateMap<V_HIS_DHST_1, HIS_DHST>();
+                            rsDhst = AutoMapper.Mapper.Map<List<HIS_DHST>>(lastDHSTview1);
                         }
                     }
                     else
