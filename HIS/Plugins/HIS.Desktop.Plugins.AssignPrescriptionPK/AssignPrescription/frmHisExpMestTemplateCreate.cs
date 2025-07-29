@@ -270,6 +270,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 emteMedicineType.IS_OUT_MEDI_STOCK = null;
                             }
 
+                            if (item.HTU_TEXT != null)
+                            {
+                                emteMedicineType.HTU_TEXT = item.HTU_TEXT;
+                            }
+
                             this.HisExpMestTemplateSDO.EmteMedicineTypes.Add(emteMedicineType);
                         }
                         else if (item.DataType == VATTU)
@@ -288,6 +293,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             if (item.IS_SUB_PRES == 1)
                             {
                                 emteMaterialType.IS_OUT_MEDI_STOCK = null;
+                            }
+
+                            if (item.HTU_TEXT != null)
+                            {
+                                emteMaterialType.HTU_TEXT = item.HTU_TEXT;
                             }
 
                             this.HisExpMestTemplateSDO.EmteMaterialTypes.Add(emteMaterialType);
@@ -310,6 +320,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 emteMedicineType.IS_OUT_MEDI_STOCK = null;
                             }
 
+                            if (item.HTU_TEXT != null)
+                            {
+                                emteMedicineType.HTU_TEXT = item.HTU_TEXT;
+                            }
+
                             this.HisExpMestTemplateSDO.EmteMedicineTypes.Add(emteMedicineType);
                         }
                         else if (item.DataType == VATTU_DM)
@@ -329,6 +344,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 emteMaterialType.IS_OUT_MEDI_STOCK = null;
                             }
 
+                            if (item.HTU_TEXT != null)
+                            {
+                                emteMaterialType.HTU_TEXT = item.HTU_TEXT;
+                            }
+
                             this.HisExpMestTemplateSDO.EmteMaterialTypes.Add(emteMaterialType);
                         }
                         else if (item.DataType == THUOC_TUTUC)//thuoc tu tuc
@@ -344,6 +364,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             if (item.IS_SUB_PRES == 1)
                             {
                                 emteMedicineType.IS_OUT_MEDI_STOCK = null;
+                            }
+
+                            if (item.HTU_TEXT != null)
+                            {
+                                emteMedicineType.HTU_TEXT = item.HTU_TEXT;
                             }
 
                             this.HisExpMestTemplateSDO.EmteMedicineTypes.Add(emteMedicineType);
