@@ -45,5 +45,7 @@ namespace MPS.Processor.Mps000151
         internal const string AGE = "AGE";
         internal const string DOB_STR = "DOB_STR";
         internal const string CMND_DATE_STR = "CMND_DATE_STR";
+        internal const string NUM_ORDER = "NUM_ORDER";
+
     }
 }

@@ -29,19 +29,6 @@ namespace MPS.Processor.Mps000151.PDO
 {
     public partial class Mps000151PDO : RDOBase
     {
-        public Mps000151PDO(
-                HIS_CARE_SUM hisCareSum
-            )
-        {
-            try
-            {
-                this.HisCareSum = hisCareSum;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
         public Mps000151PDO() { }
 
         public Mps000151PDO(
@@ -101,6 +88,38 @@ namespace MPS.Processor.Mps000151.PDO
                 this.genderCode__FeMale = genderCode__FeMale;
                 this.lstCareDescription = _careDescription;
                 this.lstInstructionDescription = instructionDescriptions;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public Mps000151PDO(
+            V_HIS_PATIENT patient,
+            Mps000151ADO mps000151ADO,
+            List<HIS_CARE> listHisCareByTreatment,
+            List<HIS_DHST> listHisDhstByHisCare,
+            //List<HIS_AWARENESS> listHisAwareness,
+            List<ACS_USER> listUser,
+            List<V_HIS_CARE_DETAIL> listCareDetail,
+            string genderCode__Male,
+            string genderCode__FeMale,
+            HIS_CARE_SUM hisCareSum 
+            )
+        {
+            try
+            {
+                this.Patient = patient;
+                this.mps000151ADO = mps000151ADO;
+                this.ListHisCareByTreatment = listHisCareByTreatment;
+                this.ListHisDhstByHisCare = listHisDhstByHisCare;
+                //this.ListHisAwareness = listHisAwareness;
+                this.ListUser = listUser;
+                this.ListCareDetail = listCareDetail;
+                this.genderCode__Male = genderCode__Male;
+                this.genderCode__FeMale = genderCode__FeMale;
+                this.HisCareSum = hisCareSum;
+
             }
             catch (Exception ex)
             {
