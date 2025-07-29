@@ -248,14 +248,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 List<HIS_DHST> rsDhstTracking = null;
                 Action myaction = () =>
                 {
-                    if (currentTracking != null)
-                    {
-
-                        MOS.Filter.HisDhstFilter dhstFilter = new MOS.Filter.HisDhstFilter();
-                        dhstFilter.TRACKING_ID = currentTracking.ID;
-                        rsDhstTracking = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>(HisRequestUriStore.HIS_DHST_GET, ApiConsumers.MosConsumer, dhstFilter, new CommonParam());
-                    }
-                    if (IsCheckedGetLastDHSTByPatient)
+                    // Nếu IsCheckedGetLastDHSTByPatient xử lý theo cache thì dời cái currentTracking ra ngoài.
+                    // Hiện tại đang xử lý theo người dùng chọn.
+                    if (this.IsCheckedGetLastDHSTByPatient)
                     {
                         CommonParam param = new CommonParam();
                         MOS.Filter.HisDhstView1Filter dhstFilter1 = new MOS.Filter.HisDhstView1Filter();
@@ -270,6 +265,12 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     }
                     else
                     {
+                        if (currentTracking != null)
+                        {
+                            MOS.Filter.HisDhstFilter dhstFilter = new MOS.Filter.HisDhstFilter();
+                            dhstFilter.TRACKING_ID = currentTracking.ID;
+                            rsDhstTracking = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>(HisRequestUriStore.HIS_DHST_GET, ApiConsumers.MosConsumer, dhstFilter, new CommonParam());
+                        }
                         HIS_DHST rs = new HIS_DHST();
                         MOS.Filter.HisDhstFilter dhstFilter1 = new MOS.Filter.HisDhstFilter();
                         dhstFilter1.TREATMENT_ID = treatmentId;
@@ -283,20 +284,28 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 await task;
 
                 bool showLastestDhst = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_SHOWLASTEST_DHST)) == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                if ((showLastestDhst || IsCheckedGetLastDHSTByPatient) && treatmentId > 0)
+                if ((showLastestDhst && treatmentId > 0) || this.IsCheckedGetLastDHSTByPatient)
                 {
                     if (rsDhst != null && rsDhst.Count > 0)
                     {
-                        if (action == GlobalVariables.ActionAdd)
+                        // Nếu IsCheckedGetLastDHSTByPatient xử lý theo cache thì bỏ điều kiện này.
+                        // Hiện tại đang xử lý theo người dùng chọn nên or để xử lý cả thêm/sửa
+                        if (action == GlobalVariables.ActionAdd || this.IsCheckedGetLastDHSTByPatient)  
                         {
                             var dhst = rsDhst.OrderByDescending(o => o.EXECUTE_TIME).ThenByDescending(o => o.ID).FirstOrDefault();
                             FillDataDhstToControl(dhst);
-                            if (chkUpdateTimeDHST.Checked && dtTrackingTime != null && dtTrackingTime.DateTime != DateTime.MinValue)
-                                dhstProcessor.SetExecuteTime(ucControlDHST, Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTrackingTime.DateTime));
-
+                            if (!this.IsCheckedGetLastDHSTByPatient)
+                            {
+                                if (chkUpdateTimeDHST.Checked && dtTrackingTime != null && dtTrackingTime.DateTime != DateTime.MinValue)
+                                {
+                                    dhstProcessor.SetExecuteTime(ucControlDHST, Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTrackingTime.DateTime));
+                                }
+                            }
                         }
                         else
+                        {
                             FillDataDhstToControl(rsDhstTracking.FirstOrDefault());
+                        }
                     }
                 }
                 else

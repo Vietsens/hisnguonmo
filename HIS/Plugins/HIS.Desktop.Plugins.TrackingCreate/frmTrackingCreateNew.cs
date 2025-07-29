@@ -5009,8 +5009,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 {
                     this.IsCheckedGetLastDHSTByPatient = !IsCheckedGetLastDHSTByPatient;
                     this.SetImageDHST();
-                    this.InitDhst();
-                    if (!this.IsCheckedGetLastDHSTByPatient)
+                    if (this.IsCheckedGetLastDHSTByPatient)
+                    {
+                        this.InitDhst();
+                    }
+                    else
                     {
                         FillDataDhstToControl(new HIS_DHST());
                     }
