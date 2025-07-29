@@ -51,9 +51,9 @@ namespace DCV.APP.Report.CheckValid
                 {
                     result = new CheckValidHourFromToBehavior(param, (HIS.UC.FormType.HourFromTo.UCHourFromTo)dataItem);
                 }
-                else if (dataItem is HIS.UC.FormType.DepartmentCombo.UCDepartmentCombo)
+                else if (dataItem is HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit)
                 {
-                    result = new CheckValidDepartmentComboBehavior(param, (HIS.UC.FormType.DepartmentCombo.UCDepartmentCombo)dataItem);
+                    result = new CheckValidDepartmentComboBehavior(param, (HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit)dataItem);
                 }
                 else if (dataItem is HIS.UC.FormType.MediStockSttFilterCheckBoxGroup.UCMediStockSttFilterCheckBoxGroup)
                 {
@@ -91,9 +91,9 @@ namespace DCV.APP.Report.CheckValid
                 {
                     result = new CheckValidTreatmentTypeComboCheckBehavior(param, (HIS.UC.FormType.TreatmentTypeComboCheck.UCTreatmentTypeComboCheck)dataItem);
                 }
-                else if (dataItem is HIS.UC.FormType.TreatmentTypeGridCheckBox.UCTreatmentTypeGridCheckBox)
+                else if (dataItem is HIS.UC.FormType.GridCheckBox.UCGridCheckBox)
                 {
-                    result = new CheckValidTreatmentTypeGridCheckBoxBehavior(param, (HIS.UC.FormType.TreatmentTypeGridCheckBox.UCTreatmentTypeGridCheckBox)dataItem);
+                    result = new CheckValidTreatmentTypeGridCheckBoxBehavior(param, (HIS.UC.FormType.GridCheckBox.UCGridCheckBox)dataItem);
                 }
                 else if (dataItem is HIS.UC.FormType.DateTime.UCDateTime)
                 {
@@ -177,7 +177,14 @@ namespace DCV.APP.Report.CheckValid
                 {
                     result = new DCV.APP.Report.CheckValid.CheckValidF20Behavior(param, (HIS.UC.FormType.F20.UCF20)dataItem);
                 }
-
+                else if (dataItem is HIS.UC.FormType.Numeric.UCNumeric)
+                {
+                    result = new CheckValidNumeric39Behavior(param, (HIS.UC.FormType.Numeric.UCNumeric)dataItem);
+                }
+                else if (dataItem is HIS.UC.FormType.Core.RadioCheckBox.UCRadioCheckBox)
+                {
+                    result = new CheckValidRadioCheckBoxBehavior(param, (HIS.UC.FormType.Core.RadioCheckBox.UCRadioCheckBox)dataItem);
+                }
                 if (result == null) throw new NullReferenceException();
             }
             catch (NullReferenceException ex)

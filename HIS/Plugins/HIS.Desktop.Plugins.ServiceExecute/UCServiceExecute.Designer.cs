@@ -2200,13 +2200,16 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.tileViewColumnSTTImage});
             this.tileView1.ColumnSet.CheckedColumn = this.tileViewIsChecked;
             contextButton1.Alignment = DevExpress.Utils.ContextItemAlignment.NearCenter;
+            contextButton1.Glyph = ((System.Drawing.Image)(resources.GetObject("contextButton1.Glyph")));
             contextButton1.Id = new System.Guid("88ea6d15-29a4-41d6-acba-c6d819c9d374");
             contextButton1.Name = "btnDelete";
             contextButton1.Visibility = DevExpress.Utils.ContextItemVisibility.Visible;
             this.tileView1.ContextButtons.Add(contextButton1);
             this.tileView1.GridControl = this.cardControl;
+            this.tileView1.Images = this.imageListStt;
             this.tileView1.Name = "tileView1";
             this.tileView1.OptionsTiles.ColumnCount = 2;
+            this.tileView1.OptionsTiles.HorizontalContentAlignment = DevExpress.Utils.HorzAlignment.Near;
             this.tileView1.OptionsTiles.IndentBetweenGroups = 10;
             this.tileView1.OptionsTiles.ItemSize = new System.Drawing.Size(160, 120);
             this.tileView1.OptionsTiles.Orientation = System.Windows.Forms.Orientation.Vertical;

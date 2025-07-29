@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{07DE1FAE-01BA-4CFC-9D05-D25303656D0F}</ProjectGuid>
+    <ProjectGuid>{3A3152CF-5FEB-40B9-AFE8-D1D0791489C1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Inventec.Fss.Client</RootNamespace>
@@ -30,8 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\RELEASE\Inventec.Core\Inventec.Core.dll</HintPath>
+    <Reference Include="Inventec.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\BACKEND\FSS\_Library\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -63,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Inventec.Fss.Utility\Inventec.Fss.Utility.csproj">
-      <Project>{68decce6-8629-4f57-9d4e-58e4dc42bdc8}</Project>
+      <Project>{30332bab-8730-4744-9067-f93452a661aa}</Project>
       <Name>Inventec.Fss.Utility</Name>
     </ProjectReference>
   </ItemGroup>

@@ -19,6 +19,7 @@ using AutoMapper;
 using FlexCel.Report;
 using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MPS.Processor.Mps000062.PDO;
@@ -4500,7 +4501,7 @@ namespace MPS.Processor.Mps000062
                                 TDL_MEDICINE_TYPE_ID = item1.MEDICINE_TYPE_ID,
                                 HTU_TEXT = item1.HTU_TEXT
                             });
-                        }
+                        }   
                     }
 
                     if (medicine_Merges != null && medicine_Merges.Count > 0)
@@ -5982,14 +5983,16 @@ namespace MPS.Processor.Mps000062
                     //Bôi da ngày 3 - 4 lần                 
 
                     item.PRE_MEDICINE = "";
+                    item.PRE_MEDICINE_OUT_TRACKING = "";
 
                     var dtTrackingDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(item.TRACKING_TIME).Value;
 
                     var serviceReqDDTs = (ServiceReq != null && ServiceReq.Count > 0) ?
                        ServiceReq.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
-                           && o.INTRUCTION_DATE < Inventec.Common.TypeConvert.Parse.ToInt64(dtTrackingDate.ToString("yyyyMMdd") + "000000")
+                           && o.INTRUCTION_TIME < Inventec.Common.TypeConvert.Parse.ToInt64(dtTrackingDate.ToString("yyyyMMdd") + "000000")
                            && o.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT).ToList()
                        : null;
+                    LogSystem.Info("serviceReqDDTs: " + LogUtil.TraceData("serviceReqDDTs: ", serviceReqDDTs));
 
                     //var serviceReqDDTs = (_ServiceReqs != null && _ServiceReqs.Count > 0) ?
                     //    _ServiceReqs.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
@@ -6004,7 +6007,7 @@ namespace MPS.Processor.Mps000062
                         {
                             var itemExpMest = rdo._DicHisExpMests.ContainsKey(itemByServiceReq.ID) ? rdo._DicHisExpMests[itemByServiceReq.ID] : null;
 
-                            if (itemExpMest == null)
+                            if (itemExpMest == null)       
                                 continue;
 
                             List<ExpMestMedicineADO> _expMestMedicines = new List<ExpMestMedicineADO>();
@@ -6033,8 +6036,17 @@ namespace MPS.Processor.Mps000062
                                         s1 += " " + medicineTypeName.CONCENTRA;
                                         s2 = emmedi.TUTORIAL;
                                         item.PRE_MEDICINE += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">- {0}</td></span></tr><tr><td text-align=\"right\" align=\"left\" width=\"650\">{1}</td></tr></table>", s1, s2);
-
+                                        
+                                        if (itemByServiceReq.TRACKING_ID != _tracking.ID &&
+                                            itemByServiceReq.USED_FOR_TRACKING_ID != _tracking.ID &&
+                                            itemByServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT &&
+                                            itemByServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                                        {
+                                            item.PRE_MEDICINE_OUT_TRACKING += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">- {0}</td></span></tr><tr><td text-align=\"right\" align=\"left\" width=\"650\">{1}</td></tr></table>", s1, s2);
+                                        }
                                     }
+
+                                    
                                     item.MEDICINE_TYPE_ID = emmedi.TDL_MEDICINE_TYPE_ID;
                                 }
                             }
@@ -6961,27 +6973,40 @@ namespace MPS.Processor.Mps000062
         {
             try
             {
-                var groupIntructionTime = SortIntructionTime.GroupBy(o => new { o.INTRUCTION_TIME });
+
+                var groupIntructionTime = SortIntructionTime.GroupBy(o => o.INTRUCTION_TIME);
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => SortIntructionTime.Select(o => o.TDL_SERVICE_REQ_ID)), SortIntructionTime.Select(o => o.TDL_SERVICE_REQ_ID)));
+
+                List<Mps62ADO> lstAdo = new List<Mps62ADO>();
                 foreach (var it in groupIntructionTime)
                 {
-                    List<string> dtTimes = it.ToList().OrderBy(o => o.USE_TIME ?? o.INTRUCTION_TIME).Select(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.USE_TIME ?? o.INTRUCTION_TIME)).ToList();
-                    var inStrTime = it.GroupBy(o => string.Format("{0}", o.MEDICINE_TYPE_CODE)).Where(o => dtTimes.Distinct().Count() > 1 ? o.Count() == dtTimes.Distinct().Count() : true).SelectMany(g => g).Select(x => x.TDL_SERVICE_REQ_ID).Distinct().ToList();
-                    var plusStrTime = it.GroupBy(o => string.Format("{0}", o.MEDICINE_TYPE_CODE)).Where(o => o.Count() != dtTimes.Distinct().Count()).SelectMany(g => g).Select(x => x.TDL_SERVICE_REQ_ID ?? 0).Distinct().ToList();
-                    if (plusStrTime != null && plusStrTime.Count > 0 && dtTimes.Distinct().Count() > 1)
+                    var groupMedicineType = it.GroupBy(o => o.MEDICINE_TYPE_CODE);
+                    foreach (var itMedicineType in groupMedicineType)
                     {
-                        ProcessAddKeyMergeDay(SortIntructionTime.ToList().Where(o => plusStrTime.Exists(p => p == o.TDL_SERVICE_REQ_ID)).ToList(), item);
+                        Mps62ADO ado = new Mps62ADO();
+                        ado.MedicineTypeCode = itMedicineType.Key;
+                        ado.List = itMedicineType.ToList();
+                        ado.Dates = BuildDateString(itMedicineType.Select(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.USE_TIME ?? o.INTRUCTION_DATE)).Distinct().ToList());
+                        ado.TotalDateNumber = itMedicineType.Select(o => o.USE_TIME ?? o.INTRUCTION_DATE).Distinct().ToList().Sum();
+                        lstAdo.Add(ado);
                     }
-                    var itServiceReq = it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID).Where(o => inStrTime.Exists(p => p == o.TDL_SERVICE_REQ_ID)).Select(o => o.TDL_SERVICE_REQ_ID).Distinct().ToList();
-
-                    item.MEDICINES_MERGE_DAY___DATA += BuildDateString(dtTimes);
+                }
+                lstAdo = lstAdo.OrderBy(o => o.TotalDateNumber).ToList();
+                var groupDates = lstAdo.GroupBy(o => new { o.Dates, o.TotalDateNumber }).ToList();
+                foreach (var inStrTime in groupDates)
+                {
+                    item.MEDICINES_MERGE_DAY___DATA += inStrTime.Key.Dates;
                     item.MEDICINES_MERGE_DAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-                    item.MEDICINES_MERGE_DAY_HTU___DATA += BuildDateString(dtTimes);
+                    item.MEDICINES_MERGE_DAY_HTU___DATA += inStrTime.Key.Dates;
                     item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-                    item.MEDICINES_MERGE_DAY___DATA += string.Join("", it.Where(o => itServiceReq.Exists(p => p == o.TDL_SERVICE_REQ_ID)).Select(o => o.DATA_DAY_REPX).Distinct());
-                    item.MEDICINES_MERGE_DAY_HTU___DATA += string.Join("", it.Where(o => itServiceReq.Exists(p => p == o.TDL_SERVICE_REQ_ID)).Select(o => o.DATA_DAY_HTU_REPX).Distinct());
-
+                    List<ExpMestMetyReqADO> it = new List<ExpMestMetyReqADO>();
+                    foreach (var il in inStrTime)
+                    {
+                        it.AddRange(il.List);
+                    }
+                    item.MEDICINES_MERGE_DAY___DATA += string.Join("", it.Select(o => o.DATA_DAY_REPX).Distinct());
+                    item.MEDICINES_MERGE_DAY_HTU___DATA += string.Join("", it.Select(o => o.DATA_DAY_REPX).Distinct());
                     long? sthang = it.GroupBy(o => new { o.TDL_SERVICE_REQ_ID, o.REMEDY_COUNT }).Sum(o => o.Key.REMEDY_COUNT ?? 0);
                     if (sthang > 0)
                     {
@@ -7000,9 +7025,8 @@ namespace MPS.Processor.Mps000062
                         item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + rdo._DicServiceReqs[it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0].ADVISE, FontStyle.Italic);
                         item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                     }
-
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.MEDICINES_MERGE_DAY___DATA), item.MEDICINES_MERGE_DAY___DATA));
                 }
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.MEDICINES_MERGE_DAY___DATA), item.MEDICINES_MERGE_DAY___DATA));
             }
             catch (Exception ex)
             {
@@ -7593,5 +7617,20 @@ namespace MPS.Processor.Mps000062
 
 
 
+    }
+
+
+    public class Compare : IEqualityComparer<ExpMestMetyReqADO>
+    {
+        public bool Equals(ExpMestMetyReqADO x, ExpMestMetyReqADO y)
+        {
+            return
+                x.MEDICINE_TYPE_CODE == y.MEDICINE_TYPE_CODE;
+        }
+
+        public int GetHashCode(ExpMestMetyReqADO x)
+        {
+            return (!string.IsNullOrEmpty(x.MEDICINE_TYPE_CODE) ? x.MEDICINE_TYPE_CODE.GetHashCode() : 0);
+        }
     }
 }

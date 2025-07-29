@@ -27,8 +27,8 @@ namespace DCV.APP.Report.JsonOutput
 {
     class JsonOutputTreatmentTypeGridCheckBoxBehavior : BussinessBase, IJsonOutput
     {
-        HIS.UC.FormType.TreatmentTypeGridCheckBox.UCTreatmentTypeGridCheckBox entity;
-        internal JsonOutputTreatmentTypeGridCheckBoxBehavior(CommonParam param, HIS.UC.FormType.TreatmentTypeGridCheckBox.UCTreatmentTypeGridCheckBox filter)
+        HIS.UC.FormType.GridCheckBox.UCGridCheckBox entity;
+        internal JsonOutputTreatmentTypeGridCheckBoxBehavior(CommonParam param, HIS.UC.FormType.GridCheckBox.UCGridCheckBox filter)
             : base(param)
         {
             this.entity = filter;

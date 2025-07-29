@@ -663,7 +663,7 @@ namespace HIS.Desktop.Plugins.HisKskDriverList
             this.chkSignFileCertUtil.Location = new System.Drawing.Point(91, 528);
             this.chkSignFileCertUtil.MenuManager = this.barManager1;
             this.chkSignFileCertUtil.Name = "chkSignFileCertUtil";
-            this.chkSignFileCertUtil.Properties.Caption = "Ký số dùng USB token";
+            this.chkSignFileCertUtil.Properties.Caption = "Ký số";
             this.chkSignFileCertUtil.Size = new System.Drawing.Size(127, 19);
             this.chkSignFileCertUtil.StyleController = this.layoutControl2;
             this.chkSignFileCertUtil.TabIndex = 13;

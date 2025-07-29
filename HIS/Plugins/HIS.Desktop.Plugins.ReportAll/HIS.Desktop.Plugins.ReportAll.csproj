@@ -37,177 +37,177 @@
       <HintPath>..\..\..\..\LIB\ACS\ACS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.BonusSkins.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.BonusSkins.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.BonusSkins.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Charts.Designer.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Charts.Designer.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Charts.Designer.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Charts.v15.2.Core">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Charts.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Charts.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.CodeConverter.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.CodeConverter.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.CodeConverter.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.CodeParser.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.CodeParser.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.CodeParser.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Data.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Data.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.DataAccess.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.DataAccess.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.DataAccess.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.DataAccess.v15.2.UI">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.DataAccess.v15.2.UI.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.DataAccess.v15.2.UI.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.DemoData.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.DemoData.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.DemoData.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.DemoData.v15.2.Core">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.DemoData.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.DemoData.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.DemoReports.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.DemoReports.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.DemoReports.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.DevAV.v15.2.Data">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.DevAV.v15.2.Data.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.DevAV.v15.2.Data.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.DevAV.v15.2.Reports">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.DevAV.v15.2.Reports.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.DevAV.v15.2.Reports.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Diagram.v15.2.Core">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Diagram.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Diagram.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Docs.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Docs.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Docs.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.EasyTest.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.EasyTest.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.EasyTest.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Images.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Images.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Images.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Map.v15.2.Core">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Map.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Map.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Mvvm.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Mvvm.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Mvvm.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Office.v15.2.Core">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Office.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Office.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Pdf.v15.2.Core">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Pdf.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Pdf.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Pdf.v15.2.Drawing">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Pdf.v15.2.Drawing.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Pdf.v15.2.Drawing.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Printing.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Printing.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.RichEdit.v15.2.Core">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.RichEdit.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.RichEdit.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Sparkline.v15.2.Core">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Sparkline.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Sparkline.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Spreadsheet.v15.2.Core">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Spreadsheet.v15.2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Spreadsheet.v15.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Tutorials.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Tutorials.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Tutorials.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Utils.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Utils.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Utils.v15.2.UI">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.Utils.v15.2.UI.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.Utils.v15.2.UI.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraBars.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraBars.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraBars.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraCharts.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraCharts.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraCharts.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraCharts.v15.2.Extensions">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraCharts.v15.2.Extensions.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraCharts.v15.2.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraCharts.v15.2.UI">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraCharts.v15.2.UI.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraCharts.v15.2.UI.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraCharts.v15.2.Web">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraCharts.v15.2.Web.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraCharts.v15.2.Web.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraCharts.v15.2.Wizard">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraCharts.v15.2.Wizard.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraCharts.v15.2.Wizard.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraDiagram.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraDiagram.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraDiagram.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraEditors.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraEditors.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraGrid.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraGrid.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraLayout.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraLayout.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraMap.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraMap.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraMap.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraNavBar.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraNavBar.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraNavBar.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraPdfViewer.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraPdfViewer.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraPdfViewer.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraPivotGrid.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraPivotGrid.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraPivotGrid.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraPrinting.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraPrinting.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraReports.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraReports.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraReports.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraReports.v15.2.Extensions">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraReports.v15.2.Extensions.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraReports.v15.2.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraReports.v15.2.Service">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraReports.v15.2.Service.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraReports.v15.2.Service.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraReports.v15.2.Web">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraReports.v15.2.Web.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraReports.v15.2.Web.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraReports.v15.2.Web.Azure">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraReports.v15.2.Web.Azure.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraReports.v15.2.Web.Azure.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraRichEdit.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraRichEdit.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraRichEdit.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraRichEdit.v15.2.Extensions">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraRichEdit.v15.2.Extensions.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraRichEdit.v15.2.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraSpreadsheet.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraSpreadsheet.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraSpreadsheet.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraTreeList.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraVerticalGrid.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraVerticalGrid.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraVerticalGrid.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraWizard.v15.2">
-      <HintPath>..\..\ReferencedAssemblies\DevLib\DevExpress.XtraWizard.v15.2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\DEVEXPRESS\DevExpress.XtraWizard.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="His.UC.CreateReport, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\HIS\His.UC.CreateReport\His.UC.CreateReport.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.FormType, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\HIS\His.UC.FormType\HIS.UC.FormType.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -272,8 +272,9 @@
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="MRS.SDO">
-      <HintPath>..\..\..\..\LIB\MRS\MRS.SDO.dll</HintPath>
+    <Reference Include="MRS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\mrs\LIB\MRSv3\MRS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -342,13 +343,20 @@
       <DependentUpon>frmMainReport.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="UCReportAll.resx">
       <DependentUpon>UCReportAll.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\UC\His.UC.CreateReport\His.UC.CreateReport.csproj">
+      <Project>{efae3b9c-2afd-4cc7-8649-6063115b4b58}</Project>
+      <Name>His.UC.CreateReport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.FormType\HIS.UC.FormType.csproj">
+      <Project>{a61418d7-2d72-4c4d-9e99-e0adf913fc4e}</Project>
+      <Name>HIS.UC.FormType</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
@@ -372,10 +380,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
       <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
       <Name>HIS.Desktop.LibraryMessage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
-      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
-      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
@@ -410,14 +414,17 @@
   <PropertyGroup>
     <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)
 
-echo Copying files from $(ProjectDir)bin\$(ConfigurationName) to $(SolutionDir)$(SolutionName)\bin\$(ConfigurationName)\ReferencedAssemblies
+echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies
 
-if not exist "$(SolutionDir)$(SolutionName)\bin\$(ConfigurationName)\ReferencedAssemblies" mkdir "$(SolutionDir)$(SolutionName)\bin\$(ConfigurationName)\ReferencedAssemblies"
+if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
 
-xcopy "$(ProjectDir)bin\$(ConfigurationName)\*.dll" "$(SolutionDir)$(SolutionName)\bin\$(ConfigurationName)\ReferencedAssemblies" /i /d /y
-xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\$(ConfigurationName)\plugins" /Y /I
+xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
+xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
 
-xcopy "$(ProjectDir)bin\$(ConfigurationName)\vi\*.dll" "$(SolutionDir)$(SolutionName)\bin\$(ConfigurationName)\vi" /Y /I
+if not exist "$(ProjectDir)bin\$(Configuration)\vi" mkdir "$(ProjectDir)bin\$(Configuration)\vi"
+if not exist "$(ProjectDir)bin\$(Configuration)\en" mkdir "$(ProjectDir)bin\$(Configuration)\en"
+xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
+xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
 
 if errorlevel 1 goto BuildEventFailed
 

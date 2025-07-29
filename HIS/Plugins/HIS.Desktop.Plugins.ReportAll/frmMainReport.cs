@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.CodeParser;
 using His.UC.CreateReport;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -23,6 +24,7 @@ using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
+using MRS.SDO;
 using SAR.EFMODEL.DataModels;
 using SAR.Filter;
 using System;
@@ -61,7 +63,6 @@ namespace HIS.Desktop.Plugins.ReportAll
             {
                 this.reportType = data;
                 this.SetDelegateForUCFormType();
-                this.MainPrint_Load();
                 InitializeComponent();
                 vlCustomFormType = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ReportCreate.CustomFormType");
                 if (vlCustomFormType == "1")
@@ -77,6 +78,7 @@ namespace HIS.Desktop.Plugins.ReportAll
                     }
                     this.Height = height;
                 }
+                this.MainPrint_Load();
             }
             catch (Exception ex)
             {
@@ -104,6 +106,49 @@ namespace HIS.Desktop.Plugins.ReportAll
                 generateRDO.DetailData = this.reportType;
                 var formCreate = vlCustomFormType == "1" ? MainCreateReport1.Generate(param, generateRDO) : MainCreateReport.Generate(param, generateRDO);
                 formCreate.Dock = DockStyle.Fill;
+                CalHeightForm(formCreate);
+                //CreateReportDelegate.ProcessCreateReport = ProcessCreateReportDelegate;
+                CreateReportDelegate.ProcessCreateReportViewAway = ProcessCreateReportDelegateViewAway;
+                CreateReportDelegate.DelegateStatusReport = DelegateStatusReport;
+                CreateReportDelegate.DelegateInitDesignReportTemplate = ProcessInitDesignTemplate;
+                CreateReportDelegate.DelegateCalHeightDesignReportTemplate = (frm) =>
+                {
+                    if (frm != null && frm.Controls != null && frm.Controls.Count > 0)
+                    {
+                        height = 165; //reset lai chieu cao ban dau
+                        CalHeightForm(frm);
+                    }
+                };
+                this.Controls.Add(formCreate);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public void CenterFormOnScreen()
+        {
+            try
+            {
+                this.StartPosition = FormStartPosition.Manual;
+                Rectangle screen = Screen.FromControl(this).WorkingArea;
+                this.Location = new Point(
+                    screen.Left + (screen.Width - this.Width) / 2,
+                    screen.Top + (screen.Height - this.Height) / 2
+                );
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void CalHeightForm(UserControl formCreate)
+        {
+            try
+            {
                 //lay chieu cao cua uc
                 if (formCreate.Controls != null && formCreate.Controls.Count > 0)
                 {
@@ -132,16 +177,37 @@ namespace HIS.Desktop.Plugins.ReportAll
                         }
                     }
                 }
-                //CreateReportDelegate.ProcessCreateReport = ProcessCreateReportDelegate;
-                CreateReportDelegate.ProcessCreateReportViewAway = ProcessCreateReportDelegateViewAway;
-                CreateReportDelegate.DelegateStatusReport = DelegateStatusReport;
 
-                this.Controls.Add(formCreate);
-                WaitingManager.Hide();
+
+                if (vlCustomFormType == "1")
+                {
+                    this.WindowState = FormWindowState.Maximized;
+                }
+                else
+                {
+                    //neu cao hon man hinh se thu nho lai vua nhin
+                    if (height >= SystemInformation.WorkingArea.Size.Height - 200)
+                    {
+                        height = SystemInformation.WorkingArea.Size.Height - 300;
+                    }
+                    this.Height = height;
+                }
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ProcessInitDesignTemplate(Size size)
+        {
+            try
+            {
+                this.Size = size;
+                this.StartPosition = FormStartPosition.CenterScreen;
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

@@ -35,6 +35,7 @@ using HIS.Desktop.Plugins.Library.PrintTreatmentFinish;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utility;
 using HIS.UC.DHST.ADO;
+using HIS.UC.ExamTreatmentFinish.Run;
 using HIS.UC.SecondaryIcd;
 using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;

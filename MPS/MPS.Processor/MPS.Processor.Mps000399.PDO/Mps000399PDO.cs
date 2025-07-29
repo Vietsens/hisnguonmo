@@ -29,11 +29,35 @@ namespace MPS.Processor.Mps000399.PDO
     {
         public SingleKeyValue SingleKeyValue { get; set; }
         public const string printTypeCode = "Mps000399";
+        //public List<SingleKeyValue> TrackingKeys { get; set; } = new List<SingleKeyValue>();
 
         public Mps000399PDO(
            V_HIS_PATIENT _currentPatient,
            HIS_TREATMENT _treatment,
            SingleKeyValue _singleKeyValue
+         
+           )
+        {
+            try {
+                this.Treatment = _treatment;
+                this.SingleKeyValue = _singleKeyValue;
+                this._currentPatient = _currentPatient;
+            } 
+               
+            catch ( Exception ex ) {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            
+        }
+
+
+
+        public Mps000399PDO(
+           V_HIS_PATIENT _currentPatient,
+           HIS_TREATMENT _treatment,
+           SingleKeyValue _singleKeyValue,
+          HIS_TRACKING _tracking
            )
         {
             try
@@ -41,11 +65,17 @@ namespace MPS.Processor.Mps000399.PDO
                 this.Treatment = _treatment;
                 this.SingleKeyValue = _singleKeyValue;
                 this._currentPatient = _currentPatient;
+                     
+                this.Tracking = _tracking;
+
+                
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
     }
+
 }

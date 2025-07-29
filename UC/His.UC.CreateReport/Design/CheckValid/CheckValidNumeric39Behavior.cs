@@ -15,36 +15,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using SAR.EFMODEL.DataModels;
+using HIS.UC.CreateReport.Base;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+//using MOS.Filter;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
+using System.Linq;
 
-namespace HIS.UC.FormType.DepartmentCombo
+
+namespace DCV.APP.Report.CheckValid
 {
-    class DepartmentComboProcessor : ProcessorBase, IProcessorGenerate
+    class CheckValidNumeric39Behavior : BussinessBase, ICheckValid
     {
-        UCDepartmentCombo ucDepartmentCombo;
-        object generateRDO;
-
-        internal DepartmentComboProcessor(V_SAR_RETY_FOFI config, object paramRDO)
-            : base(config)
+        HIS.UC.FormType.Numeric.UCNumeric entity;
+        internal CheckValidNumeric39Behavior(CommonParam param, HIS.UC.FormType.Numeric.UCNumeric filter)
+            : base(param)
         {
-            this.generateRDO = paramRDO;
+            this.entity = filter;
         }
 
-        object IProcessorGenerate.Run()
+        bool ICheckValid.Run()
         {
-            object result = null;
+            bool result = false;
             try
             {
-                result = new UCDepartmentCombo(config, generateRDO);
+                result = entity.Valid();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                result = null;
+                param.HasException = true;
+                result = false;
             }
             return result;
         }

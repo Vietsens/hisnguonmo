@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "His.UC.CreateReport", "His.UC.CreateReport.csproj", "{EFAE3B9C-2AFD-4CC7-8649-6063115B4B58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop", "..\..\HIS\HIS.Desktop\HIS.Desktop.csproj", "{8207ACB0-A325-42C6-97CB-FB54AE1AE6B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.ReportAll", "..\..\HIS\Plugins\HIS.Desktop.Plugins.ReportAll\HIS.Desktop.Plugins.ReportAll.csproj", "{7E82B5DF-8F97-4779-97DD-3F4A84815B0D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFAE3B9C-2AFD-4CC7-8649-6063115B4B58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFAE3B9C-2AFD-4CC7-8649-6063115B4B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFAE3B9C-2AFD-4CC7-8649-6063115B4B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFAE3B9C-2AFD-4CC7-8649-6063115B4B58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8207ACB0-A325-42C6-97CB-FB54AE1AE6B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8207ACB0-A325-42C6-97CB-FB54AE1AE6B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8207ACB0-A325-42C6-97CB-FB54AE1AE6B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8207ACB0-A325-42C6-97CB-FB54AE1AE6B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E82B5DF-8F97-4779-97DD-3F4A84815B0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E82B5DF-8F97-4779-97DD-3F4A84815B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E82B5DF-8F97-4779-97DD-3F4A84815B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E82B5DF-8F97-4779-97DD-3F4A84815B0D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

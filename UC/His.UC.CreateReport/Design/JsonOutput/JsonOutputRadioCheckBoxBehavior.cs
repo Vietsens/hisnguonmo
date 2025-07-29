@@ -15,31 +15,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.UC.CreateReport.Base;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+//using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HIS.UC.FormType.DepartmentCombo.Validation
+namespace DCV.APP.Report.JsonOutput
 {
-    class DepartmentValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
+    class JsonOutputRadioCheckBoxBehavior : BussinessBase, IJsonOutput
     {
-        internal DevExpress.XtraEditors.GridLookUpEdit cboDepartment;
-        internal DevExpress.XtraEditors.TextEdit txtDepartmentCode;
-
-        public override bool Validate(System.Windows.Forms.Control control, object value)
+        HIS.UC.FormType.Core.RadioCheckBox.UCRadioCheckBox entity;
+        internal JsonOutputRadioCheckBoxBehavior(CommonParam param, HIS.UC.FormType.Core.RadioCheckBox.UCRadioCheckBox filter)
+            : base(param)
         {
-            bool result = false;
+            this.entity = filter;
+        }
+
+        string IJsonOutput.Run()
+        {
+            string result = "";
             try
             {
-                if (cboDepartment == null || txtDepartmentCode == null) return result;
-                if (cboDepartment.EditValue == null || txtDepartmentCode.Text.Trim() == "") return result;
-                result = true;
+                result = entity.GetValue();
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                param.HasException = true;
+                result = "";
             }
             return result;
         }

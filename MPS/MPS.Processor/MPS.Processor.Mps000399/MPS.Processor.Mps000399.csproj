@@ -130,6 +130,10 @@
     <Reference Include="MOS.TDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000399.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MPS.Processor.Mps000399.PDO\bin\Debug\MPS.Processor.Mps000399.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="SAR.EFMODEL">
       <HintPath>..\..\..\..\LIB\SAR\SAR.EFMODEL.dll</HintPath>
     </Reference>
@@ -155,10 +159,6 @@
     <ProjectReference Include="..\..\MPS.ProcessorBase\MPS.ProcessorBase.csproj">
       <Project>{075d8b91-153f-4e19-a00a-77547e6f2bd0}</Project>
       <Name>MPS.ProcessorBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MPS.Processor.Mps000399.PDO\MPS.Processor.Mps000399.PDO.csproj">
-      <Project>{f47e1595-a9cb-40a6-9c90-f4beae8e85c4}</Project>
-      <Name>MPS.Processor.Mps000399.PDO</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

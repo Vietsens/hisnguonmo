@@ -3903,8 +3903,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     currentServiceReq.START_TIME = dicSereServExt.ToList().Min(o => o.Value.BEGIN_TIME);
                     currentServiceReq.FINISH_TIME = dicSereServExt.ToList().Max(o => o.Value.END_TIME);
                 }
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("currentServiceReq___:", currentServiceReq));
-
                 var result = new Inventec.Common.Adapter.BackendAdapter(param).Post<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>("api/HisServiceReq/FinishWithTime", ApiConsumer.ApiConsumers.MosConsumer, currentServiceReq, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
                 if (result != null)
                 {
@@ -4094,7 +4092,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                 if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsAssignServiceSimulTaneityOption)
                 {
-                    LogSystem.Info("lấy dữ liệu gọi api------------------------------------------------------------------------");
                     HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
                     var login = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();//currentServiceReq.EXECUTE_LOGINNAME;
                     long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime) ?? 0;
@@ -4108,9 +4105,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     List<string> dsLogin = new List<string> { login };
                     if (ekipUsers != null && ekipUsers.Count > 0)
                     {
-                        
-
-                        LogSystem.Info("có ekip------------------------------------------------------------------------");
                         List<string> lstLogin = ekipUsers.Select(o => o.LOGINNAME).Distinct().ToList();
                         foreach (string acc in lstLogin)
                         {
@@ -4128,13 +4122,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                     else
                     {
-                        LogSystem.Info("ko có ekip------------------------------------------------------------------------");
                         //var USER = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                         //string EXECUTE_LOGINNAME = ServiceReqConstruct.EXECUTE_LOGINNAME;
 
                         HIS_EXECUTE_ROLE hIS_EXECUTE_ROLE = new HIS_EXECUTE_ROLE();
                         MOS.EFMODEL.DataModels.HIS_EKIP_USER ekipUser = new HIS_EKIP_USER();
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"ServiceReqConstruct", ServiceReqConstruct.EXECUTE_LOGINNAME));
                         if (ServiceReqConstruct.EXECUTE_LOGINNAME != null)
                         {
                             ekipUser.LOGINNAME = ServiceReqConstruct.EXECUTE_LOGINNAME;
@@ -4171,13 +4163,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             inputSDO.Loginnames = lstLoginValid;
                             
                         }
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"ekipUserVirtual", ekipUsers));
                     }
                     
                     string message = "";
                     CommonParam paramCheckEx = new CommonParam();
                     bool suscess = new BackendAdapter(paramCheckEx).Post<bool>("api/HisSereServ/CheckExecuteTimes", ApiConsumers.MosConsumer, inputSDO, paramCheckEx);
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"/api/HisSereServ/CheckExecuteTimes", inputSDO));
                     if (suscess == true)
                     {
                                          
@@ -4250,10 +4240,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                     string message = "";
                     CommonParam paramCheckSurg = new CommonParam();
-                    Inventec.Common.Logging.LogSystem.Debug("____________SERE_SERV_ID: " + sereServ.ID);
-                    Inventec.Common.Logging.LogSystem.Debug("____________LOGINAME:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ekipUsers), ekipUsers));
-                    Inventec.Common.Logging.LogSystem.Debug("____________BEGIN_TIME: " + surgUpdate.SereServExt.BEGIN_TIME);
-                    Inventec.Common.Logging.LogSystem.Debug("____________END_TIME: " + surgUpdate.SereServExt.END_TIME);
 
                     bool suscess = new BackendAdapter(paramCheckSurg).Post<bool>("api/HisServiceReq/CheckSurgSimultaneily", ApiConsumers.MosConsumer, InputSDO, paramCheckSurg);
                     if (suscess == true)

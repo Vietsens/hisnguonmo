@@ -32,7 +32,7 @@ namespace HIS.UC.FormType.Base
             {
                 Resources.ResourceLanguageManager.LanguageUCAccountBookCombo = new ResourceManager("HIS.UC.FormType.Resources.Lang", typeof(HIS.UC.FormType.AccountBookCombo.UCAccountBookCombo).Assembly);
                 Resources.ResourceLanguageManager.LanguageUCDateTime = new ResourceManager("HIS.UC.FormType.Resources.Lang", typeof(HIS.UC.FormType.DateTime.UCDateTime).Assembly);
-                Resources.ResourceLanguageManager.LanguageUCDepartmentCombo = new ResourceManager("HIS.UC.FormType.Resources.Lang", typeof(HIS.UC.FormType.DepartmentCombo.UCDepartmentCombo).Assembly);
+                Resources.ResourceLanguageManager.LanguageUCDepartmentCombo = new ResourceManager("HIS.UC.FormType.Resources.Lang", typeof(HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit).Assembly);
                 Resources.ResourceLanguageManager.LanguageUCExpMestTypeComboCheck = new ResourceManager("HIS.UC.FormType.Resources.Lang", typeof(HIS.UC.FormType.ExpMestTypeComboCheck.UCExpMestTypeComboCheck).Assembly);
                 Resources.ResourceLanguageManager.LanguageUCMaterialTypeCombo = new ResourceManager("HIS.UC.FormType.Resources.Lang", typeof(HIS.UC.FormType.MaterialTypeCombo.UCMaterialTypeCombo).Assembly);
                 Resources.ResourceLanguageManager.LanguageUCMediStockComboFilterByDepartmentCombo = new ResourceManager("HIS.UC.FormType.Resources.Lang", typeof(HIS.UC.FormType.MediStockComboFilterByDepartmentCombo.UCMediStockComboFilterByDepartmentCombo).Assembly);

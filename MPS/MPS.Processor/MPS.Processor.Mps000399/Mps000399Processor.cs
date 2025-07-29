@@ -76,6 +76,7 @@ namespace MPS.Processor.Mps000399
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 DataInputProcess();
+                AddTrackingKeys();
                 ProcessSingleKey();
                 SetBarcodeKey();
 
@@ -91,7 +92,7 @@ namespace MPS.Processor.Mps000399
 
             return result;
         }
-
+          
         void ProcessSingleKey()
         {
             try
@@ -132,11 +133,27 @@ namespace MPS.Processor.Mps000399
 
                 AddObjectKeyIntoListkey<HIS_TREATMENT>(rdo.Treatment, false);
                 AddObjectKeyIntoListkey<PatientADO>(patientADO, false);
+              
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }  
+           
+        void AddTrackingKeys()
+        {
+            try {
+
+
+                AddObjectKeyIntoListkey<HIS_TRACKING>(rdo.Tracking, false);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
     }
 }

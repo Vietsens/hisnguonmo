@@ -34,5 +34,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
         public string InvoiceLoginname { get; set; }
         public string InvoiceLookupCode { get; set; }
         public long? InvoiceTime { get; set; }
+        //qtcode
+        public byte[] PdfFileData { get; set; }
+        public Guid hoadon68_id { get; set; }
+        public string Status { get; set; }
     }
 }

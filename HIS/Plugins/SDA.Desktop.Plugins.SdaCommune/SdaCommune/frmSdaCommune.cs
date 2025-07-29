@@ -268,7 +268,7 @@ namespace SDA.Desktop.Plugins.SdaCommune
             {
                 InitComboDistrict();
                 InitComboProvince();
-
+                InitComboInitialName();
 
                 //TODO
             }
@@ -279,6 +279,22 @@ namespace SDA.Desktop.Plugins.SdaCommune
         }
 
         #region Init combo
+        private void InitComboInitialName()
+        {
+            try
+            {
+                cboInitialName.Properties.Items.Clear();
+                cboInitialName.Properties.Items.AddRange(new[] { "Xã", "Phường", "Thị trấn", "Đặc khu" });
+                cboInitialName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard; 
+                cboInitialName.Properties.AutoComplete = false;
+                cboInitialName.Properties.ImmediatePopup = false; 
+                cboInitialName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True; 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void InitComboDistrict()
         {
             try
@@ -528,7 +544,6 @@ namespace SDA.Desktop.Plugins.SdaCommune
                     currentData = rowData;
                     ChangedDataRow(rowData);
 
-                    //Set focus vào control editor đầu tiên
                     SetFocusEditor();
                 }
             }
@@ -611,6 +626,11 @@ namespace SDA.Desktop.Plugins.SdaCommune
                     txtSearchCode.EditValue = data.SEARCH_CODE;
                     cboInitialName.EditValue = data.INITIAL_NAME;
                     cboProvince.EditValue = data.PROVINCE_ID;
+                    cboInitialName.Text = data.INITIAL_NAME; 
+                    cboInitialName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard; 
+                    cboInitialName.Properties.AutoComplete = false; 
+                    cboInitialName.Properties.ImmediatePopup = false;
+                    cboInitialName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
 
                 }
             }
@@ -944,12 +964,8 @@ namespace SDA.Desktop.Plugins.SdaCommune
                 currentDTO.COMMUNE_NAME = txtCommuneName.Text.Trim();
                 currentDTO.DISTRICT_ID = (long?)cboDistrict.EditValue;
                 currentDTO.PROVINCE_ID = (long?)cboProvince.EditValue;
-                if (cboInitialName.EditValue != null)
-                {
-                    currentDTO.INITIAL_NAME = cboInitialName.SelectedItem.ToString();
-
-                }
-                if(txtSearchCode.EditValue !=null)
+                currentDTO.INITIAL_NAME = string.IsNullOrWhiteSpace(cboInitialName.Text) ? null : cboInitialName.Text.Trim();
+                if (txtSearchCode.EditValue !=null)
                 {
                     currentDTO.SEARCH_CODE = txtSearchCode.Text.Trim();
 
@@ -1630,7 +1646,7 @@ namespace SDA.Desktop.Plugins.SdaCommune
             {
                 if (cboProvince.EditValue != null)
                 {
-                    cboProvince.Properties.Buttons[1].Visible = true; // Nút Delete là nút thứ 2 (index 1)
+                    cboProvince.Properties.Buttons[1].Visible = true; 
                 }
                 else
                 {

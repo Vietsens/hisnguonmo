@@ -82,7 +82,7 @@ namespace HIS.UC.Sick
                     this.hisTreatment = data.CurrentHisTreatment;
                     this.currentModule = data.currentModule;
                     this.IsDuongThai = data.IsDuongThai;
-                    this.NextFocus = data.DelegateNextFocus;
+                    this.NextFocus = data.DelegateNextFocus;    
                     this.lstDocumentBook = data.ListDocumentBook;
                     this.workPlaceId = data.WorkPlaceId;
                     FillDataToForm(this.hisTreatment);
@@ -563,7 +563,7 @@ namespace HIS.UC.Sick
                     txtMother.Text = currentTreatmentFinishSDO.TDL_PATIENT_MOTHER_NAME;
                     txtFather.Text = currentTreatmentFinishSDO.TDL_PATIENT_FATHER_NAME;
                 }
-                else
+                else    
                 {
                     spinSickLeaveDay.EditValue = null;
                     dtSickLeaveFromTime.EditValue = null;

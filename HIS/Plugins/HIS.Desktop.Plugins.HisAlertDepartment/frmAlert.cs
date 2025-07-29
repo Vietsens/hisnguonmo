@@ -1200,15 +1200,15 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
         {
             try
             {
-                var commonIDs = listDepartmentAlert.Select(s => s.ID)
-                                   .Intersect(listDepartmentRecive.Select(s => s.ID))
-                                   .ToList();
-                if (commonIDs.Any())
-                {
-                    LogSystem.Debug("___DU lieu trung:" + LogUtil.TraceData("Trung", commonIDs));
-                    MessageBox.Show(this, "Khoa đang chọn không được giống khoa gửi yêu cầu", "Thông báo", MessageBoxButtons.OK);
-                    return;
-                }
+                //var commonIDs = listDepartmentAlert.Select(s => s.ID)
+                //                   .Intersect(listDepartmentRecive.Select(s => s.ID))
+                //                   .ToList();
+                //if (commonIDs.Any())
+                //{
+                //    LogSystem.Debug("___DU lieu trung:" + LogUtil.TraceData("Trung", commonIDs));
+                //    MessageBox.Show(this, "Khoa đang chọn không được giống khoa gửi yêu cầu", "Thông báo", MessageBoxButtons.OK);
+                //    return;
+                //}
                 
                 if(TYPE == 2)
                 {

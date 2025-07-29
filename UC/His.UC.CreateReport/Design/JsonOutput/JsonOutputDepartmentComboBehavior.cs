@@ -27,8 +27,8 @@ namespace DCV.APP.Report.JsonOutput
 {
     class JsonOutputDepartmentComboBehavior : BussinessBase, IJsonOutput
     {
-        HIS.UC.FormType.DepartmentCombo.UCDepartmentCombo entity;
-        internal JsonOutputDepartmentComboBehavior(CommonParam param, HIS.UC.FormType.DepartmentCombo.UCDepartmentCombo filter)
+        HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit entity;
+        internal JsonOutputDepartmentComboBehavior(CommonParam param, HIS.UC.FormType.GridLookUpTextEdit.UCGridLookUpTextEdit filter)
             : base(param)
         {
             this.entity = filter;

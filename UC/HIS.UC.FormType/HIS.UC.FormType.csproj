@@ -125,6 +125,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\DevExpress.XtraVerticalGrid.v15.2.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Common">
+      <HintPath>..\..\..\lib\HIS\HIS.Desktop.Common\HIS.Desktop.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="His.UC.LibraryMessage">
       <HintPath>..\..\..\lib\HIS\His.UC.LibraryMessage\His.UC.LibraryMessage.dll</HintPath>
     </Reference>
@@ -289,11 +295,11 @@
     </Compile>
     <Compile Include="Core\ComboBoxAtComboBox_F4__\Validation\ComboBoxAtComboBoxServiceTypeValidationRule.cs" />
     <Compile Include="Core\ComboBoxAtComboBox_F4__\Validation\ComboBoxAtComboBoxServiceValidationRule.cs" />
-    <Compile Include="Core\DepartmentCombo_F9__\UCDepartmentCombo.cs">
+    <Compile Include="Core\GridLookUpTextEdit_F9\UCGridLookUpTextEdit.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Core\DepartmentCombo_F9__\UCDepartmentCombo.Designer.cs">
-      <DependentUpon>UCDepartmentCombo.cs</DependentUpon>
+    <Compile Include="Core\GridLookUpTextEdit_F9\UCGridLookUpTextEdit.Designer.cs">
+      <DependentUpon>UCGridLookUpTextEdit.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\F33\F33FDO.cs" />
     <Compile Include="Core\F33\F33Processor.cs" />
@@ -329,9 +335,9 @@
       <DependentUpon>UCDateTime.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\DateTime_F18__\Validation\TimeValidationRule.cs" />
-    <Compile Include="Core\DepartmentCombo_F9__\DepartmentComboFDO.cs" />
-    <Compile Include="Core\DepartmentCombo_F9__\DepartmentComboProcessor.cs" />
-    <Compile Include="Core\DepartmentCombo_F9__\Validation\DepartmentValidationRule.cs" />
+    <Compile Include="Core\GridLookUpTextEdit_F9\GridLookUpTextEditFDO.cs" />
+    <Compile Include="Core\GridLookUpTextEdit_F9\GridLookUpTextEditProcessor.cs" />
+    <Compile Include="Core\GridLookUpTextEdit_F9\Validation\DepartmentValidationRule.cs" />
     <Compile Include="Core\ExpMestTypeComboCheck_F24__\ExpMestTypeComboCheckFDO.cs" />
     <Compile Include="Core\ExpMestTypeComboCheck_F24__\ExpMestTypeComboCheckProcessor.cs" />
     <Compile Include="Core\ExpMestTypeComboCheck_F24__\UCExpMestTypeComboCheck.cs">
@@ -491,6 +497,15 @@
       <DependentUpon>UCNumeric.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Numericft_F30__\Validation\NumericValidationRule.cs" />
+    <Compile Include="Core\Numeric_F39_\NumericftFDO.cs" />
+    <Compile Include="Core\Numeric_F39_\NumericProcessor.cs" />
+    <Compile Include="Core\Numeric_F39_\UCNumeric.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\Numeric_F39_\UCNumeric.Designer.cs">
+      <DependentUpon>UCNumeric.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Numeric_F39_\Validation\NumericValidationRule.cs" />
     <Compile Include="Core\PatientTypeCombo_F13__\PatientTypeComboFDO.cs" />
     <Compile Include="Core\PatientTypeCombo_F13__\PatientTypeComboProcessor.cs" />
     <Compile Include="Core\PatientTypeCombo_F13__\UCPatientTypeCombo.cs">
@@ -500,6 +515,15 @@
       <DependentUpon>UCPatientTypeCombo.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\PatientTypeCombo_F13__\Validation\PatientTypeValidationRule.cs" />
+    <Compile Include="Core\RadioCheckBox_F40_\RadioCheckBoxFDO.cs" />
+    <Compile Include="Core\RadioCheckBox_F40_\RadioCheckBoxProcessor.cs" />
+    <Compile Include="Core\RadioCheckBox_F40_\UCRadioCheckBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\RadioCheckBox_F40_\UCRadioCheckBox.Designer.cs">
+      <DependentUpon>UCRadioCheckBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\RadioCheckBox_F40_\Validation\RadioCheckBoxValidationRule.cs" />
     <Compile Include="Core\RoleUserGrid_F36__\ADO\HisMestInveUserAdo.cs" />
     <Compile Include="Core\RoleUserGrid_F36__\ADO\RoleUserADO.cs" />
     <Compile Include="Core\RoleUserGrid_F36__\config.cs" />
@@ -584,13 +608,13 @@
     </Compile>
     <Compile Include="Core\TreatmentTypeCombo_F22__\Validation\TreatmentTypeValidationRule.cs" />
     <Compile Include="Base\GridViewCheckMarkSelection.cs" />
-    <Compile Include="Core\TreatmentTypeGridCheckBox_F16__\TreatmentTypeGridCheckBoxFDO.cs" />
-    <Compile Include="Core\TreatmentTypeGridCheckBox_F16__\TreatmentTypeGridCheckBoxProcessor.cs" />
-    <Compile Include="Core\TreatmentTypeGridCheckBox_F16__\UCTreatmentTypeGridCheckBox.cs">
+    <Compile Include="Core\GridCheckBox_F16\GridCheckBoxFDO.cs" />
+    <Compile Include="Core\GridCheckBox_F16\GridCheckBoxProcessor.cs" />
+    <Compile Include="Core\GridCheckBox_F16\UCGridCheckBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Core\TreatmentTypeGridCheckBox_F16__\UCTreatmentTypeGridCheckBox.Designer.cs">
-      <DependentUpon>UCTreatmentTypeGridCheckBox.cs</DependentUpon>
+    <Compile Include="Core\GridCheckBox_F16\UCGridCheckBox.Designer.cs">
+      <DependentUpon>UCGridCheckBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\TrueOrFalse_F7__\TrueOrFalseFDO.cs" />
     <Compile Include="Core\TrueOrFalse_F7__\TrueOrFalseProcessor.cs" />
@@ -680,8 +704,8 @@
     <EmbeddedResource Include="Core\ComboBoxAtComboBox_F4__\UCComboBoxAtComboBox.resx">
       <DependentUpon>UCComboBoxAtComboBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Core\DepartmentCombo_F9__\UCDepartmentCombo.resx">
-      <DependentUpon>UCDepartmentCombo.cs</DependentUpon>
+    <EmbeddedResource Include="Core\GridLookUpTextEdit_F9\UCGridLookUpTextEdit.resx">
+      <DependentUpon>UCGridLookUpTextEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Core\F33\UCF33.resx">
       <DependentUpon>UCF33.cs</DependentUpon>
@@ -740,8 +764,14 @@
     <EmbeddedResource Include="Core\Numericft_F30__\UCNumeric.resx">
       <DependentUpon>UCNumeric.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Core\Numeric_F39_\UCNumeric.resx">
+      <DependentUpon>UCNumeric.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Core\PatientTypeCombo_F13__\UCPatientTypeCombo.resx">
       <DependentUpon>UCPatientTypeCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\RadioCheckBox_F40_\UCRadioCheckBox.resx">
+      <DependentUpon>UCRadioCheckBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Core\RoleUserGrid_F36__\UCRoleUser.resx">
       <DependentUpon>UCRoleUser.cs</DependentUpon>
@@ -770,8 +800,8 @@
     <EmbeddedResource Include="Core\TreatmentTypeCombo_F22__\UCTreatmentTypeCombo.resx">
       <DependentUpon>UCTreatmentTypeCombo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Core\TreatmentTypeGridCheckBox_F16__\UCTreatmentTypeGridCheckBox.resx">
-      <DependentUpon>UCTreatmentTypeGridCheckBox.cs</DependentUpon>
+    <EmbeddedResource Include="Core\GridCheckBox_F16\UCGridCheckBox.resx">
+      <DependentUpon>UCGridCheckBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Core\TrueOrFalse_F7__\UCTrueOrFalse.resx">
       <DependentUpon>UCTrueOrFalse.cs</DependentUpon>
@@ -782,7 +812,6 @@
     <EmbeddedResource Include="Core\F21__\UCF21.resx">
       <DependentUpon>UCF21.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

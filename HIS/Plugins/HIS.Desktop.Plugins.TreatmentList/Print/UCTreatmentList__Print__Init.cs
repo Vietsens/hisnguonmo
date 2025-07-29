@@ -146,8 +146,11 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         menu.AddItems(new BarItem[] { itemGiayTuVong });
                     BarButtonItem itemGiayXacNhanNoiTru = new BarButtonItem(barManager, "Giấy xác nhận điều trị nội trú");
                     itemGiayXacNhanNoiTru.ItemClick += new ItemClickEventHandler(GiayXacNhanDieuTriNoiTruClick);
-                    if (treatment.IS_PAUSE == 1 && treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
+                    //if (treatment.IS_PAUSE == 1 && treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
+                    //    menu.AddItems(new BarItem[] { itemGiayXacNhanNoiTru });
+                    if ( treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
                         menu.AddItems(new BarItem[] { itemGiayXacNhanNoiTru });
+
                 }
 
                 BarButtonItem itemHoSoQuanLySucKhoeCaNhan = new BarButtonItem(barManager, "Hồ sơ quản lý sức khỏe cá nhân");
@@ -453,7 +456,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     {
                         menu.AddItems(new BarItem[] { itemGiayPTTT, itemGiayTT });
                     }
-                    
+
                     if (treatment.IS_PAUSE == 1 && treatment.TREATMENT_END_TYPE_EXT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM)
                         menu.AddItems(new BarItem[] { itemGiayNghiOm });
                     if (treatment.IS_PAUSE == 1 && treatment.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET)
@@ -470,14 +473,16 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 BarButtonItem itemTomTatBA = new BarButtonItem(barManager, "Tóm tắt bệnh án");
                 itemTomTatBA.ItemClick += new ItemClickEventHandler(InTomTatBenhAnClick330or331);
                 //Inventec.Common.Logging.LogSystem.Info("treatment.IS_PAUSE " + treatment.IS_PAUSE + " treatment.TDL_TREATMENT_TYPE_ID " + treatment.TDL_TREATMENT_TYPE_ID);
-                if (treatment.IS_PAUSE == 1 && treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
+                //if (treatment.IS_PAUSE == 1 && treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
+                //    menu.AddItems(new BarItem[] { itemGiayXacNhanNoiTru });
+                if (treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
                     menu.AddItems(new BarItem[] { itemGiayXacNhanNoiTru });
 
                 BarButtonItem itemDonThuoc = new BarButtonItem(barManager, "In đơn thuốc");
                 itemDonThuoc.ItemClick += new ItemClickEventHandler(InDonThuoc);
                 menu.AddItems(new BarItem[] { itemKhamBenhVaoVien, itemBenhAnNgoaiTru, itemGiayKetQuaXetNghiem, itemTheBenhNhan, itemHoSoQuanLySucKhoeCaNhan, itemBieuMauKhac, itemTomTatBA, itemTrichLuc });
-               
-                
+
+
                 if (treatment.IS_EMERGENCY == 1 && treatment.TDL_PATIENT_TYPE_ID == Config.HisConfigCFG.PatientTypeId__BHYT)
                 {
                     menu.AddItems(new BarItem[] { itemInGiayXacNhanBenhNhanCapCuu });
@@ -498,20 +503,20 @@ namespace HIS.Desktop.Plugins.TreatmentList
             }
         }
 
-		private void InDonThuocPTTT(object sender, ItemClickEventArgs e)
-		{
-			try
-			{
+        private void InDonThuocPTTT(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
                 currentTreatmentPrint = gridViewtreatmentList.GetFocusedRow() as V_HIS_TREATMENT_4;
                 richEditorMain.RunPrintTemplate("Mps000478", DelegateRunPrinter);
             }
-			catch (Exception ex)
-			{
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
- 		}
+        }
 
-		private void InTomTatBenhAnClick330or331(object sender, ItemClickEventArgs e)
+        private void InTomTatBenhAnClick330or331(object sender, ItemClickEventArgs e)
         {
             try
             {
@@ -730,7 +735,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 var hisTreatment = new HIS_TREATMENT();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(hisTreatment, treatment4);
                 LoadServiceReq(treatment4.ID);
-                var printProcess = new HIS.Desktop.Plugins.Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatment,serviceReqExamEndType, currentModule != null ? currentModule.RoomId : 0);
+                var printProcess = new HIS.Desktop.Plugins.Library.PrintTreatmentFinish.PrintTreatmentFinishProcessor(hisTreatment, serviceReqExamEndType, currentModule != null ? currentModule.RoomId : 0);
                 printProcess.Print(PrintTypeCodeWorker.PRINT_TYPE_CODE__IN_GIAY_HEN_KHAM__MPS000010, false);
             }
             catch (Exception ex)
@@ -889,12 +894,12 @@ namespace HIS.Desktop.Plugins.TreatmentList
             return result;
         }
 
-		private void LoadDonthuocPTTT(string printTypeCode, string fileName, ref bool result)
-		{
+        private void LoadDonthuocPTTT(string printTypeCode, string fileName, ref bool result)
+        {
             try
             {
                 WaitingManager.Show();
-           
+
                 var treatment = new V_HIS_TREATMENT();
                 Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_TREATMENT>(treatment, currentTreatmentPrint);
 
@@ -936,7 +941,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 MPS.Processor.Mps000478.PDO.Mps000478PDO rdo = new MPS.Processor.Mps000478.PDO.Mps000478PDO(
                     treatment,
                     rsSereServ,
-                    expMestMedicine                
+                    expMestMedicine
                     );
 
                 string printerName = "";
@@ -962,7 +967,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             }
         }
 
-		private void InBangKiemTruocTiemChungClick()
+        private void InBangKiemTruocTiemChungClick()
         {
             try
             {
@@ -1072,7 +1077,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             try
             {
                 WaitingManager.Show();
-               
+
                 V_HIS_TREATMENT_4 treatment4 = gridViewtreatmentList.GetFocusedRow() as V_HIS_TREATMENT_4;
 
                 var hisTreatment = new HIS_TREATMENT();
@@ -1089,7 +1094,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 MOS.Filter.HisPatientTypeAlterFilter patientFilter_ = new HisPatientTypeAlterFilter();
                 patientFilter_.TREATMENT_ID = treatment4.ID;
                 var currentPatientAlter = new BackendAdapter(param)
-                          .Get<List<HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/Get", ApiConsumers.MosConsumer, patientFilter_, param_).OrderByDescending(o=>o.ID).FirstOrDefault();
+                          .Get<List<HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/Get", ApiConsumers.MosConsumer, patientFilter_, param_).OrderByDescending(o => o.ID).FirstOrDefault();
 
 
                 CommonParam params_ = new CommonParam();

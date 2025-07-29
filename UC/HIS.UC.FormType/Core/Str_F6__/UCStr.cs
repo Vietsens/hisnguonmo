@@ -37,9 +37,12 @@ namespace HIS.UC.FormType.Str
         SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config;
         SAR.EFMODEL.DataModels.V_SAR_REPORT report;
 
+        DynamicFilterRDO DynamicFilter;
+        PropetiesRDO PropetiesFilter;
         const string StrOutput0 = "_OUTPUT0:";
         string Output0 = "";
         string JsonOutput = "";
+        HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas;
 
         public UCStr(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO)
         {
@@ -51,7 +54,8 @@ namespace HIS.UC.FormType.Str
                 this.config = config;
                 if (paramRDO is GenerateRDO)
                 {
-                    this.report = (paramRDO as GenerateRDO).Report;
+                    this.report = (paramRDO as GenerateRDO).Report; 
+                    this.DynamicFilter = (paramRDO as GenerateRDO).DynamicFilter;
                 }
                 this.isValidData = (this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE);
                 Init();
@@ -275,9 +279,19 @@ namespace HIS.UC.FormType.Str
         {
             try
             {
-                layoutControlItem1.Text = this.config.DESCRIPTION; //Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY_UC_MEDICIN_LAYOUT_CONTROL_ITEM1", Resources.ResourceLanguageManager.LanguageUCStr, Base.LanguageManager.GetCulture());
+                layoutControlItem1.Text = this.config.DESCRIPTION; 
 
-                GetValueOutput0(this.config.JSON_OUTPUT, ref Output0);
+                if (this.DynamicFilter != null)
+                {
+                    PropetiesFilter = this.DynamicFilter.Propeties;
+                    Output0 = PropetiesFilter != null ? (PropetiesFilter.DefaultValue as string) : null;
+                }
+                else
+                {
+                  
+                    GetValueOutput0(this.config.JSON_OUTPUT, ref Output0);
+                    
+                }
                 SetDefaultValue();
                 JsonOutput = this.config.JSON_OUTPUT;
                 RemoveStrOutput0(ref JsonOutput);

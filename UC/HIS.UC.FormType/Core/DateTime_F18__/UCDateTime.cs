@@ -15,18 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Linq;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
-using His.UC.LibraryMessage;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.UC.FormType.DateTime
 {
@@ -36,19 +36,23 @@ namespace HIS.UC.FormType.DateTime
         SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config;
         int positionHandleControl = -1;
         SAR.EFMODEL.DataModels.V_SAR_REPORT report;
+        DynamicFilterRDO DynamicFilter;
 
         public UCDateTime(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO)
         {
             try
             {
                 InitializeComponent();
-                //FormTypeConfig.ReportHight += 25;
-
-                if (paramRDO is GenerateRDO)
-                {
-                    this.report = (paramRDO as GenerateRDO).Report;
-                }
                 this.config = config;
+                if (paramRDO is GenerateRDO generateRDO)
+                {
+                    this.report = generateRDO.Report;
+                    this.DynamicFilter = generateRDO.DynamicFilter;
+                    if (this.DynamicFilter != null)
+                    {
+                        this.config = this.DynamicFilter.Fofi;
+                    }
+                }
                 Init();
             }
             catch (Exception ex)
@@ -68,7 +72,27 @@ namespace HIS.UC.FormType.DateTime
                 }
                 SetDefaultTime();
                 SetTitle();//Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => report), report));
-                
+                if (this.DynamicFilter != null && this.DynamicFilter.Propeties != null && this.DynamicFilter.Propeties.Format != null)
+                {
+                    FormatView();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void FormatView()
+        {
+            try
+            {
+                this.dtTime.Properties.DisplayFormat.FormatString = this.DynamicFilter.Propeties.Format;
+                this.dtTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+                this.dtTime.Properties.EditFormat.FormatString = this.DynamicFilter.Propeties.Format;
+                this.dtTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+                this.dtTime.Properties.Mask.EditMask = this.DynamicFilter.Propeties.Format;
+                this.dtTime.Properties.Mask.UseMaskAsDisplayFormat = true;
             }
             catch (Exception ex)
             {
@@ -159,7 +183,7 @@ namespace HIS.UC.FormType.DateTime
             bool result = true;
             try
             {
-                if (this.generateRDO != null && this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
+                if (this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
                 {
                     this.positionHandleControl = -1;
                     result = dxValidationProvider1.Validate();
@@ -180,7 +204,7 @@ namespace HIS.UC.FormType.DateTime
             {
                 HIS.UC.FormType.DateTime.Validation.TimeValidationRule validRule = new HIS.UC.FormType.DateTime.Validation.TimeValidationRule();
                 validRule.dtTime = dtTime;
-                validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(Message.Enum.ThieuTruongDuLieuBatBuoc);
+                validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.ThieuTruongDuLieuBatBuoc);
                 validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProvider1.SetValidationRule(dtTime, validRule);
             }

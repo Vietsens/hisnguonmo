@@ -15,17 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using His.UC.LibraryMessage;
+//using System.Windows.Forms;
+using HIS.UC.FormType.Core.Numericft;
+using Inventec.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using System.Windows.Forms;
-using HIS.UC.FormType.Core.Numericft;
-using His.UC.LibraryMessage;
 
 namespace HIS.UC.FormType.Numericft
 {
@@ -37,7 +38,8 @@ namespace HIS.UC.FormType.Numericft
         SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config;
         // public static bool exitclick = false;
         SAR.EFMODEL.DataModels.V_SAR_REPORT report;
-       
+        DynamicFilterRDO DynamicFilter;
+
         public UCNumeric(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI config, object paramRDO)
         {
             try
@@ -46,9 +48,14 @@ namespace HIS.UC.FormType.Numericft
                 //FormTypeConfig.ReportHight += 25;
                 
                 this.config = config;
-                if (paramRDO is GenerateRDO)
+                if (paramRDO is GenerateRDO generateRDO)
                 {
-                    this.report = (paramRDO as GenerateRDO).Report;
+                    this.report = generateRDO.Report;
+                    this.DynamicFilter = generateRDO.DynamicFilter;
+                    if (this.DynamicFilter != null)
+                    {
+                        this.config = this.DynamicFilter.Fofi;
+                    }
                 }
                 this.isValidData = (this.config != null && this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE);
                 Init();
@@ -63,6 +70,8 @@ namespace HIS.UC.FormType.Numericft
         {
             try
             {
+                this.numericUpDown1.EditValue = null;
+                this.numericUpDown2.EditValue = null;
                 SetTitle();//Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => report), report));
                 if (this.report != null)
                 {
@@ -73,15 +82,8 @@ namespace HIS.UC.FormType.Numericft
                     Validation();
                     layoutControlItem1.AppearanceItemCaption.ForeColor = Color.Maroon;
                     layoutControlItem2.AppearanceItemCaption.ForeColor = Color.Maroon;
-                    numericUpDown1.EditValue = 0;
-                    numericUpDown2.EditValue = 0;
                 }
-                else
-                {
-                    numericUpDown1.EditValue = null;
-                    numericUpDown2.EditValue = null;
-                }
-                }
+            }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
@@ -156,7 +158,7 @@ namespace HIS.UC.FormType.Numericft
             bool result = true;
             try
             {
-                if (this.isValidData != null && this.isValidData)
+                if (this.isValidData)
                 {
                     this.positionHandleControl = -1;
                     result = dxValidationProvider1.Validate();
@@ -175,9 +177,10 @@ namespace HIS.UC.FormType.Numericft
         {
             try
             {
-                HIS.UC.FormType.Numeric.NumericValidationRule validRule = new HIS.UC.FormType.Numeric.NumericValidationRule();
+                HIS.UC.FormType.Numericft.NumericValidationRule validRule = new HIS.UC.FormType.Numericft.NumericValidationRule();
                 //validRule.txtTreatmentTypeCode = txtTreatmentTypeCode;
                 validRule.numericUpDown1 = numericUpDown1;
+                validRule.numericUpDown2 = numericUpDown2;
                validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(Message.Enum.ThieuTruongDuLieuBatBuoc);
                 validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProvider1.SetValidationRule(numericUpDown1, validRule);

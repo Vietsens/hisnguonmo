@@ -44,5 +44,22 @@ namespace HIS.UC.FormType
             }
             return result;
         }
+        public static object RunDynamic(SAR.EFMODEL.DataModels.V_SAR_RETY_FOFI data, object generateRDO, HIS.Desktop.Common.DelegateSelectDatas delegateSelectDatas)
+        {
+            object result = null;
+            try
+            {
+                IProcessorGenerate processor = ProcessorFactory.MakeProcessorBase(data, generateRDO, delegateSelectDatas);
+                if (processor != null)
+                {
+                    result = processor.Run();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
     }
 }

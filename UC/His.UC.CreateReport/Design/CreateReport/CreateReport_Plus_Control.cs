@@ -43,6 +43,7 @@ namespace His.UC.CreateReport.Design.CreateReport
                         var listData = CreateReportConfig.ReportTemplates.Where(o => o.REPORT_TEMPLATE_CODE.Contains(txtReportTemplateCode.Text) || o.REPORT_TEMPLATE_NAME.Contains(txtReportTemplateCode.Text)).ToList();
                         if (listData != null && listData.Count == 1)
                         {
+                            this.reportTemplate = listData.First();
                             txtReportTemplateCode.Text = listData.First().REPORT_TEMPLATE_CODE;
                             cboReportTemplate.EditValue = listData.First().ID;
                             txtReportName.Focus();
@@ -70,13 +71,14 @@ namespace His.UC.CreateReport.Design.CreateReport
                 {
                     if (cboReportTemplate.EditValue != null)
                     {
-                        var reportTemplate = CreateReportConfig.ReportTemplates.FirstOrDefault(f => f.ID == long.Parse(cboReportTemplate.EditValue.ToString()));
-                        if (reportTemplate != null)
+                        this.reportTemplate = CreateReportConfig.ReportTemplates.FirstOrDefault(f => f.ID == long.Parse(cboReportTemplate.EditValue.ToString()));
+                        if (this.reportTemplate != null)
                         {
-                            txtReportTemplateCode.Text = reportTemplate.REPORT_TEMPLATE_CODE;
-                            txtReportName.Text = reportTemplate.REPORT_TEMPLATE_NAME;
+                            txtReportTemplateCode.Text = this.reportTemplate.REPORT_TEMPLATE_CODE;
+                            txtReportName.Text = this.reportTemplate.REPORT_TEMPLATE_NAME;
                             txtReportName.Focus();
                             txtReportName.SelectAll();
+                            CreateReportControl();
                         }
                     }
                     else

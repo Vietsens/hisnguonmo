@@ -339,7 +339,88 @@ namespace Inventec.Common.FlexCellExport
             }
             return result;
         }
+        public bool OutFileWithoutValue(string path)
+        {
+            bool result = false;
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("OutFileWithoutValue. 1");
+                if (flexCel != null && !System.String.IsNullOrWhiteSpace(path))
+                {
+                    SavePath = path;
+                    flexCel.Run(TemplatePath, SavePath);
 
+                    FlexCel.XlsAdapter.XlsFile xls = new FlexCel.XlsAdapter.XlsFile(true);
+                    xls.Open(SavePath);
+                    xls.ConvertFormulasToValues(false);
+                    this.ProcessComment(xls);
+                    this.ProcessTemKey(xls);
+                    this.ProcessImageHeaderFooter(xls);
+                    if (DictionaryTemplateKey != null)
+                    {
+                        int SheetCount = 0;
+                        int activesheet = xls.ActiveSheet;
+                        // them 1 sheet an de chua cac key//kiểm tra đã có sheet nào có tên Template_Key
+                        for (int i = 1; i <= xls.SheetCount; i++)
+                        {
+                            if (xls.GetSheetName(i) == "Template_Key")
+                            {
+                                SheetCount = i;
+                                break;
+                            }
+                        }
+
+                        if (SheetCount == 0)
+                        {
+                            xls.AddSheet();
+                            SheetCount = xls.SheetCount;
+                        }
+
+                        var count = DictionaryTemplateKey.Count;
+                        List<string> keys = DictionaryTemplateKey.Keys.ToList();
+                        List<object> values = DictionaryTemplateKey.Values.ToList();
+                        xls.SetCellValue(SheetCount, 1, 2, count, -1);
+                        for (int i = 1; i < count + 1; i++)
+                        {
+                            xls.SetCellValue(SheetCount, i + 1, 1, keys[i - 1], -1);
+                            xls.SetCellValue(SheetCount, i + 1, 2, values[i - 1], -1);
+                        }
+                        xls.ActiveSheet = SheetCount;
+                        xls.SheetName = "Template_Key";
+
+                        xls.SheetVisible = FlexCel.Core.TXlsSheetVisible.Hidden;
+                        xls.ActiveSheet = activesheet;
+                        xls.SheetVisible = FlexCel.Core.TXlsSheetVisible.Visible;
+                    }
+                    LoadPaperSizes(xls);
+                    xls.Save(SavePath);
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => SavePath), SavePath));
+                    using (FileStream checkStream = System.IO.File.OpenRead(SavePath))
+                    {
+                        if (checkStream != null && checkStream.Length > 0)
+                        {
+                            result = true;
+                        }
+                        else
+                        {
+                            LogSystem.Error("Su dung FileStream de tao file khong thanh cong." + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => SavePath), SavePath));
+                        }
+                    }
+                }
+                else
+                {
+                    LogSystem.Error("Khong out duoc do workSheet null hoac path null/whitespace." + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => path), path));
+                }
+                Inventec.Common.Logging.LogSystem.Debug("OutFile. 2");
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                SavePath = "";
+                result = false;
+            }
+            return result;
+        }
         private void ProcessImageHeaderFooter(FlexCel.XlsAdapter.XlsFile xls)
         {
             try
@@ -601,6 +682,244 @@ namespace Inventec.Common.FlexCellExport
                 resultPdfStream = new MemoryStream();
             }
             return resultPdfStream;
+        }
+
+        public MemoryStream OutStreamPDFWithoutValue()
+        {
+            MemoryStream resultPdfStream = new MemoryStream();
+            MemoryStream result = new MemoryStream();
+            try
+            {
+                if (flexCel != null)
+                {
+                    //Inventec.Common.Logging.LogSystem.Debug("OutStreamPDFWithoutValue.1");
+                    //var tmpStream = new MemoryStream();
+                    TemplateStream.Position = 0;
+                    //flexCel.Run(TemplateStream, tmpStream);
+                    //Inventec.Common.Logging.LogSystem.Debug("OutStreamPDFWithoutValue.2");
+                    //if (tmpStream != null)
+                    //{
+                    //    tmpStream.Position = 0;
+                    //}
+
+                    FlexCel.XlsAdapter.XlsFile xls = new FlexCel.XlsAdapter.XlsFile(true);
+                    xls.Open(TemplateStream);
+                    xls.ConvertFormulasToValues(false);
+                    //this.ProcessImageHeaderFooter(xls);
+                    //this.ProcessComment(xls);
+                    this.ProcessTemKey(xls);
+
+                    LoadPaperSizes(xls);
+
+                    xls.Save(result);
+
+                    result.Position = 0;
+                    ConvertExcelToPdfByFlexCel(result, resultPdfStream);
+
+                    Inventec.Common.Logging.LogSystem.Debug("OutStreamPDF.3");
+                }
+                else
+                {
+                    LogSystem.Error("Khong out duoc do workSheet null.");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                resultPdfStream = new MemoryStream();
+            }
+            return resultPdfStream;
+        }
+
+        void ProcessTemKey(FlexCel.XlsAdapter.XlsFile xls)
+        {
+            try
+            {
+                const string SINGLE_KEY_START = "<#";
+                const string SINGLE_KEY_END = ";>";
+
+                Inventec.Common.Logging.LogSystem.Debug("Store.ProcessTemKey. 1");
+
+                for (int col = 1; col <= xls.ColCount; col++)
+                {
+                    for (int row = 1; row <= xls.RowCount; row++)
+                    {
+                        try
+                        {
+                            var dataCell = xls.GetCellValue(row, col);
+                            string cellValue = (dataCell != null ? dataCell : "").ToString();
+
+                            if (!string.IsNullOrEmpty(cellValue) && cellValue.Contains(SINGLE_KEY_START))
+                            {
+
+                                cellValue = cellValue.Replace("<#Row Height(Autofit)>", "");
+                                cellValue = cellValue.Replace("<#FlFuncCalculateAge(<#DOB;>;tuổi;tháng tuổi;ngày tuổi;giờ tuổi)>", "");
+                                cellValue = cellValue.Replace("<#FlFuncRownumber(", "");
+                                cellValue = cellValue.Replace(".#rowpos>", ".#rowpos;>");
+                                cellValue = cellValue.Replace("<#Row Height(Autofit)>", "");
+                                cellValue = cellValue.Replace("<#if(<#ICD_MAIN_TEXT;> =\"\";<#ICD_NAME;>;<#ICD_MAIN_TEXT;>)>", "");
+                                cellValue = cellValue.Replace("(<#FlFuncSpeechNumberToString", "");
+                                cellValue = cellValue.Replace("<#format cell(Format0)>", "");
+                                cellValue = cellValue.Replace("<#format cell(Format2)>", "");
+                                cellValue = cellValue.Replace("<#format cell(Format4)>", "");
+                                cellValue = cellValue.Replace("<#format cell(Format2Bold)>", "");
+
+                                // Tìm tất cả các thẻ <# ...;> trong ô
+                                int startIndex = 0;
+                                if (cellValue.Contains("<#if"))
+                                {
+                                    // Process all keys starting with <#if
+                                    startIndex = cellValue.IndexOf("<#if");
+                                    while (startIndex != -1)
+                                    {
+                                        int endIndex = FindMatchingClosingBracket(cellValue, startIndex);
+                                        if (endIndex == -1) break;
+
+                                        // Extract the full key
+                                        string fullKey = cellValue.Substring(startIndex, endIndex - startIndex + 1); // +1 to include ">"
+
+                                        // Replace the full key with the processed result (or empty string if removing)
+                                        cellValue = cellValue.Replace(fullKey, "");
+
+                                        if (startIndex >= cellValue.Length) break;
+                                        // Update startIndex to continue searching
+                                        startIndex = cellValue.IndexOf("<#if", startIndex);
+                                    }
+                                }
+                                if (cellValue.Contains("<#FlFuncSubString("))
+                                {
+                                    // Xử lý các thẻ <#FlFuncSubString(...)>
+                                    startIndex = cellValue.IndexOf("<#FlFuncSubString(");
+                                    while (startIndex != -1)
+                                    {
+                                        int endIndex = cellValue.IndexOf(")>", startIndex);
+                                        if (endIndex == -1) break;
+                                        // Extract the full key
+                                        string fullKey = cellValue.Substring(startIndex, endIndex - startIndex + 2); // +2 to include ")>"
+                                        // Replace the key with an empty string
+                                        cellValue = cellValue.Replace(fullKey, "");
+
+                                        if (endIndex >= cellValue.Length) break;
+                                        // Update startIndex to continue searching
+                                        startIndex = cellValue.IndexOf("<#FlFuncSubString(", endIndex);
+                                    }
+                                }
+                                if (cellValue.Contains("<#FlFuncSubString("))
+                                {
+                                    // Xử lý các thẻ <#FlFuncSubString(...)>
+                                    startIndex = cellValue.IndexOf("<#FlFuncSubString(");
+                                    while (startIndex != -1)
+                                    {
+                                        int endIndex = cellValue.IndexOf(")>", startIndex);
+                                        if (endIndex == -1) break;
+                                        // Extract the full key
+                                        string fullKey = cellValue.Substring(startIndex, endIndex - startIndex + 2); // +2 to include ")>"
+                                        // Replace the key with an empty string
+                                        cellValue = cellValue.Replace(fullKey, "");
+
+                                        if (endIndex >= cellValue.Length) break;
+                                        // Update startIndex to continue searching
+                                        startIndex = cellValue.IndexOf("<#FlFuncSubString(", endIndex);
+                                    }
+                                }
+                                else
+                                {
+                                    while ((startIndex = cellValue.IndexOf(SINGLE_KEY_START, 0)) != -1)
+                                    {
+                                        int endIndex = cellValue.IndexOf(SINGLE_KEY_END, startIndex);
+                                        if (endIndex == -1) break;
+
+                                        // Extract the full key
+                                        string fullKey = cellValue.Substring(startIndex, endIndex - startIndex + SINGLE_KEY_END.Length);
+
+                                        // Replace the key with an empty string
+                                        cellValue = cellValue.Replace(fullKey, "");
+
+                                        // Update startIndex and validate it
+                                        startIndex = endIndex + SINGLE_KEY_END.Length;
+                                        if (startIndex >= cellValue.Length) break;
+                                    }
+                                }
+
+
+                                cellValue = cellValue.Replace(")>", "");
+
+                                // Cập nhật giá trị ô sau khi thay thế
+                                xls.SetCellValue(row, col, new FlexCel.Core.TRichString(cellValue));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            LogSystem.Warn($"Error processing cell at row {row}, col {col}: {ex.Message}");
+                        }
+                    }
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug("Store.ProcessTemKey. 2");
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error($"Error in ProcessTemKey: {ex.Message}");
+            }
+        }
+
+        private int FindMatchingClosingBracket(string input, int startIndex)
+        {
+            int openParenthesesCount = 0;
+
+            for (int i = startIndex; i < input.Length; i++)
+            {
+                // Check for the opening of an <#if
+                if (input.Substring(i).StartsWith("<#if"))
+                {
+                    openParenthesesCount++;
+                }
+
+                // Check for the closing of a parenthesis followed by >
+                if (input[i] == ')' && i + 1 < input.Length && input[i + 1] == '>')
+                {
+                    openParenthesesCount--;
+
+                    // If all parentheses are closed, return the index of the closing bracket
+                    if (openParenthesesCount == 0)
+                    {
+                        return i + 1; // Include the '>'
+                    }
+                }
+            }
+
+            return -1; // No matching closing bracket found
+        }
+
+        private string ProcessNestedKeys(string input)
+        {
+            // Replace nested keys like <#FlFuncSubString(...)>, <#delete row>, etc.
+            input = ReplaceFlFuncSubString(input);
+            input = ReplaceDeleteRow(input);
+
+            // Add more replacements as needed for other key types
+            return input;
+        }
+
+        private string ReplaceFlFuncSubString(string input)
+        {
+            int startIndex = input.IndexOf("<#FlFuncSubString(");
+            while (startIndex != -1)
+            {
+                int endIndex = input.IndexOf(")>", startIndex);
+                if (endIndex == -1) break;
+
+                string fullKey = input.Substring(startIndex, endIndex - startIndex + 2); // +2 to include ")>"
+                input = input.Replace(fullKey, ""); // Replace with an empty string or processed value
+
+                startIndex = input.IndexOf("<#FlFuncSubString(", endIndex);
+            }
+            return input;
+        }
+
+        private string ReplaceDeleteRow(string input)
+        {
+            return input.Replace("<#delete row>", ""); // Replace with an empty string or processed value
         }
 
         private void LoadPaperSizes(FlexCel.Core.ExcelFile Xls)

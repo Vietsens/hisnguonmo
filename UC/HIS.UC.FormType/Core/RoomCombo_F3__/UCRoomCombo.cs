@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using DevExpress.XtraEditors;
 using HIS.UC.FormType.Loader;
 using His.UC.LibraryMessage;
+using Inventec.Common.Logging;
 
 namespace HIS.UC.FormType.RoomCombo
 {
@@ -44,7 +45,7 @@ namespace HIS.UC.FormType.RoomCombo
             {
                 InitializeComponent();
                 //FormTypeConfig.ReportHight += 25;
-             
+
                 this.config = config;
                 if (paramRDO is GenerateRDO)
                 {
@@ -64,14 +65,14 @@ namespace HIS.UC.FormType.RoomCombo
             try
             {
                 if (this.config.JSON_OUTPUT == "\"ROOM_ID\":{0}") RoomLoader.LoadDataToCombo(cboRoom);
-                if (this.config.JSON_OUTPUT == "\"KEY_HEIN_CARD\":{0}"||this.config.JSON_OUTPUT == "\"HEIN_NUMBER_CODE\":{0}") RoomLoader.LoadDataToCombo1(cboRoom);
+                if (this.config.JSON_OUTPUT == "\"KEY_HEIN_CARD\":{0}" || this.config.JSON_OUTPUT == "\"HEIN_NUMBER_CODE\":{0}") RoomLoader.LoadDataToCombo1(cboRoom);
                 if (this.isValidData)
                 {
                     Validation();
                     layoutControlItem10.AppearanceItemCaption.ForeColor = Color.Maroon;
                 }
                 SetTitle();//Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => report), report));
-                
+
             }
             catch (Exception ex)
             {
@@ -136,7 +137,7 @@ namespace HIS.UC.FormType.RoomCombo
                             }
                         }
 
-                        if (this.config.JSON_OUTPUT == "\"KEY_HEIN_CARD\":{0}"||this.config.JSON_OUTPUT == "\"HEIN_NUMBER_CODE\":{0}")
+                        if (this.config.JSON_OUTPUT == "\"KEY_HEIN_CARD\":{0}" || this.config.JSON_OUTPUT == "\"HEIN_NUMBER_CODE\":{0}")
                         {
                             List<string> a = MOS.LibraryHein.Bhyt.HeinObject.HeinObjectBenefitStore.GetObjectCodeWithBenefitCodes();
                             List<HeadCard> listData = new List<HeadCard>();
@@ -193,7 +194,7 @@ namespace HIS.UC.FormType.RoomCombo
             try
             {
                 long? departmentId = (long?)headCard.INDEX;
-                
+
                 value = String.Format(this.config.JSON_OUTPUT, ConvertUtils.ConvertToObjectFilter(departmentId));
                 string departmentId1;
                 if (this.config.JSON_OUTPUT == "\"HEIN_NUMBER_CODE\":{0}")
@@ -216,7 +217,7 @@ namespace HIS.UC.FormType.RoomCombo
             {
                 if (this.config.JSON_OUTPUT != null && this.report.JSON_FILTER != null)
                 {
-                    string value = HIS.UC.FormType.CopyFilter.CopyFilter.CopyFilterProcess(this.config,this.config.JSON_OUTPUT, this.report.JSON_FILTER);
+                    string value = HIS.UC.FormType.CopyFilter.CopyFilter.CopyFilterProcess(this.config, this.config.JSON_OUTPUT, this.report.JSON_FILTER);
                     if (value != null && value != "null" && Inventec.Common.TypeConvert.Parse.ToInt64(value) > 0)
                     {
                         cboRoom.Properties.DataSource = Config.HisFormTypeConfig.VHisRooms;
@@ -234,11 +235,25 @@ namespace HIS.UC.FormType.RoomCombo
                             listData.Add(data);
                         }
                         cboRoom.Properties.DataSource = listData;
-                        cboRoom.EditValue = (listData.FirstOrDefault(f => f.HEAD_HEINCARD == value)??new HeadCard()).INDEX;
+                        cboRoom.EditValue = (listData.FirstOrDefault(f => f.HEAD_HEINCARD == value) ?? new HeadCard()).INDEX;
                     }
                 }
 
 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public void ChangeValueForReferenceActionHandler(string filedName, object filedValue)
+        {
+            try
+            {
+                LogSystem.Info("ChangeValueForReferenceActionHandler:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filedName), filedName) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filedValue), filedValue));
+                cboRoom.Properties.DataSource = Config.HisFormTypeConfig.VHisRooms.Where(o => o.DEPARTMENT_ID == Convert.ToInt64(filedValue)).ToList();
+                cboRoom.EditValue = null;
             }
             catch (Exception ex)
             {

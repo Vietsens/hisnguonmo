@@ -244,6 +244,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 InitializeComponent();
                 //this.InitLanguage();
                 SetCaptionByLanguageKey();
+
+                
+                
             }
             catch (Exception ex)
             {
@@ -2296,6 +2299,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     treatmentFinishProcessor = new ExamTreatmentFinishProcessor();
                     HIS.UC.ExamTreatmentFinish.ADO.TreatmentFinishInitADO treatmentFinishInitADO = new UC.ExamTreatmentFinish.ADO.TreatmentFinishInitADO();
+                    HIS_TREATMENT treatmentAdDO = new HIS_TREATMENT();
+                    if (txtTreatmentInstruction.Text.Trim() != null)
+                    {
+                        treatmentAdDO.TREATMENT_METHOD = txtTreatmentInstruction.Text;
+                    }
+                    treatmentFinishInitADO.Treatment = treatmentAdDO;
                     treatmentFinishInitADO.BranchName = BranchDataWorker.Branch.BRANCH_NAME;
                     if (this.moduleData != null)
                         treatmentFinishInitADO.moduleData = this.moduleData;
@@ -2397,8 +2406,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     //this.ucTreatmentFinish = new UCExamTreatmentFinish(treatmentFinishInitADO, this.currentTreatmentExt);
                     if (this.ucTreatmentFinish is UCExamTreatmentFinish uCExamTreatmentFinish)
                     {
+                        //txtTreatmentInstruction.Text = uCExamTreatmentFinish.TreatmentInstruction;
                         uCExamTreatmentFinish.CapSoLuuTruBAChanged += UCExamTreatmentFinish_CapSoLuuTruBAChanged;
+                        uCExamTreatmentFinish.SetDelegateSendTeatmentMethod(FillTreatmentMethod);
                     }
+
+
 
                     if (treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
                     || treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
@@ -2431,6 +2444,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void FillTreatmentMethod(object data)
+        {
+            txtTreatmentInstruction.Text = data.ToString();
         }
 
         private void UCExamTreatmentFinish_CapSoLuuTruBAChanged(object sender, EventArgs e)
@@ -2932,7 +2950,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (hisServiceReqSDO.TreatmentFinishSDO != null)
                 {
                     hisServiceReqSDO.IsFinish = true;
-
+                    
                     //ngant muon sua thanh null khi loi hoac co thong bao
                     if (hisServiceReqSDO.TreatmentFinishSDO.TreatmentFinishTime > 0) hisServiceReqSDO.FinishTime = hisServiceReqSDO.TreatmentFinishSDO.TreatmentFinishTime;
                 }
