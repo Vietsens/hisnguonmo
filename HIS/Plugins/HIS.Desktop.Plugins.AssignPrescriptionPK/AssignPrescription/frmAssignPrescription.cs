@@ -3124,25 +3124,26 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             decimal result = 0;
             try
             {
+                // bỏ value vì đã nhân trực tiếp trong chiSoMLCT
                 switch (type)
                 {
                     case IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__EGFR:
                         //Công thức eGFR 
                         if (HisConfigCFG.ASSIGNPRESCRIPTION_EGFROPTION == "1")
                         {
-                            result = 186 * (decimal)Math.Pow((double)(chiSoMLCT * value), (double)(-1.154)) * (decimal)Math.Pow(Age(patientDob),
+                            result = 186 * (decimal)Math.Pow((double)(chiSoMLCT), (double)(-1.154)) * (decimal)Math.Pow(Age(patientDob),
                                 (double)(-0.203)) * (genderName.ToLower().Equals("nữ") ? (decimal)0.742 : 1);
                         }
                         else
                         {
-                            result = 175 * (decimal)Math.Pow((double)(chiSoMLCT * value), (double)(-1.154)) * (decimal)Math.Pow(Age(patientDob),
+                            result = 175 * (decimal)Math.Pow((double)(chiSoMLCT), (double)(-1.154)) * (decimal)Math.Pow(Age(patientDob),
                                 (double)(-0.203)) * (genderName.ToLower().Equals("nữ") ? (decimal)0.742 : 1);
                         }
 
                         break;
                     case IMSys.DbConfig.HIS_RS.HIS_MEDICINE_SERVICE.DATA_TYPE__CRCL:
                         //Công thức CrCl
-                        result = ((140 - Age(patientDob)) * (dhst != null && dhst.ID > 0 ? dhst.WEIGHT * (genderName.ToLower().Equals("nữ") ? (decimal)0.85 : 1) : 1)) / (72 * chiSoMLCT * value) ?? 0;
+                        result = ((140 - Age(patientDob)) * (dhst != null && dhst.ID > 0 ? dhst.WEIGHT * (genderName.ToLower().Equals("nữ") ? (decimal)0.85 : 1) : 1)) / (72 * chiSoMLCT) ?? 0;
                         LogSystem.Info("result; " + result);
                         break;
                     default:
@@ -11163,8 +11164,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                     if (Decimal.TryParse(ssTeinVL, out chiso) && currentTreatmentWithPatientType != null)
                                     {
                                         if (testIndex.CONVERT_RATIO_MLCT.HasValue)
+                                        {
                                             chiso *= (testIndex.CONVERT_RATIO_MLCT ?? 0);
-                                        chiSoMLCT = testIndex.CONVERT_RATIO_MLCT ?? 0;
+                                            chiSoMLCT = chiso;
+                                        }
+                                        
                                         strIsToCalculateEgfr = Inventec.Common.Calculate.Calculation.MucLocCauThanCrCleGFR(this.currentTreatmentWithPatientType.TDL_PATIENT_DOB, spinWeight.Value, spinHeight.Value, chiso, this.currentTreatmentWithPatientType.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE).ToString();
                                     }
                                 }
