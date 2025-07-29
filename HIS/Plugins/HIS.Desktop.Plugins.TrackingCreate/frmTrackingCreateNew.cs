@@ -885,11 +885,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         {
                             chkLockInfor.Checked = item.VALUE == "1";
                         }
-                        else if(item.KEY == ControlStateConstan.chkLastDHSTByPatient)
-                        {
-                            IsCheckedGetLastDHSTByPatient = item.VALUE == "1" ? true : false;
-                            this.SetImageDHST();
-                        }
+                        //else if(item.KEY == ControlStateConstan.chkLastDHSTByPatient)
+                        //{
+                        //    IsCheckedGetLastDHSTByPatient = item.VALUE == "1" ? true : false;
+                        //    this.SetImageDHST();
+                        //}
                     }
                     chkPrintDocumentSigned.Enabled = chkSign.Checked;
                     if (chkSign.Checked == false)
@@ -5010,22 +5010,26 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     this.IsCheckedGetLastDHSTByPatient = !IsCheckedGetLastDHSTByPatient;
                     this.SetImageDHST();
                     this.InitDhst();
-                    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = this.currentControlStateRDO != null ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstan.chkLastDHSTByPatient).FirstOrDefault() : null;
-                    if (csAddOrUpdate != null)
+                    if (!this.IsCheckedGetLastDHSTByPatient)
                     {
-                        csAddOrUpdate.VALUE = IsCheckedGetLastDHSTByPatient ? "1" : "0";
+                        FillDataDhstToControl(new HIS_DHST());
                     }
-                    else
-                    {
-                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-                        csAddOrUpdate.KEY = ControlStateConstan.chkLastDHSTByPatient;
-                        csAddOrUpdate.VALUE = IsCheckedGetLastDHSTByPatient ? "1" : "0";
-                        csAddOrUpdate.MODULE_LINK = currentModule.ModuleLink;
-                        if (this.currentControlStateRDO == null)
-                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-                        this.currentControlStateRDO.Add(csAddOrUpdate);
-                    }
-                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                    //HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = this.currentControlStateRDO != null ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstan.chkLastDHSTByPatient).FirstOrDefault() : null;
+                    //if (csAddOrUpdate != null)
+                    //{
+                    //    csAddOrUpdate.VALUE = IsCheckedGetLastDHSTByPatient ? "1" : "0";
+                    //}
+                    //else
+                    //{
+                    //    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    //    csAddOrUpdate.KEY = ControlStateConstan.chkLastDHSTByPatient;
+                    //    csAddOrUpdate.VALUE = IsCheckedGetLastDHSTByPatient ? "1" : "0";
+                    //    csAddOrUpdate.MODULE_LINK = currentModule.ModuleLink;
+                    //    if (this.currentControlStateRDO == null)
+                    //        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    //    this.currentControlStateRDO.Add(csAddOrUpdate);
+                    //}
+                    //this.controlStateWorker.SetData(this.currentControlStateRDO);
                 }
             }
         }
