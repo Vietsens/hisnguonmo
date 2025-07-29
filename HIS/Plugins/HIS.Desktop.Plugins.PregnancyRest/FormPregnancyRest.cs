@@ -115,7 +115,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 LoadDataToGrid();
                 SetDefaultValueControl();
                 CboTreatmentEndTypExt.Focus();
-               
+
             }
             catch (Exception ex)
             {
@@ -151,7 +151,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 {
                     nameCb = employee.TDL_USERNAME;
                     cccdCb = employee.IDENTIFICATION_NUMBER;
-                    
+
                 }
             }
             catch (Exception ex)
@@ -166,7 +166,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             try
             {
                 var rs = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(s => s.LOGINNAME == username).FirstOrDefault();
-                if(rs != null)
+                if (rs != null)
                 {
                     result = rs;
                 }
@@ -386,6 +386,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             {
                 if (hisTreatment != null)
                 {
+                    //long typeId = Inventec.Common.TypeConvert.Parse.ToInt64(CboTreatmentEndTypExt.EditValue.ToString());
                     if (!String.IsNullOrWhiteSpace(hisTreatment.TDL_PATIENT_WORK_PLACE_NAME))
                     {
                         var workPlace = BackendDataWorker.Get<HIS_WORK_PLACE>().FirstOrDefault(o => !String.IsNullOrWhiteSpace(o.WORK_PLACE_NAME) && o.WORK_PLACE_NAME.ToLower() == hisTreatment.TDL_PATIENT_WORK_PLACE_NAME.ToLower());
@@ -411,7 +412,14 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                         cboSickUserName.EditValue = creator;
                         cboSickUserName.Properties.Buttons[1].Visible = true;
                     }
-
+                    if (hisTreatment.GESTATIONAL_AGE.HasValue)
+                    {
+                        SpGestationalAge.EditValue = hisTreatment.GESTATIONAL_AGE;
+                    }
+                    else
+                    {
+                        SpGestationalAge.EditValue = null;
+                    }
                     //có thì gán không thì gán theo tự động nếu có 1 bản ghi
                     if (hisTreatment.DOCUMENT_BOOK_ID.HasValue)
                     {
@@ -620,7 +628,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                         }
                     }
                 }
-
+                long typeId = Inventec.Common.TypeConvert.Parse.ToInt64(CboTreatmentEndTypExt.EditValue.ToString());
                 if (CboTreatmentEndTypExt.EditValue != null)
                 {
                     //if (!string.IsNullOrEmpty(txtCodeWorkPlace.Text))
@@ -679,6 +687,25 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                         sdo.SickLeaveDay = Inventec.Common.TypeConvert.Parse.ToDecimal(SpLeaveDay.EditValue.ToString());
                     }
 
+                    if (typeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_DUONG_THAI)
+                    {
+                        if (SpGestationalAge.EditValue != null && !string.IsNullOrWhiteSpace(SpGestationalAge.EditValue.ToString()))
+                        {
+                            try
+                            {
+                                sdo.GestationalAge = (long?)Convert.ToInt64(SpGestationalAge.EditValue);
+                            }
+                            catch
+                            {
+                                sdo.GestationalAge = null;
+                            }
+                        }
+                        else
+                        {
+                            sdo.GestationalAge = null;
+                        }
+                    }
+
                 }
 
                 if (!string.IsNullOrEmpty(txtCodeWorkPlace.Text))
@@ -692,12 +719,17 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 sdo.PatientRelativeType = CboRelativeType.Text.Trim();
                 sdo.SocialInsuranceNumber = txtMaBHXH.Text.Trim();
                 sdo.IsPregnancyTermination = chkIsPregnancyTermination.Checked ? true : false;
-                if (!String.IsNullOrEmpty(txtGestationalAge.Text.Trim()))
+                if (typeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM)
                 {
-                    sdo.GestationalAge = Inventec.Common.TypeConvert.Parse.ToInt64(txtGestationalAge.Text);
+                    if (!String.IsNullOrEmpty(txtGestationalAge.Text.Trim()))
+                    {
+                        sdo.GestationalAge = Inventec.Common.TypeConvert.Parse.ToInt64(txtGestationalAge.Text);
+                    }
+                    else
+                    {
+                        sdo.GestationalAge = null;
+                    }
                 }
-                else
-                    sdo.GestationalAge = null;
                 sdo.PregnancyTerminationReason = txtPregnancyTerminationReason.Text;
                 sdo.EndTypeExtNote = txtEndTypeExtNote.Text;
                 if (dtPregnancyTerminationTime.EditValue != null)
@@ -709,6 +741,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 Inventec.Common.Logging.LogSystem.Debug("____________________" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                 CommonParam param = new CommonParam();
                 hisTreatmentResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TREATMENT>("api/HisTreatment/UpdateExtraEndInfo", ApiConsumer.ApiConsumers.MosConsumer, sdo, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", sdo));
                 FillDataToControl(hisTreatmentResult);
                 if (hisTreatmentResult != null)
                 {
@@ -1162,7 +1195,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 ValidMaxLengthRequired(false, txtPregnancyTerminationReason, 1000, null);
                 ValidateRelativeType();
                 ValidateAgeRelativeName();
-                
+
             }
             catch (Exception ex)
             {
@@ -1305,11 +1338,13 @@ namespace HIS.Desktop.Plugins.PregnancyRest
 
                     if (typeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__HEN_MO)
                     {
+                        lciPregnantAge.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         lciCboDocumentBookId.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         ValidationBHXH(this.txtMaBHXH, 10, 10);
                     }
                     else if (typeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM || typeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_DUONG_THAI)
                     {
+                        lciPregnantAge.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                         if (xml2076ExportOption == "1")
                         {
                             ValidateSickUser();
@@ -1327,6 +1362,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                     {
                         if (this.hisTreatment.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__FEMALE)
                         {
+                            lciPregnantAge.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                             LciInfantInformation.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                             LciGridControl.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                         }
@@ -1339,6 +1375,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                     }
                     if (typeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM)
                     {
+                        lciPregnantAge.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         lciCheckTT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                         lciIsPregnancyTermination.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                         lciGestationalAge.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;

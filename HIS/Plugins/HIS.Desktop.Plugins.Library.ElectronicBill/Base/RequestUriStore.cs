@@ -31,7 +31,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
         internal const string MobifoneSignInvoiceCertFile68 = "/api/Invoice68/SignInvoiceCertFile68";
         internal const string MobifoneInHoadon = "/api/Invoice68/inHoadon?id={0}&type=PDF&inchuyendoi={1}";//api/Invoice68/inHoadon?id={hdon_id}&type=PDF&inchuyendoi=true
         internal const string MobifoneuploadCanceledInv = "/api/Invoice68/uploadCanceledInv?id={0}";//api/Invoice68/uploadCanceledInv?id={hdon_id}
-
+        internal const string BDBillLogin = "api/services/hddtws/Authentication/GetToken";
+        internal const string BDBillGuiVaKyHoadonGoc = "api/services/hddtws/QuanLyHoaDon/GuiVaKyHoaDonGocHSM";
+        internal const string BDBillTaiHoaDonPdfKhongCanThueDuyet = "api/services/hddtws/TraCuuHoaDon/TaiHoaDonPdfKhongCanThueDuyet"; 
+        internal const string BDBillThayTheHoaDon = "api/services/hddtws/QuanLyHoaDon/LapHoaDonThayThe"; 
+        internal const string BDBillTraCuuHoaDon = "api/services/hddtws/TraCuuHoaDon/TraThongTinHoaDon"; 
+        internal const string BDBillChuyenDoiHoaDon = "api/services/hddtws/QuanLyHoaDon/ChuyenDoiHoaDon"; 
+        internal const string BDBillHuyHoaDon = "api/services/hddtws/QuanLyHoaDon/LapHoaDonHuyBo"; 
+        
         //CYBERBILL
         internal const string CyberbillLogin = "api/services/hddtws/Authentication/GetToken";
         internal const string CyberbillGuiHoadonGoc = "api/services/hddtws/GuiHoadon/GuiHoadonGoc";

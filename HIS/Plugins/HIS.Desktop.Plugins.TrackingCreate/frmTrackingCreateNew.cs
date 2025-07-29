@@ -42,6 +42,7 @@ using HIS.Desktop.Plugins.TrackingCreate.ValidationRuleControl;
 using HIS.Desktop.Utility;
 using HIS.UC.DHST;
 using HIS.UC.DHST.ADO;
+using HIS.UC.DHST.Run;
 using HIS.UC.Icd;
 using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd;
@@ -615,7 +616,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 {
                     chkIsMineNew.CheckState = CheckState.Checked;
                 }
-
+                this.SetImageDHST();
                 LoadTreatment();
                 InitUser();
                 InitUcIcd();
@@ -884,6 +885,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         {
                             chkLockInfor.Checked = item.VALUE == "1";
                         }
+                        //else if(item.KEY == ControlStateConstan.chkLastDHSTByPatient)
+                        //{
+                        //    IsCheckedGetLastDHSTByPatient = item.VALUE == "1" ? true : false;
+                        //    this.SetImageDHST();
+                        //}
                     }
                     chkPrintDocumentSigned.Enabled = chkSign.Checked;
                     if (chkSign.Checked == false)
@@ -1032,7 +1038,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
                         Inventec.Common.Mapper.DataObjectMapper.Map<HisTrackingADO>(AddItem, item);
                         AddItem.ID = item.ID;
-                        AddItem.DEPARTMENT_NAME = BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(p => p.ID == item.DEPARTMENT_ID).DEPARTMENT_NAME;
+                        AddItem.DEPARTMENT_NAME = BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(p => p.ID == item?.DEPARTMENT_ID)?.DEPARTMENT_NAME;
                         AddItem.TRACKING_TIME_STR = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(item.TRACKING_TIME);
 
                         result.Add(AddItem);
@@ -4992,6 +4998,50 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             {
                 txtMedicalInstruction.Text = data.ToString();
             }
+        }
+
+        bool IsCheckedGetLastDHSTByPatient = false;
+        private void xtraTabControl1_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)
+        {
+            if (e.ActivePage == xtraTabPageDhst)
+            {
+                if (e.Button == this.xtraTabControl1.CustomHeaderButtons[0])
+                {
+                    this.IsCheckedGetLastDHSTByPatient = !IsCheckedGetLastDHSTByPatient;
+                    this.SetImageDHST();
+                    this.InitDhst();
+                    if (!this.IsCheckedGetLastDHSTByPatient)
+                    {
+                        FillDataDhstToControl(new HIS_DHST());
+                    }
+                    //HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = this.currentControlStateRDO != null ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstan.chkLastDHSTByPatient).FirstOrDefault() : null;
+                    //if (csAddOrUpdate != null)
+                    //{
+                    //    csAddOrUpdate.VALUE = IsCheckedGetLastDHSTByPatient ? "1" : "0";
+                    //}
+                    //else
+                    //{
+                    //    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    //    csAddOrUpdate.KEY = ControlStateConstan.chkLastDHSTByPatient;
+                    //    csAddOrUpdate.VALUE = IsCheckedGetLastDHSTByPatient ? "1" : "0";
+                    //    csAddOrUpdate.MODULE_LINK = currentModule.ModuleLink;
+                    //    if (this.currentControlStateRDO == null)
+                    //        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    //    this.currentControlStateRDO.Add(csAddOrUpdate);
+                    //}
+                    //this.controlStateWorker.SetData(this.currentControlStateRDO);
+                }
+            }
+        }
+
+        private void SetImageDHST()
+        {
+            this.xtraTabControl1.CustomHeaderButtons[0].Image = IsCheckedGetLastDHSTByPatient ? imageCollection1.Images[1] : imageCollection1.Images[0];
+        }
+        private void xtraTabControl1_SelectedPageChanged(object sender, DevExpress.XtraTab.TabPageChangedEventArgs e)
+        {
+            xtraTabControl1.CustomHeaderButtons[0].Visible = (xtraTabControl1.SelectedTabPage == xtraTabPageDhst);
+
         }
 
 

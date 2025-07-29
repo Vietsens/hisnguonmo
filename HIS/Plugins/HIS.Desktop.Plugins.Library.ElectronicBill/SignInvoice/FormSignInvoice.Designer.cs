@@ -86,8 +86,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.SignInvoice
             // 
             // pdfView
             // 
+            this.pdfView.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.pdfView.Location = new System.Drawing.Point(2, 28);
             this.pdfView.Name = "pdfView";
+            // 
+            // 
+            // 
+            this.pdfView.RootElement.ControlBounds = new System.Drawing.Rectangle(0, 0, 200, 200);
             this.pdfView.Size = new System.Drawing.Size(876, 531);
             this.pdfView.TabIndex = 8;
             this.pdfView.ThumbnailsScaleFactor = 0.15F;

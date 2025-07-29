@@ -78,7 +78,7 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                     {
                         this.checkedListBoxControl1.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Standard;
                     }
-                    var items = this.DynamicFilter.Propeties.DefaultSource.ToString().Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    var items = Newtonsoft.Json.JsonConvert.DeserializeObject<string[]>(this.DynamicFilter.Propeties.DefaultSource.ToString());
                     for (int i = 0; i < items.Length; i++)
                     {
                         this.checkedListBoxControl1.Items.AddRange(new DevExpress.XtraEditors.Controls.CheckedListBoxItem[]
@@ -90,7 +90,7 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                 {
                     SetValidation();
                 }
-                SetTitle();
+                SetTitle(); 
                 //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => report), report));
                 GetValueOutput0(this.config.JSON_OUTPUT, ref Output0);
                 if (!string.IsNullOrWhiteSpace(Output0))

@@ -144,7 +144,7 @@ namespace HIS.UC.FormType.Core.TrueOrFalse
             {
                 if (this.DynamicFilter != null && this.DynamicFilter.Propeties != null && this.DynamicFilter.Propeties.DefaultSource != null)
                 {
-                    var items = this.DynamicFilter.Propeties.DefaultSource.ToString().Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    var items = Newtonsoft.Json.JsonConvert.DeserializeObject<string[]>(this.DynamicFilter.Propeties.DefaultSource.ToString());
                     radTrue.Text = items.First();
                     radFalse.Text = items.Last();
                 }
