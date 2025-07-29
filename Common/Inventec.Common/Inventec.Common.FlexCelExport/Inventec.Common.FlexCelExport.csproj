@@ -36,20 +36,8 @@
     <Reference Include="Inventec.Common.BarcodeLib">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.DateTime">
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.Number">
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
-    </Reference>
     <Reference Include="Inventec.Common.QRCoder">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.QRCoder\Inventec.Common.QRCoder.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.String">
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -64,6 +52,7 @@
     <Compile Include="Common.cs" />
     <Compile Include="ProcessWatermarkTag.cs" />
     <Compile Include="Store.cs" />
+    <Compile Include="TFlexCelUFEmployeeInfo.cs" />
     <Compile Include="TFlexCelUFFormatIcd.cs" />
     <Compile Include="TFlexCelUFCreateBarcode.cs" />
     <Compile Include="TFlexCelUFCreateQR.cs" />
@@ -82,6 +71,24 @@
     <Compile Include="ProcessSingleTag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TFlexCelUFRowNumber.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Inventec.Common.DateTime\Inventec.Common.DateTime.csproj">
+      <Project>{d3437a35-37ed-4697-a3fa-109939baaf47}</Project>
+      <Name>Inventec.Common.DateTime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
+      <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
+      <Name>Inventec.Common.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Inventec.Common.Number\Inventec.Common.Number.csproj">
+      <Project>{7428c903-6c07-4763-9154-a5c7461a9cbf}</Project>
+      <Name>Inventec.Common.Number</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Inventec.Common.String\Inventec.Common.String.csproj">
+      <Project>{dce10a9c-b9df-4306-ac93-691275a5e456}</Project>
+      <Name>Inventec.Common.String</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

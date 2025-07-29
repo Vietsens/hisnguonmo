@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using Inventec.Common.FlexCellExport;
 using Inventec.Common.QRCoder;
 using Inventec.Common.SignLibrary;
 using Inventec.Common.SignLibrary.ADO;
@@ -1036,6 +1037,22 @@ namespace MPS.ProcessorBase.Core
 
         protected void SetCommonFunctionRun()
         {
+            Store.EmployeeInfoHandler = (loginName, infoKey) =>
+            {
+                if (string.IsNullOrWhiteSpace(loginName))
+                    return string.Empty;
+                var employee = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == loginName);
+                if (employee == null)
+                    return string.Empty;
+                var prop = employee.GetType().GetProperties()
+                    .FirstOrDefault(p => string.Equals(p.Name, infoKey, StringComparison.OrdinalIgnoreCase));
+                if (prop != null)
+                {
+                    var value = prop.GetValue(employee);
+                    return value != null ? value.ToString() : string.Empty;
+                }
+                return string.Empty;
+            };
             switch (this.templateType)
             {
                 case PrintConfig.TemplateType.Excel:

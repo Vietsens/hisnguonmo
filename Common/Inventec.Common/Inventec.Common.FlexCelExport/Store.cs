@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using FlexCel.Report;
+using Inventec.Common.FlexCelExport;
 using Inventec.Common.Logging;
 using MRS.MANAGER.Core.MrsReport.RDO;
 using System;
@@ -50,8 +51,11 @@ namespace Inventec.Common.FlexCellExport
         const string TFlexCelUFCreateQR = "FlFuncCreateQR";
         const string TFlexCelUFCreateBarcode = "FlFuncCreateBarcode";
         const string TFlexCelUFFormatIcd = "FlFuncFormatIcd";
+        const string TFlexCelUFEmployeeInfo = "FlFuncEmployeeInfo";
         public Dictionary<string, object> DictionaryTemplateKey { get; set; }
         public bool IsUseCommentKey = true;//TODO
+        public delegate string EmployeeInfoDelegate(string loginName, string infoKey);
+        public static EmployeeInfoDelegate EmployeeInfoHandler { get; set; }
         private MemoryStream ResultStream { get; set; }
         private System.Drawing.Printing.PaperSize PaperSizeDefault { get; set; }
 
@@ -133,6 +137,7 @@ namespace Inventec.Common.FlexCellExport
                 flexCel.SetUserFunction(TFlexCelUFCreateQR, new TFlexCelUFCreateQR());
                 flexCel.SetUserFunction(TFlexCelUFCreateBarcode, new TFlexCelUFCreateBarcode());
                 flexCel.SetUserFunction(TFlexCelUFFormatIcd, new TFlexCelUFFormatIcd());
+                flexCel.SetUserFunction(TFlexCelUFEmployeeInfo, new TFlexCelUFEmployeeInfo());
                 result = true;
             }
             catch (ArgumentNullException ex)
