@@ -59,7 +59,6 @@ namespace HIS.Desktop.Plugins.TransactionRepay
         List<V_HIS_ACCOUNT_BOOK> ListAccountBook = new List<V_HIS_ACCOUNT_BOOK>();
         V_HIS_PATIENT_TYPE_ALTER currentHisPatientTypeAlter;
         V_HIS_PATIENT_BANK_ACCOUNT currentPatientBankAccount = null;
-
         bool isNotLoadWhilechkAutoCloseStateInFirst = true;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
@@ -487,18 +486,15 @@ namespace HIS.Desktop.Plugins.TransactionRepay
 
         private void GetPatientTypeAlter(long treatmentId)
         {
-            if (this.currentHisPatientTypeAlter == null)
+            CommonParam param = new CommonParam();
+            try
             {
-                CommonParam param = new CommonParam();
-                try
-                {
-                    this.currentHisPatientTypeAlter = new Inventec.Common.Adapter.BackendAdapter(param).Get<V_HIS_PATIENT_TYPE_ALTER>("api/HisPatientTypeAlter/GetLastByTreatmentId", ApiConsumer.ApiConsumers.MosConsumer, treatmentId, param);
-                    dteCommonParam = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(param.Now) ?? DateTime.Now;
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Error(ex);
-                }
+                this.currentHisPatientTypeAlter = new Inventec.Common.Adapter.BackendAdapter(param).Get<V_HIS_PATIENT_TYPE_ALTER>("api/HisPatientTypeAlter/GetLastByTreatmentId", ApiConsumer.ApiConsumers.MosConsumer, treatmentId, param);
+                dteCommonParam = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(param.Now) ?? DateTime.Now;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -672,11 +668,11 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             try
             {
                 this.resultTransaction = null;
-                txtCashierUsername.Text = "";
                 txtDescription.Text = "";
+                txtCashierUsername.Text = "";
                 spinTongTuDen.Value = 0;
                 spinTongTuDen.Text = "";
-                txtTransactionCode.Text = "";
+                //txtTransactionCode.Text = "";
                 dtCreateTime.EditValue = null;
                 cboRepayReason.EditValue = null;
                 txtRepayReason.Text = "";
@@ -684,6 +680,8 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 btnSave.Enabled = true;
                 txtNguoiThuHuong.Text = "";
                 currentPatientBankAccount = null;
+                //CommonParam paramCommon = new CommonParam();
+                //dteCommonParam = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(paramCommon.Now) ?? DateTime.Now;
                 if (HisConfigCFG.ShowServerTimeByDefault == "1")
                 {
                     dtTransactionTime.DateTime = dteCommonParam;
