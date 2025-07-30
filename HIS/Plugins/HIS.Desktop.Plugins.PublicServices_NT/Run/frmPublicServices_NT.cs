@@ -379,7 +379,10 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                         var _SereServs = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GETVIEW, ApiConsumers.MosConsumer, _ssFiler, param);
                         if (_SereServs != null && _SereServs.Count > 0)
                         {
-                            _SereServs = _SereServs.Where(o => _serviceReqId_SVs.Contains(o.SERVICE_REQ_ID ?? 0)).ToList();
+                            _SereServs = _SereServs.Where(o 
+                                => _serviceReqId_SVs.Contains(o.SERVICE_REQ_ID ?? 0)
+                                && (chkServiceIsNoExecute.Checked ? true : o.IS_NO_EXECUTE != 1)
+                                ).ToList();
 
                             List<HIS_SERE_SERV_EXT> _SereServsExt = GetSsExtBySsId(_SereServs.Select(o => o.ID).ToList());
 
