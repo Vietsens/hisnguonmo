@@ -240,7 +240,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             }
         }
 
-        private async Task InitDhst()
+        private async Task InitDhst(bool? buttonDHSTCheck = null)
         {
             try
             {
@@ -248,63 +248,52 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 List<HIS_DHST> rsDhstTracking = null;
                 Action myaction = () =>
                 {
-                    // Nếu IsCheckedGetLastDHSTByPatient xử lý theo cache thì dời cái currentTracking ra ngoài.
-                    // Hiện tại đang xử lý theo người dùng chọn.
-                    if (this.IsCheckedGetLastDHSTByPatient)
+                    if (currentTracking != null)
                     {
-                        CommonParam param = new CommonParam();
-                        MOS.Filter.HisDhstView1Filter dhstFilter1 = new MOS.Filter.HisDhstView1Filter();
-                        dhstFilter1.PATIENT_ID = this._Treatment.PATIENT_ID;
-                        var lastDHSTview1 = new BackendAdapter(param).Get<List<V_HIS_DHST_1>>
-                            ("api/HisDhst/GetView1", ApiConsumers.MosConsumer, dhstFilter1, param);
-                        if (lastDHSTview1 != null)
+                        MOS.Filter.HisDhstFilter dhstFilter = new MOS.Filter.HisDhstFilter();
+                        dhstFilter.TRACKING_ID = currentTracking.ID;
+                        rsDhstTracking = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>(HisRequestUriStore.HIS_DHST_GET, ApiConsumers.MosConsumer, dhstFilter, new CommonParam());
+                    }
+                    if (buttonDHSTCheck.HasValue)
+                    {
+                        if (buttonDHSTCheck.Value)
                         {
-                            AutoMapper.Mapper.CreateMap<V_HIS_DHST_1, HIS_DHST>();
-                            rsDhst = AutoMapper.Mapper.Map<List<HIS_DHST>>(lastDHSTview1);
+                            CommonParam param = new CommonParam();
+                            MOS.Filter.HisDhstView1Filter dhstFilter1 = new MOS.Filter.HisDhstView1Filter();
+                            dhstFilter1.PATIENT_ID = this._Treatment.PATIENT_ID;
+                            var lastDHSTview1 = new BackendAdapter(param).Get<List<V_HIS_DHST_1>>
+                                ("api/HisDhst/GetView1", ApiConsumers.MosConsumer, dhstFilter1, param);
+                            if (lastDHSTview1 != null)
+                            {
+                                AutoMapper.Mapper.CreateMap<V_HIS_DHST_1, HIS_DHST>();
+                                rsDhst = AutoMapper.Mapper.Map<List<HIS_DHST>>(lastDHSTview1);
+                            }
                         }
                     }
                     else
                     {
-                        if (currentTracking != null)
-                        {
-                            MOS.Filter.HisDhstFilter dhstFilter = new MOS.Filter.HisDhstFilter();
-                            dhstFilter.TRACKING_ID = currentTracking.ID;
-                            rsDhstTracking = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>(HisRequestUriStore.HIS_DHST_GET, ApiConsumers.MosConsumer, dhstFilter, new CommonParam());
-                        }
                         HIS_DHST rs = new HIS_DHST();
                         MOS.Filter.HisDhstFilter dhstFilter1 = new MOS.Filter.HisDhstFilter();
                         dhstFilter1.TREATMENT_ID = treatmentId;
                         rsDhst = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>(HisRequestUriStore.HIS_DHST_GET, ApiConsumers.MosConsumer, dhstFilter1, new CommonParam());
-
                     }
                 };
                 Task task = new Task(myaction);
                 task.Start();
-
                 await task;
 
-                bool showLastestDhst = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_SHOWLASTEST_DHST)) == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                if ((showLastestDhst && treatmentId > 0) || this.IsCheckedGetLastDHSTByPatient)
+                bool isLastestDhst = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_SHOWLASTEST_DHST)) == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                isLastestDhst = isLastestDhst && (!buttonDHSTCheck.HasValue && action == GlobalVariables.ActionAdd && treatmentId > 0);
+                bool isButtonDhstCheck = buttonDHSTCheck.HasValue && buttonDHSTCheck.Value;
+                if ((isLastestDhst || isButtonDhstCheck) && (rsDhst != null && rsDhst.Count > 0))
                 {
-                    if (rsDhst != null && rsDhst.Count > 0)
+                    var dhst = rsDhst.OrderByDescending(o => o.EXECUTE_TIME).ThenByDescending(o => o.ID).FirstOrDefault();
+                    FillDataDhstToControl(dhst);
+                    if (isLastestDhst)
                     {
-                        // Nếu IsCheckedGetLastDHSTByPatient xử lý theo cache thì bỏ điều kiện này.
-                        // Hiện tại đang xử lý theo người dùng chọn nên or để xử lý cả thêm/sửa
-                        if (action == GlobalVariables.ActionAdd || this.IsCheckedGetLastDHSTByPatient)  
+                        if (chkUpdateTimeDHST.Checked && dtTrackingTime != null && dtTrackingTime.DateTime != DateTime.MinValue)
                         {
-                            var dhst = rsDhst.OrderByDescending(o => o.EXECUTE_TIME).ThenByDescending(o => o.ID).FirstOrDefault();
-                            FillDataDhstToControl(dhst);
-                            if (!this.IsCheckedGetLastDHSTByPatient)
-                            {
-                                if (chkUpdateTimeDHST.Checked && dtTrackingTime != null && dtTrackingTime.DateTime != DateTime.MinValue)
-                                {
-                                    dhstProcessor.SetExecuteTime(ucControlDHST, Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTrackingTime.DateTime));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            FillDataDhstToControl(rsDhstTracking.FirstOrDefault());
+                            dhstProcessor.SetExecuteTime(ucControlDHST, Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTrackingTime.DateTime));
                         }
                     }
                 }
@@ -313,7 +302,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     if (rsDhstTracking != null && rsDhstTracking.Count > 0)
                     {
                         _Dhst = rsDhstTracking.FirstOrDefault();
-                        FillDataDhstToControl(rsDhstTracking.FirstOrDefault());
+                        FillDataDhstToControl(_Dhst);
                     }
                 }
             }
@@ -322,7 +311,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        
+
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             try

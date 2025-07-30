@@ -5009,14 +5009,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 {
                     this.IsCheckedGetLastDHSTByPatient = !IsCheckedGetLastDHSTByPatient;
                     this.SetImageDHST();
-                    if (this.IsCheckedGetLastDHSTByPatient)
-                    {
-                        this.InitDhst();
-                    }
-                    else
-                    {
-                        FillDataDhstToControl(new HIS_DHST());
-                    }
+                    this.InitDhst(this.IsCheckedGetLastDHSTByPatient);
                     //HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = this.currentControlStateRDO != null ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstan.chkLastDHSTByPatient).FirstOrDefault() : null;
                     //if (csAddOrUpdate != null)
                     //{
