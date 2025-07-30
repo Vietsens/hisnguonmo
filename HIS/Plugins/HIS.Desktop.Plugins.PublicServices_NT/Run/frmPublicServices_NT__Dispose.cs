@@ -89,7 +89,7 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                 gridViewPatientType.GridControl.DataSource = null;
                 gridControlPatientType.DataSource = null;
                 layoutControlItem7 = null;
-                emptySpaceItem7 = null;
+                //emptySpaceItem7 = null;
                 chkLayCaThuocVTNgoaiKho = null;
                 emptySpaceItem6 = null;
                 emptySpaceItem5 = null;
@@ -118,7 +118,7 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                 layoutControlItem5 = null;
                 Root = null;
                 layoutControl2 = null;
-                emptySpaceItem3 = null;
+                //emptySpaceItem3 = null;
                 layoutControlItem_GridPatient = null;
                 layoutControlItem6 = null;
                 rdoRequestDepartment__Current = null;
