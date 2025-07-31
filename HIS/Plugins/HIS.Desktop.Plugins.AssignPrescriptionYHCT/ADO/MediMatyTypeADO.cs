@@ -59,6 +59,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 this.IS_CHEMICAL_SUBSTANCE = materialType.IS_CHEMICAL_SUBSTANCE;
                 this.IsStent = ((materialType.IS_STENT ?? 0) == GlobalVariables.CommonNumberTrue ? true : false);
                 this.IsAllowOdd = materialType.IS_ALLOW_ODD == 1 ? true : false;
+
             }
             catch (Exception ex)
             {
@@ -73,8 +74,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 var mety = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == inputData.MEDICINE_TYPE_ID);
                 if (mety != null)
                 {
-                    Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, mety);
 
+                    Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, mety);
+                    this.HTU_TEXT = inputData.HTU_TEXT;
                     this.SERVICE_UNIT_ID = (inputData.SERVICE_UNIT_ID ?? 0);
                     this.SERVICE_UNIT_CODE = inputData.SERVICE_UNIT_CODE;
                     this.SERVICE_UNIT_NAME = inputData.SERVICE_UNIT_NAME;
@@ -153,6 +155,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 if (maty != null)
                 {
                     Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, maty);
+                    //qtcode
+                    this.HTU_TEXT = inputData.HTU_TEXT; 
                     this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU;
                     this.ID = (inputData.MATERIAL_TYPE_ID ?? 0);
                     this.MEDICINE_TYPE_CODE = inputData.MATERIAL_TYPE_CODE;

@@ -186,7 +186,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 {
                     this.HisExpMestTemplateSDO.EmteMedicineTypes.Clear();
                     this.HisExpMestTemplateSDO.EmteMaterialTypes.Clear();
-
                     foreach (var item in this.mediMatyTypeADOs)
                     {
                         var service = BackendDataWorker.Get<V_HIS_SERVICE>().SingleOrDefault(o => o.ID == item.SERVICE_ID);
@@ -201,6 +200,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                             emteMedicineType.MEDICINE_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                             emteMedicineType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
                             emteMedicineType.TUTORIAL = item.TUTORIAL;
+                            emteMedicineType.HTU_TEXT = item.HTU_TEXT;
                             emteMedicineType.IS_EXPEND = (item.IsExpend ? (short)1 : (short)0);
                             this.HisExpMestTemplateSDO.EmteMedicineTypes.Add(emteMedicineType);
                         }
@@ -213,6 +213,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                                 emteMaterialType.SERVICE_UNIT_ID = service.SERVICE_UNIT_ID;
                             emteMaterialType.MATERIAL_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                             emteMaterialType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
+                            emteMaterialType.HTU_TEXT = item.HTU_TEXT;
                             emteMaterialType.IS_EXPEND = (item.IsExpend ? (short)1 : (short)0);
                             this.HisExpMestTemplateSDO.EmteMaterialTypes.Add(emteMaterialType);
                         }
@@ -228,6 +229,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                             emteMedicineType.IS_OUT_MEDI_STOCK = 1;
                             emteMedicineType.TUTORIAL = item.TUTORIAL;
                             emteMedicineType.IS_EXPEND = (item.IsExpend ? (short)1 : (short)0);
+                            emteMedicineType.HTU_TEXT = item.HTU_TEXT; 
                             this.HisExpMestTemplateSDO.EmteMedicineTypes.Add(emteMedicineType);
                         }
                         else if (item.DataType == VATTU_DM)
@@ -241,6 +243,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                             emteMaterialType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
                             emteMaterialType.IS_EXPEND = (item.IsExpend ? (short)1 : (short)0);
                             emteMaterialType.IS_OUT_MEDI_STOCK = 1;
+                            //qtcode
+                            emteMaterialType.HTU_TEXT = item.HTU_TEXT; 
                             this.HisExpMestTemplateSDO.EmteMaterialTypes.Add(emteMaterialType);
                         }
                         else if (item.DataType == THUOC_TUTUC)//thuoc tu tuc
@@ -251,6 +255,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                             emteMedicineType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
                             emteMedicineType.IS_OUT_MEDI_STOCK = 1;
                             emteMedicineType.TUTORIAL = item.TUTORIAL;
+                            emteMedicineType.HTU_TEXT = item.HTU_TEXT;
                             emteMedicineType.IS_EXPEND = (item.IsExpend ? (short)1 : (short)0);
                             this.HisExpMestTemplateSDO.EmteMedicineTypes.Add(emteMedicineType);
                         }
