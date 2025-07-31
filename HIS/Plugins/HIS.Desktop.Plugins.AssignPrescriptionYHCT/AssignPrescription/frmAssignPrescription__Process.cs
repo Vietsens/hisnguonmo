@@ -1430,6 +1430,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 this.txtLadder.Text = "";
                 this.txtAdvise.Text = "";
                 this.txtHuongDan.Text = "";
+                //qtcode
+                this.memHtu.Text = ""; 
                 this.spinSoNgay.Enabled = true;
 
                 this.actionType = (this.assignPrescriptionEditADO != null ? GlobalVariables.ActionEdit : GlobalVariables.ActionAdd);
@@ -1901,7 +1903,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
 
-        private void ProcessGetEmteMedcineType(List<V_HIS_EMTE_MEDICINE_TYPE> listEmteMedcineType)
+        private void ProcessGetEmteMedcineType(List<V_HIS_EMTE_MEDICINE_TYPE> listEmteMedcineType) // list V_HIS_EMTE_MEDICINE_TYPE được lấy ra theo ID của HIS_EXP_MEST_TEMPLATE
         {
             try
             {
@@ -1982,7 +1984,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
 
-        private void ProcessChoiceExpMestTemplate(MOS.EFMODEL.DataModels.HIS_EXP_MEST_TEMPLATE expTemplate)
+        private void ProcessChoiceExpMestTemplate(MOS.EFMODEL.DataModels.HIS_EXP_MEST_TEMPLATE expTemplate) // có dữ liệu của HIS_EXP_MEST_TEMPLATE
         {
             try
             {
@@ -1996,7 +1998,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 //Release tat ca cac thuoc/ vat tu da duoc take bean truoc do nhung chua duoc luu
                 this.ReleaseAllMediByUser();
 
-                this.ProcessGetEmteMedcineType(this.GetEmteMedicineTypeByExpMestId(expTemplate.ID));
+                this.ProcessGetEmteMedcineType(this.GetEmteMedicineTypeByExpMestId(expTemplate.ID)); //truyền vào ID để lấy ra 1 list V_HIS_EMTE_MEDICINE_TYPE
                 this.ProcessGetEmteMaterialType(this.GetEmteMaterialTypeByExpMestId(expTemplate.ID));
                 this.ProcessRemecountTutorial();
                 this.ProcessInstructionTimeMediForEdit();
@@ -2631,7 +2633,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         }
 
         private void SetHuongDanFromSoLuongNgay()
-        {
+       {
             try
             {
                 if (isNotChangeTutorial)
@@ -2738,8 +2740,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     txtLadder.Text = (remedyCountMax ?? 0).ToString();
                 }
                 var medimaty = this.mediMatyTypeADOs.FirstOrDefault(o => !String.IsNullOrEmpty(o.TUTORIAL));
-
+                
                 txtHuongDan.Text = (medimaty != null ? medimaty.TUTORIAL : "");
+                //qtcode
+                memHtu.Text = medimaty != null ? medimaty.HTU_TEXT : ""; 
                 this.isNotChangeTutorial = false;
             }
             catch (Exception ex)

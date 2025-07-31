@@ -803,7 +803,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             LogTheadInSessionInfo(Add_TabMedicine, "btnAdd_TabMedicine_Click");
         }
-
+        public void ResetValueForAdd()
+        {
+            this.memHtu.Text = "";
+            this.txtHuongDan.Text = "";
+        }
         private void Add_TabMedicine()
         {
             try
@@ -885,6 +889,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         LogSystem.Debug("btnAdd_TabMedicine_Click => thao tac khong hop le. actionBosung = " + this.actionBosung);
                         break;
                 }
+                ResetValueForAdd();
             }
             catch (Exception ex)
             {
@@ -1604,7 +1609,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         {
                             this.txtExpMestTemplateCode.Text = data.EXP_MEST_TEMPLATE_CODE;
                             this.cboExpMestTemplate.Properties.Buttons[1].Visible = true;
-                            this.ProcessChoiceExpMestTemplate(data);
+                            this.ProcessChoiceExpMestTemplate(data); // dữ liệu HIS_EXP_MEST_TEMPLATE
                             this.ResetFocusMediMaty(!MediStockNull);
                         }
                     }
