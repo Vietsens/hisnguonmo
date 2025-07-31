@@ -383,7 +383,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOIT
                 if (electronicBillDataInput.Discount.HasValue && electronicBillDataInput.Discount.Value > 0)
                 {
                     Product pd = new Product();
-                    pd.ProdName = "Tiền chiết khấu";
+                    pd.ProdName = "Tiền chiết khấu";   
                     pd.ProdPrice = "0";
                     pd.ProdQuantity = "0";
                     pd.Amount = String.Format("{0:0.####}", electronicBillDataInput.Discount.Value);

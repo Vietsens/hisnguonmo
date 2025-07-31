@@ -54,8 +54,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                     result.Note = dataInput.Transaction.DESCRIPTION;
                     result.TransactionTime = dataInput.Transaction.TRANSACTION_TIME;
                     result.BuyerEmail = dataInput.Transaction.BUYER_EMAIL;
-                    //result.BuyerIdentityNumber = dataInput.Transaction.BUYER_IDENTITY_NUMBER;
-                    //result.BuyerIdentityType = dataInput.Transaction.BUYER_IDENTITY_TYPE + "";
+                    result.BuyerIdentityNumber = dataInput.Transaction.BUYER_IDENTITY_NUMBER;
+                    result.BuyerIdentityType = dataInput.Transaction.BUYER_IDENTITY_TYPE + "";
 
                     patientCode = dataInput.Transaction.TDL_PATIENT_CODE;
                     treatmentCode = dataInput.Transaction.TDL_TREATMENT_CODE;
