@@ -35,6 +35,7 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate.ADO
         public string Toi { get; set; }
         public decimal? AMOUNT { get; set; }
         public short? IsOutMediStock { get; set; }
+        public string HTU_TEXT { get; set; }
 
         public MediMatyTypeADO()
         {
@@ -126,6 +127,7 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate.ADO
 
 
                     this.HTU_ID = inputData.HTU_ID;
+                    this.HTU_TEXT = inputData.HTU_TEXT;
                 }
                 else
                 {
@@ -162,6 +164,7 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate.ADO
                     this.TUTORIAL = "";
                     this.MEDICINE_USE_FORM_ID = null;
                     this.MEDICINE_USE_FORM_NAME = "";
+                    this.HTU_TEXT = inputData.HTU_TEXT;
                 }
                 else
                 {

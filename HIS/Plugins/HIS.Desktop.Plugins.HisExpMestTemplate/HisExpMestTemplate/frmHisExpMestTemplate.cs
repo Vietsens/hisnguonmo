@@ -417,6 +417,10 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate
                     var data = (List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TEMPLATE>)apiResult.Where(o => o.CREATOR == this.loggingName || o.IS_PUBLIC == 1).ToList();
                     if (data != null)
                     {
+                        //if (gridControlFormList.InvokeRequired)
+                        //    gridControlFormList.Invoke(new Action(() => gridControlFormList.DataSource = data));
+                        //else
+                        //    gridControlFormList.DataSource = data;
                         gridviewFormList.GridControl.DataSource = data;
                         //rowCount = (data == null ? 0 : data.Count);
                         //dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
@@ -998,6 +1002,8 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate
                         mediType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
                         mediType.TUTORIAL = item.TUTORIAL;
                         mediType.NOON = item.Chieu;
+                        mediType.HTU_TEXT = item.HTU_TEXT;
+
 
                         if (currentDTO != null && currentDTO.ID > 0)
                         {
@@ -1023,6 +1029,7 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate
                         maty.MATERIAL_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                         maty.SERVICE_UNIT_ID = item.SERVICE_UNIT_ID;
                         maty.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
+                        maty.HTU_TEXT = item.HTU_TEXT;
 
                         if (currentDTO != null && currentDTO.ID > 0)
                         {
@@ -2022,6 +2029,7 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate
                 cboMedicineUseForm.EditValue = null;
                 txtAmount.Text = "";
                 txtTutorial.Text = "";
+                txtHTU.Text = "";
                 this.VisibleButton(this.actionBosung);
                 cboChooseMediMate1.Focus();
 
@@ -2046,7 +2054,7 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate
                 data.AMOUNT = (!String.IsNullOrEmpty(txtAmount.Text.Trim())) ? decimal.Parse(txtAmount.Text.Trim()) : (decimal?)null;
                 data.TUTORIAL = txtTutorial.Text.Trim();
                 data.IsOutMediStock = chkOutStock.Checked ? (short?)1 : (short?)0;
-
+                data.HTU_TEXT = txtHTU.Text.Trim();
             }
             catch (Exception ex)
             {
@@ -2826,6 +2834,7 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate
                             //Ngược lại nếu là số nguyên thì hiển thị giữ nguyên giá trị     
                             this.txtAmount.EditValue = ConvertNumber.ConvertDecToFracByConfig((double)(this.MediMatyTypeADO.AMOUNT ?? 0));
                             this.txtTutorial.Text = this.MediMatyTypeADO.TUTORIAL;
+                            this.txtHTU.Text = this.MediMatyTypeADO.HTU_TEXT;
 
                             Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidationProviderAdd, this.dxErrorProvider);
                             this.VisibleButton(this.actionBosung);
@@ -2890,6 +2899,7 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate
                         {
                             this.SetHuongDanFromSoLuongNgay();
                         }
+                        txtHTU.Text = this.MediMatyTypeADO.HTU_TEXT;
                     }
                 }
                 else if (e.KeyCode == Keys.Down)
@@ -3141,6 +3151,7 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate
                         {
                             this.SetHuongDanFromSoLuongNgay();
                         }
+                        txtHTU.Text = this.MediMatyTypeADO.HTU_TEXT;
 
                     }
                     Inventec.Common.Logging.LogSystem.Debug("gridViewMediMaty_KeyDown.4");
@@ -3204,6 +3215,7 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate
                     {
                         this.SetHuongDanFromSoLuongNgay();
                     }
+                    txtHTU.Text = this.MediMatyTypeADO.HTU_TEXT;
                 }
                 Inventec.Common.Logging.LogSystem.Debug("gridViewMediMaty_RowClick.7");
             }
