@@ -292,7 +292,7 @@
     <value>Chiều:</value>
   </data>
   <data name="frmHisExpMestTemplate.lciHtu.Text" xml:space="preserve">
-    <value>Cách dùng</value>
+    <value>Thời gian dùng:</value>
   </data>
   <data name="frmHisExpMestTemplate.lciPrescriptionType.Text" xml:space="preserve">
     <value>Loại đơn:</value>
