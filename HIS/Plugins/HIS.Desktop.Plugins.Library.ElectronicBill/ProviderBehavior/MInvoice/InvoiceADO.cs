@@ -321,4 +321,31 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
         public string hoadon68_id { get; set; }
         public string tthai { get; set; }
     }
+    //delete
+    public class DeleteInvoiceData
+    {
+        public string editmode { get; set; }
+        public List<DeleteDataItem> data { get; set; }
+    }
+
+    public class DeleteDataItem
+    {
+        public string inv_invoiceSeries { get; set; }
+        public string inv_invoiceAuth_Id { get; set; }
+    }
+
+    public class DeleteInvoiceResult
+    {
+        public string code { get; set; }
+        public string message { get; set; }
+        public bool ok { get; set; }
+        public InvoiceDataDelete data { get; set; }
+    }
+
+    public class InvoiceDataDelete
+    {
+        public string inv_invoiceSeries { get; set; }
+        public string inv_invoiceAuth_Id { get; set; }
+        public string key_api { get; set; }
+    }
 }

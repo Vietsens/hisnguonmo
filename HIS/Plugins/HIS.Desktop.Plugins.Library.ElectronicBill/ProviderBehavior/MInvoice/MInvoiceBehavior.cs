@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Data;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Template;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
 {
@@ -64,7 +65,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
                             else
                             {
                                 TaoHoaDonDienTu(ref result, serviceUrl, adoLogin, loginResult, _templateType);
-                                if (result.InvoiceCode != null)
+                                if (result.InvoiceCode != null && configArr.Count() == 4 && configArr[3] == "1")
                                 {
                                     KyHoaDonDienTu(ref result, serviceUrl, adoLogin, loginResult, _templateType);
                                 }
@@ -99,31 +100,86 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
             }
             return result;
         }
+        private void DeleteInvoice(ref ElectronicBillResult result, string serviceUrl, LoginDataMinvoice adoLogin, ApiDataResult loginResult)
+        {
+            try
+            {
+                DeleteInvoiceData deleteInvoiceData = new DeleteInvoiceData
+                {
+                    editmode = "3",
+                    data = new List<DeleteDataItem>
+                    {
+                        new DeleteDataItem
+                        {
+                            inv_invoiceSeries = ElectronicBillDataInput.TemplateCode + ElectronicBillDataInput.SymbolCode,
+                            inv_invoiceAuth_Id = result.hoadon68_id.ToString()
+                        }
+                    }
+                };
+
+                string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(deleteInvoiceData);
+                var deleteInvoiceResult = Base.ApiConsumerV2.CreateRequest<DeleteInvoiceResult>(System.Net.WebRequestMethods.Http.Post, serviceUrl, "api/InvoiceApi78/SaveV2", loginResult.token, adoLogin.ma_dvcs, sendJsonData
+                );
+
+                if (deleteInvoiceResult != null && deleteInvoiceResult.ok && deleteInvoiceResult.code == "00")
+                {
+                    Inventec.Common.Logging.LogSystem.Info(
+                        string.Format("Xóa hóa đơn thành công: inv_invoiceSeries={0}, inv_invoiceAuth_Id={1}",
+                            deleteInvoiceData.data[0].inv_invoiceSeries,
+                            deleteInvoiceData.data[0].inv_invoiceAuth_Id)
+                    );
+                }
+                else
+                {
+                    string message = deleteInvoiceResult != null ? deleteInvoiceResult.message ?? "Xóa hóa đơn thất bại" : "Xóa hóa đơn thất bại";
+                    Inventec.Common.Logging.LogSystem.Error(
+                        string.Format("Xóa hóa đơn thất bại: {0}", message)
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(
+                    string.Format("Lỗi khi gọi API xóa hóa đơn: {0}", ex.Message)
+                );
+            }
+            ElectronicBillResultUtil.Set(ref result, false, "Ký hóa đơn thất bại và đã xóa hóa đơn");
+        }
+
         private void KyHoaDonDienTu(ref ElectronicBillResult result, string serviceUrl, LoginDataMinvoice adoLogin, ApiDataResult loginResult, TemplateEnum.TYPE templateType)
         {
             try
             {
                 var signData = new { hoadon68_id = result.InvoiceCode };
                 string signJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(signData);
-                var signResult = Base.ApiConsumerV2.CreateRequest<ApiSignDataResult>(System.Net.WebRequestMethods.Http.Post, serviceUrl, "api/InvoiceApi78/Sign", loginResult.token, adoLogin.ma_dvcs, signJsonData
-                );
-
-                if (signResult == null || signResult.code != "00" || signResult.data == null || signResult.data == null)
+                ApiSignDataResult signResult = new ApiSignDataResult();
+                try
+                {
+                    signResult = Base.ApiConsumerV2.CreateRequest<ApiSignDataResult>(System.Net.WebRequestMethods.Http.Post, serviceUrl, "api/InvoiceApi78/Sign", loginResult.token, adoLogin.ma_dvcs, signJsonData);
+                }
+                catch (Exception ex)
+                {
+                    LogSystem.Error("Lỗi khi gọi API ký hóa đơn: " + ex);
+                    DeleteInvoice(ref result, serviceUrl, adoLogin, loginResult);
+                    return;
+                }
+                if (signResult == null || signResult.code != "00" || signResult.data == null)
                 {
                     string message = signResult != null ? signResult.message : "Ký hóa đơn thất bại";
                     ElectronicBillResultUtil.Set(ref result, false, message);
                     Inventec.Common.Logging.LogSystem.Error(string.Format("Ký hóa đơn thất bại: {0}", message));
+                    DeleteInvoice(ref result, serviceUrl, adoLogin, loginResult);
                     return;
                 }
 
-                if (signResult.data.data.tthai != "Đã gửi")
+                if (signResult.data.data == null || signResult.data.data.tthai != "Đã gửi")
                 {
                     ElectronicBillResultUtil.Set(ref result, false, "Hóa đơn chưa được gửi CQT");
                     Inventec.Common.Logging.LogSystem.Error("Hóa đơn chưa được gửi CQT");
                     return;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex.Message);
             }
