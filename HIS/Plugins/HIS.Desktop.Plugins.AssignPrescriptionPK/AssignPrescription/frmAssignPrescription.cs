@@ -5792,7 +5792,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         this.txtMediMatyForPrescription.Text = this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_NAME;
                     }
 
-                    this.VisibleInputControl(!(currentMedicineTypeADOForEdit.IS_OXYGEN == GlobalVariables.CommonNumberTrue));
+                    this.VisibleInputControl(!(currentMedicineTypeADOForEdit.IS_OXYGEN == GlobalVariables.CommonNumberTrue));    
 
                     this.lciTocDoTruyen.Enabled = (this.currentMedicineTypeADOForEdit.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC
                         || this.currentMedicineTypeADOForEdit.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
