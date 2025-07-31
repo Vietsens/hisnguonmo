@@ -406,8 +406,12 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                             {
                                                 combinedServices = " " + string.Join("  ", servicesInLine);
                                             }
+                                            else
+                                            {
+                                                combinedServices = " " + string.Join("  ", servicesInLine);
+                                            }
 
-                                            _str.Add(combinedServices);
+                                                _str.Add(combinedServices);
                                         }
                                     }
                                 }
