@@ -22,6 +22,7 @@ using HIS.Desktop.ADO;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.SurgServiceReqExecute.Base;
+using HIS.Desktop.Plugins.SurgServiceReqExecute.Config;
 using HIS.Desktop.Plugins.SurgServiceReqExecute.Resources;
 using HIS.Desktop.Utility;
 using Inventec.Common.Controls.EditorLoader;
