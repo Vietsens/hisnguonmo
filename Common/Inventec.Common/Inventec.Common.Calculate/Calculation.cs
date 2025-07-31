@@ -16,45 +16,59 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace Inventec.Common.Calculate
 {
     public class Calculation
     {
-        public static decimal MucLocCauThan(long patientDob, decimal weight, decimal height, decimal resultTestIndex, bool isMale)
+        public static List<decimal> MucLocCauThan(long patientDob, decimal weight, decimal height, decimal resultTestIndex, bool isMale)
         {
-            decimal result = 0;
+            List<decimal> result = new List<decimal>();
             try
             {
                 var age = Age(patientDob);
                 if (age >= 17)
                 {
-                    result = isMale ? (140 - age) * weight / (resultTestIndex * 72) : (140 - age) * weight * (decimal)0.85f / (resultTestIndex * 72);
+                    var cockcroft = isMale ? (140 - age) * weight / (resultTestIndex * 72) : (140 - age) * weight * (decimal)0.85 / (resultTestIndex * 72);
+                    result.Add(Math.Round(cockcroft, 4));
+
+                    var mdrd = 186 * (decimal)Math.Pow((double)resultTestIndex, -1.154) * (decimal)Math.Pow((double)age, -0.203);
+                    if (!isMale) mdrd *= (decimal)0.742;
+                    result.Add(Math.Round(mdrd, 4));
+
+                    var k = isMale ? (decimal)0.9 : (decimal)0.7;
+                    var alpha = isMale ? -0.302 : -0.241;
+                    var scr_k = resultTestIndex / k;
+                    var ckdEpi = 142 * (decimal)Math.Pow((double)Math.Min(scr_k, 1), alpha) * (decimal)Math.Pow((double)Math.Max(scr_k, 1), -1.2) * (decimal)Math.Pow(0.9938, (double)age);
+                    if (!isMale) ckdEpi *= (decimal)1.012;
+                    result.Add(Math.Round(ckdEpi, 4));
                 }
                 else
                 {
                     decimal schwartzConstant = 0;
                     if (13 <= age && age <= 17)
                     {
-                        schwartzConstant = isMale ? (decimal)0.70f : (decimal)0.55f;
+                        schwartzConstant = isMale ? (decimal)0.70 : (decimal)0.55;
                     }
                     else if (1 <= age && age <= 12)
                     {
-                        schwartzConstant = (decimal)0.55f;
+                        schwartzConstant = (decimal)0.55;
                     }
                     else if (age < 1)
                     {
                         int monthOld = DifferenceDate(patientDob, (long)SystemDateTimeToTimeNumber(DateTime.Now)) / 30;
                         decimal standardWeight = GetStandardWeight(monthOld, isMale);
-                        schwartzConstant = weight < standardWeight ? (decimal)0.33f : (decimal)0.45f;
+                        schwartzConstant = weight < standardWeight ? (decimal)0.33 : (decimal)0.45;
                     }
-                    result = schwartzConstant * height / resultTestIndex;
+                    var schwartz = schwartzConstant * height / resultTestIndex;
+                    result.Add(Math.Round(schwartz, 4));
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                result = -1;
+                result = new List<decimal> { -1 };
             }
             return result;
         }
@@ -62,20 +76,24 @@ namespace Inventec.Common.Calculate
         public static string MucLocCauThanCrCleGFR(long patientDob, decimal weight, decimal height, decimal resultTestIndex, bool isMale)
         {
             string result = null;
-
             try
             {
                 var age = Age(patientDob);
-                var number = MucLocCauThan(patientDob, weight, height, resultTestIndex, isMale);
-                number = Math.Round(number, 4); 
-
+                var results = MucLocCauThan(patientDob, weight, height, resultTestIndex, isMale);
                 if (age >= 17)
                 {
-                    result = string.Format("CrCl: {0} ml/phút", number);
+                    if (results.Count >= 3)
+                    {
+                        result = string.Format("CrCl: {0} ml/phút (Cockcroft-Gault); eGFR: {1} (MDRD-Jaffe); {2} (CKD-EPI 2021)", results[0], results[1], results[2]);
+
+                    }
                 }
                 else
                 {
-                    result = string.Format("eGFR: {0} ml/phút/1,73 m2", number);
+                    if (results.Count >= 1)
+                    {
+                        result = string.Format("eGFR: {0} ml/phút/1.73m2 (Schwartz)", results[0]);
+                    }
                 }
             }
             catch (Exception)
