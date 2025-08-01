@@ -47,6 +47,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                 {
                     Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, mety);
 
+                    this.HTU_TEXT = inputData.HTU_TEXT;
                     this.SERVICE_UNIT_ID = (inputData.SERVICE_UNIT_ID ?? 0);
                     this.SERVICE_UNIT_CODE = inputData.SERVICE_UNIT_CODE;
                     this.SERVICE_UNIT_NAME = inputData.SERVICE_UNIT_NAME;
@@ -154,6 +155,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                     Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, maty);
                     this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU;
                     this.ID = (inputData.MATERIAL_TYPE_ID ?? 0);
+                    this.HTU_TEXT = inputData.HTU_TEXT;
                     this.MEDICINE_TYPE_CODE = inputData.MATERIAL_TYPE_CODE;
                     this.MEDICINE_TYPE_NAME = inputData.MATERIAL_TYPE_NAME;
                     this.SERVICE_UNIT_ID = (inputData.SERVICE_UNIT_ID ?? 0);

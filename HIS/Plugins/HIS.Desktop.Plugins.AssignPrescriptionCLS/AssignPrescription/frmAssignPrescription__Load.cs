@@ -744,11 +744,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
             try
             {
-                if(HisConfigCFG.IsDefaultPatientTypeOption)
-				{
-                    result = currentPatientTypeWithPatientTypeAlter.Where(o => o.ID == Int64.Parse(cboPatientType.EditValue.ToString())).FirstOrDefault();
-                    return result;
-				}                    
+                if (HisConfigCFG.IsDefaultPatientTypeOption)
+                {
+                    if (currentPatientTypeWithPatientTypeAlter != null && cboPatientType != null && cboPatientType.EditValue != null)
+                    {
+                        result = currentPatientTypeWithPatientTypeAlter.Where(o => o.ID == Int64.Parse(cboPatientType.EditValue.ToString())).FirstOrDefault();
+                        return result;
+                    }
+                   
+                }
                 bool isFullHeinInfoData = IsFullHeinInfo(medimaty);
                 if (patientTypeId == HisConfigCFG.PatientTypeId__BHYT && isFullHeinInfoData)
                 {
@@ -859,7 +863,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             {
                 valid = (medimaty.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC &&
                             !String.IsNullOrEmpty(medimaty.ACTIVE_INGR_BHYT_CODE)
-                    //&& !String.IsNullOrEmpty(medimaty.REGISTER_NUMBER)
+                            //&& !String.IsNullOrEmpty(medimaty.REGISTER_NUMBER)
                             && (medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM
                             || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL
                             || medimaty.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_UT))
