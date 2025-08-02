@@ -79,5 +79,6 @@ namespace MPS.Processor.Mps000196
         internal const string TREATMENT_FEE_TRANSFER = "TREATMENT_FEE_TRANSFER";
         internal const string TOTAL_NUMBER_FILM = "TOTAL_NUMBER_FILM";
         internal const string TOTAL_NUMBER_FILM_STR = "TOTAL_NUMBER_FILM_STR";
+        internal const string TREATMENT_DAY_COUNT_6556 = "TREATMENT_DAY_COUNT_6556";
     }
 }
