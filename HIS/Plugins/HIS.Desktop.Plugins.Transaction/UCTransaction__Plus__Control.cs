@@ -1272,7 +1272,7 @@ namespace HIS.Desktop.Plugins.Transaction
                             PrintPhieuGiuTheBhyt();
                             break;
                         case PopupMenuProcessor.ItemType.InPhieuThanhToan:
-                            PrintInPhieuThanhToan();
+                            PrintInPhieuThanhToan();   
                             break;
                         case PopupMenuProcessor.ItemType.TamKhoa:
                             TemporaryLock();
@@ -1358,48 +1358,35 @@ namespace HIS.Desktop.Plugins.Transaction
         }
         private void btnQrListClick()
         {
-
-            if (this.currentTreatment == null)
-                return;
-            Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.RequestDeposit").FirstOrDefault();
-            Inventec.Desktop.Common.Modules.Module moduleDeposit = new Inventec.Desktop.Common.Modules.Module();
-            if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.RequestDeposit'");
-            if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
-            {
-                List<object> listArgs = new List<object>();
-                listArgs.Add(currentTreatment.ID);
-
-                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.RequestDeposit", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
-            }
-
-
-
             try
             {
                 if (this.currentTreatment == null)
                     return;
 
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
-                        .Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisTransReqList")
-                        .FirstOrDefault();
+                    .Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisTransReqList")
+                    .FirstOrDefault();
 
-                    if (moduleData == null)
-                        Inventec.Common.Logging.LogSystem.Error("Khong tim thay moduleLink = HIS.Desktop.Plugins.HisTransReqList");
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Khong tim thay moduleLink = HIS.Desktop.Plugins.HisTransReqList");
+                    return;
+                }
 
-                    if (moduleData.ISPlugin && moduleData.ExtensionInfo != null)
-                    {
-                        List<object> listArgs = new List<object>();
-                      
-                        listArgs.Add(currentTreatment.ID);
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(currentTreatment.ID);
+                    //listArgs.Add("treatmentId");
 
-                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.RequestDeposit", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
-                        
 
-                        if (extenceInstance == null)
-                            throw new ArgumentNullException("moduleData is null");
-
-                        ((Form)extenceInstance).ShowDialog();
-                    }
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                        "HIS.Desktop.Plugins.HisTransReqList",
+                        this.currentModule.RoomId,
+                        this.currentModule.RoomTypeId,
+                        listArgs
+                    );
+                }
             }
             catch (Exception ex)
             {

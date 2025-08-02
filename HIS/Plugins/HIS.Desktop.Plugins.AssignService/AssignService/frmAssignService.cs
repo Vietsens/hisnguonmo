@@ -1518,7 +1518,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 var allDatas = this.ServiceIsleafADOs != null && this.ServiceIsleafADOs.Count > 0 ? this.ServiceIsleafADOs.AsQueryable() : null;
                 this.gridControlServiceProcess.DataSource = allDatas.ToList();
                 this.toggleSwitchDataChecked.EditValue = false;
-                isCheckAssignServiceSimultaneityOption = false;
+                //isCheckAssignServiceSimultaneityOption = false;
                 this.SetEnableButtonControl(this.actionType);
                 Inventec.Common.Logging.LogSystem.Debug("ResetDefaultGridData. 3");
             }
