@@ -47,7 +47,7 @@
       <HintPath>..\..\..\..\LIB\WCF\CHC.WCF\Client\CHC.WCFClient.dll</HintPath>
     </Reference>
     <Reference Include="CPA.WCFClient.CallPatientClient">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\CPA.WCFClient.CallPatientClient.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\CPA.WCFClient.CallPatientClient.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -82,7 +82,7 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TotalPriceInfo">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.TotalPriceInfo.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.TotalPriceInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreatmentInfo">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreatmentInfo\HIS.UC.TreatmentInfo.dll</HintPath>
