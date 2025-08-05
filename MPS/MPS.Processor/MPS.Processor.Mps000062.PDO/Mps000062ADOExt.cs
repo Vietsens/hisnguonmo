@@ -687,6 +687,10 @@ namespace MPS.Processor.Mps000062.PDO
         public string DATA_DAY_HTU_REPX { get; set; }
         public long? ASSIGN_TIME_TO { get; set; }
         public string ADVISE { get; set; }
+
+        public string BED_LOG_BED_CODE { get; set; }
+        public string BED_LOG_BED_NAME { get; set; }
+
         public ExpMestMetyReqADO() { }
         public ExpMestMetyReqADO(HIS_EXP_MEST_MEDICINE data)
         {
@@ -759,6 +763,8 @@ namespace MPS.Processor.Mps000062.PDO
         public string ACTIVE_INGR_BHYT_NAME { get; set; }
         public long INTRUCTION_DATE { get; set; }
         public string CONCENTRA { get; set; }
+        public string BED_LOG_BED_CODE { get; set; }
+        public string BED_LOG_BED_NAME { get; set; }
         public ServiceReqMetyADO() { }
         public ServiceReqMetyADO(HIS_SERVICE_REQ_METY data, long trackingId, List<HIS_SERVICE_REQ> ServiceReqs)
         {
@@ -939,6 +945,8 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDICINE_LINE_NAME { get; set; }
         public string MEDICINE_GROUP_NAME { get; set; }
         public string DOSAGE_FORM_NAME { get; set; }
+        public string BED_LOG_BED_CODE { get; set; }
+        public string BED_LOG_BED_NAME { get; set; }
         public ImpMestMedicineADO() { }
 
         public ImpMestMedicineADO(V_HIS_IMP_MEST_MEDICINE data, HIS_SERVICE_REQ ServiceReq)
@@ -1089,6 +1097,8 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDICINE_LINE_NAME { get; set; }
         public string MEDICINE_GROUP_NAME { get; set; }
         public string DOSAGE_FORM_NAME { get; set; }
+        public string BED_LOG_BED_CODE { get; set; }
+        public string BED_LOG_BED_NAME { get; set; }
         public ExpMestMedicineADO() { }
         public ExpMestMedicineADO(HIS_EXP_MEST_MEDICINE data, List<V_HIS_MEDICINE_TYPE> MedicineTypes)
         {
