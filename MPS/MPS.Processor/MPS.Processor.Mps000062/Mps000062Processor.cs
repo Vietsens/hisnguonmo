@@ -4180,6 +4180,11 @@ namespace MPS.Processor.Mps000062
                                 current.NUM_ORDER_DOSAGE_FORM = dosaForm.NUM_ORDER ?? 0;
                                 current.DOSAGE_FORM_NAME = dosaForm.DOSAGE_FORM_NAME;
                             }
+                            if (rdo.BedLog != null)
+                            {
+                                current.BED_LOG_BED_CODE = rdo.BedLog.BED_CODE;
+                                current.BED_LOG_BED_NAME = rdo.BedLog.BED_NAME;
+                            }
                         }
                         data.Add(ado);
                     }
@@ -4234,6 +4239,11 @@ namespace MPS.Processor.Mps000062
                             {
                                 ado.NUM_ORDER_DOSAGE_FORM = dosaForm.NUM_ORDER ?? 0;
                                 ado.DOSAGE_FORM_NAME = dosaForm.DOSAGE_FORM_NAME;
+                            }
+                            if (rdo.BedLog != null)
+                            {
+                                ado.BED_LOG_BED_CODE = rdo.BedLog.BED_CODE;
+                                ado.BED_LOG_BED_NAME = rdo.BedLog.BED_NAME;
                             }
                         }
                         data.Add(ado);
@@ -4318,6 +4328,11 @@ namespace MPS.Processor.Mps000062
                                 ado.DOSAGE_FORM_NAME = dosaForm.DOSAGE_FORM_NAME;
                             }
                         }
+                        if (rdo.BedLog != null)
+                        {
+                            ado.BED_LOG_BED_CODE = rdo.BedLog.BED_CODE;
+                            ado.BED_LOG_BED_NAME = rdo.BedLog.BED_NAME;
+                        }
                         data.Add(ado);
                     }
                     data = data.OrderByDescending(o => o.NUM_ORDER_MEDICINE_LINE ?? -1).ThenByDescending(o => o.NUM_ORDER_MEDICINE_USE_FORM ?? -1).ThenByDescending(o => o.NUMBER_BY_GROUP ?? -1).ThenByDescending(o => o.NUM_ORDER_DOSAGE_FORM ?? -1).ThenBy(o => o.NUM_ORDER).ToList();
@@ -4383,6 +4398,11 @@ namespace MPS.Processor.Mps000062
                                 ado.NUM_ORDER_DOSAGE_FORM = dosaForm.NUM_ORDER ?? 0;
                                 ado.DOSAGE_FORM_NAME = dosaForm.DOSAGE_FORM_NAME;
                             }
+                        }
+                        if (rdo.BedLog != null)
+                        {
+                            ado.BED_LOG_BED_CODE = rdo.BedLog.BED_CODE;
+                            ado.BED_LOG_BED_NAME = rdo.BedLog.BED_NAME;
                         }
                         data.Add(ado);
                     }
