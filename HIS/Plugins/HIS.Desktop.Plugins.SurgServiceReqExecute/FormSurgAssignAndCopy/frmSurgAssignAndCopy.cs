@@ -61,7 +61,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
         internal List<DateTime?> intructionTimeSelected = new List<DateTime?>();
         internal List<DateTime?> useTimeSelected = new List<DateTime?>();
         DateTime timeSelested;
-        
+        public bool validNgayYLenh; 
         bool isInitUcDate;
         List<V_HIS_SERVICE> lstService;
         List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> ekipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
@@ -282,6 +282,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(txtNgayYLenh.Text))
+                {
+                    dxErrorProvider1.SetError(txtNgayYLenh, "Ngày y lệnh không được bỏ trống!", ErrorType.Warning);
+                    return; 
+                }
+                else
+                {
+                    dxErrorProvider1.SetError(txtNgayYLenh, string.Empty);
+                }
                 bool success = false;
                 CommonParam param = new CommonParam();
                 if (this.serviceReq != null && this.serviceReq.ID > 0)
@@ -717,6 +726,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
             else if (txtNgayDuTruTime.EditValue != null && e.Button.Kind == ButtonPredefines.Delete)
             {
                 txtNgayDuTruTime.EditValue = null;
+            }
+        }
+
+        private void txtNgayYLenh_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtNgayYLenh.Text))
+            {
+                dxErrorProvider1.SetError(txtNgayYLenh, string.Empty);
             }
         }
     }

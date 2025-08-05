@@ -280,6 +280,29 @@ namespace MPS.Processor.Mps000196
                     {
                         SetSingleKey(new KeyValue(Mps000196ExtendSingleKey.CLOSE_TIME_SEPARATE_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo.treatment.OUT_TIME.Value)));
                     }
+                    if (rdo.treatment.OUT_TIME.HasValue)
+                    {
+                        long inTime = rdo.treatment.CLINICAL_IN_TIME ?? rdo.treatment.IN_TIME;
+
+                        System.DateTime? dateBefore = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(inTime);
+                        System.DateTime? dateAfter = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(rdo.treatment.OUT_TIME.Value);
+
+                        if (dateBefore != null && dateAfter != null)
+                        {
+                            DateTime inDate = dateBefore.Value.Date;
+                            DateTime outDate = dateAfter.Value.Date;
+
+                            int totalDays = (int)(outDate - inDate).TotalDays;
+
+                            int dayCount6556 = totalDays < 1 ? 1 : totalDays + 1;
+
+                            SetSingleKey(new KeyValue(Mps000196ExtendSingleKey.TREATMENT_DAY_COUNT_6556, dayCount6556));
+                        }
+                    }
+
+
+
+
                 }
                 SetSingleKey(new KeyValue(Mps000196ExtendSingleKey.TOTAL_DAY, rdo.bordereauSingleValue.today));
 

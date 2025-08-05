@@ -746,7 +746,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
             {
                 if (!listDepartmentAlert.Any(x => x.ID == rowData.ID))
                 {
-                    if (Convert.ToInt16(cbotype.EditValue) == 1) listDepartmentAlert.Clear();
+                    if (Convert.ToInt16(cbotype.EditValue) == 2) listDepartmentAlert.Clear();
                     listDepartmentAlert.Add(rowData);
                 }
             }
@@ -1178,11 +1178,6 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 }
                 UpdateSelectedRowsRecive(rowData, check.Checked);
                 if(rowData != null && check.Checked) LoadDataWithDepartment(rowData,check.Checked);
-                // Refresh lại dữ liệu trong grid để cập nhật thay đổi
-                //if(listDepartmentRecive.Count == 0)
-                //{
-                //    ClearDataSelected(gridViewDepartmentAlert, listDepartmentAlert, checkboxStates,dicIsMedicalAlert,dicIsSecurityAlert);
-                //}
                 gridViewDepartmentRecive.RefreshData();
 
             }
@@ -1209,8 +1204,8 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 //    MessageBox.Show(this, "Khoa đang chọn không được giống khoa gửi yêu cầu", "Thông báo", MessageBoxButtons.OK);
                 //    return;
                 //}
-                
-                if(TYPE == 2)
+
+                if (TYPE == 2)
                 {
                     if (listDepartmentAlert.Count == 0 || listDepartmentRecive.Count == 0) return;
                     foreach (var alert in listDepartmentRecive)
@@ -1367,7 +1362,7 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                             {
                                 HIS_ALERT_DEPARTMENT record = new HIS_ALERT_DEPARTMENT();
                                 record.RECEIVE_DEPARTMENT_ID = listDepartmentRecive.First().ID;
-                                record.RECEIVE_DEPARTMENT_ID = rc.ID;
+                                record.DEPARTMENT_ID = rc.ID;
                                 if (dicIsMedicalAlert.ContainsKey(rc.ID) && dicIsMedicalAlert[rc.ID] == true)
                                 {
                                     record.IS_MEDICAL = 1;
@@ -1454,7 +1449,6 @@ namespace HIS.Desktop.Plugins.HisAlertDepartment
                 List<HIS_ALERT_DEPARTMENT> result = new List<HIS_ALERT_DEPARTMENT>();
                 if(action == GlobalVariables.ActionEdit)
                 {
-                    LogSystem.Debug("___DU lieu UPDATE:" + LogUtil.TraceData("___DATA", listDTO));
                     result = new BackendAdapter(param).Post<List<HIS_ALERT_DEPARTMENT>>("/api/HisAlertDepartment/UpdateList", ApiConsumers.MosConsumer, listDTO, param);
                     if(result != null)
                     {

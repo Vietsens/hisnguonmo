@@ -221,10 +221,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                     if (item != null)
                     {
                         var dt = item.StartDate;
-                        while (dt.Date <= item.EndDate.Date)
+                        //bool first = true;
+                        while (dt.Date < item.EndDate.Date)
                         {
                             isSelected = true;
-                            listSelected.Add(dt);
+                            listSelected.Add(dt); 
                             //long timeNumber = long.Parse(dt.ToString("yyyyMMddHHmmss"));
                             DateTime dtWithTime = dt.Date.Add(timeIntruction.TimeSpan);
                             long timeNumber = long.Parse(dtWithTime.ToString("yyyyMMddHHmmss"));
@@ -256,6 +257,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                         delegateSelectData(listSelected, this.timeSelested);
 
                     WaitingManager.Hide();
+                    
                     this.Close();
                 }
                 else

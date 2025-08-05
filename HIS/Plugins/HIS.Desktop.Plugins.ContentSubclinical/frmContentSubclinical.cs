@@ -255,9 +255,9 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
         {
             try
             {
-                if (this._DelegateSelectData != null)   
+                if (this._DelegateSelectData != null)           
                 {
-                    if (this.isReturnObject)
+                    if (this.isReturnObject) 
                     {
                         var dataChecks = (List<TreeSereServADO>)this.GetListCheck();
                         if (dataChecks != null && dataChecks.Count > 0)
@@ -353,6 +353,10 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                             {
                                                 dienBien = " " + dienBien;
                                             }
+                                            else
+                                            {
+                                                dienBien = " " + string.Join("  ", dienBien);
+                                            }
 
                                             _str.Add(dienBien);
                                         }
@@ -411,12 +415,12 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                                 combinedServices = " " + string.Join("  ", servicesInLine);
                                             }
 
-                                                _str.Add(combinedServices);
+                                            _str.Add(combinedServices);  
                                         }
                                     }
                                 }
 
-                                if (chkAssign.Checked && datagroupby.Count > 1)
+                                if (chkAssign.Checked && datagroupby.Count > 1)    
                                 {
                                     _str.Add("");
                                 }

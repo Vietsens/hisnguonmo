@@ -22,7 +22,6 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.ContentSubclinical.ADO;
 using Inventec.Common.Adapter;
-using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -166,7 +165,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     List<LIS_SAMPLE_SERVICE> _LisSampleServices = new List<LIS_SAMPLE_SERVICE>();
                     List<LIS_RESULT> _LisResults = new List<LIS_RESULT>();
                     if (!chkImportant.Checked && chkShowMicrobiological.Checked)
-                    {   
+                    {
                         if (dataTests != null && dataTests.Count > 0)
                         {
                             LisSampleFilter samFilter = new LisSampleFilter();
@@ -184,12 +183,12 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                     _LisResults = new BackendAdapter(param).Get<List<LIS_RESULT>>("api/LisResult/Get", ApiConsumer.ApiConsumers.LisConsumer, resultFilter, param);
                                 }
                             }
-                        }   
+                        }
                     }
                     List<V_HIS_SERVICE> listServiceXN = BackendDataWorker.Get<V_HIS_SERVICE>().Where(p => p.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN).ToList();
                     #region ---CreateTree---
                     List<TreeSereServADO> SereServADOs = new List<TreeSereServADO>();
-                    treeListServiceReq.DataSource = null;     
+                    treeListServiceReq.DataSource = null;
                     var listRootSety = (rsSereServ != null && rsSereServ.Count > 0) ? rsSereServ.GroupBy(g => g.TDL_INTRUCTION_DATE).ToList() : null;
                     foreach (var rootSety in listRootSety)
                     {
@@ -198,24 +197,12 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                         ssInTime.CONCRETE_ID__IN_SETY = rootSety.First().TDL_INTRUCTION_DATE + "";
                         ssInTime.SERVICE_REQ_CODE = Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().TDL_INTRUCTION_DATE.ToString());
                         ssInTime.TDL_INTRUCTION_DATE = rootSety.First().TDL_INTRUCTION_DATE;
-                        ssInTime.ID = rootSety.First().ID;
-                        if (chkAssign.Checked && rootSety != null)
-                        {
-                            SereServADOs.Add(ssInTime);
-                        }   
+                        SereServADOs.Add(ssInTime);
                         foreach (var itemSS in listBySety)
                         {
-                            var serviceTypeID = itemSS.First().TDL_SERVICE_TYPE_ID;
-                            TreeSereServADO ssServiceType = new TreeSereServADO();    
-
-                            ssServiceType.CONCRETE_ID__IN_SETY = (ssInTime.CONCRETE_ID__IN_SETY ?? Guid.NewGuid().ToString()) + "_" + itemSS.First().TDL_SERVICE_TYPE_ID;
-                            if (chkServiceType.Checked && itemSS != null)
-                            {
-                                ssServiceType.PARENT_ID__IN_SETY = ssInTime.CONCRETE_ID__IN_SETY;
-                            }
-                            ssServiceType.TDL_SERVICE_TYPE_ID = serviceTypeID;
-                            ssServiceType.TDL_INTRUCTION_DATE = ssInTime.TDL_INTRUCTION_DATE;
-                            ssServiceType.ID = ssInTime.ID;
+                            TreeSereServADO ssServiceType = new TreeSereServADO();
+                            ssServiceType.CONCRETE_ID__IN_SETY = ssInTime.CONCRETE_ID__IN_SETY + "_" + itemSS.First().TDL_SERVICE_TYPE_ID + "";
+                            ssServiceType.PARENT_ID__IN_SETY = ssInTime.CONCRETE_ID__IN_SETY;
                             var serviceType = BackendDataWorker.Get<HIS_SERVICE_TYPE>().FirstOrDefault(p => p.ID == itemSS.First().TDL_SERVICE_TYPE_ID);
                             ssServiceType.SERVICE_REQ_CODE = (serviceType != null ? serviceType.SERVICE_TYPE_NAME : "");
                             List<IGrouping<long, HisSereServADONumOrder>> listBySetyParent = null;
@@ -233,21 +220,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 ssServiceType.NUM_ORDER = 2;
                             }
                             ssServiceType.TDL_SERVICE_TYPE_ID = itemSS.First().TDL_SERVICE_TYPE_ID;
-                            if (chkServiceType.Checked && itemSS != null)
-                            {
-                                SereServADOs.Add(ssServiceType);
-                            }
-
-                            TreeSereServADO currentParentNode;
-                            if (chkServiceType.Checked)
-                            {
-                                currentParentNode = ssServiceType;    
-                            }
-                            else
-                            {   
-                                currentParentNode = ssInTime;
-                            }
-
+                            SereServADOs.Add(ssServiceType);
                             if (chkShowParentServiceGroup.Checked && listBySetyParent != null && listBySetyParent.Count > 0)
                             {
                                 foreach (var itemParent in listBySetyParent)
@@ -255,14 +228,13 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                     if (itemParent.Key > 0)
                                     {
                                         TreeSereServADO ssServiceParent = new TreeSereServADO();
-                                        ssServiceParent.CONCRETE_ID__IN_SETY = (currentParentNode.CONCRETE_ID__IN_SETY ?? Guid.NewGuid().ToString()) + "_" + itemParent.First().PARENT_ID;
-                                        ssServiceParent.PARENT_ID__IN_SETY = currentParentNode.CONCRETE_ID__IN_SETY;
-                                        ssServiceParent.NUM_ORDER = currentParentNode.NUM_ORDER;
-                                        ssServiceParent.TDL_SERVICE_TYPE_ID = serviceTypeID;
+                                        ssServiceParent.CONCRETE_ID__IN_SETY = ssServiceType.CONCRETE_ID__IN_SETY + "_" + itemParent.First().PARENT_ID;
+                                        ssServiceParent.PARENT_ID__IN_SETY = ssServiceType.CONCRETE_ID__IN_SETY;
+                                        ssServiceParent.NUM_ORDER = ssServiceType.NUM_ORDER;
+                                        ssServiceParent.TDL_SERVICE_TYPE_ID = ssServiceType.TDL_SERVICE_TYPE_ID;
                                         var serviceParent = itemParent.First().PARENT_ID != null ? listServiceXN.FirstOrDefault(p => p.ID == itemParent.First().PARENT_ID) : null;
                                         ssServiceParent.SERVICE_REQ_CODE = (serviceParent != null ? serviceParent.SERVICE_NAME : "");
                                         ssServiceParent.IsParentServiceType = true;
-                                        ssServiceParent.ID = currentParentNode.ID;
                                         SereServADOs.Add(ssServiceParent);
                                         if (chkImportant.Checked || !chkShowMicrobiological.Checked || _LisSampleServices == null || _LisSampleServices.Count == 0 || _LisResults == null || _LisResults.Count == 0)
                                         {
@@ -273,10 +245,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                             }
                                         }
                                         else
-                                        {
                                             LoadDataMicrobiologicalResult(itemParent, ssServiceParent, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, _LisSampleServices, _LisResults, ref SereServADOs);
-                                        }
-                                        
                                     }
                                     else
                                     {
@@ -285,12 +254,12 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                             int t = 0;
                                             foreach (var item in itemParent)
                                             {
-                                                LoadDataService(item, currentParentNode, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, ref SereServADOs, ref t);
+                                                LoadDataService(item, ssServiceType, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, ref SereServADOs, ref t);
                                             }
                                         }
                                         else
                                         {
-                                            LoadDataMicrobiologicalResult(itemParent, currentParentNode, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, _LisSampleServices, _LisResults, ref SereServADOs);
+                                            LoadDataMicrobiologicalResult(itemParent, ssServiceType, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, _LisSampleServices, _LisResults, ref SereServADOs);
                                         }
                                     }
                                 }
@@ -301,26 +270,21 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 {
                                     int t = 0;
                                     foreach (var item in itemSS)
-                                    {  
-                                        LoadDataService(item, currentParentNode, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, ref SereServADOs, ref t);
+                                    {
+                                        LoadDataService(item, ssServiceType, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, ref SereServADOs, ref t);
                                     }
                                 }
                                 else
-                                {
-                                    LoadDataMicrobiologicalResult(itemSS, currentParentNode, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, _LisSampleServices, _LisResults, ref SereServADOs);
-                                }
-                                
+                                    LoadDataMicrobiologicalResult(itemSS, ssServiceType, rsServiceReq, dicSereServExt, _SereServTeins, _LisSamples, _LisSampleServices, _LisResults, ref SereServADOs);
                             }
                         }
                     }
-
                     if (chkImportant.Checked)
                     {
                         var listSsImportant = SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
                             && o.IsLeaf && o.IS_IMPORTANT).ToList();
                         if (listSsImportant == null || listSsImportant.Count == 0)
                             SereServADOs = new List<TreeSereServADO>();
-
                         var listSsImportantP = listSsImportant.Select(o => o.PARENT_ID__IN_SETY).Distinct().ToList();
                         var listDV = SereServADOs.Where(o => listSsImportantP.Contains(o.CONCRETE_ID__IN_SETY)).Select(o => o.PARENT_ID__IN_SETY).Distinct().ToList();
                         List<string> listDVC = new List<string>();
@@ -428,9 +392,9 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                             }
                         }
                     }
-                       
 
-                    SereServADOs = SereServADOs.OrderByDescending(o => o.CONCRETE_ID__IN_SETY).ThenBy(p => p.NUM_ORDER).ToList();
+
+                    SereServADOs = SereServADOs.OrderByDescending(o => o.TDL_INTRUCTION_DATE).ThenBy(p => p.NUM_ORDER).ToList();
                     BindingList<TreeSereServADO> records = new BindingList<TreeSereServADO>(SereServADOs);
                     treeListServiceReq.DataSource = records;
                     treeListServiceReq.ExpandAll();
@@ -439,7 +403,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     LoadImage(SereServADOs);
                 }
                 WaitingManager.Hide();
-            }  
+            }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
@@ -471,17 +435,13 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                         leaff.CONCRETE_ID__IN_SETY = ssServiceParent.CONCRETE_ID__IN_SETY + "_" + sammpleService.ID;
                                         leaff.PARENT_ID__IN_SETY = ssServiceParent.CONCRETE_ID__IN_SETY;
                                         leaff.SERVICE_REQ_CODE = sammpleService.SERVICE_NAME;
-
-                                        leaff.TDL_INTRUCTION_DATE = ssServiceParent.TDL_INTRUCTION_DATE;
-                                        leaff.TDL_SERVICE_TYPE_ID = ssServiceParent.TDL_SERVICE_TYPE_ID;
-
                                         leaff.NUM_ORDER = ssServiceParent.NUM_ORDER;
+                                        leaff.TDL_SERVICE_TYPE_ID = ssServiceParent.TDL_SERVICE_TYPE_ID;
                                         leaff.TDL_SERVICE_CODE = sammpleService.SERVICE_CODE;
                                         leaff.TDL_SERVICE_NAME = sammpleService.SERVICE_NAME;
                                         leaff.VALUE_RANGE = sammpleService.MICROBIOLOGICAL_RESULT;
                                         leaff.DESCRIPTION = !string.IsNullOrEmpty(sample.NOTE) ? "Ghi chú: " + sample.NOTE : "";
                                         leaff.IS_SERE_SERV_HAS_MIC = true;
-                                        leaff.ID = ssServiceParent.ID;
                                         SereServADOs.Add(leaff);
                                         int q = 0;
                                         var ssResult = lstResult.GroupBy(o => o.BACTERIUM_CODE).ToList();
@@ -493,13 +453,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                             bacterium.PARENT_ID__IN_SETY = leaff.CONCRETE_ID__IN_SETY;
                                             bacterium.SERVICE_REQ_CODE = ssBac.First().BACTERIUM_NAME;
                                             bacterium.NUM_ORDER = ssServiceParent.NUM_ORDER;
-
-                                            // Luôn gán TDL_INTRUCTION_DATE và TDL_SERVICE_TYPE_ID
-                                            bacterium.TDL_INTRUCTION_DATE = ssServiceParent.TDL_INTRUCTION_DATE;
-                                            bacterium.TDL_SERVICE_TYPE_ID = ssServiceParent.TDL_SERVICE_TYPE_ID;
-
                                             bacterium.IS_BACTERIUM = true;
-                                            bacterium.ID = ssServiceParent.ID;
                                             SereServADOs.Add(bacterium);
                                             foreach (var ssAnti in ssBac)
                                             {
@@ -513,11 +467,6 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                                 antibiotic.SRI_CODE = ssAnti.SRI_CODE;
                                                 antibiotic.DESCRIPTION = ssAnti.DESCRIPTION;
                                                 antibiotic.NUM_ORDER = ssServiceParent.NUM_ORDER;
-
-                                                // Luôn gán TDL_INTRUCTION_DATE và TDL_SERVICE_TYPE_ID
-                                                antibiotic.TDL_INTRUCTION_DATE = ssServiceParent.TDL_INTRUCTION_DATE;
-                                                antibiotic.TDL_SERVICE_TYPE_ID = ssServiceParent.TDL_SERVICE_TYPE_ID;
-                                                antibiotic.ID = ssAnti.ID;
                                                 antibiotic.IS_ANTIBIOTIC = true;
                                                 SereServADOs.Add(antibiotic);
                                             }
@@ -555,25 +504,14 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                 t++;
                 var serviceUnit = BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(p => p.ID == item.TDL_SERVICE_UNIT_ID);
                 TreeSereServADO leaf = new TreeSereServADO(item);
-                leaf.CONCRETE_ID__IN_SETY = ssServiceParent.CONCRETE_ID__IN_SETY + "_" + Guid.NewGuid();//ssServiceReq
+                leaf.CONCRETE_ID__IN_SETY = ssServiceParent.CONCRETE_ID__IN_SETY + "_" + t;//ssServiceReq
                 leaf.PARENT_ID__IN_SETY = ssServiceParent.CONCRETE_ID__IN_SETY;//ssServiceReq
-
-                // Luôn gán TDL_INTRUCTION_DATE và TDL_SERVICE_TYPE_ID bất kể checkbox có được tích hay không
-                leaf.TDL_INTRUCTION_DATE = ssServiceParent.TDL_INTRUCTION_DATE;
-                leaf.TDL_SERVICE_TYPE_ID = ssServiceParent.TDL_SERVICE_TYPE_ID;
-
+                leaf.SERVICE_REQ_CODE = item.TDL_SERVICE_NAME;
                 leaf.NUM_ORDER = ssServiceParent.NUM_ORDER;
+                leaf.TDL_SERVICE_TYPE_ID = ssServiceParent.TDL_SERVICE_TYPE_ID;
                 leaf.SERVICE_ID = item.SERVICE_ID;
                 leaf.TDL_SERVICE_CODE = item.TDL_SERVICE_CODE;
                 leaf.TDL_SERVICE_NAME = item.TDL_SERVICE_NAME;
-                leaf.ID = item.ID;
-
-                // Chỉ SERVICE_REQ_CODE mới phụ thuộc vào checkbox
-                if (chkShowParentServiceGroup.Checked)
-                    leaf.SERVICE_REQ_CODE = item.TDL_SERVICE_NAME;
-                else
-                    leaf.SERVICE_REQ_CODE = ssServiceParent.SERVICE_REQ_CODE;
-
                 if (item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
                 {
                     if (!chkImportant.Checked && chkShowMicrobiological.Checked)
@@ -590,7 +528,6 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     var dataSer = rsServiceReq.FirstOrDefault(p => p.ID == item.SERVICE_REQ_ID);
                     if (dataSer != null && dataSer.ID > 0 && dataSer.EXE_SERVICE_MODULE_ID > 0)
                     {
-                        LogSystem.Info("LoadDataService2.3: ");
                         List<HIS_EXE_SERVICE_MODULE> exeServiceModules = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_EXE_SERVICE_MODULE>();
                         HIS_EXE_SERVICE_MODULE exeServiceModule = exeServiceModules != null && exeServiceModules.Count > 0 ?
                             exeServiceModules.FirstOrDefault(o => o.ID == dataSer.EXE_SERVICE_MODULE_ID.Value) : null;
@@ -616,11 +553,6 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 TreeSereServADO leafXN = new TreeSereServADO();
                                 leafXN.CONCRETE_ID__IN_SETY = leaf.CONCRETE_ID__IN_SETY + "_" + k;
                                 leafXN.PARENT_ID__IN_SETY = leaf.CONCRETE_ID__IN_SETY;
-
-                                // Luôn gán TDL_INTRUCTION_DATE và TDL_SERVICE_TYPE_ID
-                                leafXN.TDL_INTRUCTION_DATE = leaf.TDL_INTRUCTION_DATE;
-                                leafXN.TDL_SERVICE_TYPE_ID = leaf.TDL_SERVICE_TYPE_ID;
-
                                 leafXN.SERVICE_REQ_CODE = itemT.TEST_INDEX_NAME;
                                 leafXN.VALUE_RANGE = itemT.VALUE;
                                 leafXN.DESCRIPTION = itemT.DESCRIPTION;
@@ -629,6 +561,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 leafXN.IsLeaf = true;
                                 leafXN.NUM_ORDER = ssServiceParent.NUM_ORDER;
                                 leafXN.IS_IMPORTANT = (itemT.IS_IMPORTANT == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                                leafXN.TDL_SERVICE_TYPE_ID = leaf.TDL_SERVICE_TYPE_ID;
                                 leafXN.SERVICE_ID = leaf.SERVICE_ID;
                                 leafXN.TDL_SERVICE_CODE = leaf.TDL_SERVICE_CODE;
                                 leafXN.TDL_SERVICE_NAME = leaf.TDL_SERVICE_NAME;
