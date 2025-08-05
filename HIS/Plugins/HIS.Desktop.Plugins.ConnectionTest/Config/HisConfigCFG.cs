@@ -49,6 +49,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest.Config
         private const string CONFIG_KEY__IS_REQUIRED_SAMPLED = "HIS.Desktop.Plugins.ConnectionTest.IsRequiredSampled";
         private const string CONFIG_KEY__START_TIME_MUST_BE_GREATER_THAN_INSTRUCTION_TIME = "HIS.Desktop.Plugins.StartTimeMustBeGreaterThanInstructionTime";
 
+        private const string CONFIG_KEY__ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE = "LIS.LIS_SAMPLE.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE";
+
+        internal static string ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE;
+
         internal static string IS_USE_SIGN_EMR;
         internal static string AUTO_RETURN_RESULT_BEFORE_PRINT;
         internal static string WARNING_TIME_RETURN_RESULT;
@@ -75,6 +79,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest.Config
         {
             try
             {
+                ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE = GetValue(CONFIG_KEY__ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE);
                 AutoDeleteEmrDocumentWhenEditReq = GetValue(CONFIG_KEY__AUTO_DELETE_EMR_DOCUMENT);
                 IS_USE_SIGN_EMR = GetValue(CONFIG_KEY__IS_USE_SIGN_EMR);
                 AUTO_RETURN_RESULT_BEFORE_PRINT = GetValue(CONFIG_KEY__AUTO_RETURN_RESULT_BEFORE_PRINT);
