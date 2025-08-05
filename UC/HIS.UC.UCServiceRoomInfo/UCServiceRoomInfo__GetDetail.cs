@@ -51,7 +51,7 @@ namespace HIS.UC.UCServiceRoomInfo
                                 {
                                     if (cboPatientType.EditValue != null)
                                         itemPT.PatientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(cboPatientType.EditValue.ToString());
-                                    if (lciCboPatientTypePhuThu.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && CboPatientTypePrimary.EditValue != null)
+                                    if (lciCboPatientTypePhuThu.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && CboPatientTypePrimary.EditValue != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
                                     {
                                         itemPT.PrimaryPatientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(CboPatientTypePrimary.EditValue.ToString());
                                     }

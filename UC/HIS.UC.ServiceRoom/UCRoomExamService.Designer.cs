@@ -45,7 +45,6 @@ namespace HIS.UC.ServiceRoom
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -64,18 +63,20 @@ namespace HIS.UC.ServiceRoom
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.beditRoom = new DevExpress.XtraEditors.ButtonEdit();
-            this.popupControlContainerRoom = new DevExpress.XtraBars.PopupControlContainer(this.components);
-            this.gridControlContainerRoom = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
-            this.gridViewContainerRoom = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
-            this.repositoryItemBtnChooseHide = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.repositoryItemBtnChoose = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.cboSurcharge = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.beditRoom = new DevExpress.XtraEditors.ButtonEdit();
+            this.popupControlContainerRoom = new DevExpress.XtraBars.PopupControlContainer();
+            this.gridControlContainerRoom = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
+            this.gridViewContainerRoom = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.repositoryItemBtnChooseHide = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemBtnChoose = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.txtRoomCode = new DevExpress.XtraEditors.TextEdit();
             this.btnDelete = new DevExpress.XtraEditors.SimpleButton();
             this.cboExamService = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -87,9 +88,13 @@ namespace HIS.UC.ServiceRoom
             this.lciExamService = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciCboRoom = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cboSurcharge.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.beditRoom.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerRoom)).BeginInit();
             this.popupControlContainerRoom.SuspendLayout();
@@ -97,7 +102,6 @@ namespace HIS.UC.ServiceRoom
             ((System.ComponentModel.ISupportInitialize)(this.gridViewContainerRoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnChooseHide)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnChoose)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtRoomCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamService.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).BeginInit();
@@ -108,11 +112,13 @@ namespace HIS.UC.ServiceRoom
             ((System.ComponentModel.ISupportInitialize)(this.lciExamService)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCboRoom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.cboSurcharge);
             this.layoutControl1.Controls.Add(this.beditRoom);
             this.layoutControl1.Controls.Add(this.popupControlContainerRoom);
             this.layoutControl1.Controls.Add(this.txtRoomCode);
@@ -127,6 +133,78 @@ namespace HIS.UC.ServiceRoom
             this.layoutControl1.Size = new System.Drawing.Size(404, 49);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // cboSurcharge
+            // 
+            this.cboSurcharge.EditValue = "";
+            this.cboSurcharge.Location = new System.Drawing.Point(282, 26);
+            this.cboSurcharge.MenuManager = this.barManager1;
+            this.cboSurcharge.Name = "cboSurcharge";
+            this.cboSurcharge.Properties.AllowDropDownWhenReadOnly = DevExpress.Utils.DefaultBoolean.True;
+            this.cboSurcharge.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboSurcharge.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboSurcharge.Properties.NullText = "";
+            this.cboSurcharge.Properties.View = this.gridLookUpEdit1View;
+            this.cboSurcharge.Size = new System.Drawing.Size(86, 20);
+            this.cboSurcharge.StyleController = this.layoutControl1;
+            this.cboSurcharge.TabIndex = 18;
+            // 
+            // barManager1
+            // 
+            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
+            this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
+            this.barManager1.Form = this;
+            this.barManager1.MaxItemId = 0;
+            // 
+            // bar1
+            // 
+            this.bar1.BarName = "Tools";
+            this.bar1.DockCol = 0;
+            this.bar1.DockRow = 0;
+            this.bar1.FloatLocation = new System.Drawing.Point(466, 120);
+            this.bar1.Offset = 423;
+            this.bar1.Text = "Tools";
+            this.bar1.Visible = false;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(404, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 49);
+            this.barDockControlBottom.Size = new System.Drawing.Size(404, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 49);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(404, 0);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 49);
+            // 
+            // gridLookUpEdit1View
+            // 
+            this.gridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridLookUpEdit1View.Name = "gridLookUpEdit1View";
+            this.gridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
             // 
             // beditRoom
             // 
@@ -146,7 +224,7 @@ namespace HIS.UC.ServiceRoom
             // 
             this.popupControlContainerRoom.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupControlContainerRoom.Controls.Add(this.gridControlContainerRoom);
-            this.popupControlContainerRoom.Location = new System.Drawing.Point(214, 17);
+            this.popupControlContainerRoom.Location = new System.Drawing.Point(7, 32);
             this.popupControlContainerRoom.Manager = this.barManager1;
             this.popupControlContainerRoom.Name = "popupControlContainerRoom";
             this.popupControlContainerRoom.Size = new System.Drawing.Size(206, 32);
@@ -205,55 +283,6 @@ namespace HIS.UC.ServiceRoom
             this.repositoryItemBtnChoose.Name = "repositoryItemBtnChoose";
             this.repositoryItemBtnChoose.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnChooseHide_ButtonClick);
             // 
-            // barManager1
-            // 
-            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
-            this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
-            this.barManager1.Form = this;
-            this.barManager1.MaxItemId = 0;
-            // 
-            // bar1
-            // 
-            this.bar1.BarName = "Tools";
-            this.bar1.DockCol = 0;
-            this.bar1.DockRow = 0;
-            this.bar1.FloatLocation = new System.Drawing.Point(466, 120);
-            this.bar1.Offset = 423;
-            this.bar1.Text = "Tools";
-            this.bar1.Visible = false;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(404, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 49);
-            this.barDockControlBottom.Size = new System.Drawing.Size(404, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 49);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(404, 0);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 49);
-            // 
             // txtRoomCode
             // 
             this.txtRoomCode.Location = new System.Drawing.Point(77, 2);
@@ -285,7 +314,7 @@ namespace HIS.UC.ServiceRoom
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.cboExamService.Properties.NullText = "";
             this.cboExamService.Properties.View = this.gridLookUpEdit2View;
-            this.cboExamService.Size = new System.Drawing.Size(232, 20);
+            this.cboExamService.Size = new System.Drawing.Size(92, 20);
             this.cboExamService.StyleController = this.layoutControl1;
             this.cboExamService.TabIndex = 6;
             this.cboExamService.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamService_Closed);
@@ -319,7 +348,8 @@ namespace HIS.UC.ServiceRoom
             this.lciRoom,
             this.lciExamService,
             this.layoutControlItem3,
-            this.lciCboRoom});
+            this.lciCboRoom,
+            this.layoutControlItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -374,7 +404,7 @@ namespace HIS.UC.ServiceRoom
             this.layoutControlItem3.Location = new System.Drawing.Point(136, 24);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem3.Size = new System.Drawing.Size(234, 25);
+            this.layoutControlItem3.Size = new System.Drawing.Size(94, 25);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -387,6 +417,19 @@ namespace HIS.UC.ServiceRoom
             this.lciCboRoom.Size = new System.Drawing.Size(234, 24);
             this.lciCboRoom.TextSize = new System.Drawing.Size(0, 0);
             this.lciCboRoom.TextVisible = false;
+            // 
+            // layoutControlItem1
+            // 
+            this.layoutControlItem1.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem1.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem1.Control = this.cboSurcharge;
+            this.layoutControlItem1.Location = new System.Drawing.Point(230, 24);
+            this.layoutControlItem1.Name = "layoutControlItem1";
+            this.layoutControlItem1.Size = new System.Drawing.Size(140, 25);
+            this.layoutControlItem1.Text = "Phụ thu:";
+            this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem1.TextSize = new System.Drawing.Size(45, 20);
+            this.layoutControlItem1.TextToControlDistance = 5;
             // 
             // imageCollection1
             // 
@@ -409,6 +452,9 @@ namespace HIS.UC.ServiceRoom
             this.Load += new System.EventHandler(this.UCRoomExamService_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cboSurcharge.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.beditRoom.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerRoom)).EndInit();
             this.popupControlContainerRoom.ResumeLayout(false);
@@ -416,7 +462,6 @@ namespace HIS.UC.ServiceRoom
             ((System.ComponentModel.ISupportInitialize)(this.gridViewContainerRoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnChooseHide)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnChoose)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtRoomCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamService.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).EndInit();
@@ -427,6 +472,7 @@ namespace HIS.UC.ServiceRoom
             ((System.ComponentModel.ISupportInitialize)(this.lciExamService)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCboRoom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -460,5 +506,8 @@ namespace HIS.UC.ServiceRoom
         private DevExpress.Utils.ImageCollection imageCollection1;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemBtnChooseHide;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemBtnChoose;
+        private DevExpress.XtraEditors.GridLookUpEdit cboSurcharge;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
     }
 }

@@ -100,6 +100,7 @@ namespace HIS.UC.UCServiceRoomInfo
                 Inventec.Common.Logging.LogSystem.Debug("UCServiceRoomInfo.InitFieldFromAsync .1");
                 SetCaptionByLanguageKey();
                 LoadComboPatientType();
+                frmPatientTypePrimary();
                 LoadComboPatientTypePrimary();
                 SetDefaultComboPatientType();
                 LoadExecuteRoomProcess();
@@ -1190,7 +1191,17 @@ namespace HIS.UC.UCServiceRoomInfo
             }
         }
         #endregion
-
+        private void frmPatientTypePrimary()
+        {
+            if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService == "1")
+            {
+                lciCboPatientTypePhuThu.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; 
+            }
+            else
+            {
+                lciCboPatientTypePhuThu.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            }
+        }
 
     }
 }

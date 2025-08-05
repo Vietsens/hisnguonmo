@@ -155,6 +155,8 @@ namespace HIS.UC.ServiceRoom
                 SetCaptionByLanguageKeyNew();
 
                 InitRestoreLayoutGridViewFromXml(gridViewContainerRoom);
+                CboSurcharge();
+                SetDataSourceCboSurcharge();
             }
             catch (Exception ex)
             {
@@ -1008,6 +1010,18 @@ namespace HIS.UC.ServiceRoom
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void CboSurcharge()
+        {
+            if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService == "1")
+            {
+                layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            }
+            else
+            {
+                layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             }
         }
     }
