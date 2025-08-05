@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
 {
     public class HisConfigCFG
     {
+        private const string CONFIG_KEY_PrimaryPatientTypeByService = "HIS.Desktop.Plugins.RegisterV2.PrimaryPatientTypeByService";
         private const string CONFIG_KEY__ModuleLinks = "HIS.Desktop.ApplyRestoreLayout.ModuleLinks";
         private const string CONFIG_KEY__PhoneRequired = "HIS.Desktop.Plugins.RegisterV2.PhoneRequired";
         private const string CONFIG_KEY__FocusExecuteRoomOption = "HIS.Desktop.Plugins.RegisterV2.FocusExecuteRoomOption";
@@ -140,6 +141,8 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         /// + Nếu đặt là 1: Hiển thị popup và foucs vào ô cho phép nhập từ khóa tìm kiếm, muốn chọn 1 phòng thì nhấn phím mũi tên xuống sau đó chọn
         /// + Nếu đặt khác 1: Hiển thị popup và focus vào dòng đầu tiên của danh sách phòng, cho phép chọn phòng luôn, nếu muốn tìm kiếm thì phải dùng chuột click vào ô chọn sau đó mới nhập từ khóa tìm kiếm
         /// </summary>
+
+        public static string PrimaryPatientTypeByService;
         public static string FocusExecuteRoomOption;
         public static bool IsNotAutoFocusOnExistsPatient;
         public static bool UsingPatientTypeOfPreviousPatient;
@@ -257,6 +260,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
                 //Get BHYT
                 BHXHLoginCFG.LoadConfig();
                 IsAllowProgramPatientOld = GetValue("HIS.Desktop.Plugins.RegisterV2.IsAllowProgramPatientOld");
+                PrimaryPatientTypeByService = GetValue(CONFIG_KEY_PrimaryPatientTypeByService);
                 MODULELINKS = GetValue(CONFIG_KEY__ModuleLinks);    
                 CHECK_DUPLICATION = GetValue(CONFIG_KEY__CHECK_DUPLICATION);
                 WarningInvalidCheckHistoryHeinCard = GetValue(CONFIG_KEY__WarningInvalidCheckHistoryHeinCard) == valueString__true;
