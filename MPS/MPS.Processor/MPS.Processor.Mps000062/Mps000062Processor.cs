@@ -7390,11 +7390,8 @@ namespace MPS.Processor.Mps000062
                 if (rdo.PatientTypeAlter != null)
                     SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.HEIN_CARD_ADDRESS, rdo.PatientTypeAlter.ADDRESS));
                 SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.PHONE, ""));
-                if (rdo.BedLog != null)
-                {
-                    SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.BED_LOG_BED_CODE, rdo.BedLog.BED_CODE));
-                    SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.BED_LOG_BED_NAME, rdo.BedLog.BED_NAME));
-                }
+                SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.BED_LOG_BED_CODE, rdo.BedLog?.BED_CODE));
+                SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.BED_LOG_BED_NAME, rdo.BedLog?.BED_NAME));
                 AddObjectKeyIntoListkey<Mps000062SingleKey>(rdo._WorkPlaceSDO, false);
                 AddObjectKeyIntoListkey<HIS_TREATMENT>(rdo._Treatment);
             }
