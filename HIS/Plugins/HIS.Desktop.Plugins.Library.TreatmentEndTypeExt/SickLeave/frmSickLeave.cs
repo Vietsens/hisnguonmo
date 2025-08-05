@@ -101,7 +101,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 ValidationControlAge();
                 InitComboRelaytionType();
                 InitComboWorkPlace();
-                InitComboDocumentBook();
+                InitComboDocumentBook();   
                 InitUIByFormType();
                 SetDataDefault();
             }
