@@ -279,14 +279,12 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 var bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
                 if (bedLogs != null)
                 {
-                    var minTrackingTime = vHisTrackingList.Min(m => m.TRACKING_TIME);
+                    var minTrackingTime = vHisTrackingPrint.Min(m => m.TRACKING_TIME);
                     var filteredBedLogs = bedLogs
                         .Where(o =>o.BED_ID != 0
                             && (o.START_TIME <= minTrackingTime && (o.FINISH_TIME == null || minTrackingTime <= o.FINISH_TIME))
                         )
                         .ToList();
-
-                    // 3. Lấy lịch sử giường có START_TIME lớn nhất, nếu trùng thì lấy ID lớn nhất
                     selectedBedLog = filteredBedLogs
                         .OrderByDescending(o => o.START_TIME)
                         .ThenByDescending(o => o.ID)
