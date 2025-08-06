@@ -29,9 +29,15 @@ namespace HIS.Desktop.Plugins.TransactionBill.ADO
         public string TaxCode { get; set; }
         public string AccountNumber { get; set; }
         public long? UnitID { get; set; }
+        public long? UnitID1 { get; set; }
+
         public string Address { get; set; }
         public string UnitText { get; set; }
+        public string UnitText1 { get; set; }
+
         public string checkBox { get; set; }
+        public string checkBox1 { get; set; }
+
         public int? BuyerType { get; set; } // 1: Cá nhân, 2: Đơn vị
         public string Email { get; set; }
         public string PhoneNumber { get; set; }

@@ -37,13 +37,10 @@
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
-    </Reference>
-    <Reference Include="MPS.ProcessorBase">
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\MPS.ProcessorBase.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,10 +56,27 @@
     <Compile Include="Mps000062ADOExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MPS.ProcessorBase\MPS.ProcessorBase.csproj">
+      <Project>{075d8b91-153f-4e19-a00a-77547e6f2bd0}</Project>
+      <Name>MPS.ProcessorBase</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>for %25%25I in ("$(SolutionDir)\..\..") do set ParentDir=%25%25~fI
+set fileName=$(TargetName).dll
+set copyPdoLib=%25ParentDir%25\lib\MPSv2\MPS.PDO
+set copyPdoTest=%25ParentDir%25\histest\x64\ReferencedAssemblies
+set copyProcessorLib=%25ParentDir%25\lib\MPSv2\MPS.Processor
+set copyProcessorTest=%25ParentDir%25\histest\x64\Plugins\MpsProcessor
+if "%25fileName:~-8%25" == ".PDO.dll" (
+    if exist %25copyPdoLib%25 xcopy "$(TargetDir)%25fileName%25" "%25copyPdoLib%25" /Y /I
+	if exist %25copyPdoTest%25 xcopy "$(TargetDir)%25fileName%25" "%25copyPdoTest%25" /Y /I
+) else (
+    if exist %25copyProcessorLib%25 xcopy "$(TargetDir)%25fileName%25" "%25copyProcessorLib%25" /Y /I
+	if exist %25copyProcessorTest%25 xcopy "$(TargetDir)%25fileName%25" "%25copyProcessorTest%25" /Y /I
+)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
