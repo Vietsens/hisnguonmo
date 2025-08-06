@@ -273,6 +273,23 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
 
                 var PatientTypeAlter = new BackendAdapter(new CommonParam()).Get<HIS_PATIENT_TYPE_ALTER>("api/HisPatientTypeAlter/GetLastByTreatmentId", ApiConsumers.MosConsumer, treatmentId, null);
 
+                V_HIS_BED_LOG selectedBedLog = null;
+                MOS.Filter.HisBedLogViewFilter bedLogViewFilter = new MOS.Filter.HisBedLogViewFilter();
+                bedLogViewFilter.TREATMENT_ID = _Treatment.ID;
+                var bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
+                if (bedLogs != null)
+                {
+                    var minTrackingTime = vHisTrackingPrint.Min(m => m.TRACKING_TIME);
+                    var filteredBedLogs = bedLogs
+                        .Where(o =>o.BED_ID != 0
+                            && (o.START_TIME <= minTrackingTime && (o.FINISH_TIME == null || minTrackingTime <= o.FINISH_TIME))
+                        )
+                        .ToList();
+                    selectedBedLog = filteredBedLogs
+                        .OrderByDescending(o => o.START_TIME)
+                        .ThenByDescending(o => o.ID)
+                        .FirstOrDefault();
+                }
 
                 MPS.Processor.Mps000062.PDO.Mps000062PDO mps000062RDO = new MPS.Processor.Mps000062.PDO.Mps000062PDO(
                 _Treatment,
@@ -304,7 +321,8 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 this._ImpMestBlood_TL,
                 PatientTypeAlter,
                 listMedicineLine,
-                listDosage
+                listDosage,
+                selectedBedLog
                 );
                 Inventec.Common.Logging.LogSystem.Debug("KT ------------Truyen data MPS======-------------");
                 WaitingManager.Hide();

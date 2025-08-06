@@ -358,6 +358,7 @@ namespace MPS.Processor.Mps000276
                     this.SetSingleKey(new KeyValue(Mps000276ExtendSingleKey.REQUEST_ROOM_ADDRESS, rdo._vServiceReqs.FirstOrDefault().REQUEST_ROOM_ADDRESS));
                     this.SetSingleKey(new KeyValue("REQUEST_DEPARTMENT", rdo._vServiceReqs.FirstOrDefault().REQUEST_DEPARTMENT_CODE));
                     this.SetSingleKey(new KeyValue("REQUEST_ROOM", rdo._vServiceReqs.FirstOrDefault().REQUEST_ROOM_CODE));
+                    this.SetSingleKey(new KeyValue("INTRUCTION_TIME", rdo._SereServs.FirstOrDefault().TDL_INTRUCTION_TIME));
                     DateTime dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(rdo._vServiceReqs.FirstOrDefault().INTRUCTION_TIME).Value;
                     switch (dt.DayOfWeek)
                     {

@@ -134,7 +134,7 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                     "ACTIVE_INGR_BHYT_CODE", "CONCENTRA","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME" ,"REGISTER_NUMBER", "NATIONAL_NAME", "MANUFACTURER_NAME",
                     "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO", "LAST_EXP_PRICE", "LAST_EXP_VAT_RATIO", "PARENT_ID","MEDICINE_USE_FORM_CODE","MEDICINE_USE_FORM_NAME",
                     "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO",
-                    "IS_LEAF", "IS_ACTIVE" ,"IS_BUSINESS", "IS_DRUG_STORE","LOCKING_REASON"};
+                    "IS_LEAF", "IS_ACTIVE" ,"IS_BUSINESS", "IS_DRUG_STORE","LOCKING_REASON", "ALERT_EXPIRED_DATE", "ALERT_MIN_IN_STOCK", "PACKING_TYPE_NAME", "MEDICINE_LINE_NAME"};
                 filter.ColumnParams = ColnParams;
 
                 this.medicineTypes = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUri.HIS_MEDICINE_TYPE_GetViewDynamic, ApiConsumers.MosConsumer, filter, param);
@@ -471,6 +471,11 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                 exportPrice.VisibleIndex = 21;
                 exportPrice.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_TOOLTIP2", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 ado.MedicineTypeColumns.Add(exportPrice);
+
+                //MedicineTypeColumn expiredDate = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_ALERT_EXPIRED_DATE", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "ALERT_EXPIRED_DATE", 100, false);
+                //expiredDate.VisibleIndex = -1;
+                //expiredDate.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_TOOLTIP2", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                //ado.MedicineTypeColumns.Add(expiredDate);
 
 
                 this.ucMedicineType = (UserControl)medicineTypeProcessor.Run(ado);
