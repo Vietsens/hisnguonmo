@@ -44,8 +44,6 @@ using DevExpress.Data;
 using HIS.Desktop.Plugins.HisDocumentBook.Validtion;
 using HIS.Desktop.LibraryMessage;
 using DevExpress.XtraEditors.DXErrorProvider;
-using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.LocalStorage.BackendData;
 
 namespace HIS.Desktop.Plugins.HisDocumentBook.HisDocumentBook
 {
@@ -59,7 +57,6 @@ namespace HIS.Desktop.Plugins.HisDocumentBook.HisDocumentBook
         int ActionType = -1;
         int positionHandle = -1;
         MOS.EFMODEL.DataModels.V_HIS_DOCUMENT_BOOK currentData;
-        List<MOS.EFMODEL.DataModels.HIS_BRANCH> HIS_BRANCH;
         List<string> arrControlEnableNotChange = new List<string>();
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
         Inventec.Desktop.Common.Modules.Module moduleData;
@@ -113,7 +110,7 @@ namespace HIS.Desktop.Plugins.HisDocumentBook.HisDocumentBook
             //Focus default
             SetDefaultFocus();
             EnableControlChanged(this.ActionType);
-            InitComboBranchId();
+
             FillDataToControl();
 
             // kiem tra du lieu nhap vao
@@ -369,7 +366,6 @@ namespace HIS.Desktop.Plugins.HisDocumentBook.HisDocumentBook
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_DOCUMENT_BOOK>>(HisRequestUriStore.HIS_DOCUMENT_BOOK_GETVIEW, ApiConsumers.MosConsumer, filter, paramCommon);
                 if (apiResult != null)
                 {
-                    
                     var data = (List<MOS.EFMODEL.DataModels.V_HIS_DOCUMENT_BOOK>)apiResult.Data;
                     if (data != null)
                     {
@@ -432,7 +428,6 @@ namespace HIS.Desktop.Plugins.HisDocumentBook.HisDocumentBook
                 spinTotalNumOrder.EditValue = null;
                 spinFromNumOrder.EditValue = null;
                 spinYear.EditValue = null;
-                cboBranch.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -476,7 +471,6 @@ namespace HIS.Desktop.Plugins.HisDocumentBook.HisDocumentBook
                     txtDocumentBookName.Text = currentData.DOCUMENT_BOOK_NAME;
                     spinTotalNumOrder.Text = currentData.TOTAL_NUM_ORDER.ToString();
                     spinFromNumOrder.Text = currentData.FROM_NUM_ORDER.ToString();
-                    cboBranch.EditValue = currentData.BRANCH_ID;
                     if (currentData.YEAR != null)
                     {
                         spinYear.Text = currentData.YEAR.ToString();
@@ -522,7 +516,7 @@ namespace HIS.Desktop.Plugins.HisDocumentBook.HisDocumentBook
                     spinTotalNumOrder.Text = data.TOTAL_NUM_ORDER.ToString();
                     spinFromNumOrder.Text = data.FROM_NUM_ORDER.ToString();
                     spinYear.Text = data.YEAR.ToString();
-                    cboBranch.EditValue = data.BRANCH_ID;
+
                 }
             }
             catch (Exception ex)
@@ -779,7 +773,6 @@ namespace HIS.Desktop.Plugins.HisDocumentBook.HisDocumentBook
                 updateDTO.DOCUMENT_BOOK_NAME = txtDocumentBookName.Text.Trim();
                 updateDTO.TOTAL_NUM_ORDER = (long)spinTotalNumOrder.Value;
                 updateDTO.FROM_NUM_ORDER = (long)spinFromNumOrder.Value;
-                updateDTO.BRANCH_ID = cboBranch.EditValue != null ? Convert.ToInt64(cboBranch.EditValue) : (long?)null;
                 if (!string.IsNullOrEmpty(spinYear.Text))
                 {
                     updateDTO.YEAR = long.Parse(spinYear.Text);
@@ -1072,25 +1065,6 @@ namespace HIS.Desktop.Plugins.HisDocumentBook.HisDocumentBook
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
-                    else if (e.Column.FieldName == "BRANCH_NAME")
-                    {
-                        try
-                        {
-                            if (pData.BRANCH_ID.HasValue)
-                            {
-                                var branch = this.HIS_BRANCH.FirstOrDefault(b => b.ID == pData.BRANCH_ID.Value);
-                                e.Value = branch != null ? branch.BRANCH_NAME : string.Empty;
-                            }
-                            else
-                            {
-                                e.Value = string.Empty;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Inventec.Common.Logging.LogSystem.Error(ex);
-                        }
-                    }
                 }
 
                 gridControlDocumentBook.RefreshDataSource();
@@ -1235,21 +1209,9 @@ namespace HIS.Desktop.Plugins.HisDocumentBook.HisDocumentBook
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void InitComboBranchId()
-        {
-            try
-            {
-                this.HIS_BRANCH = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BRANCH>().Where(o => o.IS_ACTIVE == 1).ToList();
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("BRANCH_CODE", "", 100, 1));
-                columnInfos.Add(new ColumnInfo("BRANCH_NAME", "", 250, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("BRANCH_NAME", "ID", columnInfos, false, 350);
-                ControlEditorLoader.Load(cboBranch, this.HIS_BRANCH, controlEditorADO);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+
+
+
+
     }
 }
