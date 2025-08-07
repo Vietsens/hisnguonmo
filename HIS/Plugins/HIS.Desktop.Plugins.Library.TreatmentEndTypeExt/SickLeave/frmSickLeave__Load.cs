@@ -389,6 +389,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 documentBookViewFilter.IS_ACTIVE = 1;
                 documentBookViewFilter.FOR_SICK_BHXH = true;
                 documentBookViewFilter.IS_OUT_NUM_ORDER = false;
+                long branchId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId();
                 var documentBooks = new BackendAdapter(param)
                     .Get<List<MOS.EFMODEL.DataModels.V_HIS_DOCUMENT_BOOK>>("api/HisDocumentBook/GetView", ApiConsumers.MosConsumer, documentBookViewFilter, param);
 
@@ -396,7 +397,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                     + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => documentBookViewFilter), documentBookViewFilter)
                     + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => documentBooks), documentBooks));
 
-                documentBooks = documentBooks != null && documentBooks.Count > 0 ? documentBooks.Where(o => o.YEAR == null || o.YEAR == yearOutDate).ToList() : null;
+                documentBooks = documentBooks != null && documentBooks.Count > 0 ? documentBooks.Where(o => (o.YEAR == null || o.YEAR == yearOutDate) && o.IS_SICK_BHXH == 1 && (o.BRANCH_ID == branchId || o.BRANCH_ID == null)).ToList() : null;
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("DOCUMENT_BOOK_CODE", "", 150, 1));
                 columnInfos.Add(new ColumnInfo("DOCUMENT_BOOK_NAME", "", 250, 2));

@@ -64,6 +64,10 @@
     <Reference Include="His.Bhyt.InsuranceExpertise">
       <HintPath>..\..\..\..\lib\HIS\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.SurgeryAppointment">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SurgeryAppointment\HIS.UC.SurgeryAppointment.dll</HintPath>
     </Reference>
@@ -142,7 +146,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
@@ -266,10 +271,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
       <Project>{2115dfe8-7545-4e23-aa30-276716394f87}</Project>
       <Name>HIS.Desktop.Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
-      <Project>{9247DD49-482C-4227-88DF-616A8AAF3F38}</Project>
-      <Name>HIS.Desktop.Plugins.Library.RegisterConfig</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
