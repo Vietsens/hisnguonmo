@@ -33,6 +33,7 @@ using MOS.SDO;
 using DevExpress.XtraEditors;
 using DevExpress.XtraTreeList.Nodes;
 using MOS.Filter;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.MediStockSummary
 {
@@ -226,6 +227,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             {
                 if (data != null)
                 {
+                    //if (data.IS_PRIORITY == 1)
+                    //{
+                    //    e.Appearance.ForeColor = Color.Blue;
+                    //    return;
+                    //}
                     if (data.ALERT_MIN_IN_STOCK.HasValue && e.Node.HasChildren)
                     {
                         if (data.TotalAmount < data.ALERT_MIN_IN_STOCK)
@@ -549,6 +555,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             {
                 if (data != null)
                 {
+                    //if (data.IS_PRIORITY == 1)
+                    //{
+                    //    e.Appearance.ForeColor = Color.Blue;
+                    //    return;
+                    //}
                     if (data.ALERT_MIN_IN_STOCK.HasValue && e.Node.HasChildren)
                     {
                         if (data.TotalAmount < data.ALERT_MIN_IN_STOCK)
@@ -649,6 +660,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     dXmenu.Click += Medicine_RightMouseClick;
                     dXmenu.Caption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_XEM_LICH_SU_XUAT_NHAP_THUOC", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     dXmenuItem.Add(dXmenu);
+
                     if (this.mediStockIds != null && mediStockIds.Count == 1)
                     {
                         var dxmenu1 = new DevExpress.Utils.Menu.DXMenuItem();
@@ -656,6 +668,10 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         dxmenu1.Caption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_TRA_KHA_DUNG", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                         dXmenuItem.Add(dxmenu1);
                     }
+                    var dxmenuEditMedicine = new DevExpress.Utils.Menu.DXMenuItem();
+                    dxmenuEditMedicine.Caption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_SUA_THONG_TIN_LO_THUOC", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    dxmenuEditMedicine.Click += EditMedicineBatch;
+                    dXmenuItem.Add(dxmenuEditMedicine);
 
                 }
 
@@ -667,6 +683,31 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             return dXmenuItem;
 
         }
+        // Thông tin lô thuốc
+        private void EditMedicineBatch(object sender, EventArgs e)
+        {
+            try
+            {
+                if (mediStockAdo != null)
+                {
+                    List<object> args = new List<object>();
+                    args.Add(mediStockAdo.ID);
+                   
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                        "HIS.Desktop.Plugins.MedicineUpdate",
+                        this.RoomId,
+                        this.RoomTypeId,
+                        args
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+       
+
         private void Medicine_RightMouseClick(object sender, EventArgs e)
         {
             try
@@ -755,6 +796,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         dXmenuItem.Add(dxMenu1);
                     }
 
+                    var dxmenuEditMaterial = new DevExpress.Utils.Menu.DXMenuItem();
+                    dxmenuEditMaterial.Caption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_SUA_THONG_TIN_LO_VAT_TU", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    dxmenuEditMaterial.Click += EditMaterialBatch;
+                    dXmenuItem.Add(dxmenuEditMaterial);
+
                 }
             }
             catch (Exception ex)
@@ -764,7 +810,29 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             return dXmenuItem;
 
         }
-
+        // Thông tin lô vật tư
+        private void EditMaterialBatch(object sender, EventArgs e)
+        {
+            try
+            {
+                if (mateStockAdo != null)
+                {
+                    List<object> args = new List<object>();
+                    args.Add(mateStockAdo.ID);
+                   
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                        "HIS.Desktop.Plugins.MaterialUpdate",
+                        this.RoomId,
+                        this.RoomTypeId,
+                        args
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void Material_RightMouseClick_TraKD(object sender, EventArgs e)
         {
             try

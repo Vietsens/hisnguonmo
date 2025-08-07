@@ -110,10 +110,11 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 InitComboEthnic();
                 InitComboRelaytionType();
                 InitComboEndTypeExt();
-                InitComboDocumentBookId();
+                
                 InitComboSickUserName();
                 LoadDataToGrid();
                 SetDefaultValueControl();
+                InitComboDocumentBookId();
                 CboTreatmentEndTypExt.Focus();
 
             }
@@ -266,7 +267,28 @@ namespace HIS.Desktop.Plugins.PregnancyRest
 
                     long year = Convert.ToInt64((this.DtRestTimeTo.EditValue != null && this.DtRestTimeTo.DateTime != DateTime.MinValue) ? this.DtRestTimeTo.DateTime.ToString("yyyy") : DateTime.Now.ToString("yyyy"));
                     LogSystem.Debug("LoadDocumentBook.Year: " + year);
-                    rs = rs != null ? rs.Where(o => !o.YEAR.HasValue || o.YEAR.Value == year).ToList() : null;
+
+                    long typeId = CboTreatmentEndTypExt.EditValue != null ? Inventec.Common.TypeConvert.Parse.ToInt64(CboTreatmentEndTypExt.EditValue.ToString()) : -99;
+                    long branchId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId();
+                    if (typeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_DUONG_THAI)
+                    {
+                       
+                        rs = rs != null ? rs.Where(o =>
+                            (!o.YEAR.HasValue || o.YEAR.Value == year)
+                        ).ToList() : null;
+                    }
+                    else {
+                       
+                        rs = rs != null ? rs.Where(o =>
+                            (!o.YEAR.HasValue || o.YEAR.Value == year)
+                            && o.IS_SICK_BHXH == 1
+                            && (o.BRANCH_ID == null || o.BRANCH_ID == branchId)
+                        ).ToList() : null;
+                    }
+
+
+
+
                 }
                 catch (Exception ex)
                 {
@@ -1311,6 +1333,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
         {
             try
             {
+                InitComboDocumentBookId();
                 lblPPDT.AppearanceItemCaption.ForeColor = Color.Black;
                 ClearValidControl(this.txtSickUserName);
                 ClearValidControl(this.txtCodeWorkPlace);
