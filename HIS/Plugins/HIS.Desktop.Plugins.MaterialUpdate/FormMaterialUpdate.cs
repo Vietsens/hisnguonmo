@@ -238,6 +238,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 {
                     this.chkBBGN.CheckState = CheckState.Unchecked;
                 }
+                this.chkPRIORITY.Checked = material.IS_PRIORITY == 1 ? true : false;
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -427,6 +428,10 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 else
                 {
                     result.INFORMATION_BID = null;
+                }
+                if (chkPRIORITY.Checked)
+                {
+                    result.IS_PRIORITY = 1;
                 }
             }
             catch (Exception ex)
