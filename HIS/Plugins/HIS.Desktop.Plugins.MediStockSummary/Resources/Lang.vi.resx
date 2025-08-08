@@ -213,9 +213,6 @@
   <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_CONCENTRA" xml:space="preserve">
     <value>Hàm lượng</value>
   </data>
-	<data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDICINE_USE_FORM_NAME" xml:space="preserve">
-    <value>Đường dùng</value>
-  </data>
   <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_CONVERT_RATIO" xml:space="preserve">
     <value>Tỷ lệ quy đổi</value>
   </data>
@@ -231,7 +228,7 @@
   <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_IMP_VAT_RATIO" xml:space="preserve">
     <value>VAT%</value>
   </data>
-	<data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_IMP_VAT_RATIO_NEXT" xml:space="preserve">
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_IMP_VAT_RATIO_NEXT" xml:space="preserve">
     <value>Giá sau VAT</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_LOCKING_REASON" xml:space="preserve">
@@ -381,56 +378,64 @@
   <data name="UCMediStockSummary.txtKeyWork.Properties.NullValuePrompt" xml:space="preserve">
     <value>Từ khóa tìm kiếm</value>
   </data>
-	<data name="frmMediCardByDateReport.form.Text1" xml:space="preserve">
+  <data name="frmMediCardByDateReport.form.Text1" xml:space="preserve">
     <value>Điều kiện lọc - Chi tiết thẻ kho thuốc theo ngày</value>
   </data>
-	<data name="frmMediCardByDateReport.form.Text2" xml:space="preserve">
+  <data name="frmMediCardByDateReport.form.Text2" xml:space="preserve">
     <value>Điều kiện lọc - Tổng hợp thẻ kho thuốc theo ngày</value>
   </data>
-	<data name="frmMediCardByDateReport.form.Text3" xml:space="preserve">
+  <data name="frmMediCardByDateReport.form.Text3" xml:space="preserve">
     <value>Điều kiện lọc - Chi tiết thẻ kho vật tư theo ngày</value>
   </data>
-	<data name="frmMediCardByDateReport.form.Text4" xml:space="preserve">
+  <data name="frmMediCardByDateReport.form.Text4" xml:space="preserve">
     <value>Điều kiện lọc - Tổng hợp thẻ kho vật tư theo ngày</value>
   </data>
-	<data name="frmMediCardByDateReport.form.Text5" xml:space="preserve">
+  <data name="frmMediCardByDateReport.form.Text5" xml:space="preserve">
     <value>Điều kiện lọc - Chi tiết thẻ kho máu theo ngày</value>
   </data>
-	<data name="frmMediCardByDateReport.form.Text6" xml:space="preserve">
+  <data name="frmMediCardByDateReport.form.Text6" xml:space="preserve">
     <value>Điều kiện lọc - Tổng hợp thẻ kho máu theo ngày</value>
   </data>
-
-	<data name="frmMediCardByDateReport.medicine.Text1" xml:space="preserve">
+  <data name="frmMediCardByDateReport.medicine.Text1" xml:space="preserve">
     <value>Mã loại thuốc:</value>
   </data>
-	<data name="frmMediCardByDateReport.medicine.Text2" xml:space="preserve">
+  <data name="frmMediCardByDateReport.medicine.Text2" xml:space="preserve">
     <value>Tên loại thuốc:</value>
   </data>
-	<data name="frmMediCardByDateReport.material.Text1" xml:space="preserve">
+  <data name="frmMediCardByDateReport.material.Text1" xml:space="preserve">
     <value>Mã loại vật tư:</value>
   </data>
-	<data name="frmMediCardByDateReport.material.Text2" xml:space="preserve">
+  <data name="frmMediCardByDateReport.material.Text2" xml:space="preserve">
     <value>Tên loại vật tư:</value>
   </data>
-	<data name="frmMediCardByDateReport.blood.Text1" xml:space="preserve">
+  <data name="frmMediCardByDateReport.blood.Text1" xml:space="preserve">
     <value>Mã loại máu:</value>
   </data>
-	<data name="frmMediCardByDateReport.blood.Text2" xml:space="preserve">
+  <data name="frmMediCardByDateReport.blood.Text2" xml:space="preserve">
     <value>Tên loại máu:</value>
   </data>
-	<data name="UCMediStockSummary.NameButtonClose" xml:space="preserve">
+  <data name="UCMediStockSummary.NameButtonClose" xml:space="preserve">
     <value>Thu gọn</value>
   </data>
-	<data name="UCMediStockSummary.NameButtonOpen" xml:space="preserve">
+  <data name="UCMediStockSummary.NameButtonOpen" xml:space="preserve">
     <value>Chi tiết</value>
   </data>
-	<data name="UCMediStockSummary.cboValue1" xml:space="preserve">
+  <data name="UCMediStockSummary.cboValue1" xml:space="preserve">
     <value>Tất cả</value>
   </data>
-	<data name="UCMediStockSummary.cboValue2" xml:space="preserve">
+  <data name="UCMediStockSummary.cboValue2" xml:space="preserve">
     <value>Không bị khóa</value>
   </data>
-	<data name="UCMediStockSummary.cboValue3" xml:space="preserve">
+  <data name="UCMediStockSummary.cboValue3" xml:space="preserve">
     <value>Bị khóa</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDICINE_USE_FORM_NAME" xml:space="preserve">
+    <value>Đường dùng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_SUA_THONG_TIN_LO_THUOC" xml:space="preserve">
+    <value>Sửa thông tin lô thuốc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_SUA_THONG_TIN_LO_VAT_TU" xml:space="preserve">
+    <value>Sửa thông tin lô vật tư</value>
   </data>
 </root>

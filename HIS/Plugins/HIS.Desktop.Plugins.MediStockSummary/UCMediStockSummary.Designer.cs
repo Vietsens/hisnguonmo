@@ -716,7 +716,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.gridColumnCheck.Caption = "Check";
             this.gridColumnCheck.ColumnEdit = this.repositoryItemCheck_E;
             this.gridColumnCheck.FieldName = "IsCheck";
-            this.gridColumnCheck.Image = global::HIS.Desktop.Plugins.MediStockSummary.Properties.Resources.dau_tích_02;
+            //this.gridColumnCheck.Image = global::HIS.Desktop.Plugins.MediStockSummary.Properties.Resources.dau_tích_02;
             this.gridColumnCheck.ImageAlignment = System.Drawing.StringAlignment.Center;
             this.gridColumnCheck.Name = "gridColumnCheck";
             this.gridColumnCheck.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;

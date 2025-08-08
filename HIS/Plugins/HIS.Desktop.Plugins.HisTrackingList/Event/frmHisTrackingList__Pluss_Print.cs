@@ -237,6 +237,27 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 List<HIS_DOSAGE_FORM> listDosage = new List<HIS_DOSAGE_FORM>();
                 listDosage = BackendDataWorker.Get<HIS_DOSAGE_FORM>();
                 #endregion
+
+                #region HisBedLog
+                V_HIS_BED_LOG selectedBedLog = null;
+                MOS.Filter.HisBedLogViewFilter bedLogViewFilter = new MOS.Filter.HisBedLogViewFilter();
+                bedLogViewFilter.TREATMENT_ID = _Treatment.ID;
+                var bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
+                if (bedLogs != null)
+                {
+                    var minTrackingTime = _TrackingPrintsProcesss.Min(m => m.TRACKING_TIME);
+                    var filteredBedLogs = bedLogs
+                        .Where(o => o.BED_ID != 0
+                            && (o.START_TIME <= minTrackingTime && (o.FINISH_TIME == null || minTrackingTime <= o.FINISH_TIME))
+                        )
+                        .ToList();
+                    selectedBedLog = filteredBedLogs
+                        .OrderByDescending(o => o.START_TIME)
+                        .ThenByDescending(o => o.ID)
+                        .FirstOrDefault();
+                }
+                #endregion
+
                 #region Mps000062
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((_Treatment != null ? _Treatment.TREATMENT_CODE : ""), printTypeCode, this.currentModule != null ? this.currentModule.RoomId : 0);
 
@@ -273,23 +294,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
 
                 var PatientTypeAlter = new BackendAdapter(new CommonParam()).Get<HIS_PATIENT_TYPE_ALTER>("api/HisPatientTypeAlter/GetLastByTreatmentId", ApiConsumers.MosConsumer, treatmentId, null);
 
-                V_HIS_BED_LOG selectedBedLog = null;
-                MOS.Filter.HisBedLogViewFilter bedLogViewFilter = new MOS.Filter.HisBedLogViewFilter();
-                bedLogViewFilter.TREATMENT_ID = _Treatment.ID;
-                var bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
-                if (bedLogs != null)
-                {
-                    var minTrackingTime = vHisTrackingPrint.Min(m => m.TRACKING_TIME);
-                    var filteredBedLogs = bedLogs
-                        .Where(o =>o.BED_ID != 0
-                            && (o.START_TIME <= minTrackingTime && (o.FINISH_TIME == null || minTrackingTime <= o.FINISH_TIME))
-                        )
-                        .ToList();
-                    selectedBedLog = filteredBedLogs
-                        .OrderByDescending(o => o.START_TIME)
-                        .ThenByDescending(o => o.ID)
-                        .FirstOrDefault();
-                }
+                
 
                 MPS.Processor.Mps000062.PDO.Mps000062PDO mps000062RDO = new MPS.Processor.Mps000062.PDO.Mps000062PDO(
                 _Treatment,

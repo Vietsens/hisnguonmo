@@ -82,7 +82,7 @@ namespace HIS.UC.Sick
                     this.hisTreatment = data.CurrentHisTreatment;
                     this.currentModule = data.currentModule;
                     this.IsDuongThai = data.IsDuongThai;
-                    this.NextFocus = data.DelegateNextFocus;    
+                    this.NextFocus = data.DelegateNextFocus;
                     this.lstDocumentBook = data.ListDocumentBook;
                     this.workPlaceId = data.WorkPlaceId;
                     FillDataToForm(this.hisTreatment);
@@ -414,25 +414,64 @@ namespace HIS.UC.Sick
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        //private void LoadComboDocumentBook()
+        //{
+        //    try
+        //    {
+        //        List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+        //        columnInfos.Add(new ColumnInfo("DOCUMENT_BOOK_CODE", "", 80, 1, true));
+        //        columnInfos.Add(new ColumnInfo("DOCUMENT_BOOK_NAME", "", 170, 2, true));
+        //        ControlEditorADO controlEditorADO = new ControlEditorADO("DOCUMENT_BOOK_NAME", "ID", columnInfos, false, 150);
+        //        ControlEditorLoader.Load(cboDocumentBook, lstDocumentBook, controlEditorADO);
+        //        if (lstDocumentBook != null && lstDocumentBook.Count > 0)
+        //        {
+        //            if (this.hisTreatment.DOCUMENT_BOOK_ID.HasValue && lstDocumentBook.Any(a => a.ID == this.hisTreatment.DOCUMENT_BOOK_ID.Value))
+        //            {
+        //                cboDocumentBook.EditValue = this.hisTreatment.DOCUMENT_BOOK_ID.Value;
+        //            }
+        //            else if (lstDocumentBook.Count == 1)
+        //            {
+        //                cboDocumentBook.EditValue = lstDocumentBook[0].ID;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
         private void LoadComboDocumentBook()
         {
             try
             {
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("DOCUMENT_BOOK_CODE", "", 80, 1, true));
-                columnInfos.Add(new ColumnInfo("DOCUMENT_BOOK_NAME", "", 170, 2, true));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("DOCUMENT_BOOK_NAME", "ID", columnInfos, false, 150);
-                ControlEditorLoader.Load(cboDocumentBook, lstDocumentBook, controlEditorADO);
-                if (lstDocumentBook != null && lstDocumentBook.Count > 0)
+                long branchId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId(); 
+
+                var filteredDocumentBook = lstDocumentBook
+                    .Where(x =>
+                        x.IS_SICK_BHXH == 1 &&
+                        (x.BRANCH_ID == null || x.BRANCH_ID == branchId))
+                    .ToList();
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>
                 {
-                    if (this.hisTreatment.DOCUMENT_BOOK_ID.HasValue && lstDocumentBook.Any(a => a.ID == this.hisTreatment.DOCUMENT_BOOK_ID.Value))
+                    new ColumnInfo("DOCUMENT_BOOK_CODE", "", 80, 1, true),
+                    new ColumnInfo("DOCUMENT_BOOK_NAME", "", 170, 2, true)
+                };
+
+                ControlEditorADO controlEditorADO = new ControlEditorADO("DOCUMENT_BOOK_NAME", "ID", columnInfos, false, 150);
+                ControlEditorLoader.Load(cboDocumentBook, filteredDocumentBook, controlEditorADO);
+
+                if (filteredDocumentBook != null && filteredDocumentBook.Count > 0)
+                {
+                    if (this.hisTreatment.DOCUMENT_BOOK_ID.HasValue &&
+                        filteredDocumentBook.Any(a => a.ID == this.hisTreatment.DOCUMENT_BOOK_ID.Value))
                     {
                         cboDocumentBook.EditValue = this.hisTreatment.DOCUMENT_BOOK_ID.Value;
                     }
-                    else if (lstDocumentBook.Count == 1)
+                    else if (filteredDocumentBook.Count == 1)
                     {
-                        cboDocumentBook.EditValue = lstDocumentBook[0].ID;
+                        cboDocumentBook.EditValue = filteredDocumentBook[0].ID;
                     }
                 }
             }
@@ -441,7 +480,6 @@ namespace HIS.UC.Sick
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void InitComboRelaytionType()
         {
             try
@@ -563,7 +601,7 @@ namespace HIS.UC.Sick
                     txtMother.Text = currentTreatmentFinishSDO.TDL_PATIENT_MOTHER_NAME;
                     txtFather.Text = currentTreatmentFinishSDO.TDL_PATIENT_FATHER_NAME;
                 }
-                else    
+                else
                 {
                     spinSickLeaveDay.EditValue = null;
                     dtSickLeaveFromTime.EditValue = null;
@@ -1565,7 +1603,7 @@ namespace HIS.UC.Sick
                 ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
                 CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
                 checkHistoryLDO.maThe = txtSocialInsuranceNumber.Text.Trim();
-                checkHistoryLDO.ngaySinh = Patient.IS_HAS_NOT_DAY_DOB == 1 ? Patient.DOB.ToString().Substring(0,4) :((Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Patient.DOB) ?? DateTime.MinValue).ToString("dd/MM/yyyy"));
+                checkHistoryLDO.ngaySinh = Patient.IS_HAS_NOT_DAY_DOB == 1 ? Patient.DOB.ToString().Substring(0, 4) : ((Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Patient.DOB) ?? DateTime.MinValue).ToString("dd/MM/yyyy"));
                 checkHistoryLDO.hoTen = Inventec.Common.String.Convert.HexToUTF8Fix(Patient.VIR_PATIENT_NAME.ToLower());
                 checkHistoryLDO.hoTen = (String.IsNullOrEmpty(checkHistoryLDO.hoTen) ? Patient.VIR_PATIENT_NAME.ToLower() : checkHistoryLDO.hoTen);
                 string username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
