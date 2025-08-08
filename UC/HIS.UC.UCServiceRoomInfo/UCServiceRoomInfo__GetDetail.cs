@@ -28,6 +28,7 @@ using HIS.Desktop.DelegateRegister;
 using DevExpress.XtraLayout;
 using DevExpress.XtraEditors;
 using MOS.SDO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace HIS.UC.UCServiceRoomInfo
 {
@@ -51,10 +52,19 @@ namespace HIS.UC.UCServiceRoomInfo
                                 {
                                     if (cboPatientType.EditValue != null)
                                         itemPT.PatientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(cboPatientType.EditValue.ToString());
-                                    if (lciCboPatientTypePhuThu.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && CboPatientTypePrimary.EditValue != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
+
+                                    if (itemPT.PrimaryPatientTypeId == null)
                                     {
-                                        itemPT.PrimaryPatientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(CboPatientTypePrimary.EditValue.ToString());
+                                        if (lciCboPatientTypePhuThu.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && CboPatientTypePrimary.EditValue != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
+                                        {
+                                            itemPT.PrimaryPatientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(CboPatientTypePrimary.EditValue.ToString());
+                                        }
+                                        else
+                                        {
+                                            itemPT.PrimaryPatientTypeId = null;
+                                        }
                                     }
+                                    
                                 }
                                 results.AddRange(dataServ);
                             }

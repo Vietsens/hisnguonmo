@@ -68,6 +68,7 @@ namespace HIS.UC.ServiceRoom
                     this.sereServExam = ado.SereServExam;
                     this.dlgRemoveUC = ado.RemoveUC;
                     this.dlgFocusNextUserControl = ado.FocusOutUC;
+                    this.dlgFocusNextUserControlSurcharge = ado.FocusOutUCSurcharge;
                     this.ucName = ado.UcName;
                     this.currentCulture = ado.CurrentCulture;
                     this.registerPatientWithRightRouteBHYT = ado.RegisterPatientWithRightRouteBHYT;
@@ -214,9 +215,13 @@ namespace HIS.UC.ServiceRoom
                         detail.RoomId = room.ROOM_ID;
                         detail.AssignedExecuteLoginName = room.RESPONSIBLE_LOGINNAME;
                         detail.AssignedExecuteUserName = room.RESPONSIBLE_USERNAME;
-                        if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService == "1" && cboSurcharge.EditValue != null)
+                        if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService == "1" && cboSurcharge.EditValue != null && cboSurcharge.Text != "")
                         {
                             detail.PrimaryPatientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(cboSurcharge.EditValue.ToString());
+                        }
+                        else
+                        {
+                            detail.PrimaryPatientTypeId = null;
                         }
                         //nếu có thiết lập lịch khám bác sĩ thì sẽ có thông tin tại WORKING_LOGINNAME
                         if (String.IsNullOrWhiteSpace(room.RESPONSIBLE_LOGINNAME) && !String.IsNullOrWhiteSpace(room.WORKING_LOGINNAME))
@@ -310,17 +315,22 @@ namespace HIS.UC.ServiceRoom
         {
             try
             {
-                var lstpatientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(p => p.IS_ACTIVE == 1 && p.IS_ADDITION == 1).ToList();
-                List<V_HIS_SERVICE_PATY> dataServicePatys = BackendDataWorker.Get<V_HIS_SERVICE_PATY>();
-                var validPatientTypeIds = dataServicePatys.Select(sp => sp.PATIENT_TYPE_ID).Distinct().ToList();
 
-                var patiesType = lstpatientType.Where(p => validPatientTypeIds.Contains(p.ID)).ToList();
+                var lstpatientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(p => p.IS_ACTIVE == 1 && p.IS_ADDITION == 1).ToList();
+                if (cboExamService.EditValue != null)
+                {
+                    List<V_HIS_SERVICE_PATY> dataServicePatys = BackendDataWorker.Get<V_HIS_SERVICE_PATY>().Where(o => o.SERVICE_ID == (long)(cboExamService.EditValue ?? 0)).ToList();
+                    var validPatientTypeIds = dataServicePatys.Select(sp => sp.PATIENT_TYPE_ID).Distinct().ToList();
+
+                    lstpatientType = lstpatientType.Where(p => validPatientTypeIds.Contains(p.ID)).ToList();
+                }
+                
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("PATIENT_TYPE_CODE", "", 50, 1));
                 columnInfos.Add(new ColumnInfo("PATIENT_TYPE_NAME", "", 200, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("PATIENT_TYPE_NAME", "ID", columnInfos, false, 250);
-                ControlEditorLoader.Load(cboSurcharge, patiesType, controlEditorADO);
+                ControlEditorLoader.Load(cboSurcharge, lstpatientType, controlEditorADO);
             }
             catch (Exception ex)
             {

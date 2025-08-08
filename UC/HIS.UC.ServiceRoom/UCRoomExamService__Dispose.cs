@@ -93,6 +93,7 @@ namespace HIS.UC.ServiceRoom
                 changeRoomNotEmergency = null;
                 registerPatientWithRightRouteBHYT = null;
                 dlgFocusNextUserControl = null;
+                dlgFocusNextUserControlSurcharge = null;
                 dlgRemoveUC = null;
                 hisRooms = null;
                 sereServExam = null;
