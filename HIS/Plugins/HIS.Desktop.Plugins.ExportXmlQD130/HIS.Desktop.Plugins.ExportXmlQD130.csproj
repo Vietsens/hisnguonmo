@@ -56,7 +56,7 @@
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml.XML130\His.Bhyt.ExportXml.XML130.dll</HintPath>
+      <HintPath>..\..\..\..\common\HISUTIL\His.Bhyt\His.Bhyt.ExportXml.XML130\bin\Debug\His.Bhyt.ExportXml.XML130.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LibraryMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
