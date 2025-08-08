@@ -74,6 +74,18 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        public FormMedicineUpdate(long medicineId, Inventec.Desktop.Common.Modules.Module moduleData)
+        : this(moduleData)
+        {
+            try
+            {
+               this.getDataMedicine(medicineId);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         #endregion
 
         #region Private method
@@ -288,6 +300,14 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 {
                     this.chkBBGN.CheckState = CheckState.Unchecked;
                 }
+                if (medicine.IS_PRIORITY == 1)
+                {
+                    this.chkPriority.CheckState = CheckState.Checked;
+                }
+                else
+                {
+                    this.chkPriority.CheckState = CheckState.Unchecked;
+                }
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -396,6 +416,14 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 else
                 {
                     result.IS_SALE_EQUAL_IMP_PRICE = null;
+                }
+                if (chkPriority.CheckState == CheckState.Checked)
+                {
+                    result.IS_PRIORITY = 1;
+                }
+                else
+                {
+                    result.IS_PRIORITY = null;
                 }
             }
             catch (Exception ex)
@@ -1027,6 +1055,29 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
+        }
+
+        private void chkPriority_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void getDataMedicine(long Id)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisMedicineView1Filter filter = new MOS.Filter.HisMedicineView1Filter();
+                filter.ID = Id;
+                var data = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_MEDICINE_1>>("api/HisMedicine/GetView1", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                if (data != null && data.Count() > 0)
+                {
+                    this.medicine = data[0];
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }
