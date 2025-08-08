@@ -673,18 +673,25 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             if (!toggleCheck.IsOn)
                             {
                                 this.LoadComboHuyen("", listResult[0].PROVINCE_CODE, false);
+                                if (isExpand)
+                                {
+                                    this.txtDistrictCode.Text = "";
+                                    this.txtDistrictCode.Focus();
+                                    this.txtDistrictCode.SelectAll();
+                                }
                             }
                             else if (toggleCheck.IsOn)
                             {
                                 this.LoadComboXa("", listResult[0].PROVINCE_CODE, false);
-
+                                if (isExpand)
+                                {
+                                    this.txtCommuneCode.Text = "";
+                                    this.txtCommuneCode.Focus();
+                                    this.txtCommuneCode.SelectAll();
+                                }
                             }
                         }
-                        if (isExpand)
-                        {
-                            this.txtDistrictCode.Focus();
-                            this.txtDistrictCode.SelectAll();
-                        }
+                        
                     }
                     else
                     {
@@ -745,19 +752,27 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             if(!toggleCheck.IsOn)
                             {
                                 this.LoadComboHuyen_HT("", listResult[0].PROVINCE_CODE, false);
+                                if (isExpand)
+                                {
+                                    this.txtHTDistrictCode.Text = "";
+                                    this.txtHTDistrictCode.Focus();
+                                    this.txtHTDistrictCode.SelectAll();
+                                }
                             }
                             else if (toggleCheck.IsOn)
                             {
                                 this.LoadComboXa_HT("", listResult[0].PROVINCE_CODE, false);
+                                if (isExpand)
+                                {
+                                    this.txtHTCommuneCode.Text = "";
+                                    this.txtHTCommuneCode.Focus();
+                                    this.txtHTCommuneCode.SelectAll();
+                                }
                             }
 
 
                         }
-                        if (isExpand)
-                        {
-                            this.txtHTDistrictCode.Focus();
-                            this.txtHTDistrictCode.SelectAll();
-                        }
+                        
                     }
                     else
                     {
@@ -818,17 +833,25 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             if (!toggleCheck.IsOn)
                             {
                                 this.LoadComboHuyen_BV("", listResult[0].PROVINCE_CODE, false);
+                                if (isExpand)
+                                {
+                                    this.txtDistrictCodeHospital.Text = "";
+                                    this.txtDistrictCodeHospital.Focus();
+                                    this.txtDistrictCodeHospital.SelectAll();
+                                }
                             }
                             else if (toggleCheck.IsOn)
                             {
                                 this.LoadComboXa_BV("", listResult[0].PROVINCE_CODE, false);
+                                if (isExpand)
+                                {
+                                    this.txtCommuneCodeHospital.Text = "";
+                                    this.txtCommuneCodeHospital.Focus();
+                                    this.txtCommuneCodeHospital.SelectAll();
+                                }
                             }
                         }
-                        if (isExpand)
-                        {
-                            this.txtDistrictCodeHospital.Focus();
-                            this.txtDistrictCodeHospital.SelectAll();
-                        }
+                        
                     }
                     else
                     {
@@ -982,10 +1005,8 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             this.cboHTProvinceName.EditValue = listResult[0].PROVINCE_CODE;
                             this.txtHTProvinceCode.Text = listResult[0].PROVINCE_CODE;
                         }
-                        if (toggleCheck.IsOn)
-                            this.LoadComboXa_HT("", listResult[0].PROVINCE_CODE, false);
-                        else if (!toggleCheck.IsOn)
-                            this.LoadComboXa_HT("", listResult[0].DISTRICT_CODE, false);
+                       
+                        this.LoadComboXa_HT("", listResult[0].DISTRICT_CODE, false);
 
                         if (isExpand)
                         {
