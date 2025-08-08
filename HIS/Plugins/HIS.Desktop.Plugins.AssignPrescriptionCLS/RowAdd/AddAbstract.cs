@@ -268,8 +268,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
                 {
                     patientTypeId = this.PatientTypeAlter.PATIENT_TYPE_ID;
                 }
-
-                patientTypeSelected = this.choosePatientTypeDefaultlServiceOther(patientTypeId, medicineTypeSDO.SERVICE_ID, medicineTypeSDO.SERVICE_TYPE_ID);
+                patientTypeSelected = BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => o.ID == patientTypeId).SingleOrDefault();
+                //patientTypeSelected = this.choosePatientTypeDefaultlServiceOther(patientTypeId, medicineTypeSDO.SERVICE_ID, medicineTypeSDO.SERVICE_TYPE_ID);
 
                 if (patientTypeSelected != null && patientTypeSelected.ID > 0)
                 {

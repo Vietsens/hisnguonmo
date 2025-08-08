@@ -25,6 +25,7 @@ using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using DevExpress.XtraSplashScreen;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
@@ -100,6 +101,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         HIS.Desktop.ADO.AssignPrescriptionADO.DelegateProcessDataResult processDataResult;
         HIS.Desktop.ADO.AssignPrescriptionADO.DelegateProcessRefeshIcd processRefeshIcd;
         HIS.Desktop.ADO.AssignPrescriptionADO.DelegateProcessWhileAutoTreatmentEnd processWhileAutoTreatmentEnd;
+        HIS.Desktop.Plugins.AssignPrescriptionCLS.MediMatyCreateWorker.ChoosePatientTypeDefaultlServiceOther choosePatientTypeDefaultlServiceOther;
         bool isInKip;
         string patientName;
         internal long patientDob;
@@ -191,6 +193,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         bool isInitUcDate;
         bool isNotProcessRunWhileFilmChangedValue;
         decimal currentSoPhimHong;
+        public int selectedOpionGroup;
         HIS_TREATMENT Histreatment;
         HIS_MEDICINE_TYPE_TUT hisMedicineTypeTut { get; set; }
 
@@ -381,6 +384,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 this.isNotLoadMediMatyByMediStockInitForm = true;
                 this.ReSetDataInputAfterAdd__MedicinePage();
                 LogSystem.Debug("frmAssignPrescription_Load. 2");
+                InitRadioGroupOption();
 
                 this.InitComboPhieuDieuTri();
 #if DEBUG
@@ -405,7 +409,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 
                 LogSystem.Debug("frmAssignPrescription_Load. 4");
                 this.FillDataToControlsForm();
-
                 if (this.actionType == GlobalVariables.ActionAdd)
                 {
                     this.OpionGroupSelectedChanged();
@@ -430,7 +433,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 LogSystem.Debug("frmAssignPrescription_Load. 5");
                 this.VisibleButton(this.actionBosung);
                 LogSystem.Debug("frmAssignPrescription_Load. 6");
-                this.LoadPrescriptionForEdit();                
+                this.LoadPrescriptionForEdit();
                 this.SetEnableButtonControl(this.actionType);
                 this.isNotLoadMediMatyByMediStockInitForm = false;
                 this.IsHandlerWhileOpionGroupSelectedIndexChanged = false;
@@ -452,19 +455,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         }
 
         private void ChooseDefaultPatientTypeFromKey()
-		{
-			try
-			{
-                if(HisConfigCFG.IsDefaultPatientTypeOption && serviceReqParentId > 0 && currentSereServ != null)
-				{                   
-                    cboPatientType.EditValue = currentSereServ.PATIENT_TYPE_ID;                       
-                }                    
-			}
-			catch (Exception ex)
-			{
+        {
+            try
+            {
+                if (HisConfigCFG.IsDefaultPatientTypeOption && serviceReqParentId > 0 && currentSereServ != null)
+                {
+                    cboPatientType.EditValue = currentSereServ.PATIENT_TYPE_ID;
+                }
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-		}
+        }
         private void timerInitForm_Tick(object sender, EventArgs e)
         {
             try
@@ -886,17 +889,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     LogSystem.Warn("btnAdd_TabMedicine_Click => thao tac khong hop le. actionType = " + this.actionType);
                     return;
-                }                
-                bool valid = true;
-                this.positionHandleControl = -1;
-                valid = valid && dxValidProviderBoXung.Validate();
-                valid = valid && CheckAllergenicByPatient();
-                valid = valid && CheckActiveIngradientForMedicine();
-                valid = valid && CheckMaxInPrescription(currentMedicineTypeADOForEdit, spinAmount.Value);
-                valid = valid && CheckGenderMediMaty(currentMedicineTypeADOForEdit);
-                valid = valid && CheckMaMePackage(currentMedicineTypeADOForEdit);
-                valid = valid && CheckOddConvertUnit(currentMedicineTypeADOForEdit, spinAmount.Value);
-                if (!valid) return;               
+                }
+                if (selectedOpionGroup == 1)
+                {
+                    bool valid = true;
+                    this.positionHandleControl = -1;
+                    valid = valid && dxValidProviderBoXung.Validate();
+                    valid = valid && CheckAllergenicByPatient();
+                    valid = valid && CheckActiveIngradientForMedicine();
+                    valid = valid && CheckMaxInPrescription(currentMedicineTypeADOForEdit, spinAmount.Value);
+                    valid = valid && CheckGenderMediMaty(currentMedicineTypeADOForEdit);
+                    valid = valid && CheckMaMePackage(currentMedicineTypeADOForEdit);
+                    valid = valid && CheckOddConvertUnit(currentMedicineTypeADOForEdit, spinAmount.Value);
+                    if (!valid) return;
+                }
                 if (this.mediMatyTypeADOs == null)
                     this.mediMatyTypeADOs = new List<MediMatyTypeADO>();
                 switch (this.actionBosung)
@@ -1912,7 +1918,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }
         }
 
-        private void spinAmount_EditValueChanged(object sender, EventArgs e)          
+        private void spinAmount_EditValueChanged(object sender, EventArgs e)
         {
             try
             {
@@ -2006,7 +2012,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 if (e.KeyCode == Keys.Enter)
                 {
                     //this.btnAdd.Focus();
-                   txtTutorial.Focus();
+                    txtTutorial.Focus();
                     e.Handled = true;
                 }
                 //else
@@ -2127,7 +2133,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        
+
         private void txtMediMatyForPrescription_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
@@ -3208,8 +3214,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     popupControlContainerMediMaty.HidePopup();
                     isShowContainerMediMaty = false;
                     isShowContainerMediMatyForChoose = true;
-                    MetyMatyTypeInStock_RowClick(medicineTypeADOForEdit);
-                }              
+                    if (selectedOpionGroup == 1)
+                    {
+                        MetyMatyTypeInStock_RowClick(medicineTypeADOForEdit);
+                    }
+                    else if (selectedOpionGroup == 2)
+                    {
+                        MaterialTypeTSD_RowClick(medicineTypeADOForEdit);
+                        btnAdd.PerformClick();
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -4500,12 +4514,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 
         private void cboPhieuDieuTri_EditValueChanged(object sender, EventArgs e)
         {
-            if(cboPhieuDieuTri.EditValue != null)
+            if (cboPhieuDieuTri.EditValue != null)
             {
                 cboPhieuDieuTri.Properties.Buttons[2].Visible = true;
-            }else
+            }
+            else
                 cboPhieuDieuTri.Properties.Buttons[2].Visible = false;
-        }        
+        }
         private void txtHtu_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
@@ -4588,6 +4603,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }
         }
 
+        private void radioGroup1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => IsHandlerWhileOpionGroupSelectedIndexChanged), IsHandlerWhileOpionGroupSelectedIndexChanged));
+                SetEnableControlMedicine();
+                if (!IsHandlerWhileOpionGroupSelectedIndexChanged)
+                    OpionGroupSelectedChanged();
+                ValidateForm();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void cboExpMestReason_KeyUp(object sender, KeyEventArgs e)
         {
             try
@@ -4599,8 +4630,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);                
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void InitRadioGroupOption()
+        {
+            // Xóa các item cũ nếu có
+            rdOpionGroup.Properties.Items.Clear();
+
+            // Thêm các lựa chọn với giá trị int tương ứng
+            rdOpionGroup.Properties.Items.Add(new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Thuốc - vật tư trong kho"));
+            rdOpionGroup.Properties.Items.Add(new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Vật tư đích danh - TSD"));
+
+            // Đặt mặc định chọn item đầu tiên
+            rdOpionGroup.SelectedIndex = 0;
         }
     }
 }

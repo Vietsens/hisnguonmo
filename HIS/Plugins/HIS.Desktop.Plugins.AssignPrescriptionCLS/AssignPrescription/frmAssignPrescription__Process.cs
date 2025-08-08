@@ -1203,8 +1203,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentMedicineTypeADOForEdit), currentMedicineTypeADOForEdit) + "____" + Inventec.Common.Logging.LogUtil.TraceData("IS_EXECUTE_KIDNEY_PRES", (this.oldServiceReq != null ? this.oldServiceReq.IS_EXECUTE_KIDNEY_PRES : null)));
-                dataType = (this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC ?
+                var selectedOpionGroup = GetSelectedOpionGroup();
+                if (selectedOpionGroup == 1 && this.currentMedicineTypeADOForEdit != null && this.currentMedicineTypeADOForEdit.DataType != HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_DM && this.currentMedicineTypeADOForEdit.DataType != HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM
+                    && this.currentMedicineTypeADOForEdit.DataType != HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
+                {
+                    dataType = (this.currentMedicineTypeADOForEdit.IS_KIDNEY == 1
+                        && (this.oldServiceReq == null || (this.oldServiceReq != null && this.oldServiceReq.IS_EXECUTE_KIDNEY_PRES != GlobalVariables.CommonNumberTrue))
+                        ) ? HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_DM : (this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC ?
                         HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC : HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU);
+                }
+                else if (selectedOpionGroup == 2)
+                {
+                    //TODO
+                    dataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD;
+                }
             }
             catch (Exception ex)
             {
@@ -1354,6 +1366,31 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 txtMediMatyForPrescription.Enabled = txtTutorial.Enabled = true;
                 dateInputADO.IsVisibleMultiDate = true;
 
+                selectedOpionGroup = GetSelectedOpionGroup();
+
+                if (selectedOpionGroup == 1)
+                {
+                    spinAmount.Enabled =
+                    txtMediMatyForPrescription.Enabled
+                        = txtTutorial.Enabled;
+                    txtTutorial.Enabled = true;
+                    spinAmount.Enabled = true;
+                    cboMedicineUseForm.Enabled = true;    
+                    txtHtu.Enabled = true;
+                    dateInputADO.IsVisibleMultiDate = true;
+                }
+                else if (selectedOpionGroup == 2)
+                {
+                    spinAmount.Enabled =
+                    txtMediMatyForPrescription.Enabled
+                        = txtTutorial.Enabled;
+                    txtTutorial.Enabled = false;
+                    spinAmount.Enabled = false;
+                    cboMedicineUseForm.Enabled = false;
+                    txtHtu.Enabled = false;
+                    dateInputADO.IsVisibleMultiDate = true;
+                }
+
                 if (GlobalStore.IsTreatmentIn && (this.actionType != GlobalVariables.ActionEdit)
                          && !GlobalStore.IsCabinet)
                 {
@@ -1368,6 +1405,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        internal int GetSelectedOpionGroup()
+        {
+            int selectedOpionGroup = 1;
+            try
+            {
+                int iSelectedIndex = this.rdOpionGroup.SelectedIndex;
+                iSelectedIndex = iSelectedIndex == -1 ? 0 : iSelectedIndex;
+                selectedOpionGroup = (int)this.rdOpionGroup.Properties.Items[iSelectedIndex].Value;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rdOpionGroup.SelectedIndex), rdOpionGroup.SelectedIndex) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => selectedOpionGroup), selectedOpionGroup) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.rdOpionGroup.Properties.Items.Count), this.rdOpionGroup.Properties.Items.Count), ex);
+            }
+
+            return selectedOpionGroup;
         }
 
         private void ValidRowChange(MediMatyTypeADO mediMatyTypeADO)
@@ -2308,40 +2362,74 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
-                if (patientTypeCombo != null
-                    )
+                if (patientTypeCombo != null)
                 {
                     if (this.currentPatientTypeWithPatientTypeAlter != null && this.currentPatientTypeWithPatientTypeAlter.Count > 0)
                     {
-                        GridCheckMarksSelection gridCheckMark = cboMediStockExport.Properties.Tag as GridCheckMarksSelection;
-                        List<long> mediStockSelecteds = new List<long>();
-                        if (gridCheckMark != null)
+                        if (data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                         {
-                            foreach (MOS.EFMODEL.DataModels.V_HIS_MEST_ROOM rv in gridCheckMark.Selection)
+                            //1 thuốc được coi là "Có đủ thông tin BHYT" khi thỏa mãn:
+                            //Khai báo đủ các thông tin: mã hoạt chất BHYT (ACTIVE_INGR_BHYT_CODE) và nhóm BHYT thuộc 1 trong các loại: "Thuốc trong danh mục", "Thuốc thanh toán theo tỷ lệ" hoặc "Thuốc ung thư, chống thải ghép"
+                            //(bỏ, ko check "số đăng ký")
+                            var sv = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o => o.SERVICE_ID == data.SERVICE_ID).FirstOrDefault();
+                            if (sv != null)
                             {
-                                mediStockSelecteds.Add(rv.MEDI_STOCK_ID);
+                                data.SERVICE_ID = sv.SERVICE_ID;
+                                data.SERVICE_TYPE_ID = sv.SERVICE_TYPE_ID;
+                                data.ACTIVE_INGR_BHYT_CODE = sv.ACTIVE_INGR_BHYT_CODE;
+                                data.HEIN_SERVICE_TYPE_ID = sv.HEIN_SERVICE_TYPE_ID;
+                                data.HEIN_SERVICE_TYPE_CODE = sv.HEIN_SERVICE_TYPE_CODE;
+                                data.HEIN_SERVICE_BHYT_CODE = sv.HEIN_SERVICE_BHYT_CODE;
+                                data.HEIN_SERVICE_BHYT_NAME = sv.HEIN_SERVICE_BHYT_NAME;
                             }
                         }
-                        else if (cboMediStockExport.EditValue != null)
+                        else if (data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
                         {
-                            mediStockSelecteds.Add(Inventec.Common.TypeConvert.Parse.ToInt64(cboMediStockExport.EditValue.ToString()));
+                            var sv = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().Where(o => o.SERVICE_ID == data.SERVICE_ID).FirstOrDefault();
+                            if (sv != null)
+                            {
+                                data.SERVICE_ID = sv.SERVICE_ID;
+                                data.SERVICE_TYPE_ID = sv.SERVICE_TYPE_ID;
+                                data.HEIN_SERVICE_TYPE_ID = sv.HEIN_SERVICE_TYPE_ID;
+                                data.HEIN_SERVICE_TYPE_CODE = sv.HEIN_SERVICE_TYPE_CODE;
+                                data.HEIN_SERVICE_BHYT_CODE = sv.HEIN_SERVICE_BHYT_CODE;
+                                data.HEIN_SERVICE_BHYT_NAME = sv.HEIN_SERVICE_BHYT_NAME;
+                            }
                         }
+                        //GridCheckMarksSelection gridCheckMark = cboMediStockExport.Properties.Tag as GridCheckMarksSelection;
+                        //List<long> mediStockSelecteds = new List<long>();
+                        //if (gridCheckMark != null)
+                        //{
+                        //    foreach (MOS.EFMODEL.DataModels.V_HIS_MEST_ROOM rv in gridCheckMark.Selection)
+                        //    {
+                        //        mediStockSelecteds.Add(rv.MEDI_STOCK_ID);
+                        //    }
+                        //}
+                        //else if (cboMediStockExport.EditValue != null)
+                        //{
+                        //    mediStockSelecteds.Add(Inventec.Common.TypeConvert.Parse.ToInt64(cboMediStockExport.EditValue.ToString()));
+                        //}
 
-                        if (mediStockSelecteds == null || mediStockSelecteds.Count == 0)
-                            throw new Exception("mediStockSelecteds null");
+                        //if (mediStockSelecteds == null || mediStockSelecteds.Count == 0)
+                        //    throw new Exception("mediStockSelecteds null");
 
-                        List<MOS.EFMODEL.DataModels.HIS_MEST_PATIENT_TYPE> lstMestPatientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEST_PATIENT_TYPE>();
-                        if (lstMestPatientType == null || lstMestPatientType.Count == 0)
-                            throw new Exception("Khong load duoc HIS_MEST_PATIENT_TYPE");
+                        //List<MOS.EFMODEL.DataModels.HIS_MEST_PATIENT_TYPE> lstMestPatientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEST_PATIENT_TYPE>();
+                        //if (lstMestPatientType == null || lstMestPatientType.Count == 0)
+                        //    throw new Exception("Khong load duoc HIS_MEST_PATIENT_TYPE");
 
-                        List<long> mediStockInMestPatientTypeIds = lstMestPatientType.Where(o => mediStockSelecteds.Contains(o.MEDI_STOCK_ID)).Select(o => o.PATIENT_TYPE_ID).ToList();
-                        this.InitComboPatientType(patientTypeCombo, this.currentPatientTypeWithPatientTypeAlter);
+                        //List<long> mediStockInMestPatientTypeIds = lstMestPatientType.Where(o => mediStockSelecteds.Contains(o.MEDI_STOCK_ID)).Select(o => o.PATIENT_TYPE_ID).ToList();
+                        var dt = IsFullHeinInfo(data);
+                        List<HIS_PATIENT_TYPE> listSource = currentPatientTypeWithPatientTypeAlter;
+                        if (!dt)
+                            listSource = listSource.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
+                        this.InitComboPatientType(patientTypeCombo, listSource);
                     }
                     else
                     {
                         this.InitComboPatientType(patientTypeCombo, null);
                     }
                 }
+                //FillMaterialBean();
             }
             catch (Exception ex)
             {
