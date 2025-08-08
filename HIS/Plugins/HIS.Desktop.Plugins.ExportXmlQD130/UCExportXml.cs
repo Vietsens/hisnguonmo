@@ -1594,7 +1594,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             wcfSignDCO.SerialNumber = SettingSignADO.SerialNumber;
                             wcfSignDCO.OutputFile = tempFilePath;
                             wcfSignDCO.PIN = "";
-
+                            if (!string.IsNullOrEmpty(saveFilePathCollinearXml))
+                            {
+                                wcfSignDCO.SourceFile = saveFilePathCollinearXml;
+                            }
+                            else
+                            {
+                                wcfSignDCO.SourceFile = saveFilePath;
+                            }                            
                             wcfSignDCO.fieldSigned = "CHUKYDONVI";
                             string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
                             SignProcessorClient signProcessorClient = new SignProcessorClient();
@@ -4381,9 +4388,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     wcfSignDCO.SerialNumber = SettingSignADO.SerialNumber;
                     wcfSignDCO.OutputFile = tempFilePath;
                     wcfSignDCO.PIN = "";
-
-                    wcfSignDCO.SourceFile = sourceFile;
-
+                    if (!string.IsNullOrEmpty(tempFolderPath))
+                    {
+                        wcfSignDCO.SourceFile = tempFolderPath;
+                    }
+                    else
+                    {
+                        wcfSignDCO.SourceFile = sourceFile;
+                    }
                     wcfSignDCO.fieldSigned = "CHUKYDONVI";
                     string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
                     SignProcessorClient signProcessorClient = new SignProcessorClient();
