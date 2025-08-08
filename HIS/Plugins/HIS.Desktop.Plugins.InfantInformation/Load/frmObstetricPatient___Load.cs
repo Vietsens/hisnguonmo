@@ -670,7 +670,15 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         {
                             this.cboProvinceName.EditValue = listResult[0].PROVINCE_CODE;
                             this.txtProvinceCode.Text = listResult[0].SEARCH_CODE;
-                            this.LoadComboHuyen("", listResult[0].PROVINCE_CODE, false);
+                            if (!toggleCheck.IsOn)
+                            {
+                                this.LoadComboHuyen("", listResult[0].PROVINCE_CODE, false);
+                            }
+                            else if (toggleCheck.IsOn)
+                            {
+                                this.LoadComboXa("", listResult[0].PROVINCE_CODE, false);
+
+                            }
                         }
                         if (isExpand)
                         {
@@ -700,7 +708,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 LogSystem.Warn(ex);
             }
         }
-
         private void LoadComboTinhThanh_HT(string searchCode, bool isExpand)
         {
             try
@@ -735,7 +742,16 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         {
                             this.cboHTProvinceName.EditValue = listResult[0].PROVINCE_CODE;
                             this.txtHTProvinceCode.Text = listResult[0].SEARCH_CODE;
-                            this.LoadComboHuyen_HT("", listResult[0].PROVINCE_CODE, false);
+                            if(!toggleCheck.IsOn)
+                            {
+                                this.LoadComboHuyen_HT("", listResult[0].PROVINCE_CODE, false);
+                            }
+                            else if (toggleCheck.IsOn)
+                            {
+                                this.LoadComboXa_HT("", listResult[0].PROVINCE_CODE, false);
+                            }
+
+
                         }
                         if (isExpand)
                         {
@@ -799,7 +815,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         {
                             this.cboProvinceNameHospital.EditValue = listResult[0].PROVINCE_CODE;
                             this.txtProvinceCodeHospital.Text = listResult[0].SEARCH_CODE;
-                            this.LoadComboHuyen_BV("", listResult[0].PROVINCE_CODE, false);
+                            if (!toggleCheck.IsOn)
+                            {
+                                this.LoadComboHuyen_BV("", listResult[0].PROVINCE_CODE, false);
+                            }
+                            else if (toggleCheck.IsOn)
+                            {
+                                this.LoadComboXa_BV("", listResult[0].PROVINCE_CODE, false);
+                            }
                         }
                         if (isExpand)
                         {
@@ -829,7 +852,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 LogSystem.Warn(ex);
             }
         }
-
         private void LoadComboHuyen(string searchCode, string provinceCode, bool isExpand)
          {
             try
@@ -910,7 +932,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void LoadComboHuyen_HT(string searchCode, string provinceCode, bool isExpand)
         {
             try
