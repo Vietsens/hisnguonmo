@@ -52,6 +52,7 @@ namespace HIS.UC.ServiceRoom.ADO
 
         public RemoveRoomExamService RemoveUC { get; set; }
         public DelegateFocusNextUserControl FocusOutUC;
+        public DelegateFocusNextUserControl FocusOutUCSurcharge;
         public TemplateDesign TemplateDesign { get; set; }
         public Action RegisterPatientWithRightRouteBHYT { get; set; }
         public Action ChangeRoomNotEmergency { get; set; }

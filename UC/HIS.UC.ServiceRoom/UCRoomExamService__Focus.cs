@@ -72,6 +72,20 @@ namespace HIS.UC.ServiceRoom
             }
         }
 
+        public void FocusNextUserControlSurcharge(DelegateFocusNextUserControl _dlgFocusNextUserControlSurcharge)
+        {
+            try
+            {
+                if (_dlgFocusNextUserControlSurcharge != null)
+                {
+                    this.dlgFocusNextUserControlSurcharge = _dlgFocusNextUserControlSurcharge;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void SendTABToNextUserControl()
         {
             try
@@ -113,7 +127,18 @@ namespace HIS.UC.ServiceRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        internal void FocusTocboSurcharge()
+        {
+            try
+            {
+                this.cboSurcharge.Focus();
+                this.cboSurcharge.ShowPopup();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         #endregion
 
     }
