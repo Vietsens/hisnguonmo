@@ -19,6 +19,7 @@ using AutoMapper;
 using Bartender.PrintClient;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.ConnectionTest.ADO;
 using HIS.Desktop.Plugins.ConnectionTest.Config;
@@ -168,6 +169,107 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
         }
 
+        //internal void LoadBieuMauPhieuYCInBarCode(string printTypeCode, string fileName, ref bool result)
+        //{
+        //    try
+        //    {
+        //        WaitingManager.Show();
+        //        CommonParam param = new CommonParam();
+        //        rowSample = null;
+        //        rowSample = (LisSampleADO)gridViewSample.GetFocusedRow();
+        //        if (rowSample == null)
+        //            return;
+        //        LogSystem.Debug("LoadBieuMauPhieuYCInBarCode. 1");
+        //        if (rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
+        //            || rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI)
+        //        {
+        //            if (LisConfigCFG.SHOW_FORM_SAMPLE_INFO != "1")
+        //            {
+        //                WaitingManager.Hide();
+        //                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+        //                    .Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
+        //                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'LIS.Desktop.Plugins.SampleInfo'");
+        //                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'LIS.Desktop.Plugins.SampleInfo' is not plugins");
+        //                List<object> listArgs = new List<object>();
+        //                listArgs.Add(rowSample);
+        //                listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+        //                var extenceInstance = PluginInstance.GetPluginInstance(
+        //                    PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId),
+        //                    listArgs);
+        //                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+        //                ((Form)extenceInstance).ShowDialog();
+        //                WaitingManager.Show();
+        //                FillDataToGridControl();
+        //                gridViewSample.RefreshData();
+        //            }
+        //            else
+        //            {
+        //                // Nếu không cho phép tự động cập nhật -> bỏ qua đoạn cập nhật
+        //                if (LisConfigCFG.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE != "1")
+        //                {
+        //                    LisSampleSampleSDO sdo = new LisSampleSampleSDO();
+        //                    sdo.SampleId = rowSample.ID;
+        //                    sdo.RequestRoomCode = room.ROOM_CODE;
+        //                    var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
+        //                    if (curentSTT != null)
+        //                    {
+        //                        rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
+        //                        rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
+        //                        rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
+        //                        rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
+        //                        rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
+        //                        rowSample.SAMPLE_ORDER = curentSTT.SAMPLE_ORDER;
+        //                        FillDataToGridControl();
+        //                        gridViewSample.RefreshData();
+        //                    }
+        //                }
+        //                // Ngược lại (được phép in mà không lấy mẫu): không làm gì
+        //            }
+        //        }
+        //        LogSystem.Debug("LoadBieuMauPhieuYCInBarCode. 2");
+        //        MOS.Filter.HisServiceReqFilter srFilter = new HisServiceReqFilter();
+        //        srFilter.SERVICE_REQ_CODE__EXACT = rowSample.SERVICE_REQ_CODE;
+        //        var lstrs = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, srFilter, param);
+        //        var rs = lstrs != null ? lstrs.FirstOrDefault() : null;
+        //        LogSystem.Debug("LoadBieuMauPhieuYCInBarCode. 4: Count: " + (lstrs != null ? lstrs.Count : 0));
+        //        string printerName = "";
+        //        if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+        //        {
+        //            printerName = GlobalVariables.dicPrinter[printTypeCode];
+        //        }
+        //        V_HIS_SERVICE_REQ serviceReq = null;
+        //        if (rs != null)
+        //        {
+        //            Mapper.CreateMap<HIS_SERVICE_REQ, V_HIS_SERVICE_REQ>();
+        //            serviceReq = Mapper.Map<V_HIS_SERVICE_REQ>(rs);
+        //        }
+        //        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+        //            .GenerateInputADOWithPrintTypeCode(serviceReq?.TDL_TREATMENT_CODE ?? "", printTypeCode, this.currentModule.RoomId);
+        //        MPS.Processor.Mps000077.PDO.Mps000077PDO mps000077RDO = new MPS.Processor.Mps000077.PDO.Mps000077PDO(rowSample, serviceReq);
+        //        WaitingManager.Hide();
+        //        if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+        //        {
+        //            result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000077RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName)
+        //            {
+        //                EmrInputADO = inputADO
+        //            });
+        //        }
+        //        else
+        //        {
+        //            result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000077RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName)
+        //            {
+        //                EmrInputADO = inputADO
+        //            });
+        //        }
+        //        FillDataToGridControl();
+        //        gridViewSample.RefreshData();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //        WaitingManager.Hide();
+        //    }
+        //}
         internal void LoadBieuMauPhieuYCInBarCode(string printTypeCode, string fileName, ref bool result)
         {
             try
@@ -180,20 +282,29 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     return;
 
                 LogSystem.Debug("LoadBieuMauPhieuYCInBarCode. 1");
+
                 if (rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
                     || rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI)
                 {
                     if (LisConfigCFG.SHOW_FORM_SAMPLE_INFO == "1")
                     {
+                        // Mở form thông tin lấy mẫu
                         WaitingManager.Hide();
-                        Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
+                        Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                            .Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
                         if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'LIS.Desktop.Plugins.SampleInfo'");
-                        if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'LIS.Desktop.Plugins.SampleInfo' is not plugins");
+                        if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'LIS.Desktop.Plugins.SampleInfo' is not plugin");
+
                         List<object> listArgs = new List<object>();
                         listArgs.Add(rowSample);
                         listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
-                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
-                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+
+                        var extenceInstance = PluginInstance.GetPluginInstance(
+                            PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId),
+                            listArgs);
+
+                        if (extenceInstance == null) throw new ArgumentNullException("extenceInstance is null");
+
                         ((Form)extenceInstance).ShowDialog();
                         WaitingManager.Show();
                         FillDataToGridControl();
@@ -201,36 +312,65 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     }
                     else
                     {
-                        LisSampleSampleSDO sdo = new LisSampleSampleSDO();
-                        sdo.SampleId = rowSample.ID;
-                        sdo.RequestRoomCode = room.ROOM_CODE;
-                        var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
-                        if (curentSTT != null)
+                        // Không mở form, kiểm tra ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE
+                        if (LisConfigCFG.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE == "1")
                         {
-                            rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
-                            rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
-                            rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
-                            rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
-                            rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
-                            rowSample.SAMPLE_ORDER = curentSTT.SAMPLE_ORDER;
-                            FillDataToGridControl();
-                            gridViewSample.RefreshData();
+                            // Không tự động cập nhật, giữ nguyên SAMPLE_STT_ID
+                            // Không làm gì thêm
+                        }
+                        else
+                        {
+                            // Tự động cập nhật sang trạng thái lấy mẫu (SAMPLE_STT_ID = 2)
+                            LisSampleSampleSDO sdo = new LisSampleSampleSDO
+                            {
+                                SampleId = rowSample.ID,
+                                RequestRoomCode = room.ROOM_CODE
+                            };
+
+                            var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>(
+                                "api/LisSample/Sample",
+                                ApiConsumer.ApiConsumers.LisConsumer,
+                                sdo,
+                                param);
+
+                            if (curentSTT != null)
+                            {
+                                rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID; // SAMPLE_STT_ID sẽ được cập nhật thành 2
+                                rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
+                                rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
+                                rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
+                                rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
+                                rowSample.SAMPLE_ORDER = curentSTT.SAMPLE_ORDER;
+
+                                FillDataToGridControl();
+                                gridViewSample.RefreshData();
+                            }
                         }
                     }
                 }
 
                 LogSystem.Debug("LoadBieuMauPhieuYCInBarCode. 2");
-                MOS.Filter.HisServiceReqFilter srFilter = new HisServiceReqFilter();
-                srFilter.SERVICE_REQ_CODE__EXACT = rowSample.SERVICE_REQ_CODE;
 
-                var lstrs = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, srFilter, param);
+                // Load thông tin HIS_SERVICE_REQ để in barcode
+                MOS.Filter.HisServiceReqFilter srFilter = new HisServiceReqFilter
+                {
+                    SERVICE_REQ_CODE__EXACT = rowSample.SERVICE_REQ_CODE
+                };
+
+                var lstrs = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>(
+                    "api/HisServiceReq/Get",
+                    ApiConsumers.MosConsumer,
+                    srFilter,
+                    param);
                 var rs = lstrs != null ? lstrs.FirstOrDefault() : null;
                 LogSystem.Debug("LoadBieuMauPhieuYCInBarCode. 4: Count: " + (lstrs != null ? lstrs.Count : 0));
+
                 string printerName = "";
                 if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
                 {
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
+
                 V_HIS_SERVICE_REQ serviceReq = null;
                 if (rs != null)
                 {
@@ -238,7 +378,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     serviceReq = Mapper.Map<V_HIS_SERVICE_REQ>(rs);
                 }
 
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((serviceReq != null ? serviceReq.TDL_TREATMENT_CODE : ""), printTypeCode, this.currentModule.RoomId);
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                    .GenerateInputADOWithPrintTypeCode(serviceReq?.TDL_TREATMENT_CODE ?? "", printTypeCode, this.currentModule.RoomId);
 
                 MPS.Processor.Mps000077.PDO.Mps000077PDO mps000077RDO = new MPS.Processor.Mps000077.PDO.Mps000077PDO(rowSample, serviceReq);
                 WaitingManager.Hide();

@@ -17,6 +17,8 @@
  */
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.LocalStorage.LocalData;
+using Inventec.Common.Logging;
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Config
 {
     class HisConfigCFG
     {
+        internal static bool IsCheckDepartmentInTimeWhenPresOrAssign;
+        private const string CONFIG_KEY_CheckDepartmentInTimeWhenPresOrAssign = "HIS.Desktop.Plugins.IsCheckDepartmentInTimeWhenPresOrAssign";
         internal static long PatientTypeId__BHYT
         {
             get
@@ -97,6 +101,33 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Config
             {
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.SurgServiceReqExecute.ExecuteRoleUserOption");
             }
+        }
+
+
+        internal static void LoadConfig()
+        {
+            try
+            {
+                IsCheckDepartmentInTimeWhenPresOrAssign = GetValue(CONFIG_KEY_CheckDepartmentInTimeWhenPresOrAssign) == GlobalVariables.CommonStringTrue;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private static string GetValue(string code)
+        {
+            string result = null;
+            try
+            {
+                return HisConfigs.Get<string>(code);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                result = null;
+            }
+            return result;
         }
     }
 }

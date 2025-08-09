@@ -51,6 +51,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     this.SERVICE_UNIT_ID = (inputData.SERVICE_UNIT_ID ?? 0);
                     this.SERVICE_UNIT_CODE = inputData.SERVICE_UNIT_CODE;
                     this.SERVICE_UNIT_NAME = inputData.SERVICE_UNIT_NAME;
+                    this.HTU_TEXT = inputData.HTU_TEXT;
                     this.TUTORIAL = (String.IsNullOrEmpty(inputData.TUTORIAL) ? mety.TUTORIAL : inputData.TUTORIAL);
                     if (
                         (HisConfigCFG.SplitOffset == GlobalVariables.CommonStringTrue || (mety.IS_SPLIT_COMPENSATION.HasValue && mety.IS_SPLIT_COMPENSATION == 1))
@@ -174,6 +175,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     this.SERVICE_UNIT_ID = (inputData.SERVICE_UNIT_ID ?? 0);
                     this.SERVICE_UNIT_NAME = inputData.SERVICE_UNIT_NAME;
                     this.SERVICE_UNIT_CODE = inputData.SERVICE_UNIT_CODE;
+                    this.HTU_TEXT = inputData.HTU_TEXT;  
                     this.DataType = maty != null && (maty.IS_REUSABLE == 1 || maty.IS_IDENTITY_MANAGEMENT == 1) ? HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD : HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU;
                     if (
                         (HisConfigCFG.SplitOffset == GlobalVariables.CommonStringTrue)

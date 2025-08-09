@@ -1518,7 +1518,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 var allDatas = this.ServiceIsleafADOs != null && this.ServiceIsleafADOs.Count > 0 ? this.ServiceIsleafADOs.AsQueryable() : null;
                 this.gridControlServiceProcess.DataSource = allDatas.ToList();
                 this.toggleSwitchDataChecked.EditValue = false;
-                isCheckAssignServiceSimultaneityOption = false;
+                //isCheckAssignServiceSimultaneityOption = false;
                 this.SetEnableButtonControl(this.actionType);
                 Inventec.Common.Logging.LogSystem.Debug("ResetDefaultGridData. 3");
             }
@@ -5694,6 +5694,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 serviceReqSDO.ServiceReqDetails = new List<ServiceReqDetailSDO>();
                                 bool isDupicate = false;
                                 this.ProcessServiceReqSDO(serviceReqSDO, serviceCheckeds__Send, ref isDupicate, item.TREATMENT_ID, false);
+                                //foreach (var detail in serviceReqSDO.ServiceReqDetails)
+                                //{
+                                //    var matchedService = serviceCheckeds__Send.FirstOrDefault(s => s.SERVICE_ID == detail.ServiceId);
+                                //    if (matchedService != null)
+                                //    {
+                                //        detail.MultipleExecute = matchedService.NumberOfTimes;
+                                //    }
+                                //}
                                 serviceReqSDO.IcdCode = item.ICD_CODE;
                                 serviceReqSDO.IcdName = item.ICD_NAME;
                                 serviceReqSDO.IcdCauseCode = item.ICD_CAUSE_CODE;
@@ -8391,7 +8399,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     new LoaiPhieuInADO("gridView7_1", "Phiếu yêu cầu dịch vụ",true),
                     new LoaiPhieuInADO("gridView7_2", "Hướng dẫn bệnh nhân"),
-                    new LoaiPhieuInADO("gridView7_3", "Yêu cầu thanh toán QR")
+                    new LoaiPhieuInADO("gridView7_3", "Yêu cầu thanh toán QR"),
+                    new LoaiPhieuInADO("gridView7_4", "Phiếu yêu cầu tổng hợp")
                 };
 
                 gridView7.BeginUpdate();
@@ -8409,6 +8418,26 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             try
             {
                 WaitingManager.Show();
+
+                if (e.Column.FieldName == "Check")
+                {
+                    var changedItem = gridView7.GetRow(e.RowHandle) as LoaiPhieuInADO;
+                    if (changedItem != null && changedItem.Check)
+                    {
+                        if (changedItem.ID == "gridView7_1")
+                        {
+                            var tongHop = lstLoaiPhieu.FirstOrDefault(x => x.ID == "gridView7_4");
+                            if (tongHop != null) tongHop.Check = false;
+                        }
+                        else if (changedItem.ID == "gridView7_4")
+                        {
+                            var dichVu = lstLoaiPhieu.FirstOrDefault(x => x.ID == "gridView7_1");
+                            if (dichVu != null) dichVu.Check = false;
+                        }
+
+                        gridView7.RefreshData(); 
+                    }
+                }
                 foreach (var item in lstLoaiPhieu)
                 {
                     //if (item.ID == "gridView7_3") continue;

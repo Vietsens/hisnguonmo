@@ -75,10 +75,14 @@
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord">
-      <HintPath>..\HIS.Desktop.Plugins.Library.FormMedicalRecord\bin\Debug\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintBordereau">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintBordereau\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintPrescription, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintPrescription\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq">
       <HintPath>..\HIS.Desktop.Plugins.Library.PrintServiceReq\bin\Debug\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
@@ -239,7 +243,7 @@
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -531,10 +535,6 @@
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintPrescription\HIS.Desktop.Plugins.Library.PrintPrescription.csproj">
-      <Project>{e34c646c-1959-4b1e-9ebd-6cc75a5470fa}</Project>
-      <Name>HIS.Desktop.Plugins.Library.PrintPrescription</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AssignPrescription\frmAssignPrescription.resx">
@@ -559,6 +559,7 @@
     <EmbeddedResource Include="MessageBoxForm\frmMessageBoxChooseAcinBhyt.resx">
       <DependentUpon>frmMessageBoxChooseAcinBhyt.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

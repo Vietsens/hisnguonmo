@@ -94,5 +94,37 @@ namespace MPS.Processor.Mps000151.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        public Mps000151PDO(
+            V_HIS_PATIENT patient,
+            Mps000151ADO mps000151ADO,
+            List<HIS_CARE> listHisCareByTreatment,
+            List<HIS_DHST> listHisDhstByHisCare,
+            //List<HIS_AWARENESS> listHisAwareness,
+            List<ACS_USER> listUser,
+            List<V_HIS_CARE_DETAIL> listCareDetail,
+            string genderCode__Male,
+            string genderCode__FeMale,
+            HIS_CARE_SUM hisCareSum 
+            )
+        {
+            try
+            {
+                this.Patient = patient;
+                this.mps000151ADO = mps000151ADO;
+                this.ListHisCareByTreatment = listHisCareByTreatment;
+                this.ListHisDhstByHisCare = listHisDhstByHisCare;
+                //this.ListHisAwareness = listHisAwareness;
+                this.ListUser = listUser;
+                this.ListCareDetail = listCareDetail;
+                this.genderCode__Male = genderCode__Male;
+                this.genderCode__FeMale = genderCode__FeMale;
+                this.HisCareSum = hisCareSum;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

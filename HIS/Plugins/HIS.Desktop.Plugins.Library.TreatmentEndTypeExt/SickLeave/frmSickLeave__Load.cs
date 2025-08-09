@@ -29,6 +29,7 @@ using Inventec.Common.Controls.EditorLoader;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -389,23 +390,26 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 documentBookViewFilter.IS_ACTIVE = 1;
                 documentBookViewFilter.FOR_SICK_BHXH = true;
                 documentBookViewFilter.IS_OUT_NUM_ORDER = false;
+                long branchId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId();
                 var documentBooks = new BackendAdapter(param)
                     .Get<List<MOS.EFMODEL.DataModels.V_HIS_DOCUMENT_BOOK>>("api/HisDocumentBook/GetView", ApiConsumers.MosConsumer, documentBookViewFilter, param);
+                var barnchId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId();
+                var documentBooksBHXH = documentBooks.Where(o => o.IS_SICK_BHXH == 1 && (o.BRANCH_ID == barnchId || o.BRANCH_ID == null)).ToList();
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => yearOutDate), yearOutDate)
                     + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => documentBookViewFilter), documentBookViewFilter)
-                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => documentBooks), documentBooks));
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => documentBooksBHXH), documentBooksBHXH));
 
-                documentBooks = documentBooks != null && documentBooks.Count > 0 ? documentBooks.Where(o => o.YEAR == null || o.YEAR == yearOutDate).ToList() : null;
+                documentBooks = documentBooks != null && documentBooks.Count > 0 ? documentBooks.Where(o => (o.YEAR == null || o.YEAR == yearOutDate) && o.IS_SICK_BHXH == 1 && (o.BRANCH_ID == branchId || o.BRANCH_ID == null)).ToList() : null;
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("DOCUMENT_BOOK_CODE", "", 150, 1));
                 columnInfos.Add(new ColumnInfo("DOCUMENT_BOOK_NAME", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("DOCUMENT_BOOK_NAME", "ID", columnInfos, false, 400);
-                ControlEditorLoader.Load(cboDocumentBook, documentBooks, controlEditorADO);
+                ControlEditorLoader.Load(cboDocumentBook, documentBooksBHXH, controlEditorADO);
 
-                if (documentBooks != null && documentBooks.Count == 1)
+                if (documentBooksBHXH != null && documentBooksBHXH.Count == 1)
                 {
-                    cboDocumentBook.EditValue = documentBooks[0].ID;
+                    cboDocumentBook.EditValue = documentBooksBHXH[0].ID;
                 }
             }
             catch (Exception ex)

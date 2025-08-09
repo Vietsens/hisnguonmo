@@ -578,7 +578,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
             return mainCode;
         }
-
         private void LoadDataFromRam()
         {
             try
@@ -1019,7 +1018,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
         #endregion
-
         #region Private method
         private void CheckAssignServiceSimultaneityOption()
         {
@@ -1072,7 +1070,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
 
         }
-
         private void SetDataText()
         {
             try
@@ -4415,7 +4412,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         cboTemplateMedicine.Properties.Buttons[1].Visible = true;
                         cboTemplateMedicine.EditValue = searchResult[0].ID;
                         txtTemplateMedicineCode.Text = searchResult[0].EXP_MEST_TEMPLATE_CODE;
-                        this.ProcessChoiceExpMestTemplate(searchResult[0]);
+                        this.ProcessChoiceExpMestTemplate(searchResult[0]);   
                     }
                     else
                     {
@@ -5795,7 +5792,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         this.txtMediMatyForPrescription.Text = this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_NAME;
                     }
 
-                    this.VisibleInputControl(!(currentMedicineTypeADOForEdit.IS_OXYGEN == GlobalVariables.CommonNumberTrue));
+                    this.VisibleInputControl(!(currentMedicineTypeADOForEdit.IS_OXYGEN == GlobalVariables.CommonNumberTrue));    
 
                     this.lciTocDoTruyen.Enabled = (this.currentMedicineTypeADOForEdit.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC
                         || this.currentMedicineTypeADOForEdit.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC

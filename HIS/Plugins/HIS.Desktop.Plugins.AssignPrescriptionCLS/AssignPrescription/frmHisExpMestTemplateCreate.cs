@@ -200,6 +200,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                 emteMedicineType.SERVICE_UNIT_ID = service.SERVICE_UNIT_ID;
                             emteMedicineType.MEDICINE_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                             emteMedicineType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
+                            emteMedicineType.HTU_TEXT = item.HTU_TEXT;
                             emteMedicineType.TUTORIAL = item.TUTORIAL;
                             if (item.Sang.HasValue)
                                 emteMedicineType.MORNING = item.Sang.ToString();
@@ -223,6 +224,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                 emteMaterialType.SERVICE_UNIT_ID = service.SERVICE_UNIT_ID;
                             emteMaterialType.MATERIAL_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                             emteMaterialType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
+                            emteMaterialType.HTU_TEXT = item.HTU_TEXT;
                             emteMaterialType.IS_EXPEND = (item.IsExpend ? (short)1 : (short)0);
                             this.HisExpMestTemplateSDO.EmteMaterialTypes.Add(emteMaterialType);
                         }
@@ -233,6 +235,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             emteMedicineType.AMOUNT = (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1);
                             emteMedicineType.MEDICINE_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                             emteMedicineType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
+                            emteMedicineType.HTU_TEXT = item.HTU_TEXT;
                             if (service != null)
                                 emteMedicineType.SERVICE_UNIT_ID = service.SERVICE_UNIT_ID;
                             emteMedicineType.IS_OUT_MEDI_STOCK = 1;
@@ -249,6 +252,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             if (service != null)
                                 emteMaterialType.SERVICE_UNIT_ID = service.SERVICE_UNIT_ID;
                             emteMaterialType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
+                            emteMaterialType.HTU_TEXT = item.HTU_TEXT;
                             emteMaterialType.IS_EXPEND = (item.IsExpend ? (short)1 : (short)0);
                             emteMaterialType.IS_OUT_MEDI_STOCK = 1;
                             this.HisExpMestTemplateSDO.EmteMaterialTypes.Add(emteMaterialType);
@@ -259,6 +263,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             emteMedicineType.AMOUNT = item.AMOUNT ?? 0;
                             emteMedicineType.MEDICINE_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                             emteMedicineType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
+                            emteMedicineType.HTU_TEXT = item.HTU_TEXT;
                             emteMedicineType.IS_OUT_MEDI_STOCK = 1;
                             emteMedicineType.TUTORIAL = item.TUTORIAL;
                             emteMedicineType.IS_EXPEND = (item.IsExpend ? (short)1 : (short)0);

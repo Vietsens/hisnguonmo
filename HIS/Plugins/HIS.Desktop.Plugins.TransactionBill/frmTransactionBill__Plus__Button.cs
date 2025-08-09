@@ -994,10 +994,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     // Cá nhân
                     data.Transaction.BUYER_TYPE = 1;
                     data.Transaction.BUYER_NAME = txtBuyerName.Text.Trim();
-                    data.Transaction.BUYER_IDENTITY_NUMBER = txtBuyerIdentityNumber.Text.Trim();
-                    data.Transaction.BUYER_WORK_PLACE_ID = null;
-                    data.Transaction.BUYER_ORGANIZATION = null;
-                    data.Transaction.BUYER_TAX_CODE = null;
+                    data.Transaction.BUYER_IDENTITY_NUMBER = txtBuyerIdentityNumber.Text.Trim();                    
                     if (cboBuyerIdentity.EditValue == "CMND")
                     {
                         data.Transaction.BUYER_IDENTITY_TYPE = 1;
@@ -1014,6 +1011,19 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     {
                         data.Transaction.BUYER_IDENTITY_TYPE = null;
                     }
+                    if (checkEdit1.Checked)
+                    {
+                        data.Transaction.BUYER_ORGANIZATION = String.IsNullOrEmpty(txtBuyerOrganzation2.Text) ? null : txtBuyerOrganzation2.Text.Trim();
+                    }
+                    else
+                    {
+                        if (cboBuyerOrganzation2.EditValue != null)
+                        {
+                            data.Transaction.BUYER_WORK_PLACE_ID = Int64.Parse(cboBuyerOrganzation2.EditValue.ToString());
+                            data.Transaction.BUYER_ORGANIZATION = dtWorkPlace.Where(o => o.ID == data.Transaction.BUYER_WORK_PLACE_ID).First().WORK_PLACE_NAME;
+                        }
+                    }
+                    data.Transaction.BUYER_TAX_CODE = txtBuyerTaxCode2.Text!=null ? txtBuyerTaxCode2.Text.Trim() : null;
                     data.Transaction.BUYER_PHONE = txtSDT.Text.Trim();
                     data.Transaction.BUYER_ADDRESS = txtBuyerAddress.Text.Trim();
                     data.Transaction.BUYER_EMAIL = txtBuyerEmail.Text.Trim();

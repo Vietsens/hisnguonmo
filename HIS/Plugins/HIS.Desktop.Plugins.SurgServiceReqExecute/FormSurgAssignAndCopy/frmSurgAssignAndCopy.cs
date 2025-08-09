@@ -61,6 +61,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
         internal List<DateTime?> intructionTimeSelected = new List<DateTime?>();
         internal List<DateTime?> useTimeSelected = new List<DateTime?>();
         DateTime timeSelested;
+        public bool validNgayYLenh; 
         bool isInitUcDate;
         List<V_HIS_SERVICE> lstService;
         List<MOS.EFMODEL.DataModels.HIS_EKIP_USER> ekipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
@@ -281,6 +282,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(txtNgayYLenh.Text))
+                {
+                    dxErrorProvider1.SetError(txtNgayYLenh, "Ngày y lệnh không được bỏ trống!", ErrorType.Warning);
+                    return; 
+                }
+                else
+                {
+                    dxErrorProvider1.SetError(txtNgayYLenh, string.Empty);
+                }
                 bool success = false;
                 CommonParam param = new CommonParam();
                 if (this.serviceReq != null && this.serviceReq.ID > 0)
@@ -602,7 +612,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                 {
                     timeSelested = DateTime.Today.Add((TimeSpan)timeInstructionTime.EditValue);
                     frmMultiIntructonTime frmChooseIntructionTime = new frmMultiIntructonTime(intructionTimeSelected, timeSelested, (datas, time)
-                        => SelectMultiIntructionTime(datas, time, txtNgayYLenh, true), "Ngay y lệnh");
+                        => SelectMultiIntructionTime(datas, time, txtNgayYLenh, true), "Ngay y lệnh", this.moduleData, this.treatment);
                       frmChooseIntructionTime.ShowDialog();
                 }
                 else if (txtNgayYLenh.EditValue != null && e.Button.Kind == ButtonPredefines.Delete)
@@ -710,12 +720,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
             {
                 timeSelested = DateTime.Today.Add((TimeSpan)timeInstructionTime.EditValue);
                 frmMultiIntructonTime frmChooseIntructionTime = new frmMultiIntructonTime(useTimeSelected, timeSelested, (datas, time) 
-                    => SelectMultiIntructionTime(datas, time, txtNgayDuTruTime, false), "Ngay dự trù");
+                    => SelectMultiIntructionTime(datas, time, txtNgayDuTruTime, false), "Ngay dự trù", this.moduleData, this.treatment);
                 frmChooseIntructionTime.ShowDialog();
             }
             else if (txtNgayDuTruTime.EditValue != null && e.Button.Kind == ButtonPredefines.Delete)
             {
                 txtNgayDuTruTime.EditValue = null;
+            }
+        }
+
+        private void txtNgayYLenh_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtNgayYLenh.Text))
+            {
+                dxErrorProvider1.SetError(txtNgayYLenh, string.Empty);
             }
         }
     }

@@ -545,7 +545,8 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDICINE_USE_FORM_NAME { get; set; }
         public string MEDICINE_GROUP_NAME { get; set; }
         public string DOSAGE_FORM_NAME { get; set; }
-
+        public string BED_LOG_BED_CODE { get; set; }
+        public string BED_LOG_BED_NAME { get; set; }
         public List<ExpMestMetyReqADO> ExpMestMetyReqADOs { get; set; }// thuốc thường
         public List<ExpMestMetyReqADO> MedicinesInfusion { get; set; } //thuốc pha truyền
         public List<ExpMestMetyReqADO> MedicinesDuTru { get; set; } //thuốc dự trù

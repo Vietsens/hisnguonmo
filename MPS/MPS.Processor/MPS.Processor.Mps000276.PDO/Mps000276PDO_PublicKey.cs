@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using MOS.EFMODEL.DataModels;
+using MPS.Processor.Mps000276.PDO.ADO;
 using MPS.ProcessorBase.Core;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,8 @@ namespace MPS.Processor.Mps000276.PDO
         public List<V_HIS_DESK> _Desks { get; set; }
         public List<HIS_CONFIG> lstConfig { get; set; }
         public HIS_TRANS_REQ transReq { get; set; }
+        public List<HIS_SERE_SERV_EXT> _ext { get; set; }
+        public ServiceReqADO aDO { get; set; }
     }
 
 }

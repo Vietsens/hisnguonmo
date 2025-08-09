@@ -123,6 +123,18 @@ namespace MPS.Processor.Mps000276
                 objectTag.AddRelationship(store, "ServiceNumOrder", "SereServs", "SERVICE_CODE", "ParentServiceCode");
 
                 objectTag.SetUserFunction(store, "FuncPerviousRowNum", new TFlexCelUFPerviousRowNum());
+                objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
+                objectTag.SetUserFunction(store, "FuncMergeData12", new CalculateMergerData());
+                objectTag.SetUserFunction(store, "FuncMergeData13", new CalculateMergerData());
+                objectTag.SetUserFunction(store, "FuncMergeData14", new CalculateMergerData());
+                objectTag.SetUserFunction(store, "FuncMergeData21", new CalculateMergerData());
+                objectTag.SetUserFunction(store, "FuncMergeData22", new CalculateMergerData());
+                objectTag.SetUserFunction(store, "FuncMergeData23", new CalculateMergerData());
+                objectTag.SetUserFunction(store, "FuncMergeData24", new CalculateMergerData());
+                objectTag.SetUserFunction(store, "FuncMergeData31", new CalculateMergerData());
+                objectTag.SetUserFunction(store, "FuncMergeData32", new CalculateMergerData());
+                objectTag.SetUserFunction(store, "FuncMergeData33", new CalculateMergerData());
+                objectTag.SetUserFunction(store, "FuncMergeData34", new CalculateMergerData());
 
                 result = true;
             }
@@ -170,6 +182,7 @@ namespace MPS.Processor.Mps000276
                         V_HIS_SERVICE_REQ sr = list.FirstOrDefault(o => o.ID == ss.SERVICE_REQ_ID);
                         V_HIS_SERVICE service = rdo._Services.FirstOrDefault(o => o.ID == ss.SERVICE_ID);
                         V_HIS_SERVICE parent = null;
+                        HIS_SERE_SERV_EXT ext = rdo._ext.FirstOrDefault(ex => ex.SERE_SERV_ID == ss.ID);
                         V_HIS_ROOM resultRoom = null;
                         V_HIS_DESK resultDesk = null;
                         ServiceNumOderAdo serviceNumOderAdo = null;
@@ -211,7 +224,7 @@ namespace MPS.Processor.Mps000276
                         ado.SampleRoomCode = sr.SAMPLE_ROOM_CODE;
                         ado.SampleRoomName = sr.SAMPLE_ROOM_NAME; 
                         ado.ASSIGN_TURN_CODE = sr.ASSIGN_TURN_CODE;
-                        ado.Note = sr.TDL_INSTRUCTION_NOTE;
+                        ado.Note = !string.IsNullOrWhiteSpace(ext?.INSTRUCTION_NOTE) ? ext.INSTRUCTION_NOTE : "";
                         if (parent != null)
                         {
 
@@ -229,7 +242,6 @@ namespace MPS.Processor.Mps000276
                                 serviceNumOderAdo.SERVICE_REQ_CODE = sr.SERVICE_REQ_CODE;
                             }
                         }
-
                         ado.RequestRoomAddress = sr.REQUEST_ROOM_ADDRESS;
                         ado.RequestRoomCode = sr.REQUEST_ROOM_CODE;
                         ado.RequestRoomId = sr.REQUEST_ROOM_ID;
@@ -273,6 +285,8 @@ namespace MPS.Processor.Mps000276
                         {
                             ado.ExecuteNumOrder = maxStt++;
                         }
+                        serviceNumOderAdo.CALL_SAMPLE_ORDER = ado.CallSampleOrder;
+                        serviceNumOderAdo.EXECUTE_ROOM_NAME = ado.ExecuteRoomName;
                         this._ListSereServ.Add(ado);
                         if (serviceNumOderAdo != null && (_ListServiceNumOder.Count() == 0 || !_ListServiceNumOder.Exists(o => o.SERVICE_CODE == serviceNumOderAdo.SERVICE_CODE)))
                             this._ListServiceNumOder.Add(serviceNumOderAdo);
@@ -342,6 +356,9 @@ namespace MPS.Processor.Mps000276
                 if (rdo._vServiceReqs != null && rdo._vServiceReqs.Count > 0)
                 {
                     this.SetSingleKey(new KeyValue(Mps000276ExtendSingleKey.REQUEST_ROOM_ADDRESS, rdo._vServiceReqs.FirstOrDefault().REQUEST_ROOM_ADDRESS));
+                    this.SetSingleKey(new KeyValue("REQUEST_DEPARTMENT", rdo._vServiceReqs.FirstOrDefault().REQUEST_DEPARTMENT_CODE));
+                    this.SetSingleKey(new KeyValue("REQUEST_ROOM", rdo._vServiceReqs.FirstOrDefault().REQUEST_ROOM_CODE));
+                    this.SetSingleKey(new KeyValue("INTRUCTION_TIME", rdo._SereServs.FirstOrDefault().TDL_INTRUCTION_TIME));
                     DateTime dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(rdo._vServiceReqs.FirstOrDefault().INTRUCTION_TIME).Value;
                     switch (dt.DayOfWeek)
                     {
@@ -375,6 +392,13 @@ namespace MPS.Processor.Mps000276
                 }
                 if (rdo.transReq != null)
                     SetSingleKey(new KeyValue(Mps000276ExtendSingleKey.PAYMENT_AMOUNT, rdo.transReq.AMOUNT));
+
+                if (rdo.aDO != null)
+                {
+                    SetSingleKey(new KeyValue("WEIGHT", rdo.aDO.WEIGHT));
+                    SetSingleKey(new KeyValue("REQUEST_DOCTOR_MOBILE", rdo.aDO.REQUEST_DOCTOR_MOBILE));
+                    SetSingleKey(new KeyValue("EXECUTE_DOCTOR_MOBILE", rdo.aDO.EXECUTE_DOCTOR_MOBILE));
+                }
             }
             catch (Exception ex)
             {
@@ -404,6 +428,40 @@ namespace MPS.Processor.Mps000276
                     LogSystem.Debug(ex);
                 }
 
+                return result;
+            }
+        }
+
+        class CalculateMergerData : TFlexCelUserFunction
+        {
+            string sampleRoom = null;
+
+            public override object Evaluate(object[] parameters)
+            {
+                if (parameters == null || parameters.Length <= 0)
+                    throw new ArgumentException("Bad parameter count in call to Orders() user-defined function");
+                bool result = false;
+                try
+                {
+                    string serviceName = parameters[0].ToString();
+                    if (serviceName != null )
+                    {
+                        if (this.sampleRoom == serviceName)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            this.sampleRoom = serviceName;
+                            return false;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                    result = false;
+                }
                 return result;
             }
         }

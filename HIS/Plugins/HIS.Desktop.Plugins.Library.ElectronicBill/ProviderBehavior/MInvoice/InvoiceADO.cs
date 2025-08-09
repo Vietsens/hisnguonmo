@@ -6,7 +6,34 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
     partial class InvoiceADO
     {
         public string editmode { get; set; }
+        
         public List<InvoiceData> data { get; set; }
+    }
+
+    partial class ReplaceInvoice
+    {
+        public int mode { get; set; }
+        public List<RpInvoiceData> data { get; set; }
+    }
+    partial class RpInvoiceData
+    {
+        public string inv_originalId { get; set; }
+        public string ngayvb { get; set; }
+        public string ghi_chu { get; set; }
+        public string sovb { get; set; }
+        public string inv_invoiceSeries { get; set; }
+        public string inv_invoiceIssuedDate { get; set; }
+        public string inv_currencyCode { get; set; }
+        public decimal inv_exchangeRate { get; set; }
+        public string inv_buyerDisplayName { get; set; }
+        public string inv_buyerLegalName { get; set; }
+        public string inv_buyerTaxCode { get; set; }
+        public string inv_buyerAddressLine { get; set; }
+        public string inv_buyerEmail { get; set; }
+        public string inv_buyerBankAccount { get; set; }
+        public string inv_buyerBankName { get; set; }
+        public string inv_paymentMethodName { get; set; }
+        public List<RpInvoiceDetails> details { get; set; }
     }
 
     partial class InvoiceData
@@ -43,6 +70,26 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
         public List<InvoiceItem> data { get; set; }
     }
 
+    partial class RpInvoiceDetails
+    {
+        public List<RpInvoiceItem> data { get; set; }
+    }
+    partial class RpInvoiceItem
+    {
+        public string stt { get; set; }
+        public string ma { get; set; }
+        public string inv_itemName { get; set; }
+        public string inv_unitCode { get; set; }
+        public decimal inv_unitPrice { get; set; }
+        public decimal inv_quantity { get; set; }
+        public decimal inv_TotalAmountWithoutVat { get; set; }
+        public decimal inv_vatAmount { get; set; }
+        public decimal inv_TotalAmount { get; set; }
+        public decimal inv_promotion { get; set; }
+        public decimal inv_discountPercentage { get; set; }
+        public decimal inv_discountAmount { get; set; }
+        public string ma_thue { get; set; }
+    }
     partial class InvoiceItem
     {
         public int tchat { get; set; }
@@ -256,5 +303,49 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
         public DateTime? Due_date { get; set; }
         public string id { get; set; }
     }
+    //qtcode
+    partial class ApiSignDataResult
+    {
+        public string code { get; set; }
+        public string message { get; set; }
+        public SignInvoiceResult data { get; set; }
+    }
+    partial class SignInvoiceResult
+    {
+        public string code { get; set; }
+        public string message { get; set; }
+        public SignInvoiceResultItem data { get; set; }
+    }
+    partial class SignInvoiceResultItem
+    {
+        public string hoadon68_id { get; set; }
+        public string tthai { get; set; }
+    }
+    //delete
+    public class DeleteInvoiceData
+    {
+        public string editmode { get; set; }
+        public List<DeleteDataItem> data { get; set; }
+    }
 
+    public class DeleteDataItem
+    {
+        public string inv_invoiceSeries { get; set; }
+        public string inv_invoiceAuth_Id { get; set; }
+    }
+
+    public class DeleteInvoiceResult
+    {
+        public string code { get; set; }
+        public string message { get; set; }
+        public bool ok { get; set; }
+        public InvoiceDataDelete data { get; set; }
+    }
+
+    public class InvoiceDataDelete
+    {
+        public string inv_invoiceSeries { get; set; }
+        public string inv_invoiceAuth_Id { get; set; }
+        public string key_api { get; set; }
+    }
 }

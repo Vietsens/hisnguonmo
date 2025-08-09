@@ -9,7 +9,22 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Resources
     class ResourceMessage
     {
         static System.Resources.ResourceManager languageMessage = new System.Resources.ResourceManager("HIS.Desktop.Plugins.SurgServiceReqExecute.Resources.Message.Lang", System.Reflection.Assembly.GetExecutingAssembly());
-
+        //qtcode
+        internal static string ThoiGianYLenhKhongThuocKhoangThoiGianTrongKhoa
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_AssignService__ThoiGianYLenhKhongThuocKhoangThoiGianTrongKhoa", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+                return "";
+            }
+        }
         internal static string ChuaChonNgayChiDinh
         {
             get

@@ -3296,5 +3296,43 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void txtReasonNTCode_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    string code = txtReasonNTCode.Text.Trim().ToUpper();
+                    if (!string.IsNullOrEmpty(code))
+                    {
+                        
+                        var reason = HisHospitalizeReason.FirstOrDefault(o => o.HOSPITALIZE_REASON_CODE.ToUpper() == code);
+                        if (reason != null)
+                        {
+                            cboReasonNT.EditValue = reason.HOSPITALIZE_REASON_CODE;
+                            cboReasonNT.Properties.Buttons[1].Visible = true; 
+                            this.inIcdProcessor.FocusControl(ucInIcd);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Mã lý do nhập viện không hợp lệ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            cboReasonNT.EditValue = null;
+                            cboReasonNT.Properties.Buttons[1].Visible = false;
+                        }
+                    }
+                    else
+                    {
+                        cboReasonNT.EditValue = null;
+                        cboReasonNT.Properties.Buttons[1].Visible = false;
+                    }
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

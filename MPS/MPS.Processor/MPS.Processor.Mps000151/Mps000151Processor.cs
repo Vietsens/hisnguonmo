@@ -535,6 +535,7 @@ namespace MPS.Processor.Mps000151
                 //AddObjectKeyIntoListkey<V_HIS_CARE_SUM>(rdo.currentSumCare,  false);
                 AddObjectKeyIntoListkey<V_HIS_PATIENT>(rdo.Patient);
                 AddObjectKeyIntoListkey<MPS.Processor.Mps000151.PDO.Mps000151PDO.Mps000151ADO>(rdo.mps000151ADO, false);
+                AddObjectKeyIntoListkey<HIS_CARE_SUM>(rdo.HisCareSum);
 
                 if (rdo.Patient != null)
                 {
@@ -543,6 +544,10 @@ namespace MPS.Processor.Mps000151
                     SetSingleKey((new KeyValue(Mps000151ExtendSingleKey.D_O_B, rdo.Patient.DOB.ToString().Substring(0, 4))));
                     SetSingleKey((new KeyValue(Mps000151ExtendSingleKey.GENDER_MALE, rdo.Patient.GENDER_CODE == rdo.genderCode__Male ? "X" : "")));
                     SetSingleKey((new KeyValue(Mps000151ExtendSingleKey.GENDER_FEMALE, rdo.Patient.GENDER_CODE == rdo.genderCode__FeMale ? "X" : "")));
+                }
+                if (rdo.HisCareSum != null)
+                {
+                    SetSingleKey((new KeyValue(Mps000151ExtendSingleKey.NUM_ORDER,rdo.HisCareSum.NUM_ORDER)));
                 }
             }
             catch (Exception ex)

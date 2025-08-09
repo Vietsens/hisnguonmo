@@ -15,9 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraBars.Docking2010.Views.Widget;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraLayout;
 using HIS.UC.FormType.Core.RadioCheckBox.Validation;
+using Inventec.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -63,18 +66,19 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
         {
             try
             {
+                this.hideWaring(true);
                 if (this.DynamicFilter != null && this.DynamicFilter.Propeties != null && this.DynamicFilter.Propeties.DefaultSource != null)
                 {
+                    this.checkedListBoxControl1.ItemCheck += checkedListBoxControl1_ItemCheck;
                     if (this.DynamicFilter.Propeties.Type == 1)
                     {
                         this.checkedListBoxControl1.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-                        this.checkedListBoxControl1.ItemCheck += checkedListBoxControl1_ItemCheck;
                     }
                     else
                     {
                         this.checkedListBoxControl1.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Standard;
                     }
-                    var items = this.DynamicFilter.Propeties.DefaultSource.ToString().Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    var items = Newtonsoft.Json.JsonConvert.DeserializeObject<string[]>(this.DynamicFilter.Propeties.DefaultSource.ToString());
                     for (int i = 0; i < items.Length; i++)
                     {
                         this.checkedListBoxControl1.Items.AddRange(new DevExpress.XtraEditors.Controls.CheckedListBoxItem[]
@@ -86,7 +90,7 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                 {
                     SetValidation();
                 }
-                SetTitle();
+                SetTitle(); 
                 //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => report), report));
                 GetValueOutput0(this.config.JSON_OUTPUT, ref Output0);
                 if (!string.IsNullOrWhiteSpace(Output0))
@@ -111,15 +115,29 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        public void hideWaring(bool result)
+        {
+            if (result)
+            {
+                this.txtTitle.Visible = false;
+            }
+            else
+            {
+                this.txtTitle.Visible = true;
+            }
+        }
         private void checkedListBoxControl1_ItemCheck(object sender, DevExpress.XtraEditors.Controls.ItemCheckEventArgs e)
         {
-            if (checkedListBoxControl1.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Radio && e.State == CheckState.Checked)
+            if (e.State == CheckState.Checked)
             {
-                for (int i = 0; i < checkedListBoxControl1.Items.Count; i++)
+                if (this.checkedListBoxControl1.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Radio)
                 {
-                    if (i != e.Index)
+                    for (int i = 0; i < checkedListBoxControl1.Items.Count; i++)
                     {
-                        checkedListBoxControl1.Items[i].CheckState = CheckState.Unchecked;
+                        if (i != e.Index)
+                        {
+                            checkedListBoxControl1.Items[i].CheckState = CheckState.Unchecked;
+                        }
                     }
                 }
             }
@@ -170,10 +188,10 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
             {
                 if (this.config != null && !String.IsNullOrEmpty(this.config.DESCRIPTION))
                 {
-                    layoutControlItem1.Text = this.config.DESCRIPTION;
+                    lciTitle.Text = this.config.DESCRIPTION;
                     if (this.config.IS_REQUIRE == IMSys.DbConfig.SAR_RS.COMMON.IS_ACTIVE__TRUE)
                     {
-                        layoutControlItem1.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        lciTitle.AppearanceItemCaption.ForeColor = Color.Maroon;
                     }
                 }
             }
@@ -229,7 +247,7 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                 validRule.radTrue = this.checkedListBoxControl1;
                 validRule.ErrorText = HIS.UC.FormType.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.ThieuTruongDuLieuBatBuoc);
                 validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                dxValidationProvider1.SetValidationRule(this.checkedListBoxControl1, validRule);
+                dxValidationProvider1.SetValidationRule(this.txtTitle, validRule);
             }
             catch (Exception ex)
             {
@@ -301,34 +319,33 @@ namespace HIS.UC.FormType.Core.RadioCheckBox
                 result = false;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+            this.hideWaring(result);
             return result;
 
         }
         private void BestFitHeight(CheckedListBoxControl listBox)
         {
-            CheckedListBoxViewInfo viewInfo = listBox.GetViewInfo() as CheckedListBoxViewInfo;
-            // Sửa lỗi vòng lặp vô tận khi tính toán chiều cao phù hợp cho CheckedListBoxControl
-            var tongChieuDai = viewInfo.ColumnWidth * viewInfo.ColumnCount;
-            int maxIterations = 100; // Giới hạn số lần lặp để tránh vòng lặp vô tận
-            int iteration = 0;
-            while (tongChieuDai > listBox.Width && iteration < maxIterations)
+            var viewInfo = listBox.GetViewInfo() as CheckedListBoxViewInfo;
+            var viewRowWidth = viewInfo.ColumnWidth * viewInfo.ColumnCount;
+            var boxRowWidth = listBox.Width;
+            // Tổng cột có thể hiển thị trong chiều rộng của listBox
+            var boxColumnCount = Math.Floor((double)listBox.Width / viewInfo.ColumnWidth);
+            // Tổng hàng có thể hiển thị trong chiều rộng của listBox
+            var boxRowCount = Math.Ceiling((double)listBox.Items.Count / boxColumnCount);
+            // Tổng cột đang hiển thị trong chiều rộng của viewInfo
+            var viewColumnCount = viewInfo.ColumnCount;
+            // Tổng hàng đang hiển thị trong chiều rộng của viewInfo
+            var viewRowCount = (int)Math.Ceiling((double)listBox.Items.Count / viewInfo.ColumnCount);
+            if (
+                // Nếu chiều rộng của viewInfo lớn hơn chiều rộng của listBox
+                viewRowWidth > boxRowWidth
+                // Nếu số cột của listBox lớn hơn số cột của viewInfo và số hàng của listBox nhỏ hơn số hàng của viewInfo
+                || boxColumnCount > viewColumnCount && boxRowCount < viewRowCount
+                // Nếu số hàng của listBox bằng số hàng của viewInfo và chỉ có một hàng
+                || (boxRowCount == viewRowCount && boxRowCount == 1))
             {
-                this.ClientSize = new Size(ClientSize.Width, ClientSize.Height + viewInfo.ItemHeight);
-                listBox.PerformLayout();
-                viewInfo = listBox.GetViewInfo() as CheckedListBoxViewInfo;
-                tongChieuDai = viewInfo.ColumnWidth * viewInfo.ColumnCount;
-                iteration++;
-            }
-            // Tính toán số cột và hàng mới khi kéo rộng cửa sổ (Hình như không cần dùng ý trên vẫn được)
-            viewInfo = listBox.GetViewInfo() as CheckedListBoxViewInfo;
-            int columnCount_new = (int)Math.Floor((double)listBox.Width / viewInfo.ColumnWidth);
-            int columnCount_current = viewInfo.ColumnCount;
-            int rowCount_new = (int)Math.Ceiling((double)listBox.Items.Count / columnCount_new);
-            int rowCount_current = (int)Math.Ceiling((double)listBox.Items.Count / viewInfo.ColumnCount);
-            if (columnCount_new > columnCount_current && rowCount_new < rowCount_current || (rowCount_new == rowCount_current && rowCount_new == 1))
-            {
-                int newHeight = rowCount_new * viewInfo.ItemHeight;
-                this.ClientSize = new Size(ClientSize.Width, newHeight + 10);
+                var newHeight = boxRowCount * viewInfo.ItemHeight;
+                this.ClientSize = new Size(ClientSize.Width, (int)newHeight + 6);
             }
         }
 

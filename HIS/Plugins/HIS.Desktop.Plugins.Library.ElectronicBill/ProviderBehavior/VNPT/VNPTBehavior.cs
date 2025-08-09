@@ -40,6 +40,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
+using Telerik.WinControls.FileDialogs;
 using static Telerik.WinControls.UI.ValueMapper;
 
 namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
@@ -623,6 +624,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                 invoice.InvoiceDetail.Products = this.GetProductElectronicBill(electronicBillDataInput, notShowTaxBreakdown, ref amount, ref SumVATAmount, ref VATRateMax);
 
                 amount = Math.Round(amount - (electronicBillDataInput.Discount ?? 0), 0, MidpointRounding.AwayFromZero);
+
                 invoice.InvoiceDetail.Total = String.Format("{0:0.####}", amount - SumVATAmount);
 
                 if (notShowTaxBreakdown)
@@ -753,6 +755,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                             product.VATAmount = "";
                             //product.VATRate = "-4";
                             product.VATRate = "-1";
+                            product.Total = Math.Round(item.Amount, 0).ToString();
                         }
                         else
                         {
@@ -786,11 +789,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                             }
 
                             product.ProdPrice = String.Format("{0:0.####}", item.ProdPrice ?? 0);
+                            product.Total = Math.Round(item.AmountWithoutTax ?? 0, 0, MidpointRounding.AwayFromZero).ToString();
+
+                            SumVATAmount += item.TaxAmount ?? 0;
                         }
 
-                        product.Total = Math.Round(item.AmountWithoutTax ?? 0, 0, MidpointRounding.AwayFromZero).ToString();
                         totalAmount += item.Amount;
-                        SumVATAmount += item.TaxAmount ?? 0;
 
                         products.Add(product);
                     }
@@ -1002,7 +1006,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                             product.ThTien = Math.Round(item.Amount, 0, MidpointRounding.AwayFromZero).ToString();
                             product.TSThue = Math.Round(item.Amount, 0, MidpointRounding.AwayFromZero).ToString();
                             product.TSuat = "";
-                            product.TThue = "-4";
+                            //product.TThue = "-4";
+                            product.TThue = "-1";
                         }
                         else
                         {
@@ -1069,7 +1074,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                             if (notShowTaxBreakdown)
                             {
                                 product.TSuat = "";
-                                product.TThue = "-4";
+                                //product.TThue = "-4";
+                                product.TThue = "-1";
                             }
                             totalAmount += item.Amount;
 
@@ -1101,7 +1107,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                                 product.ThTien = Math.Round(item.Amount, 0, MidpointRounding.AwayFromZero).ToString();
                                 product.TSThue = Math.Round(item.Amount, 0, MidpointRounding.AwayFromZero).ToString();
                                 product.TSuat = "";
-                                product.TThue = "-4";
+                                //product.TThue = "-4";
+                                product.TThue = "-1";
                             }
                             else
                             {
@@ -1163,7 +1170,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                 invoice.dLHDon.nDHDon.tToan.TgTCThue = invoice.dLHDon.nDHDon.hHDVu.Sum(s => Parse.ToDecimal(s.ThTien)) + "";
                 if (notShowTaxBreakdown)
                 {
-                    invoice.dLHDon.nDHDon.tToan.TgTThue = "-4";
+                    //invoice.dLHDon.nDHDon.tToan.TgTThue = "-4";
+                    invoice.dLHDon.nDHDon.tToan.TgTThue = "-1";
                 }
                 else
                 {

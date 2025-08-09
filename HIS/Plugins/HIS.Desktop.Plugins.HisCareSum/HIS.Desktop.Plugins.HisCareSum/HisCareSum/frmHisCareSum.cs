@@ -667,6 +667,7 @@ namespace HIS.Desktop.Plugins.HisCareSum
         {
             try
             {
+                //MPS.Processor.Mps000151.PDO.Mps000151PDO mps000151RDO = new MPS.Processor.Mps000151.PDO.Mps000151PDO(data);
                 HIS.UC.Icd.ADO.IcdInputADO inputAdo = new UC.Icd.ADO.IcdInputADO();
                 inputAdo.ICD_NAME = data.ICD_NAME;
                 inputAdo.ICD_CODE = data.ICD_CODE;
@@ -1634,7 +1635,8 @@ namespace HIS.Desktop.Plugins.HisCareSum
                     BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>(),
                     LoadDataCareDetailView(lstHisCareByTreatment),
                     BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE).GENDER_CODE,
-                    BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__FEMALE).GENDER_CODE
+                    BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__FEMALE).GENDER_CODE,
+                    currentData
                     //this._CreatorADOs
                     );
                 WaitingManager.Hide();

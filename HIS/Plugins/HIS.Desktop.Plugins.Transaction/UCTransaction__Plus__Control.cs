@@ -1272,7 +1272,7 @@ namespace HIS.Desktop.Plugins.Transaction
                             PrintPhieuGiuTheBhyt();
                             break;
                         case PopupMenuProcessor.ItemType.InPhieuThanhToan:
-                            PrintInPhieuThanhToan();
+                            PrintInPhieuThanhToan();   
                             break;
                         case PopupMenuProcessor.ItemType.TamKhoa:
                             TemporaryLock();
@@ -1343,9 +1343,49 @@ namespace HIS.Desktop.Plugins.Transaction
                         case PopupMenuProcessor.ItemType.InDonTongHopPhongKham:
                             PrintDonTongHopPhongKham();
                             break;
+                        case PopupMenuProcessor.ItemType.QrThanhToan:
+                            btnQrListClick();
+                            break;
                         default:
                             break;
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void btnQrListClick()
+        {
+            try
+            {
+                if (this.currentTreatment == null)
+                    return;
+
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                    .Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisTransReqList")
+                    .FirstOrDefault();
+
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Khong tim thay moduleLink = HIS.Desktop.Plugins.HisTransReqList");
+                    return;
+                }
+
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(currentTreatment.ID);
+                    //listArgs.Add("treatmentId");
+
+
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                        "HIS.Desktop.Plugins.HisTransReqList",
+                        this.currentModule.RoomId,
+                        this.currentModule.RoomTypeId,
+                        listArgs
+                    );
                 }
             }
             catch (Exception ex)
