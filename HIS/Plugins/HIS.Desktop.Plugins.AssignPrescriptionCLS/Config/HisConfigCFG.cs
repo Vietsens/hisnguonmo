@@ -28,6 +28,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
 {
     class HisConfigCFG
     {
+        private const string CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT = "MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT";
         private const string CONFIG_KEY__MOS_HIS_SERVICE_REQ_MANY_DAYS_PRESCRIPTION_OPTION = "MOS.HIS_SERVICE_REQ.MANY_DAYS_PRESCRIPTION_OPTION";
         private const string CONFIG_KEY__IsAllowAssignPresByPackage = "HIS.Desktop.Plugins.IsAllowAssignPresByPackage";
         private const string CONFIG_KEY__IsloadIcdFromExamServiceExecute = "HIS.Desktop.Plugins.IsloadIcdFromExamServiceExecute";
@@ -177,6 +178,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         /// 1: Kê nhiều ngày theo cả đơn; 2: Kê nhiều ngày theo từng thuốc
         /// </summary>
         internal static long ManyDayPrescriptionOption;
+        internal static string UsePaymentObjectByDept;
 
         internal static bool InPatientPrescription__ShowRoundAvailableAmount;
 
@@ -216,6 +218,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         {
             try
             {
+                UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);
                 //qtcode
                 AllowSignaturePrintModuleLinks = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);
                 //qtcode
