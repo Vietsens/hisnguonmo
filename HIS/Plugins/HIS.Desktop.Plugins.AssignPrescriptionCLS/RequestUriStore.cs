@@ -20,6 +20,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS
 {
     class RequestUriStore
     {
+        public const string HIS_DEPA_PATIENT_TYPE__GET = "api/HisDepaPatientType/Get";
         public const string HIS_MEDI_STOCK__GETDHISMEDISTOCK2 = "api/HisMediStock/GetDHisMediStock2";
 
         public const string HIS_SERVICE_REQ_METY__GET = "api/HisServiceReqMety/Get";

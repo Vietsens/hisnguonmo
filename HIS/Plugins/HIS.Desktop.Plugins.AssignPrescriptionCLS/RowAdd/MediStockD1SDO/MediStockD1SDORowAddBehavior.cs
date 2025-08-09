@@ -121,6 +121,65 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add.MediStockD1SDO
             medicineTypeSDO__Category__SameMediAcin = null;
             try
             {
+                if (frmAssignPrescription.selectedOpionGroup == 2)
+                {
+                    List<MediMatyTypeADO> mediMatyTypeADOTemps = new List<MediMatyTypeADO>();
+                    this.CreateADO();
+                    this.UpdateMedicinePackageInfoInDataRow(this.medicineTypeSDO);
+                    this.UpdatePatientTypeInDataRow(this.medicineTypeSDO);
+                    this.UpdateMedicineUseFormInDataRow(this.medicineTypeSDO);
+                    this.UpdateUseTimeInDataRow(this.medicineTypeSDO);
+                    this.SetValidError();
+                    MestMetyUnitWorker.UpdateUnit(this.medicineTypeSDO);
+
+                    if (this.medicineTypeSDO != null && this.medicineTypeSDO.IsStent == true
+                        && this.medicineTypeSDO.AMOUNT > 1)
+                    {
+                        mediMatyTypeADOTemps = MediMatyProcessor.MakeMaterialSingleStent(medicineTypeSDO);
+                    }
+                    else
+                    {
+                        mediMatyTypeADOTemps.Add(this.medicineTypeSDO);
+                    }
+
+                    foreach (var item in mediMatyTypeADOTemps)
+                    {
+                        //Nếu (kê đơn phòng khám hoặc kê tủ trực) và không phải trường hợp hết khả dụng chọn thuốc ngoài kho thay thế thì sẽ gọi hàm take bean
+                        if ((!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet) && medicineTypeSDO__Category__SameMediAcin == null)
+                        {
+                            if (TakeOrReleaseBeanWorker.TakeForCreateBean(frmAssignPrescription.intructionTimeSelecteds, this.expMestId, item, false, Param))
+                            {
+                                success = true;
+                                item.PrimaryKey = (this.medicineTypeSDO.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
+                                this.SaveDataAndRefesh(item);
+                                frmAssignPrescription.ReloadDataAvaiableMediBeanInCombo();
+                                LogSystem.Debug("SaveDataAndRefesh => 4");
+                            }
+                            else
+                            {
+                                //Release stent
+                                MessageManager.Show(Param, success);
+                                return success = false;
+                            }
+                        }
+                        else
+                        {
+                            item.TotalPrice = frmAssignPrescription.CalculatePrice(item);
+                            //if (frmAssignPrescription.servicePatyAllows != null && frmAssignPrescription.servicePatyAllows.ContainsKey(item.SERVICE_ID))
+                            //{
+                            //    var data_ServicePrice = frmAssignPrescription.servicePatyAllows[item.SERVICE_ID].Where(o => o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID).OrderByDescending(m => m.MODIFY_TIME).ToList();
+                            //    if (data_ServicePrice != null && data_ServicePrice.Count > 0)
+                            //    {
+                            //        item.TotalPrice = (data_ServicePrice[0].PRICE * item.AMOUNT) ?? 0;
+                            //    }
+                            //}
+
+                            success = true;
+                            this.SaveDataAndRefesh(item);
+                            frmAssignPrescription.ReloadDataAvaiableMediBeanInCombo();
+                        }
+                    }
+                }
                 if (this.ValidMetyMatyType__Add())
                 {
                     List<MediMatyTypeADO> mediMatyTypeADOTemps = new List<MediMatyTypeADO>();

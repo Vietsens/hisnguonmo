@@ -119,7 +119,7 @@
     </Reference>
     <Reference Include="HIS.UC.ServiceRoom, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.ServiceRoom.dll</HintPath>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.ServiceRoom.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TranPati">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.TranPati\HIS.UC.TranPati.dll</HintPath>

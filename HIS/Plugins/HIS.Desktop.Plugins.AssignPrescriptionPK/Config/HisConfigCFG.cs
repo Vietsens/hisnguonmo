@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 {
     class HisConfigCFG
     {
+        private const string CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT = "MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT";
         private const string CONFIG_KEY__HIS_ICD_SERVICE__HAS_REQUIRE__PATIENT_BHYT = "HIS.HIS_ICD_SERVICE.HAS_REQUIRE.PATIENT.BHYT";
         private const string CONFIG_KEY__IsCheckServiceFollwWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
         private const string CONFIG_KEY__SuggestPrescriptionsInfo = "HIS.Desktop.AI.SuggestPrescriptionsInfo";
@@ -342,6 +343,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static List<long> autoFinishServiceIds;
         internal static string BlockingInteractiveGrade;
         internal static bool IsloadIcdFromExamServiceExecute;
+        internal static string UsePaymentObjectByDept;
 
         /// <summary>
         /// Cấu hình cho phép kê thuốc/vật tư theo lô hoặc theo loại. Đăt 1: cho phép kê theo lô. Đặt khác 1: kê theo loại.
@@ -453,6 +455,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         {
             try
             {
+                UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);
                 HisIcdServiceHasRequirePatientBhyt = GetValue(CONFIG_KEY__HIS_ICD_SERVICE__HAS_REQUIRE__PATIENT_BHYT);
                 IsCheckServiceFollowWhenOut = GetValue(CONFIG_KEY__IsCheckServiceFollwWhenOut);    
                 SuggestPrescriptionsInfo = GetValue(CONFIG_KEY__SuggestPrescriptionsInfo);
