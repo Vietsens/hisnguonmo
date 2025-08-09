@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 serviceRoomInitADO.RoomId = this.currentModule.RoomId;
                 serviceRoomInitADO.dlgGetPatientTypeId = GetPatientTypeId;
                 serviceRoomInitADO.DelegateFocusNextUserControl = FoucusMoveOutServiceRoomInfo;
+                serviceRoomInitADO.DelegateFocusNextUserControlSurcharge = FoucusMoveOutServiceRoomInfoSurcharge;
                 serviceRoomInitADO.IsFocusCombo = HisConfigCFG.IsByPassTextBoxRoomCode;
                 if (this.ucPatientRaw1.GetValue().PATIENTTYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
                 {
@@ -121,6 +122,42 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         {
             try
             {
+                try
+                {
+                    if ((HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "1" ||
+                        HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "2") &&
+                        HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService == "1")
+                    {
+
+                        ucServiceRoomInfo1.FocusSurcharge_frmServiceRoom();
+                    }
+                    else
+                    {
+                        if (HisConfigCFG.IsAutoFocusToSavePrintAfterChoosingExam)
+                        {
+                            this.focusToBtnSaveAndPrint();
+                        }
+                        else
+                        {
+                            this.focusToBtnSave();
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        void FoucusMoveOutServiceRoomInfoSurcharge()
+        {
+            try
+            {
                 if (HisConfigCFG.IsAutoFocusToSavePrintAfterChoosingExam)
                 {
                     this.focusToBtnSaveAndPrint();
@@ -144,6 +181,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 serviceRoomInitADO.dlgGetPatientTypeId = GetPatientTypeId;
                 serviceRoomInitADO.RoomId = this.currentModule.RoomId;
                 serviceRoomInitADO.DelegateFocusNextUserControl = FoucusMoveOutServiceRoomInfo;
+                serviceRoomInitADO.DelegateFocusNextUserControlSurcharge = FoucusMoveOutServiceRoomInfoSurcharge;
                 serviceRoomInitADO.IsFocusCombo = HisConfigCFG.IsByPassTextBoxRoomCode;
                 if (this.ucPatientRaw1.GetValue().PATIENTTYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
                 {

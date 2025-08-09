@@ -507,7 +507,7 @@ namespace HIS.UC.ServiceRoom
         private DevExpress.Utils.ImageCollection imageCollection1;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemBtnChooseHide;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemBtnChoose;
-        private DevExpress.XtraEditors.GridLookUpEdit cboSurcharge;
+        public DevExpress.XtraEditors.GridLookUpEdit cboSurcharge;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
     }

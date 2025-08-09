@@ -59,8 +59,17 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.ucOtherServiceReqInfo1.SetDelegateHeinRightRouteType(this.SetRightRouteEmergencyWhenRegisterOutTime);
 				this.ucOtherServiceReqInfo1.SetDelegatePriorityNumberChanged(this.SetServuceRoomAddButtonWhenRegisterHasPriorityNumber);
 				this.ucOtherServiceReqInfo1.FillDataOweTypeDefault();
-				
-				if (HisConfigCFG.IsAutoFocusToSavePrintAfterChoosingExam)
+
+                if (HisConfigCFG.IsAutoFocusToSavePrintAfterChoosingExam)
+                {
+                    this.ucServiceRoomInfo1.FocusNextUserControlSurcharge(focusToBtnSaveAndPrint);
+                }
+                else
+                {
+                    this.ucServiceRoomInfo1.FocusNextUserControlSurcharge(focusToBtnSave);
+                }
+
+                if (HisConfigCFG.IsAutoFocusToSavePrintAfterChoosingExam)
 				{
 					this.ucServiceRoomInfo1.FocusNextUserControl(focusToBtnSaveAndPrint);
 				}
