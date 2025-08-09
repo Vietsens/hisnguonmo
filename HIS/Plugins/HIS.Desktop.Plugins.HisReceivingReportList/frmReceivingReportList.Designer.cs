@@ -30,10 +30,10 @@ namespace HIS.Desktop.Plugins.HisReceivingReportList
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmReceivingReportList));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.navBarControl1 = new DevExpress.XtraNavBar.NavBarControl();
             this.navBarGroup1 = new DevExpress.XtraNavBar.NavBarGroup();
@@ -177,6 +177,9 @@ namespace HIS.Desktop.Plugins.HisReceivingReportList
             this.txtSearch.Location = new System.Drawing.Point(2, 2);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Properties.NullText = "Từ khóa tìm kiếm";
+            this.txtSearch.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
+            this.txtSearch.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtSearch.Properties.ShowNullValuePromptWhenFocused = true;
             this.txtSearch.Size = new System.Drawing.Size(284, 20);
             this.txtSearch.StyleController = this.layoutControl1;
             this.txtSearch.TabIndex = 5;
@@ -235,6 +238,7 @@ namespace HIS.Desktop.Plugins.HisReceivingReportList
             // gridColumn2
             // 
             this.gridColumn2.ColumnEdit = this.btnViewDetail;
+            this.gridColumn2.FieldName = "btnViewDetail";
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.ShowCaption = false;
             this.gridColumn2.Visible = true;
@@ -245,64 +249,67 @@ namespace HIS.Desktop.Plugins.HisReceivingReportList
             // 
             this.btnViewDetail.AutoHeight = false;
             this.btnViewDetail.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnViewDetail.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnViewDetail.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.btnViewDetail.Name = "btnViewDetail";
             this.btnViewDetail.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.btnViewDetail.Click += new System.EventHandler(this.btnViewDetail_Click);
             // 
             // colReportID
             // 
-            this.colReportID.Caption = "Mã";
+            this.colReportID.Caption = "Mã giao dịch";
             this.colReportID.FieldName = "REPORT_ID";
             this.colReportID.Name = "colReportID";
             this.colReportID.Visible = true;
             this.colReportID.VisibleIndex = 2;
-            this.colReportID.Width = 45;
+            this.colReportID.Width = 70;
             // 
             // colBeginDate
             // 
-            this.colBeginDate.Caption = "Thời gian bắt đầu";
+            this.colBeginDate.Caption = "Thời gian bắt đầu đối soát";
             this.colBeginDate.FieldName = "BEGIN_DATE_STR";
             this.colBeginDate.Name = "colBeginDate";
             this.colBeginDate.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colBeginDate.Visible = true;
             this.colBeginDate.VisibleIndex = 3;
-            this.colBeginDate.Width = 95;
+            this.colBeginDate.Width = 150;
             // 
             // colEndDate
             // 
-            this.colEndDate.Caption = "Thời gian kết thúc";
+            this.colEndDate.Caption = "Thời gian kết thúc đối soát";
             this.colEndDate.FieldName = "END_DATE_STR";
             this.colEndDate.Name = "colEndDate";
             this.colEndDate.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colEndDate.Visible = true;
             this.colEndDate.VisibleIndex = 4;
-            this.colEndDate.Width = 95;
+            this.colEndDate.Width = 150;
             // 
             // colReceivingReport
             // 
-            this.colReceivingReport.Caption = "Mã định danh";
+            this.colReceivingReport.Caption = "Mã định danh phần mềm";
             this.colReceivingReport.FieldName = "RECEIVING_REPORT";
             this.colReceivingReport.Name = "colReceivingReport";
             this.colReceivingReport.Visible = true;
             this.colReceivingReport.VisibleIndex = 5;
+            this.colReceivingReport.Width = 130;
             // 
             // colCreationTime
             // 
-            this.colCreationTime.Caption = "Thời gian tạo";
+            this.colCreationTime.Caption = "Thời gian tạo báo cáo";
             this.colCreationTime.FieldName = "CREATION_DATETIME_STR";
             this.colCreationTime.Name = "colCreationTime";
+            this.colCreationTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colCreationTime.Visible = true;
             this.colCreationTime.VisibleIndex = 6;
-            this.colCreationTime.Width = 83;
+            this.colCreationTime.Width = 120;
             // 
             // colPageNumber
             // 
-            this.colPageNumber.Caption = "Số thứ tự";
+            this.colPageNumber.Caption = "Số thứ tự trang báo cáo";
             this.colPageNumber.FieldName = "PAGE_NUMBER";
             this.colPageNumber.Name = "colPageNumber";
             this.colPageNumber.Visible = true;
             this.colPageNumber.VisibleIndex = 7;
-            this.colPageNumber.Width = 55;
+            this.colPageNumber.Width = 130;
             // 
             // colTotalPage
             // 
@@ -320,7 +327,7 @@ namespace HIS.Desktop.Plugins.HisReceivingReportList
             this.colActive.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colActive.Visible = true;
             this.colActive.VisibleIndex = 9;
-            this.colActive.Width = 60;
+            this.colActive.Width = 80;
             // 
             // colCreateTime
             // 
@@ -330,7 +337,7 @@ namespace HIS.Desktop.Plugins.HisReceivingReportList
             this.colCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colCreateTime.Visible = true;
             this.colCreateTime.VisibleIndex = 10;
-            this.colCreateTime.Width = 95;
+            this.colCreateTime.Width = 110;
             // 
             // colModifyTime
             // 
@@ -340,7 +347,7 @@ namespace HIS.Desktop.Plugins.HisReceivingReportList
             this.colModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colModifyTime.Visible = true;
             this.colModifyTime.VisibleIndex = 11;
-            this.colModifyTime.Width = 95;
+            this.colModifyTime.Width = 110;
             // 
             // colCreator
             // 
@@ -349,7 +356,7 @@ namespace HIS.Desktop.Plugins.HisReceivingReportList
             this.colCreator.Name = "colCreator";
             this.colCreator.Visible = true;
             this.colCreator.VisibleIndex = 12;
-            this.colCreator.Width = 60;
+            this.colCreator.Width = 70;
             // 
             // colModifier
             // 
@@ -358,7 +365,7 @@ namespace HIS.Desktop.Plugins.HisReceivingReportList
             this.colModifier.Name = "colModifier";
             this.colModifier.Visible = true;
             this.colModifier.VisibleIndex = 13;
-            this.colModifier.Width = 60;
+            this.colModifier.Width = 70;
             // 
             // layoutControlGroup1
             // 

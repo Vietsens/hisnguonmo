@@ -169,6 +169,8 @@ namespace HIS.Desktop.Plugins.HisReceivingReportList
 
                 this.txtSearch.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmReceivingReportList.txtSearch.Properties.NullValuePrompt",
                     Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.Text = Inventec.Common.Resource.Get.Value("frmReceivingReportList.Text",
+                    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
                 if (this.moduleData != null && !String.IsNullOrEmpty(this.moduleData.text))
                 {
@@ -213,12 +215,15 @@ namespace HIS.Desktop.Plugins.HisReceivingReportList
                 int limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(startPage, limit);
                 Inventec.Core.ApiResultObject<List<HIS_RECEIVING_REPORT>> apiResult = null;
+                LogSystem.Info($"[HisReceivingReport] API Request - Start: {startPage}, Limit: {limit}");
                 HisReceivingReportFilter filter = new HisReceivingReportFilter();
                 filter.KEY_WORD = txtSearch.Text.Trim();
                 filter.CREATE_TIME_FROM = Convert.ToInt64(dtCreateTimeFrom.DateTime.ToString("yyyyMMdd") + "000000");
                 filter.CREATE_TIME_TO = Convert.ToInt64(dtCreateTimeTo.DateTime.ToString("yyyyMMdd") + "235959");
                 filter.ORDER_DIRECTION = "DESC";
                 filter.ORDER_FIELD = "CREATE_TIME";
+                LogSystem.Info($"[HisReceivingReport] Filter - KeyWord: {filter.KEY_WORD}, " +
+                      $"FromTime: {filter.CREATE_TIME_FROM}, ToTime: {filter.CREATE_TIME_TO}");
                 gridControl1.BeginUpdate();
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<HIS_RECEIVING_REPORT>>(
                     "/api/HisReceivingReport/Get", ApiConsumers.MosConsumer, filter, paramCommon);
@@ -344,8 +349,7 @@ namespace HIS.Desktop.Plugins.HisReceivingReportList
             }
             catch (Exception ex)
             {
-
-                throw;
+                LogSystem.Error(ex);
             }
         }
 
@@ -374,6 +378,30 @@ namespace HIS.Desktop.Plugins.HisReceivingReportList
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnViewDetail_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedRow = grvReportList.GetFocusedRow() as HIS_RECEIVING_REPORT;
+                if (selectedRow == null)
+                {
+                    MessageBox.Show("Vui lòng chọn một báo cáo để xem chi tiết");
+                    return;
+                }
+
+                using (var detailForm = new frmReceivingDetail(selectedRow))
+                {
+                    detailForm.StartPosition = FormStartPosition.CenterParent;
+                    detailForm.ShowDialog(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                MessageBox.Show("Có lỗi xảy ra khi xem chi tiết báo cáo");
             }
         }
     }
