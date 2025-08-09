@@ -51,9 +51,11 @@ namespace HIS.UC.UCServiceRoomInfo
 
         RoomExamServiceProcessor roomExamServiceProcessor;
         UserControl ucRoomExamService = null;
+        private UCRoomExamService ucServiceRoom;
         int roomExamServiceNumber = 0;
         private bool isFocusCombo;
         DelegateFocusNextUserControl dlgFocusNextUserControl;
+        DelegateFocusNextUserControl dlgFocusNextUserControlSurcharge;
         dlgGetPatientTypeId dlgGetPatientTypeId;
         Action registerPatientWithRightRouteBHYT;
         Action changeRoomNotEmergency;
@@ -82,6 +84,7 @@ namespace HIS.UC.UCServiceRoomInfo
         {
             try
             {
+                ucServiceRoom = new UCRoomExamService();
                 Inventec.Common.Logging.LogSystem.Debug("UCServiceRoomInfo_Load .1");
                 this.CreateExamServiceRoomInfoPanel();
                 InitFieldFromAsync();
@@ -100,7 +103,12 @@ namespace HIS.UC.UCServiceRoomInfo
                 Inventec.Common.Logging.LogSystem.Debug("UCServiceRoomInfo.InitFieldFromAsync .1");
                 SetCaptionByLanguageKey();
                 LoadComboPatientType();
-                LoadComboPatientTypePrimary();
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "1" ||
+                    HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "2")
+                {
+                    frmPatientTypePrimary();
+                }
+                //LoadComboPatientTypePrimary();
                 SetDefaultComboPatientType();
                 LoadExecuteRoomProcess();
             }
@@ -150,6 +158,7 @@ namespace HIS.UC.UCServiceRoomInfo
                 this._RoomID = serviceRoomInitADO.RoomId;
                 this.dlgGetPatientTypeId = serviceRoomInitADO.dlgGetPatientTypeId;
                 this.dlgFocusNextUserControl = serviceRoomInitADO.DelegateFocusNextUserControl;
+                this.dlgFocusNextUserControlSurcharge = serviceRoomInitADO.DelegateFocusNextUserControlSurcharge;
                 this.registerPatientWithRightRouteBHYT = serviceRoomInitADO.RegisterPatientWithRightRouteBHYT;
                 this.changeRoomNotEmergency = serviceRoomInitADO.ChangeRoomNotEmergency;
                 this.isFocusCombo = serviceRoomInitADO.IsFocusCombo;
@@ -354,6 +363,7 @@ namespace HIS.UC.UCServiceRoomInfo
                 this._RoomID = serviceRoomInitADO.RoomId;
                 this.dlgGetPatientTypeId = serviceRoomInitADO.dlgGetPatientTypeId;
                 this.dlgFocusNextUserControl = serviceRoomInitADO.DelegateFocusNextUserControl;
+                this.dlgFocusNextUserControlSurcharge = serviceRoomInitADO.DelegateFocusNextUserControlSurcharge;
                 this.registerPatientWithRightRouteBHYT = serviceRoomInitADO.RegisterPatientWithRightRouteBHYT;
                 this.dlgGetIntructionTime = serviceRoomInitADO.dlgGetIntructionTime;
 
@@ -475,6 +485,7 @@ namespace HIS.UC.UCServiceRoomInfo
                 roomExamServiceData.TemplateDesign = TemplateDesign.T20;
                 roomExamServiceData.RemoveUC = this.DeleteServiceRoomInfo;
                 roomExamServiceData.FocusOutUC = this.dlgFocusNextUserControl;
+                roomExamServiceData.FocusOutUCSurcharge = this.dlgFocusNextUserControlSurcharge;
                 roomExamServiceData.ChangeServiceProcessPrimaryPatientType = this.ProcessPrimaryPatientTypeChangeService;
                 roomExamServiceData.ChangeDisablePrimaryPatientType = this.ProcessDisablePatientTypeChangeService;
                 roomExamServiceData.GetIntructionTime = this.dlgGetIntructionTime;
@@ -919,16 +930,19 @@ namespace HIS.UC.UCServiceRoomInfo
         {
             try
             {
-                var paties = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(p => p.IS_ACTIVE == 1).ToList();
-                //if (this.dlgGetPatientTypeId() > 0)
+                //string cfgPT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERE_SERV.IS_SET_PRIMARY_PATIENT_TYPE");
+                //if (cfgPT == "1" || cfgPT == "2")
                 //{
+                //lciCboPatientTypePhuThu.Visibility = LayoutVisibility.Always;
 
+                var paties = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(p => p.IS_ACTIVE == 1 && p.IS_ADDITION == 1).ToList();
+
+                List<ColumnInfo> columnInfosPT = new List<ColumnInfo>();
+                columnInfosPT.Add(new ColumnInfo("PATIENT_TYPE_CODE", "", 60, 1));
+                columnInfosPT.Add(new ColumnInfo("PATIENT_TYPE_NAME", "", 280, 2));
+                ControlEditorADO controlEditorADOPT = new ControlEditorADO("PATIENT_TYPE_NAME", "ID", columnInfosPT, false, 340);
+                ControlEditorLoader.Load(this.CboPatientTypePrimary, paties, controlEditorADOPT);
                 //}
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("PATIENT_TYPE_CODE", "", 60, 1));
-                columnInfos.Add(new ColumnInfo("PATIENT_TYPE_NAME", "", 280, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("PATIENT_TYPE_NAME", "ID", columnInfos, false, 340);
-                ControlEditorLoader.Load(this.cboPatientType, paties, controlEditorADO);
             }
             catch (Exception ex)
             {
@@ -1195,6 +1209,36 @@ namespace HIS.UC.UCServiceRoomInfo
         }
         #endregion
 
+        private void frmPatientTypePrimary()
+        {
+            try
+            {
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService == "1")
+                {
+                    lciCboPatientTypePhuThu.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+                else
+                {
+                    lciCboPatientTypePhuThu.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    LoadComboPatientTypePrimary();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
+        public void FocusSurcharge_frmServiceRoom()
+        {
+            try
+            {
+                ucServiceRoom.cboSurcharge.Focus();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

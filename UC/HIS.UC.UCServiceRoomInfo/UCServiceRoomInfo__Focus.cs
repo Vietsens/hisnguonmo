@@ -68,7 +68,20 @@ namespace HIS.UC.UCServiceRoomInfo
                 Inventec.Common.Logging.LogSystem.Warn("Focus ra khoi uc UCServiceRoomInfo that bai: \n" + ex);
             }
         }
-
+        public void FocusNextUserControlSurcharge(DelegateFocusNextUserControl _dlgFocusNextUserControlSurcharge)
+        {
+            try
+            {
+                if (_dlgFocusNextUserControlSurcharge != null)
+                {
+                    this.dlgFocusNextUserControlSurcharge = _dlgFocusNextUserControlSurcharge;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Focus ra khoi uc UCServiceRoomInfo that bai: \n" + ex);
+            }
+        }
         #endregion
 
         #region Inside Focus UserControl
