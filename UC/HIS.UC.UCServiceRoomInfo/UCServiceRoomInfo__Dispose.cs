@@ -44,6 +44,7 @@ namespace HIS.UC.UCServiceRoomInfo
                 registerPatientWithRightRouteBHYT = null;
                 dlgGetPatientTypeId = null;
                 dlgFocusNextUserControl = null;
+                dlgFocusNextUserControlSurcharge = null;
                 isFocusCombo = false;
                 roomExamServiceNumber = 0;
                 roomExamServiceProcessor.DisposeControl(ucRoomExamService);

@@ -70,6 +70,7 @@ namespace HIS.UC.ServiceRoom
         internal List<V_HIS_ROOM> hisRooms { get; set; }
         public RemoveRoomExamService dlgRemoveUC { get; set; }
         public DelegateFocusNextUserControl dlgFocusNextUserControl;
+        public DelegateFocusNextUserControl dlgFocusNextUserControlSurcharge;
         Action registerPatientWithRightRouteBHYT;
         Action changeRoomNotEmergency;
         Action<long> changeServiceProcessPrimaryPatientType;
@@ -155,6 +156,13 @@ namespace HIS.UC.ServiceRoom
                 SetCaptionByLanguageKeyNew();
 
                 InitRestoreLayoutGridViewFromXml(gridViewContainerRoom);
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "1" ||
+                    HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "2")
+                {
+                    ItemCboSurcharge();
+                }
+
+                SetDataSourceCboSurcharge();
             }
             catch (Exception ex)
             {
@@ -781,10 +789,18 @@ namespace HIS.UC.ServiceRoom
                             this.txtExamServiceCode.Text = "";
                             this.cboExamService.EditValue = null;
                         }
+
+                        if ((HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "1" ||
+                            HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "2") &&
+                            HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService == "1")
+                        {
+
+                            this.cboSurcharge.Focus();
+                        }
                     }
                     if (!valid)
                     {
-                        this.FocusTocboExamService();
+                        this.FocusTocboExamService();      
                     }
                     e.Handled = true;
                 }
@@ -797,7 +813,6 @@ namespace HIS.UC.ServiceRoom
 
         private void txtExamServiceCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-
         }
 
         private void cboExamService_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
@@ -812,6 +827,7 @@ namespace HIS.UC.ServiceRoom
                         {
                             this.dlgFocusNextUserControl();
                         }
+                        SetDataSourceCboSurcharge();
                     }
                 }
             }
@@ -832,6 +848,13 @@ namespace HIS.UC.ServiceRoom
                         if (this.dlgFocusNextUserControl != null)
                         {
                             this.dlgFocusNextUserControl();
+                        }
+
+                        if ((HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "1" ||
+                            HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "2") &&
+                            HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService == "1")
+                        {
+                            this.cboSurcharge.Focus();
                         }
                     }
                 }
@@ -868,7 +891,9 @@ namespace HIS.UC.ServiceRoom
                             this.changeDisablePrimaryPatientType(false);
                         }
                     }
+                    this.cboSurcharge.Focus();
                 }
+                SetDataSourceCboSurcharge();
             }
             catch (Exception ex)
             {
@@ -1004,6 +1029,79 @@ namespace HIS.UC.ServiceRoom
 
                 var rawRoom = (rowHandle >= 0) ? (RoomExtADO)this.gridViewContainerRoom.GetRow(rowHandle) : null;
                 CallModuleNumOrderBlockChooser(rawRoom);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public void ItemCboSurcharge()
+        {
+            if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService == "1")
+            {
+                layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            }
+            else
+            {
+                layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            }
+        }
+
+        private void cboSurcharge_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboSurcharge.Text = null;
+                    cboSurcharge.Text = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboSurcharge_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                bool valid = false;
+                if (this.cboSurcharge.EditValue != null && this.cboSurcharge.Text != "")
+                {
+                    valid = true;
+                    if (this.dlgFocusNextUserControlSurcharge != null)
+                    {
+                        this.dlgFocusNextUserControlSurcharge();
+                    }
+                }
+                if (!valid)
+                {
+                    this.FocusTocboSurcharge();
+                }
+                e.Handled = true;   
+            }
+        }
+
+        private void cboSurcharge_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                bool valid = false;
+                if (this.cboSurcharge.EditValue != null)
+                {
+                    valid = true;
+                    if (this.dlgFocusNextUserControlSurcharge != null)
+                    {
+                        this.dlgFocusNextUserControlSurcharge();
+                    } 
+                }
+                if (!valid)
+                {
+                    this.FocusTocboSurcharge();
+                }
             }
             catch (Exception ex)
             {
