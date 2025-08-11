@@ -828,4 +828,8 @@
   <data name="UCTotalPriceInfo.lciTotalOtherBillAmount.Text" xml:space="preserve">
     <value>Other costs:</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_TRANSACTION__POPUP_MENU__ITEM_DANH_SACH_QR" xml:space="preserve">
+    <value>Qr list</value>
+    <comment>danh sách Qr</comment>
+  </data>
 </root>

@@ -6948,6 +6948,8 @@ namespace MPS.Processor.Mps000062
                     item.BED_ROOM_NAME = GetStringValueInSingleValueDictionaryByKey("BED_ROOM_NAME");
                     item.PATIENT_TYPE_NAME = GetStringValueInSingleValueDictionaryByKey("PATIENT_TYPE_NAME");
                     item.PATIENT_TYPE_CODE = GetStringValueInSingleValueDictionaryByKey("PATIENT_TYPE_CODE");
+                    item.BED_LOG_BED_CODE = GetStringValueInSingleValueDictionaryByKey("BED_LOG_BED_CODE");
+                    item.BED_LOG_BED_NAME = GetStringValueInSingleValueDictionaryByKey("BED_LOG_BED_NAME");
                     item.ORDER_SHEET = GetStringValueInSingleValueDictionaryByKey(Mps000062ExtendSingleKey.ORDER_SHEET);
                     if (itemIndex > 0)
                     {
@@ -7388,6 +7390,8 @@ namespace MPS.Processor.Mps000062
                 if (rdo.PatientTypeAlter != null)
                     SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.HEIN_CARD_ADDRESS, rdo.PatientTypeAlter.ADDRESS));
                 SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.PHONE, ""));
+                SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.BED_LOG_BED_CODE, rdo.BedLog?.BED_CODE));
+                SetSingleKey(new KeyValue(Mps000062ExtendSingleKey.BED_LOG_BED_NAME, rdo.BedLog?.BED_NAME));
                 AddObjectKeyIntoListkey<Mps000062SingleKey>(rdo._WorkPlaceSDO, false);
                 AddObjectKeyIntoListkey<HIS_TREATMENT>(rdo._Treatment);
             }

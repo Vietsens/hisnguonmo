@@ -165,7 +165,7 @@ namespace HIS.UC.UCServiceRoomInfo
             this.layoutControl2.Location = new System.Drawing.Point(3, 27);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(352, 50);
+            this.layoutControl2.Size = new System.Drawing.Size(382, 50);
             this.layoutControl2.TabIndex = 24;
             this.layoutControl2.Text = "layoutControl2";
             // 
@@ -176,15 +176,15 @@ namespace HIS.UC.UCServiceRoomInfo
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(352, 50);
+            this.Root.Size = new System.Drawing.Size(382, 50);
             this.Root.TextVisible = false;
             // 
             // btnAddRow
             // 
             this.btnAddRow.Image = ((System.Drawing.Image)(resources.GetObject("btnAddRow.Image")));
-            this.btnAddRow.Location = new System.Drawing.Point(359, 27);
+            this.btnAddRow.Location = new System.Drawing.Point(389, 27);
             this.btnAddRow.Name = "btnAddRow";
-            this.btnAddRow.Size = new System.Drawing.Size(76, 22);
+            this.btnAddRow.Size = new System.Drawing.Size(46, 22);
             this.btnAddRow.StyleController = this.lcUCServiceRoomInfo;
             this.btnAddRow.TabIndex = 23;
             this.btnAddRow.Click += new System.EventHandler(this.btnAddRow_Click);
@@ -208,9 +208,9 @@ namespace HIS.UC.UCServiceRoomInfo
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.btnAddRow;
-            this.layoutControlItem1.Location = new System.Drawing.Point(356, 24);
+            this.layoutControlItem1.Location = new System.Drawing.Point(386, 24);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(80, 54);
+            this.layoutControlItem1.Size = new System.Drawing.Size(50, 54);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -219,7 +219,7 @@ namespace HIS.UC.UCServiceRoomInfo
             this.layoutControlItem2.Control = this.layoutControl2;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(356, 54);
+            this.layoutControlItem2.Size = new System.Drawing.Size(386, 54);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 

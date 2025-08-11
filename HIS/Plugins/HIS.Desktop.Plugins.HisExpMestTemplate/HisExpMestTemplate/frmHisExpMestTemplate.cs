@@ -2260,8 +2260,9 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate
                             FillDataToGridControl();
                             ResetFormData();
                             ResetMediMaty();
+                            listMediMatyTypeADOchoose.Clear();
                             gridViewAdd.BeginUpdate();
-                            gridViewAdd.GridControl.DataSource = null;
+                            gridViewAdd.GridControl.DataSource = listMediMatyTypeADOchoose;
                             gridViewAdd.EndUpdate();
                         }
                     }
@@ -2274,8 +2275,9 @@ namespace HIS.Desktop.Plugins.HisExpMestTemplate
                             FillDataToGridControl();
                             ResetFormData();
                             ResetMediMaty();
+                            listMediMatyTypeADOchoose.Clear();
                             gridViewAdd.BeginUpdate();
-                            gridViewAdd.GridControl.DataSource = null;
+                            gridViewAdd.GridControl.DataSource = listMediMatyTypeADOchoose;
                             gridViewAdd.EndUpdate();
                         }
                     }

@@ -98,6 +98,10 @@ namespace MPS.Processor.Mps000452
                     if (rdo.PeriodDriverDity[i].IS_YES_NO == "1")
                     {
                         y = "X";
+                        if (rdo.DiseaseType[i].DISEASE_TYPE_CODE == "22")
+                        {
+                            name += ":" + rdo.HisKskOverEighteen.PATHOLOGICAL_HISTORY;
+                        }
                     }
                     else if (rdo.PeriodDriverDity[i].IS_YES_NO == "0")
                     {

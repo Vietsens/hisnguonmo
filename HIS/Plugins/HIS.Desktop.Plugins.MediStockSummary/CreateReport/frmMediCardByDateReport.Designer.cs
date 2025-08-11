@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.lblExpiredDate = new DevExpress.XtraEditors.LabelControl();
             this.lblPackageNumber = new DevExpress.XtraEditors.LabelControl();
@@ -67,14 +68,14 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciPackageNumber = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciExpiredDate = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem__Save = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtTimeTo.Properties.CalendarTimeProperties)).BeginInit();
@@ -109,41 +110,37 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             this.layoutControl1.Controls.Add(this.lblMediStockName);
             this.layoutControl1.Controls.Add(this.lblMediStockCode);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 38);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(191, 159, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(756, 115);
+            this.layoutControl1.Size = new System.Drawing.Size(567, 95);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // lblExpiredDate
             // 
             this.lblExpiredDate.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblExpiredDate.Location = new System.Drawing.Point(392, 55);
-            this.lblExpiredDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblExpiredDate.Location = new System.Drawing.Point(317, 50);
             this.lblExpiredDate.Name = "lblExpiredDate";
-            this.lblExpiredDate.Size = new System.Drawing.Size(340, 20);
+            this.lblExpiredDate.Size = new System.Drawing.Size(231, 20);
             this.lblExpiredDate.StyleController = this.layoutControl1;
             this.lblExpiredDate.TabIndex = 17;
             // 
             // lblPackageNumber
             // 
             this.lblPackageNumber.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblPackageNumber.Location = new System.Drawing.Point(98, 55);
-            this.lblPackageNumber.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblPackageNumber.Location = new System.Drawing.Point(97, 50);
             this.lblPackageNumber.Name = "lblPackageNumber";
-            this.lblPackageNumber.Size = new System.Drawing.Size(193, 20);
+            this.lblPackageNumber.Size = new System.Drawing.Size(121, 20);
             this.lblPackageNumber.StyleController = this.layoutControl1;
             this.lblPackageNumber.TabIndex = 16;
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(615, 105);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSave.Location = new System.Drawing.Point(460, 98);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(117, 27);
+            this.btnSave.Size = new System.Drawing.Size(88, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 15;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -152,8 +149,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             // dtTimeTo
             // 
             this.dtTimeTo.EditValue = null;
-            this.dtTimeTo.Location = new System.Drawing.Point(392, 81);
-            this.dtTimeTo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtTimeTo.Location = new System.Drawing.Point(317, 74);
             this.dtTimeTo.Name = "dtTimeTo";
             this.dtTimeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -165,7 +161,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             this.dtTimeTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtTimeTo.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
             this.dtTimeTo.Properties.Mask.UseMaskAsDisplayFormat = true;
-            this.dtTimeTo.Size = new System.Drawing.Size(193, 22);
+            this.dtTimeTo.Size = new System.Drawing.Size(121, 20);
             this.dtTimeTo.StyleController = this.layoutControl1;
             this.dtTimeTo.TabIndex = 13;
             this.dtTimeTo.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtTimeTo_Closed);
@@ -173,8 +169,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             // dtTimeFrom
             // 
             this.dtTimeFrom.EditValue = null;
-            this.dtTimeFrom.Location = new System.Drawing.Point(98, 81);
-            this.dtTimeFrom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtTimeFrom.Location = new System.Drawing.Point(97, 74);
             this.dtTimeFrom.Name = "dtTimeFrom";
             this.dtTimeFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -186,7 +181,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             this.dtTimeFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtTimeFrom.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
             this.dtTimeFrom.Properties.Mask.UseMaskAsDisplayFormat = true;
-            this.dtTimeFrom.Size = new System.Drawing.Size(193, 22);
+            this.dtTimeFrom.Size = new System.Drawing.Size(121, 20);
             this.dtTimeFrom.StyleController = this.layoutControl1;
             this.dtTimeFrom.TabIndex = 12;
             this.dtTimeFrom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtTimeFrom_Closed);
@@ -194,39 +189,35 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             // lblReportTypeName
             // 
             this.lblReportTypeName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblReportTypeName.Location = new System.Drawing.Point(392, 29);
-            this.lblReportTypeName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblReportTypeName.Location = new System.Drawing.Point(317, 26);
             this.lblReportTypeName.Name = "lblReportTypeName";
-            this.lblReportTypeName.Size = new System.Drawing.Size(340, 20);
+            this.lblReportTypeName.Size = new System.Drawing.Size(231, 20);
             this.lblReportTypeName.StyleController = this.layoutControl1;
             this.lblReportTypeName.TabIndex = 8;
             // 
             // lblReportTypeCode
             // 
-            this.lblReportTypeCode.Location = new System.Drawing.Point(98, 29);
-            this.lblReportTypeCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblReportTypeCode.Location = new System.Drawing.Point(97, 26);
             this.lblReportTypeCode.Name = "lblReportTypeCode";
-            this.lblReportTypeCode.Size = new System.Drawing.Size(193, 18);
+            this.lblReportTypeCode.Size = new System.Drawing.Size(121, 20);
             this.lblReportTypeCode.StyleController = this.layoutControl1;
             this.lblReportTypeCode.TabIndex = 7;
             // 
             // lblMediStockName
             // 
             this.lblMediStockName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblMediStockName.Location = new System.Drawing.Point(392, 3);
-            this.lblMediStockName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblMediStockName.Location = new System.Drawing.Point(317, 2);
             this.lblMediStockName.Name = "lblMediStockName";
-            this.lblMediStockName.Size = new System.Drawing.Size(340, 20);
+            this.lblMediStockName.Size = new System.Drawing.Size(231, 20);
             this.lblMediStockName.StyleController = this.layoutControl1;
             this.lblMediStockName.TabIndex = 5;
             // 
             // lblMediStockCode
             // 
             this.lblMediStockCode.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblMediStockCode.Location = new System.Drawing.Point(98, 3);
-            this.lblMediStockCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblMediStockCode.Location = new System.Drawing.Point(97, 2);
             this.lblMediStockCode.Name = "lblMediStockCode";
-            this.lblMediStockCode.Size = new System.Drawing.Size(193, 18);
+            this.lblMediStockCode.Size = new System.Drawing.Size(121, 20);
             this.lblMediStockCode.StyleController = this.layoutControl1;
             this.lblMediStockCode.TabIndex = 4;
             // 
@@ -249,7 +240,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(735, 135);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(550, 122);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -261,7 +252,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             this.layoutControlItem1.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem1.MinSize = new System.Drawing.Size(220, 24);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(294, 26);
+            this.layoutControlItem1.Size = new System.Drawing.Size(220, 24);
             this.layoutControlItem1.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem1.Text = "Mã kho:";
             this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -273,9 +264,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             this.layoutControlItem2.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem2.Control = this.lblMediStockName;
-            this.layoutControlItem2.Location = new System.Drawing.Point(294, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(220, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(441, 26);
+            this.layoutControlItem2.Size = new System.Drawing.Size(330, 24);
             this.layoutControlItem2.Text = "Tên kho:";
             this.layoutControlItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem2.TextSize = new System.Drawing.Size(90, 20);
@@ -286,11 +277,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             this.lciMediMateCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciMediMateCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciMediMateCode.Control = this.lblReportTypeCode;
-            this.lciMediMateCode.Location = new System.Drawing.Point(0, 26);
+            this.lciMediMateCode.Location = new System.Drawing.Point(0, 24);
             this.lciMediMateCode.MaxSize = new System.Drawing.Size(0, 24);
             this.lciMediMateCode.MinSize = new System.Drawing.Size(220, 24);
             this.lciMediMateCode.Name = "lciMediMateCode";
-            this.lciMediMateCode.Size = new System.Drawing.Size(294, 26);
+            this.lciMediMateCode.Size = new System.Drawing.Size(220, 24);
             this.lciMediMateCode.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciMediMateCode.Text = "Mã loại thuốc:";
             this.lciMediMateCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -302,9 +293,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             this.lciMediMateName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciMediMateName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciMediMateName.Control = this.lblReportTypeName;
-            this.lciMediMateName.Location = new System.Drawing.Point(294, 26);
+            this.lciMediMateName.Location = new System.Drawing.Point(220, 24);
             this.lciMediMateName.Name = "lciMediMateName";
-            this.lciMediMateName.Size = new System.Drawing.Size(441, 26);
+            this.lciMediMateName.Size = new System.Drawing.Size(330, 24);
             this.lciMediMateName.Text = "Tên loại thuốc:";
             this.lciMediMateName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciMediMateName.TextSize = new System.Drawing.Size(90, 20);
@@ -317,11 +308,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             this.layoutControlItem9.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem9.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem9.Control = this.dtTimeFrom;
-            this.layoutControlItem9.Location = new System.Drawing.Point(0, 78);
+            this.layoutControlItem9.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem9.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem9.MinSize = new System.Drawing.Size(220, 24);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(294, 24);
+            this.layoutControlItem9.Size = new System.Drawing.Size(220, 24);
             this.layoutControlItem9.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem9.Text = "Từ:";
             this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -335,11 +326,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             this.layoutControlItem10.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem10.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem10.Control = this.dtTimeTo;
-            this.layoutControlItem10.Location = new System.Drawing.Point(294, 78);
+            this.layoutControlItem10.Location = new System.Drawing.Point(220, 72);
             this.layoutControlItem10.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem10.MinSize = new System.Drawing.Size(220, 24);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(294, 24);
+            this.layoutControlItem10.Size = new System.Drawing.Size(220, 24);
             this.layoutControlItem10.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem10.Text = "Đến:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -349,26 +340,26 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSave;
-            this.layoutControlItem3.Location = new System.Drawing.Point(612, 102);
+            this.layoutControlItem3.Location = new System.Drawing.Point(458, 96);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(123, 33);
+            this.layoutControlItem3.Size = new System.Drawing.Size(92, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 102);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 96);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(612, 33);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(458, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(588, 78);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(440, 72);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(147, 24);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(110, 24);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciPackageNumber
@@ -376,9 +367,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             this.lciPackageNumber.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPackageNumber.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPackageNumber.Control = this.lblPackageNumber;
-            this.lciPackageNumber.Location = new System.Drawing.Point(0, 52);
+            this.lciPackageNumber.Location = new System.Drawing.Point(0, 48);
             this.lciPackageNumber.Name = "lciPackageNumber";
-            this.lciPackageNumber.Size = new System.Drawing.Size(294, 26);
+            this.lciPackageNumber.Size = new System.Drawing.Size(220, 24);
             this.lciPackageNumber.Text = "Số lô:";
             this.lciPackageNumber.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPackageNumber.TextSize = new System.Drawing.Size(90, 20);
@@ -390,9 +381,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             this.lciExpiredDate.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciExpiredDate.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciExpiredDate.Control = this.lblExpiredDate;
-            this.lciExpiredDate.Location = new System.Drawing.Point(294, 52);
+            this.lciExpiredDate.Location = new System.Drawing.Point(220, 48);
             this.lciExpiredDate.Name = "lciExpiredDate";
-            this.lciExpiredDate.Size = new System.Drawing.Size(441, 26);
+            this.lciExpiredDate.Size = new System.Drawing.Size(330, 24);
             this.lciExpiredDate.Text = "Hạn dùng:";
             this.lciExpiredDate.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciExpiredDate.TextSize = new System.Drawing.Size(90, 20);
@@ -403,6 +394,10 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem__Save});
@@ -431,33 +426,29 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 38);
-            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlTop.Size = new System.Drawing.Size(756, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(567, 29);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 153);
-            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlBottom.Size = new System.Drawing.Size(756, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 124);
+            this.barDockControlBottom.Size = new System.Drawing.Size(567, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
-            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 115);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 95);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(756, 38);
-            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 115);
+            this.barDockControlRight.Location = new System.Drawing.Point(567, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 95);
             // 
             // dxValidationProvider1
             // 
@@ -465,15 +456,14 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             // 
             // frmMediCardByDateReport
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(756, 153);
+            this.ClientSize = new System.Drawing.Size(567, 124);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmMediCardByDateReport";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmMediCardByDateReport";

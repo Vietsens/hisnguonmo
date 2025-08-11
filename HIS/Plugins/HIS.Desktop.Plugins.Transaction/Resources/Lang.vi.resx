@@ -300,9 +300,6 @@
   <data name="IVT_LANGUAGE_KEY__UC_TRANSACTION__POPUP_MENU__ITEM_CLS" xml:space="preserve">
     <value>Duyệt y lệnh CLS</value>
   </data>
-	<data name="IVT_LANGUAGE_KEY__UC_TRANSACTION__POPUP_MENU__ITEM_YCTU" xml:space="preserve">
-    <value>Yêu cầu tạm ứng</value>
-  </data>
   <data name="IVT_LANGUAGE_KEY__UC_TRANSACTION__POPUP_MENU__ITEM_HOA_DON_DIEN_TU" xml:space="preserve">
     <value>Xuất hóa đơn điện tử</value>
   </data>
@@ -825,14 +822,17 @@
   <data name="UCTransaction.txtStepNumber.Properties.NullValuePrompt" xml:space="preserve">
     <value>Bước nhảy</value>
   </data>
-  <data name="UCTotalPriceInfo.layoutTotalDebtAmount.Text" xml:space="preserve">
-    <value>Công nợ:</value>
-  </data>
   <data name="UCTotalPriceInfo.lciOtherSourcePrice.Text" xml:space="preserve">
     <value>Nguồn khác thanh toán:</value>
   </data>
   <data name="UCTotalPriceInfo.lciTotalOtherBillAmount.Text" xml:space="preserve">
     <value>Chi phí khác:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_TRANSACTION__POPUP_MENU__ITEM_YCTU" xml:space="preserve">
+    <value>Yêu cầu tạm ứng</value>
+  </data>
+  <data name="UCTotalPriceInfo.layoutTotalDebtAmount.Text" xml:space="preserve">
+    <value>Công nợ:</value>
   </data>
   <data name="UCTotalPriceInfo.LayoutLockingAmount.Text" xml:space="preserve">
     <value>Đã nộp (tạm khóa):</value>
@@ -840,7 +840,11 @@
   <data name="UCTotalPriceInfo.LayoutLockingAmountTotip.Text" xml:space="preserve">
     <value>Số tiền bệnh nhân đã tạm ứng hoặc thanh toán (không bao gồm tiền kết chuyển) nhưng đang bị tạm khóa</value>
   </data>
-	<data name="IVT_LANGUAGE_KEY__UC_TRANSACTION__TOTAL_PRICE_INFO__LAYOUT_VIR_TOTAL_RECEIVE_PRICE_TOTIP" xml:space="preserve">
+  <data name="IVT_LANGUAGE_KEY__UC_TRANSACTION__TOTAL_PRICE_INFO__LAYOUT_VIR_TOTAL_RECEIVE_PRICE_TOTIP" xml:space="preserve">
     <value>Số tiền đã thu của bệnh nhân bao gồm cả số tiền đang tạm khó</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_TRANSACTION__POPUP_MENU__ITEM_DANH_SACH_QR" xml:space="preserve">
+    <value>Danh sách Qr</value>
+    <comment>danh sách Qr</comment>
   </data>
 </root>

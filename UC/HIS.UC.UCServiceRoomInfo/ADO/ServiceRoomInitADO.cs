@@ -30,6 +30,7 @@ namespace HIS.UC.UCServiceRoomInfo.ADO
 
         public dlgGetPatientTypeId dlgGetPatientTypeId { get; set; }
         public DelegateFocusNextUserControl DelegateFocusNextUserControl { get; set; }
+        public DelegateFocusNextUserControl DelegateFocusNextUserControlSurcharge { get; set; }
         public Action RegisterPatientWithRightRouteBHYT { get; set; }
         public Action ChangeRoomNotEmergency { get; set; }
         public long RoomId { get; set; }

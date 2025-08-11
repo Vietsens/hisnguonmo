@@ -207,18 +207,22 @@ namespace HIS.Desktop.Plugins.InfantInformation
             listHisBaby = BackendDataWorker.Get<HIS_BABY>();
             listHisEmpLoyee = listHisEmpLoyee.Where(o => o.IS_ACTIVE == 1).ToList();
             if (!toggleCheck.IsOn)
+            {
                 listProvince = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_NO_DISTRICT != 1 && o.IS_ACTIVE == 1).ToList();
+                listCommune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_NO_DISTRICT != 1 && o.IS_ACTIVE == 1).ToList();
+            }
             else
+            {   
                 listProvince = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_NO_DISTRICT == 1 && o.IS_ACTIVE == 1).ToList();
-
+                listCommune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_NO_DISTRICT == 1 && o.IS_ACTIVE == 1).ToList();
+            }
             listDistrict = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>().Where(o => o.IS_ACTIVE == 1).ToList();
-            listCommune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>();
             this.hisBranch = BranchDataWorker.Branch;
             this.listHisMediOrg = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDI_ORG>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
 
             LoadComboEthnic();
             GetDataHisBirthCertBook();
-            LoadComboHisBirthCertBook();
+            LoadComboHisBirthCertBook();   
 
             LoadComboBornType();
 
@@ -3395,24 +3399,48 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     this.cboCommuneNameHospital.Properties.DataSource = lstCommuneADO;
                     if (this.isBornedAtHospital)
                     {
+                        txtProvinceCodeHospital.Text = "";
                         txtProvinceCodeHospital.Enabled = false;
                         cboProvinceNameHospital.Enabled = false;
+                        txtDistrictCodeHospital.Text = "";
                         txtDistrictCodeHospital.Enabled = false;
                         cboDistrictNameHospital.Enabled = false;
+                        txtCommuneCodeHospital.Text = "";
                         txtCommuneCodeHospital.Enabled = false;
                         cboCommuneNameHospital.Enabled = false;
-                        cboProvinceNameHospital.EditValue = this.hisBranch.PROVINCE_CODE;
-                        txtProvinceCodeHospital.Text = listProvince.FirstOrDefault(o => o.PROVINCE_CODE == this.hisBranch.PROVINCE_CODE).SEARCH_CODE;
-
+                        if (this.hisBranch.PROVINCE_CODE != null)
+                        {
+                            cboProvinceNameHospital.EditValue = this.hisBranch.PROVINCE_CODE;
+                            var hospital = listProvince.Where(o => o.PROVINCE_CODE == this.hisBranch.PROVINCE_CODE).ToList();
+                            if (hospital != null && hospital.Count > 0)
+                            {
+                                txtProvinceCodeHospital.Text = hospital.First().SEARCH_CODE;
+                            }
+                        }
                         
+                        //txtProvinceCodeHospital.Text = listProvince.FirstOrDefault(o => o.PROVINCE_CODE == this.hisBranch.PROVINCE_CODE).SEARCH_CODE;
+
                         if (this.hisBranch.DISTRICT_CODE != null)
                         {
                             cboDistrictNameHospital.EditValue = this.hisBranch.DISTRICT_CODE;
-                            txtDistrictCodeHospital.Text = lstDistrictADO.FirstOrDefault(o => o.DISTRICT_CODE == this.hisBranch.DISTRICT_CODE).SEARCH_CODE;
+                            var hospital = lstDistrictADO.Where(o => o.DISTRICT_CODE == this.hisBranch.DISTRICT_CODE).ToList();
+                            if (hospital != null && hospital.Count > 0)
+                            {
+                                txtDistrictCodeHospital.Text = hospital.First().SEARCH_CODE;
+                            }
+                            //txtDistrictCodeHospital.Text = lstDistrictADO.FirstOrDefault(o => o.DISTRICT_CODE == this.hisBranch.DISTRICT_CODE).SEARCH_CODE;
                         }
 
-                        cboCommuneNameHospital.EditValue = this.hisBranch.COMMUNE_CODE;
-                        txtCommuneCodeHospital.Text = lstCommuneADO.FirstOrDefault(o => o.COMMUNE_CODE == this.hisBranch.COMMUNE_CODE).SEARCH_CODE;
+                        if (this.hisBranch.COMMUNE_CODE != null)
+                        {
+                            cboCommuneNameHospital.EditValue = this.hisBranch.COMMUNE_CODE;
+                            var commune = lstCommuneADO.Where(o => o.COMMUNE_CODE == this.hisBranch.COMMUNE_CODE).ToList();
+                            if (commune != null && commune.Count > 0)
+                            {
+                                txtCommuneCodeHospital.Text = commune.First().SEARCH_CODE;
+                            }
+                        }
+                        //txtCommuneCodeHospital.Text = lstCommuneADO.FirstOrDefault(o => o.COMMUNE_CODE == this.hisBranch.COMMUNE_CODE).SEARCH_CODE;
                     }
                     else
                     {
@@ -4779,7 +4807,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 cboHTDistrictName.Text = null;
                 txtHTCommuneCode.Text = null;
                 cboHTCommuneName.Text = null;
+                this.cboProvinceNameHospital.Properties.DataSource = null;
+                this.cboDistrictNameHospital.Properties.DataSource = null;
+                this.cboCommuneNameHospital.Properties.DataSource = null;
                 LoadCombo();
+                this.cboProvinceNameHospital.Properties.DataSource = listProvince;
             }
             catch (Exception ex)
             {

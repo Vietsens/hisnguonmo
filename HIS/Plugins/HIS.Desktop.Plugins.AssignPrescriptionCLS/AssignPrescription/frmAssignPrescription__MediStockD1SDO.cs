@@ -15,7 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.LookAndFeel.Helpers;
 using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraExport;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
@@ -28,6 +30,7 @@ using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,187 +50,384 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 //Tại màn hình kê đơn, nếu phòng mà người dùng đang làm việc có "Giới hạn thuốc được phép sử dụng" (IS_RESTRICT_MEDICINE_TYPE trong HIS_ROOM bằng true) thì danh sách thuốc khi kê thuốc trong kho chỉ hiển thị các thuốc được khai cấu hình tương ứng với phòng đấy (dữ liệu lưu trong bảng HIS_MEDICINE_TYPE_ROOM)
                 List<DMediStock1ADO> dMediStock1s = new List<DMediStock1ADO>();
                 dMediStock1s.AddRange(this.mediStockD1ADOs);
-
+                LogSystem.Info("DMediStock1ADO: " + LogUtil.TraceData("dMediStock1s: ", dMediStock1s));
                 gridViewMediMaty.BeginUpdate();
                 gridViewMediMaty.Columns.Clear();
                 popupControlContainerMediMaty.Width = theRequiredWidth;
                 popupControlContainerMediMaty.Height = theRequiredHeight;
-
-                DevExpress.XtraGrid.Columns.GridColumn col2 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col2.FieldName = "MEDICINE_TYPE_NAME";
-                col2.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_TYPE_NAME",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                col2.Width = 250;
-                col2.VisibleIndex = 1;
-                gridViewMediMaty.Columns.Add(col2);
-
-
-                DevExpress.XtraGrid.Columns.GridColumn col3 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col3.FieldName = "SERVICE_UNIT_NAME_DISPLAY";
-                col3.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_SERVICE_UNIT_NAME",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                col3.Width = 60;
-                col3.VisibleIndex = 2;
-                col3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-                gridViewMediMaty.Columns.Add(col3);
+                if (selectedOpionGroup == 1)
+                {
+                    DevExpress.XtraGrid.Columns.GridColumn col2 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col2.FieldName = "MEDICINE_TYPE_NAME";
+                    col2.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_TYPE_NAME",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col2.Width = 250;
+                    col2.VisibleIndex = 1;
+                    gridViewMediMaty.Columns.Add(col2);
 
 
-                DevExpress.XtraGrid.Columns.GridColumn col8 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col8.FieldName = "CONCENTRA";
-                col8.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_CONCENTRA",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                col8.Width = 100;
-                col8.VisibleIndex = 3;
-                gridViewMediMaty.Columns.Add(col8);
+                    DevExpress.XtraGrid.Columns.GridColumn col3 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col3.FieldName = "SERVICE_UNIT_NAME_DISPLAY";
+                    col3.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_SERVICE_UNIT_NAME",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col3.Width = 60;
+                    col3.VisibleIndex = 2;
+                    col3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col3);
 
 
-                DevExpress.XtraGrid.Columns.GridColumn col7 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col7.FieldName = "ACTIVE_INGR_BHYT_NAME";
-                col7.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_ACTIVE_INGR_BHYT_NAME",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                col7.Width = 160;
-                col7.VisibleIndex = 4;
-                gridViewMediMaty.Columns.Add(col7);
+                    DevExpress.XtraGrid.Columns.GridColumn col8 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col8.FieldName = "CONCENTRA";
+                    col8.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_CONCENTRA",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col8.Width = 100;
+                    col8.VisibleIndex = 3;
+                    gridViewMediMaty.Columns.Add(col8);
 
 
-                DevExpress.XtraGrid.Columns.GridColumn col4 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col4.FieldName = "AMOUNT";
-                col4.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_AVAILABLE_AMOUNT",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                col4.Width = 90;
-                col4.VisibleIndex = 5;
-                col4.DisplayFormat.FormatString = "#,##0.00";
-                col4.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-                gridViewMediMaty.Columns.Add(col4);
+                    DevExpress.XtraGrid.Columns.GridColumn col7 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col7.FieldName = "ACTIVE_INGR_BHYT_NAME";
+                    col7.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_ACTIVE_INGR_BHYT_NAME",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col7.Width = 160;
+                    col7.VisibleIndex = 4;
+                    gridViewMediMaty.Columns.Add(col7);
 
 
-                DevExpress.XtraGrid.Columns.GridColumn col9 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col9.FieldName = "MEDI_STOCK_NAME";
-                col9.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MEDI_STOCK",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                col9.Width = 100;
-                col9.VisibleIndex = 6;
-                gridViewMediMaty.Columns.Add(col9);
+                    DevExpress.XtraGrid.Columns.GridColumn col4 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col4.FieldName = "AMOUNT";
+                    col4.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_AVAILABLE_AMOUNT",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col4.Width = 90;
+                    col4.VisibleIndex = 5;
+                    col4.DisplayFormat.FormatString = "#,##0.00";
+                    col4.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+                    gridViewMediMaty.Columns.Add(col4);
 
 
-                DevExpress.XtraGrid.Columns.GridColumn col5 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col5.FieldName = "IMP_PRICE_DISPLAY";
-                col5.Caption = "Giá bán";
-                col5.Width = 100;
-                col5.VisibleIndex = 7;
-                col5.DisplayFormat.FormatString = "#,##0.00";
-                col5.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-                col5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-                gridViewMediMaty.Columns.Add(col5);
-
-                DevExpress.XtraGrid.Columns.GridColumn col6 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col6.FieldName = "IMP_VAT_RATIO_DISPLAY";
-                col6.Caption = "VAT(%)";
-                col6.Width = 100;
-                col6.VisibleIndex = 8;
-                col6.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-                gridViewMediMaty.Columns.Add(col6);
+                    DevExpress.XtraGrid.Columns.GridColumn col9 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col9.FieldName = "MEDI_STOCK_NAME";
+                    col9.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MEDI_STOCK",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col9.Width = 100;
+                    col9.VisibleIndex = 6;
+                    gridViewMediMaty.Columns.Add(col9);
 
 
-                DevExpress.XtraGrid.Columns.GridColumn col6a = new DevExpress.XtraGrid.Columns.GridColumn();
-                col6a.FieldName = "TDL_PACKAGE_NUMBER";
-                col6a.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_PACKAGE_NUMBER",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                col6a.Width = 100;
-                col6a.VisibleIndex = 9;
-                gridViewMediMaty.Columns.Add(col6a);
+                    DevExpress.XtraGrid.Columns.GridColumn col5 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col5.FieldName = "IMP_PRICE_DISPLAY";
+                    col5.Caption = "Giá bán";
+                    col5.Width = 100;
+                    col5.VisibleIndex = 7;
+                    col5.DisplayFormat.FormatString = "#,##0.00";
+                    col5.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+                    col5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col5);
 
-                DevExpress.XtraGrid.Columns.GridColumn col6b = new DevExpress.XtraGrid.Columns.GridColumn();
-                col6b.FieldName = "REGISTER_NUMBER";
-                col6b.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_REGISTER_NUMBER",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                col6b.Width = 100;
-                col6b.VisibleIndex = 10;
-                gridViewMediMaty.Columns.Add(col6b);
-
-                DevExpress.XtraGrid.Columns.GridColumn col6c = new DevExpress.XtraGrid.Columns.GridColumn();
-                col6c.FieldName = "EXPIRED_DATE_DISPLAY";
-                col6c.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-                col6c.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_EXPIRED_DATE",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                col6c.Width = 100;
-                col6c.VisibleIndex = 11;
-                gridViewMediMaty.Columns.Add(col6c);
+                    DevExpress.XtraGrid.Columns.GridColumn col6 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col6.FieldName = "IMP_VAT_RATIO_DISPLAY";
+                    col6.Caption = "VAT(%)";
+                    col6.Width = 100;
+                    col6.VisibleIndex = 8;
+                    col6.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col6);
 
 
-                DevExpress.XtraGrid.Columns.GridColumn col10 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col10.FieldName = "MANUFACTURER_NAME";
-                col10.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MANUFACTURER_NAME",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                col10.Width = 150;
-                col10.VisibleIndex = 12;
-                gridViewMediMaty.Columns.Add(col10);
+                    DevExpress.XtraGrid.Columns.GridColumn col6a = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col6a.FieldName = "TDL_PACKAGE_NUMBER";
+                    col6a.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_PACKAGE_NUMBER",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col6a.Width = 100;
+                    col6a.VisibleIndex = 9;
+                    gridViewMediMaty.Columns.Add(col6a);
 
-                DevExpress.XtraGrid.Columns.GridColumn col11 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col11.FieldName = "NATIONAL_NAME";
-                col11.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_NATIONAL_NAME",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                col11.Width = 80;
-                col11.VisibleIndex = 13;
-                gridViewMediMaty.Columns.Add(col11);
+                    DevExpress.XtraGrid.Columns.GridColumn col6b = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col6b.FieldName = "REGISTER_NUMBER";
+                    col6b.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_REGISTER_NUMBER",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col6b.Width = 100;
+                    col6b.VisibleIndex = 10;
+                    gridViewMediMaty.Columns.Add(col6b);
+
+                    DevExpress.XtraGrid.Columns.GridColumn col6c = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col6c.FieldName = "EXPIRED_DATE_DISPLAY";
+                    col6c.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    col6c.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_EXPIRED_DATE",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col6c.Width = 100;
+                    col6c.VisibleIndex = 11;
+                    gridViewMediMaty.Columns.Add(col6c);
 
 
-                DevExpress.XtraGrid.Columns.GridColumn col1 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col1.FieldName = "MEDICINE_TYPE_CODE";
-                col1.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_TYPE_CODE",
-                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
-                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                col1.Width = 60;
-                col1.VisibleIndex = 14;
-                gridViewMediMaty.Columns.Add(col1);
+                    DevExpress.XtraGrid.Columns.GridColumn col10 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col10.FieldName = "MANUFACTURER_NAME";
+                    col10.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MANUFACTURER_NAME",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col10.Width = 150;
+                    col10.VisibleIndex = 12;
+                    gridViewMediMaty.Columns.Add(col10);
+
+                    DevExpress.XtraGrid.Columns.GridColumn col11 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col11.FieldName = "NATIONAL_NAME";
+                    col11.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_NATIONAL_NAME",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col11.Width = 80;
+                    col11.VisibleIndex = 13;
+                    gridViewMediMaty.Columns.Add(col11);
 
 
-                //Phuc vu cho tim kiem khong dau
+                    DevExpress.XtraGrid.Columns.GridColumn col1 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col1.FieldName = "MEDICINE_TYPE_CODE";
+                    col1.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_TYPE_CODE",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col1.Width = 60;
+                    col1.VisibleIndex = 14;
+                    gridViewMediMaty.Columns.Add(col1);
 
-                DevExpress.XtraGrid.Columns.GridColumn col12 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col12.FieldName = "MEDICINE_TYPE_CODE__UNSIGN";
-                col12.Width = 80;
-                col12.VisibleIndex = -1;
-                gridViewMediMaty.Columns.Add(col12);
 
-                DevExpress.XtraGrid.Columns.GridColumn col13 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col13.FieldName = "MEDICINE_TYPE_NAME__UNSIGN";
-                col13.Width = 80;
-                col13.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Like;
-                col13.VisibleIndex = -1;
-                gridViewMediMaty.Columns.Add(col13);
+                    //Phuc vu cho tim kiem khong dau
 
-                DevExpress.XtraGrid.Columns.GridColumn col14 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col14.FieldName = "ACTIVE_INGR_BHYT_NAME__UNSIGN";
-                col14.VisibleIndex = -1;
-                col14.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Like;
-                gridViewMediMaty.Columns.Add(col14);
+                    DevExpress.XtraGrid.Columns.GridColumn col12 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col12.FieldName = "MEDICINE_TYPE_CODE__UNSIGN";
+                    col12.Width = 80;
+                    col12.VisibleIndex = -1;
+                    gridViewMediMaty.Columns.Add(col12);
 
-                gridViewMediMaty.GridControl.DataSource = dMediStock1s;
-                gridViewMediMaty.EndUpdate();
+                    DevExpress.XtraGrid.Columns.GridColumn col13 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col13.FieldName = "MEDICINE_TYPE_NAME__UNSIGN";
+                    col13.Width = 80;
+                    col13.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Like;
+                    col13.VisibleIndex = -1;
+                    gridViewMediMaty.Columns.Add(col13);
+
+                    DevExpress.XtraGrid.Columns.GridColumn col14 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col14.FieldName = "ACTIVE_INGR_BHYT_NAME__UNSIGN";
+                    col14.VisibleIndex = -1;
+                    col14.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Like;
+                    gridViewMediMaty.Columns.Add(col14);
+
+                    gridViewMediMaty.GridControl.DataSource = dMediStock1s;
+                    gridViewMediMaty.EndUpdate();
+                }
+                else if (selectedOpionGroup == 2)
+                {
+                    DevExpress.XtraGrid.Columns.GridColumn col2 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col2.FieldName = "MEDICINE_TYPE_NAME";
+                    col2.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_TYPE_NAME",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col2.Width = 250;
+                    col2.VisibleIndex = 1;
+                    gridViewMediMaty.Columns.Add(col2);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col3 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col3.FieldName = "SERVICE_UNIT_NAME";
+                    col3.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_SERVICE_UNIT_NAME",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col3.Width = 60;
+                    col3.VisibleIndex = 2;
+                    col3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col3);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col4 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col4.FieldName = "SERIAL_NUMBER";
+                    col4.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_SERIAL_NUMBER",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col4.Width = 60;
+                    col4.VisibleIndex = 2;
+                    col4.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col4);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col5 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col5.FieldName = "REMAIN_REUSE_COUNT";
+                    col5.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_REMAIN_REUSE_COUNT",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col5.Width = 60;
+                    col5.VisibleIndex = 2;
+                    col5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col5);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col6 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col6.FieldName = "TDL_MATERIAL_MAX_REUSE_COUNT";
+                    col6.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_TDL_MATERIAL_MAX_REUSE_COUNT",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col6.Width = 60;
+                    col6.VisibleIndex = 2;
+                    col6.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col6);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col7 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col7.FieldName = "MEDI_STOCK_NAME";
+                    col7.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MEDI_STOCK_NAME",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col7.Width = 60;
+                    col7.VisibleIndex = 2;
+                    col7.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col7);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col8 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col8.FieldName = "LAST_EXP_PRICE";
+                    col8.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_LAST_EXP_PRICE",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col8.Width = 60;
+                    col8.VisibleIndex = 2;
+                    col8.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col8);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col9 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col9.FieldName = "LAST_EXP_VAT_RATIO";
+                    col9.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_LAST_EXP_VAT_RATIO",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col9.Width = 60;
+                    col9.VisibleIndex = 2;
+                    col9.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col9);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col10 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col10.FieldName = "TDL_PACKAGE_NUMBER"; 
+                    col10.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_PACKAGE_NUMBER",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col10.Width = 60;
+                    col10.VisibleIndex = 2;
+                    col10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col10);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col11 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col11.FieldName = "MATERIAL_REGISTER_NUMBER";
+                    col11.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MATERIAL_REGISTER_NUMBER",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col11.Width = 60;
+                    col11.VisibleIndex = 2;
+                    col11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col11);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col12 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col12.FieldName = "EXPIRED_DATE";
+                    col12.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_EXPIRED_DATE",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col12.Width = 60;
+                    col12.VisibleIndex = 2;
+                    col12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col12);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col13 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col13.FieldName = "MANUFACTURER_NAME";
+                    col13.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MANUFACTURER_NAME",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col13.Width = 60;
+                    col13.VisibleIndex = 2;
+                    col13.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col13);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col14 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col14.FieldName = "NATIONAL_NAME";
+                    col14.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_PACKAGE_NUMBER",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col14.Width = 60;
+                    col14.VisibleIndex = 2;
+                    col14.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col14);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col15 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col15.FieldName = "MATERIAL_TYPE_CODE";
+                    col15.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MATERIAL_TYPE_CODE",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col15.Width = 60;
+                    col15.VisibleIndex = 2;
+                    col15.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col15);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col16 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col16.FieldName = "PARENT_NAME";
+                    col16.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_PARENT_NAME",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col16.Width = 60;
+                    col16.VisibleIndex = 2;
+                    col16.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col16);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col17 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col17.FieldName = "MATERIAL_TYPE_MAP_ID";
+                    col17.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MATERIAL_TYPE_MAP_ID",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col17.Width = 60;
+                    col17.VisibleIndex = 2;
+                    col17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    gridViewMediMaty.Columns.Add(col17);
+
+                    gridViewMediMaty.GridControl.DataSource = dMediStock1s;
+                    gridViewMediMaty.EndUpdate();
+                }
             }
             catch (Exception ex)
             {
@@ -539,7 +739,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 if (data != null)
                 {
                     Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this.currentMedicineTypeADOForEdit, data);
-
+                    
+                    currentMedicineTypeADOForEdit.IsExpend = currentMedicineTypeADOForEdit.IS_AUTO_EXPEND == 1;
+                    if (data.GetType() == typeof(DMediStock1ADO))
+                    {
+                        DMediStock1ADO dMediStock = data as DMediStock1ADO;
+                        this.currentMedicineTypeADOForEdit.IsStent = ((dMediStock.IS_STENT ?? 0) == GlobalVariables.CommonNumberTrue ? true : false);
+                    }
                     this.actionBosung = GlobalVariables.ActionAdd;
                     this.VisibleButton(this.actionBosung);
                     this.btnAdd.Enabled = true;
@@ -792,6 +998,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
+                bool isTSD = selectedOpionGroup == 2;
                 this.mediStockD1ADOs = new List<DMediStock1ADO>();
                 if (currentMediStock != null && currentMediStock.Count > 0)
                 {
@@ -806,7 +1013,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter));
                     this.mediMatyTypeAvailables = new BackendAdapter(param).Get<List<D_HIS_MEDI_STOCK_2>>(HisRequestUriStore.HIS_MEDISTOCKDISDO_GET1, ApiConsumers.MosConsumer, filter, ProcessLostToken, param);
 
-                    this.ProcessResultDataMetyMatyTypeInStock(mediStockIds, false);
+                    this.ProcessResultDataMetyMatyTypeInStock(mediStockIds, isTSD);
                 }
                 else
                 {
@@ -853,13 +1060,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 
                 if (isTSD)
                 {
-                    mediStockD1s = mediStockD1s.Where(o => o.IS_REUSABLE == 1 && o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT).ToList();
+                    mediStockD1s = mediStockD1s.Where(o => (o.IS_REUSABLE == 1 || o.IS_IDENTITY_MANAGEMENT == 1) && o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT).ToList();
                     this.ProcessMapingDataForTSD(mediStockD1s, mediStockIds);
                 }
                 else
                 {
                     mediStockD1s = mediStockD1s.Where(o => (o.IS_REUSABLE == null || o.IS_REUSABLE != 1)).ToList();
                     this.mediStockD1ADOs = this.ConvertToDMediStock2(mediStockD1s);
+                    //this.mediStockD1ADOs = this.ConvertToDMediStock2(mediStockD1s, mediStockIds);
                 }
             }
             catch (Exception ex)
@@ -1028,8 +1236,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             result.Add(dMediStock1ADO);
                         }
                     }
+                    }
                 }
-            }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);

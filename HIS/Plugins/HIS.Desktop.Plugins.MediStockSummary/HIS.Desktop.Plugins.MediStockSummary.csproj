@@ -203,6 +203,21 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\FlexCellReport\FlexCel.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Library.CacheClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.Library.CacheClient.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.BloodTypeInStock">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.BloodTypeInStock.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.MaterialInStock, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.MaterialInStock.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.MedicineInStock, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.MedicineInStock.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -291,18 +306,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
-    </Reference>
-    <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MOS.TDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
@@ -314,10 +328,10 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000131.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000217.PDO">
-      <HintPath>..\..\..\..\..\..\..\HIS_TEST\ReferencedAssemblies\MPS.Processor.Mps000217.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000217.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000218.PDO">
-      <HintPath>..\..\..\..\..\..\..\HIS_TEST\ReferencedAssemblies\MPS.Processor.Mps000218.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000218.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000219.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000219.PDO.dll</HintPath>
@@ -438,6 +452,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
@@ -455,18 +470,6 @@
     <None Include="Resources\dau tích-02.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.BloodTypeInStock\HIS.UC.BloodTypeInStock.csproj">
-      <Project>{e1b815f8-bbc3-40c6-aa9d-c74874cef69c}</Project>
-      <Name>HIS.UC.BloodTypeInStock</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.MaterialInStock\HIS.UC.MaterialInStock.csproj">
-      <Project>{28f6c389-4034-490d-9626-18a410f3d432}</Project>
-      <Name>HIS.UC.MaterialInStock</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.MedicineInStock\HIS.UC.MedicineInStock.csproj">
-      <Project>{6ba16df0-44de-4e0b-93b6-6b8fb63837dd}</Project>
-      <Name>HIS.UC.MedicineInStock</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
