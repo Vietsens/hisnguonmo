@@ -4388,14 +4388,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     wcfSignDCO.SerialNumber = SettingSignADO.SerialNumber;
                     wcfSignDCO.OutputFile = tempFilePath;
                     wcfSignDCO.PIN = "";
-                    if (!string.IsNullOrEmpty(tempFolderPath))
-                    {
-                        wcfSignDCO.SourceFile = tempFolderPath;
-                    }
-                    else
-                    {
-                        wcfSignDCO.SourceFile = sourceFile;
-                    }
+                    wcfSignDCO.SourceFile = sourceFile;
                     wcfSignDCO.fieldSigned = "CHUKYDONVI";
                     string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
                     SignProcessorClient signProcessorClient = new SignProcessorClient();
