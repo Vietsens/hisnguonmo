@@ -1316,24 +1316,17 @@ namespace HIS.Desktop.ModuleExt
                 }
                 Inventec.Common.Logging.LogSystem.Debug("ShowModule.moduleData:ModuleLink=" + moduleData.ModuleLink + ",IsNotShowDialog=" + moduleData.IsNotShowDialog);
                 var extenceInstance = PluginInstance.GetPluginInstance(moduleShow, listArgs);
-                Inventec.Common.Logging.LogSystem.Debug("-----------------------------" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => moduleShow), moduleShow));
-                Inventec.Common.Logging.LogSystem.Debug("-----------------------------" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listArgs), listArgs));
-                LogSystem.Info($"extenceInstance11111111111 {extenceInstance}, ");
                 if (extenceInstance == null) throw new NullReferenceException("extenceInstance is null");
 
                 moduleData.ExtensionInfo = moduleShow.ExtensionInfo;
-                LogSystem.Info($"moduleData.ExtensionInfo {moduleData.ExtensionInfo}");
                 moduleData.PluginInfo = moduleShow.PluginInfo;
-                LogSystem.Info($"moduleData.PluginInfo {moduleData.PluginInfo}");
                 moduleData.ModuleTypeId = moduleShow.ModuleTypeId;
-                LogSystem.Info($"moduleData.ModuleTypeId {moduleData.ModuleTypeId}");
 
                 Inventec.Common.Logging.LogSystem.Debug("ShowModule.5");
                 WaitingManager.Hide();
 
                 if (extenceInstance is System.Windows.Forms.Form)
                 {
-                    LogSystem.Info($"extenceInstance6666666666666666 {extenceInstance}");
                     if (moduleData.IsNotShowDialog.HasValue && moduleData.IsNotShowDialog.Value)
                         ((System.Windows.Forms.Form)extenceInstance).Show();
                     else
