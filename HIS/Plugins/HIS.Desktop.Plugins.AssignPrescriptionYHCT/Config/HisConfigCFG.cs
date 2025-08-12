@@ -53,6 +53,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         private const string Key__AcinInteractive__Grade = "HIS.Desktop.Plugins.AssignPrescription.AcinInteractive__Grade";
         //dangth
         private const string IS_ALLOW_SIGN_NATURE_PRINT = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
+        private const string CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT = "MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT";
         internal static string AllowSignaturePrintModules;
 
         private const string TREATMENT_END___APPOINTMENT_TIME_DEFAULT_KEY = "EXE.HIS_TREATMENT_END.APPOINTMENT_TIME_DEFAULT";
@@ -119,6 +120,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         public static decimal WarningOverCeiling__In { get; set; }
         internal static string ShowRequestUser;
         internal static string PatientTypeCode__BHYT;
+        internal static string UsePaymentObjectByDept;
         internal static long PatientTypeId__BHYT;
         internal static string PatientTypeCode__VP;
         internal static long PatientTypeId__VP;
@@ -237,6 +239,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
             try
             {
                 //dangth
+                UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);
                 AllowSignaturePrintModules = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);
                 IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);
                 ASSIGN_SERVICE_SIMULTANEITY_OPTION = GetValue(KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION);
