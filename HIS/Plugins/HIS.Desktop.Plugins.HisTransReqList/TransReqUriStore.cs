@@ -8,7 +8,7 @@ namespace HIS.Desktop.Plugins.HisTransReqList
 {
     class TransReqUriStore
     {
-        internal const string TRANS_REQ_GET = "api/HisTransReq/Get";
+        internal const string TRANS_REQ_GET = "api/HisTransReq/GetView";
         internal const string TRANS_REQ_CHECK = "api/HisTransReq/CheckQrStatus";
     }
 }
