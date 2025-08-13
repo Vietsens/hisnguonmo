@@ -101,6 +101,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         internal static bool RequiredAddressOption;
         internal static string RequiredTreatmentMethodOption;
         internal static string AutoCheckIcd;
+        private const string KEY_IsRequiredPathologicalProcessTransferPatientBHYT = "HIS.Desktop.Plugins.TreatmentFinish.IsRequiredPathologicalProcessTransferPatientBHYT";
+        private const string KEY_PathologicalProcessOption = "HIS.Desktop.Plugins.TreatmentFinish.PathologicalProcessOption";
+        internal static bool IsRequiredPathologicalProcessTransferPatientBHYT;
+        internal static int PathologicalProcessOption;
         internal static void LoadConfig()
         {
             try
@@ -132,6 +136,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 terminalSystemSecureKey = GetValue(TERMINAL_SYTEM_SECURE_KEY);
                 RequiredTreatmentMethodOption = GetValue(CONFIG_KEY__IS_REQUIRED_TREATMENT_METHOD_OPTION);
                 AutoCheckIcd = GetValue(CONFIG_KEY__ICD_GENERA_KEY);
+                IsRequiredPathologicalProcessTransferPatientBHYT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsRequiredPathologicalProcessTransferPatientBHYT) == GlobalVariables.CommonStringTrue;
+                PathologicalProcessOption = int.Parse(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_PathologicalProcessOption) ?? "0");
             }
             catch (Exception ex)
             {

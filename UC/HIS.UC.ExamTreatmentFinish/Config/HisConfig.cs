@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.LocalStorage.LocalData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,6 +63,10 @@ namespace HIS.UC.ExamTreatmentFinish.Config
         internal static string AllowManyOpeningOption;
 
         internal static string ENDDEPARTMENTSUBSHEADOPTION;
+        private const string KEY_IsRequiredPathologicalProcessTransferPatientBHYT = "HIS.Desktop.Plugins.TreatmentFinish.IsRequiredPathologicalProcessTransferPatientBHYT";
+        private const string KEY_PathologicalProcessOption = "HIS.Desktop.Plugins.TreatmentFinish.PathologicalProcessOption";
+        internal static bool IsRequiredPathologicalProcessTransferPatientBHYT;
+        internal static int PathologicalProcessOption;
 
 
         internal static void GetConfig()
@@ -82,6 +87,8 @@ namespace HIS.UC.ExamTreatmentFinish.Config
                 IsCheckedCheckboxIssueOutPatientStoreCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(DefaultCheckedCheckboxIssueOutPatientStoreCodeSTR) == IS__TRUE;
                 IsEnableCheckboxIssueOutPatientStoreCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(EnableCheckboxIssueOutPatientStoreCodeSTR) == IS__TRUE;
                 IsExportXmlCollinear = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(EXPORT_XML_COLLINEAR) == IS__TRUE;
+                IsRequiredPathologicalProcessTransferPatientBHYT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsRequiredPathologicalProcessTransferPatientBHYT) == IS__TRUE;
+                PathologicalProcessOption = int.Parse(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_PathologicalProcessOption) ?? "0");
                 string maxDayStr = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(MAX_OF_APPOINTMENT_DAYS);
                 if (!String.IsNullOrWhiteSpace(maxDayStr))
                 {

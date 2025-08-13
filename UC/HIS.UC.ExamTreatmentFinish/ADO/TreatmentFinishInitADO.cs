@@ -48,6 +48,7 @@ namespace HIS.UC.ExamTreatmentFinish.ADO
         public string IcdSubCode { get; set; }
         public string IcdText { get; set; }
         public long? CareerId { get; set; }
+        public string PATHOLOGICAL_PROCESS { get; set; }
 
         public string TraditionalIcdCode { get; set; }
         public string TraditionalIcdName { get; set; }

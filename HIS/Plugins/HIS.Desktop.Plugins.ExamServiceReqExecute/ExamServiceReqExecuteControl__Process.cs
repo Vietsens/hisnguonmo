@@ -575,6 +575,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     return false;
                 }
+
             }
             catch (Exception ex)
             {
@@ -2527,7 +2528,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisServiceReqResult", HisServiceReqResult));
                     success = true;
-                    this.HisServiceReqView = new V_HIS_SERVICE_REQ();
+                     this.HisServiceReqView = new V_HIS_SERVICE_REQ();
                     Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERVICE_REQ>(this.HisServiceReqView, HisServiceReqResult.ServiceReq);
                     EnableButtonByServiceReq(HisServiceReqResult.ServiceReq.SERVICE_REQ_STT_ID);
                     btnSaveFinish.Enabled = false;

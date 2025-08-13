@@ -231,7 +231,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         internal UserControl ucSecondaryIcdYHCT;
         internal SecondaryIcdProcessor subIcdProcessor;
         internal SecondaryIcdProcessor subIcdProcessorYHCT;
-
+        private bool isRequiredPathologicalProcessTransferPatientBHYT = false;
+        private int pathologicalProcessOption = 0;
         bool isLoadedMLCT;
         #endregion
 
@@ -520,7 +521,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
         private void ValidateForm()
         {
-            ValidationRequired(txtPathologicalProcess);
+            //ValidationRequired(txtPathologicalProcess);
             ValidationRequired(txtSubclinical);
             ValidationRequired(txtTreatmentInstruction);
         }
@@ -1404,9 +1405,20 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
         private void txtPathologicalProcess_Leave(object sender, EventArgs e)
         {
-            //txtPathologicalHistory.Focus();
-            //txtPathologicalHistory.SelectAll();
+            try
+            {
+                if (this.ucTreatmentFinish != null && this.ucTreatmentFinish is UCExamTreatmentFinish ucExamTreatmentFinish)
+                {
+                    // Update pathological process value cho UCTreatmentFinish
+                    ucExamTreatmentFinish.UpdatePathologicalProcess(txtPathologicalProcess.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
         }
+
 
         private void spinBreathRate_Leave(object sender, EventArgs e)
         {
@@ -2396,6 +2408,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         treatmentFinishInitADO.ListEventsCausesDeath = dtEventsCausesDeath;
                     }
                     if (this.isTimeServer) treatmentFinishInitADO.Treatment.OUT_TIME = loadParam().Now;
+                    if (!string.IsNullOrEmpty(txtPathologicalProcess.Text))
+                    {
+                        treatmentFinishInitADO.PATHOLOGICAL_PROCESS = txtPathologicalProcess.Text;
+                    }
 
                     this.ucTreatmentFinish = (UserControl)treatmentFinishProcessor.Run(treatmentFinishInitADO, this.currentTreatmentExt);
                     LoadUCToPanelExecuteExt(this.ucTreatmentFinish, chkTreatmentFinish);   
@@ -2409,6 +2425,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         //txtTreatmentInstruction.Text = uCExamTreatmentFinish.TreatmentInstruction;
                         uCExamTreatmentFinish.CapSoLuuTruBAChanged += UCExamTreatmentFinish_CapSoLuuTruBAChanged;
                         uCExamTreatmentFinish.SetDelegateSendTeatmentMethod(FillTreatmentMethod);
+                        uCExamTreatmentFinish.PathologicalProcessRequired += UcExamTreatmentFinish_PathologicalProcessRequired;
                     }
 
 
@@ -2417,7 +2434,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     || treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
                     || treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY)
                     {
-                        lblCaptionPathologicalProcess.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        //lblCaptionPathologicalProcess.AppearanceItemCaption.ForeColor = Color.Maroon;
                         lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Maroon;
                         lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Maroon;
                         ValidateForm();
@@ -2443,6 +2460,38 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void UcExamTreatmentFinish_PathologicalProcessRequired(object sender, EventArgs e)
+        {
+            try
+            {
+                var ucTreatmentFinish = sender as UCExamTreatmentFinish;
+                if (ucTreatmentFinish != null)
+                {
+                    XtraMessageBox.Show(ucTreatmentFinish.MessageText,
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    if (txtPathologicalProcess != null && !txtPathologicalProcess.IsDisposed)
+                    {
+                        if (!txtPathologicalProcess.Enabled)
+                        {
+                            txtPathologicalProcess.Enabled = true;
+                        }
+                        if (!txtPathologicalProcess.Visible)
+                        {
+                            txtPathologicalProcess.Visible = true;
+                        }
+
+                        this.BeginInvoke(new Action(() => {
+                            txtPathologicalProcess.Focus();
+                            txtPathologicalProcess.SelectAll();
+                        }));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
             }
         }
 
@@ -2913,6 +2962,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     isClickSaveFinish = false;
                     return;
                 }
+                if (!ValidPathologicalProcessForTransfer())
+                {
+                    isClickSaveFinish = false;
+                    return;
+                }
                 isClickSaveFinish = false;
 
                 if (this.requiredControl != null && this.requiredControl == 1 && string.IsNullOrEmpty(this.txtPathologicalProcess.Text.Trim()))
@@ -3034,6 +3088,57 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private bool ValidPathologicalProcessForTransfer()
+        {
+            try
+            {
+                // Get UCTreatmentFinish instance
+                if (this.ucTreatmentFinish is UCExamTreatmentFinish ucExamTreatmentFinish)
+                {
+                    // Get selected treatment end type
+                    var selectedEndType = ucExamTreatmentFinish.GetSelectedTreatmentEndType();
+                    if (selectedEndType?.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
+                    {
+                        bool isBHYTPatient = treatment.TDL_PATIENT_TYPE_ID == HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT;
+                        bool needValidatePathological = false;
+
+                        // Check conditions based on config keys
+                        if ((isBHYTPatient && HisConfigCFG.IsRequiredPathologicalProcessTransferPatientBHYT) ||
+                        (HisConfigCFG.PathologicalProcessOption == 1 && treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU) ||
+                        (HisConfigCFG.PathologicalProcessOption == 2 && (
+                            treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU ||
+                            treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU ||
+                            treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
+                        )))
+                        {
+                            needValidatePathological = true;
+                        }
+
+                        if (needValidatePathological)
+                        {
+                            if (string.IsNullOrWhiteSpace(txtPathologicalProcess.Text))
+                            {
+                                XtraMessageBox.Show("Bắt buộc nhập quá trình bệnh lý đối với bệnh nhân chuyển viện",
+                                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                                if (txtPathologicalProcess != null && !txtPathologicalProcess.IsDisposed)
+                                {
+                                    txtPathologicalProcess.Focus();
+                                }
+                                return false;
+                            }
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                return true; // Return true on error to not block saving
             }
         }
         private bool CheckMustFinishAllServices(long serviceReqId)
@@ -6652,16 +6757,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         cboIcds.EditValue = listData.First().ID;
                         chkEditIcd.Checked = (chkEditIcd.Enabled ? this.isAutoCheckIcd : false);
                         string messErr = null;
-                        if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), txtIcdSubCode.Text.Trim(), ref messErr, false))
-                        {
-                            XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
-                            if (CheckIcdManager.IcdCodeError.Equals(txtIcdCode.Text.Trim()))
+                            if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), txtIcdSubCode.Text.Trim(), ref messErr, false))
                             {
-                                txtIcdCode.Text = txtIcdMainText.Text = null;
-                                cboIcds.EditValue = null;
+                                XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
+                                if (CheckIcdManager.IcdCodeError.Equals(txtIcdCode.Text.Trim()))
+                                {
+                                    txtIcdCode.Text = txtIcdMainText.Text = null;
+                                    cboIcds.EditValue = null;
+                                }
+                                return;
                             }
-                            return;
-                        }
                         if (chkEditIcd.Checked)
                         {
                             txtIcdMainText.Focus();
