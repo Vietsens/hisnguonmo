@@ -972,6 +972,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     //Dangth
                     this.txtProvisionalDianosis.Text = currentVHisTreatment.PROVISIONAL_DIAGNOSIS;
                     this.txtTreatmentInstruction.Text = currentVHisTreatment.TREATMENT_METHOD;
+                    //Ma Doi Tuong  
+                    this.txtHeinPatientTypeCode.Text = currentVHisTreatment.HEIN_PATIENT_TYPE_CODE;
 
                     if (!String.IsNullOrWhiteSpace(currentVHisTreatment.FUND_CUSTOMER_NAME))
                     {
@@ -1076,6 +1078,15 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         txtReasonVV.Text = "";
                     }
 
+                    if (!String.IsNullOrEmpty(currentVHisTreatment.HEIN_PATIENT_TYPE_CODE))
+                    {
+                        txtHeinPatientTypeCode.Text = currentVHisTreatment.HOSPITALIZATION_REASON;
+                    }
+                    else
+                    {
+                        txtHeinPatientTypeCode.Text = "";
+                    }
+
                     if (!String.IsNullOrEmpty(currentVHisTreatment.TDL_PATIENT_NOTE))
                     {
                         txtPatientNote.Text = currentVHisTreatment.TDL_PATIENT_NOTE;
@@ -1129,6 +1140,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     //    txtNumManager.Enabled = true;
                     //    txtNumManager.Properties.MaxLength = 100;
                     //}
+                    if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "3")
+                    {
+                        lblHeinPatientTypeCode.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    }
 
                 }
                 if (currentVHisTreatment.TREATMENT_ORDER.HasValue)
@@ -1373,6 +1388,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 ValidTextControlMaxlength(this.txtSanPham, 200, false);
                 ValidTextControlMaxlength(this.txtReasonVV, 200, false);
                 ValidTextControlMaxlength(this.txtReasonNTCode, 10, false);
+                ValidTextControlMaxlength(this.txtHeinPatientTypeCode, 10, false);
                 ValidTextControlMaxlength(this.cboReasonNT, 1000, false);
 
                 ValidTextControlMaxlength(this.txtPatientNote, 2000, false);
@@ -1923,6 +1939,41 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 {
                     data.TdlPatientNote = txtPatientNote.Text;
                 }
+
+                data.HeinPatientTypeCode = txtHeinPatientTypeCode.Text?.Trim();
+
+                if (string.IsNullOrEmpty(data.HeinPatientTypeCode))
+                {
+                    if (HisConfig.warningConfig_ == "2")
+                    {
+
+                        if (XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị. Bạn có muốn tiếp tục?",
+                           "Thông báo",
+                          MessageBoxButtons.YesNo,
+                          MessageBoxIcon.Warning
+                          ) == DialogResult.No)
+                            return;
+                    }
+                    else if (HisConfig.warningConfig_ == "3")
+                    {
+                        XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị.",
+                            "Thông báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+                //if(!string.IsNullOrEmpty(txtHeinPatientTypeCode.Text))
+                //{
+                //    data.HeinPatientTypeCode = txtHeinPatientTypeCode.Text;
+                //}else
+                //{
+                //    if (true)
+                //    {
+
+                //    }
+                //}
+
 
                 HisTreatmentCommonInfoUpdateSDO result = new BackendAdapter(param).Post<HisTreatmentCommonInfoUpdateSDO>(RequestUriStore.HIS_TREATMENT_UPDATE_COMMON_INFO, ApiConsumer.ApiConsumers.MosConsumer, data, param);
 
