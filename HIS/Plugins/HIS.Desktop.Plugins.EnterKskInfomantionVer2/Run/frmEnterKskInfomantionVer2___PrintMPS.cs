@@ -178,7 +178,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
                 HisDiseaseTypeFilter Disfilter = new HisDiseaseTypeFilter();
                 Disfilter.IS_ACTIVE = 1;
+                Disfilter.IS_KSK_OVER_EIGHTEEN = 1;
                 var dataVacine = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DISEASE_TYPE>>("api/HisDiseaseType/Get", ApiConsumers.MosConsumer, Disfilter, param);
+                if (dataVacine != null && dataVacine.Count > 0)
+                {
+                    dataVacine = dataVacine.OrderBy(o => o.DISEASE_TYPE_CODE).ToList();
+                }
                 WaitingManager.Hide();
                 MPS.Processor.Mps000452.PDO.Mps000452PDO rdo = new MPS.Processor.Mps000452.PDO.Mps000452PDO(
                     currentKskOverEight,
@@ -270,9 +275,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     HisDiseaseTypeFilter Disfilter = new HisDiseaseTypeFilter();
                     Disfilter.IS_ACTIVE = 1;
+                    Disfilter.IS_KSK_PERIOD_DRIVER = 1;
                     Disfilter.IDs = lstDriverDity.Select(o => o.DISEASE_TYPE_ID).ToList();
                     lstDiseaseType = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DISEASE_TYPE>>("api/HisDiseaseType/Get", ApiConsumers.MosConsumer, Disfilter, param);
-
+                    if (lstDiseaseType != null && lstDiseaseType.Count > 0)
+                    {
+                        lstDiseaseType = lstDiseaseType.OrderBy(o => o.DISEASE_TYPE_CODE).ToList();
+                    }
                 }
 
                 WaitingManager.Hide();

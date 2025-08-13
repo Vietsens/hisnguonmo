@@ -1132,10 +1132,10 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                             {
                                 e.Value = imageListStatus.Images[1];
                             }
-                            //else if (data.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REJECT) // tu choi duyet
-                            //{
-                            //    e.Value = imageListStatus.Images[2];
-                            //}
+                            else if (data.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REJECT) // tu choi duyet
+                            {
+                                e.Value = imageListStatus.Images[2];
+                            }
                             else if (data.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE) // duyet
                             {
                                 e.Value = imageListStatus.Images[3];

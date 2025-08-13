@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -100,9 +100,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 CommonParam param = new CommonParam();
                 HisDiseaseTypeFilter Disfilter = new HisDiseaseTypeFilter();
                 Disfilter.IS_ACTIVE = 1;
+                Disfilter.IS_KSK_OVER_EIGHTEEN = 1;
                 var dataVacine = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DISEASE_TYPE>>("api/HisDiseaseType/Get", ApiConsumers.MosConsumer, Disfilter, param);
                 if (dataVacine != null && dataVacine.Count > 0)
                 {
+                    dataVacine = dataVacine.OrderBy(o => o.DISEASE_TYPE_CODE).ToList();
                     List<ADO.DiseaseTypeADO> lstAdo = new List<ADO.DiseaseTypeADO>();
                     foreach (var item in dataVacine)
                     {
@@ -229,6 +231,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         {
                             HisDiseaseTypeFilter Disfilter = new HisDiseaseTypeFilter();
                             Disfilter.IS_ACTIVE = 1;
+                            Disfilter.IS_KSK_OVER_EIGHTEEN = 1; // Chỉ lấy những bệnh trên 18 tuổi
                             Disfilter.IDs = lstDataDriverDityOverE.Select(o => o.DISEASE_TYPE_ID).ToList();
                             var dataVacine = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DISEASE_TYPE>>("api/HisDiseaseType/Get", ApiConsumers.MosConsumer, Disfilter, param);
                             if (dataVacine != null && dataVacine.Count > 0)

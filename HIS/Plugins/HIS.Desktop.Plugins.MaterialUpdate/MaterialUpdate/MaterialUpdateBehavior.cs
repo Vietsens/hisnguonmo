@@ -46,6 +46,8 @@ namespace HIS.Desktop.Plugins.MaterialUpdate.MaterialUpdate
         {
             MOS.EFMODEL.DataModels.V_HIS_MATERIAL_1 result = null;
             Inventec.Desktop.Common.Modules.Module moduleData = null;
+            long? ID = null;
+
             try
             {
                 if (entity != null && entity.Count() > 0)
@@ -56,22 +58,29 @@ namespace HIS.Desktop.Plugins.MaterialUpdate.MaterialUpdate
                             result = (MOS.EFMODEL.DataModels.V_HIS_MATERIAL_1)item;
                         if (item is Inventec.Desktop.Common.Modules.Module)
                             moduleData = (Inventec.Desktop.Common.Modules.Module)item;
+                        if (item is long)
+                            ID = (long)item;
                     }
                 }
                 if (moduleData != null)
                 {
-                    return new FormMaterialUpdate(result, moduleData);
-                }
-                else
-                {
-                    return null;
+                    if (result != null)
+                    {
+                        return new FormMaterialUpdate(result, moduleData);
+                    }
+                    else if (ID.HasValue)
+                    {
+                        return new FormMaterialUpdate(ID.Value, moduleData);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
             }
+
+            // Ensure all code paths return a value
+            return null;
         }
     }
 }

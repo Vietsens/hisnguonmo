@@ -15,6 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Plugins.MaterialUpdate.Validation;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,16 +37,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Inventec.Desktop.Common.Message;
-using MOS.EFMODEL.DataModels;
-using Inventec.Core;
-using HIS.Desktop.Plugins.MaterialUpdate.Validation;
-using DevExpress.XtraEditors.DXErrorProvider;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Common.Controls.EditorLoader;
 
 namespace HIS.Desktop.Plugins.MaterialUpdate
 {
@@ -68,6 +71,19 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             {
                 this.material = data;
                 this.Text = moduleData.text;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public FormMaterialUpdate(long ID, Inventec.Desktop.Common.Modules.Module moduleData)
+            : this(moduleData)
+        {
+            try
+            {
+                getData(ID);
             }
             catch (Exception ex)
             {
@@ -238,6 +254,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 {
                     this.chkBBGN.CheckState = CheckState.Unchecked;
                 }
+                this.chkPRIORITY.Checked = material.IS_PRIORITY == 1 ? true : false;
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -427,6 +444,14 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 else
                 {
                     result.INFORMATION_BID = null;
+                }
+                if (chkPRIORITY.Checked)
+                {
+                    result.IS_PRIORITY = 1;
+                }
+                else
+                {
+                    result.IS_PRIORITY = null;
                 }
             }
             catch (Exception ex)
@@ -967,6 +992,22 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 {
                     btnSave.Focus();
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void getData(long ID)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisMaterialView1Filter filter = new HisMaterialView1Filter();
+                filter.ID = ID;
+                var list = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_MATERIAL_1>>("api/HisMaterial/GetView1", ApiConsumers.MosConsumer, filter, param);
+                material = list?.FirstOrDefault();
             }
             catch (Exception ex)
             {
