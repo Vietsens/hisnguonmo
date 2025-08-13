@@ -114,7 +114,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             AMP_5,
             MET_5,
             MAR_5,
-            NDC_5
+            NDC_5,
+            HER_4,
+            MOR_4,
         }
         public ENameOtherItem? NameOtherItem { get; set; }
         public bool IsSignEmr { get; set; }
@@ -993,6 +995,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             case ENameOtherItem.NDC_5:
                                 txtTestConcentration5.Text = item.VALUE;
                                 break;
+                            case ENameOtherItem.MOR_4:
+                                txtMorphine.Text = item.VALUE;
+                                break;
+                            case ENameOtherItem.HER_4:
+                                txtHeroin.Text = item.VALUE;
+                                break;
                             default:
                                 break;
                         }
@@ -1045,6 +1053,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 cboExamEntLoginName7.Text= null;
                 cboExamEntLoginName7.EditValue = null;
             }
+        }
+
+        private void txtMorphine_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.MOR_4;
+            GetSpecInformation();
+        }
+
+        private void txtHeroin_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.HER_4;
+            GetSpecInformation();
         }
     }
 }

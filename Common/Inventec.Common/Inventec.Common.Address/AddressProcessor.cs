@@ -62,7 +62,10 @@ namespace Inventec.Common.Address
                     List<V_SDA_PROVINCE> provinces = null;
                     List<V_SDA_DISTRICT> district = null;
                     V_SDA_COMMUNE commune = null;
-                    string[] splitA = result.Address.Split(',', '-');
+                    string[] splitA = result.Address
+                        .Split(new string[] { ",", "-" }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(s => s.Trim())
+                        .ToArray();
                     string[] joinsAdd = new string[splitA.Length];
                     for (int i = splitA.Length - 1; i >= 0; i--)
                     {
@@ -172,7 +175,14 @@ namespace Inventec.Common.Address
                                         addr.Add(item.PROVINCE_NAME);
 
                                         string address = string.Join(" - ", addr);
-                                        if (checkaddress.Contains(address))
+
+                                        List<string> addrNoInitial = new List<string>();
+                                        addrNoInitial.Add(item.COMMUNE_NAME.Trim());
+                                        addrNoInitial.Add(item.DISTRICT_NAME.Trim());
+                                        addrNoInitial.Add(item.PROVINCE_NAME);
+
+                                        string addressNoInitial = string.Join(" - ", addrNoInitial);
+                                        if (checkaddress.ToUpper().Contains(address.ToUpper()) || checkaddress.ToUpper().Contains(addressNoInitial.ToUpper()))
                                         {
                                             commune = item;
                                             break;

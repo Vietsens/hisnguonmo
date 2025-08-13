@@ -291,8 +291,10 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             {
                 CommonParam param = new CommonParam();
                 MOS.Filter.HisExecuteRoleFilter roleFilter = new MOS.Filter.HisExecuteRoleFilter();
+                roleFilter.IS_STOCK = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 listExecuteRole = new BackendAdapter(param).Get<List<HIS_EXECUTE_ROLE>>(HisRequestUriStore.HIS_EXECUTE_ROLE_GET, ApiConsumers.MosConsumer, roleFilter, param);
                 InitComboLookUp(this.repositoryItemLookUp__ExecuteRoleName, listExecuteRole);
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("Dangth", listExecuteRole));
 
                 MOS.Filter.HisExecuteRoleUserFilter roleUserFilter = new MOS.Filter.HisExecuteRoleUserFilter();
                 listExecuteRoleUser = new BackendAdapter(param).Get<List<HIS_EXECUTE_ROLE_USER>>("api/HisExecuteRoleUser/Get", ApiConsumers.MosConsumer, roleUserFilter, param);

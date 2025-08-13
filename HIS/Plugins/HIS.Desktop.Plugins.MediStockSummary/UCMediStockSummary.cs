@@ -289,7 +289,8 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         }
 
         private void InitMedicineTree()
-        {
+         
+            {
             try
             {
                 hisMediInStockProcessor = new HisMedicineInStockProcessor();
@@ -1818,19 +1819,21 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             }
             return str;
         }
-
+            
 
         private void chkAlertMinStock_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
 
-                if (IsInitForm)
-                    return;
+                
                 HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
                     ? this.currentControlStateRDO.Where(o => o.KEY == chkAlertMinStock.Name && o.MODULE_LINK == this.ModuleLink).FirstOrDefault()
                     : null;
-                if (csAddOrUpdate != null)
+
+
+        
+            if (csAddOrUpdate != null)
                 {
                     csAddOrUpdate.VALUE = (chkAlertMinStock.Checked ? "1" : "");
                 }

@@ -224,14 +224,14 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         private void medicineType_NodeCellStyle(HisMedicineInStockADO data, DevExpress.XtraTreeList.GetCustomNodeCellStyleEventArgs e)
         {
             try
-            {
+            {  
                 if (data != null)
                 {
-                    //if (data.IS_PRIORITY == 1)
-                    //{
-                    //    e.Appearance.ForeColor = Color.Blue;
-                    //    return;
-                    //}
+                    if (data.IS_PRIORITY == 1)
+                    {
+                        e.Appearance.ForeColor = Color.Blue;
+                        return;
+                    }
                     if (data.ALERT_MIN_IN_STOCK.HasValue && e.Node.HasChildren)
                     {
                         if (data.TotalAmount < data.ALERT_MIN_IN_STOCK)
@@ -555,11 +555,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             {
                 if (data != null)
                 {
-                    //if (data.IS_PRIORITY == 1)
-                    //{
-                    //    e.Appearance.ForeColor = Color.Blue;
-                    //    return;
-                    //}
+                    if (data.IS_PRIORITY == 1)
+                    {
+                        e.Appearance.ForeColor = Color.Blue;
+                        return;
+                    }
                     if (data.ALERT_MIN_IN_STOCK.HasValue && e.Node.HasChildren)
                     {
                         if (data.TotalAmount < data.ALERT_MIN_IN_STOCK)
@@ -601,6 +601,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                     e.Appearance.ForeColor = Color.Blue;
                                 }
                             }
+
                             break;
                         }
                     }
@@ -692,7 +693,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 {
                     List<object> args = new List<object>();
                     args.Add(mediStockAdo.ID);
-                   
+
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
                         "HIS.Desktop.Plugins.MedicineUpdate",
                         this.RoomId,
@@ -706,7 +707,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-       
+
 
         private void Medicine_RightMouseClick(object sender, EventArgs e)
         {
@@ -819,7 +820,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 {
                     List<object> args = new List<object>();
                     args.Add(mateStockAdo.ID);
-                   
+
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
                         "HIS.Desktop.Plugins.MaterialUpdate",
                         this.RoomId,
@@ -927,29 +928,29 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 //{
                 //if(item.ID == currentRowMedicine.ID)
                 {
-                        CommonParam param = new CommonParam();
-                        HisMedicineStockViewFilter mediFilter = new HisMedicineStockViewFilter();
-                        mediFilter.MEDI_STOCK_IDs = this.mediStockIds;
-                        mediFilter.INCLUDE_EMPTY = false;
-                        mediFilter.GROUP_BY_MEDI_STOCK = false;
-                        mediFilter.INCLUDE_BASE_AMOUNT = false;
-                        mediFilter.INCLUDE_EXP_PRICE = false;
-                        mediFilter.ID = currentRowMedicine.ID;
-                        var ListMedicineInStockSDO = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>("/api/HisMedicine/GetInStockMedicineWithTypeTree", ApiConsumer.ApiConsumers.MosConsumer, mediFilter, param);
-                        if(ListMedicineInStockSDO != null && ListMedicineInStockSDO.Count > 0)
+                    CommonParam param = new CommonParam();
+                    HisMedicineStockViewFilter mediFilter = new HisMedicineStockViewFilter();
+                    mediFilter.MEDI_STOCK_IDs = this.mediStockIds;
+                    mediFilter.INCLUDE_EMPTY = false;
+                    mediFilter.GROUP_BY_MEDI_STOCK = false;
+                    mediFilter.INCLUDE_BASE_AMOUNT = false;
+                    mediFilter.INCLUDE_EXP_PRICE = false;
+                    mediFilter.ID = currentRowMedicine.ID;
+                    var ListMedicineInStockSDO = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>("/api/HisMedicine/GetInStockMedicineWithTypeTree", ApiConsumer.ApiConsumers.MosConsumer, mediFilter, param);
+                    if (ListMedicineInStockSDO != null && ListMedicineInStockSDO.Count > 0)
+                    {
+                        var medi = ListMedicineInStockSDO.FirstOrDefault(o => o.ID == currentRowMedicine.ID);
+                        if (medi != null)
                         {
-                            var medi = ListMedicineInStockSDO.FirstOrDefault(o => o.ID == currentRowMedicine.ID);
-                            if (medi != null)
-                            {
-                                var oldAmount = currentRowMedicine.AvailableAmount;
-                                currentRowMedicine.AvailableAmount = medi.AvailableAmount;
-                                var parent = lstData.FirstOrDefault(o => o.NodeId == currentRowMedicine.ParentNodeId);
-                                if (parent != null)
-                                    parentAvailableAmount = parent.AvailableAmount = currentRowMedicine.AvailableAmount != 0 ? parent.AvailableAmount + currentRowMedicine.AvailableAmount : parent.AvailableAmount - oldAmount;
-                            }
+                            var oldAmount = currentRowMedicine.AvailableAmount;
+                            currentRowMedicine.AvailableAmount = medi.AvailableAmount;
+                            var parent = lstData.FirstOrDefault(o => o.NodeId == currentRowMedicine.ParentNodeId);
+                            if (parent != null)
+                                parentAvailableAmount = parent.AvailableAmount = currentRowMedicine.AvailableAmount != 0 ? parent.AvailableAmount + currentRowMedicine.AvailableAmount : parent.AvailableAmount - oldAmount;
+                        }
                         //    break;
-                        }    
-                    }    
+                    }
+                }
                 //}
                 hisMediInStockProcessor.RefreshData(ucMedicineInfo, currentRowMedicine, parentAvailableAmount);
                 //hisMediInStockProcessor.FocusRowTree(ucMedicineInfo);
@@ -1002,7 +1003,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 if (data != null)
                 {
                     currentRowMaterial = data;
-                    frmReasonLock frmLock = new frmReasonLock(data,ActionSuccessMate, this.mediStockIds[0],RoomId);
+                    frmReasonLock frmLock = new frmReasonLock(data, ActionSuccessMate, this.mediStockIds[0], RoomId);
                     frmLock.ShowDialog();
                 }
             }

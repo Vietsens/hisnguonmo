@@ -174,11 +174,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtNoteSubclinical4.Text = currentKskPeriodDriver.NOTE_SUBCLINICAL;
                         txtConclude4.Text = currentKskPeriodDriver.CONCLUDE;
 
+                        txtMorphine.Text = currentKskPeriodDriver.TEST_MORPHIN;
+                        txtHeroin.Text = currentKskPeriodDriver.TEST_HEROIN;
+
 
                         cboExamEyeLoginName4.EditValue = currentKskPeriodDriver.EXAM_EYE_LOGINNAME;
                         cboExamEntLoginName4.EditValue = currentKskPeriodDriver.EXAM_ENT_LOGINNAME;
                         cboExamCardiovascularLoginName4.EditValue = currentKskPeriodDriver.EXAM_CARDIOVASCULAR_LOGINNAME;
                         cboExamSubclinicalLoginName4.EditValue = currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME;
+
+
 
                         HisPeriodDriverDityFilter dityFilter = new HisPeriodDriverDityFilter();
                         dityFilter.KSK_PERIOD_DRIVER_ID = currentKskPeriodDriver.ID;
@@ -188,6 +193,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         {
                             HisDiseaseTypeFilter Disfilter = new HisDiseaseTypeFilter();
                             Disfilter.IS_ACTIVE = 1;
+                            Disfilter.IS_KSK_PERIOD_DRIVER = 1;
                             Disfilter.IDs = lstDataDriverDity.Select(o => o.DISEASE_TYPE_ID).ToList();
                             var dataVacine = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DISEASE_TYPE>>("api/HisDiseaseType/Get", ApiConsumers.MosConsumer, Disfilter, param);
                             if (dataVacine != null && dataVacine.Count > 0)
@@ -355,9 +361,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 CommonParam param = new CommonParam();
                 HisDiseaseTypeFilter Disfilter = new HisDiseaseTypeFilter();
                 Disfilter.IS_ACTIVE = 1;
+                Disfilter.IS_KSK_PERIOD_DRIVER = 1;
                 var dataVacine = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DISEASE_TYPE>>("api/HisDiseaseType/Get", ApiConsumers.MosConsumer, Disfilter, param);
                 if (dataVacine != null && dataVacine.Count > 0)
                 {
+                    dataVacine = dataVacine.OrderBy(o => o.DISEASE_TYPE_CODE).ToList();
                     List<ADO.DiseaseTypeADO> lstAdo = new List<ADO.DiseaseTypeADO>();
                     foreach (var item in dataVacine)
                     {
@@ -474,6 +482,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_ENT_LOGINNAME = cboExamEntLoginName4.EditValue != null ? cboExamEntLoginName4.EditValue.ToString() : null;
                 obj.EXAM_CARDIOVASCULAR_LOGINNAME = cboExamCardiovascularLoginName4.EditValue != null ? cboExamCardiovascularLoginName4.EditValue.ToString() : null;
                 obj.EXAM_SUBCLINICAL_LOGINNAME = cboExamSubclinicalLoginName4.EditValue != null ? cboExamSubclinicalLoginName4.EditValue.ToString() : null;
+
+                obj.TEST_MORPHIN = txtMorphine.Text;
+                obj.TEST_HEROIN = txtHeroin.Text;
             }
             catch (Exception ex)
             {

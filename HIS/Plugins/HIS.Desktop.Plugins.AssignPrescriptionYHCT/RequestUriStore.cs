@@ -26,7 +26,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT
     class RequestUriStore
     {
         public const string HIS_MEDI_STOCK__GETDHISMEDISTOCK2 = "api/HisMediStock/GetDHisMediStock2";
-
+        public const string HIS_DEPA_PATIENT_TYPE__GET = "api/HisDepaPatientType/Get";
         public const string HIS_SERVICE_REQ_METY__GET = "api/HisServiceReqMety/Get";
         public const string HIS_SERVICE_REQ_MATY__GET = "api/HisServiceReqMaty/Get";
         public const string HIS_SERVICE_REQ_METY__GETVIEW = "api/HisServiceReqMety/GetView";

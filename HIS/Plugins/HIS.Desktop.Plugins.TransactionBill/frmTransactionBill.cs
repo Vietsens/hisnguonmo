@@ -3999,6 +3999,12 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 layoutControlItem33.Visibility = LayoutVisibility.Never;
                 layoutControlItem34.Visibility = LayoutVisibility.Never;
                 layoutControlItem62.Visibility = LayoutVisibility.Always;
+                if(checkEdit1.Checked)
+                {
+                    layoutControlItem58.Visibility = LayoutVisibility.Never;
+                    layoutControlItem61.Visibility = LayoutVisibility.Always;
+
+                }
 
             }
         }
