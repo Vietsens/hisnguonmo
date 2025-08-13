@@ -1835,7 +1835,40 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
-                this.InitComboPatientType(patientTypeCombo, currentPatientTypeWithPatientTypeAlter);
+                //this.InitComboPatientType(patientTypeCombo, currentPatientTypeWithPatientTypeAlter);
+                if (HisConfigCFG.UsePaymentObjectByDept == "1")
+                {
+                    var Department = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>().Where(o => o.ID == requestRoom.DEPARTMENT_ID).FirstOrDefault();
+                    CommonParam common = new CommonParam();
+                    HisDepaPatientTypeFilter filter = new HisDepaPatientTypeFilter();
+                    filter.SERVICE_ID = data.SERVICE_ID;
+
+                    var DepaPatientType = new BackendAdapter(common).Get<List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>>(RequestUriStore.HIS_DEPA_PATIENT_TYPE__GET, ApiConsumers.MosConsumer, filter, common);
+
+                    if (DepaPatientType != null && DepaPatientType.Count > 0)
+                    {
+                        List<long> PatientTypeId = DepaPatientType.Where(o => o.DEPARTMENT_ID == Department.ID).Select(o => o.PATIENT_TYPE_ID ?? 0).ToList();
+                        List<HIS_PATIENT_TYPE> listSource = currentPatientTypeWithPatientTypeAlter;
+                        listSource = listSource.Where(o => PatientTypeId.Contains(o.ID)).ToList();
+                        this.InitComboPatientType(patientTypeCombo, listSource);
+                    }
+                    else
+                    {
+                        var dt = IsFullHeinInfo(data);
+                        List<HIS_PATIENT_TYPE> listSource = currentPatientTypeWithPatientTypeAlter;
+                        if (!dt)
+                            listSource = listSource.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
+                        this.InitComboPatientType(patientTypeCombo, listSource);
+                    }
+                }
+                else
+                {
+                    var dt = IsFullHeinInfo(data);
+                    List<HIS_PATIENT_TYPE> listSource = currentPatientTypeWithPatientTypeAlter;
+                    if (!dt)
+                        listSource = listSource.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
+                    this.InitComboPatientType(patientTypeCombo, listSource);
+                }          
             }
             catch (Exception ex)
             {

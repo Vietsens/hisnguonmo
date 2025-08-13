@@ -751,7 +751,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
                         if (notShowTaxBreakdown)
                         {
-                            product.ProdPrice = String.Format("{0:0.####}", Math.Round((item.ProdPrice ?? 0) + (item.ProdQuantity.HasValue && item.ProdQuantity.Value > 0 ? (item.TaxAmount ?? 0) / (item.ProdQuantity ?? 0) : 0), 4) + "");
+                            product.ProdPrice = String.Format("{0:0.####}", Math.Round(item.Amount / (item.ProdQuantity ?? 0), 4) + "");
                             product.VATAmount = "";
                             //product.VATRate = "-4";
                             product.VATRate = "-1";

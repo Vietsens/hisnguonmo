@@ -15,6 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
@@ -45,5 +47,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
         public bool? IsUseOrginalUnitForPres { get; set; }
         public string ATC_CODES { get; set; }
         public string ATC_GROUP_CODES { get; set; }
+        public string MATERIAL_REGISTER_NUMBER { get; set; }
+        public string MATERIAL_TYPE_CODE { get; set; }
     }
 }

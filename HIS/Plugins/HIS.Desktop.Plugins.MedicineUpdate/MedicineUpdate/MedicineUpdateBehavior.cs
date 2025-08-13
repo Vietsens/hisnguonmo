@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate.MedicineUpdate
         {
             MOS.EFMODEL.DataModels.V_HIS_MEDICINE_1 result = null;
             Inventec.Desktop.Common.Modules.Module moduleData = null;
+            long? medicineId = null;
             try
             {
                 if (entity != null && entity.Count() > 0)
@@ -56,16 +57,18 @@ namespace HIS.Desktop.Plugins.MedicineUpdate.MedicineUpdate
                             result = (MOS.EFMODEL.DataModels.V_HIS_MEDICINE_1)item;
                         if (item is Inventec.Desktop.Common.Modules.Module)
                             moduleData = (Inventec.Desktop.Common.Modules.Module)item;
+                        if (item is long)
+                            medicineId = (long)item;
                     }
                 }
                 if (moduleData != null)
                 {
-                    return new FormMedicineUpdate(result, moduleData);
+                    if (result != null)
+                        return new FormMedicineUpdate(result, moduleData);
+                    else if (medicineId.HasValue)
+                        return new FormMedicineUpdate(medicineId.Value, moduleData);
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
             catch (Exception ex)
             {

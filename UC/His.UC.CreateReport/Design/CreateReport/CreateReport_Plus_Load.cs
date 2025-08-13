@@ -58,11 +58,13 @@ namespace His.UC.CreateReport.Design.CreateReport
 
         private void CreateReportControl()
         {
-            ClearControl();
             if (!GenDynamicFilterConfig())
                 CreateReportControlByReportType();
             else
+            {
+                ClearControl();
                 CreateReportControlByDynamicFilterSheet();
+            }
         }
         private void ClearControl()
         {

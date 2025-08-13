@@ -846,4 +846,38 @@
   <data name="frmAssignPrescription.lciFortxtProvisionalDiagnosis.Text" xml:space="preserve">
     <value>Ch/đoán sơ bộ:</value>
   </data>
+
+	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_SERIAL_NUMBER" xml:space="preserve">
+    <value>Số serial</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_REMAIN_REUSE_COUNT" xml:space="preserve">
+    <value>TSD còn lại</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_TDL_MATERIAL_MAX_REUSE_COUNT" xml:space="preserve">
+    <value>TSD tối đa</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MEDI_STOCK_NAME" xml:space="preserve">
+    <value>Kho</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_LAST_EXP_PRICE" xml:space="preserve">
+    <value>Giá bán</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_LAST_EXP_VAT_RATIO" xml:space="preserve">
+    <value>VAT%</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MATERIAL_REGISTER_NUMBER" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_SUPPLIER_NAME" xml:space="preserve">
+    <value>Hãng sản xuất</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MATERIAL_TYPE_CODE" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_PARENT_NAME" xml:space="preserve">
+    <value>Nhóm cha</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MATERIAL_TYPE_MAP_ID" xml:space="preserve">
+    <value>Vật tư ánh xạ</value>      
+  </data>
 </root>

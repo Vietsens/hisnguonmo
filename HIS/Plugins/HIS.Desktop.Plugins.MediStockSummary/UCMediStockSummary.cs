@@ -48,6 +48,7 @@ using MOS.Filter;
 using System.Dynamic;
 using System.Reflection;
 
+
 namespace HIS.Desktop.Plugins.MediStockSummary
 {
     public partial class UCMediStockSummary : HIS.Desktop.Utility.UserControlBase
@@ -95,6 +96,10 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         private HisMedicineInStockADO currentRowMedicine { get; set; }
         private HisMaterialInStockADO currentRowMaterial { get; set; }
         private decimal? parentAvailableAmount { get; set; }
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        string ModuleLink = "HIS.Desktop.Plugins.MediStockSummary";
+        bool IsInitForm = false;
         #endregion
         public UCMediStockSummary(Inventec.Desktop.Common.Modules.Module module, long roomId, long roomTypeId)
             : base(module)
@@ -119,7 +124,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
+        } 
 
         private void UCMediStockSummary_Load(object sender, EventArgs e)
         {
@@ -138,6 +143,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 var dat2 = Inventec.Common.TypeConvert.Parse.ToDateTime(lastDayOfMonthTo + "/" + date.Month + "/" + DateTo);
                 dtExpiredDate.EditValue = dat2.ToString("MM/yyyy");
                 dtValidToTime.EditValue = date.ToString("dd/MM/yyyy");
+                InitControlState();
             }
             catch (Exception ex)
             {
@@ -189,7 +195,37 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void InitControlState()
+        {
 
+           
+
+            try
+            {
+                IsInitForm = true;
+                chkAlertMinStock.Checked = false; 
+
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(this.ModuleLink);
+                
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item_ in this.currentControlStateRDO)
+                    {
+                        if (item_.KEY == chkAlertMinStock.Name)
+                        {
+                            chkAlertMinStock.Checked = item_.VALUE == "1";
+                        }
+                    }
+                }
+                IsInitForm = false;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void InitCboPatientType()
         {
             try
@@ -253,7 +289,8 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         }
 
         private void InitMedicineTree()
-        {
+         
+            {
             try
             {
                 hisMediInStockProcessor = new HisMedicineInStockProcessor();
@@ -1782,11 +1819,37 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             }
             return str;
         }
+            
 
         private void chkAlertMinStock_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
+
+                
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    ? this.currentControlStateRDO.Where(o => o.KEY == chkAlertMinStock.Name && o.MODULE_LINK == this.ModuleLink).FirstOrDefault()
+                    : null;
+
+
+        
+            if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkAlertMinStock.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkAlertMinStock.Name;
+                    csAddOrUpdate.VALUE = (chkAlertMinStock.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = this.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+
+
                 if (!chkAlertMinStock.Enabled)
                 {
                     return;

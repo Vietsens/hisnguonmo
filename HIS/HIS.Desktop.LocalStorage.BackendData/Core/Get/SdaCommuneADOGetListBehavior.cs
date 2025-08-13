@@ -75,7 +75,7 @@ namespace HIS.Desktop.LocalStorage.BackendData.Get
                         result.Add(ado);
                     }
                     if (communes != null && communes.Count > 0
-                         && districts != null && districts.Count > 0
+                        // && districts != null && districts.Count > 0
                         && provinces != null && provinces.Count > 0
                         )
                     {

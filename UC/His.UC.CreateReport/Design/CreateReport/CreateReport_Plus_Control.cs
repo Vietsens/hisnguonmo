@@ -78,7 +78,10 @@ namespace His.UC.CreateReport.Design.CreateReport
                             txtReportName.Text = this.reportTemplate.REPORT_TEMPLATE_NAME;
                             txtReportName.Focus();
                             txtReportName.SelectAll();
-                            CreateReportControl();
+                            if (reportTemplate.REPORT_TEMPLATE_CODE.ToUpper().StartsWith("BCM"))
+                            {
+                                CreateReportControl();
+                            }
                         }
                     }
                     else

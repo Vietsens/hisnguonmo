@@ -233,11 +233,13 @@ namespace His.UC.CreateReport.Design.CreateReport1
         }
         private void CreateReportControl()
         {
-            ClearControl();
             if (!GenDynamicFilterConfig())
                 CreateReportControlByReportType();
             else
+            {
+                ClearControl();
                 CreateReportControlByDynamicFilterSheet();
+            }
             InitFthisLayout();
         }
 
