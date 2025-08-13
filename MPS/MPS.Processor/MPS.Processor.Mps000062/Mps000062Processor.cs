@@ -6989,7 +6989,7 @@ namespace MPS.Processor.Mps000062
                         Mps62ADO ado = new Mps62ADO();
                         ado.MedicineTypeCode = itMedicineType.Key;
                         ado.List = itMedicineType.ToList();
-                        ado.Dates = BuildDateString(itMedicineType.Select(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.USE_TIME ?? o.INTRUCTION_DATE)).Distinct().ToList());
+                        ado.Dates = BuildDateString(itMedicineType.OrderBy(o=>o.USE_TIME ?? o.INTRUCTION_DATE).Select(o => Inventec.Common.DateTime.Convert.TimeNumberToDateString(o.USE_TIME ?? o.INTRUCTION_DATE)).Distinct().ToList());
                         ado.TotalDateNumber = itMedicineType.Select(o => o.USE_TIME ?? o.INTRUCTION_DATE).Distinct().ToList().Sum();
                         lstAdo.Add(ado);
                     }
