@@ -28,6 +28,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
 {
     class HisConfigCFG
     {
+        private const string KeyWarningHeinPatientTypeCode = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
         public const string CONFIG_KEY_IsCheckServiceFollowWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
         internal static bool IsCheckServiceFollowWhenOut;
         public const string REQUIRED_PULSE_BLOOD_PRESSURE = "HIS.UC.DHST__REQUIRED_PULSE_BLOOD_PRESSURE";
@@ -101,6 +102,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         internal static bool RequiredAddressOption;
         internal static string RequiredTreatmentMethodOption;
         internal static string AutoCheckIcd;
+        internal static string WarningHeinPatientTypeCode;
         internal static void LoadConfig()
         {
             try
@@ -132,6 +134,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 terminalSystemSecureKey = GetValue(TERMINAL_SYTEM_SECURE_KEY);
                 RequiredTreatmentMethodOption = GetValue(CONFIG_KEY__IS_REQUIRED_TREATMENT_METHOD_OPTION);
                 AutoCheckIcd = GetValue(CONFIG_KEY__ICD_GENERA_KEY);
+                WarningHeinPatientTypeCode = GetValue(KeyWarningHeinPatientTypeCode);
             }
             catch (Exception ex)
             {
