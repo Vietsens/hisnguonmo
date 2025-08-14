@@ -356,7 +356,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // 
             this.txtHeinPatientTypeCode.Location = new System.Drawing.Point(416, 102);
             this.txtHeinPatientTypeCode.Name = "txtHeinPatientTypeCode";
-            this.txtHeinPatientTypeCode.Properties.Mask.EditMask = "[0-9,\\.]{0,10}";
+            this.txtHeinPatientTypeCode.Properties.Mask.EditMask = "[0-9\\.]{0,10}";
             this.txtHeinPatientTypeCode.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
             this.txtHeinPatientTypeCode.Size = new System.Drawing.Size(242, 20);
             this.txtHeinPatientTypeCode.StyleController = this.layoutControl1;
