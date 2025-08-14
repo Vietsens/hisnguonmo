@@ -5040,23 +5040,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
         }
 
-
-        //private int GetNextSheetOrder()
-        //{
-        //    try
-        //    {
-        //        if (treatmentId <= 0)
-        //            return 1;
-
-        //        var maxSheetOrder = BackendDataWorker.Get<HIS_TRACKING>().Where(x => x.TREATMENT_ID == treatmentId && x.SHEET_ORDER.HasValue).Select(x => (int?)x.SHEET_ORDER.Value).Max();
-        //        var result = (maxSheetOrder ?? 0);
-        //        return result + 1; 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Inventec.Common.Logging.LogSystem.Error(ex);
-        //        return 1;
-        //    }
-        //}
+        private void btnPDF_Click(object sender, EventArgs e)
+        {
+            frmAttach frm = new frmAttach(this.currentTracking.DEPARTMENT_ID);
+            frm.Show(); 
+        }
     }
 }
