@@ -141,9 +141,14 @@ namespace HIS.Desktop.Plugins.RegisterV2
         {
             try
             {
-                gridControlHistory.BeginUpdate();
-                gridControlHistory.DataSource = resultHistoryLDO.dsLichSuKCB2018;
-                gridControlHistory.EndUpdate();
+                gridControlHistory.DataSource = null;
+                if (resultHistoryLDO.dsLichSuKCB2018 != null)
+                {
+                    var query = resultHistoryLDO.dsLichSuKCB2018
+                        .OrderByDescending(o => o.ngayRa)
+                        .ToList();
+                    gridControlHistory.DataSource = query;
+                }
             }
             catch (Exception ex)
             {
@@ -197,6 +202,8 @@ namespace HIS.Desktop.Plugins.RegisterV2
                                 e.Value = "Trốn viện";
                             else if (data.tinhTrang == "4")
                                 e.Value = "Xin ra viện";
+                            else if (data.tinhTrang == "5")
+                                e.Value = "Kiểm tra thẻ";
                         }
                         else if (e.Column.FieldName == "kqDieuTri_str")
                         {

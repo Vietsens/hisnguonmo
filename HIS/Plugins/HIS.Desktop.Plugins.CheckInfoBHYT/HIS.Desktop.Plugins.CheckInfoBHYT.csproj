@@ -55,6 +55,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig">
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Print.dll</HintPath>
     </Reference>
@@ -228,6 +231,7 @@
     <EmbeddedResource Include="frmCheckInfoBHYT.resx">
       <DependentUpon>frmCheckInfoBHYT.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.en.resx" />

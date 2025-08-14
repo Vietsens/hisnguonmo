@@ -448,7 +448,7 @@ namespace HIS.UC.UCHeniInfo
         {
             try
             {
-                // this.heinCardData = new HeinCardData();
+                //this.heinCardData = new HeinCardData();
                 heinCardData.HeinCardNumber = this.txtSoThe.Text.Trim();
                 heinCardData.MediOrgCode = txtMaDKKCBBD.Text;
                 heinCardData.Address = txtAddress.Text;

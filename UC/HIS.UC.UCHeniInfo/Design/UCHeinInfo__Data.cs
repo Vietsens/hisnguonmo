@@ -34,12 +34,14 @@ using HIS.UC.UCHeniInfo.Data;
 using Inventec.Common.Adapter;
 using HIS.UC.UCHeniInfo.ControlProcess;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 
 namespace HIS.UC.UCHeniInfo
 {
 	public partial class UCHeinInfo : UserControlBase
 	{
 		public HisPatientProfileSDO GetValue()
+		
 		{
 			HisPatientProfileSDO patientProfileSDO = new HisPatientProfileSDO();
 			try
@@ -134,9 +136,14 @@ namespace HIS.UC.UCHeniInfo
 				else
 					patientProfileSDO.HisPatientTypeAlter.FREE_CO_PAID_TIME = null;
 				patientProfileSDO.HisPatientTypeAlter.ADDRESS = this.txtAddress.Text.Trim();
-				patientProfileSDO.HisPatientTypeAlter.IS_NO_CHECK_EXPIRE = ((this.lciKhongKTHSD.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && this.chkKhongKTHSD.Checked) ? (short?)1 : null);
-
-				patientProfileSDO.HisPatientTypeAlter.HAS_WORKING_LETTER = this.lciHasWorkingLetter.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && this.chkHasWorkingLetter.Checked ? (short?)1 : null;
+                if (patientProfileSDO.HisTreatment == null)
+                    patientProfileSDO.HisTreatment = new MOS.EFMODEL.DataModels.HIS_TREATMENT();
+                if (this.txtPatientTypeCode != null && this.txtPatientTypeCode.Text != null)
+                    patientProfileSDO.HisTreatment.HEIN_PATIENT_TYPE_CODE = this.txtPatientTypeCode.Text.Trim();
+                else
+                    patientProfileSDO.HisPatientTypeAlter.HIS_TREATMENT.HEIN_PATIENT_TYPE_CODE = null;
+                patientProfileSDO.HisPatientTypeAlter.IS_NO_CHECK_EXPIRE = ((this.lciKhongKTHSD.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && this.chkKhongKTHSD.Checked) ? (short?)1 : null);
+                patientProfileSDO.HisPatientTypeAlter.HAS_WORKING_LETTER = this.lciHasWorkingLetter.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && this.chkHasWorkingLetter.Checked ? (short?)1 : null;
 				patientProfileSDO.HisPatientTypeAlter.HAS_ABSENT_LETTER = this.lciHasAbsentLetter.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && this.chkHasAbsentLetter.Checked ? (short?)1 : null;
 				patientProfileSDO.HisPatientTypeAlter.IS_TT46 = this.lciIsTt46.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && this.chkIsTt46.Checked ? (short?)1 : null;
 				patientProfileSDO.HisPatientTypeAlter.TT46_NOTE = this.lciNote.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always ? this.txtNote.Text : null;
