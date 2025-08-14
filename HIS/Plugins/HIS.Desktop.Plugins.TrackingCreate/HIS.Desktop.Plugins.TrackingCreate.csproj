@@ -63,6 +63,9 @@
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.HisRegimenTemp">
+      <HintPath>..\HIS.Desktop.Plugins.HisRegimenTemp\bin\Debug\HIS.Desktop.Plugins.HisRegimenTemp.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.CheckIcd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.CheckIcd\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
@@ -279,6 +282,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmDisplay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDisplay.Designer.cs">
+      <DependentUpon>frmDisplay.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormKetLuanHoiChan\frmKetLuanHoiChan.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -354,6 +363,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDisplay.resx">
+      <DependentUpon>frmDisplay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormKetLuanHoiChan\frmKetLuanHoiChan.resx">
       <DependentUpon>frmKetLuanHoiChan.cs</DependentUpon>

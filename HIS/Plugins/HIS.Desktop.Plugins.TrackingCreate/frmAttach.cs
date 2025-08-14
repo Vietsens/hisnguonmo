@@ -16,11 +16,13 @@ using Inventec.Desktop.Common.Message;
 using Inventec.Fss.Client;
 using System.IO;
 using Inventec.Common.SignLibrary;
-
+using HIS.Desktop.Plugins.HisRegimenTemp.UC;
 namespace HIS.Desktop.Plugins.TrackingCreate
 {
     public partial class frmAttach : Form
     {
+        HIS.Desktop.Plugins.HisRegimenTemp.UC.UCDocument UcDocument = new UCDocument();
+        HIS.Desktop.Plugins.HisRegimenTemp.UC.UCPDF UCPdf = new UCPDF();
         long? departmentId { get; set; }
         public frmAttach(long? departmentId)
         {
@@ -80,24 +82,25 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     WaitingManager.Show();
 
                     string output = Utils.GenerateTempFileWithin();
-                    if (row != null && row.ID > 0)
-                    {
-                        var streamSource = Inventec.Fss.Client.FileDownload.GetFile(row.URL);
-                        streamSource.Position = 0;
-                        Utils.ByteToFile(Utils.StreamToByte(streamSource), output);
-                    }
-                    else
-                    {
-                        output = row.URL;
-                    }
-
-                    Inventec.Common.DocumentViewer.Template.frmPdfViewer DocumentView = new Inventec.Common.DocumentViewer.Template.frmPdfViewer(output);
-
-                    DocumentView.Text = "Xem văn bản";
-
-                    DocumentView.ShowDialog();
-
+                    string path = Utils.GenerateTempFolderWithin();
+                    var streamSource = Inventec.Fss.Client.FileDownload.GetFile(row.URL);
+                    streamSource.Position = 0;
+                    string outputFilePath = Path.Combine(path, Guid.NewGuid().ToString() + ".doc");
                     WaitingManager.Hide();
+                    if (row.FILE_TYPE == 2)
+                    {
+                        Utils.ByteToFile(Utils.StreamToByte(streamSource), output);
+                        UCPdf.LoadDocument(output);
+                        frmDisplay frm = new frmDisplay(UCPdf);
+                        frm.ShowDialog();
+                    }
+                    else if (row.FILE_TYPE == 3)
+                    {
+                        SaveStreamToDocFile(streamSource, outputFilePath);
+                        UcDocument.LoadDocument(outputFilePath);
+                        frmDisplay frm = new frmDisplay(UcDocument);
+                        frm.ShowDialog();
+                    }
                 }
             }
             catch (Exception ex)
@@ -124,3 +127,20 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
     }
 }
+
+
+//string output = Utils.GenerateTempFileWithin();
+//string path = Utils.GenerateTempFolderWithin();
+//var streamSource = Inventec.Fss.Client.FileDownload.GetFile(row.URL);
+//streamSource.Position = 0;
+//string outputFilePath = Path.Combine(path, Guid.NewGuid().ToString() + ".doc");
+//if (row.FILE_TYPE == 2)
+//{
+//    Utils.ByteToFile(Utils.StreamToByte(streamSource), output);
+//    UCPdf.LoadDocument(output);
+//}
+//else if (row.FILE_TYPE == 3)
+//{
+//    SaveStreamToDocFile(streamSource, outputFilePath);
+//    UcDocument.LoadDocument(outputFilePath);
+//}
