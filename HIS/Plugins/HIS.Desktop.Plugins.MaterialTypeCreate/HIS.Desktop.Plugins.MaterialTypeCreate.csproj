@@ -75,6 +75,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.UCOtherServiceReqInfo\HIS.Desktop.Library.CacheClient.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.ConfigApplication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.HisConfig">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
     </Reference>
@@ -182,11 +186,13 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -194,7 +200,7 @@
     </Reference>
     <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -235,6 +241,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\DepartmentADO.cs" />
+    <Compile Include="ADO\PatientTypeADO.cs" />
     <Compile Include="ADO\VHisServicePatyADO.cs" />
     <Compile Include="CustomParse.cs" />
     <Compile Include="Delegate.cs" />
@@ -242,6 +250,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="KeyboardWorker.cs" />
+    <Compile Include="MaterialTypeCreate\frmDepartmentPatientType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MaterialTypeCreate\frmDepartmentPatientType.Designer.cs">
+      <DependentUpon>frmDepartmentPatientType.cs</DependentUpon>
+    </Compile>
     <Compile Include="MaterialTypeCreate\frmMaterialTypeCreate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -285,6 +299,9 @@
     <Compile Include="Validtion\ValidMaxlengthTxtMaterialTypeCodeName.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MaterialTypeCreate\frmDepartmentPatientType.resx">
+      <DependentUpon>frmDepartmentPatientType.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MaterialTypeCreate\frmMaterialTypeCreate.resx">
       <DependentUpon>frmMaterialTypeCreate.cs</DependentUpon>
     </EmbeddedResource>
