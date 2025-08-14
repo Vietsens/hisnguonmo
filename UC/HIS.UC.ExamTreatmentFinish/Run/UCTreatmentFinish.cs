@@ -197,7 +197,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                     {
                         if (HisConfig.WarningHeinPatientTypeCode == "3")
                         {
-                            txtHeinPatientTypeCode.ForeColor = Color.Maroon;
+                            lciMaDoiTuong.AppearanceItemCaption.ForeColor = Color.Maroon;
                             ValidationHeinPatientTypeCode();
                         }
                         else if(HisConfig.WarningHeinPatientTypeCode == "1")
