@@ -84,8 +84,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV">
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.CheckHeinGOV, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\HIS.Desktop.Plugins.Library.CheckHeinGOV\bin\Debug\HIS.Desktop.Plugins.Library.CheckHeinGOV.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -117,6 +118,10 @@
     <Reference Include="HIS.UC.KskContract">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.KskContract\HIS.UC.KskContract.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.PlusInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.PlusInfo.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.ServiceRoom, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.ServiceRoom.dll</HintPath>
@@ -140,6 +145,10 @@
     <Reference Include="HIS.UC.UCOtherServiceReqInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.UCPatientRaw, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCRelativeInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -545,14 +554,6 @@
     <Compile Include="ValidationRule\PatientDob__ValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC.PlusInfo\HIS.UC.PlusInfo.csproj">
-      <Project>{dfa6e196-bae2-4ba0-81f6-7363e985c083}</Project>
-      <Name>HIS.UC.PlusInfo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC.UCPatientRaw\HIS.UC.UCPatientRaw.csproj">
-      <Project>{56fea3a2-be4c-4025-880d-e4a5f89b6ff6}</Project>
-      <Name>HIS.UC.UCPatientRaw</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

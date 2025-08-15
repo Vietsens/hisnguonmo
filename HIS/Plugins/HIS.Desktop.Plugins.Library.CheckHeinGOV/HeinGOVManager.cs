@@ -708,13 +708,16 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                             maxNgayRa = ngayRa;
                     }
 
-                    var otherChecks = new List<dsLichSuKT2018>();
+                    var otherChecks = new List<dynamic>();
                     foreach (var o in rsData.ResultHistoryLDO.dsLichSuKT2018)
                     {
                         long thoiGianKT;
-                        if (long.TryParse(o.thoiGianKT, out thoiGianKT)
-                            && thoiGianKT > maxNgayRa
-                            && !string.IsNullOrEmpty(o.userKT))
+                        if (!long.TryParse(o.thoiGianKT, out thoiGianKT))
+                            continue;
+                        string userKT = o.userKT ?? "";
+                        string currentMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+
+                        if (thoiGianKT > maxNgayRa && !string.IsNullOrEmpty(userKT) && userKT.IndexOf(currentMediOrgCode) < 0 && (o.maLoi == "000" || o.maLoi == "001" || o.maLoi == "002" || o.maLoi == "003"))
                         {
                             otherChecks.Add(o);
                         }
@@ -782,14 +785,8 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                 ngayRa = null,
                                 tinhTrang = "5",
                             };
-                        }).OrderByDescending(x =>
-                        {
-                            // Sắp xếp giảm dần theo thời gian kiểm tra
-                            DateTime dt;
-                            if (DateTime.TryParseExact(x.ngayVao, "dd/MM/yyyy HH:mm", null, System.Globalization.DateTimeStyles.None, out dt))
-                                return dt;
-                            return DateTime.MinValue;
-                        }).ToList();
+                        })
+                        .OrderByDescending(x => x.ngayVao).ToList();
 
                         // Gộp vào dsLichSuKCB2018: kiểm tra thẻ trước, sau đó dữ liệu cũ
                         var oldList = rsData.ResultHistoryLDO.dsLichSuKCB2018 ?? new List<ExamHistoryLDO>();
