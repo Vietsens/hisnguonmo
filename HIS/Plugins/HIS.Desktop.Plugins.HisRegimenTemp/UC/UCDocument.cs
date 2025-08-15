@@ -41,6 +41,7 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.UC
             }
         }
 
+
         public void SetRtfText(string text)
         {
             try

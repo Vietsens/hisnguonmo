@@ -44,8 +44,6 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
         int ActionType = -1;
         int positionHandle = -1;
         MOS.EFMODEL.DataModels.HIS_REGIMEN_TEMP currentData;
-        List<string> arrControlEnableNotchange = new List<string>();
-        Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
         Inventec.Desktop.Common.Modules.Module moduleData;
 
         string creator = "";
@@ -94,7 +92,6 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                 SetDefaultFocus();
                 EnableControlChange(this.ActionType);
                 SetDefaultValue();
-                //InitTabIndex();    
                 SetResourcesByLanguage();
                 ValidateForm();
                 this.UcDocument.SetRtfText("");
@@ -210,10 +207,12 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                 txtSearch.Text = "";
                 txtMa.Text = "";
                 txtTen.Text = "";
-                this.UcDocument.SetRtfText("");
+                //this.UcDocument.SetRtfText("");
                 this.UcDocument.SetFont(new Font("Times New Roman", 14));
                 label2.Text = "";
                 UCPdf.CloseDocument();
+                this.panelControl1.Controls.Clear();
+                fileName = "";
                 //zoomFactor();
             }
             catch (Exception ex)
@@ -221,24 +220,6 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                 LogSystem.Warn(ex);
             }
         }
-
-        private void zoomFactor()
-        {
-            try
-            {
-                float zoom = 0;
-                if (this.UcDocument.getLandscape(0))
-                    zoom = (float)(this.UcDocument.getWidth() - 50) / (this.UcDocument.getPageHeight(0) / 3);
-                else
-                    zoom = (float)(this.UcDocument.getWidth() - 50) / (this.UcDocument.getPageWidth(0) / 3);
-                this.UcDocument.SetZoomFactor(zoom);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
         private void EnableControlChange(int actionType)
         {
             btnAdd.Enabled = (actionType == GlobalVariables.ActionAdd);
@@ -362,6 +343,7 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                 if (data != null)
                 {
                     FillDataEditorControl(data);
+                    if (label2.Text == "") this.panelControl1.Controls.Clear();
                     if (data.IS_PUBLIC == 1)
                         chkToanVien.Checked = true;
                     else
@@ -393,7 +375,15 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                     string path = Utils.GenerateTempFolderWithin();
                     var streamSource = Inventec.Fss.Client.FileDownload.GetFile(data.URL);
                     streamSource.Position = 0;
-                    string outputFilePath = Path.Combine(path, Guid.NewGuid().ToString() + ".doc");
+                    string extension = ".doc";
+                    if (!string.IsNullOrEmpty(data.FILE_NAME))
+                    {
+                        extension = Path.GetExtension(data.FILE_NAME).ToLower();
+                        if (extension != ".doc" && extension != ".docx")
+                            extension = ".doc";
+                    }
+                    string outputFilePath = Path.Combine(path, Guid.NewGuid().ToString() + extension);
+
                     if (data.FILE_TYPE == 2)
                     {
                         Utils.ByteToFile(Utils.StreamToByte(streamSource), output);
@@ -405,7 +395,7 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                         SaveStreamToDocFile(streamSource, outputFilePath);
                         InitDocument();
                         UcDocument.LoadDocument(outputFilePath);
-                    }
+                    }                
                     this.ActionType = GlobalVariables.ActionEdit;
                     EnableControlChange(this.ActionType);
                     btnEdit.Enabled = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
@@ -523,7 +513,7 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                     updateDTO.FILE_TYPE = 0;
                 HisEmployeeFilter filter = new HisEmployeeFilter();
                 if (ActionType == GlobalVariables.ActionAdd)
-                {
+                {                    
                     filter.LOGINNAME__EXACT = creator;
                     filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                     var employees = new Inventec.Common.Adapter.BackendAdapter
@@ -550,6 +540,12 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                 {
                     filter.LOGINNAME__EXACT = creator;
                     filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    if (fileName == "")
+                    {
+                        updateDTO.URL = currentData.URL;
+                        updateDTO.FILE_NAME = currentData.FILE_NAME;
+                        updateDTO.FILE_TYPE = currentData.FILE_TYPE;
+                    }
                     var employees = new Inventec.Common.Adapter.BackendAdapter
                         (param).Get<List<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>>
                         (RegimenTempUriStore.HIS_EMPLOYEE, ApiConsumer.ApiConsumers.MosConsumer, filter, param);
@@ -562,14 +558,12 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                     {
                         updateDTO.DEPARTMENT_ID = null;
                     }
-
                     var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_REGIMEN_TEMP>(RegimenTempUriStore.REGIMEN_TEMP_UPDATE, ApiConsumers.MosConsumer, updateDTO, param);
                     if (resultData != null)
                     {
                         success = true;
                         FillDataToControl();
                         SetDefaultValue();
-
                     }
                 }
                 WaitingManager.Hide();
@@ -577,7 +571,7 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                 MessageManager.Show(this, param, success);
                 #endregion
 
-                #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login (3h06)
+                #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
                 SessionManager.ProcessTokenLost(param);
                 #endregion
             }
@@ -643,42 +637,6 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        private void ResetFormData()
-        {
-            try
-            {
-                if (!lcEditorInfo.IsInitialized) return;
-                lcEditorInfo.BeginUpdate();
-                try
-                {
-                    foreach (DevExpress.XtraLayout.BaseLayoutItem item in lcEditorInfo.Items)
-                    {
-                        DevExpress.XtraLayout.LayoutControlItem lci = item as DevExpress.XtraLayout.LayoutControlItem;
-                        if (lci != null && lci.Control != null && lci.Control is BaseEdit)
-                        {
-                            DevExpress.XtraEditors.BaseEdit formatFrm = lci.Control as DevExpress.XtraEditors.BaseEdit;
-                            formatFrm.ResetText();
-                            formatFrm.EditValue = null;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn(ex);
-                }
-                finally
-                {
-                    lcEditorInfo.EndUpdate();
-                }
-                txtMa.Focus();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         private void btnSearch_Click(object sender, EventArgs e)
         {
             try
@@ -915,7 +873,7 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
             {
                 using (OpenFileDialog openFileDialog = new OpenFileDialog())
                 {
-                    openFileDialog.Filter = "PDF Files (*.pdf)|*.pdf|Word Files (*.doc;*.docx)|*.doc;*.docx";
+                    openFileDialog.Filter = "Tất cả(*.pdf;*.doc;*.docx)|*.pdf;*.doc;*.docx|PDF (*.pdf)|*.pdf|Word (*.doc;*.docx)|*.doc;*.docx";
                     openFileDialog.Title = "Chọn tệp mẫu (PDF hoặc Word)";
                     openFileDialog.Multiselect = false;
 
