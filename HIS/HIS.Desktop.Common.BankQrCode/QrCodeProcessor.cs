@@ -228,6 +228,10 @@ namespace HIS.Desktop.Common.BankQrCode
                     result = "PAYMENT_QR_CODE_PVCB";
                     bankType = ProvinceType.PVCB;
                     break;
+                case "HIS.Desktop.Plugins.PaymentQrCode.AGRInfo":
+                    result = "PAYMENT_QR_CODE_AGR";
+                    bankType = ProvinceType.LPBANK;
+                    break;
                 case "DYNAMIC":
                     result = "PAYMENT_QR_CODE_DYNAMIC";
                     bankType = ProvinceType.DYNAMIC;
