@@ -134,7 +134,14 @@ namespace HIS.UC.UCHeniInfo
 				else
 					patientProfileSDO.HisPatientTypeAlter.FREE_CO_PAID_TIME = null;
 				patientProfileSDO.HisPatientTypeAlter.ADDRESS = this.txtAddress.Text.Trim();
-				patientProfileSDO.HisPatientTypeAlter.IS_NO_CHECK_EXPIRE = ((this.lciKhongKTHSD.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && this.chkKhongKTHSD.Checked) ? (short?)1 : null);
+                if (patientProfileSDO.HisTreatment == null)
+                    patientProfileSDO.HisTreatment = new MOS.EFMODEL.DataModels.HIS_TREATMENT();
+                if (this.txtHeinPatientTypeCode != null)
+					patientProfileSDO.HisTreatment.HEIN_PATIENT_TYPE_CODE = this.txtHeinPatientTypeCode.Text.Trim();
+                else
+                    patientProfileSDO.HisTreatment.HEIN_PATIENT_TYPE_CODE = null;
+
+                patientProfileSDO.HisPatientTypeAlter.IS_NO_CHECK_EXPIRE = ((this.lciKhongKTHSD.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && this.chkKhongKTHSD.Checked) ? (short?)1 : null);
 
 				patientProfileSDO.HisPatientTypeAlter.HAS_WORKING_LETTER = this.lciHasWorkingLetter.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && this.chkHasWorkingLetter.Checked ? (short?)1 : null;
 				patientProfileSDO.HisPatientTypeAlter.HAS_ABSENT_LETTER = this.lciHasAbsentLetter.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && this.chkHasAbsentLetter.Checked ? (short?)1 : null;

@@ -192,6 +192,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         protected bool IsHiv { get; set; }
         //UcheinInfo
         protected short? isBhytHolded { get; set; }
+        protected string HeinPatientCode { get; set; }
 
         // UCTransPatin
         protected string icd_Code { get; set; }
@@ -371,6 +372,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 if (this.heinInfoValue != null && this.heinInfoValue.HisTreatment != null)
                 {
                     this.isBhytHolded = this.heinInfoValue.HisTreatment.IS_BHYT_HOLDED;
+                    this.HeinPatientCode = this.heinInfoValue.HisTreatment.HEIN_PATIENT_TYPE_CODE;
                 }
                 this.isCheckSS = ucServiceRequestRegiter.isCheckSS;
                 // UCPlusInfo
@@ -820,6 +822,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisTreatment.TREATMENT_ORDER = this.treatmentOrder;
                 this.patientProfile.HisTreatment.IN_CODE = this.inCode;
                 this.patientProfile.HisTreatment.IS_BHYT_HOLDED = this.isBhytHolded;
+                this.patientProfile.HisTreatment.HEIN_PATIENT_TYPE_CODE = this.HeinPatientCode;
                 this.patientProfile.HisTreatment.IS_HIV = this.IsHiv ? (short?)1 : null;
                 //Du lieu doi tuong cung chi tra
                 if (this.FUND_ID > 0)

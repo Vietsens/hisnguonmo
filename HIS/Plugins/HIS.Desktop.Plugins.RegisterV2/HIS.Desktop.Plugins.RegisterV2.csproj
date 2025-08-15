@@ -129,15 +129,16 @@
     <Reference Include="HIS.UC.TranPati">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.TranPati\HIS.UC.TranPati.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCCheckTT">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCCheckTT\HIS.UC.UCCheckTT.dll</HintPath>
+    <Reference Include="HIS.UC.UCCheckTT, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\UC\HIS.UC.UCCheckTT\bin\Debug\HIS.UC.UCCheckTT.dll</HintPath>
     </Reference>
     <Reference Include="His.UC.UCHein">
       <HintPath>..\..\..\..\lib\HIS\His.UC.UCHein\His.UC.UCHein.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCHeniInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCHeniInfo.dll</HintPath>
+      <HintPath>..\..\..\UC\HIS.UC.UCHeniInfo\bin\Debug\HIS.UC.UCHeniInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCImageInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCImageInfo\HIS.UC.UCImageInfo.dll</HintPath>
