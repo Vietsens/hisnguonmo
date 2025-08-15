@@ -780,7 +780,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                 maCSKCB = orgCode5, // chỉ lấy tên
                                 ngayVao = item.thoiGianKT,
                                 ngayRa = null,
-                                tinhTrang = "Kiểm tra thẻ"
+                                tinhTrang = "5",
                             };
                         }).OrderByDescending(x =>
                         {
