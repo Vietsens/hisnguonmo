@@ -316,14 +316,14 @@ namespace HIS.Desktop.Plugins.Bordereau
                 && (departmentPremissionIds == null || !departmentPremissionIds.Contains(currentDepartmentId)))))
                 {
                     vali = false;
-                    mess = String.Format("({0}) {1} dịch vụ có khoa hiện tại không phải là khoa yêu cầu hoặc khoa xử lý", data.TDL_SERVICE_REQ_CODE, data.SERVICE_NAME);
+                    mess = String.Format("({0}) {1} dịch vụ có khoa hiện tại không phải là khoa yêu cầu hoặc khoa xử lý", data.TDL_SERVICE_REQ_CODE, data.TDL_SERVICE_CODE);
                     return vali;
                 }
 
                 if (isPay)
                 {
                     vali = false;
-                    mess = String.Format("({0}) {1} dịch vụ đã thanh toán", data.TDL_SERVICE_REQ_CODE, data.SERVICE_NAME);
+                    mess = String.Format("({0}) {1} dịch vụ đã thanh toán", data.TDL_SERVICE_REQ_CODE, data.TDL_SERVICE_CODE);
                     return vali;
                 }
 
@@ -334,21 +334,21 @@ namespace HIS.Desktop.Plugins.Bordereau
                         if (!this.IsAllowNoExecuteForPaid)
                         {
                             vali = false;
-                            mess = String.Format("({0}) {1} dịch vụ đã tạm ứng", data.TDL_SERVICE_REQ_CODE, data.SERVICE_NAME);
+                            mess = String.Format("({0}) {1} dịch vụ đã tạm ứng", data.TDL_SERVICE_REQ_CODE, data.TDL_SERVICE_NAME);
                             return vali;
                         }
 
                         if (data.SERVICE_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
                         {
                             vali = false;
-                            mess = String.Format("({0}) {1} dịch vụ đã được xử lý", data.TDL_SERVICE_REQ_CODE, data.SERVICE_NAME);
+                            mess = String.Format("({0}) {1} dịch vụ đã được xử lý", data.TDL_SERVICE_REQ_CODE, data.TDL_SERVICE_NAME);
                             return vali;
                         }
 
                         if (data.TDL_REQUEST_LOGINNAME != loginName && !CheckLoginAdmin.IsAdmin(loginName))
                         {
                             vali = false;
-                            mess = String.Format("({0}) {1} tài khoản không có quyền thực hiện", data.TDL_SERVICE_REQ_CODE, data.SERVICE_NAME);
+                            mess = String.Format("({0}) {1} tài khoản không có quyền thực hiện", data.TDL_SERVICE_REQ_CODE, data.TDL_SERVICE_NAME);
                             return vali;
                         }
                     }
@@ -359,7 +359,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                             if (comlumnType == ComlumnType.EXPEND)
                             {
                                 vali = false;
-                                mess = String.Format("({0}) {1} dịch vụ đã tạm ứng không cho phép sửa tại khoa không được cấu hình", data.TDL_SERVICE_REQ_CODE, data.SERVICE_NAME);
+                                mess = String.Format("({0}) {1} dịch vụ đã tạm ứng không cho phép sửa tại khoa không được cấu hình", data.TDL_SERVICE_REQ_CODE, data.TDL_SERVICE_NAME);
                                 return vali;
                             }
                         }
@@ -378,7 +378,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                     if (!data.PARENT_ID.HasValue)
                     {
                         vali = false;
-                        mess = String.Format("({0}) {1} dịch vụ không phải là dịch vụ đính kèm", data.TDL_SERVICE_REQ_CODE, data.SERVICE_NAME);
+                        mess = String.Format("({0}) {1} dịch vụ không phải là dịch vụ đính kèm", data.TDL_SERVICE_REQ_CODE, data.TDL_SERVICE_NAME);
                         return vali;
                     }
                 }
@@ -390,7 +390,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                         && data.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
                     {
                         vali = false;
-                        mess = String.Format("({0}) {1} dịch vụ không có quyền thực hiện chức năng này", data.TDL_SERVICE_REQ_CODE, data.SERVICE_NAME);
+                        mess = String.Format("({0}) {1} dịch vụ không có quyền thực hiện chức năng này", data.TDL_SERVICE_REQ_CODE, data.TDL_SERVICE_NAME);
                         return vali;
                     }
                 }
@@ -400,7 +400,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                     if (!CheckExpendTypeOfData(data))
                     {
                         vali = false;
-                        mess = String.Format("({0}) {1} dịch vụ không có quyền thực hiện chức năng này", data.TDL_SERVICE_REQ_CODE, data.SERVICE_NAME);
+                        mess = String.Format("({0}) {1} dịch vụ không có quyền thực hiện chức năng này", data.TDL_SERVICE_REQ_CODE, data.TDL_SERVICE_CODE);
                         return vali;
                     }
                 }
@@ -1179,147 +1179,7 @@ namespace HIS.Desktop.Plugins.Bordereau
 
         private void gridViewBordereau_RowCellClick(object sender, RowCellClickEventArgs e)
         {
-            //try
-            //{
-            //    Inventec.Common.Logging.LogSystem.Debug("gridViewBordereau_RowCellClick. 1");
-            //    SereServADO sereServADO = this.gridViewBordereau.GetFocusedRow() as SereServADO;
-            //    string mess = "";
-            //    if (sereServADO != null)
-            //    {
-            //        HIS_SERE_SERV sereServ = new HIS_SERE_SERV();
-
-            //        if (e.Column.FieldName == "IsNoExecute")
-            //        {
-            //            if (!this.CheckPremissionEdit(sereServADO, ComlumnType.NO_EXECUTE, ref mess))
-            //            {
-            //                if (!String.IsNullOrEmpty(mess))
-            //                    MessageManager.Show(mess);
-            //                Inventec.Common.Logging.LogSystem.Debug("CheckPremissionEdit=false");
-            //                return;
-            //            }
-
-            //            if (sereServADO.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT
-            //                    && sereServADO.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
-            //                    && sereServADO.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU)
-            //            {
-            //                if (sereServADO.IS_NO_EXECUTE == 1)
-            //                {
-            //                    List<long> serviceIds = new List<long> { sereServADO.SERVICE_ID };
-            //                    List<HIS_SERE_SERV> sereServWithMinDurations = this.GetSereServWithMinDuration(currentTreatment.PATIENT_ID, serviceIds);
-            //                    if (sereServWithMinDurations != null && sereServWithMinDurations.Count > 0)
-            //                    {
-            //                        string sereServMinDurationStr = "";
-            //                        foreach (var item in sereServWithMinDurations)
-            //                        {
-            //                            sereServMinDurationStr += item.TDL_SERVICE_CODE + " - " + item.TDL_SERVICE_NAME + "; ";
-            //                        }
-
-            //                        if (MessageBox.Show(string.Format("Các dịch vụ sau có thời gian chỉ định nằm trong khoảng thời gian không cho phép: {0} .Bạn có muốn tiếp tục?", sereServMinDurationStr), "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
-            //                            return;
-            //                    }
-            //                }
-
-            //                sereServ.ID = sereServADO.ID;
-            //                if (sereServADO.IS_NO_EXECUTE == 1)
-            //                    sereServ.IS_NO_EXECUTE = null;
-            //                else
-            //                    sereServ.IS_NO_EXECUTE = 1;
-
-            //                List<HIS_SERE_SERV> sereServs = new List<HIS_SERE_SERV>();
-            //                sereServs.Add(sereServ);
-            //                HisSereServPayslipSDO hisSereServPayslipSDO = new HisSereServPayslipSDO();
-            //                hisSereServPayslipSDO.Field = UpdateField.IS_NO_EXECUTE;
-            //                hisSereServPayslipSDO.SereServs = sereServs;
-            //                hisSereServPayslipSDO.TreatmentId = this.currentTreatment.ID;
-            //                this.UpdatePayslipInfoProcess(hisSereServPayslipSDO);
-            //            }
-            //        }
-            //        else if (e.Column.FieldName == "IsExpend")
-            //        {
-            //            Inventec.Common.Logging.LogSystem.Debug("gridViewBordereau_RowCellClick. 2");
-            //            if (!this.CheckPremissionEdit(sereServADO, ComlumnType.EXPEND, ref mess))
-            //            {
-            //                if (!String.IsNullOrEmpty(mess))
-            //                    MessageManager.Show(mess);
-            //                Inventec.Common.Logging.LogSystem.Debug("CheckPremissionEdit=false");
-            //                return;
-            //            }
-            //            Inventec.Common.Logging.LogSystem.Debug("gridViewBordereau_RowCellClick. 3");
-            //            sereServ.ID = sereServADO.ID;
-
-            //            if (sereServADO.IS_EXPEND == 1)
-            //                sereServ.IS_EXPEND = null;
-            //            else
-            //                sereServ.IS_EXPEND = 1;
-
-            //            List<HIS_SERE_SERV> sereServs = new List<HIS_SERE_SERV>();
-            //            sereServs.Add(sereServ);
-            //            HisSereServPayslipSDO hisSereServPayslipSDO = new HisSereServPayslipSDO();
-            //            hisSereServPayslipSDO.Field = UpdateField.IS_EXPEND;
-            //            hisSereServPayslipSDO.SereServs = sereServs;
-            //            hisSereServPayslipSDO.TreatmentId = this.currentTreatment.ID;
-            //            this.UpdatePayslipInfoProcess(hisSereServPayslipSDO);
-            //        }
-            //        else if (e.Column.FieldName == "ExpendTypeId" && CheckExpendTypeOfData(sereServADO))
-            //        {
-            //            Inventec.Common.Logging.LogSystem.Debug("gridViewBordereau_RowCellClick. 4");
-            //            if (!this.CheckPremissionEdit(sereServADO, ComlumnType.EXPEND_TYPE_ID, ref mess))
-            //            {
-            //                if (!String.IsNullOrEmpty(mess))
-            //                    MessageManager.Show(mess);
-            //                Inventec.Common.Logging.LogSystem.Debug("CheckPremissionEdit=false");
-            //                return;
-            //            }
-            //            Inventec.Common.Logging.LogSystem.Debug("gridViewBordereau_RowCellClick. 5");
-            //            sereServ.ID = sereServADO.ID;
-
-            //            if (sereServADO.EXPEND_TYPE_ID == 1)
-            //                sereServ.EXPEND_TYPE_ID = null;
-            //            else
-            //                sereServ.EXPEND_TYPE_ID = 1;
-
-            //            List<HIS_SERE_SERV> sereServs = new List<HIS_SERE_SERV>();
-            //            sereServs.Add(sereServ);
-            //            HisSereServPayslipSDO hisSereServPayslipSDO = new HisSereServPayslipSDO();
-            //            hisSereServPayslipSDO.Field = UpdateField.EXPEND_TYPE_ID;
-            //            hisSereServPayslipSDO.SereServs = sereServs;
-            //            hisSereServPayslipSDO.TreatmentId = this.currentTreatment.ID;
-            //            this.UpdatePayslipInfoProcess(hisSereServPayslipSDO);
-            //            Inventec.Common.Logging.LogSystem.Debug("UpdatePayslipInfoProcess. call");
-            //        }
-            //        else if (e.Column.FieldName == "IsOutKtcFee")
-            //        {
-            //            if (!this.CheckPremissionEdit(sereServADO, ComlumnType.IS_OUT_PARENT_FEE, ref mess))
-            //            {
-            //                if (!String.IsNullOrEmpty(mess))
-            //                    MessageManager.Show(mess);
-            //                Inventec.Common.Logging.LogSystem.Debug("CheckPremissionEdit=false");
-            //                return;
-            //            }
-            //            sereServ.ID = sereServADO.ID;
-            //            if (sereServADO.IS_OUT_PARENT_FEE == 1)
-            //                sereServ.IS_OUT_PARENT_FEE = null;
-            //            else
-            //                sereServ.IS_OUT_PARENT_FEE = 1;
-
-            //            List<HIS_SERE_SERV> sereServs = new List<HIS_SERE_SERV>();
-            //            sereServs.Add(sereServ);
-            //            HisSereServPayslipSDO hisSereServPayslipSDO = new HisSereServPayslipSDO();
-            //            hisSereServPayslipSDO.Field = UpdateField.IS_OUT_PARENT_FEE;
-            //            hisSereServPayslipSDO.SereServs = sereServs;
-            //            hisSereServPayslipSDO.TreatmentId = this.currentTreatment.ID;
-            //            this.UpdatePayslipInfoProcess(hisSereServPayslipSDO);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Inventec.Common.Logging.LogSystem.Debug("gridViewBordereau_RowCellClick.sereServADO is null");
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    LogSystem.Warn(ex);
-            //}
+            
         }
 
         private void gridViewBordereau_PopupMenuShowing(object sender, DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventArgs e)
