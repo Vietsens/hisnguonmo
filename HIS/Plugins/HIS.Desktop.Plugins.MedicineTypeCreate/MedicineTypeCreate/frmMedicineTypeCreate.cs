@@ -72,6 +72,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         List<HIS_ACTIVE_INGREDIENT> activeIngrBhyts;
         List<HIS_ACTIVE_INGREDIENT> activeIngredients;
         List<HIS_ATC> Acts;
+        //qtcode
+        private List<HIS_DEPA_PATIENT_TYPE> depaPatientTypes = new List<HIS_DEPA_PATIENT_TYPE>();
+        public bool isCalledApi = false;
+        public bool isClickPick = false;
         List<HIS_ATC_GROUP> ActGroups;
         V_HIS_SERVICE currentRightClick;
         V_HIS_SERVICE currentRightClickDefault;
@@ -3252,6 +3256,24 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 if (ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd)
                 {
                     resultData = new BackendAdapter(param).Post<HIS_MEDICINE_TYPE>(HisRequestUriStore.HIS_MEDICINE_TYPE_CREATE, ApiConsumers.MosConsumer, currentMedicineTypeDTO, param);
+                    if (resultData != null)
+                    {
+                        success = true;
+                        if (this.depaPatientTypes != null && this.depaPatientTypes.Count > 0)
+                        {
+                            foreach (var item in this.depaPatientTypes)
+                            {
+                                item.SERVICE_ID = resultData.SERVICE_ID;
+                            }
+                            var createResult = new BackendAdapter(param).Post<List<HIS_DEPA_PATIENT_TYPE>>("api/HisDepaPatientType/CreateList", ApiConsumers.MosConsumer, this.depaPatientTypes, param);
+                            if (createResult == null)
+                            {
+                                success = false;
+                            }
+                        }
+                        BackendDataWorker.Reset<HIS_MATERIAL_TYPE>();
+                        BackendDataWorker.Reset<HIS_DEPA_PATIENT_TYPE>();
+                    }
                 }
                 else if (ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
                 {
@@ -3259,6 +3281,31 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     medicineTypeSdo.HisMedicineType = currentMedicineTypeDTO;
                     UpdateData(medicineTypeSdo);
                     resultData = new BackendAdapter(param).Post<HIS_MEDICINE_TYPE>(HisRequestUri.HIS_MEDICINE_TYPE_UPDATE_SDO, ApiConsumers.MosConsumer, medicineTypeSdo, param);
+                    HisDepaPatientTypeFilter filter = new HisDepaPatientTypeFilter();
+                    filter.SERVICE_ID = resultData.SERVICE_ID;
+                    var oldDepaPatientTypes = new BackendAdapter(param).Get<List<HIS_DEPA_PATIENT_TYPE>>("api/HisDepaPatientType/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (oldDepaPatientTypes != null && oldDepaPatientTypes.Count > 0 && this.isClickPick == true)
+                    {
+                        var deleteResult = new BackendAdapter(param).Post<bool>("api/HisDepaPatientType/DeleteList", ApiConsumers.MosConsumer, oldDepaPatientTypes.Select(p => p.ID).ToList(), param);
+                        if (!deleteResult)
+                        {
+                            success = false;
+                        }
+                    }
+                    if (this.depaPatientTypes != null && this.depaPatientTypes.Count > 0)
+                    {
+                        foreach (var item in this.depaPatientTypes)
+                        {
+                            item.SERVICE_ID = resultData.SERVICE_ID;
+                        }
+                        var createResult = new BackendAdapter(param).Post<List<HIS_DEPA_PATIENT_TYPE>>("api/HisDepaPatientType/CreateList", ApiConsumers.MosConsumer, this.depaPatientTypes, param);
+                        if (createResult == null)
+                        {
+                            success = false;
+                        }
+                    }
+                    BackendDataWorker.Reset<HIS_MATERIAL_TYPE>();
+                    BackendDataWorker.Reset<HIS_DEPA_PATIENT_TYPE>();
                 }
 
                 if (resultData != null)
@@ -3268,6 +3315,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     btnDieuChinhLieu.Enabled = true;
                     WaitingManager.Hide();
                     btnSave.Enabled = false;
+                    btnDepartmentPatient.Enabled = false; 
                     btnRefresh.Enabled = true;
                     btnEditInfo.Enabled = true;
                     // nếu thuốc là lá mới thiết lập chính sách giá
@@ -7785,6 +7833,32 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
 
                 LogSystem.Error(ex);
+            }
+        }
+
+        private void btnDepartmentPatient_Click(object sender, EventArgs e)
+        {
+            var serviceId = BackendDataWorker.Get<HIS_MEDICINE_TYPE>().Where(p => p.ID == this.currentMedicineTypeId).Select(p => p.SERVICE_ID).FirstOrDefault();
+
+            frmDepartmentPatientType frm = serviceId != 0
+                ? new frmDepartmentPatientType(serviceId, this.depaPatientTypes ?? new List<HIS_DEPA_PATIENT_TYPE>(), this.isCalledApi, this.isClickPick)
+                : new frmDepartmentPatientType(this.depaPatientTypes ?? new List<HIS_DEPA_PATIENT_TYPE>());
+
+            frm.OnDepaPatientTypeSaved += Frm_OnDepaPatientTypeSaved;
+            frm.Show();
+        }
+
+        private void Frm_OnDepaPatientTypeSaved(List<HIS_DEPA_PATIENT_TYPE> depaPatientTypes, bool isCalledApi, bool isClickPick)
+        {
+            try
+            {
+                this.isCalledApi = isCalledApi;
+                this.depaPatientTypes = depaPatientTypes != null ? depaPatientTypes : new List<HIS_DEPA_PATIENT_TYPE>();
+                this.isClickPick = isClickPick;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

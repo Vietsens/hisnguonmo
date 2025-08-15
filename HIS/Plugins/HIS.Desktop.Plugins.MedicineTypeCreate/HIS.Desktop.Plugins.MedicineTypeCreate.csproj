@@ -253,6 +253,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\DepartmentADO.cs" />
+    <Compile Include="ADO\PatientTypeADO.cs" />
     <Compile Include="ADO\RankADO.cs" />
     <Compile Include="ADO\SourceMedicineADO.cs" />
     <Compile Include="ADO\VHisServicePatyADO.cs" />
@@ -264,6 +266,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="KeyboardWorker.cs" />
+    <Compile Include="MedicineTypeCreate\frmDepartmentPatientType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MedicineTypeCreate\frmDepartmentPatientType.Designer.cs">
+      <DependentUpon>frmDepartmentPatientType.cs</DependentUpon>
+    </Compile>
     <Compile Include="MedicineTypeCreate\frmMedicineTypeCreate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -322,6 +330,9 @@
     <Compile Include="Validtion\ValidMaxlengthTxtMedicineTypeCodeName.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MedicineTypeCreate\frmDepartmentPatientType.resx">
+      <DependentUpon>frmDepartmentPatientType.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MedicineTypeCreate\frmMedicineTypeCreate.resx">
       <DependentUpon>frmMedicineTypeCreate.cs</DependentUpon>
       <SubType>Designer</SubType>
