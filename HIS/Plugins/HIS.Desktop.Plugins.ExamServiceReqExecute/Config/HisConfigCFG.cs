@@ -28,7 +28,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
 {
     class HisConfigCFG
     {
-        private const string KeyWarningHeinPatientTypeCode = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
         public const string CONFIG_KEY_IsCheckServiceFollowWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
         internal static bool IsCheckServiceFollowWhenOut;
         public const string REQUIRED_PULSE_BLOOD_PRESSURE = "HIS.UC.DHST__REQUIRED_PULSE_BLOOD_PRESSURE";
@@ -102,7 +101,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         internal static bool RequiredAddressOption;
         internal static string RequiredTreatmentMethodOption;
         internal static string AutoCheckIcd;
-        internal static string WarningHeinPatientTypeCode;
+        private const string KEY_IsRequiredPathologicalProcessTransferPatientBHYT = "HIS.Desktop.Plugins.TreatmentFinish.IsRequiredPathologicalProcessTransferPatientBHYT";
+        private const string KEY_PathologicalProcessOption = "HIS.Desktop.Plugins.TreatmentFinish.PathologicalProcessOption";
+        internal static bool IsRequiredPathologicalProcessTransferPatientBHYT;
+        internal static int PathologicalProcessOption;
         internal static void LoadConfig()
         {
             try
@@ -134,7 +136,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 terminalSystemSecureKey = GetValue(TERMINAL_SYTEM_SECURE_KEY);
                 RequiredTreatmentMethodOption = GetValue(CONFIG_KEY__IS_REQUIRED_TREATMENT_METHOD_OPTION);
                 AutoCheckIcd = GetValue(CONFIG_KEY__ICD_GENERA_KEY);
-                WarningHeinPatientTypeCode = GetValue(KeyWarningHeinPatientTypeCode);
+                IsRequiredPathologicalProcessTransferPatientBHYT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsRequiredPathologicalProcessTransferPatientBHYT) == GlobalVariables.CommonStringTrue;
+                PathologicalProcessOption = int.Parse(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_PathologicalProcessOption) ?? "0");
             }
             catch (Exception ex)
             {

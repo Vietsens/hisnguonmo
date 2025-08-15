@@ -127,19 +127,19 @@
     <value>Trạng thái</value>
   </data>
   <data name="frmReceivingReportList.colBeginDate.Caption" xml:space="preserve">
-    <value>Thời gian bắt đầu</value>
+    <value>Thời gian bắt đầu đối soát</value>
   </data>
   <data name="frmReceivingReportList.colCreateTime.Caption" xml:space="preserve">
     <value>Thời gian tạo</value>
   </data>
   <data name="frmReceivingReportList.colCreationTime.Caption" xml:space="preserve">
-    <value>Thời gian tạo</value>
+    <value>Thời gian tạo báo cáo</value>
   </data>
   <data name="frmReceivingReportList.colCreator.Caption" xml:space="preserve">
     <value>Người tạo</value>
   </data>
   <data name="frmReceivingReportList.colEndDate.Caption" xml:space="preserve">
-    <value>Thời gian kết thúc</value>
+    <value>Thời gian kết thúc đối soát</value>
   </data>
   <data name="frmReceivingReportList.colModifier.Caption" xml:space="preserve">
     <value>Người sửa</value>
@@ -148,13 +148,13 @@
     <value>Thời gian sửa</value>
   </data>
   <data name="frmReceivingReportList.colPageNumber.Caption" xml:space="preserve">
-    <value>Số thứ tự</value>
+    <value>Số thứ tự trang báo cáo</value>
   </data>
   <data name="frmReceivingReportList.colReceivingReport.Caption" xml:space="preserve">
     <value>Mã định danh</value>
   </data>
   <data name="frmReceivingReportList.colReportID.Caption" xml:space="preserve">
-    <value>Mã</value>
+    <value>Mã báo cáo</value>
   </data>
   <data name="frmReceivingReportList.colSTT.Caption" xml:space="preserve">
     <value>STT</value>
@@ -175,7 +175,7 @@
     <value>Đến:</value>
   </data>
   <data name="frmReceivingReportList.Text" xml:space="preserve">
-    <value>Danh sách giao dịch</value>
+    <value>Báo cáo đối soát ngân hàng</value>
   </data>
   <data name="frmReceivingReportList.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
     <value>Từ khóa tìm kiếm </value>

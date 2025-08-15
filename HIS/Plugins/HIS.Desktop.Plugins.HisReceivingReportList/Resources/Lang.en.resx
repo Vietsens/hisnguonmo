@@ -175,7 +175,7 @@
     <value>To</value>
   </data>
   <data name="frmReceivingReportList.Text" xml:space="preserve">
-    <value>Transaction list</value>
+    <value>Receiving report</value>
   </data>
   <data name="frmReceivingReportList.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
     <value>Search</value>

@@ -15,10 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
-using Inventec.Common.Logging;
-using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +35,7 @@ namespace HIS.UC.ExamTreatmentFinish.Config
 
         private const string TREATMENT_END___APPOINTMENT_TIME_DEFAULT_KEY = "EXE.HIS_TREATMENT_END.APPOINTMENT_TIME_DEFAULT";
         private const string PRESCRIPTION_TIME_AND_APPOINTMENT_TIME_KEY = "HIS.Desktop.Plugins.ExamTreatmentFinish.APPOINTMENT_TIME";
+        const string IS__TRUE = "1";
 
         private const string DefaultCheckedCheckboxIssueOutPatientStoreCodeSTR = "HIS.Desktop.Plugins.TreatmentFinish.DefaultCheckedCheckboxCreateOutPatientMediRecord";
         private const string EnableCheckboxIssueOutPatientStoreCodeSTR = "HIS.Desktop.Plugins.TreatmentFinish.EnableCheckboxCreateOutPatientMediRecord";
@@ -49,7 +47,6 @@ namespace HIS.UC.ExamTreatmentFinish.Config
         private const string EXPORT_XML_COLLINEAR= "HIS.Desktop.Plugins.TreatmentFinish.AutoCheckAndDisable.ExportXmlCollinear";
         private const string CONFIG__USING_EXAM_SUB_ICD_WHEN_FINISH = "MOS.HIS_TREATMENT.IS_USING_EXAM_SUB_ICD_WHEN_FINISH";
         private const string CHECK_ICD_WHEN_SAVE = "HIS.Desktop.Plugins.CheckIcdWhenSave";
-        private const string KeyWarningHeinPatientTypeCode = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
         internal static string CheckIcdWhenSave;
         internal static string OptionSubIcdWhenFinish;
         internal static long treatmentEndAppointmentTimeDefault;
@@ -66,7 +63,10 @@ namespace HIS.UC.ExamTreatmentFinish.Config
         internal static string AllowManyOpeningOption;
 
         internal static string ENDDEPARTMENTSUBSHEADOPTION;
-        internal static string WarningHeinPatientTypeCode;
+        private const string KEY_IsRequiredPathologicalProcessTransferPatientBHYT = "HIS.Desktop.Plugins.TreatmentFinish.IsRequiredPathologicalProcessTransferPatientBHYT";
+        private const string KEY_PathologicalProcessOption = "HIS.Desktop.Plugins.TreatmentFinish.PathologicalProcessOption";
+        internal static bool IsRequiredPathologicalProcessTransferPatientBHYT;
+        internal static int PathologicalProcessOption;
 
 
         internal static void GetConfig()
@@ -82,11 +82,13 @@ namespace HIS.UC.ExamTreatmentFinish.Config
                 MustChooseSeviceInCaseOfAppointment = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(MUST_CHOOSE_SERVICE);
 
                 treatmentEndAppointmentTimeDefault = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(TREATMENT_END___APPOINTMENT_TIME_DEFAULT_KEY);
-                AppointmentTimeDefault = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(PRESCRIPTION_TIME_AND_APPOINTMENT_TIME_KEY) == GlobalVariables.CommonStringTrue;
+                AppointmentTimeDefault = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(PRESCRIPTION_TIME_AND_APPOINTMENT_TIME_KEY) == IS__TRUE;
                 AllowManyOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_TREATMENT_ALLOW_MANY_TREATMENT_OPENING_OPTION);
-                IsCheckedCheckboxIssueOutPatientStoreCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(DefaultCheckedCheckboxIssueOutPatientStoreCodeSTR) == GlobalVariables.CommonStringTrue;
-                IsEnableCheckboxIssueOutPatientStoreCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(EnableCheckboxIssueOutPatientStoreCodeSTR) == GlobalVariables.CommonStringTrue;
-                IsExportXmlCollinear = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(EXPORT_XML_COLLINEAR) == GlobalVariables.CommonStringTrue;
+                IsCheckedCheckboxIssueOutPatientStoreCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(DefaultCheckedCheckboxIssueOutPatientStoreCodeSTR) == IS__TRUE;
+                IsEnableCheckboxIssueOutPatientStoreCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(EnableCheckboxIssueOutPatientStoreCodeSTR) == IS__TRUE;
+                IsExportXmlCollinear = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(EXPORT_XML_COLLINEAR) == IS__TRUE;
+                IsRequiredPathologicalProcessTransferPatientBHYT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsRequiredPathologicalProcessTransferPatientBHYT) == IS__TRUE;
+                PathologicalProcessOption = int.Parse(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_PathologicalProcessOption) ?? "0");
                 string maxDayStr = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(MAX_OF_APPOINTMENT_DAYS);
                 if (!String.IsNullOrWhiteSpace(maxDayStr))
                 {
@@ -106,44 +108,11 @@ namespace HIS.UC.ExamTreatmentFinish.Config
                 {
                     WarningOptionWhenExceedingMaxOfAppointmentDays = null;
                 }
-                WarningHeinPatientTypeCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KeyWarningHeinPatientTypeCode);
-
+            
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-        private static long GetId(string code)
-        {
-            long result = 0;
-            try
-            {
-                var data = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == code);
-                if (!(data != null && data.ID > 0)) throw new ArgumentNullException(code + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => code), code));
-                result = data.ID;
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Debug(ex);
-                result = 0;
-            }
-            return result;
-        }
-        private static long patientTypeIdIsHein;
-        public static long PATIENT_TYPE_ID__BHYT
-        {
-            get
-            {
-                if (patientTypeIdIsHein == 0)
-                {
-                    patientTypeIdIsHein = GetId(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT"));
-                }
-                return patientTypeIdIsHein;
-            }
-            set
-            {
-                patientTypeIdIsHein = value;
             }
         }
     }

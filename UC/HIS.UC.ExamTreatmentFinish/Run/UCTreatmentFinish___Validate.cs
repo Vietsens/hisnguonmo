@@ -15,24 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.DXErrorProvider;
-using HIS.UC.ExamTreatmentFinish.Config;
-using HIS.UC.ExamTreatmentFinish.Run.Validate;
-using Inventec.Common.Controls.EditorLoader;
-using Inventec.Common.Logging;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using MOS.EFMODEL.DataModels;
-using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MOS.EFMODEL.DataModels;
+using Inventec.Common.Controls.EditorLoader;
+using HIS.UC.ExamTreatmentFinish.Run.Validate;
+using DevExpress.XtraEditors.DXErrorProvider;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using DevExpress.XtraEditors;
+using Inventec.Common.Logging;
 
 namespace HIS.UC.ExamTreatmentFinish.Run
 {
@@ -194,21 +192,6 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void ValidationHeinPatientTypeCode()
-        {
-            try
-            {
-                ControlEditValidationRule validate = new ControlEditValidationRule();
-                validate.editor = txtHeinPatientTypeCode;
-                validate.ErrorText = String.Format(Resources.ResourceMessage.TruongDuLieuBatBuoc);
-                validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                this.dxValidationProvider1.SetValidationRule(txtHeinPatientTypeCode, validate);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
 
         public bool ValidateControl(bool IsNotCheckValidateIcdUC)
         {
@@ -243,34 +226,13 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                     sickSdoResult = null;
                     frmPopUpSick frm = new frmPopUpSick(sickInitADO, ActionGetSdoSickResult);
                     frm.ShowDialog();
-                }
+                }                    
                 //if (sickProcessor != null && ucSick != null && cboTreatmentEndTypeExt.EditValue!=null)
                 //{
                 //    valid = sickProcessor.ValidControl(ucSick) && valid;
                 //    Inventec.Common.Logging.LogSystem.Debug("UCExamTreatmentFinish.ValidateControl.valid2=" + valid);
                 //}
-                var isBHYT = this.ExamTreatmentFinishInitADO.Treatment.TDL_PATIENT_TYPE_ID == HisConfig.PATIENT_TYPE_ID__BHYT;
-                if (this.ExamTreatmentFinishInitADO != null && this.ExamTreatmentFinishInitADO.Treatment != null
-                        && !string.IsNullOrEmpty(HisConfig.WarningHeinPatientTypeCode)
-                        && this.ExamTreatmentFinishInitADO.Treatment.TDL_PATIENT_TYPE_ID == HisConfig.PATIENT_TYPE_ID__BHYT
-                        && (string.IsNullOrEmpty(txtHeinPatientTypeCode.Text))
-                        )
-                {
-                    if (HisConfig.WarningHeinPatientTypeCode == "2")
-                    {
-                        if (XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị. Bạn có muốn tiếp tục?",
-                            "Thông báo", MessageBoxButtons.YesNo, DevExpress.Utils.DefaultBoolean.True)
-                            != System.Windows.Forms.DialogResult.Yes)
-                        {
-                            valid = false;
-                        }
-                    }
-                    else if (HisConfig.WarningHeinPatientTypeCode == "3")
-                    {
-                        valid = false;
-                        XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị");
-                    }
-                }
+
             }
             catch (Exception ex)
             {

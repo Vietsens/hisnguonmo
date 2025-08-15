@@ -128,7 +128,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
         {
             ResultDataADO rsData = new ResultDataADO();
             try
-            //Tôi chịu  bị sao vậy a :v, đặt debug cũng sai chỗ thì code cũng sai nốt, tự sửa đi
+                //Tôi chịu  bị sao vậy a :v, đặt debug cũng sai chỗ thì code cũng sai nốt, tự sửa đi
             {
                 long keyCheck = AppConfigs.CheDoTuDongCheckThongTinTheBHYT;
                 if (keyCheck > 0)
@@ -490,12 +490,12 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     //}
                     try
                     {
-                        if (HisConfigCFG.WarningInvalidCheckHistoryHeinCard
-                            && rsData.ResultHistoryLDO != null && rsData.ResultHistoryLDO.dsLichSuKT2018 != null
-                            && rsData.ResultHistoryLDO.dsLichSuKT2018.Count > 0
-                            && rsData.ResultHistoryLDO.dsLichSuKCB2018 != null
+                        if (HisConfigCFG.WarningInvalidCheckHistoryHeinCard 
+                            && rsData.ResultHistoryLDO != null && rsData.ResultHistoryLDO.dsLichSuKT2018 != null 
+                            && rsData.ResultHistoryLDO.dsLichSuKT2018.Count > 0 
+                            && rsData.ResultHistoryLDO.dsLichSuKCB2018 != null 
                             && rsData.ResultHistoryLDO.dsLichSuKCB2018.Count > 0)
-                        {
+                        { 
                             long maxNgayRa = 0;
                             foreach (var p in rsData.ResultHistoryLDO.dsLichSuKCB2018)
                             {
@@ -561,7 +561,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                         }
 
                                         errorDetails.Add(detail);
-                                    }
+                                    }                        
                                 }
                                 rsData.ResultHistoryLDO.message = "Thẻ BHYT có thông tin kiểm tra thẻ tại " + string.Join("; ", errorDetails);
                                 rsData.ResultHistoryLDO.maKetQua = "8888";

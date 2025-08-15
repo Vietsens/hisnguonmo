@@ -106,9 +106,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.DocumentViewer">
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.DocumentViewer\Inventec.Common.DocumentViewer.dll</HintPath>
-    </Reference>
     <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
@@ -175,10 +172,6 @@
     <Reference Include="Inventec.Desktop.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Fss.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
-    </Reference>
     <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
@@ -201,11 +194,10 @@
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
+    <Reference Include="MOS.SDO">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MOS.TDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
@@ -285,12 +277,6 @@
     <Compile Include="FormKetLuanHoiChan\frmKetLuanHoiChan.Designer.cs">
       <DependentUpon>frmKetLuanHoiChan.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmAttach.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAttach.Designer.cs">
-      <DependentUpon>frmAttach.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmGhiChu\frmInstructionNote.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -358,9 +344,6 @@
     <EmbeddedResource Include="FormKetLuanHoiChan\frmKetLuanHoiChan.resx">
       <DependentUpon>frmKetLuanHoiChan.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmAttach.resx">
-      <DependentUpon>frmAttach.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmGhiChu\frmInstructionNote.resx">
       <DependentUpon>frmInstructionNote.cs</DependentUpon>
     </EmbeddedResource>
@@ -371,7 +354,6 @@
     <EmbeddedResource Include="LoaiChamSoc.resx">
       <DependentUpon>LoaiChamSoc.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -60,6 +60,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using Inventec.Common.Logging;
 using DevExpress.XtraExport;
 using HIS.Desktop.Common;
+using HIS.UC.Sick.Config;
 
 namespace HIS.UC.ExamTreatmentFinish.Run
 {
@@ -73,7 +74,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         private DateTime prescriptionTime = new DateTime();
         List<HIS_TREATMENT_END_TYPE> treatmentEndTypes { get; set; }
         List<HIS_TREATMENT_END_TYPE_EXT> treatmentEndTypeExts { get; set; }
-        List<HIS_TREATMENT_RESULT> treatmentResults { get; set; }
+        List<HIS_TREATMENT_RESULT> treatmentResults { get; set; }  
         List<ProgramADO> ProgramADOList { get; set; }
 
         private int positionHandle = -1;
@@ -117,6 +118,11 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         List<HIS_BRANCH> listBranch;
         public string TreatmentInstruction;
         public Action<string> OnTreatmentInstructionChanged;
+        public delegate void PathologicalProcessRequiredEventHandler(object sender, EventArgs e);
+        public event PathologicalProcessRequiredEventHandler PathologicalProcessRequired;
+
+        // Thêm property để truyền message
+        public string MessageText { get; private set; }
         public UCExamTreatmentFinish(TreatmentFinishInitADO _ExamTreatmentFinishInitADO,HIS_TREATMENT_EXT _treatmentExt)
         {
             InitializeComponent();
@@ -190,21 +196,6 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 if (this.ExamTreatmentFinishInitADO != null)
                 {
                     cboCareer.EditValue = this.ExamTreatmentFinishInitADO.CareerId;
-                    txtHeinPatientTypeCode.EditValue = this.ExamTreatmentFinishInitADO.Treatment.HEIN_PATIENT_TYPE_CODE;
-                    if (0 == 0
-                        && !string.IsNullOrEmpty(HisConfig.WarningHeinPatientTypeCode) 
-                        && this.ExamTreatmentFinishInitADO.Treatment.TDL_PATIENT_TYPE_ID == HisConfig.PATIENT_TYPE_ID__BHYT)
-                    {
-                        if (HisConfig.WarningHeinPatientTypeCode == "3")
-                        {
-                            txtHeinPatientTypeCode.ForeColor = Color.Maroon;
-                            ValidationHeinPatientTypeCode();
-                        }
-                        else if(HisConfig.WarningHeinPatientTypeCode == "1")
-                        {
-                            XtraMessageBox.Show("Vui lòng kiểm tra lại mã đối tượng của hồ sơ điều trị.");
-                        }
-                    }
                 }
 
                 InitControlState();
@@ -822,7 +813,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                         sickInitADO = new SickInitADO();
                         sickInitADO.currentModule = this.ExamTreatmentFinishInitADO.moduleData;
                         sickInitADO.CurrentHisTreatment = ExamTreatmentFinishInitADO.Treatment;
-                        if (Inventec.Common.TypeConvert.Parse.ToInt64(cboTreatmentEndTypeExt.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_DUONG_THAI)
+                        if (Inventec.Common.TypeConvert.Parse.ToInt64(cboTreatmentEndTypeExt.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_DUONG_THAI) 
                         {
                             sickInitADO.IsDuongThai = true;
                         }
@@ -1220,13 +1211,84 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private bool CheckPathologicalProcessRequired()
+        {
+            bool valid = true;  
+            try
+            {
+                // Check conditions...
+                bool isBHYTPatient = ExamTreatmentFinishInitADO.Treatment.TDL_PATIENT_TYPE_ID == HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT;
+                bool needValidatePathological = false;
+
+                if ((isBHYTPatient && HisConfig.IsRequiredPathologicalProcessTransferPatientBHYT) ||
+                (HisConfig.PathologicalProcessOption == 1 && treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU) ||
+                (HisConfig.PathologicalProcessOption == 2 && (
+                    ExamTreatmentFinishInitADO.Treatment.TDL_PATIENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU ||
+                    ExamTreatmentFinishInitADO.Treatment.TDL_PATIENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU ||
+                    ExamTreatmentFinishInitADO.Treatment.TDL_PATIENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
+                )))
+                {
+                    needValidatePathological = true;
+                }
+
+                if (needValidatePathological)
+                {
+                    string pathologicalProcess = ExamTreatmentFinishInitADO.PATHOLOGICAL_PROCESS;
+
+                    if (string.IsNullOrWhiteSpace(pathologicalProcess))
+                    {
+                        valid = false;
+                        MessageText = "Bắt buộc nhập quá trình bệnh lý đối với bệnh nhân chuyển viện";
+                        // Raise event to notify parent form
+                        PathologicalProcessRequired?.Invoke(this, EventArgs.Empty);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+            return valid;
+        }
+
+        public void UpdatePathologicalProcess(string pathologicalProcess)
+        {
+            try
+            {
+                if (ExamTreatmentFinishInitADO != null && ExamTreatmentFinishInitADO.Treatment != null)
+                {
+                    ExamTreatmentFinishInitADO.PATHOLOGICAL_PROCESS = pathologicalProcess;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+        public HIS_TREATMENT_END_TYPE GetSelectedTreatmentEndType()
+        {
+            try
+            {
+                if (cboTreatmentEndType.EditValue != null)
+                {
+                    return treatmentEndTypes.FirstOrDefault(o =>
+                        o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentEndType.EditValue ?? 0).ToString()));
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+            return null;
+        }
 
         private void cboTreatmentEndType_EditValueChanged(object sender, EventArgs e)
         {
             try
             {
-                layoutControlIPanelUCExtend.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                IsVisibleHosTransfer = false;
+
+                layoutControlIPanelUCExtend.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never; 
+                IsVisibleHosTransfer = false; 
                 chkPrintHosTransfer.Checked = false;
                 chkPrintHosTransfer.Enabled = false;
                 if (cboTreatmentEndType.EditValue != null)
@@ -1236,6 +1298,11 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                     {
                         if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
                         {
+                            if (!CheckPathologicalProcessRequired())
+                            {
+                                cboTreatmentEndType.EditValue = null;
+                                return;
+                            }
                             var patientType = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT"));
                             if (HisConfig.AllowManyOpeningOption == "4" && ExamTreatmentFinishInitADO.Treatment.TDL_PATIENT_TYPE_ID == patientType.ID)
                             {

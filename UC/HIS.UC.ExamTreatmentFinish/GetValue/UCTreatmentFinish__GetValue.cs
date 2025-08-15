@@ -227,7 +227,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
 
                 ExamTreatmentFinishSDO.TreatmentFinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
                 ExamTreatmentFinishSDO.TreatmentId = this.ExamTreatmentFinishInitADO.Treatment != null ? this.ExamTreatmentFinishInitADO.Treatment.ID : 0;
-                ExamTreatmentFinishSDO.TreatmentEndTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(cboTreatmentEndType.EditValue?.ToString());
+                ExamTreatmentFinishSDO.TreatmentEndTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(cboTreatmentEndType.EditValue.ToString());
                 if (cboTreatmentResult.EditValue != null)
                 {
                     ExamTreatmentFinishSDO.TreatmentResultId = Inventec.Common.TypeConvert.Parse.ToInt64(cboTreatmentResult.EditValue.ToString());
@@ -336,10 +336,6 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                         ExamTreatmentFinish.TreatmentFinishSDO.IcdSubCode = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
                         ExamTreatmentFinish.TreatmentFinishSDO.IcdText = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                     }
-                }
-                if (txtHeinPatientTypeCode.Text.Trim() != "")
-                {
-                    ExamTreatmentFinish.TreatmentFinishSDO.HeinPatientTypeCode = txtHeinPatientTypeCode.Text.Trim();
                 }
                 LogSystem.Debug("UCExamTreatmentFinish.GetValue. End: \n" + LogUtil.TraceData("ExamTreatmentFinish", ExamTreatmentFinish));
             }

@@ -58,7 +58,6 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.txtHeinPatientTypeCode = new DevExpress.XtraEditors.TextEdit();
             this.btnCheckIcd = new DevExpress.XtraEditors.SimpleButton();
             this.panelControlSubIcd = new DevExpress.XtraEditors.PanelControl();
             this.cboCareer = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -175,16 +174,15 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.emptySpaceItem7 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciIsExpXml4210Collinear = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem8 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciCareer = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciMaDoiTuong = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtHeinPatientTypeCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSubIcd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
@@ -300,17 +298,16 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsExpXml4210Collinear)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCareer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciMaDoiTuong)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
-            this.layoutControl1.Controls.Add(this.txtHeinPatientTypeCode);
             this.layoutControl1.Controls.Add(this.btnCheckIcd);
             this.layoutControl1.Controls.Add(this.panelControlSubIcd);
             this.layoutControl1.Controls.Add(this.cboCareer);
@@ -352,16 +349,6 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControl1.Size = new System.Drawing.Size(660, 532);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
-            // 
-            // txtHeinPatientTypeCode
-            // 
-            this.txtHeinPatientTypeCode.Location = new System.Drawing.Point(416, 102);
-            this.txtHeinPatientTypeCode.Name = "txtHeinPatientTypeCode";
-            this.txtHeinPatientTypeCode.Properties.Mask.EditMask = "[a-z,A-Z,0-9,\\.]{0,10}";
-            this.txtHeinPatientTypeCode.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
-            this.txtHeinPatientTypeCode.Size = new System.Drawing.Size(242, 20);
-            this.txtHeinPatientTypeCode.StyleController = this.layoutControl1;
-            this.txtHeinPatientTypeCode.TabIndex = 43;
             // 
             // btnCheckIcd
             // 
@@ -410,7 +397,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // 
             // chkIsExpXml4210Collinear
             // 
-            this.chkIsExpXml4210Collinear.Location = new System.Drawing.Point(414, 256);
+            this.chkIsExpXml4210Collinear.Location = new System.Drawing.Point(426, 256);
             this.chkIsExpXml4210Collinear.Name = "chkIsExpXml4210Collinear";
             this.chkIsExpXml4210Collinear.Properties.Caption = "";
             this.chkIsExpXml4210Collinear.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
@@ -423,7 +410,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // chkPrintHosTransfer
             // 
             this.chkPrintHosTransfer.Enabled = false;
-            this.chkPrintHosTransfer.Location = new System.Drawing.Point(414, 236);
+            this.chkPrintHosTransfer.Location = new System.Drawing.Point(426, 236);
             this.chkPrintHosTransfer.Name = "chkPrintHosTransfer";
             this.chkPrintHosTransfer.Properties.Caption = ":In";
             this.chkPrintHosTransfer.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -484,7 +471,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // chkSignBHXH
             // 
             this.chkSignBHXH.Enabled = false;
-            this.chkSignBHXH.Location = new System.Drawing.Point(456, 174);
+            this.chkSignBHXH.Location = new System.Drawing.Point(468, 174);
             this.chkSignBHXH.Name = "chkSignBHXH";
             this.chkSignBHXH.Properties.Caption = ":Ký";
             this.chkSignBHXH.Properties.FullFocusRect = true;
@@ -498,7 +485,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // chkPrintBHXH
             // 
             this.chkPrintBHXH.Enabled = false;
-            this.chkPrintBHXH.Location = new System.Drawing.Point(416, 174);
+            this.chkPrintBHXH.Location = new System.Drawing.Point(428, 174);
             this.chkPrintBHXH.Name = "chkPrintBHXH";
             this.chkPrintBHXH.Properties.Caption = ":In";
             this.chkPrintBHXH.Properties.FullFocusRect = true;
@@ -511,7 +498,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // 
             // chkSignBordereau
             // 
-            this.chkSignBordereau.Location = new System.Drawing.Point(452, 218);
+            this.chkSignBordereau.Location = new System.Drawing.Point(464, 218);
             this.chkSignBordereau.Name = "chkSignBordereau";
             this.chkSignBordereau.Properties.Caption = ":Ký";
             this.chkSignBordereau.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -1110,7 +1097,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.cboTreatmentEndTypeExt.Properties.NullText = "";
             this.cboTreatmentEndTypeExt.Properties.View = this.gridView1;
             this.cboTreatmentEndTypeExt.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.gridLookUpEdit1_Properties_ButtonClick);
-            this.cboTreatmentEndTypeExt.Size = new System.Drawing.Size(170, 20);
+            this.cboTreatmentEndTypeExt.Size = new System.Drawing.Size(182, 20);
             this.cboTreatmentEndTypeExt.StyleController = this.layoutControl1;
             this.cboTreatmentEndTypeExt.TabIndex = 16;
             this.cboTreatmentEndTypeExt.EditValueChanged += new System.EventHandler(this.cboTreatmentEndTypeExt_EditValueChanged);
@@ -1197,7 +1184,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // 
             // chkPrintBordereau
             // 
-            this.chkPrintBordereau.Location = new System.Drawing.Point(414, 216);
+            this.chkPrintBordereau.Location = new System.Drawing.Point(426, 216);
             this.chkPrintBordereau.Name = "chkPrintBordereau";
             this.chkPrintBordereau.Properties.Caption = ":In";
             this.chkPrintBordereau.Properties.FullFocusRect = true;
@@ -1213,16 +1200,16 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.lblOutCode.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblOutCode.Location = new System.Drawing.Point(105, 196);
             this.lblOutCode.Name = "lblOutCode";
-            this.lblOutCode.Size = new System.Drawing.Size(174, 20);
+            this.lblOutCode.Size = new System.Drawing.Size(186, 20);
             this.lblOutCode.StyleController = this.layoutControl1;
             this.lblOutCode.TabIndex = 13;
             // 
             // lblEndCode
             // 
             this.lblEndCode.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblEndCode.Location = new System.Drawing.Point(414, 196);
+            this.lblEndCode.Location = new System.Drawing.Point(426, 196);
             this.lblEndCode.Name = "lblEndCode";
-            this.lblEndCode.Size = new System.Drawing.Size(246, 20);
+            this.lblEndCode.Size = new System.Drawing.Size(234, 20);
             this.lblEndCode.StyleController = this.layoutControl1;
             this.lblEndCode.TabIndex = 12;
             // 
@@ -1340,11 +1327,11 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.emptySpaceItem7,
             this.layoutControlItem28,
             this.lciIsExpXml4210Collinear,
+            this.emptySpaceItem8,
             this.lciCareer,
             this.layoutControlItem32,
             this.layoutControlItem26,
-            this.layoutControlItem33,
-            this.lciMaDoiTuong});
+            this.layoutControlItem33});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1412,7 +1399,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.OptionsToolTip.ToolTip = "Số chuyển viện";
             this.layoutControlItem10.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem10.Size = new System.Drawing.Size(279, 20);
+            this.layoutControlItem10.Size = new System.Drawing.Size(291, 20);
             this.layoutControlItem10.Text = "Số CV:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem10.TextSize = new System.Drawing.Size(100, 20);
@@ -1423,10 +1410,10 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem9.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem9.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem9.Control = this.lblEndCode;
-            this.layoutControlItem9.Location = new System.Drawing.Point(279, 196);
+            this.layoutControlItem9.Location = new System.Drawing.Point(291, 196);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem9.Size = new System.Drawing.Size(381, 20);
+            this.layoutControlItem9.Size = new System.Drawing.Size(369, 20);
             this.layoutControlItem9.Text = "Số ra viện:";
             this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem9.TextSize = new System.Drawing.Size(130, 20);
@@ -1561,9 +1548,9 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(496, 172);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(508, 172);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(164, 24);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(152, 24);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem4
@@ -1571,7 +1558,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.emptySpaceItem4.AllowHotTrack = false;
             this.emptySpaceItem4.Location = new System.Drawing.Point(179, 216);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(100, 20);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(112, 20);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem7
@@ -1579,7 +1566,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem7.Control = this.chkPrintBordereau;
-            this.layoutControlItem7.Location = new System.Drawing.Point(279, 216);
+            this.layoutControlItem7.Location = new System.Drawing.Point(291, 216);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlItem7.Size = new System.Drawing.Size(171, 20);
@@ -1601,7 +1588,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.chkSignBordereau;
-            this.layoutControlItem15.Location = new System.Drawing.Point(450, 216);
+            this.layoutControlItem15.Location = new System.Drawing.Point(462, 216);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.Size = new System.Drawing.Size(42, 60);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
@@ -1610,9 +1597,9 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // emptySpaceItem5
             // 
             this.emptySpaceItem5.AllowHotTrack = false;
-            this.emptySpaceItem5.Location = new System.Drawing.Point(492, 216);
+            this.emptySpaceItem5.Location = new System.Drawing.Point(504, 216);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(168, 60);
+            this.emptySpaceItem5.Size = new System.Drawing.Size(156, 60);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem20
@@ -1638,7 +1625,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem14.Location = new System.Drawing.Point(0, 172);
             this.layoutControlItem14.Name = "layoutControlItem14";
             this.layoutControlItem14.OptionsToolTip.ToolTip = "Thông tin bổ sung";
-            this.layoutControlItem14.Size = new System.Drawing.Size(279, 24);
+            this.layoutControlItem14.Size = new System.Drawing.Size(291, 24);
             this.layoutControlItem14.Text = "TT bổ sung:";
             this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem14.TextSize = new System.Drawing.Size(100, 20);
@@ -1649,7 +1636,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem5.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem5.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem5.Control = this.chkPrintBHXH;
-            this.layoutControlItem5.Location = new System.Drawing.Point(279, 172);
+            this.layoutControlItem5.Location = new System.Drawing.Point(291, 172);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.OptionsToolTip.ToolTip = "In phiếu nghỉ hưởng bảo hiểm xã hội";
             this.layoutControlItem5.Size = new System.Drawing.Size(175, 24);
@@ -1661,7 +1648,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // layoutControlItem21
             // 
             this.layoutControlItem21.Control = this.chkSignBHXH;
-            this.layoutControlItem21.Location = new System.Drawing.Point(454, 172);
+            this.layoutControlItem21.Location = new System.Drawing.Point(466, 172);
             this.layoutControlItem21.Name = "layoutControlItem21";
             this.layoutControlItem21.Size = new System.Drawing.Size(42, 24);
             this.layoutControlItem21.TextSize = new System.Drawing.Size(0, 0);
@@ -1697,7 +1684,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.emptySpaceItem6.AllowHotTrack = false;
             this.emptySpaceItem6.Location = new System.Drawing.Point(179, 236);
             this.emptySpaceItem6.Name = "emptySpaceItem6";
-            this.emptySpaceItem6.Size = new System.Drawing.Size(100, 20);
+            this.emptySpaceItem6.Size = new System.Drawing.Size(112, 20);
             this.emptySpaceItem6.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem27
@@ -1719,7 +1706,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.emptySpaceItem7.AllowHotTrack = false;
             this.emptySpaceItem7.Location = new System.Drawing.Point(141, 256);
             this.emptySpaceItem7.Name = "emptySpaceItem7";
-            this.emptySpaceItem7.Size = new System.Drawing.Size(138, 20);
+            this.emptySpaceItem7.Size = new System.Drawing.Size(150, 20);
             this.emptySpaceItem7.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem28
@@ -1727,7 +1714,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem28.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem28.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem28.Control = this.chkPrintHosTransfer;
-            this.layoutControlItem28.Location = new System.Drawing.Point(279, 236);
+            this.layoutControlItem28.Location = new System.Drawing.Point(291, 236);
             this.layoutControlItem28.Name = "layoutControlItem28";
             this.layoutControlItem28.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlItem28.Size = new System.Drawing.Size(171, 20);
@@ -1741,7 +1728,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.lciIsExpXml4210Collinear.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciIsExpXml4210Collinear.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciIsExpXml4210Collinear.Control = this.chkIsExpXml4210Collinear;
-            this.lciIsExpXml4210Collinear.Location = new System.Drawing.Point(279, 256);
+            this.lciIsExpXml4210Collinear.Location = new System.Drawing.Point(291, 256);
             this.lciIsExpXml4210Collinear.Name = "lciIsExpXml4210Collinear";
             this.lciIsExpXml4210Collinear.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.lciIsExpXml4210Collinear.Size = new System.Drawing.Size(171, 20);
@@ -1749,6 +1736,14 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.lciIsExpXml4210Collinear.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciIsExpXml4210Collinear.TextSize = new System.Drawing.Size(130, 20);
             this.lciIsExpXml4210Collinear.TextToControlDistance = 5;
+            // 
+            // emptySpaceItem8
+            // 
+            this.emptySpaceItem8.AllowHotTrack = false;
+            this.emptySpaceItem8.Location = new System.Drawing.Point(279, 100);
+            this.emptySpaceItem8.Name = "emptySpaceItem8";
+            this.emptySpaceItem8.Size = new System.Drawing.Size(381, 24);
+            this.emptySpaceItem8.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciCareer
             // 
@@ -1793,20 +1788,6 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem33.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem33.TextVisible = false;
             // 
-            // lciMaDoiTuong
-            // 
-            this.lciMaDoiTuong.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciMaDoiTuong.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciMaDoiTuong.Control = this.txtHeinPatientTypeCode;
-            this.lciMaDoiTuong.Location = new System.Drawing.Point(279, 100);
-            this.lciMaDoiTuong.Name = "lciMaDoiTuong";
-            this.lciMaDoiTuong.Size = new System.Drawing.Size(381, 24);
-            this.lciMaDoiTuong.Text = "Mã đối tượng:";
-            this.lciMaDoiTuong.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciMaDoiTuong.TextLocation = DevExpress.Utils.Locations.Left;
-            this.lciMaDoiTuong.TextSize = new System.Drawing.Size(130, 20);
-            this.lciMaDoiTuong.TextToControlDistance = 5;
-            // 
             // dxValidationProvider1
             // 
             this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
@@ -1826,7 +1807,6 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.Load += new System.EventHandler(this.UCExamTreatmentFinish_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtHeinPatientTypeCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSubIcd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
@@ -1942,11 +1922,11 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsExpXml4210Collinear)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCareer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciMaDoiTuong)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
 
@@ -2047,6 +2027,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
 		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem28;
 		private DevExpress.XtraEditors.CheckEdit chkIsExpXml4210Collinear;
 		private DevExpress.XtraLayout.LayoutControlItem lciIsExpXml4210Collinear;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem8;
         private DevExpress.XtraEditors.GridLookUpEdit cboCareer;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
         private DevExpress.XtraLayout.LayoutControlItem lciCareer;
@@ -2077,7 +2058,5 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup2;
         private DevExpress.XtraEditors.MemoEdit memNote;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem36;
-        private DevExpress.XtraEditors.TextEdit txtHeinPatientTypeCode;
-        private DevExpress.XtraLayout.LayoutControlItem lciMaDoiTuong;
     }
 }

@@ -107,12 +107,14 @@
             this.grvReceivingDetail.OptionsView.ColumnAutoWidth = false;
             this.grvReceivingDetail.OptionsView.ShowGroupPanel = false;
             this.grvReceivingDetail.OptionsView.ShowIndicator = false;
+            this.grvReceivingDetail.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.grvReceivingDetail_CustomUnboundColumnData);
             // 
             // colSTT
             // 
             this.colSTT.Caption = "STT";
             this.colSTT.FieldName = "STT";
             this.colSTT.Name = "colSTT";
+            this.colSTT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colSTT.Visible = true;
             this.colSTT.VisibleIndex = 0;
             this.colSTT.Width = 35;
@@ -120,7 +122,7 @@
             // colReportID
             // 
             this.colReportID.Caption = "Mã";
-            this.colReportID.FieldName = "RECEIVING_REPORT_ID ";
+            this.colReportID.FieldName = "RECEIVING_REPORT_ID";
             this.colReportID.Name = "colReportID";
             this.colReportID.Visible = true;
             this.colReportID.VisibleIndex = 1;
@@ -140,6 +142,7 @@
             this.colTransTime.Caption = "Thời gian giao dịch";
             this.colTransTime.FieldName = "TRANS_DATETIME_STR";
             this.colTransTime.Name = "colTransTime";
+            this.colTransTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colTransTime.Visible = true;
             this.colTransTime.VisibleIndex = 3;
             this.colTransTime.Width = 100;
@@ -239,6 +242,7 @@
             this.colCreateTime.Caption = "Ngày tạo";
             this.colCreateTime.FieldName = "CREATE_TIME_STR";
             this.colCreateTime.Name = "colCreateTime";
+            this.colCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colCreateTime.Visible = true;
             this.colCreateTime.VisibleIndex = 14;
             this.colCreateTime.Width = 70;
@@ -248,6 +252,7 @@
             this.colModifyTime.Caption = "Ngày sửa";
             this.colModifyTime.FieldName = "MODIFY_TIME_STR";
             this.colModifyTime.Name = "colModifyTime";
+            this.colModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colModifyTime.Visible = true;
             this.colModifyTime.VisibleIndex = 15;
             this.colModifyTime.Width = 70;
@@ -301,6 +306,7 @@
             this.Name = "frmReceivingDetail";
             this.Text = "Báo cáo chi tiết";
             this.Load += new System.EventHandler(this.frmReceivingDetail_Load);
+            this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
@@ -308,6 +314,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

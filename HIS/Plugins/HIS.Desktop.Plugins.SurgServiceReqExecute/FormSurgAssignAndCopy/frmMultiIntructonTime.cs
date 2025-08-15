@@ -225,7 +225,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                         while (dt.Date < item.EndDate.Date)
                         {
                             isSelected = true;
-                            listSelected.Add(dt);
+                            listSelected.Add(dt); 
                             //long timeNumber = long.Parse(dt.ToString("yyyyMMddHHmmss"));
                             DateTime dtWithTime = dt.Date.Add(timeIntruction.TimeSpan);
                             long timeNumber = long.Parse(dtWithTime.ToString("yyyyMMddHHmmss"));
@@ -257,7 +257,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                         delegateSelectData(listSelected, this.timeSelested);
 
                     WaitingManager.Hide();
-
+                    
                     this.Close();
                 }
                 else
@@ -274,27 +274,103 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
         }
         private bool CheckTimeInDepartment(List<long> listTime)
         {
+            bool result = true;
             try
             {
-                HisTreatmentViewFilter treatmentViewFilter = new HisTreatmentViewFilter();
-                treatmentViewFilter.ID = this.treatment.ID;
-                CommonParam param = new CommonParam();
-                var treatment = new BackendAdapter(param).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumer.ApiConsumers.MosConsumer, treatmentViewFilter, null).FirstOrDefault();
-                foreach (var time in listTime)
+                V_HIS_ROOM currentWorkingRoom = null;
+                currentWorkingRoom = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().First(o => o.ID == this.moduleData.RoomId);
+                CommonParam paramGet = new CommonParam();
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listTime), listTime));
+                HisDepartmentTranFilter filter = new HisDepartmentTranFilter();
+                filter.TREATMENT_ID = this.treatment.ID;
+                this.ListDepartmentTranCheckTime = new BackendAdapter(paramGet).Get<List<HIS_DEPARTMENT_TRAN>>("api/HisDepartmentTran/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
+                //danh sách các lần chuyển khoa
+                List<HIS_DEPARTMENT_TRAN> curremtTrans = null;
+                if (this.ListDepartmentTranCheckTime != null && this.ListDepartmentTranCheckTime.Count > 0)
                 {
-                    if(time < treatment.IN_TIME)
-                    {
-                        XtraMessageBox.Show(string.Format("Thời gian y lệnh phải lớn hơn thời gian vào viện ({0})", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(treatment.IN_TIME)), "Thông báo");
-                        return false; 
-                    }
+                    curremtTrans = this.ListDepartmentTranCheckTime.Where(o => o.DEPARTMENT_ID == currentWorkingRoom.DEPARTMENT_ID && o.DEPARTMENT_IN_TIME.HasValue).ToList();
                 }
 
+                List<HIS_CO_TREATMENT> currentCo = null;
+                HisCoTreatmentFilter filter1 = new HisCoTreatmentFilter();
+                filter1.TDL_TREATMENT_ID = this.treatment.ID;
+                this.ListCoTreatmentCheckTime = new BackendAdapter(paramGet).Get<List<HIS_CO_TREATMENT>>("api/HisCoTreatment/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
+                if (this.ListCoTreatmentCheckTime != null && this.ListCoTreatmentCheckTime.Count > 0)
+                {
+                    currentCo = this.ListCoTreatmentCheckTime.Where(o => o.DEPARTMENT_ID == currentWorkingRoom.DEPARTMENT_ID && o.START_TIME.HasValue).ToList();
+                }
+
+                foreach (var intructionTime in listTime)
+                {
+                    bool hasTran = false;
+
+                    List<string> times = new List<string>();
+                    if (curremtTrans != null && curremtTrans.Count > 0)
+                    {
+                        curremtTrans = curremtTrans.OrderBy(o => o.DEPARTMENT_IN_TIME ?? 0).ToList();
+
+                        long fromTime = 0;
+                        long toTime = 0;
+
+                        foreach (var item in curremtTrans)
+                        {
+                            fromTime = item.DEPARTMENT_IN_TIME ?? 0;
+                            toTime = long.MaxValue;
+                            HIS_DEPARTMENT_TRAN nextTran = this.ListDepartmentTranCheckTime.FirstOrDefault(o => o.PREVIOUS_ID == item.ID);
+                            if (nextTran != null)
+                            {
+                                toTime = nextTran.DEPARTMENT_IN_TIME ?? long.MaxValue;
+                            }
+
+                            hasTran = hasTran || (fromTime <= intructionTime && intructionTime <= toTime);
+
+                            times.Add(string.Format("từ {0}{1}", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(fromTime),
+                            (toTime > 0 && toTime != long.MaxValue) ? " đến " + Inventec.Common.DateTime.Convert.TimeNumberToTimeString(toTime) : ""));
+                        }
+                    }
+
+                    if (!hasTran && times.Count > 0 && currentCo != null && currentCo.Count > 0)
+                    {
+                        times.Clear();
+                    }
+
+                    if (!hasTran && currentCo != null && currentCo.Count > 0)
+                    {
+                        currentCo = currentCo.OrderBy(o => o.START_TIME ?? 0).ToList();
+
+                        long fromTime = 0;
+                        long toTime = 0;
+
+                        foreach (var item in currentCo)
+                        {
+                            fromTime = item.START_TIME ?? 0;
+                            toTime = item.FINISH_TIME ?? long.MaxValue;
+
+                            hasTran = hasTran || (fromTime <= intructionTime && intructionTime <= toTime);
+
+                            times.Add(string.Format("từ {0}{1}", Inventec.Common.DateTime.Convert.TimeNumberToTimeString(fromTime),
+                            (toTime > 0 && toTime != long.MaxValue) ? " đến " + Inventec.Common.DateTime.Convert.TimeNumberToTimeString(toTime) : ""));
+                        }
+                    }
+
+                    if (!hasTran)
+                    {
+                        //XtraMessageBox.Show(string.Format(ResourceMessage.ThoiGianYLenhKhongThuocKhoangThoiGianTrongKhoa,
+                        //   string.Join(",", times)), "Thông báo");
+                        XtraMessageBox.Show("Thời gian y lệnh phải nằm trong thời gian bệnh nhân hiện diện tại khoa", "Thông báo");
+                        //this.isNotLoadWhileChangeInstructionTimeInFirst = true;
+                        //this.dtInstructionTime.Focus();
+                        //this.isNotLoadWhileChangeInstructionTimeInFirst = false;
+                        return false;
+                    }
+                }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                result = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            return true;
+            return result;
         }
     }
 }
