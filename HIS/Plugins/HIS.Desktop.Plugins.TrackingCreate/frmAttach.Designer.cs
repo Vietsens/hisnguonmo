@@ -30,10 +30,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAttach));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControlAttach = new DevExpress.XtraGrid.GridControl();
             this.gridViewAttach = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -41,6 +41,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -59,7 +60,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(494, 203);
+            this.layoutControl1.Size = new System.Drawing.Size(581, 210);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -70,7 +71,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.gridControlAttach.Name = "gridControlAttach";
             this.gridControlAttach.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemButtonEdit1});
-            this.gridControlAttach.Size = new System.Drawing.Size(490, 199);
+            this.gridControlAttach.Size = new System.Drawing.Size(577, 206);
             this.gridControlAttach.TabIndex = 4;
             this.gridControlAttach.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewAttach});
@@ -80,7 +81,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.gridViewAttach.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn1,
             this.gridColumn2,
-            this.gridColumn3});
+            this.gridColumn3,
+            this.gridColumn4});
             this.gridViewAttach.GridControl = this.gridControlAttach;
             this.gridViewAttach.Name = "gridViewAttach";
             this.gridViewAttach.OptionsView.ShowGroupPanel = false;
@@ -96,7 +98,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Integer;
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 0;
-            this.gridColumn1.Width = 32;
+            this.gridColumn1.Width = 36;
             // 
             // gridColumn2
             // 
@@ -107,13 +109,13 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.gridColumn2.OptionsColumn.ShowCaption = false;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 1;
-            this.gridColumn2.Width = 28;
+            this.gridColumn2.Width = 32;
             // 
             // repositoryItemButtonEdit1
             // 
             this.repositoryItemButtonEdit1.AutoHeight = false;
             this.repositoryItemButtonEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.repositoryItemButtonEdit1.Name = "repositoryItemButtonEdit1";
             this.repositoryItemButtonEdit1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEdit1.Click += new System.EventHandler(this.repositoryItemButtonEdit1_Click);
@@ -121,12 +123,21 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             // gridColumn3
             // 
             this.gridColumn3.Caption = "Tên";
-            this.gridColumn3.FieldName = "FILE_NAME";
+            this.gridColumn3.FieldName = "REGIMEN_TEMP_NAME";
             this.gridColumn3.MinWidth = 50;
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 2;
-            this.gridColumn3.Width = 526;
+            this.gridColumn3.Width = 200;
+            // 
+            // gridColumn4
+            // 
+            this.gridColumn4.Caption = "Tên file";
+            this.gridColumn4.FieldName = "FILE_NAME";
+            this.gridColumn4.Name = "gridColumn4";
+            this.gridColumn4.Visible = true;
+            this.gridColumn4.VisibleIndex = 3;
+            this.gridColumn4.Width = 250;
             // 
             // layoutControlGroup1
             // 
@@ -136,7 +147,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.layoutControlItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(494, 203);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(581, 210);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -144,7 +155,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.layoutControlItem1.Control = this.gridControlAttach;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(494, 203);
+            this.layoutControlItem1.Size = new System.Drawing.Size(581, 210);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -152,7 +163,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(494, 203);
+            this.ClientSize = new System.Drawing.Size(581, 210);
             this.Controls.Add(this.layoutControl1);
             this.Name = "frmAttach";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -180,5 +191,6 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
     }
 }

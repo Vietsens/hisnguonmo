@@ -5042,7 +5042,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
         private void btnPDF_Click(object sender, EventArgs e)
         {
-            frmAttach frm = new frmAttach(this.currentTracking.DEPARTMENT_ID);
+            long departmentId = BackendDataWorker.Get<HIS_ROOM>().Where(r => r.ID == this.currentModule.RoomId).Select(r=> r.DEPARTMENT_ID).FirstOrDefault();
+            frmAttach frm = new frmAttach(departmentId);
             frm.Show(); 
         }
     }

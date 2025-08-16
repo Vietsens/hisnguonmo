@@ -23,8 +23,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
     {
         HIS.Desktop.Plugins.HisRegimenTemp.UC.UCDocument UcDocument = new UCDocument();
         HIS.Desktop.Plugins.HisRegimenTemp.UC.UCPDF UCPdf = new UCPDF();
-        long? departmentId { get; set; }
-        public frmAttach(long? departmentId)
+        long departmentId { get; set; }
+        public frmAttach(long departmentId)
         {
             this.departmentId = departmentId; 
             InitializeComponent();
@@ -85,7 +85,15 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     string path = Utils.GenerateTempFolderWithin();
                     var streamSource = Inventec.Fss.Client.FileDownload.GetFile(row.URL);
                     streamSource.Position = 0;
-                    string outputFilePath = Path.Combine(path, Guid.NewGuid().ToString() + ".doc");
+                    //string outputFilePath = Path.Combine(path, Guid.NewGuid().ToString() + ".doc");
+                    string extension = ".doc";
+                    if (!string.IsNullOrEmpty(row.FILE_NAME))
+                    {
+                        extension = Path.GetExtension(row.FILE_NAME).ToLower();
+                        if (extension != ".doc" && extension != ".docx")
+                            extension = ".doc";
+                    }
+                    string outputFilePath = Path.Combine(path, Guid.NewGuid().ToString() + extension);
                     WaitingManager.Hide();
                     if (row.FILE_TYPE == 2)
                     {
@@ -128,19 +136,3 @@ namespace HIS.Desktop.Plugins.TrackingCreate
     }
 }
 
-
-//string output = Utils.GenerateTempFileWithin();
-//string path = Utils.GenerateTempFolderWithin();
-//var streamSource = Inventec.Fss.Client.FileDownload.GetFile(row.URL);
-//streamSource.Position = 0;
-//string outputFilePath = Path.Combine(path, Guid.NewGuid().ToString() + ".doc");
-//if (row.FILE_TYPE == 2)
-//{
-//    Utils.ByteToFile(Utils.StreamToByte(streamSource), output);
-//    UCPdf.LoadDocument(output);
-//}
-//else if (row.FILE_TYPE == 3)
-//{
-//    SaveStreamToDocFile(streamSource, outputFilePath);
-//    UcDocument.LoadDocument(outputFilePath);
-//}
