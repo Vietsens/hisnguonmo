@@ -996,6 +996,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             );
             return checkRect;
         }
+        bool IsMouseDown = false;
         private void treeMedicineIsUsePt_MouseUp(object sender, MouseEventArgs e)
         {
             try
@@ -1005,7 +1006,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                 TreeListHitInfo hit = tree.CalcHitInfo(pt);
                 if (hit.Column != null && hit.Column.Name == treeListColumn_IsUsed.Name)
                 {
-                    if(IsInvalidNodeException(tree))
+                    if (IsInvalidNodeException(tree))
                     {
                          return;
                     }
@@ -1014,11 +1015,21 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     Rectangle checkRect = GetRectangleUsed(info.Bounds);
                     if (checkRect.Contains(pt))
                     {
+                        if (IsMouseDown)
+                        {
+                            return;
+                        }
+                        IsMouseDown = true;
                         hit.Column.OptionsColumn.AllowSort = false;
                         bool isUsed = false;
                         if (!IsAllSelectedReRun(tree))
                         {
                             isUsed = true;
+                        }
+                        string text = isUsed ? "đã dùng" : "chưa dùng";
+                        if (MessageBox.Show("Bạn có muốn chuyển tất cả sang " + text + " không?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        {
+                            return;
                         }
                         List<ExpMestMediMateADO> listResultCheck = null;
                         if (tree != null && tree.DataSource != null && tree.DataSource is BindingList<ExpMestMediMateADO> bindingList)
@@ -1089,6 +1100,10 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                IsMouseDown = false;
             }
         }
 
