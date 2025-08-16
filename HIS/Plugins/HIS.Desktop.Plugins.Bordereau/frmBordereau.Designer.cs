@@ -1117,7 +1117,7 @@ namespace HIS.Desktop.Plugins.Bordereau
             // gridColumn3
             // 
             this.gridColumn3.Caption = "Mã dịch vụ";
-            this.gridColumn3.FieldName = "SERVICE_CODE";
+            this.gridColumn3.FieldName = "TDL_SERVICE_CODE";
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.Visible = true;
@@ -1137,7 +1137,7 @@ namespace HIS.Desktop.Plugins.Bordereau
             // gridColumn4
             // 
             this.gridColumn4.Caption = "Tên dịch vụ";
-            this.gridColumn4.FieldName = "SERVICE_NAME";
+            this.gridColumn4.FieldName = "TDL_SERVICE_NAME";
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
