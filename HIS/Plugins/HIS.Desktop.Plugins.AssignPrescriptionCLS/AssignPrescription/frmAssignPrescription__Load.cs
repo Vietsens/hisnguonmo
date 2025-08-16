@@ -742,13 +742,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         private MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE ChoosePatientTypeDefaultlService(long patientTypeId, MediMatyTypeADO medimaty)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
-            try
+            try  
             {
                 if (HisConfigCFG.IsDefaultPatientTypeOption)
                 {
-                    if (currentPatientTypeWithPatientTypeAlter != null && cboPatientType != null && cboPatientType.EditValue != null)
+                    if (listSourcePatientType != null && cboPatientType != null && cboPatientType.EditValue != null)
                     {
-                        result = currentPatientTypeWithPatientTypeAlter.Where(o => o.ID == Int64.Parse(cboPatientType.EditValue.ToString())).FirstOrDefault();
+                        result = listSourcePatientType.Where(o => o.ID == Int64.Parse(cboPatientType.EditValue.ToString())).FirstOrDefault();
                         return result;
                     }
                    
@@ -756,15 +756,60 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 bool isFullHeinInfoData = IsFullHeinInfo(medimaty);
                 if (patientTypeId == HisConfigCFG.PatientTypeId__BHYT && isFullHeinInfoData)
                 {
-                    result = currentPatientTypeWithPatientTypeAlter.Where(o => o.ID == HisConfigCFG.PatientTypeId__BHYT).FirstOrDefault();
+                    var data = listSourcePatientType.Where(o => o.ID == HisConfigCFG.PatientTypeId__BHYT).ToList();
+                    if (data.Count > 0 && data != null)
+                    {
+                        result = data.FirstOrDefault();
+                    }
+                    else
+                    {
+                        if (cboPatientType.EditValue != null && long.TryParse(cboPatientType.EditValue.ToString(), out long id))
+                        {
+                            result = listSourcePatientType.FirstOrDefault(o => o.ID == id);
+                        }
+                        else
+                        {
+                            result = null;
+                        }
+                    }
                 }
                 else if (patientTypeId == HisConfigCFG.PatientTypeId__BHYT && !isFullHeinInfoData)
                 {
-                    result = currentPatientTypeWithPatientTypeAlter.Where(o => o.ID == HisConfigCFG.PatientTypeId__VP).FirstOrDefault();
+                    var data = listSourcePatientType.Where(o => o.ID == HisConfigCFG.PatientTypeId__VP).ToList();
+                    if (data.Count > 0 && data != null)
+                    {
+                        result = data.FirstOrDefault();
+                    }
+                    else
+                    {
+                        if (cboPatientType.EditValue != null && long.TryParse(cboPatientType.EditValue.ToString(), out long id))
+                        {
+                            result = listSourcePatientType.FirstOrDefault(o => o.ID == id);
+                        }
+                        else
+                        {
+                            result = null;
+                        }
+                    }
                 }
                 else
                 {
-                    result = currentPatientTypeWithPatientTypeAlter.Where(o => o.ID == patientTypeId).FirstOrDefault();
+                    var data = listSourcePatientType.Where(o => o.ID == patientTypeId).ToList();
+                    if (data.Count > 0 && data != null)
+                    {
+                        result = data.FirstOrDefault();
+                    }
+                    else
+                    {
+                        if (cboPatientType.EditValue != null && long.TryParse(cboPatientType.EditValue.ToString(), out long id))
+                        {
+                            result = listSourcePatientType.FirstOrDefault(o => o.ID == id);
+                        }
+                        else
+                        {
+                            result = null;
+                        }
+                    }
                 }
 
                 //var patientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>();

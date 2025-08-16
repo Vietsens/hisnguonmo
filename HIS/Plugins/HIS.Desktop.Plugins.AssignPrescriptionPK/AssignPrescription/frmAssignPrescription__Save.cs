@@ -500,8 +500,38 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 bool isHasTreatmentFinishChecked = (treatUC != null && treatUC.IsAutoTreatmentFinish);
                 var bhyt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>()
                         .FirstOrDefault(o => o.PATIENT_TYPE_CODE == Config.HisConfigCFG.PatientTypeCode__BHYT);
+
+                if (treatUC.HeinPatientTypeCode.Trim().Length > 10)
+                {
+                    IsValidForSave = false;
+                    XtraMessageBox.Show(string.Format("Mã đối tượng khám bệnh không được quá {0} ký tự", 10));
+                    return;
+                }
+
+                if (treatUC.HeinPatientTypeCode.Any(char.IsLetter))
+                {
+                    IsValidForSave = false;
+                    XtraMessageBox.Show("Mã đối tượng khám bệnh không được nhập chữ");
+                    return;
+                }
+
                 if (isHasTreatmentFinishChecked && treatUC != null)
                 {
+                    if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "2" && treatUC.HeinPatientTypeCode == "")
+                    {
+                        var result = DevExpress.XtraEditors.XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị. Bạn có muốn tiếp tục?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                        if (result == DialogResult.No)
+                        {
+                            return;
+                        }
+                    }
+                    else if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "3" && treatUC.HeinPatientTypeCode == "")
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     if (HisConfigCFG.IsCheckServiceFollowWhenOut == "1" && this.currentTreatment.TDL_PATIENT_TYPE_ID == bhyt.ID)
                     {
                            

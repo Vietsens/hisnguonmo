@@ -156,6 +156,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                     {
                         
                         txtXetNghiem.Text = treatmentExt[0].SUBCLINICAL_RESULT;
+                        txtQuaTrinhBenhLy.Text = treatmentExt[0].CLINICAL_NOTE;       
                     }
                     txtDauHieuLamSang.Text = treatment.CLINICAL_SIGNS;
                     txtTinhTrangNguoiBenh.Text = treatment.PATIENT_CONDITION;
@@ -421,6 +422,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                     txtXetNghiem.Text = currentTreatmentFinishSDO.SubclinicalResult;
                     txtTinhTrangNguoiBenh.Text = currentTreatmentFinishSDO.PatientCondition;
                     txtPhuongTienVanChuyen.Text = currentTreatmentFinishSDO.TransportVehicle;
+                    txtQuaTrinhBenhLy.Text = currentTreatmentFinishSDO.ClinicalNote;
                     if (currentTreatmentFinishSDO != null && !string.IsNullOrEmpty(currentTreatmentFinishSDO.TransporterLoginnames))
                     {
                         var oldSelecteds = currentTreatmentFinishSDO.TransporterLoginnames.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -910,6 +912,25 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                 this.positionHandle = -1;
                 if (!dxValidationProviderControl.Validate()) return;
 
+                bool isRequiredPathologicalProcess = false;
+                var isRequiredBHYT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>("HIS.Desktop.Plugins.TreatmentFinish.IsRequiredPathologicalProcessTransferPatientBHYT");
+                var pathologicalProcessOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TreatmentFinish.PathologicalProcessOption");
+
+                var isBHYT = hisTreatment.TDL_PATIENT_TYPE_ID;
+
+                if((isBHYT == 1 && isRequiredBHYT == 1) || ((pathologicalProcessOption == "1" || pathologicalProcessOption == "2") 
+                    && (hisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU))
+                    && string.IsNullOrWhiteSpace(txtQuaTrinhBenhLy.Text))
+                {     
+                    var result = XtraMessageBox.Show("Bắt buộc nhập quá trình bệnh lý đối với bệnh nhân chuyển viện", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    if (result == DialogResult.OK)
+                    {
+                        txtQuaTrinhBenhLy.Focus();
+                        txtQuaTrinhBenhLy.SelectAll();
+                    }
+                    return;
+                }
+
                 currentTreatmentFinishSDO.TreatmentId = hisTreatment.ID;
 
                 if (cboTranPatiReason.EditValue != null)
@@ -947,7 +968,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                         currentTreatmentFinishSDO.TransferOutMediOrgName = null;
                     }
                 }
-
+                currentTreatmentFinishSDO.ClinicalNote = txtQuaTrinhBenhLy.Text;
                 currentTreatmentFinishSDO.ClinicalSigns = txtDauHieuLamSang.Text;
                 currentTreatmentFinishSDO.SubclinicalResult = txtXetNghiem.Text;
                 currentTreatmentFinishSDO.PatientCondition = txtTinhTrangNguoiBenh.Text;
@@ -961,6 +982,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                         lstLoginNames = lst.Select(o => o.LOGINNAME).ToList();
                     }
                 }
+                currentTreatmentFinishSDO.ClinicalNote = txtQuaTrinhBenhLy.Text;
                 currentTreatmentFinishSDO.TransporterLoginnames = lstLoginNames != null && lstLoginNames.Count > 0 ? string.Join(";", lstLoginNames) : null;
                 currentTreatmentFinishSDO.Transporter = selected != null && selected.Count > 0 ? string.Join(";", selected.Select(o => o.TDL_USERNAME)) : null;
                 currentTreatmentFinishSDO.TreatmentMethod = txtPPKTThuoc.Text;

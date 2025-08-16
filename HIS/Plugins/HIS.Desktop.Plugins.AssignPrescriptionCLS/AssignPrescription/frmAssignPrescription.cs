@@ -196,7 +196,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         public int selectedOpionGroup;
         HIS_TREATMENT Histreatment;
         HIS_MEDICINE_TYPE_TUT hisMedicineTypeTut { get; set; }
-
+        List<HIS_PATIENT_TYPE> listSourcePatientType = new List<HIS_PATIENT_TYPE>();
         #endregion
 
         #region Construct
@@ -460,7 +460,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             {
                 if (HisConfigCFG.IsDefaultPatientTypeOption && serviceReqParentId > 0 && currentSereServ != null)
                 {
-                    cboPatientType.EditValue = currentSereServ.PATIENT_TYPE_ID;
+                    var patientType = this.listSourcePatientType.FirstOrDefault(o => o.ID == currentSereServ.PATIENT_TYPE_ID);
+                    if (patientType != null)
+                    {
+                        cboPatientType.EditValue = patientType.ID;
+                    }
+                    else
+                    {
+                        cboPatientType.EditValue = this.listSourcePatientType.FirstOrDefault().ID;
+                    }
                 }
             }
             catch (Exception ex)
@@ -2588,7 +2596,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     else if (e.Column.FieldName == "IsExpend")
                     {
                         //#16421 để key cấu hình giá trị 1: Không cho phép check hao phí với thuốc/vật tư không đính kèm
-                        if ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU) && ((HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && ((data.SereServParentId ?? 0) > 0 || GetSereServInKip() > 0)) || !HisConfigCFG.IsNotAllowingExpendWithoutHavingParent))
+                        if (data.IsDisableExpend || ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD) && ((HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && ((data.SereServParentId ?? 0) > 0 || GetSereServInKip() > 0)) || !HisConfigCFG.IsNotAllowingExpendWithoutHavingParent)))
                             e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
                         else
                             e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
@@ -2622,6 +2630,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     }
                     else if (e.Column.FieldName == "AMOUNT")
                     {
+                        if (selectedOpionGroup == 2)
+                        {
+                            e.RepositoryItem = repositoryItemSpinAmount_Disable__MedicinePage;
+                            return;
+                        }
                         if (data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
                             e.RepositoryItem = repositoryItemSpinAmount_Disable__MedicinePage;
                         else if (((data.IsAllowOdd.HasValue && data.IsAllowOdd.Value == true) || (data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)) && (GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet))
@@ -3289,6 +3302,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             else if (e.Column.FieldName == "EXPIRED_DATE_DISPLAY")
                             {
                                 e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString((long)(data.EXPIRED_DATE ?? 0));
+                            }
+                            else if (e.Column.FieldName == "REMAIN_REUSE_COUNT")
+                            {
+                                e.Value = (data.REMAIN_REUSE_COUNT.HasValue ? data.REMAIN_REUSE_COUNT.Value : 0) + " / " + (data.TDL_MATERIAL_MAX_REUSE_COUNT.HasValue ? data.TDL_MATERIAL_MAX_REUSE_COUNT.Value : 0);
                             }
                         }
                     }

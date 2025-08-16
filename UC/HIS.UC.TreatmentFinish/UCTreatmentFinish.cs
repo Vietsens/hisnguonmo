@@ -15,45 +15,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using HIS.Desktop.ApiConsumer;       
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.Library.TreatmentEndTypeExt;
+using HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.Data;
+using HIS.UC.TreatmentFinish.ADO;    
+using HIS.UC.TreatmentFinish.CloseTreatment;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
-using System.Text;
+using System.Resources;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.LocalData;
-using MOS.Filter;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Common.Adapter;
-using Inventec.Core;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using DevExpress.Data;
-using HIS.Desktop.Controls.Session;
-using Inventec.Desktop.Common.LanguageManager;
-using HIS.UC.TreatmentFinish;
-using HIS.UC.TreatmentFinish.ADO;
-using HIS.UC.TreatmentFinish.Run;
-using HIS.UC.TreatmentFinish.Reload;
-using MOS.SDO;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.ADO;
-using HIS.UC.TreatmentFinish.CloseTreatment;
-using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.Plugins.Library.TreatmentEndTypeExt;
-using HIS.Desktop.Common;
-using HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.Data;
-using DevExpress.XtraEditors;
-using HIS.Desktop.Utilities.Extensions;
-using DevExpress.XtraEditors.Repository;
-using System.Resources;
-using Inventec.Common.Logging;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace HIS.UC.TreatmentFinish.Run
 {
@@ -102,6 +91,7 @@ namespace HIS.UC.TreatmentFinish.Run
         IcdTemp currentIcd = new IcdTemp();
         HIS_TREATMENT HisTreatment = new HIS_TREATMENT();
         private List<AcsUserADO> lstReAcsUserADO;
+        string PatientTypeBHYT { get; set; }
         /// <summary>
         ///  Cấu hình cho phép mở nhiều hồ sơ điều trị của cùng 1 bệnh nhân hay không.
         ///0: Không cho phép
@@ -124,11 +114,11 @@ namespace HIS.UC.TreatmentFinish.Run
 
         #region Contructor
         public UCTreatmentFinish()
-            : this(null)
+            : this(null, null)
         {
         }
 
-        public UCTreatmentFinish(TreatmentFinishInitADO data)
+        public UCTreatmentFinish(TreatmentFinishInitADO data, string PatientTypeBHYT)
         {
             LogSystem.Debug("UCTreatmentFinish. 1");
             InitializeComponent();
@@ -164,6 +154,8 @@ namespace HIS.UC.TreatmentFinish.Run
                     this.IsBlockOrder = data.IsBlockOrder;
                     this.IsShowButtonIcd = data.IsShowButtonIcd;
                 }
+                this.PatientTypeBHYT = PatientTypeBHYT;
+                      
                 //SetCaptionByLanguageKey();
                 SetCaptionByLanguageKeyNew();
                 LogSystem.Debug("UCTreatmentFinish. 2");
@@ -284,6 +276,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 }
 
                 dtEndTime.Enabled = txtTreatmentEndTypeCode.Enabled
+                    =txtPatientType.Enabled
                     = cboTreatmentEndType.Enabled
                     = chkAutoPrintGHK.Enabled
                     = chkSignGHK.Enabled
@@ -324,7 +317,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 }
                 LogSystem.Debug("UCTreatmentFinish_Load. 4");
 
-
+                this.LableTxtPatientType();
                 this.InitTreatmentEndType();
 
                 this.ValidHeadDepartmentAndDirectorBranch();
@@ -369,11 +362,12 @@ namespace HIS.UC.TreatmentFinish.Run
                             filter.INTRUCTION_TIME = this.dataInputADO.UseTime;
                     }
 
-                    this.Treatment = new BackendAdapter(param).Get<List<HisTreatmentWithPatientTypeInfoSDO>>("api/HisTreatment/GetTreatmentWithPatientTypeInfoSdo", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                    this.Treatment = new BackendAdapter(param).Get<List<HisTreatmentWithPatientTypeInfoSDO>>("api/HisTreatment/GetTreatmentWithPatientTypeInfoSdo", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();   
+                    
                 }
 
                 SetEnableCheckSoLuuTruBANTByConfig();
-
+                this.txtPatientType.Text = this.Treatment.HEIN_PATIENT_TYPE_CODE;
                 if (!chkIssueOutPatientStoreCode.Checked)
                 {
                     lciForlblSoLuuTruBANT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -642,12 +636,20 @@ namespace HIS.UC.TreatmentFinish.Run
             }
         }
         bool IsCheckAutoTreatmentFinish;
+        public bool IsCheck;
         private void chkAutoTreatmentFinish_CheckedChanged(object sender, EventArgs e)
+        
         {
             try
             {
+                if (ConfigKeyCFG.WarningHeinPatientTypeCode == "1" && Treatment.PATIENT_TYPE_CODE == this.PatientTypeBHYT && chkAutoTreatmentFinish.Checked)
+                {
+                    XtraMessageBox.Show("Vui lòng kiểm tra lại mã đối tượng của hồ sơ điều trị.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
                 IsCheckAutoTreatmentFinish = chkAutoTreatmentFinish.Checked;
+                
                 AutoTreatmentFinishCheckedChanged();
+                IsCheck = chkAutoTreatmentFinish.Checked;
                 IsCheckAutoTreatmentFinish = false;
             }
             catch (Exception ex)
@@ -946,6 +948,11 @@ namespace HIS.UC.TreatmentFinish.Run
                     HisTreatmentFinishSDO treatmentFinishSDOExt = new HisTreatmentFinishSDO();
                     treatmentFinishSDOExt.TreatmentFinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
                     treatmentFinishSDOExt.DocumentBookId = treatmentFinishSDO != null ? treatmentFinishSDO.DocumentBookId : null;
+                    if (!string.IsNullOrEmpty(txtPatientType.Text.Trim()))
+                    {
+                        treatmentFinishSDOExt.HeinPatientTypeCode = txtPatientType.Text;
+                    }
+                    
                     if (String.IsNullOrEmpty(treatmentFinishSDOExt.SickLoginname))
                     {
                         treatmentFinishSDOExt.SickLoginname = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
@@ -1517,6 +1524,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 Inventec.Common.Logging.LogSystem.Debug("AutoTreatmentFinishCheckedChanged");
 
                 dtEndTime.Enabled = txtTreatmentEndTypeCode.Enabled
+                    = txtPatientType.Enabled
                     = cboTreatmentEndType.Enabled
                     //= chkAutoPrintGHK.Enabled
                     //= chkSignGHK.Enabled
@@ -1586,6 +1594,7 @@ namespace HIS.UC.TreatmentFinish.Run
                         treatmentFinishSDO.DeathWithinId = this.Treatment.DEATH_WITHIN_ID;
                         treatmentFinishSDO.HospitalizeReasonName = this.Treatment.HOSPITALIZE_REASON_NAME;
                         treatmentFinishSDO.HospitalizeReasonCode = this.Treatment.HOSPITALIZE_REASON_CODE;
+
                         if (this.currentTreatmentEndTypeExt.WorkPlaceId == null)
                         {
                             if (!String.IsNullOrWhiteSpace(this.Treatment.TDL_PATIENT_WORK_PLACE_NAME))
@@ -2102,6 +2111,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 treatmentFinishSDO.EndDeptSubsHeadUsername = cboEndDeptSubs.EditValue != null ? cboEndDeptSubs.Text.ToString() : null;
                 treatmentFinishSDO.HospSubsDirectorLoginname = cboHospSubs.EditValue != null ? cboHospSubs.EditValue.ToString() : null;
                 treatmentFinishSDO.HospSubsDirectorUsername = cboHospSubs.EditValue != null ? cboHospSubs.Text.ToString() : null;
+                treatmentFinishSDO.HeinPatientTypeCode = txtPatientType.Text != null ? txtPatientType.Text.ToString() : null;
                 return this.treatmentFinishSDO;
             }
             catch (Exception ex)
@@ -2116,6 +2126,7 @@ namespace HIS.UC.TreatmentFinish.Run
             DataOutputADO result = new DataOutputADO();
             try
             {
+                result.HeinPatientTypeCode = txtPatientType.Text;
                 result.IsSignExam = chkSignExam.Checked;
                 result.IsPrintExam = chkPrintExam.Checked;
                 result.IsAutoTreatmentFinish = chkAutoTreatmentFinish.Checked;
@@ -2676,6 +2687,61 @@ namespace HIS.UC.TreatmentFinish.Run
         public bool IsAutoTreatmentFinishChecked
         {
             get { return chkAutoTreatmentFinish.Checked; }
+        }
+
+        private void txtPatientType_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsControl(e.KeyChar))
+                return;
+            if (char.IsDigit(e.KeyChar))
+                return;
+
+            if (e.KeyChar == '.')
+            {
+                return;
+            }
+
+            e.Handled = true;
+        }
+
+        private void LableTxtPatientType()
+        {
+            if (ConfigKeyCFG.WarningHeinPatientTypeCode == "3")
+            {
+                layoutControlItem5.AppearanceItemCaption.ForeColor = Color.Maroon;
+            }
+            else
+            {
+                layoutControlItem5.AppearanceItemCaption.ForeColor = Color.Black;
+            }
+        }
+
+        private void txtEndDeptSubs_EditValueChanged(object sender, EventArgs e)
+        {
+        }
+        private void ValidateMaxLength(DevExpress.XtraEditors.TextEdit textEdit, DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider errorProvider)
+        {
+            if (textEdit.Text.Length > 10)
+            {
+                errorProvider.SetErrorType(textEdit, ErrorType.Warning);
+                errorProvider.SetError(textEdit, "Mã điều trị không vượt quá 10 ký tự");
+                
+            }
+            else
+            {
+                errorProvider.SetError(textEdit, string.Empty);
+            }
+        }
+
+        public void ValidateTxtPatientType()         
+        {
+            ValidateMaxLength(txtPatientType, dxErrorProvider1);
+            txtPatientType.Focus();
+        }
+
+        private void txtPatientType_EditValueChanged(object sender, EventArgs e)
+        {
+            ValidateTxtPatientType();
         }
     }
 }

@@ -21,7 +21,7 @@ using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
-using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.LocalStorage.LocalData;   
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Resources;
@@ -353,7 +353,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
-                 this.bIsSelectMultiPatientProcessing = false;
+                this.bIsSelectMultiPatientProcessing = false;
 
                 if (this.gridViewServiceProcess.IsEditing)
                     this.gridViewServiceProcess.CloseEditor();
@@ -731,9 +731,38 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 {
                     var uc = ucTreatmentFinish as HIS.UC.TreatmentFinish.Run.UCTreatmentFinish;
                     bool isAutoFinishChecked = uc != null && uc.IsAutoTreatmentFinishChecked;
+
+                    if (uc.txtPatientType.Text.Any(char.IsLetter))
+                    {
+                        isValid = false;
+                        XtraMessageBox.Show("Mã đối tượng khám bệnh không được nhập chữ");
+                        return;
+                    }
+
+                    if (!string.IsNullOrEmpty(uc.txtPatientType.Text) && uc.txtPatientType.Text.Length > 10)
+                    {
+                        isValid = false;
+                        XtraMessageBox.Show(string.Format("Mã đối tượng khám bệnh không được quá {0} ký tự", 10));
+                        return;
+                    }
                     if (isAutoFinishChecked)
                     {
-                            if (HisConfigCFG.IsCheckServiceFollowWhenOut == "1" && currentTreatmentWithPatientType.PATIENT_TYPE_CODE == HisConfigCFG.PatientTypeCode__BHYT)
+                        if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "2" && uc.txtPatientType.Text.Trim() == "")
+                        {
+                            var result = DevExpress.XtraEditors.XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị. Bạn có muốn tiếp tục?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                            if (result == DialogResult.No)
+                            {
+                                return;
+                            }
+                        }
+                        else if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "3" && uc.txtPatientType.Text == "")
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        if (HisConfigCFG.IsCheckServiceFollowWhenOut == "1" && currentTreatmentWithPatientType.PATIENT_TYPE_CODE == HisConfigCFG.PatientTypeCode__BHYT)
                             {
                                 CommonParam param = new CommonParam();
                                 var result = new BackendAdapter(param).Post<bool>("api/HisTreatment/CheckServiceFollow", ApiConsumers.MosConsumer, this.treatmentId, param);

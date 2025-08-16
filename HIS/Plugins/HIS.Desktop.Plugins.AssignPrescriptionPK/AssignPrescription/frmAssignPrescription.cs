@@ -26,7 +26,7 @@ using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using HIS.Desktop.ADO;      
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
@@ -39,20 +39,28 @@ using HIS.Desktop.Plugins.AssignPrescriptionPK.Advise;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Base;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.ChooseICD;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Config;
+using HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Resources;
+using HIS.Desktop.Plugins.AssignPrescriptionPK.SuggestPrescriptionsInfo;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Worker;
+using HIS.Desktop.Plugins.Library.CheckIcd;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
+using HIS.Desktop.Plugins.Library.PrintBordereau;
+using HIS.Desktop.Plugins.Library.PrintBordereau.ADO;
+using HIS.Desktop.Plugins.Library.PrintBordereau.Base;
 using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
+using HIS.UC.Icd;
 using HIS.UC.PatientSelect;
 using HIS.UC.PeriousExpMestList;
 using HIS.UC.SecondaryIcd;
 using HIS.UC.SecondaryIcd.ADO;
 using HIS.UC.TreatmentFinish;
+using HIS.UC.TreatmentFinish.Run;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.PopupLoader;
 using Inventec.Common.Logging;
-using Inventec.Common.ThreadCustom;
+using Inventec.Common.SignLibrary.DTO;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -64,33 +72,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Resources;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.Plugins.Library.CheckIcd;
-using System.Globalization;
-using HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm;
-using System.Threading;
-using HIS.UC.Icd;
-using HIS.UC.Icd.ADO;
-using DevExpress.XtraGrid;
-using System.ComponentModel.DataAnnotations;
-using static MPS.ProcessorBase.PrintConfig;
-using Newtonsoft.Json;
-using HIS.Desktop.LocalStorage.HisConfig;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Web;
-using System.Configuration;
-using System.Net;
-using HIS.Desktop.Plugins.AssignPrescriptionPK.SuggestPrescriptionsInfo;
-using DevExpress.Utils.OAuth.Provider;
-using HIS.Desktop.Plugins.Library.PrintBordereau.ADO;
-using HIS.Desktop.Plugins.Library.PrintBordereau.Base;
-using HIS.Desktop.Plugins.Library.PrintBordereau;
-using Inventec.Common.SignLibrary.DTO;
 
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
@@ -207,6 +195,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         internal PeriousExpMestListProcessor periousExpMestListProcessor;
         internal UserControl ucPeriousExpMestList;
         internal TreatmentFinishProcessor treatmentFinishProcessor;
+        private UCTreatmentFinish ucTreatmentFinishControl = new UCTreatmentFinish();
         internal UserControl ucTreatmentFinish;
         internal PatientSelectProcessor patientSelectProcessor;
         internal UserControl ucPatientSelect;
@@ -364,6 +353,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         private bool IsActionButtonPrintBill = false;
         Dictionary<long, List<DocumentSignedUpdateIGSysResultDTO>> dSignedList = new Dictionary<long, List<DocumentSignedUpdateIGSysResultDTO>>();
         V_HIS_TREATMENT_FEE treatmentPrint;
+        List<HIS_PATIENT_TYPE> listSourcePatientType = new List<HIS_PATIENT_TYPE>();
         #endregion
 
         #region Construct
@@ -1136,7 +1126,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.LoadDataForPrint();
                 LogSystem.Debug("frmAssignPrescription_Load. 8");
                 LogSystem.Debug("frmAssignPrescription_Load. 9");
-                
+
                 this.timerInitForm.Interval = 500;//Fix
                 this.timerInitForm.Enabled = true;
                 this.timerInitForm.Start();
@@ -1329,7 +1319,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         private void TimerReloadTreatmentFinishTime_Tick(object sender, EventArgs e)
         {
             try
-            {       
+            {
                 if (dteCommonParam != null && dteCommonParam != DateTime.MinValue)
                     dteCommonParam = dteCommonParam.AddSeconds(1);
                 if (this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0)
@@ -1931,7 +1921,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
         private void ProcessSaveMedicineTypeTut()
         {
-                  
+
             WaitingManager.Show();
             if (memHtu.Text != null)
                 this.medicineTypeTutSelected.HTU_TEXT = memHtu.Text;
@@ -2163,7 +2153,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-
                 this.bIsSelectMultiPatientProcessing = false;
 
                 if (this.gridViewServiceProcess.IsEditing)
@@ -2338,12 +2327,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             bool result = true;
             try
             {
-                if (mediMatyType.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU     
+                if (mediMatyType.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU
                     || mediMatyType.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM
                     || mediMatyType.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
                 {
                     return result;
-                }     
+                }
                 CommonParam param = new CommonParam();
                 HisMedicineServiceFilter filter = new HisMedicineServiceFilter();
                 filter.MEDICINE_TYPE_ID = mediMatyType.ID;
@@ -2750,7 +2739,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                     medi.dicTreatmentOverKidneyReason = new Dictionary<long, List<TreatmentOverReason>>();
                                 decimal AmountInDay = 0;
                                 var mediSer = mediKidney.Where(o => o.MEDICINE_TYPE_ID == medi.ID).ToList();
-                                foreach (var treatId in treatmentIds)      
+                                foreach (var treatId in treatmentIds)
                                 {
                                     AmountInDay = GetAmountInDaySave(medi, treatId, itime, IsShowPopup);
                                     var ssTeinList = sereServTeinKidney.Where(o => !string.IsNullOrEmpty(o.VALUE)).Where(o => o.TDL_TREATMENT_ID == treatId && mediSer.Exists(p => p.TEST_INDEX_ID == o.TEST_INDEX_ID)).ToList();
@@ -2862,7 +2851,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                             {
                                                 medi.IsEditOverKidneyReason = true;
                                             }
-                                        }    
+                                        }
                                         else
                                         {
                                             medi.OVER_KIDNEY_REASON = null;
@@ -3171,7 +3160,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-            }   
+            }
             return result;
         }
         private void btnSave_Click(object sender, EventArgs e)
@@ -4412,7 +4401,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         cboTemplateMedicine.Properties.Buttons[1].Visible = true;
                         cboTemplateMedicine.EditValue = searchResult[0].ID;
                         txtTemplateMedicineCode.Text = searchResult[0].EXP_MEST_TEMPLATE_CODE;
-                        this.ProcessChoiceExpMestTemplate(searchResult[0]);   
+                        this.ProcessChoiceExpMestTemplate(searchResult[0]);
                     }
                     else
                     {
@@ -4813,7 +4802,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 e.ExceptionMode = ExceptionMode.DisplayError;
             }
             catch (Exception ex)
-            {       
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -5119,13 +5108,13 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
                     List<object> listArgs = new List<object>();
                     var md = HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, GetRoomId(), GetRoomTypeId());
-                    md.ModuleTypeId = Inventec.Desktop.Common.Modules.Module.MODULE_TYPE_ID__FORM;    
+                    md.ModuleTypeId = Inventec.Desktop.Common.Modules.Module.MODULE_TYPE_ID__FORM;
                     var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(md, listArgs);
                     if (extenceInstance == null) throw new NullReferenceException("Khoi tao moduleData that bai. extenceInstance = null");
 
                     WaitingManager.Hide();
                     if (extenceInstance is Form)
-                    {    
+                    {
                         ((Form)extenceInstance).ShowDialog();
                     }
                     else if (extenceInstance is UserControl)
@@ -5628,7 +5617,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 }
                 else if (e.Control && e.KeyCode == Keys.A)
                 {
-                    txtMediMatyForPrescription.SelectAll(); 
+                    txtMediMatyForPrescription.SelectAll();
                     e.Handled = true;
                 }
             }
@@ -5690,11 +5679,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);   
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
-        private void VisibleInputControl(bool is4Control)      
+        private void VisibleInputControl(bool is4Control)
         {
             try
             {
@@ -5706,7 +5695,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-            
+
         private void chkPreKidneyShift_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -5740,7 +5729,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 this.currentMedicineTypeADOForEdit = (MediMatyTypeADO)this.gridViewServiceProcess.GetFocusedRow();
                 if (this.currentMedicineTypeADOForEdit != null)
                 {
-                    var selectedOpionGroup = GetSelectedOpionGroup();      
+                    var selectedOpionGroup = GetSelectedOpionGroup();
 
                     this.actionBosung = GlobalVariables.ActionEdit;
                     isShowContainerMediMatyForChoose = true;
@@ -5792,7 +5781,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         this.txtMediMatyForPrescription.Text = this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_NAME;
                     }
 
-                    this.VisibleInputControl(!(currentMedicineTypeADOForEdit.IS_OXYGEN == GlobalVariables.CommonNumberTrue));    
+                    this.VisibleInputControl(!(currentMedicineTypeADOForEdit.IS_OXYGEN == GlobalVariables.CommonNumberTrue));
 
                     this.lciTocDoTruyen.Enabled = (this.currentMedicineTypeADOForEdit.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC
                         || this.currentMedicineTypeADOForEdit.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
@@ -7001,7 +6990,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     if (data != null)
                     {
                         this.FillDataIntoPatientTypeCombo(data, editor);
-                        editor.EditValue = data.PATIENT_TYPE_ID;
+                        //editor.EditValue = data.PATIENT_TYPE_ID;
                     }
                 }
                 else if (view.FocusedColumn.FieldName == "IsKHBHYT" && view.ActiveEditor is CheckEdit && (data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU))
@@ -7975,7 +7964,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         }
 
         private void tooltipService_GetActiveObjectInfo(object sender, ToolTipControllerGetActiveObjectInfoEventArgs e)
-        {    
+        {
             try
             {
                 if (e.Info == null && e.SelectedControl == this.gridControlServiceProcess)
@@ -7983,9 +7972,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     string text = "";
                     DevExpress.XtraGrid.Views.Grid.GridView view = this.gridControlServiceProcess.FocusedView as DevExpress.XtraGrid.Views.Grid.GridView;
                     GridHitInfo info = view.CalcHitInfo(e.ControlMousePosition);
-                    if (info.InRowCell)        
+                    if (info.InRowCell)
                     {
-                        if (this.lastRowHandle != info.RowHandle || this.lastColumn != info.Column)     
+                        if (this.lastRowHandle != info.RowHandle || this.lastColumn != info.Column)
                         {
                             this.lastColumn = info.Column;
                             this.lastRowHandle = info.RowHandle;
@@ -12783,7 +12772,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     isShowContainerHTU = false;
                     HtuText_RowClick(medicineTypehtu);
                 }
-                
+
 
             }
             catch (Exception ex)
@@ -12853,11 +12842,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
         private void memHtu_EditValueChanged(object sender, EventArgs e)
         {
-            string expected = cboMedicineUseForm.Text + " " + cboHtu.Text;     
+            string expected = cboMedicineUseForm.Text + " " + cboHtu.Text;
 
             if (memHtu.Text != expected)
             {
-                shouldAutoUpdateMemHtu = false;     
+                shouldAutoUpdateMemHtu = false;
             }
         }
 
@@ -12865,7 +12854,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         {
             try
             {
-                if (currentMediStock == null || currentMediStock.Count == 0)           
+                if (currentMediStock == null || currentMediStock.Count == 0)
                 {
                     mediMatyTypeADOs = new List<MediMatyTypeADO>();
                     var myResult = DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.BanChuaChonKhoXuat, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
@@ -12886,7 +12875,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     age = CalculateAge(currentTreatmentWithPatientType.TDL_PATIENT_DOB),
                     top_n = 5,
                     //Dangth
-                    servicereq_type_id = GetServiceReqTypeIdFromGlobalStore() 
+                    servicereq_type_id = GetServiceReqTypeIdFromGlobalStore()
                 };
                 ShowAISuggestionForm(requestData);
 
@@ -12935,7 +12924,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     if (mediMatySelected != null && mediMatySelected.Count > 0)
                     {
 
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediMatySelected.Select(o=>o.DataType)), mediMatySelected.Select(o=>o.DataType))); 
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediMatySelected.Select(o => o.DataType)), mediMatySelected.Select(o => o.DataType)));
                         mediMatyTypeADOs = mediMatySelected;
                         //Check trong kho
                         //Gắn biến tạm để không bị gấp đôi số lượng khi kiểm tra danh sách
@@ -13205,6 +13194,20 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridViewMediMaty_RowStyle(object sender, RowStyleEventArgs e)
+        {
+            if (e.RowHandle >= 0)
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;        
+                var rowData = view.GetRow(e.RowHandle) as DMediStock1ADO;
+                if (rowData != null && rowData.IS_PRIORITY == 1)
+                {
+                    e.Appearance.ForeColor = Color.FromArgb(0, 0, 255);
+                    //e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
+                }
             }
         }
 

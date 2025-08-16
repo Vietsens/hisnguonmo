@@ -19,13 +19,13 @@ using DevExpress.XtraBars;
 using Inventec.Common.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq;   
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks;     
 
 namespace HIS.UC.MenuPrint.ADO
 {
-    public class MenuPrintADO
+    public class MenuPrintADO  
     {
         public string Caption { get; set; }
         public string PrintTypeCode { get; set; }

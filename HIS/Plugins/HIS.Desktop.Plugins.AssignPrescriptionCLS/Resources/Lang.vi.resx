@@ -851,7 +851,7 @@
     <value>Số serial</value>
   </data>
 	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_REMAIN_REUSE_COUNT" xml:space="preserve">
-    <value>TSD còn lại</value>
+    <value>TSD còn lại / TSD tối đa</value>
   </data>
 	<data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_TDL_MATERIAL_MAX_REUSE_COUNT" xml:space="preserve">
     <value>TSD tối đa</value>

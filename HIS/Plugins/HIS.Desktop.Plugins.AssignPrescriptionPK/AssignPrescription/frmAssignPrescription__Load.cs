@@ -30,6 +30,7 @@ using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Common.SignLibrary.DTO;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
@@ -1538,15 +1539,60 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 bool isFullHeinInfoData = IsFullHeinInfo(medimaty);
                 if (patientTypeId == HisConfigCFG.PatientTypeId__BHYT && isFullHeinInfoData)
                 {
-                    result = currentPatientTypeWithPatientTypeAlter.Where(o => o.ID == HisConfigCFG.PatientTypeId__BHYT).FirstOrDefault();
+                    var data = listSourcePatientType.Where(o => o.ID == HisConfigCFG.PatientTypeId__BHYT).ToList();
+                    if (data.Count > 0 && data != null)
+                    {
+                        result = data.FirstOrDefault();
+                    }
+                    else
+                    {
+                        if (cboPatientType.EditValue != null && long.TryParse(cboPatientType.EditValue.ToString(), out long id))
+                        {
+                            result = listSourcePatientType.FirstOrDefault(o => o.ID == id);
+                        }
+                        else
+                        {
+                            result = null;
+                        }
+                    }
                 }
                 else if (patientTypeId == HisConfigCFG.PatientTypeId__BHYT && !isFullHeinInfoData)
                 {
-                    result = currentPatientTypeWithPatientTypeAlter.Where(o => o.ID == HisConfigCFG.PatientTypeId__VP).FirstOrDefault();
+                    var data = listSourcePatientType.Where(o => o.ID == HisConfigCFG.PatientTypeId__VP).ToList();
+                    if (data.Count > 0 && data != null)
+                    {
+                        result = data.FirstOrDefault();
+                    }
+                    else
+                    {
+                        if (cboPatientType.EditValue != null && long.TryParse(cboPatientType.EditValue.ToString(), out long id))
+                        {
+                            result = listSourcePatientType.FirstOrDefault(o => o.ID == id);
+                        }
+                        else
+                        {
+                            result = null;
+                        }
+                    }
                 }
                 else
                 {
-                    result = currentPatientTypeWithPatientTypeAlter.Where(o => o.ID == patientTypeId).FirstOrDefault();
+                    var data = listSourcePatientType.Where(o => o.ID == patientTypeId).ToList();
+                    if (data.Count > 0 && data != null)
+                    {
+                        result = data.FirstOrDefault();
+                    }
+                    else
+                    {
+                        if (cboPatientType.EditValue != null && long.TryParse(cboPatientType.EditValue.ToString(), out long id))
+                        {
+                            result = listSourcePatientType.FirstOrDefault(o => o.ID == id);
+                        }
+                        else
+                        {
+                            result = null;
+                        }
+                    }
                 }
                 if (result == null || result.ID == 0)
                 {
