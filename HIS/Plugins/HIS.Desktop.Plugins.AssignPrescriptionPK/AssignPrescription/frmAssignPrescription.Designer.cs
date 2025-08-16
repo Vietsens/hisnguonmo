@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAssignPrescription));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -188,9 +189,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject122 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject123 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject124 = new DevExpress.Utils.SerializableAppearanceObject();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barbtnSaveShortcut = new DevExpress.XtraBars.BarButtonItem();
             this.barbtnSaveAndPrintShortcut = new DevExpress.XtraBars.BarButtonItem();
@@ -203,14 +204,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.bbtnF5 = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnF6 = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnF7 = new DevExpress.XtraBars.BarButtonItem();
-            this.dockManager1 = new DevExpress.XtraBars.Docking.DockManager();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.dockManager1 = new DevExpress.XtraBars.Docking.DockManager(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.layoutControl6 = new DevExpress.XtraLayout.LayoutControl();
-            this.popupContainerHtu = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.layoutControl8 = new DevExpress.XtraLayout.LayoutControl();
+            this.gridControlMediMaty = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
+            this.gridViewMediMaty = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.tooltipService = new DevExpress.Utils.ToolTipController(this.components);
+            this.layoutControlGroup7 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.popupContainerHtu = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl11 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControlHtu = new DevExpress.XtraGrid.GridControl();
             this.gridViewHtu = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -221,7 +229,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.layoutControlItem43 = new DevExpress.XtraLayout.LayoutControlItem();
             this.btnQR = new DevExpress.XtraEditors.SimpleButton();
             this.btnPrescriptionAI = new DevExpress.XtraEditors.SimpleButton();
-            this.popupControlContainerHtuText = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerHtuText = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridViewHtuText = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.spnPresPhaseNum = new DevExpress.XtraEditors.SpinEdit();
@@ -310,7 +318,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lblPhatSinh__KhacBHYT = new DevExpress.XtraEditors.LabelControl();
             this.lblPhatSinh__BHYT = new DevExpress.XtraEditors.LabelControl();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlOtherPaySource = new DevExpress.XtraGrid.GridControl();
             this.gridViewOtherPaySource = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -319,7 +327,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCheckEdit3 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl12 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControlConfig = new DevExpress.XtraGrid.GridControl();
             this.gridViewConfig = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -328,13 +336,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.repCheckConfig = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.layoutControlGroup11 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem38 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer();
-            this.layoutControl8 = new DevExpress.XtraLayout.LayoutControl();
-            this.gridControlMediMaty = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
-            this.gridViewMediMaty = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
-            this.tooltipService = new DevExpress.Utils.ToolTipController();
-            this.layoutControlGroup7 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridControlServiceProcess = new Inventec.Desktop.CustomControl.MyGridControl();
             this.gridViewServiceProcess = new Inventec.Desktop.CustomControl.MyGridView();
             this.grcDelete__MedicinePage = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -583,7 +584,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lciDateEditor = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.pnlUCPanelRightTop = new DevExpress.XtraEditors.PanelControl();
-            this.popupControlContainerTutorial = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerTutorial = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlTutorial = new DevExpress.XtraGrid.GridControl();
             this.gridViewTutorial = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.lcgPrevousPrescription = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -626,7 +627,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.layoutControlItem46 = new DevExpress.XtraLayout.LayoutControlItem();
             this.separatorControl1 = new DevExpress.XtraEditors.SeparatorControl();
             this.rdOpionGroup = new DevExpress.XtraEditors.RadioGroup();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
             this.txtUnitOther = new DevExpress.XtraEditors.TextEdit();
             this.txtMedicineTypeOther = new DevExpress.XtraEditors.TextEdit();
             this.lblPhatSinh = new DevExpress.XtraEditors.LabelControl();
@@ -732,7 +733,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.layoutControlItem59 = new DevExpress.XtraLayout.LayoutControlItem();
             this.customGridViewWithFilterMultiColumn3 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
-            this.popupControlContainerCondition = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerCondition = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlCondition = new DevExpress.XtraGrid.GridControl();
             this.gridViewCondition = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -740,11 +741,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCheckEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.dxValidProviderBoXung = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxValidProviderBoXung__DuongDung = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxValidationProviderMaterialTypeTSD = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.timerInitForm = new System.Windows.Forms.Timer();
-            this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer();
+            this.dxValidProviderBoXung = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidProviderBoXung__DuongDung = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProviderMaterialTypeTSD = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.timerInitForm = new System.Windows.Forms.Timer(this.components);
+            this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl21 = new DevExpress.XtraLayout.LayoutControl();
             this.customGridControlSubIcdName = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.customGridViewSubIcdName = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
@@ -754,7 +755,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup22 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem103 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.popupControlContainer2 = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainer2 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.gridView15 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.customGridLookUpEditWithFilterMultiColumn1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
@@ -763,8 +764,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.customGridViewWithFilterMultiColumn5 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn6 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn7 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
-            this.imageList1 = new System.Windows.Forms.ImageList();
-            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
@@ -772,6 +773,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).BeginInit();
             this.layoutControl6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMediMaty)).BeginInit();
+            this.popupControlContainerMediMaty.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl8)).BeginInit();
+            this.layoutControl8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlMediMaty)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewMediMaty)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupContainerHtu)).BeginInit();
             this.popupContainerHtu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl11)).BeginInit();
@@ -866,14 +875,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.repCheckConfig)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMediMaty)).BeginInit();
-            this.popupControlContainerMediMaty.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl8)).BeginInit();
-            this.layoutControl8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlMediMaty)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewMediMaty)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlServiceProcess)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewServiceProcess)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnDelete__MedicinePage)).BeginInit();
@@ -1224,10 +1225,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.DockManager = this.dockManager1;
             this.barManager1.Form = this;
             this.barManager1.Images = this.imageCollection1;
@@ -1401,8 +1398,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1350, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1350, 0);
             // 
             // barDockControlBottom
             // 
@@ -1427,6 +1424,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             // layoutControl6
             // 
+            this.layoutControl6.Controls.Add(this.popupControlContainerMediMaty);
             this.layoutControl6.Controls.Add(this.popupContainerHtu);
             this.layoutControl6.Controls.Add(this.btnQR);
             this.layoutControl6.Controls.Add(this.btnPrescriptionAI);
@@ -1510,6 +1508,99 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.layoutControl6.Size = new System.Drawing.Size(1350, 700);
             this.layoutControl6.TabIndex = 5;
             this.layoutControl6.Text = "layoutControl6";
+            // 
+            // popupControlContainerMediMaty
+            // 
+            this.popupControlContainerMediMaty.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlContainerMediMaty.Controls.Add(this.layoutControl8);
+            this.popupControlContainerMediMaty.Location = new System.Drawing.Point(144, 336);
+            this.popupControlContainerMediMaty.Manager = this.barManager1;
+            this.popupControlContainerMediMaty.Name = "popupControlContainerMediMaty";
+            this.popupControlContainerMediMaty.Size = new System.Drawing.Size(642, 110);
+            this.popupControlContainerMediMaty.TabIndex = 15;
+            this.popupControlContainerMediMaty.Visible = false;
+            this.popupControlContainerMediMaty.CloseUp += new System.EventHandler(this.popupControlContainerMediMaty_CloseUp);
+            this.popupControlContainerMediMaty.Popup += new System.EventHandler(this.popupControlContainerMediMaty_Popup);
+            // 
+            // layoutControl8
+            // 
+            this.layoutControl8.Controls.Add(this.gridControlMediMaty);
+            this.layoutControl8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControl8.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl8.Name = "layoutControl8";
+            this.layoutControl8.Root = this.layoutControlGroup7;
+            this.layoutControl8.Size = new System.Drawing.Size(642, 110);
+            this.layoutControl8.TabIndex = 17;
+            this.layoutControl8.Text = "layoutControl8";
+            // 
+            // gridControlMediMaty
+            // 
+            this.gridControlMediMaty.Location = new System.Drawing.Point(2, 2);
+            this.gridControlMediMaty.MainView = this.gridViewMediMaty;
+            this.gridControlMediMaty.MenuManager = this.barManager1;
+            this.gridControlMediMaty.Name = "gridControlMediMaty";
+            this.gridControlMediMaty.Size = new System.Drawing.Size(638, 106);
+            this.gridControlMediMaty.TabIndex = 0;
+            this.gridControlMediMaty.ToolTipController = this.tooltipService;
+            this.gridControlMediMaty.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewMediMaty});
+            this.gridControlMediMaty.Click += new System.EventHandler(this.gridControlMediMaty_Click);
+            // 
+            // gridViewMediMaty
+            // 
+            this.gridViewMediMaty.Appearance.FocusedCell.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.gridViewMediMaty.Appearance.FocusedCell.ForeColor = System.Drawing.Color.White;
+            this.gridViewMediMaty.Appearance.FocusedCell.Options.UseBackColor = true;
+            this.gridViewMediMaty.Appearance.FocusedCell.Options.UseForeColor = true;
+            this.gridViewMediMaty.Appearance.FocusedRow.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.gridViewMediMaty.Appearance.FocusedRow.Options.UseBackColor = true;
+            this.gridViewMediMaty.Appearance.HideSelectionRow.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.gridViewMediMaty.Appearance.HideSelectionRow.BorderColor = System.Drawing.Color.Green;
+            this.gridViewMediMaty.Appearance.HideSelectionRow.Options.UseBackColor = true;
+            this.gridViewMediMaty.Appearance.HideSelectionRow.Options.UseBorderColor = true;
+            this.gridViewMediMaty.Appearance.SelectedRow.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.gridViewMediMaty.Appearance.SelectedRow.BorderColor = System.Drawing.Color.Green;
+            this.gridViewMediMaty.Appearance.SelectedRow.Options.UseBackColor = true;
+            this.gridViewMediMaty.Appearance.SelectedRow.Options.UseBorderColor = true;
+            this.gridViewMediMaty.GridControl = this.gridControlMediMaty;
+            this.gridViewMediMaty.Name = "gridViewMediMaty";
+            this.gridViewMediMaty.OptionsBehavior.Editable = false;
+            this.gridViewMediMaty.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+            this.gridViewMediMaty.OptionsView.ShowGroupPanel = false;
+            this.gridViewMediMaty.OptionsView.ShowIndicator = false;
+            this.gridViewMediMaty.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridViewMediMaty_RowClick);
+            this.gridViewMediMaty.CustomDrawCell += new DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventHandler(this.OnCustomDrawCell);
+            this.gridViewMediMaty.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewMediMaty_RowCellStyle);
+            this.gridViewMediMaty.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gridViewMediMaty_RowStyle);
+            this.gridViewMediMaty.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewMediMaty_CustomRowCellEdit);
+            this.gridViewMediMaty.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewMediMaty_CustomUnboundColumnData);
+            this.gridViewMediMaty.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridViewMediMaty_KeyDown);
+            this.gridViewMediMaty.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gridViewMediMaty_MouseMove);
+            // 
+            // tooltipService
+            // 
+            this.tooltipService.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.tooltipService_GetActiveObjectInfo);
+            // 
+            // layoutControlGroup7
+            // 
+            this.layoutControlGroup7.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroup7.GroupBordersVisible = false;
+            this.layoutControlGroup7.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem25});
+            this.layoutControlGroup7.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup7.Name = "layoutControlGroup7";
+            this.layoutControlGroup7.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlGroup7.Size = new System.Drawing.Size(642, 110);
+            this.layoutControlGroup7.TextVisible = false;
+            // 
+            // layoutControlItem25
+            // 
+            this.layoutControlItem25.Control = this.gridControlMediMaty;
+            this.layoutControlItem25.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem25.Name = "layoutControlItem25";
+            this.layoutControlItem25.Size = new System.Drawing.Size(642, 110);
+            this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem25.TextVisible = false;
             // 
             // popupContainerHtu
             // 
@@ -2938,7 +3029,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.panelControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.panelControl1.Controls.Add(this.popupControlContainerOtherPaySource);
             this.panelControl1.Controls.Add(this.popupControlContainer1);
-            this.panelControl1.Controls.Add(this.popupControlContainerMediMaty);
             this.panelControl1.Controls.Add(this.gridControlServiceProcess);
             this.panelControl1.Controls.Add(this.navBarControlChongChiDinhInfo);
             this.panelControl1.Location = new System.Drawing.Point(2, 363);
@@ -3138,96 +3228,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.layoutControlItem38.Size = new System.Drawing.Size(354, 115);
             this.layoutControlItem38.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem38.TextVisible = false;
-            // 
-            // popupControlContainerMediMaty
-            // 
-            this.popupControlContainerMediMaty.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.popupControlContainerMediMaty.Controls.Add(this.layoutControl8);
-            this.popupControlContainerMediMaty.Location = new System.Drawing.Point(536, 122);
-            this.popupControlContainerMediMaty.Manager = this.barManager1;
-            this.popupControlContainerMediMaty.Name = "popupControlContainerMediMaty";
-            this.popupControlContainerMediMaty.Size = new System.Drawing.Size(642, 110);
-            this.popupControlContainerMediMaty.TabIndex = 15;
-            this.popupControlContainerMediMaty.Visible = false;
-            this.popupControlContainerMediMaty.CloseUp += new System.EventHandler(this.popupControlContainerMediMaty_CloseUp);
-            this.popupControlContainerMediMaty.Popup += new System.EventHandler(this.popupControlContainerMediMaty_Popup);
-            // 
-            // layoutControl8
-            // 
-            this.layoutControl8.Controls.Add(this.gridControlMediMaty);
-            this.layoutControl8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl8.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl8.Name = "layoutControl8";
-            this.layoutControl8.Root = this.layoutControlGroup7;
-            this.layoutControl8.Size = new System.Drawing.Size(642, 110);
-            this.layoutControl8.TabIndex = 17;
-            this.layoutControl8.Text = "layoutControl8";
-            // 
-            // gridControlMediMaty
-            // 
-            this.gridControlMediMaty.Location = new System.Drawing.Point(2, 2);
-            this.gridControlMediMaty.MainView = this.gridViewMediMaty;
-            this.gridControlMediMaty.MenuManager = this.barManager1;
-            this.gridControlMediMaty.Name = "gridControlMediMaty";
-            this.gridControlMediMaty.Size = new System.Drawing.Size(638, 106);
-            this.gridControlMediMaty.TabIndex = 0;
-            this.gridControlMediMaty.ToolTipController = this.tooltipService;
-            this.gridControlMediMaty.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewMediMaty});
-            this.gridControlMediMaty.Click += new System.EventHandler(this.gridControlMediMaty_Click);
-            // 
-            // gridViewMediMaty
-            // 
-            this.gridViewMediMaty.Appearance.FocusedCell.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.gridViewMediMaty.Appearance.FocusedCell.Options.UseBackColor = true;
-            this.gridViewMediMaty.Appearance.FocusedRow.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.gridViewMediMaty.Appearance.FocusedRow.Options.UseBackColor = true;
-            this.gridViewMediMaty.Appearance.HideSelectionRow.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.gridViewMediMaty.Appearance.HideSelectionRow.BorderColor = System.Drawing.Color.Green;
-            this.gridViewMediMaty.Appearance.HideSelectionRow.Options.UseBackColor = true;
-            this.gridViewMediMaty.Appearance.HideSelectionRow.Options.UseBorderColor = true;
-            this.gridViewMediMaty.Appearance.SelectedRow.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.gridViewMediMaty.Appearance.SelectedRow.BorderColor = System.Drawing.Color.Green;
-            this.gridViewMediMaty.Appearance.SelectedRow.Options.UseBackColor = true;
-            this.gridViewMediMaty.Appearance.SelectedRow.Options.UseBorderColor = true;
-            this.gridViewMediMaty.GridControl = this.gridControlMediMaty;
-            this.gridViewMediMaty.Name = "gridViewMediMaty";
-            this.gridViewMediMaty.OptionsBehavior.Editable = false;
-            this.gridViewMediMaty.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
-            this.gridViewMediMaty.OptionsView.ShowGroupPanel = false;
-            this.gridViewMediMaty.OptionsView.ShowIndicator = false;
-            this.gridViewMediMaty.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridViewMediMaty_RowClick);
-            this.gridViewMediMaty.CustomDrawCell += new DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventHandler(this.OnCustomDrawCell);
-            this.gridViewMediMaty.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewMediMaty_RowCellStyle);
-            this.gridViewMediMaty.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewMediMaty_CustomRowCellEdit);
-            this.gridViewMediMaty.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewMediMaty_CustomUnboundColumnData);
-            this.gridViewMediMaty.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridViewMediMaty_KeyDown);
-            this.gridViewMediMaty.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gridViewMediMaty_MouseMove);
-            // 
-            // tooltipService
-            // 
-            this.tooltipService.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.tooltipService_GetActiveObjectInfo);
-            // 
-            // layoutControlGroup7
-            // 
-            this.layoutControlGroup7.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
-            this.layoutControlGroup7.GroupBordersVisible = false;
-            this.layoutControlGroup7.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem25});
-            this.layoutControlGroup7.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlGroup7.Name = "layoutControlGroup7";
-            this.layoutControlGroup7.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup7.Size = new System.Drawing.Size(642, 110);
-            this.layoutControlGroup7.TextVisible = false;
-            // 
-            // layoutControlItem25
-            // 
-            this.layoutControlItem25.Control = this.gridControlMediMaty;
-            this.layoutControlItem25.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem25.Name = "layoutControlItem25";
-            this.layoutControlItem25.Size = new System.Drawing.Size(642, 110);
-            this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem25.TextVisible = false;
             // 
             // gridControlServiceProcess
             // 
@@ -4984,7 +4984,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // txtPreviousUseDay
             // 
             this.txtPreviousUseDay.EditValue = "";
-            this.txtPreviousUseDay.Location = new System.Drawing.Point(775, 3);
+            this.txtPreviousUseDay.Location = new System.Drawing.Point(775, 2);
             this.txtPreviousUseDay.MenuManager = this.barManager1;
             this.txtPreviousUseDay.Name = "txtPreviousUseDay";
             this.txtPreviousUseDay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5005,7 +5005,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.layoutControl7.Controls.Add(this.spinTrua);
             this.layoutControl7.Controls.Add(this.spinChieu);
             this.layoutControl7.Controls.Add(this.spinToi);
-            this.layoutControl7.Location = new System.Drawing.Point(170, 3);
+            this.layoutControl7.Location = new System.Drawing.Point(170, 2);
             this.layoutControl7.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl7.Name = "layoutControl7";
             this.layoutControl7.Root = this.layoutControlGroup4;
@@ -5248,7 +5248,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             0,
             0,
             0});
-            this.spinSoLuongNgay.Location = new System.Drawing.Point(100, 5);
+            this.spinSoLuongNgay.Location = new System.Drawing.Point(100, 4);
             this.spinSoLuongNgay.MenuManager = this.barManager1;
             this.spinSoLuongNgay.Name = "spinSoLuongNgay";
             this.spinSoLuongNgay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5279,7 +5279,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             0,
             0,
             0});
-            this.spinTocDoTruyen.Location = new System.Drawing.Point(100, 37);
+            this.spinTocDoTruyen.Location = new System.Drawing.Point(100, 36);
             this.spinTocDoTruyen.MenuManager = this.barManager1;
             this.spinTocDoTruyen.Name = "spinTocDoTruyen";
             this.spinTocDoTruyen.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5310,7 +5310,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.cboMedicineUseForm.Enabled = false;
             this.cboMedicineUseForm.EnterMoveNextControl = true;
-            this.cboMedicineUseForm.Location = new System.Drawing.Point(381, 37);
+            this.cboMedicineUseForm.Location = new System.Drawing.Point(381, 36);
             this.cboMedicineUseForm.MenuManager = this.barManager1;
             this.cboMedicineUseForm.Name = "cboMedicineUseForm";
             this.cboMedicineUseForm.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5339,7 +5339,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             // txtTutorial
             // 
-            this.txtTutorial.Location = new System.Drawing.Point(100, 61);
+            this.txtTutorial.Location = new System.Drawing.Point(100, 60);
             this.txtTutorial.MenuManager = this.barManager1;
             this.txtTutorial.Name = "txtTutorial";
             this.txtTutorial.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -5354,7 +5354,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             // btnAddTutorial
             // 
-            this.btnAddTutorial.Location = new System.Drawing.Point(648, 61);
+            this.btnAddTutorial.Location = new System.Drawing.Point(648, 60);
             this.btnAddTutorial.Name = "btnAddTutorial";
             this.btnAddTutorial.Size = new System.Drawing.Size(78, 22);
             this.btnAddTutorial.StyleController = this.layoutControl1;
@@ -5373,7 +5373,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             0,
             0,
             0});
-            this.spinAmount.Location = new System.Drawing.Point(641, 37);
+            this.spinAmount.Location = new System.Drawing.Point(641, 36);
             this.spinAmount.Name = "spinAmount";
             this.spinAmount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinAmount.Properties.Appearance.Options.UseTextOptions = true;
@@ -5393,7 +5393,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // btnAdd
             // 
             this.btnAdd.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.TopCenter;
-            this.btnAdd.Location = new System.Drawing.Point(730, 37);
+            this.btnAdd.Location = new System.Drawing.Point(730, 36);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(67, 46);
             this.btnAdd.StyleController = this.layoutControl1;
@@ -5403,7 +5403,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             // cboHtu
             // 
-            this.cboHtu.Location = new System.Drawing.Point(235, 37);
+            this.cboHtu.Location = new System.Drawing.Point(235, 36);
             this.cboHtu.MenuManager = this.barManager1;
             this.cboHtu.Name = "cboHtu";
             this.cboHtu.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5422,7 +5422,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             // memHtu
             // 
-            this.memHtu.Location = new System.Drawing.Point(100, 87);
+            this.memHtu.Location = new System.Drawing.Point(100, 86);
             this.memHtu.MenuManager = this.barManager1;
             this.memHtu.Name = "memHtu";
             this.memHtu.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -5453,7 +5453,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lciFortxtPreviousUseDay,
             this.layoutControlItem27,
             this.layoutControlItem47});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, -1);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlGroup1.Size = new System.Drawing.Size(799, 110);
@@ -8459,6 +8459,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).EndInit();
             this.layoutControl6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMediMaty)).EndInit();
+            this.popupControlContainerMediMaty.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl8)).EndInit();
+            this.layoutControl8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlMediMaty)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewMediMaty)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupContainerHtu)).EndInit();
             this.popupContainerHtu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl11)).EndInit();
@@ -8553,14 +8561,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.repCheckConfig)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMediMaty)).EndInit();
-            this.popupControlContainerMediMaty.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl8)).EndInit();
-            this.layoutControl8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlMediMaty)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewMediMaty)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlServiceProcess)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewServiceProcess)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnDelete__MedicinePage)).EndInit();
@@ -9481,7 +9481,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem15;
         private DevExpress.XtraEditors.LabelControl lblACRPCR;
         private DevExpress.XtraLayout.LayoutControlItem lciARCPCR;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem103;
         internal DevExpress.XtraEditors.ButtonEdit memHtu;
         private DevExpress.XtraBars.PopupControlContainer popupControlContainerHtuText;
         private DevExpress.XtraGrid.GridControl gridControl1;
@@ -9492,5 +9491,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem59;
         private DevExpress.XtraBars.PopupMenu popupMenu1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem43;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem103;
     }
 }

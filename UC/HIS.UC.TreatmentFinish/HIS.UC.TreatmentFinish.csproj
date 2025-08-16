@@ -63,6 +63,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.Common\HIS.Desktop.Common.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.TreatmentEndTypeExt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
@@ -388,10 +392,6 @@
     <ProjectReference Include="..\..\HIS\Plugins\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS\Plugins\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.csproj">
-      <Project>{1b07baeb-f145-400d-b3c6-94957934a3a9}</Project>
-      <Name>HIS.Desktop.Plugins.Library.TreatmentEndTypeExt</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

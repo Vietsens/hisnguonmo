@@ -27,7 +27,7 @@ namespace HIS.UC.TreatmentFinish.ADO
     {
         public DataOutputADO() { }
         public bool IsSignExam { get; set; }
-        public bool IsPrintExam { get; set; }
+        public bool IsPrintExam { get; set; }  
         public bool IsAutoTreatmentFinish { get; set; }
         public bool IsAutoPrintGHK { get; set; }
         public bool IsSignGHK { get; set; }
@@ -103,6 +103,7 @@ namespace HIS.UC.TreatmentFinish.ADO
         public long? SurgeryBeginTime { get; set; }
         public long? SurgeryEndTime { get; set; }
         public string UsedMedicine { get; set; }
+        public string HeinPatientTypeCode { get; set; }      
 
     }
 }

@@ -1181,6 +1181,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
         public long? IsNotExpend { get; set; }
         public decimal? AMOUNT_BHYT { get; set; }
         public decimal EXPEND_AMOUNT { get; set; }
+        public bool IsDisableExpend { get; set; }
 
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeAmountHasRound { get; set; }
         public string ErrorMessageAmountHasRound { get; set; }

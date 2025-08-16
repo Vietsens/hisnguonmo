@@ -30,7 +30,7 @@ namespace MPS.Processor.Mps000014.PDO
         public V_HIS_PATIENT_TYPE_ALTER _PatyAlterBhyt { get; set; }
         public HIS_TREATMENT _Treatment { get; set; }
         public V_HIS_SERVICE_REQ _ServiceReq { get; set; }
-        public List<V_HIS_TEST_INDEX_RANGE> _TestIndexRangeAll { get; set; }
+        public List<V_HIS_TEST_INDEX_RANGE> _TestIndexRangeAll { get; set; }   
         public List<V_HIS_SERE_SERV_TEIN> _SereServTeins { get; set; }
         public decimal ratio_text { get; set; }
         public List<SereServNumOder> _SereServNumOder { get; set; }

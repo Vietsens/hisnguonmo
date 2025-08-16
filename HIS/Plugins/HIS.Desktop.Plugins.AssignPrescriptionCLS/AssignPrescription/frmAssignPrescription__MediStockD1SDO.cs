@@ -46,7 +46,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             try
             {
                 this.InitDataMetyMatyTypeInStockD();
-
+                LogSystem.Info("mediStockD1ADOs " + LogUtil.TraceData("mediStockD1ADOs.WHERE ", mediStockD1ADOs.Where(o => o.MEDICINE_TYPE_CODE == "dichdanh").ToList()));
                 //Tại màn hình kê đơn, nếu phòng mà người dùng đang làm việc có "Giới hạn thuốc được phép sử dụng" (IS_RESTRICT_MEDICINE_TYPE trong HIS_ROOM bằng true) thì danh sách thuốc khi kê thuốc trong kho chỉ hiển thị các thuốc được khai cấu hình tương ứng với phòng đấy (dữ liệu lưu trong bảng HIS_MEDICINE_TYPE_ROOM)
                 List<DMediStock1ADO> dMediStock1s = new List<DMediStock1ADO>();
                 dMediStock1s.AddRange(this.mediStockD1ADOs);
@@ -269,7 +269,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     col4.UnboundType = DevExpress.Data.UnboundColumnType.Object;
                     gridViewMediMaty.Columns.Add(col4);
 
-
                     DevExpress.XtraGrid.Columns.GridColumn col5 = new DevExpress.XtraGrid.Columns.GridColumn();
                     col5.FieldName = "REMAIN_REUSE_COUNT";
                     col5.Caption = Inventec.Common.Resource.Get.Value
@@ -278,6 +277,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     col5.Width = 60;
                     col5.VisibleIndex = 2;
+                    col5.DisplayFormat.FormatString = "#,##0.00";
                     col5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
                     gridViewMediMaty.Columns.Add(col5);
 
@@ -290,6 +290,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     col6.Width = 60;
                     col6.VisibleIndex = 2;
+                    col6.DisplayFormat.FormatString = "#,##0.00";
                     col6.UnboundType = DevExpress.Data.UnboundColumnType.Object;
                     gridViewMediMaty.Columns.Add(col6);
 
@@ -1056,16 +1057,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 LogSystem.Debug("Du lieu thuoc/vat tu theo kho sau khi loc theo cac dieu kien loc____ket qua tim thay " + (this.mediMatyTypeAvailables != null ? this.mediMatyTypeAvailables.Count : 0));
 
                 List<D_HIS_MEDI_STOCK_2> mediStockD1s = new List<D_HIS_MEDI_STOCK_2>();
+                LogSystem.Info("mediMatyTypeAvailables " + LogUtil.TraceData("mediMatyTypeAvailables.WHERE ", mediMatyTypeAvailables.Where(o => o.MEDICINE_TYPE_CODE == "dichdanh").ToList()));
                 mediStockD1s.AddRange(this.mediMatyTypeAvailables);
-
+                LogSystem.Info("mediStockD1s " + LogUtil.TraceData("mediStockD1s.WHERE ", mediStockD1s.Where(o => o.MEDICINE_TYPE_CODE == "dichdanh").ToList()));
                 if (isTSD)
                 {
                     mediStockD1s = mediStockD1s.Where(o => (o.IS_REUSABLE == 1 || o.IS_IDENTITY_MANAGEMENT == 1) && o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT).ToList();
+                    LogSystem.Info("mediStockD1s " + LogUtil.TraceData("mediStockD1s.WHERE ", mediStockD1s.Where(o => o.MEDICINE_TYPE_CODE == "dichdanh").ToList()));
                     this.ProcessMapingDataForTSD(mediStockD1s, mediStockIds);
                 }
                 else
                 {
-                    mediStockD1s = mediStockD1s.Where(o => (o.IS_REUSABLE == null || o.IS_REUSABLE != 1)).ToList();
+                    mediStockD1s = mediStockD1s.Where(o => (o.IS_REUSABLE == null || o.IS_REUSABLE != 1) && (o.IS_IDENTITY_MANAGEMENT == null || o.IS_IDENTITY_MANAGEMENT != 1)).ToList();
                     this.mediStockD1ADOs = this.ConvertToDMediStock2(mediStockD1s);
                     //this.mediStockD1ADOs = this.ConvertToDMediStock2(mediStockD1s, mediStockIds);
                 }
@@ -1082,10 +1085,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             {
                 CommonParam param = new CommonParam();
                 MOS.Filter.HisMaterialBeanView1Filter materialBeanViewFilter = new MOS.Filter.HisMaterialBeanView1Filter();
-                materialBeanViewFilter.IS_REUSABLE = true;
+                //materialBeanViewFilter.IS_REUSABLE = true;
                 materialBeanViewFilter.MEDI_STOCK_IDs = mediStockIds;
                 materialBeanViewFilter.MATERIAL_IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 materialBeanViewFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                materialBeanViewFilter.IS_REUSABLE__OR__IS_IDENTITY_MANAGEMENT = true;
 
                 var matyIds = mediStockD1s.Select(o => o.ID ?? 0).ToList();
                 var matyBeans = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_BEAN_1>>(RequestUriStore.HIS_MATERIAL_BEAN__GET_VIEW1, ApiConsumers.MosConsumer, materialBeanViewFilter, ProcessLostToken, param);
@@ -1093,7 +1097,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 
                 AutoMapper.Mapper.CreateMap<V_HIS_MATERIAL_BEAN_1, DMediStock1ADO>();
                 this.mediStockD1ADOs = AutoMapper.Mapper.Map<List<DMediStock1ADO>>(matyBeans);
-
+                LogSystem.Info("mediStockD1s " + LogUtil.TraceData("mediStockD1s.WHERE ", mediStockD1s.Where(o => o.MEDICINE_TYPE_CODE == "dichdanh").ToList()));
                 foreach (var item in this.mediStockD1ADOs)
                 {
                     item.USE_COUNT_DISPLAY = String.Format("{0} / {1}", item.REMAIN_REUSE_COUNT, item.TDL_MATERIAL_MAX_REUSE_COUNT);
@@ -1139,6 +1143,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     }
                 }
                 this.mediStockD1ADOs = this.mediStockD1ADOs.Where(o => o.ID > 0).ToList();
+                LogSystem.Info("mediStockD1ADOs " + LogUtil.TraceData("mediStockD1ADOs.WHERE ", mediStockD1ADOs.Where(o => o.MEDICINE_TYPE_CODE == "dichdanh").ToList()));
             }
             catch (Exception ex)
             {

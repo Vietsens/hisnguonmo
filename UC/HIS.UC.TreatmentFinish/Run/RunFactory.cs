@@ -26,14 +26,14 @@ namespace HIS.UC.TreatmentFinish.Run
 {
     class RunFactory
     {
-        internal static IRun MakeIDepositRequestList(CommonParam param, object data)
+        internal static IRun MakeIDepositRequestList(CommonParam param, object data, string bhyt)
         {
             IRun result = null;
             try
             {
                 if (data is ADO.TreatmentFinishInitADO)
                 {
-                    result = new RunBehavior(param, (ADO.TreatmentFinishInitADO)data);
+                    result = new RunBehavior(param, (ADO.TreatmentFinishInitADO)data, bhyt);
                 }
                 if (result == null) throw new NullReferenceException();
             }

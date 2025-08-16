@@ -112,7 +112,7 @@
     </Reference>
     <Reference Include="HIS.UC.MenuPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.MenuPrint.dll</HintPath>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.MenuPrint.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.PatientSelect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

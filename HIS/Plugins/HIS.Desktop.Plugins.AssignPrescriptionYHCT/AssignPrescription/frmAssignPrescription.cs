@@ -70,6 +70,7 @@ using DevExpress.XtraBars;
 using HIS.Desktop.Plugins.Library.PrintBordereau.ADO;
 using HIS.Desktop.Plugins.Library.PrintBordereau.Base;
 using HIS.Desktop.Plugins.Library.PrintBordereau;
+using HIS.UC.TreatmentFinish.Run;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 {
@@ -178,6 +179,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         internal UserControl ucTreatmentFinish;
         internal PatientSelectProcessor patientSelectProcessor;
         internal UserControl ucPatientSelect;
+        private UCTreatmentFinish ucTreatmentFinishControl = new UCTreatmentFinish();
 
         int theRequiredWidth = 900, theRequiredHeight = 130;
         bool isShowContainerMediMaty = false;

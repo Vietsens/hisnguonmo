@@ -675,11 +675,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             }
                         }
 
-                        result.Document.ReplaceAll("<#CONCLUDE_PRINT;>", dicSereServExt[sereServ.ID].CONCLUDE, SearchOptions.CaseSensitive);
-                        result.Document.ReplaceAll("<#NOTE_PRINT;>", dicSereServExt[sereServ.ID].NOTE, SearchOptions.CaseSensitive);
-                        result.Document.ReplaceAll("<#DESCRIPTION_PRINT;>", dicSereServExt[sereServ.ID].DESCRIPTION, SearchOptions.CaseSensitive);
-                        result.Document.ReplaceAll("<#SUBCLINICAL_RESULT_LOGINNAME;>", dicSereServExt[sereServ.ID].SUBCLINICAL_RESULT_LOGINNAME, SearchOptions.CaseSensitive);
-                        result.Document.ReplaceAll("<#SUBCLINICAL_RESULT_USERNAME;>", dicSereServExt[sereServ.ID].SUBCLINICAL_RESULT_USERNAME, SearchOptions.CaseSensitive);
+                        result.Document.ReplaceAll("<#CONCLUDE_PRINT;>", dicSereServExt[sereServ.ID].CONCLUDE ?? "", SearchOptions.CaseSensitive);
+                        result.Document.ReplaceAll("<#NOTE_PRINT;>", dicSereServExt[sereServ.ID].NOTE ?? "", SearchOptions.CaseSensitive);
+                        result.Document.ReplaceAll("<#DESCRIPTION_PRINT;>", dicSereServExt[sereServ.ID].DESCRIPTION ?? "", SearchOptions.CaseSensitive);
+                        result.Document.ReplaceAll("<#SUBCLINICAL_RESULT_LOGINNAME;>", dicSereServExt[sereServ.ID].SUBCLINICAL_RESULT_LOGINNAME ?? "", SearchOptions.CaseSensitive);
+                        result.Document.ReplaceAll("<#SUBCLINICAL_RESULT_USERNAME;>", dicSereServExt[sereServ.ID].SUBCLINICAL_RESULT_USERNAME ?? "", SearchOptions.CaseSensitive);
                         result.Document.ReplaceAll("<#END_TIME_FULL_STR;>", MPS.ProcessorBase.GlobalQuery.GetCurrentTimeSeparateNoSecond(
                                 Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dicSereServExt[sereServ.ID].END_TIME ?? 0) ?? DateTime.Now), SearchOptions.CaseSensitive);
                         result.Document.ReplaceAll("<#BEGIN_TIME_FULL_STR;>", MPS.ProcessorBase.GlobalQuery.GetCurrentTimeSeparateNoSecond(

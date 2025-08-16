@@ -112,5 +112,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
         public const string HIS_MEDISTOCKDISDO_GET2 = "api/HisMediStock/GetDHisMediStock2";
 
         public const string HIS_PATIENT__GET_CARD_BALANCE = "api/HisPatient/GetCardBalance";
+
+        public const string HIS_MEDICINE_BEAN__GET_VIEW1 = "api/HisMedicineBean/GetView1";
     }
 }
