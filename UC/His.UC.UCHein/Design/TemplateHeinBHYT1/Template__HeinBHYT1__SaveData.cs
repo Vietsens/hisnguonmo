@@ -72,6 +72,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                         //    patientProfileSDO.HisTreatment.TRANSFER_IN_ICD_ID = null;
                         patientProfileSDO.HisTreatment.IS_TRANSFER_IN = 1;
                         patientProfileSDO.HisTreatment.TRANSFER_IN_ICD_CODE = this.txtMaChanDoanTD.Text.Trim();
+                        //qtcode
+                        patientProfileSDO.HisTreatment.HEIN_PATIENT_TYPE_CODE = this.txtPatientCode.Text.Trim();
                         if (chkHasDialogText.Checked)
                             patientProfileSDO.HisTreatment.TRANSFER_IN_ICD_NAME = this.txtDialogText.Text.Trim();
                         else
@@ -128,6 +130,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     patientProfileSDO.HisTreatment.TRANSFER_IN_TIME_FROM = null;
                     patientProfileSDO.HisTreatment.TRANSFER_IN_TIME_TO = null;
                     patientProfileSDO.HisTreatment.TRANSFER_IN_CODE = null;
+                    //patientProfileSDO.HisTreatment.HEIN_PATIENT_TYPE_CODE = this.txtPatientCode.Text.Trim();
                 }
             }
             catch (Exception ex)
@@ -144,6 +147,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         {
             try
             {
+                if (patientProfileSDO.HisTreatment == null)
+                {
+                    patientProfileSDO.HisTreatment = new MOS.EFMODEL.DataModels.HIS_TREATMENT();
+                }
                 if (patientProfileSDO.HisPatientTypeAlter == null)
                     patientProfileSDO.HisPatientTypeAlter = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER();
 
@@ -156,7 +163,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 }
                 else
                     patientProfileSDO.HisPatientTypeAlter.HAS_BIRTH_CERTIFICATE = MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.FALSE;
-
+                patientProfileSDO.HisTreatment.HEIN_PATIENT_TYPE_CODE = txtPatientCode.Text.Trim(); 
                 patientProfileSDO.HisPatientTypeAlter.HEIN_CARD_NUMBER = Utils.HeinUtils.TrimHeinCardNumber(this.txtSoThe.Text);
                 patientProfileSDO.HisPatientTypeAlter.RIGHT_ROUTE_CODE = MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE;
                 patientProfileSDO.HisPatientTypeAlter.RIGHT_ROUTE_TYPE_CODE = (this.cboHeinRightRoute.EditValue ?? "").ToString();

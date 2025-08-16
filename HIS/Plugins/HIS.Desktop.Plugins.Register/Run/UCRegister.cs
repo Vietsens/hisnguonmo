@@ -87,6 +87,7 @@ namespace HIS.Desktop.Plugins.Register.Run
         internal string typeCodeFind__CCCDCMND = "CCCD/CMND";
         internal long programId = 0;
         internal string appointmentCode = "";
+        internal string heinPatientTypeCode = "";
         internal long _TreatmnetIdByAppointmentCode = 0;
         internal bool isNotPatientDayDob = false;
         internal List<long> serviceReqPrintIds { get; set; }

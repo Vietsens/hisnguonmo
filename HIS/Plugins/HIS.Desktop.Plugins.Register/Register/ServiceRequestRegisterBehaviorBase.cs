@@ -82,6 +82,8 @@ namespace HIS.Desktop.Plugins.Register.Register
         protected long emergencyWTimeId { get; set; }
         protected bool chkEmergency { get; set; }
         protected long programId { get; set; }
+        //qtcode
+        protected string HeinPatientTypeCode { get; set; }
         protected string appointmentCode { get; set; }
         protected string codeFind { get; set; }
         protected string typeCodeFind__MaBN { get; set; }
@@ -199,6 +201,8 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.typeCodeFind__CCCDCMND = ucServiceRequestRegiter.typeCodeFind__CCCDCMND;
                 this.programId = ucServiceRequestRegiter.programId;
                 this.appointmentCode = ucServiceRequestRegiter.appointmentCode;
+                //qtcode
+                //this.HeinPatientTypeCode = ucServiceRequestRegiter.heinPatientTypeCode;
                 if (ucServiceRequestRegiter.cboMilitaryRank.EditValue != null)
                     this.militaryId = (long)(ucServiceRequestRegiter.cboMilitaryRank.EditValue);
                 this.departmentId = ucServiceRequestRegiter.departmentId;
@@ -464,7 +468,6 @@ namespace HIS.Desktop.Plugins.Register.Register
                 {
                     this.patientProfile.DepartmentId = departmentId;
                 }
-
                 if (this.programId != 0)
                     this.patientProfile.HisTreatment.PROGRAM_ID = this.programId;
 
@@ -525,11 +528,12 @@ namespace HIS.Desktop.Plugins.Register.Register
                     if (patientTypeId == HisConfigCFG.PatientTypeId__BHYT || patientTypeId == HisConfigCFG.PatientTypeId__QN)
                     {
                         this.uCMainHein.UpdateDataFormIntoPatientTypeAlter(this.ucHein__BHYT, dataPatientProfile);
+
                         Mapper.CreateMap<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER, MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER>();
                     }
 
                     patientProfile.HisPatientTypeAlter = Mapper.Map<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER, MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER>(dataPatientProfile.HisPatientTypeAlter);
-
+                    patientProfile.HisTreatment.HEIN_PATIENT_TYPE_CODE = dataPatientProfile.HisTreatment.HEIN_PATIENT_TYPE_CODE; 
                     if (patientTypeId == HisConfigCFG.PatientTypeId__KSK && this.kskContractId.HasValue)
                     {
                         patientProfile.HisPatientTypeAlter.KSK_CONTRACT_ID = this.kskContractId.Value;
