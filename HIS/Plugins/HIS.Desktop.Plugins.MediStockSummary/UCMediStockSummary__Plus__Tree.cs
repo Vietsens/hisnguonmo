@@ -14,7 +14,7 @@
  *  
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+ */  
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.MediStockSummary.CreateReport;
 using HIS.UC.HisMaterialInStock.ADO;
@@ -45,7 +45,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         private void medicineType_GetSelectImage(HisMedicineInStockSDO data, DevExpress.XtraTreeList.GetSelectImageEventArgs e)
         {
             try
-            {
+            {  
                 if (this.mediStockIds.Count == 1)
                 {
                     if (data != null)
@@ -224,10 +224,10 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         private void medicineType_NodeCellStyle(HisMedicineInStockADO data, DevExpress.XtraTreeList.GetCustomNodeCellStyleEventArgs e)
         {
             try
-            {  
+            {
                 if (data != null)
                 {
-                    if (data.IS_PRIORITY == 1)
+                    if (data.IS_PRIORITY == 1 && !e.Node.HasChildren)
                     {
                         e.Appearance.ForeColor = Color.Blue;
                         return;
@@ -238,6 +238,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         {
                             e.Appearance.ForeColor = Color.Red;
                         }
+
                     }
                 }
             }
@@ -551,13 +552,15 @@ namespace HIS.Desktop.Plugins.MediStockSummary
 
         private void materialType_NodeCellStyle(HisMaterialInStockADO data, DevExpress.XtraTreeList.GetCustomNodeCellStyleEventArgs e)
         {
+            
             try
             {
                 if (data != null)
                 {
-                    if (data.IS_PRIORITY == 1)
+                    if (data.IS_PRIORITY == 1 && !e.Node.HasChildren)
                     {
                         e.Appearance.ForeColor = Color.Blue;
+
                         return;
                     }
                     if (data.ALERT_MIN_IN_STOCK.HasValue && e.Node.HasChildren)
@@ -565,6 +568,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         if (data.TotalAmount < data.ALERT_MIN_IN_STOCK)
                         {
                             e.Appearance.ForeColor = Color.Red;
+                            
                         }
                     }
                 }
@@ -573,6 +577,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+           
         }
 
         private void materialType_CustomDrawNodeCell(HisMaterialInStockADO data, DevExpress.XtraTreeList.CustomDrawNodeCellEventArgs e)
@@ -657,32 +662,53 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 if (data != null)
                 {
                     mediStockAdo = data;
-                    if (mediStockAdo.IS_LEAF == 1 && node != null && !node.HasChildren) mediStockAdo.NotHasChildren = true;
+                    if (mediStockAdo.IS_LEAF == 1 && node != null && !node.HasChildren)
+                        mediStockAdo.NotHasChildren = true;
+
                     dXmenu.Click += Medicine_RightMouseClick;
-                    dXmenu.Caption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_XEM_LICH_SU_XUAT_NHAP_THUOC", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    dXmenu.Caption = Inventec.Common.Resource.Get.Value(
+                        "IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_XEM_LICH_SU_XUAT_NHAP_THUOC",
+                        Base.ResourceLangManager.LanguageUCMediStockSummary,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     dXmenuItem.Add(dXmenu);
 
                     if (this.mediStockIds != null && mediStockIds.Count == 1)
                     {
                         var dxmenu1 = new DevExpress.Utils.Menu.DXMenuItem();
                         dxmenu1.Click += Medicine_Pay_Available_RightMouseClick;
-                        dxmenu1.Caption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_TRA_KHA_DUNG", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                        dxmenu1.Caption = Inventec.Common.Resource.Get.Value(
+                            "IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_TRA_KHA_DUNG",
+                            Base.ResourceLangManager.LanguageUCMediStockSummary,
+                            Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                         dXmenuItem.Add(dxmenu1);
                     }
-                    var dxmenuEditMedicine = new DevExpress.Utils.Menu.DXMenuItem();
-                    dxmenuEditMedicine.Caption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_SUA_THONG_TIN_LO_THUOC", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                    dxmenuEditMedicine.Click += EditMedicineBatch;
-                    dXmenuItem.Add(dxmenuEditMedicine);
+                    List<HisMedicineInStockADO> allNodes = hisMediInStockProcessor
+      .GetListAll(ucMedicineInfo)
+      .Select(x => new HisMedicineInStockADO(x))
+      .ToList();
+                    bool IsLeafNode(HisMedicineInStockADO nodeItem, List<HisMedicineInStockADO> nodes)
+                    {
+                        return !nodes.Any(x => x.ParentNodeId == nodeItem.NodeId);
+                    }
+
+                    if (IsLeafNode(data, allNodes))
+                    {
+                        var dxmenuEditMedicine = new DevExpress.Utils.Menu.DXMenuItem();
+                        dxmenuEditMedicine.Caption = Inventec.Common.Resource.Get.Value(
+                            "IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_SUA_THONG_TIN_LO_THUOC",
+                            Base.ResourceLangManager.LanguageUCMediStockSummary,
+                            Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                        dxmenuEditMedicine.Click += EditMedicineBatch;
+                        dXmenuItem.Add(dxmenuEditMedicine);
+                    }
 
                 }
-
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return dXmenuItem;
-
         }
         // Thông tin lô thuốc
         private void EditMedicineBatch(object sender, EventArgs e)
@@ -797,13 +823,30 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         dXmenuItem.Add(dxMenu1);
                     }
 
-                    var dxmenuEditMaterial = new DevExpress.Utils.Menu.DXMenuItem();
-                    dxmenuEditMaterial.Caption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_SUA_THONG_TIN_LO_VAT_TU", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                    dxmenuEditMaterial.Click += EditMaterialBatch;
-                    dXmenuItem.Add(dxmenuEditMaterial);
+
+                    List<HisMaterialInStockADO> allNodes = hisMateInStockProcessor
+      .GetListAll(ucMaterialInfo)
+      .Select(x => new HisMaterialInStockADO(x))
+      .ToList();
+                    bool IsLeafNode(HisMaterialInStockADO nodeItem, List<HisMaterialInStockADO> nodes)
+                    {
+                        return !nodes.Any(x => x.ParentNodeId == nodeItem.NodeId);
+                    }
+
+                    if (IsLeafNode(data, allNodes))
+                    {   
+                        var dxmenuEditMaterial = new DevExpress.Utils.Menu.DXMenuItem();
+                        dxmenuEditMaterial.Caption = Inventec.Common.Resource.Get.Value(
+                            "IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_SUA_THONG_TIN_LO_THUOC",
+                            Base.ResourceLangManager.LanguageUCMediStockSummary,
+                            Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                        dxmenuEditMaterial.Click += EditMaterialBatch;
+                        dXmenuItem.Add(dxmenuEditMaterial);
+                    }
+
 
                 }
-            }
+            }  
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
