@@ -61,6 +61,10 @@
     <Reference Include="HIS.Common.Treatment">
       <HintPath>..\..\..\..\lib\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.ADO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Common">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Common\HIS.Desktop.Common.dll</HintPath>
     </Reference>
@@ -223,9 +227,10 @@
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -236,7 +241,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO">
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MOS.UTILITY">
@@ -290,11 +296,11 @@
     </Reference>
     <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\SDA\SDA.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\SDA.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="SDA.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\SDA\SDA.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\SDA.SDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -451,6 +457,7 @@
     <Compile Include="Validation\ResultValidationRule.cs" />
     <Compile Include="Validation\TimeFinishValidationRule.cs" />
     <Compile Include="Validation\ValidateMaxLength.cs" />
+    <Compile Include="Validation\ValidateObjectCode.cs" />
     <Compile Include="Validation\ValidateRequireAndMaxLength.cs" />
     <Compile Include="Validation\ValidateTxtRule.cs" />
     <Compile Include="Validation\ValidateWorkPlace.cs" />
@@ -517,10 +524,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
-      <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
-      <Name>HIS.Desktop.ADO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

@@ -32,6 +32,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
     {
         private const string KEY__HIS_DESKTOP_PLUGINS_TREATMENTFINISH_ENDDEAPRTMENTSUBSHEADOPTIOIN = "HIS.Desktop.Plugins.TreatmentFinish.EndDepartmentSubsHeadOption";
 
+     
+        
+
         public const string KEY__MOS_HIS_SERVICE_REQ_NUM_ORDER_ISSUE_OPTION = "MOS.HIS_SERVICE_REQ.NUM_ORDER_ISSUE_OPTION";
         internal const string SaveTemp = "HIS.Desktop.Plugins.TreatmentFinish.SaveTemp";
         internal const string TREATMENT_RESULT_CODE_DEFAULT_OF_EXAM = "MOS.HIS_TREATMENT_RESULT.TREATMENT_RESULT_CODE.DEFAULT_OF_EXAM";
@@ -70,6 +73,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         private const string KEY__TIME_TO_CREATE_NEW_TREATMENT_IN_NEW_MONTH = "HIS.Desktop.Plugins.TreatmentFinish.TimeToCreateNewTreatmentInNewMonth";
 
         private const string KEY__PATHOLOCICAL_PROCESS_OPTION = "HIS.Desktop.Plugins.TreatmentFinish.PathologicalProcessOption";
+
+        private const string KEY__ISREQUIREDPATHOLOGICALPROCESSTRANSFERPATIENTBHYT = "HIS.Desktop.Plugins.TreatmentFinish.IsRequiredPathologicalProcessTransferPatientBHYT";
+
+
         private const string KEY__WARNING_UNFINISHED_SERVICE_OPTION = "HIS.Desktop.Plugins.TreatmentFinish.WarningUnfinishedServiceOption";
         private const string KEY__MustChooseSeviceExam = "HIS.Desktop.Plugins.TreatmentFinish.MustChooseSeviceExam.Option";
         private const string KEY__IsAllowTreatmentFinishDepartmentIsActiveFee = "HIS.Desktop.Plugins.TreatmentFinish.IsAllowTreatmentFinishDepartmentIsActiveFee";
@@ -82,6 +89,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         internal static string MustChooseSeviceExamOption;
         internal static string WarningUnfinishedServiceOption;
         internal static string PathologicalProcessOption;
+        internal static string IsRequiredPathologicalProcessTransferPatientBHYT;
         internal static string CheckingRationOption;
         internal static string SetDefaultTreatmentEndType;
         internal static string TreatmentResultDefault;
@@ -118,16 +126,20 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
 
         internal static string ENDDEAPRTMENTSUBSHEADOPTIOIN;
 
+       
         internal static void GetConfigKey()
         {
             try
             {
+
                 ENDDEAPRTMENTSUBSHEADOPTIOIN = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__HIS_DESKTOP_PLUGINS_TREATMENTFINISH_ENDDEAPRTMENTSUBSHEADOPTIOIN);
                 IsCheckSubIcdExceedLimit = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsCheckSubIcdExceedLimit);
                 OptionTreatmentEndTypeIsTransfer = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_TreatmentEndTypeIsTransfer);
                 MustChooseSeviceExamOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MustChooseSeviceExam);
                 WarningUnfinishedServiceOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__WARNING_UNFINISHED_SERVICE_OPTION);
                 PathologicalProcessOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__PATHOLOCICAL_PROCESS_OPTION);
+
+                IsRequiredPathologicalProcessTransferPatientBHYT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__ISREQUIREDPATHOLOGICALPROCESSTRANSFERPATIENTBHYT);
                 CheckingRationOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CHECKING_RATION_OPTION);
                 NumOrderIssueOption = "1";
                 AutoCreateWhenAppointment = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_HIS_TREATMENT_AUTO_CREATE_WHEN_APPOINTMENT);

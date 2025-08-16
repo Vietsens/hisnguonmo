@@ -53,15 +53,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 ValidationResult();
                 ValidationMaxLength(txtMethod, 3000);
                 ValidationMaxLength(txtAdvised, 500);
-
+                
                 if (ConfigKey.PathologicalProcessOption == "1" && currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)
                 {
-                    layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
+                   layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
                     ValidateRequired(txtDauHieuLamSang);
                 }
                 else if (ConfigKey.PathologicalProcessOption == "2" && (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY))
                 {
-                    layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
+                   layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
                     ValidateRequired(txtDauHieuLamSang);
                 }
                 
@@ -79,9 +79,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 MOS.EFMODEL.DataModels.HIS_TREATMENT_END_TYPE data = this.hisTreatmentEndTypes.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentEndType.EditValue ?? 0).ToString()));
                 if ((data != null && data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN) || (cboTreatmentEndType.EditValue != null && Int64.Parse(cboTreatmentEndType.EditValue.ToString()) == 2))
                 {
-                    layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    //layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
                     ValidateTextEdit(txtDauHieuLamSang);
                 }
+                
             }
             catch (Exception ex)
             {
@@ -214,6 +215,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        
 
         private void ValidationMaxLengthAndRequire(BaseEdit memoEdit, int? maxLength)
         {
