@@ -42,6 +42,7 @@ using System.Linq;
 using System.Resources;
 using System.Windows.Forms;
 
+
 namespace His.UC.UCHein.Design.TemplateHeinBHYT1
 {
     public partial class Template__HeinBHYT1 : UserControl
@@ -174,10 +175,23 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 Inventec.Common.Logging.LogSystem.Debug("Template__HeinBHYT1_Load()");
                 this.SetCaptionByLanguageKeyNew();
                 Config.HisConfigCFG.LoadConfig();
+                ResetPatientCode(); 
                 if (this.isDefaultInit)
                     this.InitData(this.entity);
             }
             catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ResetPatientCode()
+        {
+            try
+            {
+                txtPatientCode.Text = "";
+            }
+            catch(Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
