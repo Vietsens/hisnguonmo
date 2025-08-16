@@ -729,10 +729,13 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     }
                     else
                     {
-                        long id = data.EXP_MEST_MEDI_MATE_ID;
+                        var update = new MOS.SDO.HisExpMestMaterialIsUsedSDO();
+                        update.ExpMestMaterialId = data.EXP_MEST_MEDI_MATE_ID;
+                        update.UsedTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
                         if (data.IS_USED == true)
                         {
-                            var lstexpmestmaterial = new BackendAdapter(param).Post<HIS_EXP_MEST_MATERIAL>("api/HisExpMestMaterial/Unused", ApiConsumers.MosConsumer, id, null);
+                            var lstexpmestmaterial = new BackendAdapter(param)
+                                .Post<HIS_EXP_MEST_MATERIAL>("api/HisExpMestMaterial/Unused", ApiConsumers.MosConsumer, update, param);
                             if (lstexpmestmaterial != null)
                             {
                                 success = true;
@@ -743,15 +746,13 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                         }
                         else
                         {
-                            MOS.SDO.HisExpMestMaterialIsUsedSDO update1 = new MOS.SDO.HisExpMestMaterialIsUsedSDO();
-                            update1.UsedTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
-                            update1.ExpMestMaterialId = id;
-                            var lstexpmestmaterial = new BackendAdapter(param).Post<HIS_EXP_MEST_MATERIAL>("api/HisExpMestMaterial/Used", ApiConsumers.MosConsumer, update1, null);
+                            var lstexpmestmaterial = new BackendAdapter(param)
+                                .Post<HIS_EXP_MEST_MATERIAL>("api/HisExpMestMaterial/Used", ApiConsumers.MosConsumer, update, param);
                             if (lstexpmestmaterial != null)
                             {
                                 success = true;
                                 data.IS_USED = true;
-                                data.USED_TIME = update1.UsedTime;
+                                data.USED_TIME = update.UsedTime;
                             }
 
                         }
