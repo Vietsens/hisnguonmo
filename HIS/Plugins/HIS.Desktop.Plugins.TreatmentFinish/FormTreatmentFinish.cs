@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
+using System;  
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -77,6 +77,8 @@ using System.Resources;
 using Inventec.UC.Login.Base;
 using HIS.UC.Icd.ADO;
 using IcdADO = HIS.Desktop.Plugins.TreatmentFinish.ADO.IcdADO;
+using HIS.Desktop.Plugins.Library.PrintOtherForm.Config;
+
 
 namespace HIS.Desktop.Plugins.TreatmentFinish
 {
@@ -176,6 +178,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         public bool XemTruocKhiIn { get; set; }
         public bool KyPhieuHenKham { get; set; }
         bool isFinished = false;
+
+        ///private const string KEY_PathologicalProcessOption = "HIS.Desktop.Plugins.TreatmentFinish.PathologicalProcessOption";
+        /// <summary>
+        /// internal static int PathologicalProcessOption;
+        /// </summary>
+        
         #endregion
 
         #region Construct
@@ -237,7 +245,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
         }
         #endregion
-
+           
         #region Private method
         HIS_TRACKING tracking { get; set; }
         private void CreateThreadGetData1()
@@ -1522,7 +1530,19 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 }
                 txtStoreCode.Text = currentHisTreatment.STORE_CODE;
                 txtKskCode.Text = currentHisTreatment.HRM_KSK_CODE;
-
+                // huannh
+                txtObjectCode.Text = currentHisTreatment.HEIN_PATIENT_TYPE_CODE;
+                var warningConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode");
+                if (currentHisTreatment.TDL_PATIENT_TYPE_ID == 1 && warningConfig == "3")
+                    layoutControlItem48.AppearanceItemCaption.ForeColor = Color.Maroon;
+                else
+                    layoutControlItem48.AppearanceItemCaption.ForeColor = Color.Black;
+                if (currentHisTreatment.TDL_PATIENT_TYPE_ID == 1 && warningConfig == "1")
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Vui lòng kiểm tra lại mã đối tượng của hồ sơ điều trị.",
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
 
             }
             catch (Exception ex)
@@ -2328,8 +2348,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            string input = txtObjectCode.Text.Trim();
+
+            
+              
+            
+            if (!System.Text.RegularExpressions.Regex.IsMatch(input, @"^[0-9.]+$"))
+            {
+                dxErrorProvider1.SetError(txtObjectCode, "Chỉ cho phép nhập số và dấu chấm", ErrorType.Warning);
+                txtObjectCode.Focus();
+                return;
+            }
+            dxErrorProvider1.ClearErrors();
+
             LogTheadInSessionInfo(save, "btnSave_Click");
-        }
+            txtObjectCode.ReadOnly = true;
+        }   
         private bool CheckWarningUnfinishedServiceOption()
         {
             bool valid = true;
@@ -2510,17 +2544,127 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             return isValid;
         }
         private async void save()
-        {
+        {  
             try
             {
+                //huannh
+
+                long? treatmentEndTypeId = null;
+                if (cboTreatmentEndType.EditValue != null)
+                {
+                    long temp = Convert.ToInt32(cboTreatmentEndType.EditValue);
+                    treatmentEndTypeId = temp;
+
+                }
+
+                //if (treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
+                //{
+                //    bool isBHYTPatient = currentHisTreatment.TDL_PATIENT_TYPE_ID == HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT;
+                //    bool cond1 = (isBHYTPatient && Config.ConfigKey.IsRequiredPathologicalProcessTransferPatientBHYT == "1");
+
+                //    bool isNoiTru = currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU;
+                //    bool isNgoaiTru = currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU;
+                //    bool isBanNgay = currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY;
+
+                //    string option = Config.ConfigKey.PathologicalProcessOption;
+
+                //    bool cond2 =
+                //        (option == "1" && isNgoaiTru) ||
+                //    (option == "2" && (isNoiTru || isNgoaiTru || isBanNgay));
+                //   // bool isValidate = false;
+
+
+                //    if ((cond1 || cond2) && string.IsNullOrWhiteSpace(txtDauHieuLamSang.Text))
+
+                //    {
+                //        if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                //                "Bắt buộc nhập quá trình bệnh lý đối với bệnh nhân chuyển viện",
+                //                "Thông báo", MessageBoxButtons.OK) == DialogResult.OK)
+                //        {
+                //            txtDauHieuLamSang.Focus();
+                //            txtDauHieuLamSang.SelectAll();
+                //        }
+                //        return;
+                //    }
+                //    else
+                //    {
+                //        layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Black;
+                //        dxValidationProvider.SetValidationRule(txtDauHieuLamSang, null);
+                //    }
+                //}
+                //else
+                //{
+                //    layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Black;
+                //    dxValidationProvider.SetValidationRule(txtDauHieuLamSang, null);
+                //}
+
+
+
+
+
+
+
+                //save Mã đối tượng
+                var warningConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode");
+                bool isBHYT = currentHisTreatment.TDL_PATIENT_TYPE_ID == 1;
+
+                string objectCode = txtObjectCode.Text?.Trim();
+                if (isBHYT)
+                {
+                    if (warningConfig == "2" && string.IsNullOrEmpty(objectCode))
+                    {
+                        var result = DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Chưa nhập mã đối tượng của hồ sơ điều trị. Bạn có muốn tiếp tục?",
+                            "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (result != DialogResult.Yes)
+                        {
+                            txtObjectCode.Focus();
+                            return;
+                        }
+                    }
+                    else if (warningConfig == "3" && string.IsNullOrEmpty(objectCode))
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Chưa nhập mã đối tượng của hồ sơ điều trị",
+                            "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        txtObjectCode.Focus();
+                        return;
+                    }
+                }
+
+              
+                if (hisTreatmentFinishSDO_process == null)
+                    hisTreatmentFinishSDO_process = new MOS.SDO.HisTreatmentFinishSDO();
+                hisTreatmentFinishSDO_process.HeinPatientTypeCode = txtObjectCode.Text?.Trim();
+                Inventec.Common.Logging.LogSystem.Debug(
+     Inventec.Common.Logging.LogUtil.TraceData(
+         "txtObjectCode Filter input:",
+         hisTreatmentFinishSDO_process.HeinPatientTypeCode
+     )
+ );
+
+
+
+                //
                 if (!btnSave.Enabled) return;
                 bool success = false;
                 this.positionHandle = -1;
-                if (cboTreatmentEndType.EditValue != null && Int64.Parse(cboTreatmentEndType.EditValue.ToString()) == 2)
+                bool isBHYTPatient = currentHisTreatment.TDL_PATIENT_TYPE_ID == HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT;
+                if (isBHYTPatient && Config.ConfigKey.IsRequiredPathologicalProcessTransferPatientBHYT == "1" && treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN) {
+
+                    ValidateTextEdit(txtDauHieuLamSang);
+
+                } 
+
+
+
+
+                if (Config.ConfigKey.IsRequiredPathologicalProcessTransferPatientBHYT != "1" && cboTreatmentEndType.EditValue != null && Int64.Parse(cboTreatmentEndType.EditValue.ToString()) == 2)
                 {
                     layoutControlItem25.AppearanceItemCaption.ForeColor = Color.Maroon;
                     ValidateTextEdit(txtDauHieuLamSang);
                 }
+
                 bool valid = (bool)icdProcessor.ValidationIcd(ucIcd);
                 valid = (bool)subIcdProcessor.GetValidate(ucSecondaryIcd) && valid;
                 valid = IsValiICDCause() && valid;
@@ -2732,14 +2876,14 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 hisTreatmentFinishSDO = new MOS.SDO.HisTreatmentFinishSDO();
                 bool rs = await ProcessDataBeforeSaveAsync(this, true);
                 if (rs)
-                {
+                {  
                     return;
                 }
-                if (hisTreatmentFinishSDO != null && Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentEndType.EditValue ?? "0").ToString()) == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN && (string.IsNullOrEmpty(hisTreatmentFinishSDO.ClinicalNote) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentDirection) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentMethod) && string.IsNullOrEmpty(hisTreatmentFinishSDO.TransportVehicle) || (string.IsNullOrEmpty(hisTreatmentFinishSDO.TransporterLoginnames) && string.IsNullOrEmpty(hisTreatmentFinishSDO.Transporter)) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TransferOutMediOrgCode) || !hisTreatmentFinishSDO.TranPatiReasonId.HasValue || !hisTreatmentFinishSDO.TranPatiFormId.HasValue))
-                {
-                    XtraMessageBox.Show("Thiếu thông tin chuyển viện", "Thông báo");
-                    return;
-                }
+                //if (hisTreatmentFinishSDO != null && (string.IsNullOrEmpty(hisTreatmentFinishSDO.ClinicalNote) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentDirection) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentMethod) && string.IsNullOrEmpty(hisTreatmentFinishSDO.TransportVehicle) || (string.IsNullOrEmpty(hisTreatmentFinishSDO.TransporterLoginnames) && string.IsNullOrEmpty(hisTreatmentFinishSDO.Transporter)) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TransferOutMediOrgCode) || !hisTreatmentFinishSDO.TranPatiReasonId.HasValue || !hisTreatmentFinishSDO.TranPatiFormId.HasValue))
+                //{
+                //    XtraMessageBox.Show("Thiếu thông tin chuyển viện", "Thông báo");
+                //    return;
+                //}
                 CommonParam param = new CommonParam();
                 SaveTreatmentFinish(hisTreatmentFinishSDO, ref success, ref param);
                 MessageManager.Show(this, param, success);
@@ -3107,6 +3251,40 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             try
             {
+
+                //save Mã đối tượng
+                var warningConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode");
+                bool isBHYT = currentHisTreatment.TDL_PATIENT_TYPE_ID == 1;
+                string objectCode = txtObjectCode.Text?.Trim();
+                if (isBHYT)
+                {
+                    if (warningConfig == "2" && string.IsNullOrEmpty(objectCode))
+                    {
+                        var result = DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Chưa nhập mã đối tượng của hồ sơ điều trị. Bạn có muốn tiếp tục?",
+                            "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (result != DialogResult.Yes)
+                        {
+                            txtObjectCode.Focus();
+                            return;
+                        }
+                    }
+                    else if (warningConfig == "3" && string.IsNullOrEmpty(objectCode))
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Chưa nhập mã đối tượng của hồ sơ điều trị",
+                            "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        txtObjectCode.Focus();
+                        return;
+                    }
+                }
+               
+                if (hisTreatmentFinishSDO_process == null)
+                    hisTreatmentFinishSDO_process = new MOS.SDO.HisTreatmentFinishSDO();
+                hisTreatmentFinishSDO_process.HeinPatientTypeCode = txtObjectCode.Text?.Trim();
+
+
+
                 if (!btnSaveTemp.Visible) return;
                 this.positionHandle = -1;
 
@@ -3309,6 +3487,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
         }
         #endregion
+       
+       
 
         private void txtEndOrder_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -3533,8 +3713,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                                 DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.HoSoKhongCoTtVaoBuong + ResourceMessage.CuaKhoaHienTai + ResourceMessage.KhongChoGanGiuong, ResourceMessage.ThongBao);
                                 return;
                             }
-                        }
-                        else
+                        }  
+                        else  
                         {
                             DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.KhoaKhongCoBuong + ResourceMessage.KhongChoGanGiuong, ResourceMessage.ThongBao);
                             return;
@@ -6070,5 +6250,24 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 LogSystem.Error(ex);
             }
         }
+
+        
+        private void txtObjectCode_TextChanged(object sender, EventArgs e)
+        {
+            string text = txtObjectCode.Text;
+
+            string filtered = new string(text.Where(c => char.IsDigit(c) || c == '.').ToArray());
+
+            if (filtered.Length > 10)
+                filtered = filtered.Substring(0, 10);
+            if (txtObjectCode.Text != filtered)
+            {
+                int selStart = txtObjectCode.SelectionStart;  
+                txtObjectCode.Text = filtered;
+                txtObjectCode.SelectionStart = Math.Min(selStart, filtered.Length);
+            }
+        }   
+
+       
     }
 }
