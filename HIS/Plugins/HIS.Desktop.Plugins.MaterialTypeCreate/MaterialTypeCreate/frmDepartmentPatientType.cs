@@ -160,6 +160,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 gridControlPatientType.BeginUpdate();
                 gridControlPatientType.DataSource = listPatientType;
                 gridControlPatientType.EndUpdate();
+                LoadSelectedPatientTypes();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -194,6 +195,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 gridControlDepartment.BeginUpdate();
                 gridControlDepartment.DataSource = listDepartment;
                 gridControlDepartment.EndUpdate();
+                LoadSelectedDepartments(); 
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -811,6 +813,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
         {
             if (e.Control && e.KeyCode == Keys.T)
             {
+                btnSave.Focus(); 
                 btnSave_Click(null, null);
                 e.Handled = true;
             }
