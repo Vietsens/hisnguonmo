@@ -642,12 +642,19 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                 var data = treeMedicineIsUsePt.GetDataRecordByNode(e.Node);
                 if (data != null && data is ExpMestMediMateADO)
                 {
-                    var rowData = ((ExpMestMediMateADO)data);
                     if (!e.Node.HasChildren)
                     {
+                        var rowData = ((ExpMestMediMateADO)data);
                         if (e.Column.FieldName == "USED_TIME_STR")
                         {
-                            e.RepositoryItem = repositoryUsedTime;
+                            if (rowData.IS_USED.HasValue && rowData.IS_USED.Value)
+                            {
+                                e.RepositoryItem = repositoryUsedTime;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = new DevExpress.XtraEditors.Repository.RepositoryItem();
+                            }
                         }
                     }
                 }
@@ -731,7 +738,6 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     {
                         var update = new MOS.SDO.HisExpMestMaterialIsUsedSDO();
                         update.ExpMestMaterialId = data.EXP_MEST_MEDI_MATE_ID;
-                        update.UsedTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
                         if (data.IS_USED == true)
                         {
                             var lstexpmestmaterial = new BackendAdapter(param)
@@ -746,6 +752,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                         }
                         else
                         {
+                            update.UsedTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
                             var lstexpmestmaterial = new BackendAdapter(param)
                                 .Post<HIS_EXP_MEST_MATERIAL>("api/HisExpMestMaterial/Used", ApiConsumers.MosConsumer, update, param);
                             if (lstexpmestmaterial != null)
@@ -829,9 +836,9 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     {
                         var update = new MOS.SDO.HisExpMestMaterialIsUsedSDO();
                         update.ExpMestMaterialId = data.EXP_MEST_MEDI_MATE_ID;
-                        update.UsedTime = data.USED_TIME;
                         if (data.IS_USED.HasValue && data.IS_USED.Value)
                         {
+                            update.UsedTime = data.USED_TIME;
                             var lstexpmestmaterial = new BackendAdapter(param)
                                 .Post<HIS_EXP_MEST_MATERIAL>("api/HisExpMestMaterial/Used", ApiConsumers.MosConsumer, update, param);
                             if (lstexpmestmaterial != null)
@@ -841,6 +848,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                         }
                         else
                         {
+                            update.UsedTime = null;
                             var lstexpmestmaterial = new BackendAdapter(param)
                                 .Post<HIS_EXP_MEST_MATERIAL>("api/HisExpMestMaterial/Unused", ApiConsumers.MosConsumer, update, param);
                             if (lstexpmestmaterial != null)
@@ -1437,7 +1445,14 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     var rowData = treeList.GetDataRecordByNode(treeList.FocusedNode) as ExpMestMediMateADO;
                     if (rowData != null)
                     {
-                        rowData.USED_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(usedTimeEdit.DateTime);
+                        if (rowData.IS_USED.HasValue && rowData.IS_USED.Value)
+                        {
+                            rowData.USED_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(usedTimeEdit.DateTime);
+                        }
+                        else
+                        {
+                            rowData.USED_TIME = null;
+                        }
                         if (rowData.USED_TIME.HasValue && rowData.USED_TIME.Value < rowData.INTRUCTION_TIME)
                         {
                             rowData.IS_IN_VALID_NODE_EXCEPTION = true;
@@ -1445,7 +1460,10 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                         else
                         {
                             rowData.IS_IN_VALID_NODE_EXCEPTION = false;
-                            UpdateHisExpMest(rowData);
+                            if (rowData.IS_USED.HasValue && rowData.IS_USED.Value)
+                            {
+                                UpdateHisExpMest(rowData);
+                            }
                         }
                         treeList.RefreshNode(treeList.FocusedNode);
                     }
