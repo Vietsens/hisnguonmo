@@ -68,13 +68,16 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                                 maxNgayRa = ngayRa;
                         }
 
-                        var otherChecks = new List<dsLichSuKT2018>();
+                        var otherChecks = new List<dynamic>();
                         foreach (var o in rsDataBHYT.ResultHistoryLDO.dsLichSuKT2018)
                         {
                             long thoiGianKT;
-                            if (long.TryParse(o.thoiGianKT, out thoiGianKT)
-                                && thoiGianKT > maxNgayRa
-                                && !string.IsNullOrEmpty(o.userKT))
+                            if (!long.TryParse(o.thoiGianKT, out thoiGianKT))
+                                continue;
+                            string userKT = o.userKT ?? "";
+                            string currentMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+
+                            if (thoiGianKT > maxNgayRa && !string.IsNullOrEmpty(userKT) && userKT.IndexOf(currentMediOrgCode) < 0 && (o.maLoi == "000" || o.maLoi == "001" || o.maLoi == "002" || o.maLoi == "003"))
                             {
                                 otherChecks.Add(o);
                             }
