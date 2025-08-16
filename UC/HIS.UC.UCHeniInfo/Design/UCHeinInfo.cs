@@ -254,6 +254,7 @@ namespace HIS.UC.UCHeniInfo
                 this.cboSoThe.EditValue = null;
                 this.cboSoThe.Properties.DataSource = null;
                 this.txtAddress.Text = "";
+                this.txtHeinPatientTypeCode.Text = "";
                 this.txtHeinCardFromTime.Text = "";
                 this.dtHeinCardFromTime.Text = "";
                 this.txtHeinCardToTime.Text = "";
