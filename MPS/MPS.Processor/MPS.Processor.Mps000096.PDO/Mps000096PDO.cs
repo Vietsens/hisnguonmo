@@ -36,7 +36,7 @@ namespace MPS.Processor.Mps000096.PDO
             this.currentSample = currentSample;
             this.currentServiceReq = currentServiceReq;
             this.lstTestIndex = lstTestIndexs;
-            this.lstLisResult = lstLisResult;
+            this.lstLisResult = lstLisResult;   
             this.testIndexRangeAll = testIndexRanges;
             this.ServiceParent = serviceParent;
             this.genderId = gerderId;

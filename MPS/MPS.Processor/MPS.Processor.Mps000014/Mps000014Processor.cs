@@ -743,10 +743,10 @@ namespace MPS.Processor.Mps000014
         }
 
         void GetTestIndexRanges(List<Mps000014PDO.TestSereServADO> ExesereServs)
-        {
+        {   
             try
             {
-                var testIndexRangeAll = rdo._TestIndexRangeAll;
+                var testIndexRangeAll = rdo._TestIndexRangeAll.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 foreach (var hisSereServTeinSDO in ExesereServs)
                 {
 
