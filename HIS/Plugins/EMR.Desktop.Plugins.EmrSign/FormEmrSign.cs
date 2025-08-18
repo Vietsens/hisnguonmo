@@ -276,7 +276,7 @@ namespace EMR.Desktop.Plugins.EmrSign
                 ListDataSign = new List<SignADO>();
                 SignADO ado = new SignADO();
                 ado.Action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd;
-                ado.NUM_ORDER = MaxOrder + 100;
+                ado.NUM_ORDER = MaxOrder + 1;
                 ado.IdRow = ado.NUM_ORDER;
                 ado.DOCUMENT_ID = this.DocumentId;
 
@@ -650,12 +650,12 @@ namespace EMR.Desktop.Plugins.EmrSign
         }
 
         private void repositoryItemButtonAdd_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
-        {
+        {      
             try
             {
                 SignADO ado = new SignADO();
                 ado.Action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit;
-                ado.NUM_ORDER = MaxOrder + 100;
+                ado.NUM_ORDER = MaxOrder + 1;
                 ado.IdRow = ado.NUM_ORDER;
                 ado.DOCUMENT_ID = this.DocumentId;
 
