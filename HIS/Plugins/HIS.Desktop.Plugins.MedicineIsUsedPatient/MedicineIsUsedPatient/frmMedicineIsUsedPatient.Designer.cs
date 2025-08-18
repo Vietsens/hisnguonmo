@@ -45,9 +45,10 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboIsUse = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
@@ -73,7 +74,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn6 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn8 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn9 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryItemCheckEditUsed = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemCheckAll = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemCheckEditMorning = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemCheckEditLunch = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
@@ -118,8 +119,8 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.timerLoadData = new System.Windows.Forms.Timer();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.timerLoadData = new System.Windows.Forms.Timer(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboIsUse.Properties)).BeginInit();
@@ -132,7 +133,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeMedicineIsUsePt)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditUsed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckAll)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditMorning)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditLunch)).BeginInit();
@@ -450,7 +451,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeMedicineIsUsePt.OptionsView.ShowVertLines = false;
             this.treeMedicineIsUsePt.ParentFieldName = "PARENT_ID__IN_SETY";
             this.treeMedicineIsUsePt.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repositoryItemCheckEdit1,
+            this.repositoryItemCheckEditUsed,
             this.repositoryItemCheckAll,
             this.repositoryItemCheckEditMorning,
             this.repositoryItemCheckEditLunch,
@@ -589,19 +590,19 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn9.VisibleIndex = 9;
             this.treeListColumn9.Width = 60;
             // 
-            // repositoryItemCheckEdit1
+            // repositoryItemCheckEditUsed
             // 
-            this.repositoryItemCheckEdit1.AppearanceFocused.BackColor = System.Drawing.Color.Transparent;
-            this.repositoryItemCheckEdit1.AppearanceFocused.BackColor2 = System.Drawing.Color.Transparent;
-            this.repositoryItemCheckEdit1.AppearanceFocused.Options.UseBackColor = true;
-            this.repositoryItemCheckEdit1.AutoHeight = false;
-            this.repositoryItemCheckEdit1.Caption = " ";
-            this.repositoryItemCheckEdit1.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Buffered;
-            this.repositoryItemCheckEdit1.FullFocusRect = true;
-            this.repositoryItemCheckEdit1.GlyphVAlignment = DevExpress.Utils.VertAlignment.Default;
-            this.repositoryItemCheckEdit1.Name = "repositoryItemCheckEdit1";
-            this.repositoryItemCheckEdit1.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.repositoryItemCheckEdit1.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEdit1_CheckedChanged);
+            this.repositoryItemCheckEditUsed.AppearanceFocused.BackColor = System.Drawing.Color.Transparent;
+            this.repositoryItemCheckEditUsed.AppearanceFocused.BackColor2 = System.Drawing.Color.Transparent;
+            this.repositoryItemCheckEditUsed.AppearanceFocused.Options.UseBackColor = true;
+            this.repositoryItemCheckEditUsed.AutoHeight = false;
+            this.repositoryItemCheckEditUsed.Caption = " ";
+            this.repositoryItemCheckEditUsed.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Buffered;
+            this.repositoryItemCheckEditUsed.FullFocusRect = true;
+            this.repositoryItemCheckEditUsed.GlyphVAlignment = DevExpress.Utils.VertAlignment.Default;
+            this.repositoryItemCheckEditUsed.Name = "repositoryItemCheckEditUsed";
+            this.repositoryItemCheckEditUsed.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEditUsed.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.repositoryItemCheckEditUsed_EditValueChanging);
             // 
             // repositoryItemCheckAll
             // 
@@ -615,6 +616,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.repositoryItemCheckEditMorning.Name = "repositoryItemCheckEditMorning";
             this.repositoryItemCheckEditMorning.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.repositoryItemCheckEditMorning.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEditMorning_CheckedChanged);
+            this.repositoryItemCheckEditMorning.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.repositoryItemCheckEditMorning_EditValueChanging);
             // 
             // repositoryItemCheckEditLunch
             // 
@@ -622,6 +624,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.repositoryItemCheckEditLunch.Name = "repositoryItemCheckEditLunch";
             this.repositoryItemCheckEditLunch.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.repositoryItemCheckEditLunch.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEditLunch_CheckedChanged);
+            this.repositoryItemCheckEditLunch.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.repositoryItemCheckEditLunch_EditValueChanging);
             // 
             // repositoryItemCheckEditAfternoon
             // 
@@ -629,6 +632,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.repositoryItemCheckEditAfternoon.Name = "repositoryItemCheckEditAfternoon";
             this.repositoryItemCheckEditAfternoon.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.repositoryItemCheckEditAfternoon.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEditAfternoon_CheckedChanged);
+            this.repositoryItemCheckEditAfternoon.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.repositoryItemCheckEditAfternoon_EditValueChanging);
             // 
             // repositoryItemCheckEditDinner
             // 
@@ -636,6 +640,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.repositoryItemCheckEditDinner.Name = "repositoryItemCheckEditDinner";
             this.repositoryItemCheckEditDinner.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.repositoryItemCheckEditDinner.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEditDinner_CheckedChanged);
+            this.repositoryItemCheckEditDinner.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.repositoryItemCheckEditDinner_EditValueChanging);
             // 
             // repositoryItemCheckEditD
             // 
@@ -1161,7 +1166,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.treeMedicineIsUsePt)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditUsed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckAll)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditMorning)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditLunch)).EndInit();
@@ -1253,7 +1258,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn3;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn4;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn_IsUsed;
-        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit1;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditUsed;
         internal DevExpress.XtraTreeList.TreeList treeMedicineIsUsePt;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn7;
         private DevExpress.XtraEditors.GridLookUpEdit cboIsUse;

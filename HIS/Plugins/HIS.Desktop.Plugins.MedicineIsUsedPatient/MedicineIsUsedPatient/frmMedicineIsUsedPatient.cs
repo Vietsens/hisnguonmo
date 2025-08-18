@@ -530,7 +530,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     {
                         if (e.Column.FieldName == "IS_USED")
                         {
-                            e.RepositoryItem = repositoryItemCheckEdit1;
+                            e.RepositoryItem = repositoryItemCheckEditUsed;
                         }
                         if (rowData.IS_MEDICINE)
                         {
@@ -664,6 +664,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private void txtKeyWords_KeyPress(object sender, KeyPressEventArgs e)
         {
             try
@@ -677,101 +678,38 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             }
         }
 
-        private void repositoryItemCheckEdit1_CheckedChanged(object sender, EventArgs e)
+        private void repositoryItemCheckEditUsed_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            repositoryItemEditValueChanging(sender, e, phaseIsUnUsed: null);
+        }
+        private void repositoryItemEditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e, long? phaseIsUnUsed = null)
         {
             try
             {
-                CommonParam param = new CommonParam();
-                ExpMestMediMateADO data = new ExpMestMediMateADO();
-                var dataSelect = treeMedicineIsUsePt.GetDataRecordByNode(treeMedicineIsUsePt.FocusedNode);
-                if (dataSelect != null) data = (ExpMestMediMateADO)dataSelect;
-                DevExpress.XtraTreeList.TreeList tree = sender as DevExpress.XtraTreeList.TreeList;
-                if (tree != null)
+                var usedCheckEdit = sender as DevExpress.XtraEditors.CheckEdit;
+                if (usedCheckEdit != null)
                 {
-                    TreeListHitInfo hi = tree.CalcHitInfo(tree.PointToClient(Control.MousePosition));
-                    data = (ExpMestMediMateADO)treeMedicineIsUsePt.GetDataRecordByNode(hi.Node);
-                }
-
-                bool success = false;
-                if (data != null)
-                {
-                    //tree.BeginUpdate();
-                    if (data.IS_MEDICINE)
+                    bool isChecked = e.NewValue is bool isUsed && isUsed;
+                    var treeList = usedCheckEdit.Parent as TreeList;
+                    var rowData = treeList.GetDataRecordByNode(treeList.FocusedNode) as ExpMestMediMateADO;
+                    if (rowData != null)
                     {
-                        long id = data.EXP_MEST_MEDI_MATE_ID;
-                        MOS.SDO.HisExpMestMedicineUnUsedSDO update = new MOS.SDO.HisExpMestMedicineUnUsedSDO();
-                        update.ExpMestMedicineId = id;
-                        if (data.IS_USED == true)
+                        bool success = false;
+                        ExpMestMediMateADO dataUpdate = new ExpMestMediMateADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestMediMateADO>(dataUpdate, rowData);
+                        dataUpdate.IS_USED = isChecked;
+                        dataUpdate.USED_TIME = isChecked ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) : null;
+                        success = this.UpdateHisExpMest(ref dataUpdate, isChecked, phaseIsUnUsed);
+                        if (success)
                         {
-                            var lstexpmestmedicine = new BackendAdapter(param).Post<HIS_EXP_MEST_MEDICINE>("api/HisExpMestMedicine/Unused", ApiConsumers.MosConsumer, update, null);
-                            if (lstexpmestmedicine != null)
-                            {
-                                success = true;
-                                data.IS_USED = false;
-                                data.USED_TIME = null;
-                                V_HIS_EXP_MEST_MEDICINE item = new V_HIS_EXP_MEST_MEDICINE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MEDICINE>(item, lstexpmestmedicine);
-                                SetstateCheck(ref data, item);
-                            }
-
+                            Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestMediMateADO>(rowData, dataUpdate);
                         }
                         else
                         {
-                            MOS.SDO.HisExpMestMedicineIsUsedSDO update1 = new MOS.SDO.HisExpMestMedicineIsUsedSDO();
-                            update1.UsedTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
-                            update1.ExpMestMedicineId = id;
-                            var lstexpmestmedicine = new BackendAdapter(param).Post<HIS_EXP_MEST_MEDICINE>("api/HisExpMestMedicine/Used", ApiConsumers.MosConsumer, update1, null);
-                            if (lstexpmestmedicine != null)
-                            {
-                                success = true;
-                                data.IS_USED = true;
-                                data.USED_TIME = update1.UsedTime;
-                                V_HIS_EXP_MEST_MEDICINE item = new V_HIS_EXP_MEST_MEDICINE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MEDICINE>(item, lstexpmestmedicine);
-                                SetstateCheck(ref data, item);
-                            }
-
+                            e.Cancel = true;
                         }
-
                     }
-                    else
-                    {
-                        var update = new MOS.SDO.HisExpMestMaterialIsUsedSDO();
-                        update.ExpMestMaterialId = data.EXP_MEST_MEDI_MATE_ID;
-                        if (data.IS_USED == true)
-                        {
-                            var lstexpmestmaterial = new BackendAdapter(param)
-                                .Post<HIS_EXP_MEST_MATERIAL>("api/HisExpMestMaterial/Unused", ApiConsumers.MosConsumer, update, param);
-                            if (lstexpmestmaterial != null)
-                            {
-                                success = true;
-                                data.IS_USED = false;
-                                data.USED_TIME = null;
-                            }
-
-                        }
-                        else
-                        {
-                            update.UsedTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
-                            var lstexpmestmaterial = new BackendAdapter(param)
-                                .Post<HIS_EXP_MEST_MATERIAL>("api/HisExpMestMaterial/Used", ApiConsumers.MosConsumer, update, param);
-                            if (lstexpmestmaterial != null)
-                            {
-                                success = true;
-                                data.IS_USED = true;
-                                data.USED_TIME = update.UsedTime;
-                            }
-
-                        }
-
-                    }
-                    //tree.EndUpdate();
-                    if (success)
-                    {
-                        treeMedicineIsUsePt.RefreshNode(treeMedicineIsUsePt.FocusedNode);
-                        data.IS_USED = !data.IS_USED;
-                    }
-                    MessageManager.Show(this, param, success);
+                    treeList.RefreshNode(treeList.FocusedNode);
                 }
             }
             catch (Exception ex)
@@ -779,7 +717,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private bool UpdateHisExpMest(ExpMestMediMateADO data)
+        private bool UpdateHisExpMest(ref ExpMestMediMateADO data, bool isChecked, long? phaseIsUnUsed = null)
         {
             bool success = false;
             try
@@ -787,74 +725,57 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                 CommonParam param = new CommonParam();
                 if (data != null)
                 {
-                    long? PhaseIsUsed = null;
-                    if (data.MORNING_CHK.HasValue && data.MORNING_CHK.Value)
-                    {
-                        PhaseIsUsed = 1;
-                    }
-                    else if (data.LUNCH_CHK.HasValue && data.LUNCH_CHK.Value)
-                    {
-                        PhaseIsUsed = 2;
-                    }
-                    else if (data.AFTERNOON_CHK.HasValue && data.AFTERNOON_CHK.Value)
-                    {
-                        PhaseIsUsed = 3;
-                    }
-                    else if (data.DINNER_CHK.HasValue && data.DINNER_CHK.Value)
-                    {
-                        PhaseIsUsed = 4;
-                    }
                     if (data.IS_MEDICINE)
                     {
-                        if (data.IS_USED.HasValue && data.IS_USED.Value)
+                        HIS_EXP_MEST_MEDICINE lstexpmestmedicine = null;
+                        if (isChecked)
                         {
                             var updateIsUsed = new MOS.SDO.HisExpMestMedicineIsUsedSDO();
                             updateIsUsed.ExpMestMedicineId = data.EXP_MEST_MEDI_MATE_ID;
-                            updateIsUsed.PhaseIsUsed = PhaseIsUsed;
+                            updateIsUsed.PhaseIsUsed = phaseIsUnUsed;
                             updateIsUsed.UsedTime = data.USED_TIME;
-                            var lstexpmestmedicine = new BackendAdapter(param)
+                            lstexpmestmedicine = new BackendAdapter(param)
                                 .Post<HIS_EXP_MEST_MEDICINE>("api/HisExpMestMedicine/Used", ApiConsumers.MosConsumer, updateIsUsed, param);
-                            if (lstexpmestmedicine != null)
-                            {
-                                success = true;
-                            }
                         }
                         else
                         {
                             var updateUnUsed = new MOS.SDO.HisExpMestMedicineUnUsedSDO();
                             updateUnUsed.ExpMestMedicineId = data.EXP_MEST_MEDI_MATE_ID;
-                            updateUnUsed.PhaseIsUnUsed = PhaseIsUsed;
-                            var lstexpmestmedicine = new BackendAdapter(param)
+                            updateUnUsed.PhaseIsUnUsed = phaseIsUnUsed;
+                            lstexpmestmedicine = new BackendAdapter(param)
                                 .Post<HIS_EXP_MEST_MEDICINE>("api/HisExpMestMedicine/Unused", ApiConsumers.MosConsumer, updateUnUsed, param);
-                            if (lstexpmestmedicine != null)
-                            {
-                                success = true;
-                            }
+                        }
+                        if (lstexpmestmedicine != null)
+                        {
+                            success = true;
+                            data.IS_USED = lstexpmestmedicine.IS_USED == 1;
+                            data.USED_TIME = lstexpmestmedicine.USED_TIME;
+                            V_HIS_EXP_MEST_MEDICINE item = new V_HIS_EXP_MEST_MEDICINE();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MEDICINE>(item, lstexpmestmedicine);
+                            SetstateCheck(ref data, item);
                         }
                     }
                     else
                     {
+                        HIS_EXP_MEST_MATERIAL lstexpmestmaterial = null;
                         var update = new MOS.SDO.HisExpMestMaterialIsUsedSDO();
                         update.ExpMestMaterialId = data.EXP_MEST_MEDI_MATE_ID;
-                        if (data.IS_USED.HasValue && data.IS_USED.Value)
+                        update.UsedTime = isChecked ? data.USED_TIME : null;
+                        if (isChecked)
                         {
-                            update.UsedTime = data.USED_TIME;
-                            var lstexpmestmaterial = new BackendAdapter(param)
+                            lstexpmestmaterial = new BackendAdapter(param)
                                 .Post<HIS_EXP_MEST_MATERIAL>("api/HisExpMestMaterial/Used", ApiConsumers.MosConsumer, update, param);
-                            if (lstexpmestmaterial != null)
-                            {
-                                success = true;
-                            }
                         }
                         else
                         {
-                            update.UsedTime = null;
-                            var lstexpmestmaterial = new BackendAdapter(param)
+                            lstexpmestmaterial = new BackendAdapter(param)
                                 .Post<HIS_EXP_MEST_MATERIAL>("api/HisExpMestMaterial/Unused", ApiConsumers.MosConsumer, update, param);
-                            if (lstexpmestmaterial != null)
-                            {
-                                success = true;
-                            }
+                        }
+                        if (lstexpmestmaterial != null)
+                        {
+                            success = true;
+                            data.IS_USED = lstexpmestmaterial.IS_USED == 1;
+                            data.USED_TIME = lstexpmestmaterial.USED_TIME;
                         }
                     }
                     MessageManager.Show(this, param, success);
@@ -892,7 +813,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                         e.Appearance.ForeColor = Color.Black;
                         if (e.Column.FieldName == "USED_TIME_STR")
                         {
-                            if (rowData.USED_TIME.HasValue && rowData.USED_TIME.Value < rowData.INTRUCTION_TIME)
+                            if (IsUsedTimeLessThanInstructionTime(rowData))
                             {
                                 e.Appearance.BackColor = Color.Maroon;
                                 e.Appearance.BackColor2 = Color.Maroon;
@@ -992,6 +913,10 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             return data != null && data.Any(o => !o.IS_PARENT && o.IS_IN_VALID_NODE_EXCEPTION);
         }
 
+        private bool IsUsedTimeLessThanInstructionTime(ExpMestMediMateADO rowData)
+        {
+            return rowData != null && rowData.USED_TIME.HasValue && rowData.USED_TIME.Value < rowData.INTRUCTION_TIME;
+        }
         private Rectangle GetRectangleUsed(Rectangle boundsColumnUsed)
         {
             int checkBoxWidth = 12;
@@ -1115,110 +1040,155 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                 IsMouseDown = false;
             }
         }
+        private void repositoryItemCheckEditMorning_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            if (repositoryItemCheckEditMorning.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Style5)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                repositoryItemEditValueChanging(sender, e, phaseIsUnUsed: 1);
+            }
+        }
 
+        private void repositoryItemCheckEditLunch_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            if (repositoryItemCheckEditLunch.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Style5)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                repositoryItemEditValueChanging(sender, e, phaseIsUnUsed: 2);
+            }
+        }
+
+        private void repositoryItemCheckEditAfternoon_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            if (repositoryItemCheckEditAfternoon.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Style5)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                repositoryItemEditValueChanging(sender, e, phaseIsUnUsed: 3);
+            }
+        }
+
+        private void repositoryItemCheckEditDinner_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            if (repositoryItemCheckEditDinner.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Style5)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                repositoryItemEditValueChanging(sender, e, phaseIsUnUsed: 4);
+            }
+        }
         private void repositoryItemCheckEditMorning_CheckedChanged(object sender, EventArgs e)
         {
-            try
-            {
-                TreeListNode focusedNode = treeMedicineIsUsePt.FocusedNode;
-                var checkEdit = sender as DevExpress.XtraEditors.CheckEdit;
-                bool isChecked = checkEdit != null && checkEdit.Checked;
-                if (repositoryItemCheckEditMorning.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Style5) return;
-                if (focusedNode != null)
-                {
-                    var data = treeMedicineIsUsePt.GetDataRecordByNode(focusedNode);
-                    if (data != null)
-                    {
-                        var rowData = (ExpMestMediMateADO)data;
+            //try
+            //{
+            //    if (repositoryItemCheckEditMorning.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Style5) return;
 
-                        ProcessCheck(1, rowData.ID, isChecked, focusedNode);
-                    }
+            //    TreeListNode focusedNode = treeMedicineIsUsePt.FocusedNode;
+            //    var checkEdit = sender as DevExpress.XtraEditors.CheckEdit;
+            //    bool isChecked = checkEdit != null && checkEdit.Checked;
+            //    if (focusedNode != null)
+            //    {
+            //        var data = treeMedicineIsUsePt.GetDataRecordByNode(focusedNode);
+            //        if (data != null)
+            //        {
+            //            var rowData = (ExpMestMediMateADO)data;
+            //            ProcessCheck(1, rowData.ID, isChecked, focusedNode);
+            //        }
 
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
         }
 
         private void repositoryItemCheckEditLunch_CheckedChanged(object sender, EventArgs e)
         {
-            try
-            {
-                TreeListNode focusedNode = treeMedicineIsUsePt.FocusedNode;
-                if (repositoryItemCheckEditLunch.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Style5) return;
-                var checkEdit = sender as DevExpress.XtraEditors.CheckEdit;
-                bool isChecked = checkEdit != null && checkEdit.Checked;
-                if (focusedNode != null)
-                {
-                    var data = treeMedicineIsUsePt.GetDataRecordByNode(focusedNode);
-                    if (data != null)
-                    {
-                        var rowData = (ExpMestMediMateADO)data;
+            //try
+            //{
+            //    TreeListNode focusedNode = treeMedicineIsUsePt.FocusedNode;
+            //    if (repositoryItemCheckEditLunch.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Style5) return;
+            //    var checkEdit = sender as DevExpress.XtraEditors.CheckEdit;
+            //    bool isChecked = checkEdit != null && checkEdit.Checked;
+            //    if (focusedNode != null)
+            //    {
+            //        var data = treeMedicineIsUsePt.GetDataRecordByNode(focusedNode);
+            //        if (data != null)
+            //        {
+            //            var rowData = (ExpMestMediMateADO)data;
 
-                        ProcessCheck(2, rowData.ID, isChecked, focusedNode);
-                    }
+            //            ProcessCheck(2, rowData.ID, isChecked, focusedNode);
+            //        }
 
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
         }
 
         private void repositoryItemCheckEditAfternoon_CheckedChanged(object sender, EventArgs e)
         {
-            try
-            {
-                TreeListNode focusedNode = treeMedicineIsUsePt.FocusedNode;
-                var checkEdit = sender as DevExpress.XtraEditors.CheckEdit;
-                if (repositoryItemCheckEditAfternoon.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Style5) return;
-                bool isChecked = checkEdit != null && checkEdit.Checked;
-                if (focusedNode != null)
-                {
-                    var data = treeMedicineIsUsePt.GetDataRecordByNode(focusedNode);
-                    if (data != null)
-                    {
-                        var rowData = (ExpMestMediMateADO)data;
-                        ProcessCheck(3, rowData.ID, isChecked, focusedNode);
-                    }
+            //try
+            //{
+            //    TreeListNode focusedNode = treeMedicineIsUsePt.FocusedNode;
+            //    var checkEdit = sender as DevExpress.XtraEditors.CheckEdit;
+            //    if (repositoryItemCheckEditAfternoon.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Style5) return;
+            //    bool isChecked = checkEdit != null && checkEdit.Checked;
+            //    if (focusedNode != null)
+            //    {
+            //        var data = treeMedicineIsUsePt.GetDataRecordByNode(focusedNode);
+            //        if (data != null)
+            //        {
+            //            var rowData = (ExpMestMediMateADO)data;
+            //            ProcessCheck(3, rowData.ID, isChecked, focusedNode);
+            //        }
 
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
         }
 
         private void repositoryItemCheckEditDinner_CheckedChanged(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
+            //    TreeListNode focusedNode = treeMedicineIsUsePt.FocusedNode;
+            //    // Lấy trạng thái của checkbox
+            //    var checkEdit = sender as DevExpress.XtraEditors.CheckEdit;
+            //    if (repositoryItemCheckEditDinner.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Style5) return;
+            //    bool isChecked = checkEdit != null && checkEdit.Checked;
 
-                TreeListNode focusedNode = treeMedicineIsUsePt.FocusedNode;
-                // Lấy trạng thái của checkbox
-                var checkEdit = sender as DevExpress.XtraEditors.CheckEdit;
-                if (repositoryItemCheckEditDinner.CheckStyle == DevExpress.XtraEditors.Controls.CheckStyles.Style5) return;
-                bool isChecked = checkEdit != null && checkEdit.Checked;
+            //    if (focusedNode != null)
+            //    {
+            //        var data = treeMedicineIsUsePt.GetDataRecordByNode(focusedNode);
+            //        if (data != null)
+            //        {
+            //            var rowData = (ExpMestMediMateADO)data;
+            //            ProcessCheck(4, rowData.ID, isChecked, focusedNode);
+            //        }
 
-                if (focusedNode != null)
-                {
-                    var data = treeMedicineIsUsePt.GetDataRecordByNode(focusedNode);
-                    if (data != null)
-                    {
-                        var rowData = (ExpMestMediMateADO)data;
-                        ProcessCheck(4, rowData.ID, isChecked, focusedNode);
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
         }
         private object GetData(string fieldName, TreeListNode focusedNode)
         {
@@ -1237,64 +1207,64 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
         }
         private void ProcessCheck(int PhaseIsUnUsed, long ExpMestMedicineId, bool check, TreeListNode focusedNode)
         {
-            try
-            {
-                var dataSelect = (ExpMestMediMateADO)treeMedicineIsUsePt.GetDataRecordByNode(focusedNode);
-                CommonParam param = new CommonParam();
-                bool success = false;
-                if (check)
-                {
-                    MOS.SDO.HisExpMestMedicineIsUsedSDO update = new MOS.SDO.HisExpMestMedicineIsUsedSDO();
-                    update.ExpMestMedicineId = ExpMestMedicineId; //ID chi tiết phiếu xuất V_HIS_EXP_MEST_MEDICINE
-                    update.PhaseIsUsed = PhaseIsUnUsed; // 1 - Sáng 2-Trưa 3-Chiều 4-Tối
-                    string api = string.Format("api/HisExpMestMedicine/{0}", (check ? "Used" : "Unused"));
-                    Inventec.Common.Logging.LogSystem.Debug("Du lieu gui len: " + Inventec.Common.Logging.LogUtil.TraceData("HisExpMestMedicineIsUsedSDO", update));
-                    var rs = new BackendAdapter(param).Post<HIS_EXP_MEST_MEDICINE>(api, ApiConsumers.MosConsumer, update, param);
-                    if (rs != null)
-                    {
-                        Inventec.Common.Logging.LogSystem.Debug("Du lieu api tra ve: " + Inventec.Common.Logging.LogUtil.TraceData("HIS_EXP_MEST_MEDICINE", rs));
-                        success = true;
-                        if (rs.IS_USED == 1)
-                        {
-                            dataSelect.IS_USED = true;
+            //try
+            //{
+            //    var dataSelect = (ExpMestMediMateADO)treeMedicineIsUsePt.GetDataRecordByNode(focusedNode);
+            //    CommonParam param = new CommonParam();
+            //    bool success = false;
+            //    if (check)
+            //    {
+            //        MOS.SDO.HisExpMestMedicineIsUsedSDO update = new MOS.SDO.HisExpMestMedicineIsUsedSDO();
+            //        update.ExpMestMedicineId = ExpMestMedicineId; //ID chi tiết phiếu xuất V_HIS_EXP_MEST_MEDICINE
+            //        update.PhaseIsUsed = PhaseIsUnUsed; // 1 - Sáng 2-Trưa 3-Chiều 4-Tối
+            //        string api = string.Format("api/HisExpMestMedicine/{0}", (check ? "Used" : "Unused"));
+            //        Inventec.Common.Logging.LogSystem.Debug("Du lieu gui len: " + Inventec.Common.Logging.LogUtil.TraceData("HisExpMestMedicineIsUsedSDO", update));
+            //        var rs = new BackendAdapter(param).Post<HIS_EXP_MEST_MEDICINE>(api, ApiConsumers.MosConsumer, update, param);
+            //        if (rs != null)
+            //        {
+            //            Inventec.Common.Logging.LogSystem.Debug("Du lieu api tra ve: " + Inventec.Common.Logging.LogUtil.TraceData("HIS_EXP_MEST_MEDICINE", rs));
+            //            success = true;
+            //            if (rs.IS_USED == 1)
+            //            {
+            //                dataSelect.IS_USED = true;
 
-                        }
-                        V_HIS_EXP_MEST_MEDICINE item = new V_HIS_EXP_MEST_MEDICINE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MEDICINE>(item, rs);
-                        SetstateCheck(ref dataSelect, item);
-                        treeMedicineIsUsePt.RefreshNode(treeMedicineIsUsePt.FocusedNode);
-                    }
-                }
-                else
-                {
-                    MOS.SDO.HisExpMestMedicineUnUsedSDO update = new MOS.SDO.HisExpMestMedicineUnUsedSDO();
-                    update.ExpMestMedicineId = ExpMestMedicineId; //ID chi tiết phiếu xuất V_HIS_EXP_MEST_MEDICINE
-                    update.PhaseIsUnUsed = PhaseIsUnUsed; // 1 - Sáng 2-Trưa 3-Chiều 4-Tối
-                    string api = string.Format("api/HisExpMestMedicine/{0}", (check ? "Used" : "Unused"));
-                    Inventec.Common.Logging.LogSystem.Debug("Du lieu gui len: " + Inventec.Common.Logging.LogUtil.TraceData("HisExpMestMedicineIsUsedSDO", update));
-                    var rs = new BackendAdapter(param).Post<HIS_EXP_MEST_MEDICINE>(api, ApiConsumers.MosConsumer, update, param);
-                    if (rs != null)
-                    {
-                        Inventec.Common.Logging.LogSystem.Debug("Du lieu api tra ve: " + Inventec.Common.Logging.LogUtil.TraceData("HIS_EXP_MEST_MEDICINE", rs));
-                        success = true;
-                        if (rs.IS_USED == 1)
-                        {
-                            dataSelect.IS_USED = true;
+            //            }
+            //            V_HIS_EXP_MEST_MEDICINE item = new V_HIS_EXP_MEST_MEDICINE();
+            //            Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MEDICINE>(item, rs);
+            //            SetstateCheck(ref dataSelect, item);
+            //            treeMedicineIsUsePt.RefreshNode(treeMedicineIsUsePt.FocusedNode);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        MOS.SDO.HisExpMestMedicineUnUsedSDO update = new MOS.SDO.HisExpMestMedicineUnUsedSDO();
+            //        update.ExpMestMedicineId = ExpMestMedicineId; //ID chi tiết phiếu xuất V_HIS_EXP_MEST_MEDICINE
+            //        update.PhaseIsUnUsed = PhaseIsUnUsed; // 1 - Sáng 2-Trưa 3-Chiều 4-Tối
+            //        string api = string.Format("api/HisExpMestMedicine/{0}", (check ? "Used" : "Unused"));
+            //        Inventec.Common.Logging.LogSystem.Debug("Du lieu gui len: " + Inventec.Common.Logging.LogUtil.TraceData("HisExpMestMedicineIsUsedSDO", update));
+            //        var rs = new BackendAdapter(param).Post<HIS_EXP_MEST_MEDICINE>(api, ApiConsumers.MosConsumer, update, param);
+            //        if (rs != null)
+            //        {
+            //            Inventec.Common.Logging.LogSystem.Debug("Du lieu api tra ve: " + Inventec.Common.Logging.LogUtil.TraceData("HIS_EXP_MEST_MEDICINE", rs));
+            //            success = true;
+            //            if (rs.IS_USED == 1)
+            //            {
+            //                dataSelect.IS_USED = true;
 
-                        }
-                        V_HIS_EXP_MEST_MEDICINE item = new V_HIS_EXP_MEST_MEDICINE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MEDICINE>(item, rs);
-                        SetstateCheck(ref dataSelect, item);
-                        treeMedicineIsUsePt.RefreshNode(treeMedicineIsUsePt.FocusedNode);
-                    }
-                }
+            //            }
+            //            V_HIS_EXP_MEST_MEDICINE item = new V_HIS_EXP_MEST_MEDICINE();
+            //            Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MEDICINE>(item, rs);
+            //            SetstateCheck(ref dataSelect, item);
+            //            treeMedicineIsUsePt.RefreshNode(treeMedicineIsUsePt.FocusedNode);
+            //        }
+            //    }
 
-                MessageManager.Show(this, param, success);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            //    MessageManager.Show(this, param, success);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
         }
         private void treeMedicineIsUsePt_CustomDrawNodeCell(object sender, CustomDrawNodeCellEventArgs e)
         {
@@ -1306,7 +1276,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     var rowData = treeMedicineIsUsePt.GetDataRecordByNode(node) as ExpMestMediMateADO;
                     if (rowData != null)
                     {
-                        if (rowData.USED_TIME.HasValue && rowData.USED_TIME.Value < rowData.INTRUCTION_TIME)
+                        if (IsUsedTimeLessThanInstructionTime(rowData))
                         {
                             e.DefaultDraw();
                             var icon = SystemIcons.Warning.ToBitmap();
@@ -1402,7 +1372,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                 var rowData = treeList.GetDataRecordByNode(node) as ExpMestMediMateADO;
                 if (rowData != null && usedTime != null)
                 {
-                    if (rowData.USED_TIME.HasValue && rowData.USED_TIME.Value < rowData.INTRUCTION_TIME)
+                    if (IsUsedTimeLessThanInstructionTime(rowData))
                     {
                         e.Valid = false;
                         e.ErrorText = "Thời gian dùng không được nhỏ hơn thời gian y lệnh (" 
@@ -1445,24 +1415,18 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     var rowData = treeList.GetDataRecordByNode(treeList.FocusedNode) as ExpMestMediMateADO;
                     if (rowData != null)
                     {
-                        if (rowData.IS_USED.HasValue && rowData.IS_USED.Value)
-                        {
-                            rowData.USED_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(usedTimeEdit.DateTime);
-                        }
-                        else
-                        {
-                            rowData.USED_TIME = null;
-                        }
-                        if (rowData.USED_TIME.HasValue && rowData.USED_TIME.Value < rowData.INTRUCTION_TIME)
+                        bool isUsed = rowData.IS_USED.HasValue && rowData.IS_USED.Value;
+                        rowData.USED_TIME = isUsed ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(usedTimeEdit.DateTime) : null;
+                        if (IsUsedTimeLessThanInstructionTime(rowData))
                         {
                             rowData.IS_IN_VALID_NODE_EXCEPTION = true;
                         }
                         else
                         {
                             rowData.IS_IN_VALID_NODE_EXCEPTION = false;
-                            if (rowData.IS_USED.HasValue && rowData.IS_USED.Value)
+                            if (isUsed)
                             {
-                                UpdateHisExpMest(rowData);
+                                UpdateHisExpMest(ref rowData, isUsed);
                             }
                         }
                         treeList.RefreshNode(treeList.FocusedNode);
@@ -1474,7 +1438,5 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
-        
     }
 }
