@@ -317,7 +317,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 }
                 LogSystem.Debug("UCTreatmentFinish_Load. 4");
 
-                this.LableTxtPatientType();
+                this.LableTxtPatientType();    
                 this.InitTreatmentEndType();
 
                 this.ValidHeadDepartmentAndDirectorBranch();
@@ -368,13 +368,13 @@ namespace HIS.UC.TreatmentFinish.Run
 
                 SetEnableCheckSoLuuTruBANTByConfig();
                 this.txtPatientType.Text = this.Treatment.HEIN_PATIENT_TYPE_CODE;
-                if (!chkIssueOutPatientStoreCode.Checked)
+                if (!chkIssueOutPatientStoreCode.Checked)      
                 {
                     lciForlblSoLuuTruBANT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lciForcboProgram.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
-
-                ProcessStoreCodeDisplay();
+                     
+                ProcessStoreCodeDisplay();    
             }
             catch (Exception ex)
             {
@@ -647,7 +647,7 @@ namespace HIS.UC.TreatmentFinish.Run
                     XtraMessageBox.Show("Vui lòng kiểm tra lại mã đối tượng của hồ sơ điều trị.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 IsCheckAutoTreatmentFinish = chkAutoTreatmentFinish.Checked;
-                
+                this.LableTxtPatientType();
                 AutoTreatmentFinishCheckedChanged();
                 IsCheck = chkAutoTreatmentFinish.Checked;
                 IsCheckAutoTreatmentFinish = false;
@@ -2704,7 +2704,7 @@ namespace HIS.UC.TreatmentFinish.Run
             e.Handled = true;
         }
 
-        private void LableTxtPatientType()
+        public void LableTxtPatientType()
         {
             if (ConfigKeyCFG.WarningHeinPatientTypeCode == "3")
             {

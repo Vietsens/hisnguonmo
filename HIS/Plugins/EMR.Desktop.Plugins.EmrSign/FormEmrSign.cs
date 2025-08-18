@@ -276,7 +276,7 @@ namespace EMR.Desktop.Plugins.EmrSign
                 ListDataSign = new List<SignADO>();
                 SignADO ado = new SignADO();
                 ado.Action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd;
-                ado.NUM_ORDER = MaxOrder + 100;
+                ado.NUM_ORDER = MaxOrder + 1;
                 ado.IdRow = ado.NUM_ORDER;
                 ado.DOCUMENT_ID = this.DocumentId;
 
@@ -399,7 +399,7 @@ namespace EMR.Desktop.Plugins.EmrSign
                             e.RepositoryItem = repositoryItemButtonDelete;
                         }
                     }
-                    else if (e.Column.FieldName == "UP")
+                    else if (e.Column.FieldName == "UP")    
                     {
                         if (signTime > 0 || rejectTime > 0 || this.isEdit.HasValue)
                         {
@@ -541,8 +541,8 @@ namespace EMR.Desktop.Plugins.EmrSign
                 if (row != null)
                 {
                     //chưa ký thì luôn ở dưới đã ký nên kiểm tra để tránh đẩy lên trên dòng đã ký
-                    if (row.REJECT_TIME.HasValue || row.SIGN_TIME.HasValue || row.IdRow < MinOrder + 100) return;
-
+                    if (row.REJECT_TIME.HasValue || row.SIGN_TIME.HasValue || row.IdRow < MinOrder + 1) return;
+                        
                     var changeRow = ListDataSign.LastOrDefault(o => o.IdRow < row.IdRow);
                     if (changeRow != null && !changeRow.REJECT_TIME.HasValue && !changeRow.SIGN_TIME.HasValue)
                     {
@@ -650,12 +650,12 @@ namespace EMR.Desktop.Plugins.EmrSign
         }
 
         private void repositoryItemButtonAdd_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
-        {
+        {      
             try
             {
                 SignADO ado = new SignADO();
                 ado.Action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit;
-                ado.NUM_ORDER = MaxOrder + 100;
+                ado.NUM_ORDER = MaxOrder + 1;
                 ado.IdRow = ado.NUM_ORDER;
                 ado.DOCUMENT_ID = this.DocumentId;
 
@@ -918,7 +918,7 @@ namespace EMR.Desktop.Plugins.EmrSign
                         adop.NUM_ORDER = MaxOrder - 1;
                     }
                     else 
-                        adop.NUM_ORDER = MaxOrder + 100;
+                        adop.NUM_ORDER = MaxOrder + 1;
                     adop.IdRow = adop.NUM_ORDER;
                     adop.DOCUMENT_ID = this.DocumentId;
                     adop.PATIENT_CODE = this.Document.PATIENT_CODE;
