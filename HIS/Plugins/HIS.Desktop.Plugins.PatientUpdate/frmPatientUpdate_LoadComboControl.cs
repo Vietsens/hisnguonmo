@@ -745,7 +745,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 }
                 else
                 {
-                    var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.ETHNIC_CODE.Contains(searchCode) || o.ETHNIC_NAME.Contains(searchCode)).ToList();
+                    var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1 &&  (o.ETHNIC_CODE.Contains(searchCode) || o.ETHNIC_NAME.Contains(searchCode))).ToList();
                     List<SDA.EFMODEL.DataModels.SDA_ETHNIC> result = (data != null ? ((data.Count == 1) ? data : data.Where(o => o.ETHNIC_CODE == searchCode || o.ETHNIC_NAME == searchCode).ToList()) : null);
                     if (result != null && result.Count == 1)
                     {

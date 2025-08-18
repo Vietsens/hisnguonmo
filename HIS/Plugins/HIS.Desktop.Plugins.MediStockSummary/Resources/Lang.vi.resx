@@ -433,9 +433,9 @@
     <value>Đường dùng</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_SUA_THONG_TIN_LO_THUOC" xml:space="preserve">
-    <value>Sửa thông tin lô thuốc</value>
+    <value>Sửa thông tin lô</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY_SUA_THONG_TIN_LO_VAT_TU" xml:space="preserve">
-    <value>Sửa thông tin lô vật tư</value>
+    <value>Sửa thông tin lô</value>
   </data>
 </root>
