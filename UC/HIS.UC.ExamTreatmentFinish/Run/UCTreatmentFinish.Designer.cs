@@ -47,16 +47,15 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCExamTreatmentFinish));
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnCheckIcd = new DevExpress.XtraEditors.SimpleButton();
             this.panelControlSubIcd = new DevExpress.XtraEditors.PanelControl();
@@ -174,13 +173,14 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.emptySpaceItem7 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciIsExpXml4210Collinear = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem8 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciCareer = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.timer1 = new System.Windows.Forms.Timer();
+            this.txtHeinPatientTypeCode = new DevExpress.XtraEditors.TextEdit();
+            this.lciHeinPatientTypeCode = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSubIcd)).BeginInit();
@@ -298,16 +298,18 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsExpXml4210Collinear)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCareer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHeinPatientTypeCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHeinPatientTypeCode)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.txtHeinPatientTypeCode);
             this.layoutControl1.Controls.Add(this.btnCheckIcd);
             this.layoutControl1.Controls.Add(this.panelControlSubIcd);
             this.layoutControl1.Controls.Add(this.cboCareer);
@@ -888,7 +890,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.cboProgram.Properties.AutoComplete = false;
             this.cboProgram.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.cboProgram.Properties.NullText = "";
             this.cboProgram.Properties.View = this.gridViewProgram;
             this.cboProgram.Size = new System.Drawing.Size(217, 20);
@@ -1093,7 +1095,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.cboTreatmentEndTypeExt.Properties.AutoComplete = false;
             this.cboTreatmentEndTypeExt.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboTreatmentEndTypeExt.Properties.NullText = "";
             this.cboTreatmentEndTypeExt.Properties.View = this.gridView1;
             this.cboTreatmentEndTypeExt.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.gridLookUpEdit1_Properties_ButtonClick);
@@ -1327,11 +1329,11 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.emptySpaceItem7,
             this.layoutControlItem28,
             this.lciIsExpXml4210Collinear,
-            this.emptySpaceItem8,
             this.lciCareer,
             this.layoutControlItem32,
             this.layoutControlItem26,
-            this.layoutControlItem33});
+            this.layoutControlItem33,
+            this.lciHeinPatientTypeCode});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1737,14 +1739,6 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.lciIsExpXml4210Collinear.TextSize = new System.Drawing.Size(130, 20);
             this.lciIsExpXml4210Collinear.TextToControlDistance = 5;
             // 
-            // emptySpaceItem8
-            // 
-            this.emptySpaceItem8.AllowHotTrack = false;
-            this.emptySpaceItem8.Location = new System.Drawing.Point(279, 100);
-            this.emptySpaceItem8.Name = "emptySpaceItem8";
-            this.emptySpaceItem8.Size = new System.Drawing.Size(381, 24);
-            this.emptySpaceItem8.TextSize = new System.Drawing.Size(0, 0);
-            // 
             // lciCareer
             // 
             this.lciCareer.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
@@ -1796,6 +1790,29 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             // 
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // txtHeinPatientTypeCode
+            // 
+            this.txtHeinPatientTypeCode.Location = new System.Drawing.Point(416, 102);
+            this.txtHeinPatientTypeCode.Name = "txtHeinPatientTypeCode";
+            this.txtHeinPatientTypeCode.Properties.Mask.EditMask = "[0-9\\.]{0,10}";
+            this.txtHeinPatientTypeCode.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
+            this.txtHeinPatientTypeCode.Size = new System.Drawing.Size(242, 20);
+            this.txtHeinPatientTypeCode.StyleController = this.layoutControl1;
+            this.txtHeinPatientTypeCode.TabIndex = 43;
+            // 
+            // lciHeinPatientTypeCode
+            // 
+            this.lciHeinPatientTypeCode.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciHeinPatientTypeCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciHeinPatientTypeCode.Control = this.txtHeinPatientTypeCode;
+            this.lciHeinPatientTypeCode.Location = new System.Drawing.Point(279, 100);
+            this.lciHeinPatientTypeCode.Name = "lciHeinPatientTypeCode";
+            this.lciHeinPatientTypeCode.Size = new System.Drawing.Size(381, 24);
+            this.lciHeinPatientTypeCode.Text = "Mã đối tượng:";
+            this.lciHeinPatientTypeCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciHeinPatientTypeCode.TextSize = new System.Drawing.Size(130, 20);
+            this.lciHeinPatientTypeCode.TextToControlDistance = 5;
             // 
             // UCExamTreatmentFinish
             // 
@@ -1922,12 +1939,13 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsExpXml4210Collinear)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCareer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHeinPatientTypeCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHeinPatientTypeCode)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2027,7 +2045,6 @@ namespace HIS.UC.ExamTreatmentFinish.Run
 		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem28;
 		private DevExpress.XtraEditors.CheckEdit chkIsExpXml4210Collinear;
 		private DevExpress.XtraLayout.LayoutControlItem lciIsExpXml4210Collinear;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem8;
         private DevExpress.XtraEditors.GridLookUpEdit cboCareer;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
         private DevExpress.XtraLayout.LayoutControlItem lciCareer;
@@ -2058,5 +2075,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup2;
         private DevExpress.XtraEditors.MemoEdit memNote;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem36;
+        private DevExpress.XtraEditors.TextEdit txtHeinPatientTypeCode;
+        private DevExpress.XtraLayout.LayoutControlItem lciHeinPatientTypeCode;
     }
 }
