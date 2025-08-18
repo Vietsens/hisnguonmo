@@ -79,7 +79,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-         
+
 namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 {
     public partial class ExamServiceReqExecuteControl : UserControlBase
@@ -246,8 +246,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 //this.InitLanguage();
                 SetCaptionByLanguageKey();
 
-                
-                
+
+
             }
             catch (Exception ex)
             {
@@ -379,7 +379,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Black;
                     lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Black;
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -2414,7 +2414,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     }
 
                     this.ucTreatmentFinish = (UserControl)treatmentFinishProcessor.Run(treatmentFinishInitADO, this.currentTreatmentExt);
-                    LoadUCToPanelExecuteExt(this.ucTreatmentFinish, chkTreatmentFinish);   
+                    LoadUCToPanelExecuteExt(this.ucTreatmentFinish, chkTreatmentFinish);
 
                     //LabelColor();
 
@@ -2449,7 +2449,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (this.requiredControl != null && this.requiredControl == 1)
                     {
                         lblCaptionPathologicalProcess.AppearanceItemCaption.ForeColor = Color.Maroon;
-                        //ValidationRequired(txtPathologicalProcess);
+                        ValidationRequired(txtPathologicalProcess);
                     }
                 }
                 else
@@ -2482,7 +2482,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             txtPathologicalProcess.Visible = true;
                         }
 
-                        this.BeginInvoke(new Action(() => {
+                        this.BeginInvoke(new Action(() =>
+                        {
                             txtPathologicalProcess.Focus();
                             txtPathologicalProcess.SelectAll();
                         }));
@@ -2508,7 +2509,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (sub_out != null && sub_out is ExamTreatmentFinishResult)
                 {
                     var sub = sub_out as ExamTreatmentFinishResult;
-                    if(sub.TreatmentFinishSDO.ProgramId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)
+                    if (sub.TreatmentFinishSDO.ProgramId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)
                     {
                         lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Maroon;
                         lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Maroon;
@@ -2909,7 +2910,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                     ((Form)extenceInstance).ShowDialog();
                 }
-            }    
+            }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
@@ -2920,7 +2921,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                  
+
                 LogTheadInSessionInfo(() => btnSaveFinish_Click_Action(sender, e), "btnSaveFinish_Click");
             }
             catch (Exception ex)
@@ -3004,7 +3005,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (hisServiceReqSDO.TreatmentFinishSDO != null)
                 {
                     hisServiceReqSDO.IsFinish = true;
-                    
+
                     //ngant muon sua thanh null khi loi hoac co thong bao
                     if (hisServiceReqSDO.TreatmentFinishSDO.TreatmentFinishTime > 0) hisServiceReqSDO.FinishTime = hisServiceReqSDO.TreatmentFinishSDO.TreatmentFinishTime;
                 }
@@ -3094,41 +3095,35 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                // Get UCTreatmentFinish instance
-                if (this.ucTreatmentFinish is UCExamTreatmentFinish ucExamTreatmentFinish)
+                if (chkTreatmentFinish.Checked && this.ucTreatmentFinish is UCExamTreatmentFinish)
                 {
-                    // Get selected treatment end type
-                    var selectedEndType = ucExamTreatmentFinish.GetSelectedTreatmentEndType();
-                    if (selectedEndType?.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
+                    var ucExamTreatmentFinish = ucTreatmentFinish as UCExamTreatmentFinish;
+                    bool isBHYTPatient = treatment.TDL_PATIENT_TYPE_ID == HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT;
+                    bool needValidatePathological = false;
+                    var TreatmentEndType = ucExamTreatmentFinish.GetSelectedTreatmentEndType().ID;
+                    if ((isBHYTPatient && HisConfigCFG.IsRequiredPathologicalProcessTransferPatientBHYT && TreatmentEndType == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN) ||
+                    (HisConfigCFG.PathologicalProcessOption == 1 && treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU) ||
+                    (HisConfigCFG.PathologicalProcessOption == 2 && (
+                        treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU ||
+                        treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU ||
+                        treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
+                    )))
                     {
-                        bool isBHYTPatient = treatment.TDL_PATIENT_TYPE_ID == HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT;
-                        bool needValidatePathological = false;
+                        needValidatePathological = true;
+                    }
 
-                        // Check conditions based on config keys
-                        if ((isBHYTPatient && HisConfigCFG.IsRequiredPathologicalProcessTransferPatientBHYT) ||
-                        (HisConfigCFG.PathologicalProcessOption == 1 && treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU) ||
-                        (HisConfigCFG.PathologicalProcessOption == 2 && (
-                            treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU ||
-                            treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU ||
-                            treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
-                        )))
+                    if (needValidatePathological)
+                    {
+                        if (string.IsNullOrWhiteSpace(txtPathologicalProcess.Text.Trim()))
                         {
-                            needValidatePathological = true;
-                        }
+                            XtraMessageBox.Show(TreatmentEndType == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN ? "Bắt buộc nhập quá trình bệnh lý đối với bệnh nhân chuyển viện" : "Bắt buộc nhập quá trình bệnh lý",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        if (needValidatePathological)
-                        {
-                            if (string.IsNullOrWhiteSpace(txtPathologicalProcess.Text))
+                            if (txtPathologicalProcess != null && !txtPathologicalProcess.IsDisposed)
                             {
-                                XtraMessageBox.Show("Bắt buộc nhập quá trình bệnh lý đối với bệnh nhân chuyển viện",
-                                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                                if (txtPathologicalProcess != null && !txtPathologicalProcess.IsDisposed)
-                                {
-                                    txtPathologicalProcess.Focus();
-                                }
-                                return false;
+                                txtPathologicalProcess.Focus();
                             }
+                            return false;
                         }
                     }
                 }
@@ -3143,8 +3138,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         }
         private bool CheckMustFinishAllServices(long serviceReqId)
         {
-               
-               
+
+
             CommonParam param = new CommonParam();
             if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>("MOS.HIS_SERVICE_REQ.MUST_FINISH_ALL_SERVICES_BEFORE_EXAM_ADDITION") == 2
                 && treatment != null
@@ -3155,7 +3150,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     ServiceReqId = serviceReqId,
                     ServiceReqTypes = new List<long>
 
-            {   
+            {
                 IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA,
                 IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL,
                 IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS,
@@ -3184,7 +3179,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 if (allServiceReqs != null && allServiceReqs.Count > 0)
                 {
-                    
+
                     var warningText = string.Join(", ", allServiceReqs.Select(s =>
                     {
                         var room = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_EXECUTE_ROOM>()
@@ -6757,16 +6752,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         cboIcds.EditValue = listData.First().ID;
                         chkEditIcd.Checked = (chkEditIcd.Enabled ? this.isAutoCheckIcd : false);
                         string messErr = null;
-                            if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), txtIcdSubCode.Text.Trim(), ref messErr, false))
+                        if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), txtIcdSubCode.Text.Trim(), ref messErr, false))
+                        {
+                            XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
+                            if (CheckIcdManager.IcdCodeError.Equals(txtIcdCode.Text.Trim()))
                             {
-                                XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
-                                if (CheckIcdManager.IcdCodeError.Equals(txtIcdCode.Text.Trim()))
-                                {
-                                    txtIcdCode.Text = txtIcdMainText.Text = null;
-                                    cboIcds.EditValue = null;
-                                }
-                                return;
+                                txtIcdCode.Text = txtIcdMainText.Text = null;
+                                cboIcds.EditValue = null;
                             }
+                            return;
+                        }
                         if (chkEditIcd.Checked)
                         {
                             txtIcdMainText.Focus();
@@ -8826,7 +8821,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         dtExecuteTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dhst.EXECUTE_TIME ?? 0) ?? DateTime.Now;
                         if (dhst.PULSE != null) spinPulse.EditValue = dhst.PULSE;
                         if (dhst.BLOOD_PRESSURE_MAX != null) spinBloodPressureMax.EditValue = dhst.BLOOD_PRESSURE_MAX;
-                        if (dhst.BLOOD_PRESSURE_MIN != null) spinBloodPressureMin.EditValue = dhst.BLOOD_PRESSURE_MIN;   
+                        if (dhst.BLOOD_PRESSURE_MIN != null) spinBloodPressureMin.EditValue = dhst.BLOOD_PRESSURE_MIN;
                         if (dhst.WEIGHT != null) spinWeight.EditValue = dhst.WEIGHT;
                         if (dhst.HEIGHT != null) spinHeight.EditValue = dhst.HEIGHT;
                         if (dhst.SPO2 != null) spinSPO2.EditValue = dhst.SPO2;
