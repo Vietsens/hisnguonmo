@@ -1225,6 +1225,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.DockManager = this.dockManager1;
             this.barManager1.Form = this;
             this.barManager1.Images = this.imageCollection1;
@@ -1398,8 +1402,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1350, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1350, 29);
             // 
             // barDockControlBottom
             // 
@@ -4984,7 +4988,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // txtPreviousUseDay
             // 
             this.txtPreviousUseDay.EditValue = "";
-            this.txtPreviousUseDay.Location = new System.Drawing.Point(775, 2);
+            this.txtPreviousUseDay.Location = new System.Drawing.Point(775, 3);
             this.txtPreviousUseDay.MenuManager = this.barManager1;
             this.txtPreviousUseDay.Name = "txtPreviousUseDay";
             this.txtPreviousUseDay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5005,7 +5009,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.layoutControl7.Controls.Add(this.spinTrua);
             this.layoutControl7.Controls.Add(this.spinChieu);
             this.layoutControl7.Controls.Add(this.spinToi);
-            this.layoutControl7.Location = new System.Drawing.Point(170, 2);
+            this.layoutControl7.Location = new System.Drawing.Point(170, 3);
             this.layoutControl7.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl7.Name = "layoutControl7";
             this.layoutControl7.Root = this.layoutControlGroup4;
@@ -5248,7 +5252,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             0,
             0,
             0});
-            this.spinSoLuongNgay.Location = new System.Drawing.Point(100, 4);
+            this.spinSoLuongNgay.Location = new System.Drawing.Point(100, 5);
             this.spinSoLuongNgay.MenuManager = this.barManager1;
             this.spinSoLuongNgay.Name = "spinSoLuongNgay";
             this.spinSoLuongNgay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5279,7 +5283,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             0,
             0,
             0});
-            this.spinTocDoTruyen.Location = new System.Drawing.Point(100, 36);
+            this.spinTocDoTruyen.Location = new System.Drawing.Point(100, 37);
             this.spinTocDoTruyen.MenuManager = this.barManager1;
             this.spinTocDoTruyen.Name = "spinTocDoTruyen";
             this.spinTocDoTruyen.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5310,7 +5314,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.cboMedicineUseForm.Enabled = false;
             this.cboMedicineUseForm.EnterMoveNextControl = true;
-            this.cboMedicineUseForm.Location = new System.Drawing.Point(381, 36);
+            this.cboMedicineUseForm.Location = new System.Drawing.Point(381, 37);
             this.cboMedicineUseForm.MenuManager = this.barManager1;
             this.cboMedicineUseForm.Name = "cboMedicineUseForm";
             this.cboMedicineUseForm.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5339,7 +5343,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             // txtTutorial
             // 
-            this.txtTutorial.Location = new System.Drawing.Point(100, 60);
+            this.txtTutorial.Location = new System.Drawing.Point(100, 61);
             this.txtTutorial.MenuManager = this.barManager1;
             this.txtTutorial.Name = "txtTutorial";
             this.txtTutorial.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -5354,7 +5358,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             // btnAddTutorial
             // 
-            this.btnAddTutorial.Location = new System.Drawing.Point(648, 60);
+            this.btnAddTutorial.Location = new System.Drawing.Point(648, 61);
             this.btnAddTutorial.Name = "btnAddTutorial";
             this.btnAddTutorial.Size = new System.Drawing.Size(78, 22);
             this.btnAddTutorial.StyleController = this.layoutControl1;
@@ -5373,7 +5377,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             0,
             0,
             0});
-            this.spinAmount.Location = new System.Drawing.Point(641, 36);
+            this.spinAmount.Location = new System.Drawing.Point(641, 37);
             this.spinAmount.Name = "spinAmount";
             this.spinAmount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinAmount.Properties.Appearance.Options.UseTextOptions = true;
@@ -5393,7 +5397,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // btnAdd
             // 
             this.btnAdd.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.TopCenter;
-            this.btnAdd.Location = new System.Drawing.Point(730, 36);
+            this.btnAdd.Location = new System.Drawing.Point(730, 37);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(67, 46);
             this.btnAdd.StyleController = this.layoutControl1;
@@ -5403,7 +5407,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             // cboHtu
             // 
-            this.cboHtu.Location = new System.Drawing.Point(235, 36);
+            this.cboHtu.Location = new System.Drawing.Point(235, 37);
             this.cboHtu.MenuManager = this.barManager1;
             this.cboHtu.Name = "cboHtu";
             this.cboHtu.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5422,7 +5426,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             // memHtu
             // 
-            this.memHtu.Location = new System.Drawing.Point(100, 86);
+            this.memHtu.Location = new System.Drawing.Point(100, 87);
             this.memHtu.MenuManager = this.barManager1;
             this.memHtu.Name = "memHtu";
             this.memHtu.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -5453,7 +5457,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lciFortxtPreviousUseDay,
             this.layoutControlItem27,
             this.layoutControlItem47});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, -1);
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlGroup1.Size = new System.Drawing.Size(799, 110);
