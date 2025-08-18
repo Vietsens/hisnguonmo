@@ -1080,7 +1080,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
                     if (!String.IsNullOrEmpty(currentVHisTreatment.HEIN_PATIENT_TYPE_CODE))
                     {
-                        txtHeinPatientTypeCode.Text = currentVHisTreatment.HOSPITALIZATION_REASON;
+                        txtHeinPatientTypeCode.Text = currentVHisTreatment.HEIN_PATIENT_TYPE_CODE;
                     }
                     else
                     {
@@ -3383,6 +3383,14 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtHeinPatientTypeCode_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetterOrDigit(e.KeyChar) && e.KeyChar != '.' && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
             }
         }
     }
