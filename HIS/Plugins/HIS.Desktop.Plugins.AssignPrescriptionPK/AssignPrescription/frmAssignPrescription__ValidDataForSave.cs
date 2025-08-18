@@ -41,6 +41,7 @@ using System.Text;
 using System.Windows.Forms;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm;
 using DevExpress.XtraEditors;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
@@ -392,6 +393,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 CommonParam param = new CommonParam();
                 HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
                 icdServiceFilter.ICD_CODE__EXACTs = icdCodes;
+                LogSystem.Info("Input icdServiceFilter2: " + LogUtil.TraceData("icdServiceFilter: ", icdServiceFilter));
                 List<HIS_ICD_SERVICE> icdServices = new BackendAdapter(param)
                 .Get<List<MOS.EFMODEL.DataModels.HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumers.MosConsumer, icdServiceFilter, param);
                 icdServices = icdServices != null ? icdServices.Where(o => o.IS_INDICATION == 1).ToList() : null;
@@ -487,6 +489,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         CommonParam param = new CommonParam();
                         HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
                         icdServiceFilter.ICD_CODE__EXACTs = icdCodeArr;
+                        LogSystem.Info("Input icdServiceFilter3: " + LogUtil.TraceData("icdServiceFilter: ", icdServiceFilter));
                         List<HIS_ICD_SERVICE> icdServicesForContraindicaterWarningOption = new BackendAdapter(param)
                         .Get<List<MOS.EFMODEL.DataModels.HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumers.MosConsumer, icdServiceFilter, param);
                         List<HIS_ICD_SERVICE> icdServicesForWarningOption = new List<HIS_ICD_SERVICE>();
@@ -816,6 +819,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         CommonParam param = new CommonParam();
                         HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
                         icdServiceFilter.SERVICE_ID_OR_ACTIVE_INGREDIENT_ID = new ActiveIngredientOrServiceId() { ServiceIds = serviceIds, ActiveIngredientIds = acinIgrIds };
+                        LogSystem.Info("Input icdServiceFilter4: " + LogUtil.TraceData("icdServiceFilter: ", icdServiceFilter));
                         List<HIS_ICD_SERVICE> icdServicesForContraindicaterWarningOption = new BackendAdapter(param)
                         .Get<List<MOS.EFMODEL.DataModels.HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumers.MosConsumer, icdServiceFilter, param);
                         List<HIS_ICD_SERVICE> icdServicesForWarningOption = new List<HIS_ICD_SERVICE>();
@@ -1043,6 +1047,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 CommonParam param = new CommonParam();
                 HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
                 icdServiceFilter.ICD_CODE__EXACTs = icdCodes;
+                LogSystem.Info("Input icdServiceFilter5: " + LogUtil.TraceData("icdServiceFilter: ", icdServiceFilter));
                 List<HIS_ICD_SERVICE> icdServices = new BackendAdapter(param)
                 .Get<List<MOS.EFMODEL.DataModels.HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumers.MosConsumer, icdServiceFilter, param);
                 //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HisConfigCFG.icdServiceHasRequireCheck), HisConfigCFG.icdServiceHasRequireCheck) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => icdServices), icdServices));
@@ -1116,6 +1121,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
                 HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
                 icdServiceFilter.SERVICE_ID_OR_ACTIVE_INGREDIENT_ID = new ActiveIngredientOrServiceId() { ServiceIds = serviceIds, ActiveIngredientIds = acinIgrIds };
+                LogSystem.Info("Input icdServiceFilter1: " + LogUtil.TraceData("icdServiceFilter: ", icdServiceFilter));
                 icdServices = new BackendAdapter(param)
                 .Get<List<MOS.EFMODEL.DataModels.HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumers.MosConsumer, icdServiceFilter, param);
                 List<HIS_ICD_SERVICE> icdsvNotExists = new List<HIS_ICD_SERVICE>();

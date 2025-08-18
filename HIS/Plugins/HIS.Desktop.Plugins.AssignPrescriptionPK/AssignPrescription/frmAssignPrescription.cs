@@ -1838,6 +1838,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 CommonParam param = new CommonParam();
                 HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
                 icdServiceFilter.ICD_CODE__EXACTs = icdCodeArr.ToList();
+                LogSystem.Info("Input icdServiceFilter6: " + LogUtil.TraceData("icdServiceFilter: ", icdServiceFilter));
                 List<HIS_ICD_SERVICE> icdServices = new BackendAdapter(param)
                 .Get<List<MOS.EFMODEL.DataModels.HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumers.MosConsumer, icdServiceFilter, param);
                 icdServices = icdServices != null ? icdServices.Where(o => o.IS_INDICATION == 1).ToList() : null;
@@ -2224,7 +2225,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.paramSaveList = new CommonParam();
                         this.paramSaveList.Messages = new List<string>();
                         this.successSaveList = true;
-
+                        LogSystem.Info("ProcessSaveData_4");
                         this.ProcessSaveData(sType);
                         this.actionType = GlobalVariables.ActionAdd;
                         this.actionBosung = GlobalVariables.ActionAdd;
@@ -2290,6 +2291,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             gridViewServiceProcess.GridControl.DataSource = this.mediMatyTypeADOs;
                             gridViewServiceProcess.EndUpdate();
                             currentTreatment = GetTreatment(item.TREATMENT_ID);
+                            LogSystem.Info("ProcessSaveData_5");
                             this.ProcessSaveData(sType);
 
                             this.actionType = GlobalVariables.ActionAdd;
@@ -2318,10 +2320,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         }
                     }
                     else
+                    {
+                        LogSystem.Info("ProcessSaveData_2");
                         this.ProcessSaveData(sType);
+                    }
+                    
                 }
                 else
+                {
+                    LogSystem.Info("ProcessSaveData_3");
                     this.ProcessSaveData(sType);
+                }
+                
                 this.LoadDataSereServWithTreatment(this.currentTreatmentWithPatientType, 0);
                 IsSaveOverResultReasonTest = false;
                 this.bIsSelectMultiPatientProcessing = false;
@@ -11700,6 +11710,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 CommonParam param = new CommonParam();
                 HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
                 icdServiceFilter.ICD_CODE__EXACTs = icdCodeArr.ToList();
+                LogSystem.Info("Input icdServiceFilter7: " + LogUtil.TraceData("icdServiceFilter: ", icdServiceFilter));
                 icdServices = new BackendAdapter(param)
                .Get<List<MOS.EFMODEL.DataModels.HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumers.MosConsumer, icdServiceFilter, param);
 

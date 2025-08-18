@@ -76,7 +76,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     Inventec.Common.Logging.LogSystem.Debug("ProcessAfterChangeTrackingTime.3");
                     this.InitWorker();
                     this.actionType = GlobalVariables.ActionEdit;
-
+                    LogSystem.Info("ProcessSaveData_1");
                     this.ProcessSaveData(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE.SAVE);//TODO cần check tiếp
                     Inventec.Common.Logging.LogSystem.Debug("ProcessAfterChangeTrackingTime.4");
                 }
