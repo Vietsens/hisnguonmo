@@ -38,6 +38,9 @@ namespace MPS.Processor.Mps000085.PDO
         public List<RoleADO> roleAdo = new List<RoleADO>();
 
         public List<MedicalContractADO> _ListMedicalContract = null;
+        //qtcode
+        public List<V_HIS_MEDICINE_PATY> _MedicinePaties = null;
+        public List<V_HIS_MATERIAL_PATY> _MaterialPaties = null; 
 
         //public Mps000085PDO(V_HIS_IMP_MEST impMest, List<V_HIS_IMP_MEST_MEDICINE> impMestMedicines, List<V_HIS_IMP_MEST_MATERIAL> impMestMaterials)
         //{
@@ -81,7 +84,7 @@ namespace MPS.Processor.Mps000085.PDO
             this._ListMedicalContract = listMedicalContract;
         }
 
-        public Mps000085PDO(V_HIS_IMP_MEST impMest, List<V_HIS_IMP_MEST_MEDICINE> impMestMedicines, List<V_HIS_IMP_MEST_MATERIAL> impMestMaterials, List<V_HIS_IMP_MEST_USER> listImpMestUserPrint, List<HIS_MEDICINE> medicine, List<HIS_MATERIAL> material, HIS_SUPPLIER supplier, List<MedicalContractADO> listMedicalContract, List<V_HIS_IMP_MEST_BLOOD> lstMestBlook)
+        public Mps000085PDO(V_HIS_IMP_MEST impMest, List<V_HIS_IMP_MEST_MEDICINE> impMestMedicines, List<V_HIS_IMP_MEST_MATERIAL> impMestMaterials, List<V_HIS_IMP_MEST_USER> listImpMestUserPrint, List<HIS_MEDICINE> medicine, List<HIS_MATERIAL> material, HIS_SUPPLIER supplier, List<MedicalContractADO> listMedicalContract, List<V_HIS_IMP_MEST_BLOOD> lstMestBlook, List<V_HIS_MEDICINE_PATY> medicinePaties , List<V_HIS_MATERIAL_PATY> materialPaties)
         {
             this._ImpMest = impMest;
             this._supplier = supplier;
@@ -92,6 +95,8 @@ namespace MPS.Processor.Mps000085.PDO
             this._ImpMestUserPrint = listImpMestUserPrint;
             this._ListMedicalContract = listMedicalContract;
             this._ListImpMestBlood = lstMestBlook;
+            this._MedicinePaties = medicinePaties;
+            this._MaterialPaties = materialPaties; 
         }
 
         //public Mps000085PDO(V_HIS_IMP_MEST impMest, List<ImpMestMedicineADO> impMestMedicineAdos, List<ImpMestMaterialADO> impMestMaterialAdos, List<V_HIS_IMP_MEST_USER> listImpMestUserPrint, V_HIS_BID bid)
