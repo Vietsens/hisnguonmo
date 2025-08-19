@@ -1031,7 +1031,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             var filtered = vSdaCommune.Where(c => c.IS_ACTIVE == 1 && (IsAddressLevel2() ? c.IS_NO_DISTRICT == 1 : c.IS_NO_DISTRICT != 1)).ToList();
             if (!string.IsNullOrEmpty(searchCode))
             {
-                filtered = filtered.Where(c => (c.COMMUNE_CODE ?? "").Contains(searchCode)).ToList();
+                filtered = filtered.Where(c => (c.COMMUNE_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) || (c.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper())).ToList();
 
             }
             if (IsAddressLevel2())
