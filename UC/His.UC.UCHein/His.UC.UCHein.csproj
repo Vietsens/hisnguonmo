@@ -384,6 +384,7 @@
     <EmbeddedResource Include="Design\TemplateHeinBHYT1\Template__HeinBHYT1.resx">
       <DependentUpon>Template__HeinBHYT1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
