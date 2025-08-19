@@ -133,8 +133,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\UC\HIS.UC.UCCheckTT\bin\Debug\HIS.UC.UCCheckTT.dll</HintPath>
     </Reference>
-    <Reference Include="His.UC.UCHein">
-      <HintPath>..\..\..\..\lib\HIS\His.UC.UCHein\His.UC.UCHein.dll</HintPath>
+    <Reference Include="His.UC.UCHein, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\His.UC.UCHein.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCHeniInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
