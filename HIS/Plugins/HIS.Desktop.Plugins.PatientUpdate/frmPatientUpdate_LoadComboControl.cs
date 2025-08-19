@@ -55,7 +55,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             {
                 // Lấy danh sách tỉnh phù hợp với trạng thái toggle
                 List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = GetProvincesForCurrentToggle(searchCode);
-                cboProvince.Properties.DataSource = GetProvincesForCurrentToggle("");
+                cboProvince.Properties.DataSource = GetProvincesForCurrentToggle(searchCode);
                 if (String.IsNullOrEmpty(searchCode))
                 {
                     cboCommune.Properties.DataSource = null;
@@ -159,7 +159,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             {
                 // Lấy danh sách tỉnh phù hợp với trạng thái toggle
                 List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE> listResult = GetProvincesForCurrentToggle(searchCode);
-                cboHTProvinceName.Properties.DataSource = GetProvincesForCurrentToggle("");
+                cboHTProvinceName.Properties.DataSource = GetProvincesForCurrentToggle(searchCode);
                 if (String.IsNullOrEmpty(searchCode))
                 {
                     cboHTCommuneName.Properties.DataSource = null;
@@ -254,8 +254,10 @@ namespace HIS.Desktop.Plugins.PatientUpdate
 
                 // Chế độ Tỉnh-Huyện-Xã (mặc định)
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = BackendDataWorker.Get<V_SDA_DISTRICT>()
-                    .Where(o => o.DISTRICT_CODE.Contains(searchCode) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode))
+                    .Where(o => o.PROVINCE_CODE == provinceCode)
                     .ToList();
+
+                listResult = listResult.Where(o => (o.DISTRICT_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) || (o.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper())).ToList();
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("SEARCH_CODE", "", 100, 1));
@@ -380,8 +382,8 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     return;
                 }
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
-                listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => o.DISTRICT_CODE.Contains(searchCode) && (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
-
+                listResult = BackendDataWorker.Get<V_SDA_DISTRICT>().Where(o => (provinceCode == "" || o.PROVINCE_CODE == provinceCode)).ToList();
+                listResult = listResult.Where(o => (o.DISTRICT_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) || (o.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper())).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("SEARCH_CODE", "", 100, 1));
                 columnInfos.Add(new ColumnInfo("DISTRICT_NAME", "", 200, 2));
@@ -563,7 +565,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     if (communes.Count == 1)
                     {
                         cboHTCommuneName.EditValue = communes[0].COMMUNE_CODE;
-                        txtHTCommuneCode.Text = communes[0].COMMUNE_CODE;
+                        txtHTCommuneCode.Text = communes[0].SEARCH_CODE;
                         if (isExpand)
                         {
                             FocusMoveText(txtHTCommuneCode);
@@ -745,7 +747,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 }
                 else
                 {
-                    var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.ETHNIC_CODE.Contains(searchCode) || o.ETHNIC_NAME.Contains(searchCode)).ToList();
+                    var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1 &&  (o.ETHNIC_CODE.Contains(searchCode) || o.ETHNIC_NAME.Contains(searchCode))).ToList();
                     List<SDA.EFMODEL.DataModels.SDA_ETHNIC> result = (data != null ? ((data.Count == 1) ? data : data.Where(o => o.ETHNIC_CODE == searchCode || o.ETHNIC_NAME == searchCode).ToList()) : null);
                     if (result != null && result.Count == 1)
                     {

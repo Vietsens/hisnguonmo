@@ -501,14 +501,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 var bhyt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>()
                         .FirstOrDefault(o => o.PATIENT_TYPE_CODE == Config.HisConfigCFG.PatientTypeCode__BHYT);
 
-                if (treatUC.HeinPatientTypeCode.Trim().Length > 10)
+                if (treatUC != null && !string.IsNullOrEmpty(treatUC.HeinPatientTypeCode) && treatUC.HeinPatientTypeCode?.Trim().Length > 10)
                 {
                     IsValidForSave = false;
                     XtraMessageBox.Show(string.Format("Mã đối tượng khám bệnh không được quá {0} ký tự", 10));
                     return;
                 }
 
-                if (treatUC.HeinPatientTypeCode.Any(char.IsLetter))
+                if (treatUC != null && !string.IsNullOrEmpty(treatUC.HeinPatientTypeCode) && treatUC.HeinPatientTypeCode.Any(char.IsLetter))
                 {
                     IsValidForSave = false;
                     XtraMessageBox.Show("Mã đối tượng khám bệnh không được nhập chữ");

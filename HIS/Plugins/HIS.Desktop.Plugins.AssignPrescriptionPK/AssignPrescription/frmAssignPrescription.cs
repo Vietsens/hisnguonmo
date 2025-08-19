@@ -2151,7 +2151,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
         private void ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE sType)
         {
-            try
+            try    
             {
                 this.bIsSelectMultiPatientProcessing = false;
 

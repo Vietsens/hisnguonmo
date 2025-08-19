@@ -964,7 +964,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 FillDataToGridLookupedit(this.cboProvince, "PROVINCE_NAME", "PROVINCE_CODE", "SEARCH_CODE", new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>());
                 FillDataToGridLookupedit(this.cboHTProvinceName, "PROVINCE_NAME", "PROVINCE_CODE", "SEARCH_CODE", new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>());
                 FillDataToGridLookupedit(this.cboCareer, "CAREER_NAME", "ID", "CAREER_CODE", BackendDataWorker.Get<HIS_CAREER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
-                FillDataToGridLookupedit(this.cboEthnic, "ETHNIC_NAME", "ETHNIC_CODE", "ETHNIC_CODE", BackendDataWorker.Get<SDA_ETHNIC>());
+                FillDataToGridLookupedit(this.cboEthnic, "ETHNIC_NAME", "ETHNIC_CODE", "ETHNIC_CODE", BackendDataWorker.Get<SDA_ETHNIC>().Where(e=> e.IS_ACTIVE == 1).ToList());
                 FillDataToGridLookupedit(this.cboNation, "NATIONAL_NAME", "NATIONAL_CODE", "NATIONAL_CODE", BackendDataWorker.Get<SDA_NATIONAL>());
                 FillDataToGridLookupedit(this.cboMilitaryRank, "MILITARY_RANK_NAME", "ID", "MILITARY_RANK_CODE", BackendDataWorker.Get<HIS_MILITARY_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
                 FillDataToLookupedit(this.cboBloodABOCode, "BLOOD_ABO_CODE", "BLOOD_ABO_CODE", BackendDataWorker.Get<HIS_BLOOD_ABO>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), 100);
@@ -1031,7 +1031,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             var filtered = vSdaCommune.Where(c => c.IS_ACTIVE == 1 && (IsAddressLevel2() ? c.IS_NO_DISTRICT == 1 : c.IS_NO_DISTRICT != 1)).ToList();
             if (!string.IsNullOrEmpty(searchCode))
             {
-                filtered = filtered.Where(c => (c.COMMUNE_CODE ?? "").Contains(searchCode)).ToList();
+                filtered = filtered.Where(c => (c.COMMUNE_CODE ?? "").ToUpper().Contains(searchCode.ToUpper()) || (c.SEARCH_CODE ?? "").ToUpper().Contains(searchCode.ToUpper())).ToList();
 
             }
             if (IsAddressLevel2())
