@@ -732,22 +732,26 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     var uc = ucTreatmentFinish as HIS.UC.TreatmentFinish.Run.UCTreatmentFinish;
                     bool isAutoFinishChecked = uc != null && uc.IsAutoTreatmentFinishChecked;
 
-                    if (uc.txtPatientType.Text.Any(char.IsLetter))
+                    if (uc != null)
                     {
-                        isValid = false;
-                        XtraMessageBox.Show("Mã đối tượng khám bệnh không được nhập chữ");
-                        return;
-                    }
+                        if (!string.IsNullOrEmpty(uc.txtPatientType.Text) && uc.txtPatientType.Text.Any(char.IsLetter))
+                        {
+                            isValid = false;
+                            XtraMessageBox.Show("Mã đối tượng khám bệnh không được nhập chữ");
+                            return;
+                        }
 
-                    if (!string.IsNullOrEmpty(uc.txtPatientType.Text) && uc.txtPatientType.Text.Length > 10)
-                    {
-                        isValid = false;
-                        XtraMessageBox.Show(string.Format("Mã đối tượng khám bệnh không được quá {0} ký tự", 10));
-                        return;
+                        if (!string.IsNullOrEmpty(uc.txtPatientType.Text) && uc.txtPatientType.Text.Length > 10)
+                        {
+                            isValid = false;
+                            XtraMessageBox.Show(string.Format("Mã đối tượng khám bệnh không được quá {0} ký tự", 10));
+                            return;
+                        }
                     }
+                    
                     if (isAutoFinishChecked)
                     {
-                        if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "2" && uc.txtPatientType.Text.Trim() == "")
+                        if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "2" && uc != null && !string.IsNullOrEmpty(uc.txtPatientType.Text))
                         {
                             var result = DevExpress.XtraEditors.XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị. Bạn có muốn tiếp tục?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
@@ -756,7 +760,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                                 return;
                             }
                         }
-                        else if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "3" && uc.txtPatientType.Text == "")
+                        else if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "3" && uc != null && !string.IsNullOrEmpty(uc.txtPatientType.Text))
                         {
                             DevExpress.XtraEditors.XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
