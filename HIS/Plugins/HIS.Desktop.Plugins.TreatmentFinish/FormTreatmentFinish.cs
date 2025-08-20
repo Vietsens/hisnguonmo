@@ -2353,7 +2353,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             
               
             
-            if (!System.Text.RegularExpressions.Regex.IsMatch(input, @"^[0-9.]+$"))
+            if (!System.Text.RegularExpressions.Regex.IsMatch(input, @"^[0-9.]+$") && !string.IsNullOrWhiteSpace(input))
             {
                 dxErrorProvider1.SetError(txtObjectCode, "Chỉ cho phép nhập số và dấu chấm", ErrorType.Warning);
                 txtObjectCode.Focus();
