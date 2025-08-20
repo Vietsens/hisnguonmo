@@ -55,12 +55,12 @@ namespace HIS.UC.UCRelativeInfo
                 {
                     this.ValidControl(this.txtHomePerson, 100, this.IsObligatory);
                 }
-                if (this.dxValidationProviderControl.Validate(txtFather))
+                if (this.dxValidationProviderControl.Validate(txtFather) && lciFather.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                 {
                     dxValidationProviderControl.SetValidationRule(txtMother, null);
                     this.ValidControl(this.txtHomePerson, 100, false);
                     this.ValidControl(this.txtCorrelated, 50, false);
-                }else if (this.dxValidationProviderControl.Validate(txtMother))
+                }else if (this.dxValidationProviderControl.Validate(txtMother) && lciFather.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                 {
                     dxValidationProviderControl.SetValidationRule(txtFather, null);
                     this.ValidControl(this.txtHomePerson, 100, false);
