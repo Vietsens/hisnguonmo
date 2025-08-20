@@ -3176,7 +3176,16 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
         private void btnSaveTemp_Click(object sender, EventArgs e)
         {
+            string input = txtObjectCode.Text.Trim();
+            if (!System.Text.RegularExpressions.Regex.IsMatch(input, @"^[0-9.]+$") && !string.IsNullOrWhiteSpace(input))
+            {
+                dxErrorProvider1.SetError(txtObjectCode, "Chỉ cho phép nhập số và dấu chấm", ErrorType.Warning);
+                txtObjectCode.Focus();
+                return;
+            }
+            dxErrorProvider1.ClearErrors();
             LogTheadInSessionInfo(saveTemp, "btnSaveTemp_Click");
+            txtObjectCode.ReadOnly = true; 
         }
         //sua lai viec 181736
         string codeCheckCD = "";
