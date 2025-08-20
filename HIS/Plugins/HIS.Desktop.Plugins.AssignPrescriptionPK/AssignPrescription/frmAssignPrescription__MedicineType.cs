@@ -278,9 +278,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.ProcessFilterDontPresExpiredTime(ref filter);//TODO
 
                 this.mediMatyTypeAvailables = new BackendAdapter(param).Get<List<D_HIS_MEDI_STOCK_2>>(HisRequestUriStore.HIS_MEDISTOCKDISDO_GET1, ApiConsumers.MosConsumer, filter, ProcessLostToken, param);
+                LogSystem.Info("count mediMatyTypeAvailables: " + mediMatyTypeAvailables.Where(o => o.IS_PRIORITY == 1).ToList().Count);
                 this.mediStockD1ADOs = ConvertToDMediStockForNhaThuoc(this.mediMatyTypeAvailables);
-                this.PriorityMedicine(this.mediStockD1ADOs, mediStockIds);
-                this.PriorityMaterials(this.mediStockD1ADOs, mediStockIds);
+                //this.PriorityMedicine(this.mediStockD1ADOs, mediStockIds);
+                //this.PriorityMaterials(this.mediStockD1ADOs, mediStockIds);
                 this.RebuildPopupContainerNhaThuocShowMediMatyForSelect(this.mediStockD1ADOs);
             }
             catch (Exception ex)

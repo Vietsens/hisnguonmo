@@ -52,10 +52,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 //Tại màn hình kê đơn, nếu phòng mà người dùng đang làm việc có "Giới hạn thuốc được phép sử dụng" (IS_RESTRICT_MEDICINE_TYPE trong HIS_ROOM bằng true) thì danh sách thuốc khi kê thuốc trong kho chỉ hiển thị các thuốc được khai cấu hình tương ứng với phòng đấy (dữ liệu lưu trong bảng HIS_MEDICINE_TYPE_ROOM)
                 dMediStock1s = new List<DMediStock1ADO>();
                 dMediStock1s.AddRange(this.mediStockD1ADOs);
-                dMediStock1s = dMediStock1s.OrderByDescending(o => o.IS_PRIORITY == 1).ThenBy(o => o.PARENT_NAME).ToList();   
-
+                dMediStock1s = dMediStock1s.OrderByDescending(o => o.IS_PRIORITY == 1).ThenBy(o => o.PARENT_NAME).ToList();
+                LogSystem.Info("dMediStock1s.Count: " + dMediStock1s.Where(o => o.IS_PRIORITY == 1).ToList().Count());
                 gridViewMediMaty.BeginUpdate();
-                gridViewMediMaty.Columns.Clear();
+                gridViewMediMaty.Columns.Clear();   
                 popupControlContainerMediMaty.Width = theRequiredWidth;
                 popupControlContainerMediMaty.Height = theRequiredHeight;
 
@@ -1541,6 +1541,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 if (listMediStock != null && listMediStock.Count > 0)
                 {
+                    LogSystem.Info("Count listMediStock: " + listMediStock.Where(o => o.IS_PRIORITY == 1).ToList().Count);
                     var currentMedicineTypeTemps = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                     var currentMaterialTypeTemps = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                     foreach (var item in listMediStock)
@@ -1617,7 +1618,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             dMediStock1ADO.IS_PRIORITY = item.IS_PRIORITY;
                             dMediStock1ADO.PARENT_ID = item.PARENT_ID;
                             dMediStock1ADO.PARENT_CODE = item.PARENT_CODE;
-
                             dMediStock1ADO.PARENT_NAME = item.PARENT_NAME;
 
                             if (chkShowLo.Checked)
@@ -1719,7 +1719,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return success;
-        }
+        }   
 
         private List<DMediStock1ADO> ConvertToDMediStockForNhaThuoc(List<D_HIS_MEDI_STOCK_2> listMediStock)
         {
@@ -1823,7 +1823,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 dMediStock1ADO.MEDICINE_TYPE_CODE__UNSIGN = StringUtil.convertToUnSign3(item.MEDICINE_TYPE_CODE) + item.MEDICINE_TYPE_CODE;
                                 dMediStock1ADO.MEDICINE_TYPE_NAME__UNSIGN = StringUtil.convertToUnSign3(item.MEDICINE_TYPE_NAME) + item.MEDICINE_TYPE_NAME;
                                 dMediStock1ADO.ACTIVE_INGR_BHYT_NAME__UNSIGN = StringUtil.convertToUnSign3(item.ACTIVE_INGR_BHYT_NAME) + item.ACTIVE_INGR_BHYT_NAME;
-
+                                dMediStock1ADO.IS_PRIORITY = item.IS_PRIORITY;
                                 dMediStock1ADO.PARENT_ID = item.PARENT_ID;
                                 dMediStock1ADO.PARENT_CODE = item.PARENT_CODE;
                                 dMediStock1ADO.PARENT_NAME = item.PARENT_NAME;

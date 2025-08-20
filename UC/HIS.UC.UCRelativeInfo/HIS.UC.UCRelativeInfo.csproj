@@ -127,6 +127,7 @@
     <Compile Include="Valid\ValidControl.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.my.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
