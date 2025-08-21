@@ -237,7 +237,7 @@ namespace HIS.Desktop.Plugins.HisIcdCmImport
 
                     if (!string.IsNullOrEmpty(item.ICD_CM_CODE))
                     {
-                        if (item.ICD_CM_CODE.Length > 10)
+                        if (item.ICD_CM_CODE.Length > 20)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Mã ICD_CM");
                         }
