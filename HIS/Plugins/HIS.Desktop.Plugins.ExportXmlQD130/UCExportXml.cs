@@ -297,7 +297,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
-        private void SetCaptionByLanguageKey()
+        private void SetCaptionByLanguageKey() 
         {
             try
             {
@@ -1217,7 +1217,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     foreach (var sereServ in ListSereServ)
                     {
-                        if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.PRICE > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue)
+                        if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE >0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE))
                         {
                             if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
                                 dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
@@ -3871,7 +3871,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             foreach (var sereServ in ListSereServ)
                             {
-                                if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.PRICE > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue)
+                                if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE))
                                 {
                                     if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
                                         dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
