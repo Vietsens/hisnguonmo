@@ -184,7 +184,7 @@ namespace MPS.Processor.Mps000235.PDO
         public string CONCENTRA { get; set; }
 
         public long? REMEDY_COUNT { get; set; }
-
+        public Mps000235ADO() { }
         public Mps000235ADO(
             V_HIS_EXP_MEST _expMest,
             List<V_HIS_EXP_MEST_MEDICINE> _expMestMedicines,
