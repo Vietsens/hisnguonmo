@@ -32,6 +32,9 @@ using Inventec.Desktop.Common.LanguageManager;
 using System.IO;
 using MOS.EFMODEL.DataModels;
 using Inventec.Common.SignLibrary;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using HIS.Desktop.LocalStorage.BackendData;
+using DevExpress.XtraEditors.Controls;
 
 namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
 {
@@ -93,8 +96,8 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                 EnableControlChange(this.ActionType);
                 SetDefaultValue();
                 SetResourcesByLanguage();
+                InitComboKhoa();
                 ValidateForm();
-                this.UcDocument.SetRtfText("");
             }
             catch (Exception ex)
             {
@@ -207,13 +210,14 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                 txtSearch.Text = "";
                 txtMa.Text = "";
                 txtTen.Text = "";
-                //this.UcDocument.SetRtfText("");
                 this.UcDocument.SetFont(new Font("Times New Roman", 14));
                 label2.Text = "";
                 UCPdf.CloseDocument();
                 this.panelControl1.Controls.Clear();
                 fileName = "";
-                //zoomFactor();
+                chkTheoKhoa.Checked = false;
+                chkToanVien.Checked = false;
+                cboKhoa.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -371,6 +375,7 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                         tempDocFilePathDoc = null;
                         tempDocFilePathPDF = null;
                     }
+                    cboKhoa.EditValue = data.DEPARTMENT_ID;
                     string output = Utils.GenerateTempFileWithin();
                     string path = Utils.GenerateTempFolderWithin();
                     var streamSource = Inventec.Fss.Client.FileDownload.GetFile(data.URL);
@@ -516,18 +521,10 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                 {                    
                     filter.LOGINNAME__EXACT = creator;
                     filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                    var employees = new Inventec.Common.Adapter.BackendAdapter
-                        (param).Get<List<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>>
-                        (RegimenTempUriStore.HIS_EMPLOYEE, ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                    if (employees != null && employees.Count > 0)
-                    {
-                        var departmentId = employees.FirstOrDefault().DEPARTMENT_ID;
-                        updateDTO.DEPARTMENT_ID = departmentId;
-                    }
+                    if (chkTheoKhoa.Checked)
+                        updateDTO.DEPARTMENT_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboKhoa.EditValue.ToString());
                     else
-                    {
                         updateDTO.DEPARTMENT_ID = null;
-                    }
                     var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_REGIMEN_TEMP>(RegimenTempUriStore.REGIMEN_TEMP_CREATE, ApiConsumers.MosConsumer, updateDTO, param);
                     if (resultData != null)
                     {
@@ -540,23 +537,15 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                 {
                     filter.LOGINNAME__EXACT = creator;
                     filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    if (chkTheoKhoa.Checked)
+                        updateDTO.DEPARTMENT_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboKhoa.EditValue.ToString());
+                    else
+                        updateDTO.DEPARTMENT_ID = currentData.DEPARTMENT_ID;
                     if (fileName == "")
                     {
                         updateDTO.URL = currentData.URL;
                         updateDTO.FILE_NAME = currentData.FILE_NAME;
                         updateDTO.FILE_TYPE = currentData.FILE_TYPE;
-                    }
-                    var employees = new Inventec.Common.Adapter.BackendAdapter
-                        (param).Get<List<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>>
-                        (RegimenTempUriStore.HIS_EMPLOYEE, ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                    if (employees != null && employees.Count > 0)
-                    {
-                        var departmentId = employees.FirstOrDefault().DEPARTMENT_ID;
-                        updateDTO.DEPARTMENT_ID = departmentId;
-                    }
-                    else
-                    {
-                        updateDTO.DEPARTMENT_ID = null;
                     }
                     var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_REGIMEN_TEMP>(RegimenTempUriStore.REGIMEN_TEMP_UPDATE, ApiConsumers.MosConsumer, updateDTO, param);
                     if (resultData != null)
@@ -953,6 +942,89 @@ namespace HIS.Desktop.Plugins.HisRegimenTemp.HisReigimenTemp
                     tempDocFilePathPDF = null;
                 }
 
+            }
+        }
+        private void ValidationSingleControl(BaseEdit control)
+        {
+            try
+            {
+                ControlEditValidationRule validRule = new ControlEditValidationRule();
+                validRule.editor = control;
+                validRule.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProvider1.SetValidationRule(control, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboKhoa()
+        {
+            try
+            {
+                var listMediaDocType = BackendDataWorker.Get<HIS_DEPARTMENT>().ToList();
+                cboKhoa.Properties.DataSource = listMediaDocType;
+                cboKhoa.Properties.DisplayMember = "DEPARTMENT_NAME";
+                cboKhoa.Properties.ValueMember = "ID";
+                cboKhoa.Properties.NullText = "";
+                cboKhoa.Properties.ImmediatePopup = true;
+                cboKhoa.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cboKhoa.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboKhoa.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                // Ngăn auto-complete fill
+                cboKhoa.Properties.AutoComplete = false;
+
+                if (cboKhoa.Properties.View.Columns.Count == 0)
+                {
+                    var colID = cboKhoa.Properties.View.Columns.AddVisible("DEPARTMENT_CODE", "Mã khoa");
+                    colID.Width = 50;
+
+                    var colName = cboKhoa.Properties.View.Columns.AddVisible("DEPARTMENT_NAME", "Tên khoa");
+                    colName.Width = 200;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        private void chkTheoKhoa_CheckedChanged(object sender, EventArgs e)
+        {
+            if(chkTheoKhoa.Checked)
+            {
+                layoutControlItem18.AppearanceItemCaption.ForeColor = Color.Maroon;
+                ValidationSingleControl(cboKhoa);
+            }
+            else
+            {
+                layoutControlItem18.AppearanceItemCaption.ForeColor = Color.Black;
+                dxValidationProvider1.SetValidationRule(this.cboKhoa, null);
+            }
+        }
+
+        private void cboKhoa_EditValueChanged(object sender, EventArgs e)
+        {
+            cboKhoa.Properties.Buttons[1].Visible = true;
+        }
+
+        private void cboKhoa_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                bool flag = e.Button.Kind == ButtonPredefines.Delete;
+                if (flag)
+                {
+                    this.cboKhoa.EditValue = null;
+                    this.cboKhoa.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
             }
         }
     }
