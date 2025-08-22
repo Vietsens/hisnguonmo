@@ -695,7 +695,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     else if (row.Type == Base.GlobalConfig.VATTU)
                     {
                         EnableLeftControl(true);
-                        txtRegisterNumber.Enabled = false;
+                        //txtRegisterNumber.Enabled = false;
                         xtraTabControl1.SelectedTabPageIndex = 1;
                         if (this.materialType == null)
                             this.materialType = new ADO.MaterialTypeADO();
@@ -703,7 +703,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         this.materialType.MATERIAL_TYPE_CODE = row.MEDICINE_TYPE_CODE;
                         this.materialType.MATERIAL_TYPE_NAME = row.MEDICINE_TYPE_NAME;
                         txtTenBHYT.Text = row.HEIN_SERVICE_BHYT_NAME ?? "";
-                        txtTenBHYT.Text = row.HEIN_SERVICE_BHYT_NAME ?? "";
+                        txtQCĐG.Text = row.PACKING_TYPE_NAME ?? "";
                         txtRegisterNumber.Text = row.REGISTER_NUMBER ?? "";
                         txtMaDT.Text = row.JOIN_BID_MATERIAL_TYPE_CODE ?? "";
                         txtMaTT.Text = row.BID_MATERIAL_TYPE_CODE ?? "";
