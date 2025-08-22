@@ -1656,7 +1656,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 cboNational.Enabled = Enable;
                 cboManufacture.Enabled = Enable;
                 txtNationalMainText.Enabled = Enable;
-                txtRegisterNumber.Enabled = Enable;
+                //txtRegisterNumber.Enabled = Enable;
                 spinDayLifeSpan.Enabled = Enable;
                 spinHourLifeSpan.Enabled = Enable;
                 spinMonthLifeSpan.Enabled = Enable;
