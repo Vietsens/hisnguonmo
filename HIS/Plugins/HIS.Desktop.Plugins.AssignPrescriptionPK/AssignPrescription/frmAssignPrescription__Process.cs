@@ -621,7 +621,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
-        private void RefeshResourceGridMedicine()
+        private void RefeshResourceGridMedicine()   
         {
             try
             {
@@ -3081,7 +3081,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         this.ProcessAddListRowDataIntoGridWithTakeBean();
                     }
-                    else
+                    else     
                     {
                         List<MediMatyTypeADO> mediMatycheck = new List<MediMatyTypeADO>();
                         if (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
