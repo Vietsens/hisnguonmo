@@ -702,6 +702,9 @@ namespace HIS.Desktop.Plugins.BidCreate
                         Inventec.Common.Mapper.DataObjectMapper.Map<ADO.MaterialTypeADO>(this.materialType, row);
                         this.materialType.MATERIAL_TYPE_CODE = row.MEDICINE_TYPE_CODE;
                         this.materialType.MATERIAL_TYPE_NAME = row.MEDICINE_TYPE_NAME;
+                        txtTenBHYT.Text = row.HEIN_SERVICE_BHYT_NAME ?? "";
+                        txtTenBHYT.Text = row.HEIN_SERVICE_BHYT_NAME ?? "";
+                        txtRegisterNumber.Text = row.REGISTER_NUMBER ?? "";
                         txtMaDT.Text = row.JOIN_BID_MATERIAL_TYPE_CODE ?? "";
                         txtMaTT.Text = row.BID_MATERIAL_TYPE_CODE ?? "";
                         txtTenTT.Text = row.BID_MATERIAL_TYPE_NAME ?? "";

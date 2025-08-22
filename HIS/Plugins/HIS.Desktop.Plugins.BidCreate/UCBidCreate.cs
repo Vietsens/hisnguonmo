@@ -1308,8 +1308,10 @@ namespace HIS.Desktop.Plugins.BidCreate
                 {
                     var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().Where(o => o.NATIONAL_NAME.Equals(this.materialType.NATIONAL_NAME)).ToList();
 
-                    txtRegisterNumber.Text = "";
-                    txtRegisterNumber.Enabled = false;
+                    txtRegisterNumber.Text = materialType.REGISTER_NUMBER;
+                    txtTenBHYT.Text = materialType.HEIN_SERVICE_BHYT_NAME;
+                    txtQCĐG.Text = materialType.PACKING_TYPE_NAME;
+                    //txtRegisterNumber.Enabled = false;
                     if (national != null && national.Count() > 0)
                     {
                         Inventec.Common.Logging.LogSystem.Debug("national: " + national[0].NATIONAL_NAME);
@@ -1743,12 +1745,12 @@ namespace HIS.Desktop.Plugins.BidCreate
                     cboInformationBid.SelectedIndex = 0;
                     if (spinImpMoreRatio.EditValue == null)
                         spinImpMoreRatio.EditValue = 0;
-                    txtRegisterNumber.Enabled = false;
+                    //txtRegisterNumber.Enabled = false;
                     txtBidPackageCode.Properties.MaxLength = 4;
                     txtTenBHYT.Text = "";
-                    txtTenBHYT.Enabled = false;
+                    //txtTenBHYT.Enabled = false;
                     txtQCĐG.Text = "";
-                    txtQCĐG.Enabled = false;
+                    //txtQCĐG.Enabled = false;
                     txtActiveBhyt.Enabled = false;
                     cboMediUserForm.Enabled = false;
                     cboDosageForm.Enabled = false;
