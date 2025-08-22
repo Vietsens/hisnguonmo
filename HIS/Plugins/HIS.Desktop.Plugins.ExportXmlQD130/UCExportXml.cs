@@ -1680,6 +1680,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
                 signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
                 result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
+                if (string.IsNullOrEmpty(result))
+                {
+                    string message = "Ký số không thành công. Vui lòng kiểm tra lại thông tin chữ ký số hoặc kết nối thiết bị.";
+                    Inventec.Common.Logging.LogSystem.Warn(message);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return result;
+                }
             }
             catch (Exception ex)
             {
@@ -4389,6 +4396,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             Inventec.Common.Logging.LogSystem.Error("Error saving xmlBase64 to file: " + ex);
                         }
                     }
+                    else
+                    {
+                        XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");
+                        return;
+                    }
                 }
                 else
                 {
@@ -4408,7 +4420,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             pathAfterFileSign = wcfSignResultDCO.OutputFile;
                         }
-                    }
+                        else
+                        {
+                            XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");
+                            return;
+                        }
+                    }                    
                 }
                 if (configSync != null && !this.configSync.dontSend)
                 {
