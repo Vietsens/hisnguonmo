@@ -4262,8 +4262,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("syncResult__" + Inventec.Common.Logging.LogUtil.GetMemberName(() => syncResult), syncResult));
                                     if (syncResult != null)
                                     {
-
-
+                                        if (!syncResult.Success)
+                                        {
+                                            XtraMessageBox.Show("Ký số thất bại: " + syncResult.Message, Resources.ResourceMessageLang.ThongBao);
+                                            if (isAutoSync)
+                                            {
+                                                autoSync.Stop();
+                                                isAutoSync = false;
+                                            }
+                                            return;
+                                        }
                                         string errorCode = syncResult.ErrorCode;
                                         if (errorCode == "01" || errorCode == "02" || errorCode == "03")
                                         {
@@ -4410,6 +4418,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     Task task = Task.Run(async () => syncResultADO = await xmlProcessor.SendFileSign(pathAfterFileSign));
                     task.Wait();
                     syncResult = syncResultADO;
+                    if (syncResult != null && !syncResult.Success)
+                    {
+                        if (File.Exists(sourceFile))
+                        {
+                            File.Delete(sourceFile);
+                        }
+                        XtraMessageBox.Show("Ký số thất bại: " + syncResult.Message, Resources.ResourceMessageLang.ThongBao);
+                        return;
+                    }
                 }
                 if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))
                 {
