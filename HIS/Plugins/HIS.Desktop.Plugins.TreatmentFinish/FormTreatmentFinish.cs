@@ -2362,7 +2362,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             dxErrorProvider1.ClearErrors();
 
             LogTheadInSessionInfo(save, "btnSave_Click");
-            txtObjectCode.ReadOnly = true;
+            
         }   
         private bool CheckWarningUnfinishedServiceOption()
         {
@@ -2928,7 +2928,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                     BtnEndCode.Enabled = CheckTreatmentEndCode();
                 }
-                Inventec.Common.Logging.LogSystem.Info("Save treatmentFinish 6"); 
+                Inventec.Common.Logging.LogSystem.Info("Save treatmentFinish 6");
+                //qtcode
+                txtObjectCode.ReadOnly = true;
             }
             catch (Exception ex)
             {
@@ -3185,7 +3187,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
             dxErrorProvider1.ClearErrors();
             LogTheadInSessionInfo(saveTemp, "btnSaveTemp_Click");
-            txtObjectCode.ReadOnly = true; 
         }
         //sua lai viec 181736
         string codeCheckCD = "";
@@ -3417,6 +3418,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     SetPrintMenu(hisTreatmentFinishSDO.TreatmentEndTypeId, hisTreatmentFinishSDO.TreatmentEndTypeExtId, this.currentHisTreatment.TDL_TREATMENT_TYPE_ID);
                     BtnEndCode.Enabled = CheckTreatmentEndCode();
                     btnDeleteEndInfo.Enabled = true;
+                    txtObjectCode.ReadOnly = true;
                 }
             }
             catch (Exception ex)
