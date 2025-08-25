@@ -621,7 +621,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
-        private void RefeshResourceGridMedicine()
+        private void RefeshResourceGridMedicine()   
         {
             try
             {
@@ -2012,10 +2012,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 repositoryItemchkIsExpendType_Disable.ReadOnly = true;
                 repositoryItemChkIsExpend__MedicinePage_Disable.Enabled = false;
                 repositoryItemChkIsExpend__MedicinePage_Disable.ReadOnly = true;
-                lciHomePres.Visibility = (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lciHomePres.Visibility = (HisConfigCFG.AllowKidneyPresOutPatient == "1") ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciForchkThongTinMat.Visibility = (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                lciForchkPreKidneyShift.Visibility = (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                lciForspinKidneyCount.Visibility = (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lciForchkPreKidneyShift.Visibility = (HisConfigCFG.AllowKidneyPresOutPatient == "1") ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lciForspinKidneyCount.Visibility = (HisConfigCFG.AllowKidneyPresOutPatient == "1") ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciForchkShowLo.Enabled = HisConfigCFG.IsAllowAssignPresByPackage ? true : false;
 
                 lciForpnlUCDateForMedi.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -3081,7 +3081,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         this.ProcessAddListRowDataIntoGridWithTakeBean();
                     }
-                    else
+                    else     
                     {
                         List<MediMatyTypeADO> mediMatycheck = new List<MediMatyTypeADO>();
                         if (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)

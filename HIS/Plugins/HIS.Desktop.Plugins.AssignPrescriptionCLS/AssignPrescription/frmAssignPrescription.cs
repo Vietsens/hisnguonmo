@@ -4194,7 +4194,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     {
                         txtIcdCode.ErrorText = "";
                         dxValidationProviderControl.RemoveControlError(txtIcdCode);
-                        ValidationICD(10, 500, true);
+                        ValidationICD(20, 500, true);
                     }
                 }
             }

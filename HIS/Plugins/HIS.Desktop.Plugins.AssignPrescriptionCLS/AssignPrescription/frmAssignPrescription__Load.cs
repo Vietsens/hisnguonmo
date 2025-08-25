@@ -769,7 +769,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         }
                         else
                         {
-                            result = null;
+                            result = listSourcePatientType.FirstOrDefault();
                         }
                     }
                 }
@@ -788,7 +788,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         }
                         else
                         {
-                            result = null;
+                            result = listSourcePatientType.FirstOrDefault(); ;
                         }
                     }
                 }
@@ -807,7 +807,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         }
                         else
                         {
-                            result = null;
+                            result = listSourcePatientType.FirstOrDefault(); ;
                         }
                     }
                 }
@@ -884,7 +884,37 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         HEIN_SERVICE_BHYT_NAME = sv.HEIN_SERVICE_BHYT_NAME,
                     };
                 }
+                if (HisConfigCFG.UsePaymentObjectByDept == "1" && mediMatyTypeADO != null)
+                {
+                    var Department = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>().Where(o => o.ID == requestRoom.DEPARTMENT_ID).FirstOrDefault();
+                    CommonParam common = new CommonParam();
+                    HisDepaPatientTypeFilter filter = new HisDepaPatientTypeFilter();
+                    filter.SERVICE_ID = mediMatyTypeADO.SERVICE_ID;
 
+                    var DepaPatientType = new BackendAdapter(common).Get<List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>>(RequestUriStore.HIS_DEPA_PATIENT_TYPE__GET, ApiConsumers.MosConsumer, filter, common);
+
+                    if (DepaPatientType != null && DepaPatientType.Count > 0)
+                    {
+                        List<long> PatientTypeId = DepaPatientType.Where(o => o.DEPARTMENT_ID == Department.ID).Select(o => o.PATIENT_TYPE_ID ?? 0).ToList();
+                        //currentPatientTypeWithPatientTypeAlter = currentPatientTypeWithPatientTypeAlter.Where(o => PatientTypeId.Contains(o.ID)).ToList();
+                        this.listSourcePatientType = currentPatientTypeWithPatientTypeAlter;
+                        this.listSourcePatientType = this.listSourcePatientType.Where(o => PatientTypeId.Contains(o.ID)).ToList();
+                    }
+                    else
+                    {
+                        var dt = IsFullHeinInfo(mediMatyTypeADO);
+                        this.listSourcePatientType = currentPatientTypeWithPatientTypeAlter;
+                        if (!dt)
+                            this.listSourcePatientType = this.listSourcePatientType.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
+                    }
+                }
+                else
+                {
+                    var dt = IsFullHeinInfo(mediMatyTypeADO);
+                    this.listSourcePatientType = currentPatientTypeWithPatientTypeAlter;
+                    if (!dt)
+                        this.listSourcePatientType = this.listSourcePatientType.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
+                }
                 return this.ChoosePatientTypeDefaultlService(patientTypeId, mediMatyTypeADO);
             }
             catch (Exception ex)

@@ -107,7 +107,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000085.PDO">
-      <HintPath>..\MPS.Processor.Mps000085.PDO\bin\Debug\MPS.Processor.Mps000085.PDO.dll</HintPath>
+      <HintPath>..\MPS.Processor.Mps000085.PDO\obj\Debug\MPS.Processor.Mps000085.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>

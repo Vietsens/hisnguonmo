@@ -3388,7 +3388,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
         private void txtHeinPatientTypeCode_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsLetterOrDigit(e.KeyChar) && e.KeyChar != '.' && !char.IsControl(e.KeyChar))
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && !char.IsControl(e.KeyChar))
             {
                 e.Handled = true;
             }
