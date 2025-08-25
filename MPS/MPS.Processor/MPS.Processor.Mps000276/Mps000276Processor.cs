@@ -285,8 +285,15 @@ namespace MPS.Processor.Mps000276
                         {
                             ado.ExecuteNumOrder = maxStt++;
                         }
-                        serviceNumOderAdo.CALL_SAMPLE_ORDER = ado.CallSampleOrder;
-                        serviceNumOderAdo.EXECUTE_ROOM_NAME = ado.ExecuteRoomName;
+
+                        if (serviceNumOderAdo != null)
+                        {
+                            serviceNumOderAdo.CALL_SAMPLE_ORDER = !string.IsNullOrWhiteSpace(ado.CallSampleOrder.ToString()) ? ado.CallSampleOrder : null;
+
+                            serviceNumOderAdo.EXECUTE_ROOM_NAME = ado.ExecuteRoomName;
+                        }
+
+                        //serviceNumOderAdo.CALL_SAMPLE_ORDER = !string.IsNullOrWhiteSpace((ado.CallSampleOrder).ToString()) ? ado.CallSampleOrder : null;
                         this._ListSereServ.Add(ado);
                         if (serviceNumOderAdo != null && (_ListServiceNumOder.Count() == 0 || !_ListServiceNumOder.Exists(o => o.SERVICE_CODE == serviceNumOderAdo.SERVICE_CODE)))
                             this._ListServiceNumOder.Add(serviceNumOderAdo);

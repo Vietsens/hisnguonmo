@@ -39,5 +39,6 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule
         internal const string HIS_SERVICE_REQ_GETVIEW_9 = "api/HisServiceReq/GetView9";
         internal const string HIS_SERVICE_REQ__KIDNEYS_CHEDULE = "api/HisServiceReq/KidneySchedule";
         internal const string HIS_SERVICE_REQ_DELETE = "api/HisServiceReq/Delete";
+        internal const string HIS_TREATMENT_GETVIEW_4 = "api/HisTreatment/GetView4";
     }
 }
