@@ -45,9 +45,9 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 WaitingManager.Show();
                 bool valid = true;
                 this.positionHandleControl = -1;
-                TreatmentBedRoomADO treatmentBedRoomADO = null;
+                //TreatmentBedRoomADO treatmentBedRoomADO = null;
                 CommonParam param = new CommonParam();
-                valid = valid && ValidRowTreatmentSelected(ref treatmentBedRoomADO);
+                //valid = valid && ValidRowTreatmentSelected(ref treatmentBedRoomADO);
                 valid = this.dxValidationProviderControl.Validate() && valid;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("UCKidneyShift.valid", valid));
                 if (valid)
@@ -66,9 +66,11 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                     serviceReqKidneyScheduleSDO.WorkingRoomId = requestRoom.ID;
                     serviceReqKidneyScheduleSDO.RoomId = (long)cboExecuteRoom.EditValue;
                     serviceReqKidneyScheduleSDO.ServiceId = (long)cboServiceForAdd.EditValue;
-                    serviceReqKidneyScheduleSDO.TreatmentId = treatmentBedRoomADO.TREATMENT_ID;
+                    serviceReqKidneyScheduleSDO.TreatmentId = this.treatmentId;
                     serviceReqKidneyScheduleSDO.RequestUsername = cboUser.Text;
                     serviceReqKidneyScheduleSDO.RequestLoginname = txtLoginName.Text;
+                    serviceReqKidneyScheduleSDO.KidneyType = Inventec.Common.TypeConvert.Parse.ToInt64(cboKidneyType.EditValue.ToString());
+
 
                     this.serviceReqListResultSDO = new BackendAdapter(param).Post<HisServiceReqListResultSDO>(RequestUriStore.HIS_SERVICE_REQ__KIDNEYS_CHEDULE, ApiConsumers.MosConsumer, serviceReqKidneyScheduleSDO, ProcessLostToken, param);
 
