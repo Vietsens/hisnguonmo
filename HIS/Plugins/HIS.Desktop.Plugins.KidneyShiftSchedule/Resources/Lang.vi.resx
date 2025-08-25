@@ -135,9 +135,9 @@
   <data name="UCKidneyShift.btnSearchForSearchServiceReqKidneyshift.Text" xml:space="preserve">
     <value>Tìm (Ctrl F)</value>
   </data>
-  <data name="UCKidneyShift.cboBedroomForPatientInBedroom.Properties.NullText" xml:space="preserve">
-    <value />
-  </data>
+  //<data name="UCKidneyShift.cboBedroomForPatientInBedroom.Properties.NullText" xml:space="preserve">
+  //  <value />
+  //</data>
   <data name="UCKidneyShift.cboCaForAdd.Properties.NullText" xml:space="preserve">
     <value />
   </data>
@@ -282,9 +282,9 @@
   <data name="UCKidneyShift.layoutControlItem17.Text" xml:space="preserve">
     <value>Từ khóa tìm kiếm:</value>
   </data>
-  <data name="UCKidneyShift.layoutControlItem18.Text" xml:space="preserve">
+  <!--<data name="UCKidneyShift.layoutControlItem18.Text" xml:space="preserve">
     <value>Buồng bệnh:</value>
-  </data>
+  </data>-->
   <data name="UCKidneyShift.layoutControlItem20.Text" xml:space="preserve">
     <value>Toàn khoa:</value>
   </data>

@@ -28,6 +28,7 @@ using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using MOS.SDO;
 using System;
 using System.Collections.Generic;
@@ -149,35 +150,38 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             try
             {
                 WaitingManager.Show();
-                List<V_HIS_TREATMENT_BED_ROOM> lstTreatmentBedRoom = new List<V_HIS_TREATMENT_BED_ROOM>();
-                _TreatmentBedRoomADOs = new List<TreatmentBedRoomADO>();
+                List<V_HIS_TREATMENT_4> lstTreatmentBedRoom = new List<V_HIS_TREATMENT_4>();
+                //_TreatmentBedRoomADOs = new List<TreatmentBedRoomADO>();
 
                 gridControlTreatmentBedRoom.DataSource = null;
                 start = ((CommonParam)param).Start ?? 0;
                 limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(start, limit);
-                MOS.Filter.HisTreatmentBedRoomViewFilter treatFilter = new MOS.Filter.HisTreatmentBedRoomViewFilter();
+                //MOS.Filter.HisTreatmentBedRoomViewFilter treatFilter = new MOS.Filter.HisTreatmentBedRoomViewFilter();
+                HisTreatmentView4Filter treatFilter = new HisTreatmentView4Filter();
+                treatFilter.IS_PAUSE = false;
+
                 SetTreatmentBedRoomFilter(ref treatFilter);
-                var resultRO = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_TREATMENT_BED_ROOM>>(HisRequestUriStore.HIS_TREATMENT_BED_ROOM_GETVIEW, ApiConsumers.MosConsumer, treatFilter, paramCommon);
+                var resultRO = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_TREATMENT_4>>(RequestUriStore.HIS_TREATMENT_GETVIEW_4, ApiConsumers.MosConsumer, treatFilter, paramCommon);
                 if (resultRO != null)
                 {
-                    lstTreatmentBedRoom = (List<V_HIS_TREATMENT_BED_ROOM>)resultRO.Data.OrderBy(p => p.TDL_PATIENT_FIRST_NAME).ToList();
+                    lstTreatmentBedRoom = (List<V_HIS_TREATMENT_4>)resultRO.Data.OrderBy(p => p.TDL_PATIENT_FIRST_NAME).ToList();
                     rowCount = (lstTreatmentBedRoom == null ? 0 : lstTreatmentBedRoom.Count);
                     dataTotal = (resultRO.Param == null ? 0 : resultRO.Param.Count ?? 0);
                 }
-                if (lstTreatmentBedRoom != null && lstTreatmentBedRoom.Count > 0)
-                {
-                    _TreatmentBedRoomADOs.AddRange((from r in lstTreatmentBedRoom select new TreatmentBedRoomADO(r)).ToList());
-                }
-                _TreatmentBedRoomADOs = _TreatmentBedRoomADOs.OrderBy(o => o.BED_ROOM_NAME).ThenBy(o => o.TDL_PATIENT_FIRST_NAME).ThenBy(o => o.TDL_PATIENT_CODE).ToList();
+                //if (lstTreatmentBedRoom != null && lstTreatmentBedRoom.Count > 0)
+                //{
+                //    _TreatmentBedRoomADOs.AddRange((from r in lstTreatmentBedRoom select new TreatmentBedRoomADO(r)).ToList());
+                //}
+                //_TreatmentBedRoomADOs = _TreatmentBedRoomADOs.OrderBy(o => o.BED_ROOM_NAME).ThenBy(o => o.TDL_PATIENT_FIRST_NAME).ThenBy(o => o.TDL_PATIENT_CODE).ToList();
                 gridControlTreatmentBedRoom.BeginUpdate();
-                gridControlTreatmentBedRoom.DataSource = _TreatmentBedRoomADOs;
+                gridControlTreatmentBedRoom.DataSource = lstTreatmentBedRoom;
                 gridControlTreatmentBedRoom.EndUpdate();
                 //gridViewTreatmentBedRoom.OptionsSelection.EnableAppearanceFocusedCell = false;
                 //gridViewTreatmentBedRoom.OptionsSelection.EnableAppearanceFocusedRow = false;
                 gridViewTreatmentBedRoom.BestFitColumns();
 
-                if (_TreatmentBedRoomADOs != null && _TreatmentBedRoomADOs.Count > 0)
+                if (lstTreatmentBedRoom != null && lstTreatmentBedRoom.Count > 0)
                 {
                     gridViewTreatmentBedRoom.FocusedRowHandle = 0;
                     RowTreatmentBedRoomRowClick();
@@ -192,27 +196,30 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             }
         }
 
-        private void SetTreatmentBedRoomFilter(ref MOS.Filter.HisTreatmentBedRoomViewFilter treatFilter)
+        private void SetTreatmentBedRoomFilter(ref MOS.Filter.HisTreatmentView4Filter treatFilter)
         {
             try
             {
-                treatFilter = treatFilter == null ? new MOS.Filter.HisTreatmentBedRoomViewFilter() : treatFilter;
-                treatFilter.ORDER_DIRECTION = "ASC";
-                treatFilter.ORDER_FIELD = "TDL_PATIENT_FIRST_NAME";//TODO   
-                if (!chkSearchAllInDepartment.Checked)
-                    treatFilter.IS_IN_ROOM = true;
-                if (!String.IsNullOrEmpty(txtKeywordForPatientInBedroom.Text))
-                {
-                    treatFilter.KEYWORD__PATIENT_NAME__TREATMENT_CODE__BED_NAME__PATIENT_CODE = txtKeywordForPatientInBedroom.Text;
-                }
+                treatFilter.KEY_WORD = txtKeywordForPatientInBedroom.Text;
+                long inTimeFrom;
 
-                long? bedRoomId = null;
-                MOS.EFMODEL.DataModels.V_HIS_BED_ROOM data = chkSearchAllInDepartment.Checked ? null : cboBedroomForPatientInBedroom.EditValue != null ? BackendDataWorker.Get<V_HIS_BED_ROOM>().SingleOrDefault(o => o.ROOM_ID == (long)cboBedroomForPatientInBedroom.EditValue) : null;
-                if (data != null)
+                if (dteInTimeFrom.EditValue == null || dteInTimeFrom.DateTime == DateTime.MinValue)
                 {
-                    bedRoomId = data.ID;
+                    inTimeFrom = Convert.ToInt64(DateTime.Now.ToString("yyyyMMdd") + START_TIME);
                 }
-                treatFilter.BED_ROOM_ID = bedRoomId;
+                else
+                {
+                    inTimeFrom = Convert.ToInt64(dteInTimeFrom.DateTime.ToString("yyyyMMdd") + START_TIME);
+                }
+                treatFilter.IN_TIME_FROM = inTimeFrom;
+
+                treatFilter.IN_TIME_TO = dteInTimeFrom.DateTime != DateTime.MinValue ? Convert.ToInt64(dteInTimeTo.DateTime.ToString("yyyyMMdd") + END_TIME) :
+                    inTimeFrom = Convert.ToInt64(DateTime.Now.ToString("yyyyMMdd") + END_TIME); 
+                treatFilter.LAST_DEPARTMENT_ID = cboDepartment.EditValue != null ? Inventec.Common.TypeConvert.Parse.ToInt64(cboDepartment.EditValue.ToString()) : this.currentDepartment.ID;
+                //treatFilter = treatFilter == null ? new MOS.Filter.HisTreatmentBedRoomViewFilter() : treatFilter;
+                treatFilter.ORDER_DIRECTION = "ASC";
+                treatFilter.ORDER_FIELD = "TDL_PATIENT_FIRST_NAME";
+
             }
             catch (Exception ex)
             {
@@ -224,11 +231,11 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
         {
             try
             {
-                this.currentTreatmentBedRoomADO = (TreatmentBedRoomADO)this.gridViewTreatmentBedRoom.GetFocusedRow();
+                this.currentTreatmentBedRoomADO = (V_HIS_TREATMENT_4)this.gridViewTreatmentBedRoom.GetFocusedRow();
 
                 if (this.currentTreatmentBedRoomADO != null)
                 {
-                    this.treatmentId = this.currentTreatmentBedRoomADO.TREATMENT_ID;
+                    this.treatmentId = this.currentTreatmentBedRoomADO.ID;
                     this.LoadDataToCurrentTreatmentData(this.treatmentId);
                     this.ProcessDataWithTreatmentWithPatientTypeInfo();
                     this.LoadServicePaty();
@@ -280,6 +287,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 this.InitComboBedRoom();
                 this.InitComboExpmestTemplate();
                 this.InitComboUser();
+                this.initComboKidNey();
                 //this.InitComboPatientType(this.currentPatientTypeWithPatientTypeAlter);
                 this.InitComboDayOfWeek(cboDayOfWeekForSearchServiceReqKidneyshift);
                 Inventec.Common.Logging.LogSystem.Debug("FillDataToControlsForm. 2");

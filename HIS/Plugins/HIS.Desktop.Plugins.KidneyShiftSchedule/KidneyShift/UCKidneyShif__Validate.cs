@@ -83,6 +83,9 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 this.ValidationSingleControl(this.cboExpMestTemplateForAdd, this.dxValidationProviderControl);
                 this.ValidationSingleControl(this.cboPatientType, this.dxValidationProviderControl);
                 this.ValidationSingleControl(this.txtLoginName, this.dxValidationProviderControl, GetMessageForValidUser(), ValidUser);
+                this.ValidationSingleControl(this.cboDepartment, this.dxValidationProviderControl);
+                this.ValidationSingleControl(this.dteInTimeFrom, this.dxValidationProviderControl);
+                this.ValidationSingleControl(this.dteInTimeTo, this.dxValidationProviderControl);
             }
             catch (Exception ex)
             {
