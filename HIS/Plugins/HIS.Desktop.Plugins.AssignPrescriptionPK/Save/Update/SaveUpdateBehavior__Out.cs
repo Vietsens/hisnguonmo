@@ -146,7 +146,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Update
                 {
                     prescriptionSDO.ParentServiceReqId = this.ParentServiceReqId;
                 }
-
+                if (frmAssignPrescription.chkPreKidneyShift.Checked)
+                {
+                    prescriptionSDO.IsKidney = true;
+                    prescriptionSDO.KidneyTimes = Convert.ToInt64(frmAssignPrescription.spinKidneyCount.Value);
+                }
+                if (frmAssignPrescription.chkHomePres.Checked)
+                {
+                    prescriptionSDO.IsHomePres = true;
+                }
                 prescriptionSDO.InstructionTime = this.InstructionTimes.OrderByDescending(o => o).First();
                 if (useTime > 0)
                 {

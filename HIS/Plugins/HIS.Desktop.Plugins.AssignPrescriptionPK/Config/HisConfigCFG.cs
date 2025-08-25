@@ -155,6 +155,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_IsRequiredHtu = "HIS.Desktop.Plugins.AssignPrescription.IsRequiredHtu"; 
         private const string KEY_SaveButtonOption = "HIS.Desktop.Plugins.AssignPrescriptionPK.SaveButtonOption";
         private const string KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX = "MOS.BHYT.ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX";
+        private const string KEY_HIS_DESKTOP_PLUGINS_ASSIGNPRESCRIPTION_ALLOWKIDNEYPRESOUTPATIENT = "HIS.Desktop.Plugins.AssignPrescription.AllowKidneyPresOutPatient";
+        internal static string AllowKidneyPresOutPatient;
         internal static string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix;
         internal static string IsSaveButtonOption;
         internal static string IsRequiredHtu;
@@ -612,6 +614,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 IsCheckDepartmentInTimeWhenPresOrAssign = (GetValue(IS_CHECK_DEPARTMENT_IN_TIME_WHEN_PRES_OR_ASSIGN) == "1");
                 MestRoomOption = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(CONFIG_KEY__MestRoomOption));
                 DefaultPatientTypeOption = (GetValue(CONFIG_KEY__DefaultPatientTypeOption) == "1");
+                AllowKidneyPresOutPatient = GetValue(KEY_HIS_DESKTOP_PLUGINS_ASSIGNPRESCRIPTION_ALLOWKIDNEYPRESOUTPATIENT);
 
                 GroupOption = (GetValue(CONFIG_KEY__GroupOption) == "1");
                 IsReasonRequired = (GetValue(CONFIG_KEY__IS_REASON_REQUIRED) == "1");

@@ -114,11 +114,11 @@ namespace HIS.UC.Icd
             }
             if (data.IsColor)
             {
-                ValidationICD(10, 500, true);
+                ValidationICD(20, 500, true);
             }
             else
             {
-                ValidationSingleControlWithMaxLength(txtIcdCode, false, 10);
+                ValidationSingleControlWithMaxLength(txtIcdCode, false, 20);
                 ValidationSingleControlWithMaxLength(txtIcdMainText, false, 500);
             }
             this.IsObligatoryTranferMediOrg = data.IsObligatoryTranferMediOrg;

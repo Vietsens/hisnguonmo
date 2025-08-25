@@ -7108,7 +7108,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
                         txtIcdCode.ErrorText = "";
                         dxValidationProviderForLeftPanel.RemoveControlError(txtIcdCode);
-                        ValidationICD(10, 500, !this.isAllowNoIcd);
+                        ValidationICD(20, 500, !this.isAllowNoIcd);
                     }
                 }
             }

@@ -1782,20 +1782,20 @@ namespace HIS.Desktop.Plugins.RadixChangeCabinet
                 if (_ExpMestMetyReq_Ts != null && _ExpMestMetyReq_Ts.Count > 0)
                 {
                     MPS.Processor.Mps000346.PDO.Mps000346PDO mps000346PDO = new MPS.Processor.Mps000346.PDO.Mps000346PDO
-        (
-         chmsExpMest,
-         _ExpMestMedicines,
-         _ExpMestMaterials,
-         _ExpMestMetyReq_Ts,
-         null,
-         IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE,
-         IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE,
-         BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
-         BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
-         _Medicines,
-         _Materials,
-         "THUỐC THƯỜNG"
-          );
+                    (
+                     chmsExpMest,
+                     _ExpMestMedicines,
+                     _ExpMestMaterials,
+                     _ExpMestMetyReq_Ts,
+                     null,
+                     IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE,
+                     IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE,
+                     BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
+                     BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
+                     _Medicines,
+                     _Materials,
+                     "THUỐC THƯỜNG"
+                      );
                     MPS.ProcessorBase.Core.PrintData PrintData = null;
                     if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
                     {
