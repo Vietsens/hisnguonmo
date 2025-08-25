@@ -55,10 +55,11 @@ namespace MPS.Processor.Mps000085
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
-                
+
                 ProcessSingleKey();
                 singleTag.ProcessData(store, singleValueDictionary);
                 objectTag.AddObjectData(store, "ListMediMate", rdo.listAdo);
+                objectTag.AddObjectData(store, "Mps000085ADO", rdo.listAdo);
                 objectTag.AddObjectData(store, "ListImpMestUser", rdo._ImpMestUserPrint);
                 objectTag.AddObjectData(store, "ListRoleUserEnd", rdo.roleAdo);
                 objectTag.AddObjectData(store, "ListImpMestBlood", rdo._ListAdo);
@@ -71,7 +72,7 @@ namespace MPS.Processor.Mps000085
             }
             return result;
         }
-        
+
         private class FlFuncElementFunction : TFlexCelUserFunction // FlexCel trong Excel có thể lấy giá trị theo key từ một Dictionary
         {
 
@@ -174,8 +175,8 @@ namespace MPS.Processor.Mps000085
                         ado.BATCH_MANUFACTURER_CODE = item.MEDICINE_MANUFACTURER_CODE;
                         ado.BATCH_MANUFACTURER_NAME = item.MEDICINE_MANUFACTURER_NAME;
                         //qtcode
-                        var medicine = rdo._Medicines?.FirstOrDefault(o => o.ID == item.MEDICINE_ID);
-                        var medicinePaties = rdo._MedicinePaties?.Where(o => o.MEDICINE_ID == item.MEDICINE_ID).ToList() ?? new List<V_HIS_MEDICINE_PATY>();
+                        var medicine = rdo._Medicines != null ? rdo._Medicines.FirstOrDefault(o => o.ID == item.MEDICINE_ID) : null;
+                        var medicinePaties = rdo._MedicinePaties != null ? rdo._MedicinePaties.Where(o => o.MEDICINE_ID == item.MEDICINE_ID).ToList() : new List<V_HIS_MEDICINE_PATY>();
                         Dictionary<string, decimal> dicPrice = new Dictionary<string, decimal>();
                         if (medicine != null)
                         {
@@ -253,8 +254,8 @@ namespace MPS.Processor.Mps000085
                         ado.BATCH_REGISTER_NUMBER = item.MATERIAL_REGISTER_NUMBER;
                         ado.BATCH_MANUFACTURER_CODE = item.MATERIAL_MANUFACTURER_CODE;
                         ado.BATCH_MANUFACTURER_NAME = item.MATERIAL_MANUFACTURER_NAME;
-                        var material = rdo._Materials.FirstOrDefault(o => o.ID == item.MATERIAL_ID);
-                        var materialPaties = rdo._MaterialPaties?.Where(o => o.MATERIAL_ID == item.MATERIAL_ID).ToList() ?? new List<V_HIS_MATERIAL_PATY>();
+                        var material = rdo._Materials != null ? rdo._Materials.FirstOrDefault(o => o.ID == item.MATERIAL_ID) : null;
+                        var materialPaties = rdo._MaterialPaties != null ? rdo._MaterialPaties.Where(o => o.MATERIAL_ID == item.MATERIAL_ID).ToList() : new List<V_HIS_MATERIAL_PATY>();
                         Dictionary<string, decimal> dicPrice = new Dictionary<string, decimal>();
                         if (material != null)
                         {
@@ -484,5 +485,5 @@ namespace MPS.Processor.Mps000085
         }
     }
 
-    
+
 }
