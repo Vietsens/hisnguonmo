@@ -123,6 +123,11 @@ namespace MPS.Processor.Mps000019
                     SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.D_O_B, rdo.Patient.DOB.ToString().Substring(0, 4))));
                     SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.GENDER_MALE, rdo.Patient.GENDER_CODE == rdo.SingleKey.genderCode__Male ? "X" : "")));
                     SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.GENDER_FEMALE, rdo.Patient.GENDER_CODE == rdo.SingleKey.genderCode__FeMale ? "X" : "")));
+                    SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.HEIN_CARD_ADDRESS, rdo.Patient.TDL_HEIN_CARD_ADDRESS)));
+                    SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.HEIN_CARD_FROM_TIME, rdo.Patient.TDL_HEIN_CARD_FROM_TIME)));
+                    SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.HEIN_CARD_TO_TIME, rdo.Patient.TDL_HEIN_CARD_TO_TIME)));
+                    SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.HEIN_MEDI_ORG_CODE, rdo.Patient.TDL_HEIN_MEDI_ORG_CODE)));
+                    SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.HEIN_MEDI_ORG_NAME, rdo.Patient.TDL_HEIN_MEDI_ORG_NAME)));
                 }
 
                 if (rdo.departmentTran != null)
