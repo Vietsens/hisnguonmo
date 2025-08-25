@@ -238,7 +238,7 @@ namespace HIS.Desktop.Plugins.HisIcdImport
 
                     if (!string.IsNullOrEmpty(item.ICD_CODE))
                     {
-                        if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.ICD_CODE, 10))
+                        if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.ICD_CODE, 20))
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Mã");
                         }
@@ -287,10 +287,10 @@ namespace HIS.Desktop.Plugins.HisIcdImport
                             error += string.Format(Message.MessageImport.Maxlength, "Tên tiếng anh");
                         }
                     }
-                    else
-                    {
-                        error += string.Format(Message.MessageImport.KhongHopLe, "Tên tiếng anh");
-                    }
+                    //else
+                    //{
+                    //    error += string.Format(Message.MessageImport.KhongHopLe, "Tên tiếng anh");
+                    //}
 
                     if (!string.IsNullOrEmpty(item.ICD_GROUP_CODE))
                     {

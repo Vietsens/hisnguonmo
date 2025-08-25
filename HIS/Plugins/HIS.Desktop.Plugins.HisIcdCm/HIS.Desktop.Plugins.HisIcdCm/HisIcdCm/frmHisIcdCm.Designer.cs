@@ -702,7 +702,7 @@ namespace HIS.Desktop.Plugins.HisIcdCm.HisIcdCm
             this.txtIcdCmCode.Location = new System.Drawing.Point(97, 25);
             this.txtIcdCmCode.Name = "txtIcdCmCode";
             this.txtIcdCmCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtIcdCmCode.Properties.MaxLength = 10;
+            this.txtIcdCmCode.Properties.MaxLength = 20;
             this.txtIcdCmCode.Size = new System.Drawing.Size(250, 20);
             this.txtIcdCmCode.StyleController = this.lcEditorInfo;
             this.txtIcdCmCode.TabIndex = 0;

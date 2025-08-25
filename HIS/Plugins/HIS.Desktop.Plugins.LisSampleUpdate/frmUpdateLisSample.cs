@@ -482,7 +482,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 sampleRaw.CARTRIDGE_LOT = txtCartridgeLot.Text;
                 sampleRaw.CARTRIDGE_CAL = txtCartridgeCal.Text;
                 sampleRaw.RANGE_TIMES = txtRangeTimes.Text;
-
+                sampleRaw.BIO_PRODUCT_NAME = txtProductName.Text;
                 sampleRaw.NOTE = txtNote.Text.Trim();
 
                 LisSampleInfoSDO sdo = new LisSampleInfoSDO();
@@ -1891,6 +1891,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 txtSampleState.Text = this.sample != null ? this.sample.SAMPLE_STATE : "";
                 txtSamplePosition.Text = this.sample != null ? this.sample.SAMPLE_POSITION : "";
                 txtCartridgeLot.Text = this.sample != null ? this.sample.CARTRIDGE_LOT : "";
+                txtProductName.Text = this.sample != null ? this.sample.BIO_PRODUCT_NAME : "";
                 txtCartridgeCal.Text = this.sample != null ? this.sample.CARTRIDGE_CAL : "";
                 txtRangeTimes.Text = this.sample != null ? this.sample.RANGE_TIMES : null;
                 if (!String.IsNullOrWhiteSpace(this.sample.SAMPLE_SENDER_CODE) || !String.IsNullOrWhiteSpace(this.sample.SAMPLE_SENDER))

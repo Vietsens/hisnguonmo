@@ -34,7 +34,7 @@ namespace MPS.Processor.Mps000085
     class Mps000085Processor : AbstractProcessor
     {
         Mps000085PDO rdo;
-        Dictionary<string, decimal> PatientTypePriceDict = new Dictionary<string, decimal>();
+        //Dictionary<string, decimal> PatientTypePriceDict = new Dictionary<string, decimal>();
         public Mps000085Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -55,7 +55,7 @@ namespace MPS.Processor.Mps000085
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
-                ProcessPatientTypePrice();
+                
                 ProcessSingleKey();
                 singleTag.ProcessData(store, singleValueDictionary);
                 objectTag.AddObjectData(store, "ListMediMate", rdo.listAdo);
@@ -71,96 +71,7 @@ namespace MPS.Processor.Mps000085
             }
             return result;
         }
-        void ProcessPatientTypePrice()
-        {
-            try
-            {
-                if (rdo._ImpMestMedicines != null && rdo._ImpMestMedicines.Count > 0 && rdo._MedicinePaties != null && rdo._Medicines != null)
-                {
-                    foreach (var item in rdo._ImpMestMedicines) // thuốc nhập 
-                    {
-                        var medicinePaties = rdo._MedicinePaties.Where(o => o.MEDICINE_ID == item.MEDICINE_ID).ToList();
-                        var medicine = rdo._Medicines.FirstOrDefault(o => o.ID == item.MEDICINE_ID);
-                        if (medicine == null) continue;
-                        foreach (var paty in medicinePaties)
-                        {
-                            decimal price = 0;
-                            if (medicine.IS_SALE_EQUAL_IMP_PRICE != 1)
-                            {
-                                if (item.TDL_IMP_UNIT_ID.HasValue)
-                                {
-                                    price = (paty.IMP_UNIT_EXP_PRICE ?? 0) * (1 + (paty.EXP_VAT_RATIO));
-                                }
-                                else
-                                {
-                                    price = (paty.EXP_PRICE) * (1 + (paty.EXP_VAT_RATIO));
-                                }
-                            }
-                            else
-                            {
-                                if (item.TDL_IMP_UNIT_ID.HasValue)
-                                {
-                                    price = (medicine.IMP_UNIT_PRICE ?? 0) * (1 + (item.IMP_VAT_RATIO));
-                                }
-                                else
-                                {
-                                    price = (medicine.IMP_PRICE) * (1 + (item.IMP_VAT_RATIO));
-                                }
-                            }
-                            if (!PatientTypePriceDict.ContainsKey(paty.PATIENT_TYPE_CODE))
-                            {
-                                PatientTypePriceDict.Add(paty.PATIENT_TYPE_CODE, price);
-                            }
-                            //PatientTypePriceDict[paty.PATIENT_TYPE_CODE] = price;
-                        }
-                    }
-                }
-                if (rdo._ImpMestMaterials != null && rdo._ImpMestMaterials.Count > 0 && rdo._MaterialPaties != null && rdo._Materials != null)
-                {
-                    foreach (var item in rdo._ImpMestMaterials)
-                    {
-                        var material = rdo._Materials.FirstOrDefault(o => o.ID == item.MATERIAL_ID);
-                        if (material == null) continue;
-
-                        var materialPaties = rdo._MaterialPaties.Where(o => o.MATERIAL_ID == item.MATERIAL_ID).ToList();
-                        foreach (var paty in materialPaties)
-                        {
-                            decimal price = 0;
-                            if (material.IS_SALE_EQUAL_IMP_PRICE != 1)
-                            {
-                                if (item.TDL_IMP_UNIT_ID.HasValue)
-                                {
-                                    price = (paty.IMP_UNIT_EXP_PRICE ?? 0) * (1 + (paty.EXP_VAT_RATIO));
-                                }
-                                else
-                                {
-                                    price = (paty.EXP_PRICE) * (1 + (paty.EXP_VAT_RATIO));
-                                }
-                            }
-                            else
-                            {
-                                if (item.TDL_IMP_UNIT_ID.HasValue)
-                                {
-                                    price = (material.IMP_UNIT_PRICE ?? 0) * (1 + (item.IMP_VAT_RATIO));
-                                }
-                                else
-                                {
-                                    price = (material.IMP_PRICE) * (1 + (item.IMP_VAT_RATIO));
-                                }
-                            }
-                            if (!PatientTypePriceDict.ContainsKey(paty.PATIENT_TYPE_CODE))
-                            {
-                                PatientTypePriceDict.Add(paty.PATIENT_TYPE_CODE, price);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+        
         private class FlFuncElementFunction : TFlexCelUserFunction // FlexCel trong Excel có thể lấy giá trị theo key từ một Dictionary
         {
 
@@ -262,6 +173,45 @@ namespace MPS.Processor.Mps000085
                         ado.BATCH_REGISTER_NUMBER = item.MEDICINE_REGISTER_NUMBER;
                         ado.BATCH_MANUFACTURER_CODE = item.MEDICINE_MANUFACTURER_CODE;
                         ado.BATCH_MANUFACTURER_NAME = item.MEDICINE_MANUFACTURER_NAME;
+                        //qtcode
+                        var medicine = rdo._Medicines?.FirstOrDefault(o => o.ID == item.MEDICINE_ID);
+                        var medicinePaties = rdo._MedicinePaties?.Where(o => o.MEDICINE_ID == item.MEDICINE_ID).ToList() ?? new List<V_HIS_MEDICINE_PATY>();
+                        Dictionary<string, decimal> dicPrice = new Dictionary<string, decimal>();
+                        if (medicine != null)
+                        {
+                            foreach (var paty in medicinePaties)
+                            {
+                                decimal price = 0;
+                                if (medicine.IS_SALE_EQUAL_IMP_PRICE != 1)
+                                {
+                                    if (item.TDL_IMP_UNIT_ID.HasValue)
+                                    {
+                                        price = (paty.IMP_UNIT_EXP_PRICE ?? 0) * (1 + (paty.EXP_VAT_RATIO));
+                                    }
+                                    else
+                                    {
+                                        price = (paty.EXP_PRICE) * (1 + (paty.EXP_VAT_RATIO));
+                                    }
+                                }
+                                else
+                                {
+                                    if (item.TDL_IMP_UNIT_ID.HasValue)
+                                    {
+                                        price = (medicine.IMP_UNIT_PRICE ?? 0) * (1 + (item.IMP_VAT_RATIO));
+                                    }
+                                    else
+                                    {
+                                        price = (medicine.IMP_PRICE) * (1 + (item.IMP_VAT_RATIO));
+                                    }
+                                }
+                                if (!dicPrice.ContainsKey(paty.PATIENT_TYPE_CODE))
+                                {
+                                    dicPrice[paty.PATIENT_TYPE_CODE] = price;
+                                }
+                            }
+                        }
+                        ado.DicMediMate = dicPrice;
+                        //qtcode
                         if (rdo._Medicines != null && rdo._Medicines.Count > 0)
                         {
                             ado.TDL_BID_GROUP_CODE = rdo._Medicines.FirstOrDefault(o => o.ID == item.MEDICINE_ID).TDL_BID_GROUP_CODE;
@@ -303,6 +253,43 @@ namespace MPS.Processor.Mps000085
                         ado.BATCH_REGISTER_NUMBER = item.MATERIAL_REGISTER_NUMBER;
                         ado.BATCH_MANUFACTURER_CODE = item.MATERIAL_MANUFACTURER_CODE;
                         ado.BATCH_MANUFACTURER_NAME = item.MATERIAL_MANUFACTURER_NAME;
+                        var material = rdo._Materials.FirstOrDefault(o => o.ID == item.MATERIAL_ID);
+                        var materialPaties = rdo._MaterialPaties?.Where(o => o.MATERIAL_ID == item.MATERIAL_ID).ToList() ?? new List<V_HIS_MATERIAL_PATY>();
+                        Dictionary<string, decimal> dicPrice = new Dictionary<string, decimal>();
+                        if (material != null)
+                        {
+                            foreach (var paty in materialPaties)
+                            {
+                                decimal price = 0;
+                                if (material.IS_SALE_EQUAL_IMP_PRICE != 1)
+                                {
+                                    if (item.TDL_IMP_UNIT_ID.HasValue)
+                                    {
+                                        price = (paty.IMP_UNIT_EXP_PRICE ?? 0) * (1 + (paty.EXP_VAT_RATIO));
+                                    }
+                                    else
+                                    {
+                                        price = (paty.EXP_PRICE) * (1 + (paty.EXP_VAT_RATIO));
+                                    }
+                                }
+                                else
+                                {
+                                    if (item.TDL_IMP_UNIT_ID.HasValue)
+                                    {
+                                        price = (material.IMP_UNIT_PRICE ?? 0) * (1 + (item.IMP_VAT_RATIO));
+                                    }
+                                    else
+                                    {
+                                        price = (material.IMP_PRICE) * (1 + (item.IMP_VAT_RATIO));
+                                    }
+                                }
+                                if (!dicPrice.ContainsKey(paty.PATIENT_TYPE_CODE))
+                                {
+                                    dicPrice[paty.PATIENT_TYPE_CODE] = price;
+                                }
+                            }
+                        }
+                        ado.DicMediMate = dicPrice;
                         if (rdo._Materials != null && rdo._Materials.Count > 0)
                         {
                             ado.TDL_BID_GROUP_CODE = rdo._Materials.FirstOrDefault(o => o.ID == item.MATERIAL_ID).TDL_BID_GROUP_CODE;

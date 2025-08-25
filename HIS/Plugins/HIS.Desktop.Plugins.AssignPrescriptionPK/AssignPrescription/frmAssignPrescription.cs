@@ -4444,7 +4444,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         }
 
         private void cboTemplate_Medicine_Closed(object sender, ClosedEventArgs e)
-        {
+        {    
             try
             {
                 if (e.CloseMode == PopupCloseMode.Normal)

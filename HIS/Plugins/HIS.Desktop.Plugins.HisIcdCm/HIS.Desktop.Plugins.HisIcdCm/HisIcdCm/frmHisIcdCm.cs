@@ -839,7 +839,7 @@ namespace HIS.Desktop.Plugins.HisIcdCm.HisIcdCm
         {
             try
             {
-                ValidationSingleControl(txtIcdCmCode,10 , true);
+                ValidationSingleControl(txtIcdCmCode,20 , true);
                 ValidationSingleControl(txtIcdCmName,500 , true);
                 ValidationSingleControl(txtChapterCode, 10, false);
                 ValidationSingleControl(txtChapterName, 500, false);

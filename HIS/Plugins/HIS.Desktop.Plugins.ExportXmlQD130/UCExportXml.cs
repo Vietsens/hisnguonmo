@@ -297,7 +297,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
-        private void SetCaptionByLanguageKey()
+        private void SetCaptionByLanguageKey() 
         {
             try
             {
@@ -1217,7 +1217,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     foreach (var sereServ in ListSereServ)
                     {
-                        if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.PRICE > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue)
+                        if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE >0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE))
                         {
                             if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
                                 dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
@@ -1680,6 +1680,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
                 signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
                 result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
+                if (string.IsNullOrEmpty(result))
+                {
+                    string message = "Ký số không thành công. Vui lòng kiểm tra lại thông tin chữ ký số hoặc kết nối thiết bị.";
+                    Inventec.Common.Logging.LogSystem.Warn(message);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return result;
+                }
             }
             catch (Exception ex)
             {
@@ -3871,7 +3878,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             foreach (var sereServ in ListSereServ)
                             {
-                                if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.PRICE > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue)
+                                if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE))
                                 {
                                     if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
                                         dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
@@ -4262,8 +4269,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("syncResult__" + Inventec.Common.Logging.LogUtil.GetMemberName(() => syncResult), syncResult));
                                     if (syncResult != null)
                                     {
-
-
+                                        if (!syncResult.Success)
+                                        {
+                                            XtraMessageBox.Show("Ký số thất bại: " + syncResult.Message, Resources.ResourceMessageLang.ThongBao);
+                                            if (isAutoSync)
+                                            {
+                                                autoSync.Stop();
+                                                isAutoSync = false;
+                                            }
+                                            return;
+                                        }
                                         string errorCode = syncResult.ErrorCode;
                                         if (errorCode == "01" || errorCode == "02" || errorCode == "03")
                                         {
@@ -4381,6 +4396,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             Inventec.Common.Logging.LogSystem.Error("Error saving xmlBase64 to file: " + ex);
                         }
                     }
+                    else
+                    {
+                        XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");
+                        return;
+                    }
                 }
                 else
                 {
@@ -4400,7 +4420,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             pathAfterFileSign = wcfSignResultDCO.OutputFile;
                         }
-                    }
+                        else
+                        {
+                            XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");
+                            return;
+                        }
+                    }                    
                 }
                 if (configSync != null && !this.configSync.dontSend)
                 {
@@ -4410,6 +4435,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     Task task = Task.Run(async () => syncResultADO = await xmlProcessor.SendFileSign(pathAfterFileSign));
                     task.Wait();
                     syncResult = syncResultADO;
+                    if (syncResult != null && !syncResult.Success)
+                    {
+                        if (File.Exists(sourceFile))
+                        {
+                            File.Delete(sourceFile);
+                        }
+                        XtraMessageBox.Show("Ký số thất bại: " + syncResult.Message, Resources.ResourceMessageLang.ThongBao);
+                        return;
+                    }
                 }
                 if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))
                 {
