@@ -264,7 +264,7 @@ namespace HIS.Desktop.Plugins.ImpHisMediStockMaty
                     //Mã kho
                     if (!string.IsNullOrEmpty(item.MEDI_STOCK_CODE))
                     {
-                        if (item.MEDI_STOCK_CODE.Length > 10)
+                        if (item.MEDI_STOCK_CODE.Length > 20)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Mã kho");
                         }

@@ -40,43 +40,43 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="Inventec.Common.Adapter">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Adapter.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.ExcelImport">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.ExcelImport.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.ExcelImport.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Mapper">
-      <HintPath>..\..\..\..\..\THE\DESKTOP\TEST\THE\x64\ReferencedAssemblies\Inventec.Common.Mapper.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.UCRelativeInfo\Inventec.Common.TypeConvert.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.WebApiClient.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Core.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Message">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Desktop.Common.Message.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.Message.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Modules">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Desktop.Common.Modules.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.Modules.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Core">
-      <HintPath>..\..\..\..\..\THE\DESKTOP\TEST\THE\x64\ReferencedAssemblies\Inventec.Desktop.Core.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="SDA.EFMODEL">
       <HintPath>..\..\..\..\LIB\SDA\SDA.EFMODEL.dll</HintPath>
@@ -111,7 +111,6 @@
       <DependentUpon>frmImport.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
