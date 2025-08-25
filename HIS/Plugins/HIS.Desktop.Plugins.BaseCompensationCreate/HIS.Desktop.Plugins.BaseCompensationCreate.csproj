@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MRS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -125,11 +125,11 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
-      <HintPath>..\..\..\..\LIB\MPS\MPS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000215.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000215.PDO\bin\Debug\MPS.Processor.Mps000215.PDO.dll</HintPath>
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000215\bin\Debug\MPS.Processor.Mps000215.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000254.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000254.PDO.dll</HintPath>
@@ -174,7 +174,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

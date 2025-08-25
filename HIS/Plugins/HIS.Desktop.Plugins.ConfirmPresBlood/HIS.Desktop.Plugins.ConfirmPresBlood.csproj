@@ -34,6 +34,12 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\LIB\MOS\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="Bartender.PrintClient">
+      <HintPath>..\..\..\..\lib\WCF\BartenderClient\Bartender.PrintClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Bartender.PrintTemBlood">
+      <HintPath>..\..\HIS.Desktop\bin\Debug\ReferencedAssemblies\Bartender.PrintTemBlood.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -155,7 +161,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
-      <HintPath>..\..\..\..\LIB\MPS\MPS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000346.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000346.PDO.dll</HintPath>
@@ -240,10 +246,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\HISUTIL\Bartender.PrintTemBlood\Bartender.PrintTemBlood.csproj">
-      <Project>{dfed35a5-aebe-4473-b9ab-ff5f58b3a0b4}</Project>
-      <Name>Bartender.PrintTemBlood</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

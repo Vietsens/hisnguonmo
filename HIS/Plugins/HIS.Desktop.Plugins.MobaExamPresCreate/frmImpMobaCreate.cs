@@ -869,10 +869,10 @@ namespace HIS.Desktop.Plugins.MobaExamPresCreate
 
                 SingleKey singleKey = new SingleKey();
                 singleKey.AGGR_EXP_MEST_CODE = hisExpMest.TDL_AGGR_EXP_MEST_CODE;
-
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.resultSDO.ImpMest != null ? this.resultSDO.ImpMest.TDL_TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
 
                 MPS.Processor.Mps000084.PDO.Mps000084PDO rdo = new MPS.Processor.Mps000084.PDO.Mps000084PDO(this.resultSDO.ImpMest, this.hisExpMest, singleKey, this.resultSDO.ImpMedicines, this.resultSDO.ImpMaterials, expMestMedicines, expMestMaterials);
-                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "") { EmrInputADO = inputADO });
             }
             catch (Exception ex)
             {

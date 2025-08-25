@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MRS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -106,7 +106,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000092.PDO">
-      <HintPath>..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000092.PDO\bin\Debug\MPS.Processor.Mps000092.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000092.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000214.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000214.PDO.dll</HintPath>
@@ -149,7 +149,6 @@
     <EmbeddedResource Include="frmMobaSaleCreate.resx">
       <DependentUpon>frmMobaSaleCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.en.resx" />

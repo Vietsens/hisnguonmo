@@ -934,7 +934,9 @@ namespace HIS.Desktop.Plugins.MobaSaleCreate
                 HisImpMestFilter impMestFilter = new HisImpMestFilter();
                 impMestFilter.MOBA_EXP_MEST_IDs = expMests.Select(s => s.ID).ToList();
                 List<V_HIS_IMP_MEST> impMests = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST>>("api/HisImpMest/GetView", ApiConsumers.MosConsumer, impMestFilter, param);
-
+                
+                var firstExpMest = expMests.FirstOrDefault();
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((firstExpMest != null ? firstExpMest.TDL_TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
 
                 MPS.Processor.Mps000092.PDO.Mps000092PDO rdo = new MPS.Processor.Mps000092.PDO.Mps000092PDO(expMests, expMestMedicines, expMestMaterials, transaction, impMests);
 
@@ -947,11 +949,11 @@ namespace HIS.Desktop.Plugins.MobaSaleCreate
                 MPS.ProcessorBase.Core.PrintData printdata = null;
                 if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
-                    printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                    printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
                 }
                 else
                 {
-                    printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                    printdata = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
                 }
 
                 WaitingManager.Hide();
