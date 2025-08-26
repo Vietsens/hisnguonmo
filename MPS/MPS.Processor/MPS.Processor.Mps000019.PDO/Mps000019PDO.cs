@@ -81,12 +81,24 @@ namespace MPS.Processor.Mps000019.PDO
         }
 
         public Mps000019PDO(
-          V_HIS_PATIENT_TYPE_ALTER patientAlter
+            V_HIS_PATIENT patient,
+            V_HIS_DEBATE currentHisDebate,
+            V_HIS_DEPARTMENT_TRAN departmentTran,
+            Mps000019SingleKey _SingleKey,
+            List<HIS_DEBATE_USER> _lstHisDebateUser,
+            V_HIS_TREATMENT _treatment,
+            V_HIS_PATIENT_TYPE_ALTER PatientAlter
             )
         {
             try
             {
-              this.PatientAlter = patientAlter;
+                this.Patient = patient;
+                this.currentHisDebate = currentHisDebate;
+                this.departmentTran = departmentTran;
+                this.SingleKey = _SingleKey;
+                this.lstHisDebateUser = _lstHisDebateUser;
+                this.treatment = _treatment;
+                this.PatientAlter = PatientAlter;
             }
             catch (Exception ex)
             {
