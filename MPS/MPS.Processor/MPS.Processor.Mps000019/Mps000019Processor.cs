@@ -123,13 +123,15 @@ namespace MPS.Processor.Mps000019
                     SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.D_O_B, rdo.Patient.DOB.ToString().Substring(0, 4))));
                     SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.GENDER_MALE, rdo.Patient.GENDER_CODE == rdo.SingleKey.genderCode__Male ? "X" : "")));
                     SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.GENDER_FEMALE, rdo.Patient.GENDER_CODE == rdo.SingleKey.genderCode__FeMale ? "X" : "")));
+                }
+                if (rdo.PatientAlter!=null)
+                {
                     SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.HEIN_CARD_ADDRESS, rdo.PatientAlter.ADDRESS)));
                     SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.HEIN_CARD_FROM_TIME, rdo.PatientAlter.HEIN_CARD_FROM_TIME)));
                     SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.HEIN_CARD_TO_TIME, rdo.PatientAlter.HEIN_CARD_TO_TIME)));
                     SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.HEIN_MEDI_ORG_CODE, rdo.PatientAlter.HEIN_MEDI_ORG_CODE)));
                     SetSingleKey((new KeyValue(Mps000019ExtendSingleKey.HEIN_MEDI_ORG_NAME, rdo.PatientAlter.HEIN_MEDI_ORG_NAME)));
                 }
-
                 if (rdo.departmentTran != null)
                 {
                     SetSingleKey(new KeyValue(Mps000019ExtendSingleKey.OPEN_TIME_SEPARATE_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo.departmentTran.DEPARTMENT_IN_TIME ?? 0)));
