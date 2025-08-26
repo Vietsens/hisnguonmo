@@ -79,5 +79,19 @@ namespace MPS.Processor.Mps000019.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        public Mps000019PDO(
+          V_HIS_PATIENT_TYPE_ALTER patientAlter
+            )
+        {
+            try
+            {
+              this.PatientAlter = patientAlter;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
