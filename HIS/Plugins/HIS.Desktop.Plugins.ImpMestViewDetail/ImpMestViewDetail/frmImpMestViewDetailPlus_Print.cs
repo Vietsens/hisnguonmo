@@ -1254,6 +1254,24 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.impMest != null ? this.impMest.TDL_TREATMENT_CODE : ""), printTypeCode, moduleData != null ? moduleData.RoomId : 0);
 
+                List<V_HIS_MEDICINE_PATY> medicinePaty = new List<V_HIS_MEDICINE_PATY>();
+                if (medicines != null && medicines.Count > 0)
+                {
+                    MOS.Filter.HisMedicinePatyViewFilter filterMediPaty = new MOS.Filter.HisMedicinePatyViewFilter();
+                    CommonParam paramMediPaty = new CommonParam();
+                    filterMediPaty.MEDICINE_IDs = medicines.Select(o => o.ID).Distinct().ToList();
+                    medicinePaty = new BackendAdapter(paramMediPaty).Get<List<V_HIS_MEDICINE_PATY>>("/api/HisMedicinePaty/GetView", ApiConsumers.MosConsumer, filterMediPaty, paramMediPaty);
+                }
+
+                List<V_HIS_MATERIAL_PATY> materialParty = new List<V_HIS_MATERIAL_PATY>();
+                if (materials != null && materials.Count > 0)
+                {
+                    MOS.Filter.HisMaterialPatyViewFilter filterMaterialPaty = new MOS.Filter.HisMaterialPatyViewFilter();
+                    CommonParam paramMaterial = new CommonParam();
+                    filterMaterialPaty.MATERIAL_IDs = materials.Select(o => o.ID).Distinct().ToList();
+                    materialParty = new BackendAdapter(paramMaterial).Get<List<V_HIS_MATERIAL_PATY>>("/api/HisMaterialPaty/GetView", ApiConsumers.MosConsumer, filterMaterialPaty, paramMaterial);
+                }
+
                 MPS.Processor.Mps000085.PDO.Mps000085PDO mps0000085RDO = new MPS.Processor.Mps000085.PDO.Mps000085PDO(
                  this.impMest,
                  impMestMedicinePrints,
@@ -1263,10 +1281,11 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                  materials,
                  supplier,
                  MedicalContractADO,
-                 bloodData
+                 bloodData,
+                 medicinePaty,
+                 materialParty
                   );
                 WaitingManager.Hide();
-
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
                 if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
