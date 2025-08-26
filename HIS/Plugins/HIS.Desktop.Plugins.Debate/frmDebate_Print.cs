@@ -377,6 +377,10 @@ namespace HIS.Desktop.Plugins.Debate
                 {
                     single.IN_CODE = treatmentToPrint.IN_CODE;
                 }
+                long instructionTime = Inventec.Common.DateTime.Get.Now() ?? 0;
+                var patyAlterBhyt = new MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER();
+                PrintGlobalStore.LoadCurrentPatientTypeAlter(currentVDebate.TREATMENT_ID, instructionTime, ref patyAlterBhyt);
+
                 //single.genderCode__FeMale
                 WaitingManager.Hide();
 
@@ -385,8 +389,10 @@ namespace HIS.Desktop.Plugins.Debate
                    currentVDebate,
                    departmentTran,
                    single,
+                   lstHisDebateUser,
                    treatmentToPrint,
-                   lstHisDebateUser);
+                   patyAlterBhyt
+                   );
 
                 string printerName = "";
                 if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
