@@ -155,9 +155,10 @@ namespace HIS.Desktop.Plugins.BedHistory
                 EnableControl();
                 LoadKeysFromlanguage();
                 SetDefaultValueControl();
-
+                ChkSplitDay.Checked = Properties.Settings.Default.MyCheckState;
                 _services = BackendDataWorker.Get<V_HIS_SERVICE>();
                 FillDataToControl();
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -1669,21 +1670,12 @@ namespace HIS.Desktop.Plugins.BedHistory
                     }
                     else
                     {
-<<<<<<< .mine
                         Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.2");
                         A = vHisBedLogs.Where(o => o.startTime < ado.finishTime).ToList();
                         if (A == null || A.Count() == 0) return;
                         Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.3");
                         if (A.Exists(o => o.finishTime == null)) isWarning = true;
-                        else
-=======
-                        B = A.Where(o => o.finishTime > ado.startTime).ToList();
-                        if (B == null || B.Count() == 0) return;
-                        //if (B.Exists(o => o.finishTime >= ado.finishTime || o.startTime <= ado.startTime)) isWarning = true; logic check cu
-                        foreach (var _b in B)
-
-
->>>>>>> .theirs
+                        else                        
                         {
                             Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.4");
                             B = A.Where(o => o.finishTime > ado.startTime).ToList();
@@ -4574,14 +4566,14 @@ namespace HIS.Desktop.Plugins.BedHistory
         private void ChkNotCountHours_CheckedChanged(object sender, EventArgs e)
         {
             try
-            {
+            {                
                 CountTimeBed();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
+        }        
         #endregion
         #endregion
 
@@ -4952,6 +4944,8 @@ namespace HIS.Desktop.Plugins.BedHistory
         {
             try
             {
+                Properties.Settings.Default.MyCheckState = ChkSplitDay.Checked;
+                Properties.Settings.Default.Save();
                 if (ChkSplitDay.Checked)
                 {
                     var splitData = ProcessSplitDay();
