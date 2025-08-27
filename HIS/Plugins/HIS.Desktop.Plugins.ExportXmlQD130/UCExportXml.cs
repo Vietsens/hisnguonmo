@@ -1608,8 +1608,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 {
                                     Inventec.Common.Logging.LogSystem.Error("File đang bị khóa, chưa xóa được: " + ioEx);
                                 }
-
-                                XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");                                 
                             }
                         }
                         else
@@ -1724,12 +1722,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
                 signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
                 result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
-                if (string.IsNullOrEmpty(result))
+                if (param != null && param.Messages != null && param.Messages.Count > 0)
                 {
-                    string message = "Phiên xác nhận ký hết hiệu lực vui lòng thao tác lại và xác nhận trên app điện thoại.";
-                    Inventec.Common.Logging.LogSystem.Warn(message);
+                    string message = string.Join(Environment.NewLine, param.Messages);
                     DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return result;
+                    Inventec.Common.Logging.LogSystem.Warn(message);
                 }
             }
             catch (Exception ex)
