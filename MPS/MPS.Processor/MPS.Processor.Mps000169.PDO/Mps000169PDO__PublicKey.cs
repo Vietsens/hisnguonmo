@@ -96,6 +96,9 @@ namespace MPS.Processor.Mps000169.PDO
 
         public string STORAGE_CONDITION_CODE { get; set; }
         public string STORAGE_CONDITION_NAME { get; set; }
+        public string MEDICINE_GROUP_CODE { get; set; }
+        public string MEDICINE_GROUP_NAME { get; set; }
+        public long? MEDICINE_GROUP_ID { get; set; }
 
         public Mps000169ADO(
             V_HIS_EXP_MEST _expMest,
@@ -170,6 +173,9 @@ namespace MPS.Processor.Mps000169.PDO
 
                     this.STORAGE_CONDITION_CODE = _expMestMedicines[0].STORAGE_CONDITION_CODE;
                     this.STORAGE_CONDITION_NAME = _expMestMedicines[0].STORAGE_CONDITION_NAME;
+                    this.MEDICINE_GROUP_CODE = _expMestMedicines[0].MEDICINE_GROUP_CODE;
+                    this.MEDICINE_GROUP_NAME = _expMestMedicines[0].MEDICINE_GROUP_NAME;
+                    this.MEDICINE_GROUP_ID = _expMestMedicines[0].MEDICINE_GROUP_ID;
                 }
             }
             catch (Exception ex)
