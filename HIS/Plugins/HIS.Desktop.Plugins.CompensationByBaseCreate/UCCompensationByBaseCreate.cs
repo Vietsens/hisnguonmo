@@ -1438,7 +1438,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                     if (_ExpMestMatyReqs != null && _ExpMestMatyReqs.Count > 0)
                     {
                         WaitingManager.Show();
-                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode("Mps00000", printTypeCode, this.currentModuleBase.RoomId);
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
                         MPS.Processor.Mps000215.PDO.Mps000215PDO mps000215PDO = new MPS.Processor.Mps000215.PDO.Mps000215PDO
                 (
                  _BcsExpMest,
@@ -1472,7 +1472,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                     if (_ExpMestMetyReq_Ts != null && _ExpMestMetyReq_Ts.Count > 0)
                     {
                         WaitingManager.Show();
-                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode("Mps00000", printTypeCode, this.currentModuleBase.RoomId);
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
                         MPS.Processor.Mps000215.PDO.Mps000215PDO mps000215PDO = new MPS.Processor.Mps000215.PDO.Mps000215PDO
                 (
                  _BcsExpMest,
@@ -1505,7 +1505,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                     if (_ExpMestMetyReq_TCs != null && _ExpMestMetyReq_TCs.Count > 0)
                     {
                         WaitingManager.Show();
-                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode("Mps00000", printTypeCode, this.currentModuleBase.RoomId);
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
                         MPS.Processor.Mps000215.PDO.Mps000215PDO mps000215PDO = new MPS.Processor.Mps000215.PDO.Mps000215PDO
                 (
                  _BcsExpMest,
@@ -1546,7 +1546,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
         {
             try
             {
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode("Mps00000", printTypeCode, this.currentModuleBase.RoomId);
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
                 long keyPrintType = ConfigApplicationWorker.Get<long>(AppConfigKeys.CONFIG_KEY__HIS_DESKTOP__IN_GOP_GAY_NGHIEN_HUONG_THAN);
                 if (keyPrintType == 1)
                 {

@@ -69,7 +69,7 @@ namespace HIS.Desktop.Plugins.ExpMestDetailBCS.ExpMestViewDetail
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
 
-                inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode("Mps00000", printTypeCode, this.currentModuleBase.RoomId);
+                inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
             }
             catch (Exception ex)
             {
