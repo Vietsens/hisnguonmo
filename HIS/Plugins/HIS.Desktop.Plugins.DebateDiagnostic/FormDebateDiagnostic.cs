@@ -352,6 +352,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     ChkOther.Checked = true;
                 }
                 time.Start();
+                ICDValidationRule(txtIcdMain, 20, false);
                 WaitingManager.Hide();
                 IsNotLoadFirst = false;
 
@@ -487,6 +488,23 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 validate.maxLength = maxLength;
                 validate.IsRequired = IsRequired;
                 validate.ErrorText = "Nhập quá kí tự cho phép [" + maxLength + "]";
+                validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProvider1.SetValidationRule(control, validate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+        private void ICDValidationRule(BaseEdit control, int? maxLength, bool IsRequired)
+        {
+            try
+            {
+                ICDValidationRule validate = new ICDValidationRule();
+                validate.editor = control;
+                validate.maxLength = maxLength;
+                validate.IsRequired = IsRequired;
                 validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProvider1.SetValidationRule(control, validate);
             }
@@ -1056,8 +1074,11 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 if (!string.IsNullOrEmpty(hisDebate.ICD_CODE))
                 {
                     var icd = Base.GlobalStore.HisIcds.Where(o => o.ICD_CODE == hisDebate.ICD_CODE).FirstOrDefault();
-                    cboIcdMain.EditValue = icd.ICD_CODE;
-                    txtIcdMain.Text = icd.ICD_CODE;
+                    if (icd != null)
+                    {
+                        cboIcdMain.EditValue = icd.ICD_CODE;
+                        txtIcdMain.Text = icd.ICD_CODE;
+                    }
                 }
                 if (!string.IsNullOrEmpty(hisDebate.ICD_NAME))
                 {
@@ -1819,7 +1840,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     CheckThuoc.Checked = false;
                     LoadDataControlDetail();
                     HIS_DEBATE_TEMP data = null;
-                    data = BackendDataWorker.Get<HIS_DEBATE_TEMP>().FirstOrDefault(p => p.ID == Int64.Parse(cboDebateTemp.EditValue.ToString()));
+                    data = BackendDataWorker.Get<HIS_DEBATE_TEMP>().FirstOrDefault(p => p.ID == Int64.Parse(cboDebateTemp.EditValue?.ToString()));
                     //if (cboDebateTemp.EditValue!= null)
                     //{
                     //    data = BackendDataWorker.Get<HIS_DEBATE_TEMP>().FirstOrDefault(p => p.ID == Int64.Parse(cboDebateTemp.EditValue.ToString()));
