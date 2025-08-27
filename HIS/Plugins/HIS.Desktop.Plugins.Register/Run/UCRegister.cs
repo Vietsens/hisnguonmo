@@ -4523,6 +4523,8 @@ namespace HIS.Desktop.Plugins.Register.Run
                         }
                     }
                 }
+                togChangeStructAdress.IsOn = true;
+                layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             }
             catch (Exception ex)
             {

@@ -431,7 +431,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(patientDTO.NOTE, ResourceMessage.TieuDeCuaSoThongBaoLaThongBao, System.Windows.Forms.MessageBoxButtons.OK);
                 }
-                if ((string.IsNullOrEmpty(patientDTO.DISTRICT_NAME) && string.IsNullOrEmpty(patientDTO.DISTRICT_CODE) && IsChangeStrucAddress) || (string.IsNullOrEmpty(patientDTO.DISTRICT_CODE) && !string.IsNullOrEmpty(patientDTO.COMMUNE_CODE)))
+                //if ((string.IsNullOrEmpty(patientDTO.DISTRICT_NAME) && string.IsNullOrEmpty(patientDTO.DISTRICT_CODE) && IsChangeStrucAddress) || (string.IsNullOrEmpty(patientDTO.DISTRICT_CODE) && !string.IsNullOrEmpty(patientDTO.COMMUNE_CODE)))
                 {
                     if (!togChangeStructAdress.IsOn)
                     {
