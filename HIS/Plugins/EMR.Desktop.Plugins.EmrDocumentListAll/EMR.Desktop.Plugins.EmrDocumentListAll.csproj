@@ -41,13 +41,13 @@
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="EMR.EFMODEL">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\EMR\EMR.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="EMR.Filter">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\lib\EMR\EMR.Filter.dll</HintPath>
     </Reference>
     <Reference Include="EMR.SDO">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
     </Reference>
     <Reference Include="EMR.URI">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR.URI.dll</HintPath>
@@ -55,8 +55,9 @@
     <Reference Include="HIS.Desktop.Plugins.HisDepartment">
       <HintPath>..\HIS.Desktop.Plugins.HisDepartment\HIS.Desktop.Plugins.HisDepartment\obj\Debug\HIS.Desktop.Plugins.HisDepartment.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.ACS_RS">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\IMSys.DbConfig.ACS_RS.dll</HintPath>
@@ -82,8 +83,9 @@
     <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.Resource.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.SignLibrary">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.SignLibrary.dll</HintPath>
+    <Reference Include="Inventec.Common.SignLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.TypeConvert.dll</HintPath>
@@ -120,6 +122,9 @@
     </Reference>
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.UC.Paging.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\histest\x64\MOS.EFMODEL.dll</HintPath>
