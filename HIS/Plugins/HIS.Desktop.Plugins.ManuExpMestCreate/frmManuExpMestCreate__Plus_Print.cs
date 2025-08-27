@@ -126,7 +126,7 @@ namespace HIS.Desktop.Plugins.ManuExpMestCreate
                         lstExpMestMaterial = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MATERIAL>>(HisRequestUriStore.HIS_EXP_MEST_MATERIAL_GETVIEW, ApiConsumers.MosConsumer, filter, param);
                     }
                 }
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((manuExpMestResult.ExpMest != null ? manuExpMestResult.ExpMest.TDL_TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode("Mps00000", printTypeCode, currentModule != null ? currentModule.RoomId : 0);
 
                 MPS.Processor.Mps000130.PDO.Mps000130PDO mps000130RDO = new MPS.Processor.Mps000130.PDO.Mps000130PDO(
                     manuExpMestResult.ExpMest,
