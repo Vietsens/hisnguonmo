@@ -353,14 +353,14 @@ namespace HIS.Desktop.Plugins.Register.Run
             {
                 IsNotCheckToggleAddress = true;
 
-                if (data.IsNoDistrict)
-                {
-                    togChangeStructAdress.IsOn = true;
-                }
-                else
-                {
-                    togChangeStructAdress.IsOn = false;
-                }
+                //if (data.IsNoDistrict)
+                //{
+                //    togChangeStructAdress.IsOn = true;
+                //}
+                //else
+                //{
+                //    togChangeStructAdress.IsOn = false;
+                //}
                 ChangeComponentDistrict();
                 ChangeDataSourceAddress();
                 cboProvince.EditValue = data.ProvinceCode;
