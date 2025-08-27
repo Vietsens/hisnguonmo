@@ -68,5 +68,12 @@ namespace MPS.Processor.Mps000457
         internal const string HEIN_ADDRESS = "HEIN_ADDRESS";
         internal const string BAR_BARCODE_STR = "BAR_BARCODE";
         internal const string IMAGE_ISO_LOGO_STR = "IMAGE_ISO_LOGO";
+        internal const string CMND_NUMBER = "CMND_NUMBER";
+        internal const string CCCD_NUMBER = "CCCD_NUMBER";
+        internal const string BARCODE = "BARCODE";
+        internal const string VIR_DOB_YEAR = "VIR_DOB_YEAR";
+        internal const string SAMPLE_TIME = "SAMPLE_TIME";
+        internal const string BIO_PRODUCT_NAME = "BIO_PRODUCT_NAME";
+        internal const string CONCLUDE_HIV = "CONCLUDE_HIV";
     }
 }

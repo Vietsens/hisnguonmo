@@ -46,7 +46,7 @@ namespace HIS.UC.Icd
                 if (InitAdo == null)
                     InitAdo = new IcdInitADO();
                 InitAdo.IsColor = isRequired;
-                ValidationICD(10, 500, isRequired);
+                ValidationICD(20, 500, isRequired);
             }
             catch (Exception ex)
             {

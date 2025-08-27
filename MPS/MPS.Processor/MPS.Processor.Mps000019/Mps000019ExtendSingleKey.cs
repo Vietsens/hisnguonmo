@@ -56,5 +56,11 @@ namespace MPS.Processor.Mps000019
         internal const string SERVICE_CODE = "SERVICE_CODE";
         internal const string SERVICE_NAME = "SERVICE_NAME";
 
+        internal const string HEIN_CARD_ADDRESS = "HEIN_CARD_ADDRESS";
+        internal const string HEIN_CARD_FROM_TIME = "HEIN_CARD_FROM_TIME";
+        internal const string HEIN_CARD_TO_TIME = "HEIN_CARD_TO_TIME";
+        internal const string HEIN_MEDI_ORG_CODE = "HEIN_MEDI_ORG_CODE";
+        internal const string HEIN_MEDI_ORG_NAME = "HEIN_MEDI_ORG_NAME";
+
     }
 }

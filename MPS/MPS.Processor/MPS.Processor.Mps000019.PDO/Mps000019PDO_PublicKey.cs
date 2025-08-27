@@ -33,7 +33,7 @@ namespace MPS.Processor.Mps000019.PDO
         public V_HIS_DEPARTMENT_TRAN departmentTran { get; set; }
         public V_HIS_TREATMENT treatment { get; set; }
         public Mps000019SingleKey SingleKey { get; set; }
-
+        public V_HIS_PATIENT_TYPE_ALTER PatientAlter { get; set; }
         public class Mps000019SingleKey
         {
             public string departmentName { get; set; }

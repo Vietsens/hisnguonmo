@@ -194,13 +194,14 @@ namespace HIS.Desktop.Plugins.HisIcd
                 txtKeyword.Text = "";
                 ResetFormData();
                 EnableControlChanged(this.ActionType);
+                dxErrorProvider.ClearErrors();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+          
         /// <summary>
         /// Gan focus vao control mac dinh
         /// </summary>
@@ -937,7 +938,12 @@ namespace HIS.Desktop.Plugins.HisIcd
                 bool success = false;
                 if (!btnEdit.Enabled && !btnAdd.Enabled)
                     return;
-
+                if (txtIcdCode.Text.Length > 20)
+                {
+                    dxErrorProvider.SetError(txtIcdCode, "Chỉ cho phép nhập tối đa 20 ký tự", ErrorType.Warning);
+                    txtIcdCode.Focus();
+                    return;
+                }
                 positionHandle = -1;
                 if (spnAgeFrom.EditValue != null || spnAgeTo.EditValue != null)
                 {

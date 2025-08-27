@@ -1388,7 +1388,6 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 ValidTextControlMaxlength(this.txtSanPham, 200, false);
                 ValidTextControlMaxlength(this.txtReasonVV, 200, false);
                 ValidTextControlMaxlength(this.txtReasonNTCode, 10, false);
-                ValidTextControlMaxlength(this.txtHeinPatientTypeCode, 10, false);
                 ValidTextControlMaxlength(this.cboReasonNT, 1000, false);
 
                 ValidTextControlMaxlength(this.txtPatientNote, 2000, false);
@@ -3383,14 +3382,6 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void txtHeinPatientTypeCode_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && !char.IsControl(e.KeyChar))
-            {
-                e.Handled = true;
             }
         }
     }

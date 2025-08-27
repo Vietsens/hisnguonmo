@@ -487,7 +487,6 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
 
                 LisSampleInfoSDO sdo = new LisSampleInfoSDO();
                 sdo.Sample = sampleRaw;
-
                 V_HIS_ROOM room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModuleBase.RoomId);
                 if (room != null)
                 {
@@ -499,10 +498,11 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                     sdo.WorkingRoomName = room.ROOM_NAME;
                 }
 
-                LogSystem.Info(LogUtil.TraceData("SampleInfoSDO", sdo));
+                LogSystem.Info(LogUtil.TraceData("Input_SampleInfoSDO", sdo));
 
                 LIS_SAMPLE rowBe = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/UpdateInfo", ApiConsumers.LisConsumer, sdo, null);
-                if (rowBe != null)
+                LogSystem.Info(LogUtil.TraceData("output_SampleInfoSDO", rowBe));
+                if (rowBe != null)    
                 {
                     success = true;
                     this.sample = rowBe;

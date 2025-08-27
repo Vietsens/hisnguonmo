@@ -120,4 +120,17 @@
   <metadata name="txtTreatmentCode.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="repositoryItemButtonEdit1.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
+        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAPdEVYdFRpdGxlAFNob3c7RXllO0njByUAAAExSURB
+        VDhPpZKxSsRQFET3Nyy18wOExcYv8G/0B+TAgkXKgAhmyzQWgsViY7FFZItsFFJobyMuWggLJuHKPHzh
+        mSgavDBwM3dmktz3RmY2+g96xFD0CGAXOI3j2CaTiQPwIE6zrj40bgJX0+nUlsulrVYrq+vaQb04zaSR
+        9ksAsAe8ZFlmqrd1Zdd3j3Z4duOew5JGWnlcALANvJZl2ZqPz29t/2jm8F1JK4+8CpgtFot2qDd7808B
+        KnnkVcC6qqp2oM/+S4A88v4aECLcSRhw4Zen6v5CCM18AQfyKmALeC6Kwg26S/QQp5lKWnnk9ce4E0WR
+        zefzNsQfo6Dem6UBnuTpXqSNNE0tSRLL89xdnqZpHNSLAzLgUtreTQyCxsAJcA+8f0K9uHFX3wsYih4x
+        FB8q0AjdQAvTBwAAAABJRU5ErkJggg==
+</value>
+  </data>
 </root>
