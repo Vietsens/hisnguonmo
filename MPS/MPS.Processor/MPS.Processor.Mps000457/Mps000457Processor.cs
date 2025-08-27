@@ -71,13 +71,16 @@ namespace MPS.Processor.Mps000457
                         }
                         else
                         {
-                            if (getValue(par) != "")
-                            {
-                                concludeHIV.Add(par.TEST_INDEX_NAME + " (" + par.TEST_INDEX_CODE + ") - " + getValue(par));
-                            }
+                            concludeHIV.Add(
+                                par.SERVICE_NAME 
+                                + " (" + par.SERVICE_CODE + ") - " 
+                                + (!string.IsNullOrEmpty(par.SERVICE_RESULT_NAME) ? par.SERVICE_RESULT_NAME : getValue(par)));
                             foreach (var chi in ListTestChildHIV.Where(w => w.PARENT_ID == par.CHILD_ID && w.IS_HAS_ONE_CHILD != 1))
                             {
-                                concludeHIV.Add(chi.TEST_INDEX_NAME + " (" + chi.TEST_INDEX_CODE + ") - " + getValue(chi));
+                                concludeHIV.Add(
+                                    chi.TEST_INDEX_NAME 
+                                    + " (" + chi.TEST_INDEX_CODE + ") - " 
+                                    + getValue(chi));
                             }
                         }
                     }
@@ -775,6 +778,7 @@ namespace MPS.Processor.Mps000457
                         hisSereServTeinSDO.SERVICE_NUM_ORDER = firstItem.SERVICE_NUM_ORDER;
                         hisSereServTeinSDO.ISO_PROCESS_CODE = firstItem.TDL_ISO_PROCESS_CODE;
                         hisSereServTeinSDO.IS_MEET_ISO_STANDARD = firstItem.TDL_IS_MEET_ISO_STANDARD;
+                        hisSereServTeinSDO.SERVICE_RESULT_NAME = firstItem.SERVICE_RESULT_NAME;
                         var tFist = testIndexs.FirstOrDefault(o => o.TEST_INDEX_CODE == firstItem.TEST_INDEX_CODE);
                         if (tFist != null)
                         {
