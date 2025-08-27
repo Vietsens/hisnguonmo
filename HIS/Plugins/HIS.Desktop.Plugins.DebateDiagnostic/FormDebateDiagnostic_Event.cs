@@ -543,7 +543,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                         {
                             showCbo = false;
                             txtIcdMain.Text = listData.First().ICD_CODE;
-                            cboIcdMain.EditValue = listData.First().ID;
+                            cboIcdMain.EditValue = listData.First().ICD_CODE;
                             icdMainText.Text = listData.First().ICD_NAME;
                             checkEdit.Focus();
                             if (checkEdit.Checked)
@@ -581,7 +581,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 {
                     if (cboIcdMain.Text != null)
                     {
-                        var data = Base.GlobalStore.HisIcds.FirstOrDefault(o => o.ID == (long)(cboIcdMain.EditValue ?? 0));
+                        var data = Base.GlobalStore.HisIcds.FirstOrDefault(o => o.ICD_CODE == (cboIcdMain.EditValue ?? "").ToString());
                         if (data != null)
                         {
                             txtIcdMain.Text = data.ICD_CODE;
@@ -604,7 +604,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 {
                     if (cboIcdMain.Text != null)
                     {
-                        var data = Base.GlobalStore.HisIcds.FirstOrDefault(o => o.ID == (long)(cboIcdMain.EditValue ?? 0));
+                        var data = Base.GlobalStore.HisIcds.FirstOrDefault(o => o.ICD_CODE == cboIcdMain.EditValue?.ToString());
                         if (data != null)
                         {
                             txtIcdMain.Text = data.ICD_CODE;
