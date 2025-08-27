@@ -357,7 +357,6 @@
     <EmbeddedResource Include="frmDevelopmentCLS.resx">
       <DependentUpon>frmDevelopmentCLS.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -367,7 +366,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
-    <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
+    <EmbeddedResource Include="Resources\Message.Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="UcDebateDetail\UcOther.resx">
       <DependentUpon>UcOther.cs</DependentUpon>
       <SubType>Designer</SubType>

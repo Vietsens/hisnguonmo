@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,8 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
     internal class ICDValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
         internal object editor;
+        internal CheckEdit checkEdit;
+        internal GridLookUpEdit cboICD;
         internal IsValidControl validEditorReference;
         internal IsValidControl isValidControl;
         internal bool isUseOnlyCustomValidControl = false;
@@ -57,12 +60,25 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                             this.ErrorText = "Nhập quá kí tự cho phép " + maxLength;
                             return valid;
                         }
-                        var icd = Base.GlobalStore.HisIcds.Where(o => o.ICD_CODE == ((DevExpress.XtraEditors.TextEdit)editor).Text).FirstOrDefault();
+                        var tICD_CODE = ((DevExpress.XtraEditors.TextEdit)editor);
+                        var icd = Base.GlobalStore.HisIcds.Where(o => o.ICD_CODE == tICD_CODE.Text).FirstOrDefault();
                         if (icd == null)
                         {
                             this.ErrorText = "ICD không hợp lệ";
                             this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical;
                             return valid;
+                        }
+                        else
+                        {
+                            if (checkEdit != null && !checkEdit.Checked)
+                            {
+                                if (!(icd.ICD_CODE == tICD_CODE.Text && icd.ICD_NAME == cboICD.Text))
+                                {
+                                    this.ErrorText = "Mã không trùng khớp với tên";
+                                    this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical;
+                                    return valid;
+                                }
+                            }
                         }
                     }
                 }
