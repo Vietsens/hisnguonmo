@@ -55,7 +55,7 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -127,7 +127,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MPS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000078.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000078.PDO.dll</HintPath>
@@ -140,7 +140,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000100.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000101.PDO">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MPS.Processor.Mps000101.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000101.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000240.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000240.PDO.dll</HintPath>

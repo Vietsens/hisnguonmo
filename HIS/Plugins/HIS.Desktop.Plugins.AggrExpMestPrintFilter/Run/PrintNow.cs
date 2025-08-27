@@ -2138,7 +2138,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
 
                 LoadDataMedicineAndMaterial(this._AggrExpMests, chooseTimeType, IntructionTimeFrom, IntructionTimeTo);
 
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this._AggrExpMests != null ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : ""), printTypeCode, this.currentModule.RoomId);
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode("Mps00000", printTypeCode, this.currentModule.RoomId);
                 MPS.Processor.Mps000247.PDO.Mps000247PDO mps000247RDO;
 
                 List<V_HIS_TREATMENT_BED_ROOM> vHisTreatmentBedRooms = new List<V_HIS_TREATMENT_BED_ROOM>();
@@ -2267,7 +2267,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000247RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
                 }
-
                 result = MPS.MpsPrinter.Run(PrintData);
             }
             catch (Exception ex)
