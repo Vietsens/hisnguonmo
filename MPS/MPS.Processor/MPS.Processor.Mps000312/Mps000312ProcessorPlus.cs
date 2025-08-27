@@ -235,7 +235,8 @@ namespace MPS.Processor.Mps000312
                         o.IS_OUT_PARENT_FEE,
                         o.PATIENT_TYPE_ID,
                         o.PARENT_ID,
-                        o.TOTAL_HEIN_PRICE_ONE_AMOUNT
+                        o.TOTAL_HEIN_PRICE_ONE_AMOUNT,
+                        o.STENT_ORDER
                     }
                     );
 
@@ -247,6 +248,14 @@ namespace MPS.Processor.Mps000312
                         sereServ.VIR_TOTAL_PATIENT_PRICE = sereServGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE);
                         sereServ.VIR_TOTAL_HEIN_PRICE = sereServGroup.Sum(o => o.VIR_TOTAL_HEIN_PRICE);
                         results.Add(sereServ);
+
+                        if (sereServ.STENT_ORDER.HasValue && sereServ.STENT_ORDER.Value > 1)
+                        {
+                            sereServ.TOTAL_PRICE_BHYT =
+                                  (sereServ.VIR_TOTAL_HEIN_PRICE ?? 0)
+                                + (sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0)
+                                + (sereServ.OTHER_SOURCE_PRICE ?? 0);
+                        }
                     }
                 }
             }

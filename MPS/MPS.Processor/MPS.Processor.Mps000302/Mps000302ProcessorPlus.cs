@@ -72,7 +72,8 @@ namespace MPS.Processor.Mps000302
                             o.IS_EXPEND,
                             o.NUMBER_OF_FILM,
                             o.KEY_PATY_ALTER,
-                            o.HEIN_SERVICE_TYPE_ID
+                            o.HEIN_SERVICE_TYPE_ID,
+                            o.STENT_ORDER
                         }).ToList();
 
                     foreach (var sereServBHYTGroup in sereServBHYTGroups)
@@ -90,6 +91,14 @@ namespace MPS.Processor.Mps000302
                         sereServ.TOTAL_PRICE_VP = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_VP);
                         sereServ.IS_PAID = sereServBHYTGroup.Min(o => o.IS_PAID);//tất cả thanh toán min sẽ là 1 nếu có 1 dv chưa thanh toán min sẽ là 0
                         sereServADOs.Add(sereServ);
+
+                        if (sereServ.STENT_ORDER.HasValue && sereServ.STENT_ORDER.Value > 1)
+                        {
+                            sereServ.TOTAL_PRICE_BHYT =
+                                  (sereServ.VIR_TOTAL_HEIN_PRICE ?? 0)
+                                + (sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0)
+                                + (sereServ.OTHER_SOURCE_PRICE ?? 0);
+                        }
                     }
 
                     sereServADOs = sereServADOs.OrderBy(o => o.STENT_ORDER ?? 0).ThenBy(o => o.SERVICE_NAME).ToList();

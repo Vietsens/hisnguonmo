@@ -66,7 +66,8 @@ namespace MPS.Processor.Mps000321
                         o.NUMBER_OF_FILM,
                         o.KEY_PATY_ALTER,
                         o.HEIN_SERVICE_TYPE_ID,
-                        o.GROUP_DEPARTMENT_ID
+                        o.GROUP_DEPARTMENT_ID,
+                        o.STENT_ORDER
                     }).ToList();
 
                 ProcessOtherSource(sereServADOTemps);
@@ -87,6 +88,14 @@ namespace MPS.Processor.Mps000321
                     sereServ.TOTAL_PRICE_PATIENT_SELF_TP = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_PATIENT_SELF_TP);
 
                     sereServADOs.Add(sereServ);
+
+                    if (sereServ.STENT_ORDER.HasValue && sereServ.STENT_ORDER.Value > 1)
+                    {
+                        sereServ.TOTAL_PRICE_BHYT =
+                              (sereServ.VIR_TOTAL_HEIN_PRICE ?? 0)
+                            + (sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0)
+                            + (sereServ.OTHER_SOURCE_PRICE ?? 0);
+                    }
                 }
                 //Inventec.Common.Logging.LogSystem.Info("sereServADOTemps" + sereServADOTemps.Count(o => String.IsNullOrWhiteSpace(o.KEY_PATY_ALTER)));
                 //Inventec.Common.Logging.LogSystem.Info("sereServADOs" + sereServADOs.Count(o => String.IsNullOrWhiteSpace(o.KEY_PATY_ALTER)));
