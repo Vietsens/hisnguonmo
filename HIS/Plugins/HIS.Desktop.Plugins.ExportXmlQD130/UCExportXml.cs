@@ -297,7 +297,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
-        private void SetCaptionByLanguageKey() 
+        private void SetCaptionByLanguageKey()
         {
             try
             {
@@ -1026,7 +1026,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         MessageManager.Show(param, success);
                     }
-
+                    else
+                    {
+                        param.Messages.Add("Xuất XML thất bại. Vui lòng kiểm tra lại.");
+                        MessageManager.Show(this.ParentForm, param, false);
+                    }
                     this.gridControlTreatment.RefreshDataSource();
                 }
                 SessionManager.ProcessTokenLost(param);
@@ -1217,7 +1221,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     foreach (var sereServ in ListSereServ)
                     {
-                        if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE >0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE))
+                        if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE))
                         {
                             if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
                                 dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
@@ -1525,16 +1529,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             Inventec.Common.Logging.LogSystem.Error("Run130_XML12: " + errorMessXml12);
                         }
                         if (rs != null)
-                        {
+                        {                           
                             if (viewXml)
                             {
                                 memoryStream = rs;
                             }
                             else
                             {
-                                FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write);
-                                rs.WriteTo(file);
-                                file.Close();
+                                using (FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write))
+                                {
+                                    rs.WriteTo(file);
+                                }
                                 rs.Close();
                             }
                             isSuccess = true;
@@ -1586,7 +1591,26 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     Inventec.Common.Logging.LogSystem.Error("Error saving xmlBase64 to file: " + ex);
                                 }
                             }
+                            else
+                            {
+                                try
+                                {
+                                    if (File.Exists(saveFilePathCollinearXml))
+                                    {
+                                        File.Delete(saveFilePathCollinearXml);
+                                    }
+                                    if (File.Exists(saveFilePath))
+                                    {
+                                        File.Delete(saveFilePath);
+                                    }
+                                }
+                                catch (IOException ioEx)
+                                {
+                                    Inventec.Common.Logging.LogSystem.Error("File đang bị khóa, chưa xóa được: " + ioEx);
+                                }
 
+                                XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");                                 
+                            }
                         }
                         else
                         {
@@ -1601,7 +1625,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             else
                             {
                                 wcfSignDCO.SourceFile = saveFilePath;
-                            }                            
+                            }
                             wcfSignDCO.fieldSigned = "CHUKYDONVI";
                             string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
                             SignProcessorClient signProcessorClient = new SignProcessorClient();
@@ -1609,7 +1633,26 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             if (wcfSignResultDCO != null && wcfSignResultDCO.Success)
                             {
                                 pathAfterFileSign = wcfSignResultDCO.OutputFile;
+                                if (!File.Exists(pathAfterFileSign) || new FileInfo(pathAfterFileSign).Length == 0)
+                                {
+                                    XtraMessageBox.Show("Ký số thất bại: file output không tồn tại hoặc rỗng.");
+                                    isSuccess = false;
+                                    return "";
+                                }
                                 Inventec.Common.Logging.LogSystem.Debug("wcfSignResultDCO.OutputFile: " + Inventec.Common.Logging.LogUtil.TraceData("output file", wcfSignResultDCO.OutputFile));
+                            }
+                            if (!string.IsNullOrEmpty(pathAfterFileSign))
+                            {
+                                saveFilePath = Path.Combine(this.savePathADO.pathXml, fullFileName);
+                                File.Copy(pathAfterFileSign, saveFilePath, true);
+                            }
+                            else
+                            {
+                                XtraMessageBox.Show("Ký số thất bại, file chưa được lưu vào thư mục chính.");
+                            }
+                            foreach (string ifile in Directory.GetFiles(tempFolderPath))
+                            {
+                                File.Delete(ifile);
                             }
                         }
                         if (this.savePathADO == null || string.IsNullOrEmpty(this.savePathADO.pathCollinearXml))
@@ -1669,6 +1712,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
             return result;
         }
+
         private string SourceFileSignApi(string xmlBase64Source)
         {
             string result = null;
@@ -1682,7 +1726,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
                 if (string.IsNullOrEmpty(result))
                 {
-                    string message = "Ký số không thành công. Vui lòng kiểm tra lại thông tin chữ ký số hoặc kết nối thiết bị.";
+                    string message = "Phiên xác nhận ký hết hiệu lực vui lòng thao tác lại và xác nhận trên app điện thoại.";
                     Inventec.Common.Logging.LogSystem.Warn(message);
                     DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return result;
@@ -1849,6 +1893,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             {
                                 Inventec.Common.Logging.LogSystem.Error("Error saving xmlBase64 to file: " + ex);
                             }
+                        }
+                        else
+                        {
+                            if (File.Exists(saveFilePath))
+                            {
+                                File.Delete(saveFilePath);
+                            }
+                            if (File.Exists(saveFilePathXml12))
+                            {
+                                File.Delete(saveFilePathXml12);
+                            }                            
                         }
                         if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathXml))
                         {
@@ -3878,7 +3933,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             foreach (var sereServ in ListSereServ)
                             {
-                                if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE))
+                                if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE))
                                 {
                                     if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
                                         dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
@@ -4398,6 +4453,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
                     else
                     {
+                        if (File.Exists(sourceFile))
+                        {
+                            File.Delete(sourceFile);
+                        }
                         XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");
                         return;
                     }
@@ -4425,7 +4484,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");
                             return;
                         }
-                    }                    
+                    }
                 }
                 if (configSync != null && !this.configSync.dontSend)
                 {
@@ -5146,13 +5205,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     });
                     frm.ShowDialog();
                     if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
-                        chkSignFileCertUtil.Checked = false;                    
+                        chkSignFileCertUtil.Checked = false;
                 }
                 else
                 {
                     SettingSignADO = null;
                 }
-                    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSignFileCertUtil.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault() : null;
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSignFileCertUtil.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault() : null;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
                 if (csAddOrUpdate != null)
                 {
@@ -5175,7 +5234,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        
+
 
         private async void btnXML3176_Click(object sender, EventArgs e)
         {
@@ -5252,7 +5311,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 if (File.Exists(filePath))
                 {
-                    byte[] fileBytes = File.ReadAllBytes(filePath); 
+                    byte[] fileBytes = File.ReadAllBytes(filePath);
                     XmlDocument xmlDocument = new XmlDocument();
                     try
                     {
