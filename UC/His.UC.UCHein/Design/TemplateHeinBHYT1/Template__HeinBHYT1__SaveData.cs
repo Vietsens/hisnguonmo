@@ -117,6 +117,11 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                         }
                         patientProfileSDO.HisTreatment.TRANSFER_IN_CODE = this.txtInCode.Text.Trim();
                     }
+                    if (cboHeinRightRoute.EditValue.ToString() == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT)
+                    {
+                        patientProfileSDO.HisTreatment.IS_TRANSFER_IN = 1;
+                        patientProfileSDO.HisTreatment.TRANSFER_IN_CODE = this.txtInCode.Text.Trim();
+                    }
                 }
                 else if (patientProfileSDO.HisTreatment != null)
                 {
