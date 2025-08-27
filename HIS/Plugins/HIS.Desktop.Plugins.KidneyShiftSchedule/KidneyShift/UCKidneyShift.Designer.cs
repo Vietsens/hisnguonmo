@@ -46,23 +46,6 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject41 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject44 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCKidneyShift));
-            DevExpress.Utils.SuperToolTip superToolTip7 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem7 = new DevExpress.Utils.ToolTipItem();
-            DevExpress.Utils.SuperToolTip superToolTip8 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem8 = new DevExpress.Utils.ToolTipItem();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -71,10 +54,27 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCKidneyShift));
+            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
             this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
@@ -559,7 +559,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             this.cboExpMestTemplateForAdd.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExpMestTemplateForAdd.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboExpMestTemplateForAdd.Properties.NullText = "";
             this.cboExpMestTemplateForAdd.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
             this.cboExpMestTemplateForAdd.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -659,10 +659,10 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             // 
             // chkSearchAllInDepartment
             // 
-            this.chkSearchAllInDepartment.Location = new System.Drawing.Point(521, 284);
+            this.chkSearchAllInDepartment.Location = new System.Drawing.Point(537, 284);
             this.chkSearchAllInDepartment.Name = "chkSearchAllInDepartment";
             this.chkSearchAllInDepartment.Properties.Caption = "";
-            this.chkSearchAllInDepartment.Size = new System.Drawing.Size(20, 19);
+            this.chkSearchAllInDepartment.Size = new System.Drawing.Size(19, 19);
             this.chkSearchAllInDepartment.StyleController = this.layoutControl1;
             this.chkSearchAllInDepartment.TabIndex = 29;
             // 
@@ -704,7 +704,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             this.cboMarchineForSearchServiceReqKidneyshift.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboMarchineForSearchServiceReqKidneyshift.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.cboMarchineForSearchServiceReqKidneyshift.Properties.NullText = "";
             this.cboMarchineForSearchServiceReqKidneyshift.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
             this.cboMarchineForSearchServiceReqKidneyshift.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -730,7 +730,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             this.cboCaForSearchServiceReqKidneyshift.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboCaForSearchServiceReqKidneyshift.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.cboCaForSearchServiceReqKidneyshift.Properties.NullText = "";
             this.cboCaForSearchServiceReqKidneyshift.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
             this.cboCaForSearchServiceReqKidneyshift.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -781,9 +781,9 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             this.btnPreviousForSearchServiceReqKidneyshift.Name = "btnPreviousForSearchServiceReqKidneyshift";
             this.btnPreviousForSearchServiceReqKidneyshift.Size = new System.Drawing.Size(28, 22);
             this.btnPreviousForSearchServiceReqKidneyshift.StyleController = this.layoutControl1;
-            toolTipItem7.Text = "Quay lại tuần trước";
-            superToolTip7.Items.Add(toolTipItem7);
-            this.btnPreviousForSearchServiceReqKidneyshift.SuperTip = superToolTip7;
+            toolTipItem1.Text = "Quay lại tuần trước";
+            superToolTip1.Items.Add(toolTipItem1);
+            this.btnPreviousForSearchServiceReqKidneyshift.SuperTip = superToolTip1;
             this.btnPreviousForSearchServiceReqKidneyshift.TabIndex = 22;
             this.btnPreviousForSearchServiceReqKidneyshift.Click += new System.EventHandler(this.btnPreviousForSearchServiceReqKidneyshift_Click);
             // 
@@ -794,9 +794,9 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             this.btnNextForSearchServiceReqKidneyshift.Name = "btnNextForSearchServiceReqKidneyshift";
             this.btnNextForSearchServiceReqKidneyshift.Size = new System.Drawing.Size(26, 22);
             this.btnNextForSearchServiceReqKidneyshift.StyleController = this.layoutControl1;
-            toolTipItem8.Text = "Tuần tiếp theo";
-            superToolTip8.Items.Add(toolTipItem8);
-            this.btnNextForSearchServiceReqKidneyshift.SuperTip = superToolTip8;
+            toolTipItem2.Text = "Tuần tiếp theo";
+            superToolTip2.Items.Add(toolTipItem2);
+            this.btnNextForSearchServiceReqKidneyshift.SuperTip = superToolTip2;
             this.btnNextForSearchServiceReqKidneyshift.TabIndex = 23;
             this.btnNextForSearchServiceReqKidneyshift.Click += new System.EventHandler(this.btnNextForSearchServiceReqKidneyshift_Click);
             // 
@@ -841,7 +841,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             this.cboDayOfWeekForSearchServiceReqKidneyshift.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboDayOfWeekForSearchServiceReqKidneyshift.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.cboDayOfWeekForSearchServiceReqKidneyshift.Properties.NullText = "";
             this.cboDayOfWeekForSearchServiceReqKidneyshift.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
             this.cboDayOfWeekForSearchServiceReqKidneyshift.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -1173,7 +1173,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             // 
             this.ButtonEdit_DelDisable.AutoHeight = false;
             this.ButtonEdit_DelDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Ellipsis, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEdit_DelDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Ellipsis, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEdit_DelDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.ButtonEdit_DelDisable.Name = "ButtonEdit_DelDisable";
             this.ButtonEdit_DelDisable.ReadOnly = true;
             this.ButtonEdit_DelDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
@@ -1182,7 +1182,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             // 
             this.ButtonEdit_DelEnable.AutoHeight = false;
             this.ButtonEdit_DelEnable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEdit_DelEnable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEdit_DelEnable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
             this.ButtonEdit_DelEnable.Name = "ButtonEdit_DelEnable";
             this.ButtonEdit_DelEnable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonEdit_DelEnable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEdit_DelEnable_ButtonClick);
@@ -1670,9 +1670,9 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             this.emptySpaceItem4.AllowHotTrack = false;
             this.emptySpaceItem4.AppearanceItemCaption.ForeColor = System.Drawing.Color.Gray;
             this.emptySpaceItem4.AppearanceItemCaption.Options.UseForeColor = true;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(543, 282);
+            this.emptySpaceItem4.Location = new System.Drawing.Point(558, 282);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(777, 24);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(762, 24);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem5
@@ -1876,10 +1876,10 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             this.layoutControlItem20.Control = this.chkSearchAllInDepartment;
             this.layoutControlItem20.Location = new System.Drawing.Point(460, 282);
             this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(83, 24);
+            this.layoutControlItem20.Size = new System.Drawing.Size(98, 24);
             this.layoutControlItem20.Text = "Toàn khoa:";
             this.layoutControlItem20.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem20.TextSize = new System.Drawing.Size(54, 13);
+            this.layoutControlItem20.TextSize = new System.Drawing.Size(70, 13);
             this.layoutControlItem20.TextToControlDistance = 5;
             // 
             // layoutControlItem28

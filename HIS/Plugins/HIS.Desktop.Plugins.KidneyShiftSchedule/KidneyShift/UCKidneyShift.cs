@@ -120,6 +120,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 this.dteInTimeTo.DateTime = DateTime.Now;
                 this.cboDepartment.EditValue = requestRoom.DEPARTMENT_ID;
                 this.txtDepartment.Text = requestRoom.DEPARTMENT_CODE;
+                this.cboKidneyType.EditValue = 1;
                 WaitingManager.Hide();
             }
             catch (Exception ex)

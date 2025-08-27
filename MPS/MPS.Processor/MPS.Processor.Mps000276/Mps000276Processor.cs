@@ -182,7 +182,7 @@ namespace MPS.Processor.Mps000276
                         V_HIS_SERVICE_REQ sr = list.FirstOrDefault(o => o.ID == ss.SERVICE_REQ_ID);
                         V_HIS_SERVICE service = rdo._Services.FirstOrDefault(o => o.ID == ss.SERVICE_ID);
                         V_HIS_SERVICE parent = null;
-                        HIS_SERE_SERV_EXT ext = rdo._ext.FirstOrDefault(ex => ex.SERE_SERV_ID == ss.ID);
+                        HIS_SERE_SERV_EXT ext = rdo._ext != null ? rdo._ext.FirstOrDefault(ex => ex.SERE_SERV_ID == ss.ID) : null;
                         V_HIS_ROOM resultRoom = null;
                         V_HIS_DESK resultDesk = null;
                         ServiceNumOderAdo serviceNumOderAdo = null;
