@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
@@ -26,6 +27,7 @@ using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -217,52 +219,83 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             }
         }
 
+        private void initComboKidNey()
+        {
+            try
+            {
+                // Tạo danh sách dữ liệu
+                DataTable dt = new DataTable();
+                dt.Columns.Add("ID", typeof(int));
+                dt.Columns.Add("Loại", typeof(string));
+
+                dt.Rows.Add(1, "Theo lịch");
+                dt.Rows.Add(2, "Đột xuất");
+
+                // Gán vào GridLookUpEdit
+                cboKidneyType.Properties.DataSource = dt;
+                cboKidneyType.Properties.DisplayMember = "Loại";   // Hiển thị
+                cboKidneyType.Properties.ValueMember = "ID";       // Giá trị thực (1 hoặc 2)
+
+                // Ẩn cột ID, chỉ hiện Name
+                cboKidneyType.Properties.PopulateViewColumns();
+                cboKidneyType.Properties.View.Columns["ID"].Visible = false;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void InitComboBedRoom()
         {
             try
             {
-                List<MOS.EFMODEL.DataModels.V_HIS_BED_ROOM> bedRooms = null;
-                if (BackendDataWorker.IsExistsKey<MOS.EFMODEL.DataModels.V_HIS_BED_ROOM>())
+                List<MOS.EFMODEL.DataModels.HIS_DEPARTMENT> bedRooms = null;
+                if (BackendDataWorker.IsExistsKey<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>())
                 {
-                    bedRooms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_BED_ROOM>();
+                    bedRooms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>();
                 }
                 else
                 {
                     CommonParam paramCommon = new CommonParam();
                     dynamic filter = new System.Dynamic.ExpandoObject();
-                    bedRooms = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.V_HIS_BED_ROOM>>("api/HisBedRoom/GetView", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
+                    bedRooms = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>>("api/HisDepartment/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
 
-                    if (bedRooms != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_BED_ROOM), bedRooms, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                    if (bedRooms != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_DEPARTMENT), bedRooms, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                 }
 
-                bedRooms = (bedRooms != null && bedRooms.Count > 0) ? bedRooms.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.DEPARTMENT_ID == this.currentDepartment.ID).ToList() : bedRooms;
+                if(chkSearchAllInDepartment.Checked)
+                    bedRooms = (bedRooms != null && bedRooms.Count > 0) ? bedRooms.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList() : bedRooms;
+                else
+                    bedRooms = (bedRooms != null && bedRooms.Count > 0) ? bedRooms.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.BRANCH_ID == this.currentDepartment.BRANCH_ID).ToList() : bedRooms;
 
 
                 if (bedRooms != null && bedRooms.Count > 0)
                 {
-                    cboBedroomForPatientInBedroom.Properties.DataSource = bedRooms;
+                    cboDepartment.Properties.DataSource = bedRooms;
                 }
                 else
                 {
-                    cboBedroomForPatientInBedroom.Properties.DataSource = null;
+                    cboDepartment.Properties.DataSource = null;
                 }
 
-                cboBedroomForPatientInBedroom.Properties.DisplayMember = "BED_ROOM_NAME";
-                cboBedroomForPatientInBedroom.Properties.ValueMember = "ROOM_ID";
-                DevExpress.XtraGrid.Columns.GridColumn col2 = cboBedroomForPatientInBedroom.Properties.View.Columns.AddField("BED_ROOM_CODE");
+                cboDepartment.Properties.DisplayMember = "DEPARTMENT_NAME";
+                cboDepartment.Properties.ValueMember = "ID";
+                DevExpress.XtraGrid.Columns.GridColumn col2 = cboDepartment.Properties.View.Columns.AddField("DEPARTMENT_CODE");
                 col2.VisibleIndex = 1;
                 col2.Width = 100;
                 col2.Caption = "Mã";
-                DevExpress.XtraGrid.Columns.GridColumn col3 = cboBedroomForPatientInBedroom.Properties.View.Columns.AddField("BED_ROOM_NAME");
+                DevExpress.XtraGrid.Columns.GridColumn col3 = cboDepartment.Properties.View.Columns.AddField("DEPARTMENT_NAME");
                 col3.VisibleIndex = 2;
                 col3.Width = 200;
                 col3.Caption = "Tên";
-                cboBedroomForPatientInBedroom.Properties.PopupFormWidth = 320;
-                cboBedroomForPatientInBedroom.Properties.View.OptionsView.ShowColumnHeaders = false;
+                cboDepartment.Properties.PopupFormWidth = 320;
+                cboDepartment.Properties.View.OptionsView.ShowColumnHeaders = false;
 
-                var broom = bedRooms != null ? bedRooms.Where(o => o.ROOM_ID == this.requestRoom.ID).FirstOrDefault() : null;
-                cboBedroomForPatientInBedroom.EditValue = broom != null ? (long?)broom.ROOM_ID : null;
-                txtBedroomForPatientInBedroom.Text = broom != null ? broom.BED_ROOM_CODE : null;
+                //var broom = bedRooms != null ? bedRooms.Where(o => o.ROOM_ID == this.requestRoom.ID).FirstOrDefault() : null;
+                //cboBedroomForPatientInBedroom.EditValue = broom != null ? (long?)broom.ROOM_ID : null;
+                //txtBedroomForPatientInBedroom.Text = broom != null ? broom.BED_ROOM_CODE : null;
             }
             catch (Exception ex)
             {

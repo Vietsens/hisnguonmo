@@ -66,7 +66,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
         List<MOS.EFMODEL.DataModels.HIS_MACHINE> currentMachines;
         List<TreatmentBedRoomADO> _TreatmentBedRoomADOs { get; set; }
         List<ServiceReqADO> _ServiceReqADOs { get; set; }
-        TreatmentBedRoomADO currentTreatmentBedRoomADO;
+        V_HIS_TREATMENT_4 currentTreatmentBedRoomADO;
         int rowCount = 0;
         int dataTotal = 0;
         int start = 0;
@@ -116,6 +116,10 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 this.FillDataToControlsForm();
                 this.FillDataToGridTreatmentBedRoom();
                 this.FillDataToGridServiceReqKidneyShift();
+                this.dteInTimeFrom.DateTime = DateTime.Now; 
+                this.dteInTimeTo.DateTime = DateTime.Now;
+                this.cboDepartment.EditValue = requestRoom.DEPARTMENT_ID;
+                this.txtDepartment.Text = requestRoom.DEPARTMENT_CODE;
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -146,7 +150,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 this.cboCaForAdd.Properties.NullText = Inventec.Common.Resource.Get.Value("UCKidneyShift.cboCaForAdd.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSearchForPatientInBedroom.Text = Inventec.Common.Resource.Get.Value("UCKidneyShift.btnSearchForPatientInBedroom.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkSearchAllInDepartment.Properties.Caption = Inventec.Common.Resource.Get.Value("UCKidneyShift.chkSearchAllInDepartment.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.cboBedroomForPatientInBedroom.Properties.NullText = Inventec.Common.Resource.Get.Value("UCKidneyShift.cboBedroomForPatientInBedroom.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.cboBedroomForPatientInBedroom.Properties.NullText = Inventec.Common.Resource.Get.Value("UCKidneyShift.cboBedroomForPatientInBedroom.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSearchForSearchServiceReqKidneyshift.Text = Inventec.Common.Resource.Get.Value("UCKidneyShift.btnSearchForSearchServiceReqKidneyshift.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnPrintForSearchServiceReqKidneyshift.Text = Inventec.Common.Resource.Get.Value("UCKidneyShift.btnPrintForSearchServiceReqKidneyshift.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboMarchineForSearchServiceReqKidneyshift.Properties.NullText = Inventec.Common.Resource.Get.Value("UCKidneyShift.cboMarchineForSearchServiceReqKidneyshift.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -194,7 +198,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 this.layoutControlItem13.Text = Inventec.Common.Resource.Get.Value("UCKidneyShift.layoutControlItem13.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem12.Text = Inventec.Common.Resource.Get.Value("UCKidneyShift.layoutControlItem12.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem17.Text = Inventec.Common.Resource.Get.Value("UCKidneyShift.layoutControlItem17.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem18.Text = Inventec.Common.Resource.Get.Value("UCKidneyShift.layoutControlItem18.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem18.Text = Inventec.Common.Resource.Get.Value("UCKidneyShift.layoutControlItem18.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem20.Text = Inventec.Common.Resource.Get.Value("UCKidneyShift.layoutControlItem20.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem22.Text = Inventec.Common.Resource.Get.Value("UCKidneyShift.layoutControlItem22.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem23.Text = Inventec.Common.Resource.Get.Value("UCKidneyShift.layoutControlItem23.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -418,7 +422,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 {
                     if (((IList)((BaseView)sender).DataSource) != null && ((IList)((BaseView)sender).DataSource).Count > 0)
                     {
-                        TreatmentBedRoomADO oneServiceSDO = (TreatmentBedRoomADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                        V_HIS_TREATMENT_4 oneServiceSDO = (V_HIS_TREATMENT_4)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                         if (oneServiceSDO != null)
                         {
                             if (e.Column.FieldName == "STT")
@@ -431,7 +435,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                             }
                             if (e.Column.FieldName == "IN_TIME_DISPLAY")
                             {
-                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(oneServiceSDO.IN_TIME);
+                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(oneServiceSDO.IN_DATE);
                             }
                         }
                         else
@@ -485,6 +489,13 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                                 {
                                     e.Value = imageListIcon.Images[0];
                                 }
+                            }
+                            if(e.Column.FieldName == "KIDNEY_TYPE_STR")
+                            {
+                                if (Convert.ToInt32(oneServiceSDO.KIDNEY_TYPE) == 1)
+                                    e.Value = "Theo lịch";
+                                else if (Convert.ToInt32(oneServiceSDO.KIDNEY_TYPE) == 2)
+                                    e.Value = "Đột xuất";
                             }
                             if (e.Column.FieldName == "InstructionTimeDisplay")
                             {
@@ -1139,13 +1150,14 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             {
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
-                    if (this.cboBedroomForPatientInBedroom.EditValue != null)
+                    if (this.cboDepartment.EditValue != null)
                     {
-                        MOS.EFMODEL.DataModels.V_HIS_BED_ROOM data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_BED_ROOM>().Where(o => o.ROOM_ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboBedroomForPatientInBedroom.EditValue ?? "0").ToString())).FirstOrDefault();
+                        MOS.EFMODEL.DataModels.HIS_DEPARTMENT data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>().Where(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboDepartment.EditValue ?? "0").ToString())).FirstOrDefault();
                         if (data != null)
                         {
-                            this.txtBedroomForPatientInBedroom.Text = data.BED_ROOM_CODE;
-                            cboBedroomForPatientInBedroom.Properties.Buttons[1].Visible = true;
+                            this.txtDepartment.Text = data.DEPARTMENT_CODE;
+                            cboDepartment.Properties.Buttons[1].Visible = true;
+                            dxValidationProviderControl.SetValidationRule(cboDepartment, null);
                         }
                     }
                     chkSearchAllInDepartment.Focus();
@@ -1157,20 +1169,19 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void cboBedroomForPatientInBedroom_KeyUp(object sender, KeyEventArgs e)
         {
             try
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (this.cboBedroomForPatientInBedroom.EditValue != null)
+                    if (this.cboDepartment.EditValue != null)
                     {
-                        MOS.EFMODEL.DataModels.V_HIS_BED_ROOM data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_BED_ROOM>().Where(o => o.ROOM_ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboBedroomForPatientInBedroom.EditValue ?? "0").ToString())).FirstOrDefault();
+                        MOS.EFMODEL.DataModels.HIS_DEPARTMENT data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>().Where(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboDepartment.EditValue ?? "0").ToString())).FirstOrDefault();
                         if (data != null)
                         {
-                            this.txtBedroomForPatientInBedroom.Text = data.BED_ROOM_CODE;
-                            cboBedroomForPatientInBedroom.Properties.Buttons[1].Visible = true;
+                            this.txtDepartment.Text = data.DEPARTMENT_CODE;
+                            cboDepartment.Properties.Buttons[1].Visible = true;
 
                             chkSearchAllInDepartment.Focus();
                             chkSearchAllInDepartment.SelectAll();
@@ -1190,9 +1201,9 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             {
                 if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
                 {
-                    cboBedroomForPatientInBedroom.Properties.Buttons[1].Visible = false;
-                    cboBedroomForPatientInBedroom.EditValue = null;
-                    txtBedroomForPatientInBedroom.Text = "";
+                    cboDepartment.Properties.Buttons[1].Visible = false;
+                    cboDepartment.EditValue = null;
+                    cboDepartment.Text = "";
                 }
             }
             catch (Exception ex)
@@ -1208,17 +1219,17 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 if (e.KeyCode == Keys.Enter)
                 {
                     bool showCombo = true;
-                    string searchCode = txtBedroomForPatientInBedroom.Text;
+                    string searchCode = txtDepartment.Text;
                     if (!String.IsNullOrEmpty(searchCode))
                     {
-                        var data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_BED_ROOM>().Where(o => o.BED_ROOM_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
-                        var result = data != null ? (data.Count > 1 ? data.Where(o => o.BED_ROOM_CODE.ToLower() == searchCode.ToLower()).ToList() : data) : null;
+                        var data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>().Where(o => o.DEPARTMENT_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
+                        var result = data != null ? (data.Count > 1 ? data.Where(o => o.DEPARTMENT_CODE.ToLower() == searchCode.ToLower()).ToList() : data) : null;
                         if (result != null && result.Count > 0)
                         {
                             showCombo = false;
-                            cboBedroomForPatientInBedroom.Properties.Buttons[1].Visible = true;
-                            cboBedroomForPatientInBedroom.EditValue = result.First().ID;
-                            txtBedroomForPatientInBedroom.Text = result.First().BED_ROOM_CODE;
+                            cboDepartment.Properties.Buttons[1].Visible = true;
+                            cboDepartment.EditValue = result.First().ID;
+                            txtDepartment.Text = result.First().DEPARTMENT_CODE;
 
                             chkSearchAllInDepartment.Focus();
                             chkSearchAllInDepartment.SelectAll();
@@ -1227,10 +1238,10 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                     }
                     if (showCombo)
                     {
-                        cboBedroomForPatientInBedroom.Properties.Buttons[1].Visible = false;
-                        cboBedroomForPatientInBedroom.EditValue = null;
-                        cboBedroomForPatientInBedroom.Focus();
-                        cboBedroomForPatientInBedroom.ShowPopup();
+                        cboDepartment.Properties.Buttons[1].Visible = false;
+                        cboDepartment.EditValue = null;
+                        cboDepartment.Focus();
+                        cboDepartment.ShowPopup();
                     }
                 }
             }
@@ -1648,11 +1659,6 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 result = null;
             }
             return result;
-        }
-
-        private void gridControlServiceReqKidneyshift_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
