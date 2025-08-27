@@ -2016,6 +2016,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 lciForchkThongTinMat.Visibility = (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciForchkPreKidneyShift.Visibility = (HisConfigCFG.AllowKidneyPresOutPatient == "1") ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciForspinKidneyCount.Visibility = (HisConfigCFG.AllowKidneyPresOutPatient == "1") ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lciForspinKidneyCount.Enabled = false;
                 lciForchkShowLo.Enabled = HisConfigCFG.IsAllowAssignPresByPackage ? true : false;
 
                 lciForpnlUCDateForMedi.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
