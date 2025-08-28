@@ -66,11 +66,11 @@ namespace MPS.Processor.Mps000457
                         }
                         else
                         {
-                            var paVa = $"{par.SERVICE_NAME} ({par.SERVICE_CODE}) - {par.VALUE_HL_NEW}";
+                            var paVa = $"{par.SERVICE_NAME} ({par.SERVICE_CODE}){(!string.IsNullOrEmpty(par.VALUE_HL_NEW) ? "" : " - ") + par.VALUE_HL_NEW}";
                             (string.IsNullOrEmpty(par.HIGH_OR_LOW) ? concludeHIV : concludeHIV_HL).Add(paVa);
                             foreach (var chi in ListTestChildHIV.Where(w => w.PARENT_ID == par.CHILD_ID && w.IS_HAS_ONE_CHILD != 1))
                             {
-                                var chiVa = $"{chi.TEST_INDEX_NAME} ({chi.TEST_INDEX_CODE}) - {chi.VALUE_HL_NEW}";
+                                var chiVa = $"{chi.TEST_INDEX_NAME} ({chi.TEST_INDEX_CODE}){(!string.IsNullOrEmpty(chi.VALUE_HL_NEW) ? "" : " - ") + chi.VALUE_HL_NEW}";
                                 (string.IsNullOrEmpty(chi.HIGH_OR_LOW) ? concludeHIV : concludeHIV_HL).Add(chiVa);
                             }
                         }
