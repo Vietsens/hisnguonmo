@@ -57,6 +57,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.txtHeinPatientTypeCode = new DevExpress.XtraEditors.TextEdit();
             this.btnCheckIcd = new DevExpress.XtraEditors.SimpleButton();
             this.panelControlSubIcd = new DevExpress.XtraEditors.PanelControl();
             this.cboCareer = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -177,12 +178,12 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciHeinPatientTypeCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.timer1 = new System.Windows.Forms.Timer();
-            this.txtHeinPatientTypeCode = new DevExpress.XtraEditors.TextEdit();
-            this.lciHeinPatientTypeCode = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHeinPatientTypeCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSubIcd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
@@ -302,9 +303,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtHeinPatientTypeCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHeinPatientTypeCode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -351,6 +351,16 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControl1.Size = new System.Drawing.Size(660, 532);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // txtHeinPatientTypeCode
+            // 
+            this.txtHeinPatientTypeCode.Location = new System.Drawing.Point(416, 102);
+            this.txtHeinPatientTypeCode.Name = "txtHeinPatientTypeCode";
+            this.txtHeinPatientTypeCode.Properties.Mask.EditMask = "[0-9\\.]{0,10}";
+            this.txtHeinPatientTypeCode.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
+            this.txtHeinPatientTypeCode.Size = new System.Drawing.Size(242, 20);
+            this.txtHeinPatientTypeCode.StyleController = this.layoutControl1;
+            this.txtHeinPatientTypeCode.TabIndex = 43;
             // 
             // btnCheckIcd
             // 
@@ -1782,25 +1792,6 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem33.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem33.TextVisible = false;
             // 
-            // dxValidationProvider1
-            // 
-            this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 500;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // txtHeinPatientTypeCode
-            // 
-            this.txtHeinPatientTypeCode.Location = new System.Drawing.Point(416, 102);
-            this.txtHeinPatientTypeCode.Name = "txtHeinPatientTypeCode";
-            this.txtHeinPatientTypeCode.Properties.Mask.EditMask = "[0-9\\.]{0,10}";
-            this.txtHeinPatientTypeCode.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
-            this.txtHeinPatientTypeCode.Size = new System.Drawing.Size(242, 20);
-            this.txtHeinPatientTypeCode.StyleController = this.layoutControl1;
-            this.txtHeinPatientTypeCode.TabIndex = 43;
-            // 
             // lciHeinPatientTypeCode
             // 
             this.lciHeinPatientTypeCode.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -1814,6 +1805,15 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.lciHeinPatientTypeCode.TextSize = new System.Drawing.Size(130, 20);
             this.lciHeinPatientTypeCode.TextToControlDistance = 5;
             // 
+            // dxValidationProvider1
+            // 
+            this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // UCExamTreatmentFinish
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1824,6 +1824,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.Load += new System.EventHandler(this.UCExamTreatmentFinish_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtHeinPatientTypeCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSubIcd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
@@ -1943,9 +1944,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtHeinPatientTypeCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHeinPatientTypeCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
 
         }

@@ -163,7 +163,7 @@
     </Reference>
     <Reference Include="HIS.UC.ExamTreatmentFinish, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.ExamTreatmentFinish.dll</HintPath>
+      <HintPath>..\..\..\UC\HIS.UC.ExamTreatmentFinish\bin\Debug\HIS.UC.ExamTreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.HisExamServiceAdd">
       <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.HisExamServiceAdd.dll</HintPath>
@@ -173,7 +173,7 @@
     </Reference>
     <Reference Include="HIS.UC.Icd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.Icd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Ksk">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.Ksk\HIS.UC.Ksk.dll</HintPath>

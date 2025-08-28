@@ -36,7 +36,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 ValidBenhPhu();
                 ValiNhapQuaKyTu();
-                ValidationICD(10, 500, !this.isAllowNoIcd);
+                ValidationICD(20, 500, !this.isAllowNoIcd);
                 ValidationSingleControlWithMaxLength(txtIcdCodeCause, false, 10);
                 ValidationSingleControlWithMaxLength(txtIcdMainTextCause, false, 500);
                 //ValidationICDCause(10, 500, isRequired);
