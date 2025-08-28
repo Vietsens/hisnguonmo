@@ -545,7 +545,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
                         }
                         else if (e.Column.FieldName == "DOB_STR")
                         {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.DOB);
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.DOB ?? 0);
                         }
                         else if (e.Column.FieldName == "NEXT_SIGNER_STR")
                         {
