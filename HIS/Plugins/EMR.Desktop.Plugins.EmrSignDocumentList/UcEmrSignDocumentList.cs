@@ -713,6 +713,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                                                 inputADO.PaperSizeDefault.RawKind = (int)row.RAW_KIND;
                                             }
                                         }
+                                        inputADO.IsOutsideTreatment = (short)(row.TREATMENT_CODE.ToUpper().Contains("MPS") ? 1 : 0);
                                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputADO.PaperSizeDefault), inputADO.PaperSizeDefault));
 
                                         if (!String.IsNullOrWhiteSpace(temFile) && File.Exists(temFile))

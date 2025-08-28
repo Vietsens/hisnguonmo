@@ -46,18 +46,18 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcEmrSignDocumentList));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnViewAndSign = new DevExpress.XtraEditors.SimpleButton();
             this.btnErrorSignDetail = new DevExpress.XtraEditors.SimpleButton();
@@ -108,6 +108,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             this.Gc_Dob = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_Gender = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_Department = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_RejectReason = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GC_StoreTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_Url = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_CreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -129,7 +130,6 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciForbtnErrorSignDetail = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.Gc_RejectReason = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.navBarControl1)).BeginInit();
@@ -184,6 +184,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.gridControlDocument);
             this.layoutControl1.Controls.Add(this.btnViewAndSign);
             this.layoutControl1.Controls.Add(this.btnErrorSignDetail);
             this.layoutControl1.Controls.Add(this.lblDocProcessErrorCount);
@@ -193,7 +194,6 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             this.layoutControl1.Controls.Add(this.navBarControl1);
             this.layoutControl1.Controls.Add(this.BtnRefresh);
             this.layoutControl1.Controls.Add(this.BtnSearch);
-            this.layoutControl1.Controls.Add(this.gridControlDocument);
             this.layoutControl1.Controls.Add(this.TxtKeyword);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
@@ -692,7 +692,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             // 
             this.repositoryItemBtnView.AutoHeight = false;
             this.repositoryItemBtnView.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnView.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Xem", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnView.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Xem", null, null, true)});
             this.repositoryItemBtnView.Name = "repositoryItemBtnView";
             this.repositoryItemBtnView.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -787,6 +787,16 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             this.Gc_Department.VisibleIndex = 11;
             this.Gc_Department.Width = 120;
             // 
+            // Gc_RejectReason
+            // 
+            this.Gc_RejectReason.Caption = "Lý do từ chối";
+            this.Gc_RejectReason.FieldName = "REJECT_REASON";
+            this.Gc_RejectReason.Name = "Gc_RejectReason";
+            this.Gc_RejectReason.OptionsColumn.AllowEdit = false;
+            this.Gc_RejectReason.Visible = true;
+            this.Gc_RejectReason.VisibleIndex = 12;
+            this.Gc_RejectReason.Width = 120;
+            // 
             // GC_StoreTime
             // 
             this.GC_StoreTime.Caption = "Thời gian Lưu";
@@ -858,7 +868,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             // 
             this.repositoryItemBtnSign.AutoHeight = false;
             this.repositoryItemBtnSign.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnSign.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Ký", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnSign.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Ký", null, null, true)});
             this.repositoryItemBtnSign.Name = "repositoryItemBtnSign";
             this.repositoryItemBtnSign.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -866,7 +876,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             // 
             this.repositoryItemBtnSignDisable.AutoHeight = false;
             this.repositoryItemBtnSignDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnSignDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Ký", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnSignDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Ký", null, null, true)});
             this.repositoryItemBtnSignDisable.Name = "repositoryItemBtnSignDisable";
             this.repositoryItemBtnSignDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1010,16 +1020,6 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             this.layoutControlItem8.Size = new System.Drawing.Size(121, 26);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
-            // 
-            // Gc_RejectReason
-            // 
-            this.Gc_RejectReason.Caption = "Lý do từ chối";
-            this.Gc_RejectReason.FieldName = "REJECT_REASON";
-            this.Gc_RejectReason.Name = "Gc_RejectReason";
-            this.Gc_RejectReason.OptionsColumn.AllowEdit = false;
-            this.Gc_RejectReason.Visible = true;
-            this.Gc_RejectReason.VisibleIndex = 12;
-            this.Gc_RejectReason.Width = 120;
             // 
             // UcEmrSignDocumentList
             // 

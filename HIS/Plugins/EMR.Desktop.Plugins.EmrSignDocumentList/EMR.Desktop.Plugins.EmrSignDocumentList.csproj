@@ -56,8 +56,9 @@
     <Reference Include="EMR.URI">
       <HintPath>..\..\..\..\LIB\EMR\EMR.URI.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\HIS.Desktop.Plugins.Library.EmrGenerate\bin\Debug\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
