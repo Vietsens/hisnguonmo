@@ -39,6 +39,7 @@ using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MPS.ProcessorBase.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -862,6 +863,8 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
                 }
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.moduleData.RoomId);
+                PrintData.EmrInputADO = inputADO;
                 result = MPS.MpsPrinter.Run(PrintData);
             }
             catch (Exception ex)
@@ -890,6 +893,8 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
                 }
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.moduleData.RoomId);
+                PrintData.EmrInputADO = inputADO;
                 result = MPS.MpsPrinter.Run(PrintData);
             }
             catch (Exception ex)
@@ -942,6 +947,8 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
                 }
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.moduleData.RoomId);
+                PrintData.EmrInputADO = inputADO;
                 result = MPS.MpsPrinter.Run(PrintData);
             }
             catch (Exception ex)
@@ -971,6 +978,8 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
                 }
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.moduleData.RoomId);
+                PrintData.EmrInputADO = inputADO;
                 result = MPS.MpsPrinter.Run(PrintData);
             }
             catch (Exception ex)
@@ -999,6 +1008,8 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
                 }
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.moduleData.RoomId);
+                PrintData.EmrInputADO = inputADO;
                 result = MPS.MpsPrinter.Run(PrintData);
             }
             catch (Exception ex)
@@ -1032,7 +1043,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                         mps000143Key.EXP_MEDI_STOCK_NAME = expMestView.FirstOrDefault().MEDI_STOCK_NAME;
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode("", printTypeCode, this.currentModule != null ? this.currentModule.RoomId : 0);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule != null ? this.currentModule.RoomId : 0);
                     WaitingManager.Hide();
 
                     long keyPrintType = ConfigApplicationWorker.Get<long>(Base.AppConfigKeys.CONFIG_KEY__HIS_DESKTOP__CHE_DO_IN_GOP_PHIEU_TRA);
@@ -1210,6 +1221,8 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
                 }
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.moduleData.RoomId);
+                PrintData.EmrInputADO = inputADO;
                 result = MPS.MpsPrinter.Run(PrintData);
             }
             catch (Exception ex)
@@ -1283,8 +1296,9 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                         _ImpMestUser
                         );
                     WaitingManager.Hide();
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.moduleData.RoomId);
                     MPS.ProcessorBase.Core.PrintData PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000199RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
-
+                    PrintData.EmrInputADO = inputADO;
                     result = MPS.MpsPrinter.Run(PrintData);
                 }
                 WaitingManager.Hide();
@@ -1362,6 +1376,8 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 {
                     printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps0000085RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                 }
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.moduleData.RoomId);
+                printData.EmrInputADO = inputADO;
                 result = MPS.MpsPrinter.Run(printData);
             }
             catch (Exception ex)

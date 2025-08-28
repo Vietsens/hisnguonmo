@@ -1954,8 +1954,9 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 {
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.moduleData.RoomId);
 
-                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName));
+                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
 
             }
             catch (Exception ex)
@@ -1987,6 +1988,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
                 }
+                PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.moduleData.RoomId);
                 result = MPS.MpsPrinter.Run(PrintData);
             }
             catch (Exception ex)
