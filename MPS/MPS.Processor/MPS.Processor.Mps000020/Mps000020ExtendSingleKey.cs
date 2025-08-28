@@ -59,6 +59,9 @@ namespace MPS.Processor.Mps000020
         public const string TIME_IN_TREATMENT = "TIME_IN_TREATMENT";
         public const string HEIN_MEDI_ORG_CODE = "HEIN_MEDI_ORG_CODE";
         public const string HEIN_MEDI_ORG_NAME = "HEIN_MEDI_ORG_NAME";
+        public const string HEIN_CARD_ADDRESS = "HEIN_CARD_ADDRESS";
+        public const string HEIN_CARD_FROM_TIME = "HEIN_CARD_FROM_TIME";
+        public const string HEIN_CARD_TO_TIME = "HEIN_CARD_TO_TIME";
 
         
         internal const string GENDER_MALE = "GENDER_MALE";

@@ -444,9 +444,9 @@
   <data name="Template__HeinBHYT1.lciIcdMain.Text" xml:space="preserve">
     <value>Bệnh chính:</value>
   </data>
-  <data name="Template__HeinBHYT1.lciInCode.Text" xml:space="preserve">
-    <value>Số chuyển viện:</value>
-  </data>
+  //<data name="Template__HeinBHYT1.lciInCode.Text" xml:space="preserve">
+  //  <value>Số chuyển viện:</value>
+  //</data>
   <data name="Template__HeinBHYT1.lciKhongKTHSD.Text" xml:space="preserve">
     <value>Không KT HSD:</value>
   </data>

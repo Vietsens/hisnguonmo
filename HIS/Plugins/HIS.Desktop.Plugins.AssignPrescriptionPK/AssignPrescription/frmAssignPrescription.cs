@@ -9534,10 +9534,10 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     {
                         XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
                         if (CheckIcdManager.IcdCodeError.Equals(txtIcdCode.Text))
-                        {
+                        {  
                             txtIcdCode.Text = txtIcdMainText.Text = null;
                             cboIcds.EditValue = null;
-                        }
+                        }   
                         return;
                     }
                     if (icd.IS_LATENT_TUBERCULOSIS == 1)
@@ -9692,7 +9692,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     {
                         txtIcdCode.ErrorText = "";
                         dxValidationProviderControl.RemoveControlError(txtIcdCode);
-                        ValidationICD(10, 500, true);
+                        ValidationICD(20, 500, true);
                     }
                 }
             }
