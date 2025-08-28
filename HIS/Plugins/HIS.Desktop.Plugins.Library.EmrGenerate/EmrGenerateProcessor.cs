@@ -72,6 +72,9 @@ namespace HIS.Desktop.Plugins.Library.EmrGenerate
             inputADO.Treatment.TREATMENT_CODE = treatmentCode;
             inputADO.DocumentName = documentName;
             inputADO.DocumentCode = documentCode;
+            //qtcode
+            inputADO.IsOutsideTreatment = (treatmentCode == documentCode) ? (short?)1 : (short?)0;
+            inputADO.MediOrgCode = GetHeinMediOrgCode();
             inputADO.DTI = String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}", ConfigSystems.URI_API_ACS, ConfigSystems.URI_API_EMR, ConfigSystems.URI_API_FSS, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetTokenData().TokenCode, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName(), ConfigSystems.URI_API_HPS);
             inputADO.IsSign = true;
             inputADO.IsPrintOnlyContent = HisConfigCFG.IsNotShowingSignInformation;
