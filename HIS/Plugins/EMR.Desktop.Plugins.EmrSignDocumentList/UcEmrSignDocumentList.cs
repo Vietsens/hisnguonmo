@@ -576,8 +576,8 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                         }
                         else if (e.Column.FieldName == "DOB_STR")
                         {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.DOB);
-                            if (data.IS_HAS_NOT_DAY_DOB == 1)
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.DOB ?? 0);
+                            if (data.IS_HAS_NOT_DAY_DOB == 1 && data.DOB.HasValue)
                             {
                                 e.Value = data.DOB.ToString().Substring(0, 4);
                             }
