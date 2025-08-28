@@ -2162,7 +2162,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private void chkExamFinish_CheckedChanged(object sender, EventArgs e)
         {
             try
-            {
+            {  
                 if (isReturnCheckboxExamFinish)
                 {
                     chkExamFinish.Checked = false;
@@ -7089,7 +7089,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
+        }  
 
         private void txtIcdCode_Validating(object sender, CancelEventArgs e)
         {
