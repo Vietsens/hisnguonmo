@@ -56,35 +56,27 @@ namespace MPS.Processor.Mps000457
                 this.ListTestChildHIV = this.ListTestChild?.Where(w => w.IS_HIV == 1).ToList();
                 if (ListTestParentHIV != null && ListTestChildHIV != null)
                 {
-                    string getValue(TestLisResultADO testLisResultADO)
-                    {
-                        return !string.IsNullOrEmpty(testLisResultADO.HIGH_OR_LOW) ? testLisResultADO.HIGH_OR_LOW :
-                               !string.IsNullOrEmpty(testLisResultADO.VALUE_HL_NEW) ? testLisResultADO.VALUE_HL_NEW :
-                               !string.IsNullOrEmpty(testLisResultADO.DESCRIPTION_NEW) ? testLisResultADO.DESCRIPTION_NEW : "";
-                    }
                     List<string> concludeHIV = new List<string>();
+                    List<string> concludeHIV_HL = new List<string>();
                     foreach (var par in ListTestParentHIV)
                     {
                         if (par.IS_NOT_SHOW_SERVICE == 1)
                         {
-                            concludeHIV.Add(getValue(par));
+                            (string.IsNullOrEmpty(par.HIGH_OR_LOW) ? concludeHIV : concludeHIV_HL).Add(par.VALUE_HL_NEW);
                         }
                         else
                         {
-                            concludeHIV.Add(
-                                par.SERVICE_NAME 
-                                + " (" + par.SERVICE_CODE + ") - " 
-                                + (!string.IsNullOrEmpty(par.SERVICE_RESULT_NAME) ? par.SERVICE_RESULT_NAME : getValue(par)));
+                            var paVa = $"{par.SERVICE_NAME} ({par.SERVICE_CODE}) - {par.VALUE_HL_NEW}";
+                            (string.IsNullOrEmpty(par.HIGH_OR_LOW) ? concludeHIV : concludeHIV_HL).Add(paVa);
                             foreach (var chi in ListTestChildHIV.Where(w => w.PARENT_ID == par.CHILD_ID && w.IS_HAS_ONE_CHILD != 1))
                             {
-                                concludeHIV.Add(
-                                    chi.TEST_INDEX_NAME 
-                                    + " (" + chi.TEST_INDEX_CODE + ") - " 
-                                    + getValue(chi));
+                                var chiVa = $"{chi.TEST_INDEX_NAME} ({chi.TEST_INDEX_CODE}) - {chi.VALUE_HL_NEW}";
+                                (string.IsNullOrEmpty(chi.HIGH_OR_LOW) ? concludeHIV : concludeHIV_HL).Add(chiVa);
                             }
                         }
                     }
                     SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.CONCLUDE_HIV, string.Join("; ", concludeHIV)));
+                    SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.CONCLUDE_HIV_HL, string.Join("; ", concludeHIV_HL)));
                 }
             }
             catch (Exception ex)
@@ -319,7 +311,7 @@ namespace MPS.Processor.Mps000457
                         {
                             if (item.AGE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_AGE_TYPE.ID__YEAR)
                             {
-                                age = Inventec.Common.DateTime.Calculation.DifferenceTime(dob, now ?? 0, Inventec.Common.DateTime.Calculation.UnitDifferenceTime.DAY)/365;
+                                age = Inventec.Common.DateTime.Calculation.DifferenceTime(dob, now ?? 0, Inventec.Common.DateTime.Calculation.UnitDifferenceTime.DAY) / 365;
                             }
                             else if (item.AGE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_AGE_TYPE.ID__MONTH)
                             {
@@ -850,11 +842,12 @@ namespace MPS.Processor.Mps000457
                             hisSereServTeinSDOChild.SERVICE_ORDER = hisSereServTeinSDO.SERVICE_ORDER;
                             hisSereServTeinSDOChild.SERVICE_PARENT_ORDER = hisSereServTeinSDO.SERVICE_PARENT_ORDER;
                             hisSereServTeinSDOChild.IS_HIV = hisSereServTeinSDO.IS_HIV;
+                            hisSereServTeinSDOChild.IS_NOT_SHOW_SERVICE = hisSereServTeinSDO.IS_NOT_SHOW_SERVICE;
 
                             this.ListTestChild.Add(hisSereServTeinSDOChild);
                         }
 
-                        hisSereServTeinSDO.VALUE_HL_NEW = !String.IsNullOrEmpty(hisSereServTeinSDO.VALUE_HL) ? hisSereServTeinSDO.VALUE_HL.Replace(',', '.') : "";
+                        hisSereServTeinSDO.VALUE_HL_NEW = !String.IsNullOrEmpty(hisSereServTeinSDO.VALUE_HL) ? hisSereServTeinSDO.VALUE_HL.Replace(',', '.') : hisSereServTeinSDO.SERVICE_RESULT_NAME;
                         this.ListTestParent.Add(hisSereServTeinSDO);
 
                         if (lstResultItem != null && (lstResultItem.Count > 1 || (lstResultItem.Count == 1 && testIndFist != null && testIndFist.IS_NOT_SHOW_SERVICE != 1)))
@@ -911,6 +904,7 @@ namespace MPS.Processor.Mps000457
 
                                 hisSereServTein.VALUE_HL_NEW = !String.IsNullOrEmpty(hisSereServTein.VALUE_HL) ? hisSereServTein.VALUE_HL.Replace(',', '.') : "";
                                 hisSereServTein.IS_HIV = hisSereServTeinSDO.IS_HIV;
+                                hisSereServTein.IS_NOT_SHOW_SERVICE = hisSereServTeinSDO.IS_NOT_SHOW_SERVICE;
 
                                 this.ListTestChild.Add(hisSereServTein);
                             }
