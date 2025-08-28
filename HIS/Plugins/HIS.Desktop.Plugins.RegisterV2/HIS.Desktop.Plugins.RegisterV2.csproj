@@ -118,24 +118,20 @@
     <Reference Include="HIS.UC.KskContract">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.KskContract\HIS.UC.KskContract.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.PlusInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.PlusInfo.dll</HintPath>
+    <Reference Include="HIS.UC.PlusInfo">
+      <HintPath>..\..\..\UC\HIS.UC.PlusInfo\bin\Debug\HIS.UC.PlusInfo.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.ServiceRoom, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.ServiceRoom.dll</HintPath>
+    <Reference Include="HIS.UC.ServiceRoom">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.ServiceRoom.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TranPati">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.TranPati\HIS.UC.TranPati.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCCheckTT, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\UC\HIS.UC.UCCheckTT\bin\Debug\HIS.UC.UCCheckTT.dll</HintPath>
+    <Reference Include="HIS.UC.UCCheckTT">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCCheckTT.dll</HintPath>
     </Reference>
-    <Reference Include="His.UC.UCHein, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\His.UC.UCHein.dll</HintPath>
+    <Reference Include="His.UC.UCHein">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.UC.UCHein.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCHeniInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -148,9 +144,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCPatientRaw, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
+    <Reference Include="HIS.UC.UCPatientRaw">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCRelativeInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -158,7 +153,7 @@
     </Reference>
     <Reference Include="HIS.UC.UCServiceRoomInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCServiceRoomInfo.dll</HintPath>
+      <HintPath>..\..\..\UC\HIS.UC.UCServiceRoomInfo\bin\Debug\HIS.UC.UCServiceRoomInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCTransPati">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCTransPati\HIS.UC.UCTransPati.dll</HintPath>
