@@ -1918,7 +1918,7 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                 btnSave_Click(null, null);
             }
             catch (Exception ex)
-            {
+            { 
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
