@@ -1171,7 +1171,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter.Run
 
                                 var grname = BackendDataWorker.Get<HIS_MEDICINE_GROUP>().FirstOrDefault(o => o.ID == gr.First().MEDICINE_GROUP_ID) ?? new HIS_MEDICINE_GROUP();
 
-                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.aggrImpMest != null ? this.aggrImpMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                                 MPS.Processor.Mps000078.PDO.Mps000078PDO mps000078RDO = new MPS.Processor.Mps000078.PDO.Mps000078PDO(
                                     gr.ToList(),
                                 null,
@@ -1643,7 +1643,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter.Run
 
                                 var grname = BackendDataWorker.Get<HIS_MEDICINE_GROUP>().FirstOrDefault(o => o.ID == gr.First().MEDICINE_GROUP_ID) ?? new HIS_MEDICINE_GROUP();
 
-                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.aggrImpMest != null ? this.aggrImpMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                                 MPS.Processor.Mps000078.PDO.Mps000078PDO mps000078RDO = new MPS.Processor.Mps000078.PDO.Mps000078PDO(
                                     gr.ToList(),
                                 null,

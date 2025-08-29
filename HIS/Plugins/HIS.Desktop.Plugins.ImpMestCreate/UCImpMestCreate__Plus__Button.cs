@@ -1653,7 +1653,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 WaitingManager.Show();
 
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode("Mps00000", printTypeCode, roomId);
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, roomId);
                 if (resultADO.ImpMestTypeId == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DK && resultADO.HisInitSDO != null)
                 {
                     CommonParam param = new CommonParam();
@@ -2022,7 +2022,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 }
                 WaitingManager.Show();
 
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode("Mps00000", printTypeCode, roomId);
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, roomId);
 
                 HisImpMestViewFilter manuImpMestFilter = new HisImpMestViewFilter();
                 manuImpMestFilter.ID = this.resultADO.HisManuSDO.ImpMest.ID;
