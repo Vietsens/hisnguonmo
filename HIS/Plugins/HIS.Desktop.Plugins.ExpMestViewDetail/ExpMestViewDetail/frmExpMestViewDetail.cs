@@ -1947,7 +1947,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 //    .Get<List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/GetVIew", ApiConsumers.MosConsumer, expMestMaterialFilter, param);
 
                 MPS.Processor.Mps000099.PDO.Mps000099PDO pdo = new MPS.Processor.Mps000099.PDO.Mps000099PDO(this._CurrentExpMest, expMestMedicines);
-                result = MpsPrinterRun(printTypeCode, fileName, pdo);
+                result = MpsPrinterRun(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow);
 
             }
             catch (Exception ex)

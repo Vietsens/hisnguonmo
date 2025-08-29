@@ -77,7 +77,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
         //        Inventec.Common.Logging.LogSystem.Warn(ex);
         //    }
         //}
-        private bool MpsPrinterRun(string printTypeCode, string fileName, object data)
+        private bool MpsPrinterRun(string printTypeCode, string fileName, object data, MPS.ProcessorBase.PrintConfig.PreviewType previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog)
         {
             bool result = false;
             try
@@ -91,7 +91,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                     printTypeCode,
                     fileName,
                     data,
-                    ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2 ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog,
+                    ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2 ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : previewType,
                     printerName);
                 printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(
                     printTypeCode,
@@ -800,7 +800,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                  keyOrder,
                  BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>()
                        );
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -862,7 +862,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                  this._Materials,
                  this._Bloods
                          );
-                            result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                            result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                         if (_ExpMestMatyReq_VTs != null && _ExpMestMatyReq_VTs.Count > 0)
                         {
@@ -905,7 +905,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                  this._Materials,
                  this._Bloods
                          );
-                            result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                            result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                     }
                     #endregion
@@ -987,7 +987,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                      keyPhieuTra
                        );
                         WaitingManager.Hide();
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
                 }
@@ -1069,7 +1069,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                      configKeyMert,
                      keyPhieuTra
                        );
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
                 }
@@ -1110,7 +1110,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                  configKeyMert,
                  keyPhieuTra
                    );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1150,7 +1150,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                  configKeyMert,
                  keyPhieuTra
                    );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1192,7 +1192,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                  keyPhieuTra
                    );
                     WaitingManager.Hide();
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1276,7 +1276,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                  keyPhieuTra
                    );
                     WaitingManager.Hide();
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1318,7 +1318,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                  keyPhieuTra
                    );
                     WaitingManager.Hide();
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
             }
@@ -1361,7 +1361,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                  configKeyMert,
                  keyPhieuTra
                    );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000198PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000198PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
             }
             catch (Exception ex)
