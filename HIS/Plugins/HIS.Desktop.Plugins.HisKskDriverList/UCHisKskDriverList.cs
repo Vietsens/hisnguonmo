@@ -898,7 +898,13 @@ namespace HIS.Desktop.Plugins.HisKskDriverList
                                 signXmlBhytSDO.TagStoreSignatureValue = null;
                                 signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
                                 var stringbase64 = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
-
+                                if (param != null && param.Messages != null && param.Messages.Count > 0)
+                                {
+                                    string message = string.Join(Environment.NewLine, param.Messages);
+                                    DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    Inventec.Common.Logging.LogSystem.Warn(message);
+                                    return;
+                                }
                                 if (!string.IsNullOrEmpty(stringbase64))
                                 {
                                     KskDriverSyncSDO sdo = new KskDriverSyncSDO();
@@ -1162,7 +1168,13 @@ namespace HIS.Desktop.Plugins.HisKskDriverList
                                     signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
                                     Inventec.Common.Logging.LogSystem.Info("signXmlBhytSDO: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => signXmlBhytSDO), signXmlBhytSDO));
                                     var stringbase64 = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
-
+                                    if (param != null && param.Messages != null && param.Messages.Count > 0)
+                                    {
+                                        string message = string.Join(Environment.NewLine, param.Messages);
+                                        DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        Inventec.Common.Logging.LogSystem.Warn(message);
+                                        return;
+                                    }
                                     if (!string.IsNullOrEmpty(stringbase64))
                                     {
                                         KskDriverSyncSDO sdo = new KskDriverSyncSDO();
