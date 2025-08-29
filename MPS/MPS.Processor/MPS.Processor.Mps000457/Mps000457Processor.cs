@@ -57,26 +57,24 @@ namespace MPS.Processor.Mps000457
                 if (ListTestParentHIV != null && ListTestChildHIV != null)
                 {
                     List<string> concludeHIV = new List<string>();
-                    List<string> concludeHIV_HL = new List<string>();
                     foreach (var par in ListTestParentHIV)
                     {
                         if (par.IS_NOT_SHOW_SERVICE == 1)
                         {
-                            (string.IsNullOrEmpty(par.HIGH_OR_LOW) ? concludeHIV : concludeHIV_HL).Add(par.VALUE_HL_NEW);
+                            concludeHIV.Add(par.VALUE_HL_NEW);
                         }
                         else
                         {
                             var paVa = $"{par.SERVICE_NAME} ({par.SERVICE_CODE}){(!string.IsNullOrEmpty(par.VALUE_HL_NEW) ? "" : " - ") + par.VALUE_HL_NEW}";
-                            (string.IsNullOrEmpty(par.HIGH_OR_LOW) ? concludeHIV : concludeHIV_HL).Add(paVa);
+                            concludeHIV.Add(paVa);
                             foreach (var chi in ListTestChildHIV.Where(w => w.PARENT_ID == par.CHILD_ID && w.IS_HAS_ONE_CHILD != 1))
                             {
                                 var chiVa = $"{chi.TEST_INDEX_NAME} ({chi.TEST_INDEX_CODE}){(!string.IsNullOrEmpty(chi.VALUE_HL_NEW) ? "" : " - ") + chi.VALUE_HL_NEW}";
-                                (string.IsNullOrEmpty(chi.HIGH_OR_LOW) ? concludeHIV : concludeHIV_HL).Add(chiVa);
+                                concludeHIV.Add(chiVa);
                             }
                         }
                     }
                     SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.CONCLUDE_HIV, string.Join("; ", concludeHIV)));
-                    SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.CONCLUDE_HIV_HL, string.Join("; ", concludeHIV_HL)));
                 }
             }
             catch (Exception ex)

@@ -75,6 +75,5 @@ namespace MPS.Processor.Mps000457
         internal const string SAMPLE_TIME = "SAMPLE_TIME";
         internal const string BIO_PRODUCT_NAME = "BIO_PRODUCT_NAME";
         internal const string CONCLUDE_HIV = "CONCLUDE_HIV";
-        internal const string CONCLUDE_HIV_HL = "CONCLUDE_HIV_HL";
     }
 }
