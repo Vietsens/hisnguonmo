@@ -78,7 +78,7 @@ namespace HIS.Desktop.Plugins.ApproveAggrImpMest
                 LoadImpMestAndImpMestDetail();
                 LoadImpMestMedicineAndMaterial();
                 LoadDataToControl();
-                FillDataToButtonPrint();
+                FillDataToButtonPrint(); 
             }
             catch (Exception ex)
             {
