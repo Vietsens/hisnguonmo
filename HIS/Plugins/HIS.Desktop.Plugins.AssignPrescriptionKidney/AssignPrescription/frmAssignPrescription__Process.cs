@@ -1614,6 +1614,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                         MessageManager.Show(Param, false);
                     }
                 }
+                else
+                {
+                    this.mediMatyTypeADOs.Add(metyADO);
+                    this.ProcessInstructionTimeMediForEdit();
+                    this.ProcessAddListRowDataIntoGridWithTakeBean();
+                }
             }
             catch (Exception ex)
             {
