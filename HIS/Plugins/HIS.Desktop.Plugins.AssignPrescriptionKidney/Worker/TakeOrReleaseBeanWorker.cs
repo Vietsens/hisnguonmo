@@ -162,7 +162,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney
             {
                 if ((medicineTypeSDO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
                     || medicineTypeSDO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)
-                    && (!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet)
                     )
                 {
                     List<long> beanIds = null;
@@ -239,9 +238,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney
             bool result = true;
             try
             {
-                if ((medicineTypeSDO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
-                    || medicineTypeSDO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)
-                    && (!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet)
+                if (medicineTypeSDO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
+                    || medicineTypeSDO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU
                     )
                 {
                     List<long> beanIds = null;
@@ -602,7 +600,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney
             bool result = true;
             try
             {
-                if (!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet)
+                //if (!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet)
                 {
                     Inventec.Common.Logging.LogSystem.Debug("ProcessReleaseAllMedi => 1");
                     CommonParam param = new CommonParam();
@@ -635,7 +633,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney
             bool result = true;
             try
             {
-                if (!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet)
+                //if (!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet)
                 {
                     Inventec.Common.Logging.LogSystem.Debug("ProcessReleaseAllMaty => 1");
                     CommonParam param = new CommonParam();

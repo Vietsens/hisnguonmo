@@ -64,6 +64,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug("ThreadLoadDonThuocCu. 1");
+                if (this.periousExpMestListProcessor != null && this.ucPeriousExpMestList != null && currentTreatment != null)
+                {
+                    this.currentPrescriptionFilter.TDL_PATIENT_ID = currentTreatment.PATIENT_ID;
+                    this.periousExpMestListProcessor.Load(this.ucPeriousExpMestList);
+                }
                 //Neu la in gop don thuoc thi moi load
                 string savePrintMpsDefault = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.SAVE_PRINT_MPS_DEFAULT);
                 if (savePrintMpsDefault != "Mps000234")
@@ -101,6 +106,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 expMestMaterialPrints = await new BackendAdapter(param)
                     .GetAsync<List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/Get", ApiConsumers.MosConsumer, expMestMaterialFilter, param);
                 Inventec.Common.Logging.LogSystem.Debug("ThreadLoadDonThuocCu. 2");
+               
             }
             catch (Exception ex)
             {

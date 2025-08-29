@@ -17,7 +17,7 @@
  */
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
-using HIS.Desktop.Plugins.AssignPrescriptionPK.ADO;
+using HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;

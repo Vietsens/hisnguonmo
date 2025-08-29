@@ -76,11 +76,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney
                                         from ac in acinInteractives
                                         where
                                          (item.ACTIVE_INGREDIENT_ID == ac.ACTIVE_INGREDIENT_ID
-                                         && (ac.GRADE ?? -1) > HisConfigCFG.AcinInteractive__Grade
+                                         && (ac.INTERACTIVE_GRADE ?? -1) > HisConfigCFG.AcinInteractive__Grade
                                          && n.ACTIVE_INGREDIENT_ID == ac.CONFLICT_ID) ||
 
                                           (item.ACTIVE_INGREDIENT_ID == ac.CONFLICT_ID
-                                         && (ac.GRADE ?? -1) > HisConfigCFG.AcinInteractive__Grade
+                                         && (ac.INTERACTIVE_GRADE ?? -1) > HisConfigCFG.AcinInteractive__Grade
                                          && n.ACTIVE_INGREDIENT_ID == ac.ACTIVE_INGREDIENT_ID)
 
                                         select new
@@ -95,7 +95,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney
                                         {
                                             //messageErr += String.Format(ResourceMessage.AcinInteractive__OverGrade, item1.A.ACTIVE_INGREDIENT_NAME, item1.A.MEDICINE_TYPE_NAME, item.ACTIVE_INGREDIENT_NAME, item.MEDICINE_TYPE_NAME, item1.B.DESCRIPTION, item1.B.GRADE);
 
-                                            string messageErrTemp = String.Format(ResourceMessage.AcinInteractive__OverGrade, item1.A.ACTIVE_INGREDIENT_NAME, item1.A.MEDICINE_TYPE_NAME, item.ACTIVE_INGREDIENT_NAME, item.MEDICINE_TYPE_NAME, item1.B.DESCRIPTION, item1.B.GRADE);
+                                            string messageErrTemp = String.Format(ResourceMessage.AcinInteractive__OverGrade, item1.A.ACTIVE_INGREDIENT_NAME, item1.A.MEDICINE_TYPE_NAME, item.ACTIVE_INGREDIENT_NAME, item.MEDICINE_TYPE_NAME, item1.B.DESCRIPTION, item1.B.INTERACTIVE_GRADE);
                                             if (!messageErr.Contains(messageErrTemp))
                                             {
                                                 messageErr += messageErrTemp;
