@@ -1150,6 +1150,11 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             }
         }
 
+        private void checkEdit1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
         //private void InitCboDepartment()
         //{
         //    try

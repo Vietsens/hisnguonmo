@@ -54,7 +54,6 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
-            this.chkOtherDocuments = new DevExpress.XtraEditors.CheckEdit();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
             this.navBarControl1 = new DevExpress.XtraNavBar.NavBarControl();
@@ -95,7 +94,6 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.GcSTT = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -124,13 +122,14 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkOtherDocuments = new DevExpress.XtraEditors.CheckEdit();
+            this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkOtherDocuments.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.navBarControl1)).BeginInit();
             this.navBarControl1.SuspendLayout();
             this.navBarGroupControlContainer1.SuspendLayout();
@@ -172,7 +171,6 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).BeginInit();
@@ -182,6 +180,8 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkOtherDocuments.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -209,9 +209,9 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             // 
             // ucPaging1
             // 
-            this.ucPaging1.Location = new System.Drawing.Point(201, 529);
+            this.ucPaging1.Location = new System.Drawing.Point(199, 527);
             this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(940, 21);
+            this.ucPaging1.Size = new System.Drawing.Size(942, 23);
             this.ucPaging1.TabIndex = 6;
             // 
             // layoutControl3
@@ -229,24 +229,15 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControl3.Margin = new System.Windows.Forms.Padding(0);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(199, 552);
+            this.layoutControl3.Size = new System.Drawing.Size(197, 552);
             this.layoutControl3.TabIndex = 5;
             this.layoutControl3.Text = "layoutControl3";
             // 
-            // chkOtherDocuments
-            // 
-            this.chkOtherDocuments.Location = new System.Drawing.Point(169, 50);
-            this.chkOtherDocuments.Name = "chkOtherDocuments";
-            this.chkOtherDocuments.Properties.Caption = "";
-            this.chkOtherDocuments.Size = new System.Drawing.Size(28, 19);
-            this.chkOtherDocuments.StyleController = this.layoutControl3;
-            this.chkOtherDocuments.TabIndex = 14;
-            // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(102, 528);
+            this.btnRefresh.Location = new System.Drawing.Point(95, 528);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(95, 22);
+            this.btnRefresh.Size = new System.Drawing.Size(100, 22);
             this.btnRefresh.StyleController = this.layoutControl3;
             this.btnRefresh.TabIndex = 13;
             this.btnRefresh.Text = "Làm lại (Ctrl R)";
@@ -256,7 +247,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             // 
             this.btnSearch.Location = new System.Drawing.Point(2, 528);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(96, 22);
+            this.btnSearch.Size = new System.Drawing.Size(89, 22);
             this.btnSearch.StyleController = this.layoutControl3;
             this.btnSearch.TabIndex = 12;
             this.btnSearch.Text = "Tìm kiếm (Ctrl F)";
@@ -272,11 +263,11 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.navBarGroupStatus,
             this.navBarGroupCreateDate,
             this.navBarGroupDocumentType});
-            this.navBarControl1.Location = new System.Drawing.Point(2, 98);
+            this.navBarControl1.Location = new System.Drawing.Point(2, 97);
             this.navBarControl1.Margin = new System.Windows.Forms.Padding(0);
             this.navBarControl1.Name = "navBarControl1";
-            this.navBarControl1.OptionsNavPane.ExpandedWidth = 195;
-            this.navBarControl1.Size = new System.Drawing.Size(195, 426);
+            this.navBarControl1.OptionsNavPane.ExpandedWidth = 193;
+            this.navBarControl1.Size = new System.Drawing.Size(193, 427);
             this.navBarControl1.TabIndex = 9;
             this.navBarControl1.Text = "navBarControl1";
             // 
@@ -299,7 +290,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.navBarGroupControlContainer1.Appearance.Options.UseBackColor = true;
             this.navBarGroupControlContainer1.Controls.Add(this.layoutControl4);
             this.navBarGroupControlContainer1.Name = "navBarGroupControlContainer1";
-            this.navBarGroupControlContainer1.Size = new System.Drawing.Size(187, 36);
+            this.navBarGroupControlContainer1.Size = new System.Drawing.Size(185, 36);
             this.navBarGroupControlContainer1.TabIndex = 0;
             // 
             // layoutControl4
@@ -309,7 +300,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControl4.Location = new System.Drawing.Point(0, 0);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(187, 36);
+            this.layoutControl4.Size = new System.Drawing.Size(185, 36);
             this.layoutControl4.TabIndex = 0;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -325,7 +316,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.cboStatus.Properties.NullText = "";
             this.cboStatus.Properties.PopupSizeable = false;
             this.cboStatus.Properties.View = this.gridView2;
-            this.cboStatus.Size = new System.Drawing.Size(183, 20);
+            this.cboStatus.Size = new System.Drawing.Size(181, 20);
             this.cboStatus.StyleController = this.layoutControl4;
             this.cboStatus.TabIndex = 4;
             // 
@@ -345,7 +336,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(187, 36);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(185, 36);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // lciStatus
@@ -353,7 +344,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.lciStatus.Control = this.cboStatus;
             this.lciStatus.Location = new System.Drawing.Point(0, 0);
             this.lciStatus.Name = "lciStatus";
-            this.lciStatus.Size = new System.Drawing.Size(187, 36);
+            this.lciStatus.Size = new System.Drawing.Size(185, 36);
             this.lciStatus.TextSize = new System.Drawing.Size(0, 0);
             this.lciStatus.TextVisible = false;
             // 
@@ -363,7 +354,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.navBarGroupControlContainer4.Appearance.Options.UseBackColor = true;
             this.navBarGroupControlContainer4.Controls.Add(this.layoutControl7);
             this.navBarGroupControlContainer4.Name = "navBarGroupControlContainer4";
-            this.navBarGroupControlContainer4.Size = new System.Drawing.Size(187, 53);
+            this.navBarGroupControlContainer4.Size = new System.Drawing.Size(185, 53);
             this.navBarGroupControlContainer4.TabIndex = 1;
             // 
             // layoutControl7
@@ -374,7 +365,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControl7.Location = new System.Drawing.Point(0, 0);
             this.layoutControl7.Name = "layoutControl7";
             this.layoutControl7.Root = this.layoutControlGroup6;
-            this.layoutControl7.Size = new System.Drawing.Size(187, 53);
+            this.layoutControl7.Size = new System.Drawing.Size(185, 53);
             this.layoutControl7.TabIndex = 0;
             this.layoutControl7.Text = "layoutControl7";
             // 
@@ -387,7 +378,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtCreateTimeTo.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtCreateTimeTo.Size = new System.Drawing.Size(156, 20);
+            this.dtCreateTimeTo.Size = new System.Drawing.Size(154, 20);
             this.dtCreateTimeTo.StyleController = this.layoutControl7;
             this.dtCreateTimeTo.TabIndex = 5;
             // 
@@ -400,7 +391,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtCreateTimeFrom.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtCreateTimeFrom.Size = new System.Drawing.Size(156, 20);
+            this.dtCreateTimeFrom.Size = new System.Drawing.Size(154, 20);
             this.dtCreateTimeFrom.StyleController = this.layoutControl7;
             this.dtCreateTimeFrom.TabIndex = 4;
             // 
@@ -414,7 +405,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup6.Name = "layoutControlGroup6";
             this.layoutControlGroup6.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup6.Size = new System.Drawing.Size(187, 53);
+            this.layoutControlGroup6.Size = new System.Drawing.Size(185, 53);
             this.layoutControlGroup6.TextVisible = false;
             // 
             // lciDateFrom
@@ -424,7 +415,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.lciDateFrom.Control = this.dtCreateTimeFrom;
             this.lciDateFrom.Location = new System.Drawing.Point(0, 0);
             this.lciDateFrom.Name = "lciDateFrom";
-            this.lciDateFrom.Size = new System.Drawing.Size(187, 24);
+            this.lciDateFrom.Size = new System.Drawing.Size(185, 24);
             this.lciDateFrom.Text = "Từ:";
             this.lciDateFrom.TextSize = new System.Drawing.Size(24, 13);
             // 
@@ -435,7 +426,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.lciDateTo.Control = this.dtCreateTimeTo;
             this.lciDateTo.Location = new System.Drawing.Point(0, 24);
             this.lciDateTo.Name = "lciDateTo";
-            this.lciDateTo.Size = new System.Drawing.Size(187, 29);
+            this.lciDateTo.Size = new System.Drawing.Size(185, 29);
             this.lciDateTo.Text = "Đến:";
             this.lciDateTo.TextSize = new System.Drawing.Size(24, 13);
             // 
@@ -445,7 +436,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.navBarGroupControlContainer5.Appearance.Options.UseBackColor = true;
             this.navBarGroupControlContainer5.Controls.Add(this.layoutControl8);
             this.navBarGroupControlContainer5.Name = "navBarGroupControlContainer5";
-            this.navBarGroupControlContainer5.Size = new System.Drawing.Size(187, 36);
+            this.navBarGroupControlContainer5.Size = new System.Drawing.Size(185, 36);
             this.navBarGroupControlContainer5.TabIndex = 2;
             // 
             // layoutControl8
@@ -455,7 +446,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControl8.Location = new System.Drawing.Point(0, 0);
             this.layoutControl8.Name = "layoutControl8";
             this.layoutControl8.Root = this.layoutControlGroup7;
-            this.layoutControl8.Size = new System.Drawing.Size(187, 36);
+            this.layoutControl8.Size = new System.Drawing.Size(185, 36);
             this.layoutControl8.TabIndex = 0;
             this.layoutControl8.Text = "layoutControl8";
             // 
@@ -467,7 +458,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboDocumentType.Properties.NullText = "";
             this.cboDocumentType.Properties.View = this.gridView4;
-            this.cboDocumentType.Size = new System.Drawing.Size(183, 20);
+            this.cboDocumentType.Size = new System.Drawing.Size(181, 20);
             this.cboDocumentType.StyleController = this.layoutControl8;
             this.cboDocumentType.TabIndex = 4;
             // 
@@ -487,7 +478,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlGroup7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup7.Name = "layoutControlGroup7";
             this.layoutControlGroup7.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup7.Size = new System.Drawing.Size(187, 36);
+            this.layoutControlGroup7.Size = new System.Drawing.Size(185, 36);
             this.layoutControlGroup7.TextVisible = false;
             // 
             // layoutControlItem13
@@ -495,7 +486,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlItem13.Control = this.cboDocumentType;
             this.layoutControlItem13.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(187, 36);
+            this.layoutControlItem13.Size = new System.Drawing.Size(185, 36);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
@@ -523,13 +514,13 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             // 
             // cboDepartment
             // 
-            this.cboDepartment.Location = new System.Drawing.Point(33, 74);
+            this.cboDepartment.Location = new System.Drawing.Point(33, 50);
             this.cboDepartment.Name = "cboDepartment";
             this.cboDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboDepartment.Properties.NullText = "";
             this.cboDepartment.Properties.View = this.gridLookUpEdit1View;
-            this.cboDepartment.Size = new System.Drawing.Size(164, 20);
+            this.cboDepartment.Size = new System.Drawing.Size(162, 20);
             this.cboDepartment.StyleController = this.layoutControl3;
             this.cboDepartment.TabIndex = 8;
             this.cboDepartment.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboDepartment_CustomDisplayText);
@@ -548,17 +539,17 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.txtKeyWord.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtKeyWord.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtKeyWord.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtKeyWord.Size = new System.Drawing.Size(195, 20);
+            this.txtKeyWord.Size = new System.Drawing.Size(193, 20);
             this.txtKeyWord.StyleController = this.layoutControl3;
             this.txtKeyWord.TabIndex = 7;
             this.txtKeyWord.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtKeyWord_PreviewKeyDown);
             // 
             // chkNotAutoCompleteZero
             // 
-            this.chkNotAutoCompleteZero.Location = new System.Drawing.Point(178, 2);
+            this.chkNotAutoCompleteZero.Location = new System.Drawing.Point(171, 2);
             this.chkNotAutoCompleteZero.Name = "chkNotAutoCompleteZero";
             this.chkNotAutoCompleteZero.Properties.Caption = "";
-            this.chkNotAutoCompleteZero.Size = new System.Drawing.Size(19, 19);
+            this.chkNotAutoCompleteZero.Size = new System.Drawing.Size(24, 19);
             this.chkNotAutoCompleteZero.StyleController = this.layoutControl3;
             this.chkNotAutoCompleteZero.TabIndex = 6;
             this.chkNotAutoCompleteZero.ToolTip = "Không tự bổ sung ký tự 0";
@@ -566,12 +557,12 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             // 
             // txtPatientCode
             // 
-            this.txtPatientCode.Location = new System.Drawing.Point(91, 2);
+            this.txtPatientCode.Location = new System.Drawing.Point(85, 2);
             this.txtPatientCode.Name = "txtPatientCode";
             this.txtPatientCode.Properties.NullValuePrompt = "Mã bệnh nhân";
             this.txtPatientCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtPatientCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtPatientCode.Size = new System.Drawing.Size(83, 20);
+            this.txtPatientCode.Size = new System.Drawing.Size(82, 20);
             this.txtPatientCode.StyleController = this.layoutControl3;
             this.txtPatientCode.TabIndex = 5;
             this.txtPatientCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPatientCode_KeyPress);
@@ -584,7 +575,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.txtTreatmentCode.Properties.NullValuePrompt = "Mã điều trị";
             this.txtTreatmentCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtTreatmentCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtTreatmentCode.Size = new System.Drawing.Size(85, 20);
+            this.txtTreatmentCode.Size = new System.Drawing.Size(79, 20);
             this.txtTreatmentCode.StyleController = this.layoutControl3;
             this.txtTreatmentCode.TabIndex = 4;
             this.txtTreatmentCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTreatmentCode_KeyPress);
@@ -606,7 +597,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlItem7});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(199, 552);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(197, 552);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // lciTreatmentCode
@@ -614,25 +605,25 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.lciTreatmentCode.Control = this.txtTreatmentCode;
             this.lciTreatmentCode.Location = new System.Drawing.Point(0, 0);
             this.lciTreatmentCode.Name = "lciTreatmentCode";
-            this.lciTreatmentCode.Size = new System.Drawing.Size(89, 24);
+            this.lciTreatmentCode.Size = new System.Drawing.Size(83, 24);
             this.lciTreatmentCode.TextSize = new System.Drawing.Size(0, 0);
             this.lciTreatmentCode.TextVisible = false;
             // 
             // lciPatientCode
             // 
             this.lciPatientCode.Control = this.txtPatientCode;
-            this.lciPatientCode.Location = new System.Drawing.Point(89, 0);
+            this.lciPatientCode.Location = new System.Drawing.Point(83, 0);
             this.lciPatientCode.Name = "lciPatientCode";
-            this.lciPatientCode.Size = new System.Drawing.Size(87, 24);
+            this.lciPatientCode.Size = new System.Drawing.Size(86, 24);
             this.lciPatientCode.TextSize = new System.Drawing.Size(0, 0);
             this.lciPatientCode.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.chkNotAutoCompleteZero;
-            this.layoutControlItem6.Location = new System.Drawing.Point(176, 0);
+            this.layoutControlItem6.Location = new System.Drawing.Point(169, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(23, 24);
+            this.layoutControlItem6.Size = new System.Drawing.Size(28, 24);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -641,7 +632,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.lciKeyWord.Control = this.txtKeyWord;
             this.lciKeyWord.Location = new System.Drawing.Point(0, 24);
             this.lciKeyWord.Name = "lciKeyWord";
-            this.lciKeyWord.Size = new System.Drawing.Size(199, 24);
+            this.lciKeyWord.Size = new System.Drawing.Size(197, 24);
             this.lciKeyWord.TextSize = new System.Drawing.Size(0, 0);
             this.lciKeyWord.TextVisible = false;
             // 
@@ -650,18 +641,18 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlItem4.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem4.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem4.Control = this.cboDepartment;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 72);
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(199, 24);
+            this.layoutControlItem4.Size = new System.Drawing.Size(197, 24);
             this.layoutControlItem4.Text = "Khoa:";
             this.layoutControlItem4.TextSize = new System.Drawing.Size(28, 13);
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.navBarControl1;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 96);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 95);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(199, 430);
+            this.layoutControlItem5.Size = new System.Drawing.Size(197, 431);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -670,40 +661,27 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlItem10.Control = this.btnSearch;
             this.layoutControlItem10.Location = new System.Drawing.Point(0, 526);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(100, 26);
+            this.layoutControlItem10.Size = new System.Drawing.Size(93, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.btnRefresh;
-            this.layoutControlItem11.Location = new System.Drawing.Point(100, 526);
+            this.layoutControlItem11.Location = new System.Drawing.Point(93, 526);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(99, 26);
+            this.layoutControlItem11.Size = new System.Drawing.Size(104, 26);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
-            // layoutControlItem7
-            // 
-            this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem7.Control = this.chkOtherDocuments;
-            this.layoutControlItem7.Location = new System.Drawing.Point(0, 48);
-            this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(199, 24);
-            this.layoutControlItem7.Text = "Văn bản khác";
-            this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem7.TextSize = new System.Drawing.Size(162, 20);
-            this.layoutControlItem7.TextToControlDistance = 5;
-            // 
             // gridControl1
             // 
-            this.gridControl1.Location = new System.Drawing.Point(199, 0);
+            this.gridControl1.Location = new System.Drawing.Point(197, 0);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemButtonEdit1});
-            this.gridControl1.Size = new System.Drawing.Size(944, 527);
+            this.gridControl1.Size = new System.Drawing.Size(946, 525);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -974,10 +952,10 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.gridControl1;
-            this.layoutControlItem2.Location = new System.Drawing.Point(199, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(197, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem2.Size = new System.Drawing.Size(944, 527);
+            this.layoutControlItem2.Size = new System.Drawing.Size(946, 525);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -987,16 +965,16 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem3.Size = new System.Drawing.Size(199, 552);
+            this.layoutControlItem3.Size = new System.Drawing.Size(197, 552);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.ucPaging1;
-            this.layoutControlItem12.Location = new System.Drawing.Point(199, 527);
+            this.layoutControlItem12.Location = new System.Drawing.Point(197, 525);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(944, 25);
+            this.layoutControlItem12.Size = new System.Drawing.Size(946, 27);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
@@ -1021,6 +999,27 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
+            // chkOtherDocuments
+            // 
+            this.chkOtherDocuments.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chkOtherDocuments.Location = new System.Drawing.Point(2, 74);
+            this.chkOtherDocuments.Name = "chkOtherDocuments";
+            this.chkOtherDocuments.Properties.Caption = "Văn bản khác";
+            this.chkOtherDocuments.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkOtherDocuments.Size = new System.Drawing.Size(193, 19);
+            this.chkOtherDocuments.StyleController = this.layoutControl3;
+            this.chkOtherDocuments.TabIndex = 14;
+            this.chkOtherDocuments.CheckedChanged += new System.EventHandler(this.checkEdit1_CheckedChanged);
+            // 
+            // layoutControlItem7
+            // 
+            this.layoutControlItem7.Control = this.chkOtherDocuments;
+            this.layoutControlItem7.Location = new System.Drawing.Point(0, 72);
+            this.layoutControlItem7.Name = "layoutControlItem7";
+            this.layoutControlItem7.Size = new System.Drawing.Size(197, 23);
+            this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem7.TextVisible = false;
+            // 
             // FrmEmrDocumentListAll
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1035,7 +1034,6 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkOtherDocuments.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.navBarControl1)).EndInit();
             this.navBarControl1.ResumeLayout(false);
             this.navBarGroupControlContainer1.ResumeLayout(false);
@@ -1077,7 +1075,6 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).EndInit();
@@ -1087,6 +1084,8 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkOtherDocuments.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             this.ResumeLayout(false);
 
         }
