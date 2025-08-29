@@ -144,8 +144,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCPatientRaw">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
+    <Reference Include="HIS.UC.UCPatientRaw, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\UC\HIS.UC.UCPatientRaw\bin\Debug\HIS.UC.UCPatientRaw.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCRelativeInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -56,7 +56,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         protected string communeNameKS { get; set; }
         protected string addressKS { get; set; }
         protected string hohName { get; set; }
-
+        //qtcode
+        internal UC.UCHeniInfo.UCHeinInfo ucHeinInfo1;
         // UCPatientRaw
         protected string PeopleCode { get; set; }
         protected string patientName { get; set; }
@@ -193,6 +194,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         //UcheinInfo
         protected short? isBhytHolded { get; set; }
         protected string HeinPatientCode { get; set; }
+        //qtcode
+        protected string TransferInCode { get; set; }
+        protected short? IsTransferIn { get; set; }
 
         // UCTransPatin
         protected string icd_Code { get; set; }
@@ -259,6 +263,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         {
             try
             {
+                //qtcode
+                this.ucHeinInfo1 = ucServiceRequestRegiter.ucHeinInfo1;
                 // Get Data From UC
                 this.ucRequestService = ucServiceRequestRegiter;
                 this.heinInfoValue = ucServiceRequestRegiter.ucHeinInfo1.GetValue();
@@ -281,7 +287,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                     this.GenderId = this.patientRawInfoValue.GENDER_ID;
                 this.dob = this.patientRawInfoValue.DOB;
                 this.patientTypeId = this.patientRawInfoValue.PATIENTTYPE_ID;
-                if (this.patientRawInfoValue.CARRER_ID != null && this.patientRawInfoValue.CARRER_ID>0)
+                if (this.patientRawInfoValue.CARRER_ID != null && this.patientRawInfoValue.CARRER_ID > 0)
                     this.careerId = (this.patientRawInfoValue.CARRER_ID);
                 this.careerCode = this.patientRawInfoValue.CARRER_CODE;
                 this.careerName = this.patientRawInfoValue.CARRER_NAME;
@@ -373,6 +379,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 {
                     this.isBhytHolded = this.heinInfoValue.HisTreatment.IS_BHYT_HOLDED;
                     this.HeinPatientCode = this.heinInfoValue.HisTreatment.HEIN_PATIENT_TYPE_CODE;
+                    this.TransferInCode = this.heinInfoValue.HisTreatment.TRANSFER_IN_CODE;
+                    this.IsTransferIn = this.heinInfoValue.HisTreatment.IS_TRANSFER_IN;
                 }
                 this.isCheckSS = ucServiceRequestRegiter.isCheckSS;
                 // UCPlusInfo
@@ -650,10 +658,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisPatient.BRANCH_ID = WorkPlace.GetBranchId();
                 //Kiểm tra số ký tự nhập vào trường CMND để phân biệt là nhập theo CMND hay theo thẻ căn cước công dân. Nhập 9 ký tự số => CMND, nhập 12 ký tự số => căn cước
                 if (!String.IsNullOrEmpty(this.cMNDNumber))
-               {                   
-                        this.patientProfile.HisPatient.CMND_DATE = this.cMNDDate;
-                        this.patientProfile.HisPatient.CMND_NUMBER = this.cMNDNumber;
-                        this.patientProfile.HisPatient.CMND_PLACE = this.cMNDPlace;
+                {
+                    this.patientProfile.HisPatient.CMND_DATE = this.cMNDDate;
+                    this.patientProfile.HisPatient.CMND_NUMBER = this.cMNDNumber;
+                    this.patientProfile.HisPatient.CMND_PLACE = this.cMNDPlace;
                 }
                 else if (!String.IsNullOrEmpty(this.cCCDNumber))
                 {
@@ -751,6 +759,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         {
             try
             {
+                //qtcode
+                //string transferInCode = null;
+                //bool isTransferIn = false;
+                //if (this.ucHeinInfo1 != null)
+                //{
+                //    transferInCode = this.ucHeinInfo1.GetTransferInCode();
+                //    isTransferIn = this.ucHeinInfo1.GetIsTransferIn();
+                //}
                 if (Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetTokenData() != null && departmentId > 0)
                 {
                     this.patientProfile.DepartmentId = departmentId;
@@ -806,6 +822,16 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 if (this.ImgTransferInData != null)
                     this.patientProfile.ImgTransferInData = this.ImgTransferInData;
                 this.patientProfile.HisTreatment.TRANSFER_IN_ICD_CODE = this.icd_Code;
+                //qtcode
+                if (!string.IsNullOrEmpty(this.TransferInCode))
+                {
+                    this.patientProfile.HisTreatment.TRANSFER_IN_CODE = this.TransferInCode;
+                }
+                else
+                {
+                    this.patientProfile.HisTreatment.TRANSFER_IN_CODE = this.soChuyenVien;
+                }
+                this.patientProfile.HisTreatment.IS_TRANSFER_IN = this.IsTransferIn;
                 this.patientProfile.HisTreatment.TRANSFER_IN_ICD_NAME = (!String.IsNullOrEmpty(this.icd_Text) ? this.icd_Text : this.icd_Name);
                 this.patientProfile.HisTreatment.TRANSFER_IN_ICD_SUB_CODE = this.icd_Sub_Code;
                 this.patientProfile.HisTreatment.TRANSFER_IN_ICD_TEXT = this.icd_Sub_Name;
@@ -813,7 +839,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisTreatment.TRANSFER_IN_MEDI_ORG_NAME = this.noiChuyenDen_Name;
                 this.patientProfile.HisTreatment.TRANSFER_IN_FORM_ID = this.hinhThucChuyen_ID;
                 this.patientProfile.HisTreatment.TRANSFER_IN_REASON_ID = this.lyDoChuyen_ID;
-                this.patientProfile.HisTreatment.TRANSFER_IN_CODE = this.soChuyenVien;
+
                 this.patientProfile.HisTreatment.TRANSFER_IN_CMKT = this.transfer_In_CMKT;
                 this.patientProfile.HisTreatment.HRM_KSK_CODE = this.hrmKskCode;
                 this.patientProfile.HisTreatment.TRANSFER_IN_TIME_FROM = this.transferInTimeFrom;

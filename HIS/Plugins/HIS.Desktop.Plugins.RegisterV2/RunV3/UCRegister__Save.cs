@@ -180,10 +180,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                     if (!CheckDuplicateCCCD())
                         return;
-
                     try
                     {
                         WaitingManager.Show(this.ParentForm);
+                        //đoạn lưu
                         HIS.Desktop.Common.IAppDelegacyT delegacy = new Register.ServiceRequestRegister(param, this, currentPatientSDO);
                         switch (GlobalStore.currentFactorySaveType)
                         {
@@ -200,6 +200,12 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                     && this.currentHisExamServiceReqResultSDO.ServiceReqs.Count > 0)
                                 {
                                     this.resultHisPatientProfileSDO = this.currentHisExamServiceReqResultSDO.HisPatientProfile;
+                                    //qtcode
+                                    //if (isTransferIn && !string.IsNullOrEmpty(transferInCode))
+                                    //{
+                                    //    this.resultHisPatientProfileSDO.HisTreatment.IS_TRANSFER_IN = 1;
+                                    //    this.resultHisPatientProfileSDO.HisTreatment.TRANSFER_IN_CODE = transferInCode;
+                                    //}
                                     this.ExamRegisterSuccess(param);
                                     if (this.currentHisExamServiceReqResultSDO.ServiceReqs.Count > 0 && HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.IsDangKyQuaTongDai == "1")
                                     {
@@ -261,6 +267,13 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                                 if (this.resultHisPatientProfileSDO != null)
                                 {
+                                    //qtcode
+                                    //if (isTransferIn && !string.IsNullOrEmpty(transferInCode))
+                                    //{
+                                    //    this.resultHisPatientProfileSDO.HisTreatment.IS_TRANSFER_IN = 1;
+                                    //    this.resultHisPatientProfileSDO.HisTreatment.TRANSFER_IN_CODE = transferInCode;
+                                    //}
+                                    //qtcode
                                     this.PatientProfileSuccess(param);
                                     success = true;
                                 }
