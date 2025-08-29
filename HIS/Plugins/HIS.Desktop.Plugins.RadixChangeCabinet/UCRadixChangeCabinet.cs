@@ -790,8 +790,12 @@ namespace HIS.Desktop.Plugins.RadixChangeCabinet
                 if (cboTuTrucXuat.EditValue != null)
                 {
                     //lay du lieu theo kho xuat
-                    V_HIS_MEDI_STOCK medi = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(p => p.ID == (long)cboTuTrucXuat.EditValue);
-                    LoadDataToCboMediMate(medi);
+                    var mediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>();
+                    if (mediStocks != null)
+                    {
+                        V_HIS_MEDI_STOCK medi = mediStocks.FirstOrDefault(p => p.ID == (long)cboTuTrucXuat.EditValue);
+                        LoadDataToCboMediMate(medi);
+                    }
                 }
 
             }

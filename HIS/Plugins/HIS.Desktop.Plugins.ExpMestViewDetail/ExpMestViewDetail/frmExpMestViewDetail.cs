@@ -1946,16 +1946,8 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 //List<V_HIS_EXP_MEST_MATERIAL> expMestMaterial = new BackendAdapter(param)
                 //    .Get<List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/GetVIew", ApiConsumers.MosConsumer, expMestMaterialFilter, param);
 
-                MPS.Processor.Mps000099.PDO.Mps000099PDO rdo = new MPS.Processor.Mps000099.PDO.Mps000099PDO(this._CurrentExpMest, expMestMedicines);
-
-
-                string printerName = "";
-                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
-                {
-                    printerName = GlobalVariables.dicPrinter[printTypeCode];
-                }
-
-                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName));
+                MPS.Processor.Mps000099.PDO.Mps000099PDO pdo = new MPS.Processor.Mps000099.PDO.Mps000099PDO(this._CurrentExpMest, expMestMedicines);
+                result = MpsPrinterRun(printTypeCode, fileName, pdo);
 
             }
             catch (Exception ex)
@@ -1987,6 +1979,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
                 }
+                PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.moduleData.RoomId);
                 result = MPS.MpsPrinter.Run(PrintData);
             }
             catch (Exception ex)

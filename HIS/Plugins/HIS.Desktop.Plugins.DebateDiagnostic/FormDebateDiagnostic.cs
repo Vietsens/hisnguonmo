@@ -352,7 +352,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     ChkOther.Checked = true;
                 }
                 time.Start();
-                ICDValidationRule(txtIcdMain, 20, false);
+                ICDValidationRule();
                 WaitingManager.Hide();
                 IsNotLoadFirst = false;
 
@@ -497,16 +497,18 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             }
 
         }
-        private void ICDValidationRule(BaseEdit control, int? maxLength, bool IsRequired)
+        private void ICDValidationRule()
         {
             try
             {
                 ICDValidationRule validate = new ICDValidationRule();
-                validate.editor = control;
-                validate.maxLength = maxLength;
-                validate.IsRequired = IsRequired;
+                validate.editor = txtIcdMain;
+                validate.checkEdit = checkEdit;
+                validate.cboICD = cboIcdMain;
+                validate.maxLength = 20;
+                validate.IsRequired = false;
                 validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                dxValidationProvider1.SetValidationRule(control, validate);
+                dxValidationProvider1.SetValidationRule(txtIcdMain, validate);
             }
             catch (Exception ex)
             {

@@ -44,7 +44,6 @@ using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Plugins.DeathInformationList.Popup;
 using HIS.Desktop.Plugins.DeathInformationList.Resources;
 using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
@@ -1205,6 +1204,12 @@ namespace HIS.Desktop.Plugins.DeathInformationList
 
                                                 Inventec.Common.Logging.LogSystem.Info("patientUpdateSdo: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => signXML), signXML));
                                                 var emrSignBase64 = new BackendAdapter(paramSign).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumers.EmrConsumer, signXML, SessionManager.ActionLostToken, paramSign);
+                                                if (paramSign != null && param.Messages != null && paramSign.Messages.Count > 0)
+                                                {
+                                                    message = string.Join(Environment.NewLine, paramSign.Messages);
+                                                    DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                                    Inventec.Common.Logging.LogSystem.Warn(message);
+                                                }
                                                 sdo.FileBase64Str = emrSignBase64;
                                             }
 

@@ -161,6 +161,9 @@ namespace MPS.Processor.Mps000020
                     SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.STR_HEIN_CARD_TO_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString((rdo.patyAlterBhyt.HEIN_CARD_TO_TIME ?? 0)))));
                     SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.HEIN_MEDI_ORG_CODE, rdo.patyAlterBhyt.HEIN_MEDI_ORG_CODE)));
                     SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.HEIN_MEDI_ORG_NAME, rdo.patyAlterBhyt.HEIN_MEDI_ORG_NAME)));
+                    SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.HEIN_CARD_ADDRESS, rdo.patyAlterBhyt.ADDRESS)));
+                    SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.HEIN_CARD_FROM_TIME, rdo.patyAlterBhyt.HEIN_CARD_FROM_TIME)));
+                    SetSingleKey((new KeyValue(Mps000020ExtendSingleKey.HEIN_CARD_TO_TIME, rdo.patyAlterBhyt.HEIN_CARD_TO_TIME)));
                 }
                 if (rdo.departmentTran != null)
                 {

@@ -1388,6 +1388,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.cboHeinRightRoute.EditValue = null;
                     this.cboHeinRightRoute.Properties.Buttons[1].Visible = false;
                     this.SetEnableControlHein(RightRouterFactory.WRONG_ROUTER, true);
+                    this.txtInCode.Enabled = false;
                     //}
                 }
             }
@@ -1423,6 +1424,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     bool rightRoute = (MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.DISTRICT == this.HeinLevelCodeCurrent
                                     || MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.COMMUNE == this.HeinLevelCodeCurrent);
                     this.SetEnableControlHein(rightRoute ? RightRouterFactory.RIGHT_ROUTER : RightRouterFactory.WRONG_ROUTER__CHOICE_RIGHT, true);
+                    txtInCode.Enabled = false;
                 }
                 ValidateRightRouteType(false);
             }
@@ -1439,7 +1441,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 var treatment = this.patientTypeAlterOld != null && this.patientTypeAlterOld.TREATMENT_ID > 0 ? His.UC.UCHein.HisTreatment.HisTreatmentGet.GetById(this.patientTypeAlterOld.TREATMENT_ID) : (this.entity.HisTreatment != null && this.entity.HisTreatment.ID > 0) ? this.entity.HisTreatment : null;
                 if (LoadDefault)
                     SetDefaultRightCode();
-                if (!this.isCallByRegistor && rdoRightRoute.Checked && this.cboDKKCBBD.EditValue != null && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).HEIN_MEDI_ORG_CODE && (!this.IsNotRequiredRightTypeInCaseOfHavingAreaCode || this.cboNoiSong.EditValue == null) &&!chkBaby.Checked && !chkHasAbsentLetter.Checked && !chkHasWorkingLetter.Checked && !chkTt46.Checked && (!ValidAcceptHeinMediOrgCode((string)this.cboDKKCBBD.EditValue, BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).ACCEPT_HEIN_MEDI_ORG_CODE)
+                if (!this.isCallByRegistor && rdoRightRoute.Checked && this.cboDKKCBBD.EditValue != null && (string)this.cboDKKCBBD.EditValue != BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).HEIN_MEDI_ORG_CODE && (!this.IsNotRequiredRightTypeInCaseOfHavingAreaCode || this.cboNoiSong.EditValue == null) && !chkBaby.Checked && !chkHasAbsentLetter.Checked && !chkHasWorkingLetter.Checked && !chkTt46.Checked && (!ValidAcceptHeinMediOrgCode((string)this.cboDKKCBBD.EditValue, BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).ACCEPT_HEIN_MEDI_ORG_CODE)
                         && !ValidSysMediOrgCode((string)this.cboDKKCBBD.EditValue, BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatment.BRANCH_ID).SYS_MEDI_ORG_CODE)))
                     ValidRightRouteType();
                 else
@@ -1574,6 +1576,15 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.ChangecboHeinRightRoute();
                 else
                     this.SetEnableControlHein(RightRouterFactory.WRONG_ROUTER__CHOICE_RIGHT__DELETE_CHOICE_TYPE, false);
+                if (cboHeinRightRoute.EditValue.ToString() == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT)
+                {
+                    txtInCode.Enabled = true;
+                }
+                else
+                {
+                    txtInCode.Enabled = false;
+                }
+
 
                 ResetValidationRightRoute_Present();
 

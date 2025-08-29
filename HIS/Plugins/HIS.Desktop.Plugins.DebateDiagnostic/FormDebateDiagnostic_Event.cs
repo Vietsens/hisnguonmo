@@ -537,8 +537,8 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     bool showCbo = true;
                     if (!String.IsNullOrEmpty(txtIcdMain.Text.Trim()))
                     {
-                        string code = txtIcdMain.Text.Trim();
-                        var listData = Base.GlobalStore.HisIcds.Where(o => o.ICD_CODE.Equals(code)).ToList();
+                        string code = txtIcdMain.Text.Trim().ToUpper();
+                        var listData = Base.GlobalStore.HisIcds.Where(o => o.ICD_CODE.ToUpper().Equals(code)).ToList();
                         if (listData != null && listData.Count == 1)
                         {
                             showCbo = false;

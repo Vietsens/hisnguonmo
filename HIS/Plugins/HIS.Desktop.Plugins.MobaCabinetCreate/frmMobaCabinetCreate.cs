@@ -1171,7 +1171,7 @@ namespace HIS.Desktop.Plugins.MobaCabinetCreate
                     WaitingManager.Hide();
                     MPS.Processor.Mps000084.PDO.Mps000084PDO rdo = new MPS.Processor.Mps000084.PDO.Mps000084PDO(this.resultMobaSdo.ImpMest, this.hisExpMest, singleKey, this.resultMobaSdo.ImpMedicines, this.resultMobaSdo.ImpMaterials, expMestMedicines, expMestMaterials);
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(this.hisExpMest != null ? this.hisExpMest.TDL_TREATMENT_CODE : "", printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
 
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "") { EmrInputADO = inputADO });
                 }
@@ -1196,7 +1196,7 @@ namespace HIS.Desktop.Plugins.MobaCabinetCreate
                         WaitingManager.Hide();
                         MPS.Processor.Mps000084.PDO.Mps000084PDO rdo = new MPS.Processor.Mps000084.PDO.Mps000084PDO(impMestResult.ImpMest, this.hisExpMest, singleKey, impMestResult.ImpMedicines, impMestResult.ImpMaterials, expMestMedicines, expMestMaterials);
 
-                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(this.hisExpMest != null ? this.hisExpMest.TDL_TREATMENT_CODE : "", printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
 
                         result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "") { EmrInputADO = inputADO });
                     }
