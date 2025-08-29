@@ -1055,9 +1055,14 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                                             IdentityNumber = settingSignADO.CccdNumber
                                         };
 
-                                        var stringbase64 = new Inventec.Common.Adapter.BackendAdapter(param)
-                                            .Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
-
+                                        var stringbase64 = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
+                                        if (param != null && param.Messages != null && param.Messages.Count > 0)
+                                        {
+                                            string message = string.Join(Environment.NewLine, param.Messages);
+                                            DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            Inventec.Common.Logging.LogSystem.Warn(message);
+                                            return;
+                                        }
                                         BabySyncSDO sdo = new BabySyncSDO();
                                         sdo.BabyID = row.ID;
                                         if (!string.IsNullOrEmpty(stringbase64))
