@@ -117,31 +117,38 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
         CabinetBaseResultSDO cabinetBaseResultSDO = null;
         V_HIS_EXP_MEST_4 expMest;
         CallApiType callApiType;
-        string printerName = "";
-        private void ProcessPrint(String printTypeCode)
+        private bool MpsPrinterRun(string printTypeCode, string fileName, object data, bool isBloodPrintTrans = false)
         {
+            bool result = false;
             try
             {
+                string printerName = string.Empty;
                 if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
                 {
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
-                string treatmentCode = printTypeCode;
-                if (chmsExpMest != null && !string.IsNullOrEmpty(chmsExpMest.TDL_TREATMENT_CODE))
-                {
-                    treatmentCode = chmsExpMest.TDL_TREATMENT_CODE;
-                }
-                else if (this.expMest != null && !string.IsNullOrEmpty(this.expMest.TDL_TREATMENT_CODE))
-                {
-                    treatmentCode = chmsExpMest.TDL_TREATMENT_CODE;
-                }
-                inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatmentCode, printTypeCode, this.currentModule != null ? this.currentModule.RoomId : 0);
+                var printData = new MPS.ProcessorBase.Core.PrintData(
+                    printTypeCode,
+                    fileName,
+                    data,
+                    GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2 || isBloodPrintTrans ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog,
+                    printerName);
+                printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(
+                    printTypeCode,
+                    printTypeCode,
+                    this.currentModule != null ?
+                    this.currentModule.RoomId : 0);
+                WaitingManager.Hide();
+                result = MPS.MpsPrinter.Run(printData);
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            return result;
         }
+
         enum CallApiType
         {
             cabinet,
@@ -666,7 +673,6 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
         {
             try
             {
-                this.ProcessPrint(printTypeCode);
                 #region ---Thuoc Thuong ----
                 if (_ExpMestMetyReq_Ts != null && _ExpMestMetyReq_Ts.Count > 0)
                 {
@@ -685,19 +691,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                      _Materials,
                      "THUỐC THƯỜNG"
                       );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
-                    }
-
-                    PrintData.EmrInputADO = inputADO;
-
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
                 }
                 #endregion
 
@@ -1086,11 +1080,10 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
         {
             try
             {
-                this.ProcessPrint(printTypeCode);
                 #region ---Thuoc Thuong ----
                 if (_ExpMestMetyReq_Ts != null && _ExpMestMetyReq_Ts.Count > 0)
                 {
-                    MPS.Processor.Mps000347.PDO.Mps000347PDO mps000346PDO = new MPS.Processor.Mps000347.PDO.Mps000347PDO
+                    MPS.Processor.Mps000347.PDO.Mps000347PDO mps000347PDO = new MPS.Processor.Mps000347.PDO.Mps000347PDO
                     (
                         chmsExpMest,
                         _ExpMestMedicines,
@@ -1106,19 +1099,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         "THUỐC THƯỜNG",
                         HisConfig.ODER_OPTION
                         );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
-                    }
-
-                    PrintData.EmrInputADO = inputADO;
-
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO);
                 }
                 #endregion
 
@@ -1533,8 +1514,6 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
 
                 if (data != null)
                 {
-                    ProcessPrint(printTypeCode);
-
                     MOS.Filter.HisTreatmentViewFilter treatmentFilter = new HisTreatmentViewFilter();
                     treatmentFilter.ID = data.TDL_TREATMENT_ID;
                     var treatment = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumer.ApiConsumers.MosConsumer, treatmentFilter, new CommonParam()).FirstOrDefault();
@@ -1587,20 +1566,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                      ChmsExpMests,
                      hIS_TRANSFUSION
                      );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-
-
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2 || isBloodPrintTrans)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(printTypeCode, fileName, pdo, isBloodPrintTrans);
                 }
             }
             catch (Exception ex)
