@@ -97,7 +97,11 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             InVatTuTSD
         }
 
-        private bool MpsPrinterRun(string printTypeCode, string fileName, object data, Inventec.Common.FlexCelPrint.DelegateEventLog eventLog = null)
+        private bool MpsPrinterRun(string printTypeCode, 
+            string fileName, 
+            object data, 
+            MPS.ProcessorBase.PrintConfig.PreviewType previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, 
+            Inventec.Common.FlexCelPrint.DelegateEventLog eventLog = null)
         {
             bool result = false;
             try
@@ -111,7 +115,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     printTypeCode,
                     fileName,
                     data,
-                    ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2 ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog,
+                    ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2 ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : previewType,
                     printerName, eventLog);
                 printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(
                     printTypeCode,
@@ -631,7 +635,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     MPS.Processor.Mps000494.PDO.Mps000494PDO rdo = new MPS.Processor.Mps000494.PDO.Mps000494PDO(lstSend);
 
                     //RunPrint(printTypeCode, fileName, rdo, (Inventec.Common.FlexCelPrint.DelegateEventLog)EventLogPrint, result, moduleData.RoomId);
-                    result = MpsPrinterRun(printTypeCode, fileName, rdo, (Inventec.Common.FlexCelPrint.DelegateEventLog)EventLogPrint);
+                    result = MpsPrinterRun(printTypeCode, fileName, rdo, eventLog: (Inventec.Common.FlexCelPrint.DelegateEventLog)EventLogPrint);
                 }
             }
             catch (Exception ex)
@@ -809,7 +813,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                 null
                 );
-                result = MpsPrinterRun(printTypeCode, fileName, mps000134PDO);
+                result = MpsPrinterRun(printTypeCode, fileName, mps000134PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 //if (result)
                 //{
                 //    this.Close();
@@ -880,7 +884,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                 null
                 );
-                result = MpsPrinterRun(printTypeCode, fileName, mps000134PDO);
+                result = MpsPrinterRun(printTypeCode, fileName, mps000134PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 //if (result)
                 //{
                 //    this.Close();
@@ -1342,7 +1346,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          Config.HisConfigCFG.ODER_OPTION
                          );
 
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000215PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000215PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -1399,7 +1403,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  configKeyMert,
                  keyPhieuTra
                    );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000198PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000198PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
 
                 WaitingManager.Hide();
@@ -1782,7 +1786,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                                 BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                                 MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuGN_HT
                                 );
-                            result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO);
+                            result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                         #endregion
                     }
@@ -1803,7 +1807,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                                 BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                                 MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuGayNghien
                                 );
-                            result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO);
+                            result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                         #endregion
 
@@ -1822,7 +1826,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                                 BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                                MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuHuongThan
                                 );
-                            result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO);
+                            result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                         #endregion
                     }
@@ -1842,7 +1846,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                                 BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                                 MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuThuocDoc
                                 );
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -1861,7 +1865,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                             MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuThuocPhongXa
                                 );
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -1880,7 +1884,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                             MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuThuocThuong
                                 );
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -1916,7 +1920,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                     MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuVatTu
                                 );
-                            result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO);
+                            result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                         #endregion
 
@@ -1935,7 +1939,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                     MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuHoaChat
                                 );
-                            result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO);
+                            result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                         #endregion
                     }
@@ -1960,7 +1964,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                BackendDataWorker.Get<V_HIS_BLOOD_TYPE>(),
                MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.Mau
                            );
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
 
                     #endregion
@@ -1980,7 +1984,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                             MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.Corticoid
                                 );
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -1999,7 +2003,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                             MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.DichTruyen
                                 );
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -2018,7 +2022,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                             MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.KhangSinh
                                 );
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -2037,7 +2041,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                             MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.Lao
                                 );
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000135PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
                 }
@@ -2079,7 +2083,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  this._CurrentExpMest,
                  this._ExpMestMedicines_Print
                  );
-                result = MpsPrinterRun(printTypeCode, fileName, pdo);
+                result = MpsPrinterRun(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
             }
             catch (Exception ex)
             {
@@ -2613,7 +2617,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             Inventec.Common.Logging.LogSystem.Info("lstConfig NULL ");
                         }
                         WaitingManager.Hide();
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -2690,7 +2694,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                                 Inventec.Common.Logging.LogSystem.Info("lstConfig NULL ");
                             }
                             WaitingManager.Hide();
-                            result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                            result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                         if (_ExpMestMatyReq_VTs != null && _ExpMestMatyReq_VTs.Count > 0)
                         {
@@ -2749,7 +2753,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                                 Inventec.Common.Logging.LogSystem.Info("lstConfig NULL ");
                             }
                             WaitingManager.Hide();
-                            result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                            result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                     }
                     #endregion
@@ -2950,7 +2954,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          _Materials,
          "THUỐC THƯỜNG"
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -2972,7 +2976,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          _Materials,
          "VẬT TƯ THƯỜNG"
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -2995,7 +2999,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          "HƯỚNG THẦN"
 
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3018,7 +3022,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          "GÂY NGHIỆN"
 
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3040,7 +3044,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          _Materials,
          "HÓA CHẤT"
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3062,7 +3066,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          null,
          "ĐỘC"
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3084,7 +3088,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          null,
          "PHÓNG XẠ"
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3106,7 +3110,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          null,
          "CORTICOID"
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3128,7 +3132,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          null,
          "DỊCH TRUYỀN"
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3150,7 +3154,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          null,
          "KHÁNG SINH"
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3172,7 +3176,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          null,
          "LAO"
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3194,7 +3198,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          null,
          "PHIẾU TRẢ CƠ SỐ THUỐC TIỀN CHẤT"
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
             }
@@ -3387,7 +3391,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
            Config.HisConfigCFG.ODER_OPTION
 
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3411,7 +3415,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             Config.HisConfigCFG.ODER_OPTION
 
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3435,7 +3439,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             Config.HisConfigCFG.ODER_OPTION
 
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3459,7 +3463,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
   Config.HisConfigCFG.ODER_OPTION
 
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3483,7 +3487,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
           Config.HisConfigCFG.ODER_OPTION
 
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3507,7 +3511,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         Config.HisConfigCFG.ODER_OPTION
 
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3531,7 +3535,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             Config.HisConfigCFG.ODER_OPTION
 
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3554,7 +3558,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          "CORTICOID",
            Config.HisConfigCFG.ODER_OPTION
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3577,7 +3581,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          "DỊCH TRUYỀN",
             Config.HisConfigCFG.ODER_OPTION
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3600,7 +3604,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          "KHÁNG SINH",
             Config.HisConfigCFG.ODER_OPTION
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3623,7 +3627,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
          "LAO",
            Config.HisConfigCFG.ODER_OPTION
           );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
             }
@@ -3698,7 +3702,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          MoreInfo
                              );
 
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -3719,7 +3723,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     MoreInfo
                         );
 
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
                 }
@@ -3742,7 +3746,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          MoreInfo
                              );
 
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -3762,7 +3766,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                              ListTreatment,
                          MoreInfo
                              );
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -3783,7 +3787,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          MoreInfo
                              );
 
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -3803,7 +3807,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                              ListTreatment,
                          MoreInfo
                              );
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
                 }
@@ -3824,7 +3828,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          ListTreatment,
                          MoreInfo
                          );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3844,7 +3848,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          ListTreatment,
                          MoreInfo
                          );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3864,7 +3868,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          ListTreatment,
                          MoreInfo
                          );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3884,7 +3888,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          ListTreatment,
                          MoreInfo
                          );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3904,7 +3908,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          ListTreatment,
                          MoreInfo
                          );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -3924,7 +3928,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          ListTreatment,
                          MoreInfo
                          );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
                 WaitingManager.Hide();
@@ -3983,7 +3987,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                      keyPhieuTra
                        );
                         WaitingManager.Hide();
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
                 }
@@ -4026,7 +4030,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                      keyPhieuTra
                        );
                         WaitingManager.Hide();
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -4067,7 +4071,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                      keyPhieuTra
                        );
                         WaitingManager.Hide();
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
                 }
@@ -4110,7 +4114,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                    );
 
                     WaitingManager.Hide();
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -4151,7 +4155,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  keyPhieuTra
                    );
                     WaitingManager.Hide();
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -4192,7 +4196,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  keyPhieuTra
                    );
                     WaitingManager.Hide();
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -4233,7 +4237,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  keyPhieuTra
                    );
                     WaitingManager.Hide();
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -4274,7 +4278,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  keyPhieuTra
                    );
                     WaitingManager.Hide();
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000048PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -4314,7 +4318,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  configKeyMert,
                  keyPhieuTra
                    );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     WaitingManager.Hide();
                 }
                 #endregion
@@ -4362,7 +4366,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  configKeyMert,
                  keyPhieuTra
                    );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000198PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000198PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 WaitingManager.Hide();
             }
