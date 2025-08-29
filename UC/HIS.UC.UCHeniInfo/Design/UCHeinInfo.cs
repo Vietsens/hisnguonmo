@@ -47,6 +47,8 @@ using System.Resources;
 using Inventec.Desktop.Common.LanguageManager;
 using HIS.UC.UCHeniInfo.CustomValidateRule;
 using HIS.Desktop.Plugins.Library.CheckHeinGOV;
+using HIS.UC.UCHeniInfo.Design;
+using MOS.EFMODEL.DataModels;
 
 namespace HIS.UC.UCHeniInfo
 {
@@ -105,6 +107,9 @@ namespace HIS.UC.UCHeniInfo
             WRONG_ROUTER__CHOICE_RIGHT__CHOICE_TYPE_HASAPPOINTMENT,
         }
         bool isInitFormData = false;
+        //qtcode
+        string transferInCode;
+        bool isTransferIn;
         #endregion
 
         #region Constructor - Load
@@ -287,6 +292,9 @@ namespace HIS.UC.UCHeniInfo
                 this.SetTreatmentId(0);
                 this.chkSs.Checked = false;
                 this.chkSs.Enabled = false;
+                //qtcode
+                this.transferInCode = null;
+                this.isTransferIn = false;
             }
             catch (Exception ex)
             {
@@ -1483,13 +1491,52 @@ namespace HIS.UC.UCHeniInfo
                     //this.cboNoiSong.ShowPopup();
                     this.FocusNextControlFreeCoPainTime();//#18970
                 }
+                //qtcode
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    if (this.cboHeinRightRoute.EditValue != null && this.cboHeinRightRoute.EditValue.ToString() == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT)
+                    {
+                        frmApointmentInfo frm = new frmApointmentInfo(this.SetTransferInCode);
+                        frm.ShowDialog();
+                    }
+                    this.FocusNextControlFreeCoPainTime();
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        //qtcode
+        private void SetTransferInCode(string code)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(code))
+                {
+                    this.transferInCode = code.Trim();
+                    this.isTransferIn = true;
+                }
+                else
+                {
+                    this.transferInCode = null;
+                    this.isTransferIn = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public string GetTransferInCode()
+        {
+            return this.transferInCode;
+        }
 
+        public bool GetIsTransferIn()
+        {
+            return this.isTransferIn;
+        }
         private void cboHeinRightRoute_EditValueChanged(object sender, EventArgs e)
         {
             try

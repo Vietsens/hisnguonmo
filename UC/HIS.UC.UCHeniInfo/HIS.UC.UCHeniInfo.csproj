@@ -170,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\DataInitUCHeniInfo.cs" />
+    <Compile Include="ADO\TranPatiDataADO.cs" />
     <Compile Include="ADO\UCHeinADO.cs" />
     <Compile Include="Core\Data\DataStore.cs">
       <SubType>Code</SubType>
@@ -180,6 +181,12 @@
     <Compile Include="CustomValidateRule\TemplateHeinBHYT1__Address__ValidationRule.cs" />
     <Compile Include="CustomValidateRule\TemplateHeinBHYT1__CheckBox__ValidationRule.cs" />
     <Compile Include="CustomValidateRule\TemplateHeinBHYT1__FreeCoPainTime__ValidationRule.cs" />
+    <Compile Include="Design\frmApointmentInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\frmApointmentInfo.Designer.cs">
+      <DependentUpon>frmApointmentInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Design\UCHeinInfo__Dispose.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -235,6 +242,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Design\frmApointmentInfo.resx">
+      <DependentUpon>frmApointmentInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Design\frmPatientChoice.resx">
       <DependentUpon>frmPatientChoice.cs</DependentUpon>
       <SubType>Designer</SubType>
