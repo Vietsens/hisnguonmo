@@ -118,7 +118,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
         CabinetBaseResultSDO cabinetBaseResultSDO = null;
         V_HIS_EXP_MEST_4 expMest;
         CallApiType callApiType;
-        private bool MpsPrinterRun(string printTypeCode, string fileName, object data, bool isBloodPrintTrans = false)
+        private bool MpsPrinterRun(string printTypeCode, string fileName, object data, MPS.ProcessorBase.PrintConfig.PreviewType previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, bool isBloodPrintTrans = false)
         {
             bool result = false;
             try
@@ -132,7 +132,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                     printTypeCode,
                     fileName,
                     data,
-                    GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2 || isBloodPrintTrans ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog,
+                    GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2 || isBloodPrintTrans ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : previewType,
                     printerName);
                 printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(
                     printTypeCode,
@@ -692,7 +692,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                      _Materials,
                      "THUỐC THƯỜNG"
                       );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -714,7 +714,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         _Materials,
                         "VẬT TƯ THƯỜNG"
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -736,7 +736,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                      null,
                      "HƯỚNG THẦN"
                       );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -758,7 +758,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         null,
                         "GÂY NGHIỆN"
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -780,7 +780,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         _Materials,
                         "HÓA CHẤT"
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -802,7 +802,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         null,
                         "ĐỘC"
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -824,7 +824,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         null,
                         "PHÓNG XẠ"
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -846,7 +846,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         null,
                         "CORTICOID"
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -868,7 +868,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         null,
                         "DỊCH TRUYỀN"
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -890,7 +890,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         null,
                         "KHÁNG SINH"
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -912,7 +912,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         null,
                         "LAO"
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -934,7 +934,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         null,
                         "TIỀN CHẤT"
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
             }
@@ -968,7 +968,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         "THUỐC THƯỜNG",
                         HisConfig.ODER_OPTION
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -991,7 +991,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         "VẬT TƯ THƯỜNG",
                         HisConfig.ODER_OPTION
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1014,7 +1014,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         "HƯỚNG THẦN",
                         HisConfig.ODER_OPTION
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1037,7 +1037,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         "GÂY NGHIỆN",
                         HisConfig.ODER_OPTION
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1060,7 +1060,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         "HÓA CHẤT",
                         HisConfig.ODER_OPTION
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1083,7 +1083,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         "ĐỘC",
                         HisConfig.ODER_OPTION
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1106,7 +1106,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         "PHÓNG XẠ",
                         HisConfig.ODER_OPTION
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1129,7 +1129,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         "CORTICOID",
                         HisConfig.ODER_OPTION
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1152,7 +1152,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         "DỊCH TRUYỀN",
                         HisConfig.ODER_OPTION
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1175,7 +1175,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         "KHÁNG SINH",
                         HisConfig.ODER_OPTION
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1198,7 +1198,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         "LAO",
                         HisConfig.ODER_OPTION
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -1221,7 +1221,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         "TIỀN CHẤT",
                         HisConfig.ODER_OPTION
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
             }
@@ -1303,7 +1303,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                      ChmsExpMests,
                      hIS_TRANSFUSION
                      );
-                    result = MpsPrinterRun(printTypeCode, fileName, pdo, isBloodPrintTrans);
+                    result = MpsPrinterRun(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, isBloodPrintTrans);
                 }
             }
             catch (Exception ex)
@@ -2782,7 +2782,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         ChmsExpMests,
                         hIS_TRANSFUSION);
 
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000421PDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000421PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow);
                 }
 
             }

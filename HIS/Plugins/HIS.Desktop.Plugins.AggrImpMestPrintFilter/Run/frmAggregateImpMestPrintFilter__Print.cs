@@ -60,7 +60,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter
 
         List<MPS.Processor.Mps000093.PDO.Mps000093ADO> listMps000093ADO = new List<MPS.Processor.Mps000093.PDO.Mps000093ADO>();
 
-        public bool MpsPrinterRun(string printTypeCode, string fileName, object data)
+        public bool MpsPrinterRun(string printTypeCode, string fileName, object data, MPS.ProcessorBase.PrintConfig.PreviewType previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog)
         {
             bool result = false;
             try
@@ -74,7 +74,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter
                     printTypeCode,
                     fileName,
                     data,
-                    ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2 ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog,
+                    ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2 ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : previewType,
                     printerName);
                 printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(
                     printTypeCode,
@@ -288,7 +288,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter
                         );
 
                         WaitingManager.Hide();
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000078RDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000078RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
 
                     if (chkMedicine.Checked && this._ImpMestMedi_Ts != null && this._ImpMestMedi_Ts.Count > 0)
@@ -313,7 +313,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter
                         );
 
                         WaitingManager.Hide();
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000078RDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000078RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
 
                     #region thuoc nhom khac
@@ -364,7 +364,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter
                             );
 
                             WaitingManager.Hide();
-                            result = MpsPrinterRun(printTypeCode, fileName, mps000078RDO);
+                            result = MpsPrinterRun(printTypeCode, fileName, mps000078RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                     }
                     #endregion
@@ -516,7 +516,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter
                     );
 
                     WaitingManager.Hide();
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000093RDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000093RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
             }
             catch (Exception ex)
@@ -649,7 +649,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter
                         );
 
                         WaitingManager.Hide();
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000101RDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000101RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                 }
                 else
@@ -674,7 +674,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter
                         );
 
                         WaitingManager.Hide();
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000101RDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000101RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
 
                     if (_ImpMestMedi_GNs != null && _ImpMestMedi_GNs.Count > 0)
@@ -697,7 +697,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter
                         );
 
                         WaitingManager.Hide();
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000101RDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000101RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                 }
             }
@@ -729,7 +729,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter
                     );
 
                     WaitingManager.Hide();
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000240RDO);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000240RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
             }
             catch (Exception ex)
@@ -904,7 +904,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter
                         );
 
                         WaitingManager.Hide();
-                        result = MpsPrinterRun(printTypeCode, fileName, mps000100RDO);
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000100RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
 
                     //Review
@@ -974,7 +974,7 @@ namespace HIS.Desktop.Plugins.AggrImpMestPrintFilter
                              AppConfigKeys.ProcessOderOption
                             );
 
-                            result = MpsPrinterRun(printTypeCode, fileName, mps000100RDO);
+                            result = MpsPrinterRun(printTypeCode, fileName, mps000100RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                     }
                     #endregion
