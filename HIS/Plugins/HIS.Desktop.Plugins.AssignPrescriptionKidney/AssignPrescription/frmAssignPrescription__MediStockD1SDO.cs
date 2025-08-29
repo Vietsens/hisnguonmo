@@ -21,6 +21,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO;
+using HIS.Desktop.Plugins.AssignPrescriptionKidney.Config;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Core;
@@ -413,7 +414,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             }
             return result;
         }
-
         private void FillDataIntoMedicineUseFormAndTutorial(long medicineTypeId)
         {
             try

@@ -22,5 +22,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney
     {
         internal static string ClientSessionKey { get; set; }
         internal static bool IsTreatmentIn { get; set; }
+        internal static bool IsCabinet { get; set; }
     }
 }

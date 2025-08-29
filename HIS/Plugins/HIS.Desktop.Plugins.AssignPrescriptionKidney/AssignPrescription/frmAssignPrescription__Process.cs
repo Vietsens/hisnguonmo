@@ -177,7 +177,222 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             }
             return result;
         }
+        private void ProcessChoicePrescriptionPrevious(List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_7> LstserviceReq)
+        {
+            try
+            {
+                if (LstserviceReq == null || LstserviceReq.Count <= 0) return;
+                if (this.actionType == GlobalVariables.ActionView)
+                {
+                    LogSystem.Debug("ProcessChoicePrescriptionPrevious => thao tac khong hop le. actionType = " + this.actionType);
+                    return;
+                }
+                if (this.mediMatyTypeAvailables == null || this.mediMatyTypeAvailables.Count == 0)
+                    this.InitDataMetyMatyTypeInStockD1(this.currentMediStock);
+                this.PrescriptionPrevious = true;
+                this.lstOutPatientPres = new List<OutPatientPresADO>();
+                //Release tat ca cac thuoc/ vat tu da duoc take bean truoc do nhung chua duoc luu
+                this.ReleaseAllMediByUser();
 
+                ServiceReqIdPrevios = LstserviceReq.First().ID;
+                List<V_HIS_SERVICE_REQ_7> serviceReqTemps = new List<V_HIS_SERVICE_REQ_7>();
+                foreach (var serviceReq in LstserviceReq)
+                {
+                    if (String.IsNullOrEmpty(serviceReq.SESSION_CODE))
+                    {
+                        serviceReqTemps.Add(serviceReq);
+                    }
+                    else
+                    {
+                        this.currentPrescriptions = this.periousExpMestListProcessor.GetServiceReqData(this.ucPeriousExpMestList);
+                        serviceReqTemps.AddRange(this.currentPrescriptions != null ? this.currentPrescriptions.Where(o =>
+                            o.SESSION_CODE == serviceReq.SESSION_CODE
+                            && o.INTRUCTION_TIME == serviceReq.INTRUCTION_TIME
+                            && o.REQUEST_LOGINNAME == serviceReq.REQUEST_LOGINNAME).ToList() : null);
+                    }
+                }
+
+                serviceReqTemps = serviceReqTemps.Distinct().ToList();
+
+                if (serviceReqTemps != null && serviceReqTemps.Count > 0)
+                {
+                    foreach (var item in serviceReqTemps)
+                    {
+                        HIS_SERVICE_REQ req = new HIS_SERVICE_REQ();
+
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE_REQ>(req, item);
+                        if (item.EXP_MEST_ID.HasValue && item.EXP_MEST_TYPE_ID.HasValue)
+                        {
+                            this.ProcessGetExpMestMedicine_Prescription(this.GetExpMestMedicineByExpMestId(item.EXP_MEST_ID ?? 0), item, this.intructionTimeSelecteds.First());
+                            this.ProcessGetExpMestMaterial_Prescription(this.GetExpMestMaterialByExpMestId(item.EXP_MEST_ID ?? 0), false);
+                            if (ProcessCheckOutMediStock(false))
+                                return;
+                        }
+                        //Đơn phụ
+                        this.ProcessGetSubServiceReqMety(this.GetServiceReqMetyByServiceReqId(item.ID), req, this.intructionTimeSelecteds.First());
+
+                        this.ProcessGetServiceRequestMety(this.GetServiceReqMetyByServiceReqId(item.ID), req, this.intructionTimeSelecteds.First());
+                        this.ProcessGetServiceRequestMety(this.GetServiceReqMatyByServiceReqId(item.ID), false);
+                        //}
+                        //this.mediMatyTypeADOs.ForEach(o => o.EXCEED_LIMIT_IN_PRES_REASON = null);
+                        //this.mediMatyTypeADOs.ForEach(o => o.EXCEED_LIMIT_IN_DAY_REASON = null);
+                        //this.mediMatyTypeADOs.ForEach(o => o.EXCEED_LIMIT_IN_BATCH_REASON = null);
+                        //this.mediMatyTypeADOs.ForEach(o => o.ODD_PRES_REASON = null);
+                    }
+                    //Check trong kho
+                    //Gắn biến tạm để không bị gấp đôi số lượng khi kiểm tra danh sách
+                    var dataSourceTmp = mediMatyTypeADOs;
+                    mediMatyTypeADOs = new List<MediMatyTypeADO>();
+                    this.ProcessDataMediStock(dataSourceTmp);
+                    this.ProcessInstructionTimeMediForEdit();
+                    if (this.ProcessCheckAllergenicByPatientAfterChoose())
+                    {
+                        this.ProcessMergeDuplicateRowForListProcessing();
+                        this.ProcessAddListRowDataIntoGridWithTakeBean();
+                        this.ReloadDataAvaiableMediBeanInCombo();
+                    }
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqTemps), serviceReqTemps));
+                }
+            }
+
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private bool ProcessCheckAllergenicByPatientAfterChoose()
+        {
+            bool result = true;
+            try
+            {
+                if (allergenics == null || allergenics.Count == 0)
+                    return result;
+
+                string messageTitle__IS_SURE = "";
+                string messageTitle__IS_DOUBT = "";
+                string messageError__IS_SURE = "";
+                string messageError__IS_DOUBT = "";
+                foreach (var item in this.mediMatyTypeADOs)
+                {
+                    if (item.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                    {
+                        HIS_ALLERGENIC allergencic = allergenics.FirstOrDefault(o => o.MEDICINE_TYPE_ID == item.ID);
+                        if (allergencic != null)
+                        {
+                            if (allergencic.IS_SURE == 1)
+                            {
+                                messageTitle__IS_SURE = "Cảnh báo dị ứng thuốc:";
+                                messageError__IS_SURE += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag(String.Format("- {0}: Biểu hiện lâm sàng ({1}).", item.MEDICINE_TYPE_NAME, allergencic.CLINICAL_EXPRESSION), Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                            }
+                            else if (allergencic.IS_DOUBT == 1)
+                            {
+                                messageTitle__IS_DOUBT = "Cảnh báo NGHI NGỜ dị ứng thuốc:";
+                                messageError__IS_DOUBT += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag(String.Format("- {0}: Biểu hiện lâm sàng ({1}).", item.MEDICINE_TYPE_NAME, allergencic.CLINICAL_EXPRESSION), Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                            }
+                        }
+                    }
+                }
+
+                if (!String.IsNullOrEmpty(messageError__IS_SURE) || !String.IsNullOrEmpty(messageError__IS_DOUBT))
+                {
+                    DialogResult myResult;
+                    string message = "";
+                    if (!String.IsNullOrEmpty(messageError__IS_SURE))
+                    {
+                        message += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag(String.Format("{0}{1}.", Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag(messageTitle__IS_SURE, Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br), messageError__IS_SURE), Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                    }
+                    if (!String.IsNullOrEmpty(messageError__IS_DOUBT))
+                    {
+                        message += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag(String.Format("{0}{1}.", Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag(messageTitle__IS_DOUBT, Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br), messageError__IS_DOUBT), Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                    }
+                    message += "Bạn có muốn tiếp tục?";
+                    myResult = XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, DevExpress.Utils.DefaultBoolean.True);
+                    if (myResult != DialogResult.OK)
+                    {
+                        result = false;
+                        Inventec.Common.Logging.LogSystem.Debug(message + "___nguoi dung chon khong tiep tuc");
+                    }
+                }
+
+                if (result == false)
+                {
+                    this.mediMatyTypeADOs = null;
+                    this.gridControlServiceProcess.DataSource = this.mediMatyTypeADOs;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+        /// <summary>
+        /// đơn phụ
+        /// </summary>
+        /// <param name="lstExpMestMety"></param>
+        /// <param name="serviceReq"></param>
+        /// <param name="currentInstructionTime"></param>     
+        private void ViewPrescriptionPreviousButtonClick(MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_7 serviceReq)
+        {
+            try
+            {
+                if (serviceReq != null)
+                {
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ServiceReqSessionDetail").FirstOrDefault();
+                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ServiceReqSessionDetail");
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        List<object> listArgs = new List<object>();
+
+                        if (!String.IsNullOrEmpty(serviceReq.SESSION_CODE))
+                        {
+                            ServiceReqSessionDetailADO ado = new ServiceReqSessionDetailADO(serviceReq.SESSION_CODE, serviceReq.INTRUCTION_TIME);
+                            listArgs.Add(ado);
+                        }
+                        else
+                        {
+                            ServiceReqSessionDetailADO ado = new ServiceReqSessionDetailADO(serviceReq.ID);
+                            listArgs.Add(ado);
+                        }
+                        var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                        ((Form)extenceInstance).Show();
+                    }
+                }
+            }
+            catch (NullReferenceException ex)
+            {
+                WaitingManager.Hide();
+                DevExpress.XtraEditors.XtraMessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBKhongTimThayPluginsCuaChucNangNay), Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK, MessageBoxIcon.Warning, DevExpress.Utils.DefaultBoolean.True);
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private bool ProcessCheckOutMediStock(bool IsExpMestTemp)
+        {
+            bool isReturn = false;
+            try
+            {
+                if ((currentMediStock == null || currentMediStock.Count == 0) && mediMatyTypeADOs != null && mediMatyTypeADOs.Count > 0 && ((IsExpMestTemp && mediMatyTypeADOs.FirstOrDefault(o => o.IS_OUT_MEDI_STOCK == null) != null) || !IsExpMestTemp))
+                {
+                    mediMatyTypeADOs = new List<MediMatyTypeADO>();
+                    var myResult = DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.BanChuaChonKhoXuat, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
+                    cboMediStockExport.Focus();
+                    cboMediStockExport.SelectAll();
+                    isReturn = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return isReturn;
+        }
         private void ProcessMergeDuplicateRowForListProcessing()
         {
             try
@@ -229,7 +444,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                                             && o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID
                                             && o.IsExpend == item.IsExpend
                                             && o.PRICE == item.PRICE
-                            //&& !GlobalStore.IsTreatmentIn ? o.PRICE == item.PRICE : true
+                                            //&& !GlobalStore.IsTreatmentIn ? o.PRICE == item.PRICE : true
                                             );
 
                         if (checkPresExists != null && checkPresExists.ID > 0 && item.IsStent == false)
@@ -480,6 +695,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             {
                 if (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
                 {
+                    if (this.serviceReqWorking != null && this.serviceReqWorking.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK ||
+                                  this.oldServiceReq != null && this.oldServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK)
+                    {
+                        TakeOrReleaseBeanWorker.ProcessReleaseAllMaty();
+                        TakeOrReleaseBeanWorker.ProcessReleaseAllMedi();
+                    }
                     this.idRow = 1;
                     this.gridControlServiceProcess.DataSource = null;
                     this.mediMatyTypeADOs = new List<MediMatyTypeADO>();
@@ -1011,7 +1232,30 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void LoadVHisTreatment()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                filter.ID = this.treatmentId;
+                var vtreatmentDatas = new BackendAdapter(param).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, param);
 
+                this.VHistreatment = vtreatmentDatas != null ? vtreatmentDatas.FirstOrDefault() : new V_HIS_TREATMENT();
+                dteCommonParam = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(param.Now) ?? DateTime.Now;
+                this.patientDob = VHistreatment.TDL_PATIENT_DOB;
+                //timerReloadTreatmentFinishTime.Start();
+
+                //currentTreatment = GetTreatment(this.treatmentId);
+                AutoMapper.Mapper.CreateMap<V_HIS_TREATMENT, HIS_TREATMENT>();
+                currentTreatment = AutoMapper.Mapper.Map<HIS_TREATMENT>(this.VHistreatment);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         private void ResetDataForm()
         {
             try
@@ -1074,7 +1318,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 this.currentMedicineTypes = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o => o.IS_LEAF == GlobalVariables.CommonNumberTrue).ToList();
                 //long isOnlyDisplayMediMateIsBusiness = Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>(HisConfigCFG.ONLY_DISPLAY_MEDIMATE_IS_BUSINESS));
                 //if (isOnlyDisplayMediMateIsBusiness == 1 && this.currentMedicineTypes != null && this.currentMedicineTypes.Count > 0)
-               //     this.currentMedicineTypes = this.currentMedicineTypes.Where(o => o.IS_BUSINESS.HasValue && o.IS_BUSINESS.Value == 1).ToList();
+                //     this.currentMedicineTypes = this.currentMedicineTypes.Where(o => o.IS_BUSINESS.HasValue && o.IS_BUSINESS.Value == 1).ToList();
 
                 this.currentMaterialTypes = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().Where(o => o.IS_LEAF == GlobalVariables.CommonNumberTrue).ToList();
 
@@ -1354,10 +1598,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 this.ReleaseAllMediByUser();
 
                 MediMatyTypeADO metyADO = new MediMatyTypeADO(this.ServiceReqMetyWorking, this.intructionTimeSelecteds.First(), this.serviceReqWorking);
-
-                this.mediMatyTypeADOs.Add(metyADO);
-                this.ProcessInstructionTimeMediForEdit();
-                this.ProcessAddListRowDataIntoGridWithTakeBean();
+                if (this.serviceReqWorking != null && this.serviceReqWorking.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK ||
+                this.oldServiceReq != null && this.oldServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK)
+                {
+                    CommonParam Param = new CommonParam();
+                    if (TakeOrReleaseBeanWorker.TakeForCreateBean(this.oldExpMestId, metyADO, false, Param))
+                    {
+                        this.mediMatyTypeADOs.Add(metyADO);
+                        this.ProcessInstructionTimeMediForEdit();
+                        this.ProcessAddListRowDataIntoGridWithTakeBean();
+                    }
+                    else
+                    {
+                        //Release stent
+                        MessageManager.Show(Param, false);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -1652,6 +1908,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void ProcessGetSubServiceReqMety(List<HIS_SERVICE_REQ_METY> lstExpMestMety, HIS_SERVICE_REQ serviceReq, long currentInstructionTime)
+        {
+            try
+            {
+                if (lstExpMestMety != null)
+                {
+                    List<MediMatyTypeADO> mediMatyTypeADOAdds = new List<MediMatyTypeADO>();
+                    var q1 = (from m in lstExpMestMety
+                              where m.IS_SUB_PRES == 1
+                              select new MediMatyTypeADO(m, currentInstructionTime, serviceReq)).ToList();
+                    if (q1 != null && q1.Count > 0)
+                        mediMatyTypeADOAdds.AddRange(q1);
+
+                    //Check trong kho
+                    this.ProcessDataMediStock(mediMatyTypeADOAdds);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private void ProcessDataMediStock(List<MediMatyTypeADO> q)
         {
@@ -1762,7 +2040,98 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void ProcessGetServiceRequestMety(List<HIS_SERVICE_REQ_MATY> lstExpMestMaty, bool isEdit)
+        {
+            try
+            {
+                if (lstExpMestMaty != null)
+                {
+                    if (!isEdit)
+                    {
+                        List<MediMatyTypeADO> mediMatyTypeADOAdds = new List<MediMatyTypeADO>();
 
+                        var q1 = (from m in lstExpMestMaty
+                                  where m.IS_SUB_PRES == 1
+                                  select new MediMatyTypeADO(m, isEdit)).ToList();
+                        if (q1 != null && q1.Count > 0)
+                            mediMatyTypeADOAdds.AddRange(q1);
+
+                        //Check trong kho
+                        this.ProcessDataMediStock(mediMatyTypeADOAdds);
+
+                        var q2 = (from m in lstExpMestMaty
+                                  where m.IS_SUB_PRES != 1
+                                  select new MediMatyTypeADO(m, isEdit)).ToList();
+                        if (q2 != null && q2.Count > 0)
+                            this.mediMatyTypeADOs.AddRange(q2);
+                    }
+                    else
+                    {
+                        var q1 = (from m in lstExpMestMaty
+                                  select new MediMatyTypeADO(m, isEdit)).ToList();
+                        if (q1 != null && q1.Count > 0)
+                            this.mediMatyTypeADOs.AddRange(q1);
+                    }
+
+                    if (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
+                    {
+                        foreach (var item in this.mediMatyTypeADOs)
+                        {
+                            if (item.MEDI_STOCK_ID == null && item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU && (this.oldServiceReq != null && this.oldServiceReq.EXECUTE_ROOM_ID > 0))
+                            {
+                                var mediStock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(o => o.ROOM_ID == this.oldServiceReq.EXECUTE_ROOM_ID).FirstOrDefault();
+
+                                if (mediStock != null)
+                                {
+                                    item.MEDI_STOCK_ID = mediStock.ID;
+                                    item.MEDI_STOCK_CODE = mediStock.MEDI_STOCK_CODE;
+                                    item.MEDI_STOCK_NAME = mediStock.MEDI_STOCK_NAME;
+                                    if (mediStock.IS_EXPEND == 1)
+                                    {
+                                        item.IsExpend = true;
+                                        item.IsDisableExpend = true;
+                                    }
+                                }
+                            }
+
+                            if (item.PATIENT_TYPE_ID == null && item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU && (this.oldServiceReq != null && this.oldServiceReq.TDL_PATIENT_TYPE_ID > 0))
+                            {
+                                item.PATIENT_TYPE_ID = this.oldServiceReq.TDL_PATIENT_TYPE_ID;
+                                item.PATIENT_TYPE_CODE = "";
+                                item.PATIENT_TYPE_NAME = "";
+                            }
+
+                            if (this.oldServiceReq != null && this.serviceReqMain != null && this.serviceReqMain.IS_SUB_PRES == 1)
+                            {
+                                item.IS_SUB_PRES = 1;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void ProcessGetServiceRequestMety(List<HIS_SERVICE_REQ_METY> lstExpMestMety, HIS_SERVICE_REQ serviceReq, long currentInstructionTime)
+        {
+            try
+            {
+                if (lstExpMestMety != null)
+                {
+                    var q1 = (from m in lstExpMestMety
+                              where m.IS_SUB_PRES != 1
+                              select new MediMatyTypeADO(m, currentInstructionTime, serviceReq)).ToList();
+                    if (q1 != null && q1.Count > 0)
+                        this.mediMatyTypeADOs.AddRange(q1);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         //Thuoc trong danh muc
         private void ProcessGetServiceReqMety(List<HIS_SERVICE_REQ_METY> lstExpMestMety, bool isEdit)
         {

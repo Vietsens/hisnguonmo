@@ -136,7 +136,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
                 if (mety != null)
                 {
                     Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, mety);
-
+                    this.HTU_TEXT = inputData.HTU_TEXT;
                     this.SERVICE_UNIT_ID = (inputData.SERVICE_UNIT_ID ?? 0);
                     this.SERVICE_UNIT_CODE = inputData.SERVICE_UNIT_CODE;
                     this.SERVICE_UNIT_NAME = inputData.SERVICE_UNIT_NAME;
@@ -242,6 +242,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
                     this.SERVICE_UNIT_NAME = inputData.SERVICE_UNIT_NAME;
                     this.SERVICE_UNIT_CODE = inputData.SERVICE_UNIT_CODE;
                     this.AMOUNT = inputData.AMOUNT;
+                    this.HTU_TEXT = inputData.HTU_TEXT;
                     if (inputData.CONVERT_RATIO.HasValue)
                     {
                         this.AMOUNT = this.AMOUNT * inputData.CONVERT_RATIO.Value;
@@ -365,7 +366,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
                 this.PATIENT_TYPE_CODE = inputData.PATIENT_TYPE_CODE;
                 this.PATIENT_TYPE_NAME = inputData.PATIENT_TYPE_NAME;
                 this.SereServParentId = inputData.SERE_SERV_PARENT_ID;
-
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 if (inputData.CONVERT_RATIO.HasValue)
                 {
                     this.AMOUNT = this.AMOUNT * inputData.CONVERT_RATIO.Value;
@@ -399,6 +400,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
                     this.PRE_AMOUNT = this.AMOUNT;
                     this.NUM_ORDER = inputData.NUM_ORDER;
                     this.UseTimeTo = inputData.USE_TIME_TO;
+                    this.MAME_ID = inputData.MEDICINE_ID;
 
                     if (medicineBeans != null && medicineBeans.Count > 0)
                     {
@@ -475,6 +477,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
                     this.AMOUNT = this.AMOUNT * inputData.CONVERT_RATIO.Value;
                     this.PRICE = this.PRICE / inputData.CONVERT_RATIO.Value;
                 }
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
                 this.PATIENT_TYPE_ID = inputData.PATIENT_TYPE_ID;
                 this.PATIENT_TYPE_CODE = inputData.PATIENT_TYPE_CODE;
@@ -571,6 +574,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
                 this.ID = inputData.MATERIAL_TYPE_ID;
                 this.MEDICINE_TYPE_CODE = inputData.MATERIAL_TYPE_CODE;
                 this.MEDICINE_TYPE_NAME = inputData.MATERIAL_TYPE_NAME;
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 this.MEDICINE_USE_FORM_NAME = "";
                 this.TUTORIAL = "";
 
@@ -608,6 +612,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
 
                     this.PRE_AMOUNT = this.AMOUNT;
                     this.NUM_ORDER = inputData.NUM_ORDER;
+                    this.MAME_ID = inputData.MATERIAL_ID;
 
                     if (materialBeans != null && materialBeans.Count > 0)
                     {
@@ -844,6 +849,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
                 this.TUTORIAL = inputData.TUTORIAL;
                 this.AMOUNT = inputData.AMOUNT;
                 this.PRICE = inputData.PRICE;
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 if (this.CONVERT_RATIO.HasValue)
                 {
                     this.AMOUNT = this.AMOUNT * this.CONVERT_RATIO.Value;
@@ -904,6 +910,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
                 this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC;
                 this.UseTimeTo = inputData.USE_TIME_TO;
                 this.TUTORIAL = inputData.TUTORIAL;
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 this.AMOUNT = inputData.AMOUNT / (serviceReq.KIDNEY_TIMES ?? 1);
                 this.PRICE = inputData.PRICE;
                 if (this.CONVERT_RATIO.HasValue)
@@ -966,6 +973,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
 
                 this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM;
                 this.AMOUNT = inputData.AMOUNT;
+                this.HTU_TEXT = inputData.HTU_TEXT;
                 this.PRICE = inputData.PRICE;
                 if (this.CONVERT_RATIO.HasValue)
                 {
@@ -1073,6 +1081,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
         public decimal? Speed { get; set; }
         public short? IS_CHEMICAL_SUBSTANCE { get; set; }
         public bool IsExpendType { get; set; }
+        public bool IsDisableExpend { get; set; }
+        public short? IS_SUB_PRES { get; set; }
+        public string EXCEED_LIMIT_IN_PRES_REASON { get; set; }
+        public string EXCEED_LIMIT_IN_DAY_REASON { get; set; }
+        public string EXCEED_LIMIT_IN_BATCH_REASON { get; set; }
+        public string ODD_PRES_REASON { get; set; }
+        public short? IS_OUT_MEDI_STOCK { get; set; }
+        public string OVER_RESULT_TEST_REASON { get; set; }
+        public string OVER_KIDNEY_REASON { get; set; }
+        public bool IsNoPrescription { get; set; }
+        public bool IsAlertInTreatPresciption { get; set; }
+        public bool? IsAssignPackage { get; set; }
+        public Dictionary<long, List<TreatmentOverReason>> dicTreatmentOverResultTestReason { get; set; }
+        public Dictionary<long, List<TreatmentOverReason>> dicTreatmentOverKidneyReason { get; set; }
+        public bool? IsUseOrginalUnitForPres { get; set; }
+        public long? MAME_ID { get; set; }
+        public string HTU_TEXT { get; set; }
         public long? PATIENT_TYPE_ID { get; set; }
         public string PATIENT_TYPE_CODE { get; set; }
         public string PATIENT_TYPE_NAME { get; set; }

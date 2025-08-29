@@ -53,7 +53,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Save.Update
 
         object ISave.Run()
         {
-            return Run__In();
+            return frmAssignPrescription.oldServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT ? Run__In() : Run__Out();
         }
     }
 }

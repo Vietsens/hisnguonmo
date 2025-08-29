@@ -759,4 +759,22 @@
   <data name="frmAssignPrescription.lciForspinKidneyCount.Text" xml:space="preserve">
     <value>S/lần chạy thận:</value>
   </data>
+  <data name="UCPeriousExpMestList.cboItem1__Text" xml:space="preserve">
+    <value>1 tháng</value>
+  </data>
+  <data name="UCPeriousExpMestList.cboItem2__Text" xml:space="preserve">
+    <value>2 tháng</value>
+  </data>
+  <data name="UCPeriousExpMestList.cboItem3__Text" xml:space="preserve">
+    <value>3 tháng</value>
+  </data>
+  <data name="UCPeriousExpMestList.cboItem4__Text" xml:space="preserve">
+    <value>Tùy chọn</value>
+  </data>
+  <data name="UCPeriousExpMestList.gridControlPreviousprescription__gcol4__Caption" xml:space="preserve">
+    <value>Mã kho</value>
+  </data>
+  <data name="UCPeriousExpMestList.lciCheckBox__Text" xml:space="preserve">
+    <value>Không hiển thị đơn tủ trực</value>
+  </data>
 </root>
