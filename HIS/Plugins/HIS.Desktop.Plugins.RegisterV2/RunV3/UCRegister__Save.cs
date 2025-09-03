@@ -194,18 +194,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                                 if (this.currentHisExamServiceReqResultSDO != null
                                     && this.currentHisExamServiceReqResultSDO.HisPatientProfile != null
-                                    //&& this.currentHisExamServiceReqResultSDO.SereServs != null
-                                    //&& this.currentHisExamServiceReqResultSDO.SereServs.Count > 0
                                     && this.currentHisExamServiceReqResultSDO.ServiceReqs != null
                                     && this.currentHisExamServiceReqResultSDO.ServiceReqs.Count > 0)
                                 {
                                     this.resultHisPatientProfileSDO = this.currentHisExamServiceReqResultSDO.HisPatientProfile;
-                                    //qtcode
-                                    //if (isTransferIn && !string.IsNullOrEmpty(transferInCode))
-                                    //{
-                                    //    this.resultHisPatientProfileSDO.HisTreatment.IS_TRANSFER_IN = 1;
-                                    //    this.resultHisPatientProfileSDO.HisTreatment.TRANSFER_IN_CODE = transferInCode;
-                                    //}
                                     this.ExamRegisterSuccess(param);
                                     if (this.currentHisExamServiceReqResultSDO.ServiceReqs.Count > 0 && HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.IsDangKyQuaTongDai == "1")
                                     {
@@ -267,13 +259,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                                 if (this.resultHisPatientProfileSDO != null)
                                 {
-                                    //qtcode
-                                    //if (isTransferIn && !string.IsNullOrEmpty(transferInCode))
-                                    //{
-                                    //    this.resultHisPatientProfileSDO.HisTreatment.IS_TRANSFER_IN = 1;
-                                    //    this.resultHisPatientProfileSDO.HisTreatment.TRANSFER_IN_CODE = transferInCode;
-                                    //}
-                                    //qtcode
                                     this.PatientProfileSuccess(param);
                                     success = true;
                                 }

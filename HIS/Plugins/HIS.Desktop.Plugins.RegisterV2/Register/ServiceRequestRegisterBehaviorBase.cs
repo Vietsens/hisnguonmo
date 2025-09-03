@@ -379,6 +379,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 {
                     this.isBhytHolded = this.heinInfoValue.HisTreatment.IS_BHYT_HOLDED;
                     this.HeinPatientCode = this.heinInfoValue.HisTreatment.HEIN_PATIENT_TYPE_CODE;
+                    //qtcode
                     this.TransferInCode = this.heinInfoValue.HisTreatment.TRANSFER_IN_CODE;
                     this.IsTransferIn = this.heinInfoValue.HisTreatment.IS_TRANSFER_IN;
                 }
@@ -516,6 +517,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                     this.transferInTimeTo = this.UCTransPatiADO.TRANSFER_IN_TIME_TO;
                     this.transferInReviews = this.UCTransPatiADO.TRANSFER_IN_REVIEWS;
                     this.ImgTransferInData = this.UCTransPatiADO.ImgTransferInData;
+                    this.IsTransferIn = 1; 
                 }
 
                 // Other
@@ -759,14 +761,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         {
             try
             {
-                //qtcode
-                //string transferInCode = null;
-                //bool isTransferIn = false;
-                //if (this.ucHeinInfo1 != null)
-                //{
-                //    transferInCode = this.ucHeinInfo1.GetTransferInCode();
-                //    isTransferIn = this.ucHeinInfo1.GetIsTransferIn();
-                //}
                 if (Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetTokenData() != null && departmentId > 0)
                 {
                     this.patientProfile.DepartmentId = departmentId;
