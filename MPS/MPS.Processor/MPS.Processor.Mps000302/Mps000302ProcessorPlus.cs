@@ -79,7 +79,7 @@ namespace MPS.Processor.Mps000302
                     foreach (var sereServBHYTGroup in sereServBHYTGroups)
                     {
                         SereServADO sereServ = sereServBHYTGroup.FirstOrDefault();
-                        sereServ.AMOUNT = sereServBHYTGroup.Sum(o => o.AMOUNT);
+                        sereServ.AMOUNT = sereServBHYTGroup.Sum(o => o.AMOUNT);                       
                         sereServ.VIR_TOTAL_HEIN_PRICE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_HEIN_PRICE);
                         sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT);
                         sereServ.TOTAL_PRICE_BHYT = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_BHYT);
@@ -94,10 +94,13 @@ namespace MPS.Processor.Mps000302
 
                         if (sereServ.STENT_ORDER.HasValue && sereServ.STENT_ORDER.Value > 1)
                         {
-                            sereServ.TOTAL_PRICE_BHYT =
-                                  (sereServ.VIR_TOTAL_HEIN_PRICE ?? 0)
-                                + (sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0)
-                                + (sereServ.OTHER_SOURCE_PRICE ?? 0);
+                            decimal quyBHTT = sereServ.VIR_TOTAL_HEIN_PRICE ?? 0;
+                            decimal bnCungChiTra = sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0;
+                            decimal nguonKhac = sereServ.OTHER_SOURCE_PRICE ?? 0;
+
+                            decimal bnHoacNguonKhac = bnCungChiTra > 0 ? bnCungChiTra : nguonKhac;
+
+                            sereServ.TOTAL_PRICE_BHYT = quyBHTT + bnHoacNguonKhac;
                         }
                     }
 
@@ -132,7 +135,8 @@ namespace MPS.Processor.Mps000302
                            o.IS_EXPEND,
                            o.NUMBER_OF_FILM,
                            o.KEY_PATY_ALTER,
-                           o.HEIN_SERVICE_TYPE_ID
+                           o.HEIN_SERVICE_TYPE_ID,
+                           o.STENT_ORDER
                        }).ToList();
 
                     foreach (var sereServBHYTGroup in sereServBHYTGroupSuatAns)
@@ -150,6 +154,17 @@ namespace MPS.Processor.Mps000302
                         sereServ.TOTAL_PRICE_VP = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_VP);
                         sereServ.IS_PAID = sereServBHYTGroup.Min(o => o.IS_PAID);//tất cả thanh toán min sẽ là 1 nếu có 1 dv chưa thanh toán min sẽ là 0
                         sereServADOSAs.Add(sereServ);
+
+                        if (sereServ.STENT_ORDER.HasValue && sereServ.STENT_ORDER.Value > 1)
+                        {
+                            decimal quyBHTT = sereServ.VIR_TOTAL_HEIN_PRICE ?? 0;
+                            decimal bnCungChiTra = sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0;
+                            decimal nguonKhac = sereServ.OTHER_SOURCE_PRICE ?? 0;
+
+                            decimal bnHoacNguonKhac = bnCungChiTra > 0 ? bnCungChiTra : nguonKhac;
+
+                            sereServ.TOTAL_PRICE_BHYT = quyBHTT + bnHoacNguonKhac;
+                        }
                     }
 
                     //không có stent lên đầu.

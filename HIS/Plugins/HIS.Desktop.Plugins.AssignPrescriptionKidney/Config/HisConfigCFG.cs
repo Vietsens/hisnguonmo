@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         private const string CONFIG_KEY__OBLIGATE_ICD = "EXE.ASSIGN_SERVICE_REQUEST__OBLIGATE_ICD";
         private const string Key__IsAllowPrintFinish = "HIS.Desktop.AllowPrint.Finish";
         private const string Key__AcinInteractive__Grade = "HIS.Desktop.Plugins.AssignPrescription.AcinInteractive__Grade";
+        private const string IS_CHECK_DEPARTMENT_IN_TIME_WHEN_PRES_OR_ASSIGN = "HIS.Desktop.Plugins.IsCheckDepartmentInTimeWhenPresOrAssign";
 
         private const string TREATMENT_END___APPOINTMENT_TIME_DEFAULT_KEY = "EXE.HIS_TREATMENT_END.APPOINTMENT_TIME_DEFAULT";
         private const string PRESCRIPTION_TIME_AND_APPOINTMENT_TIME_KEY = "HIS.Desktop.Plugins.TreatmentFinish.APPOINTMENT_TIME";
@@ -60,6 +61,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         public const string ICD_SERVICE__HAS_REQUIRE_CHECK = "HIS.HIS_ICD_SERVICE.HAS_REQUIRE_CHECK";
         public const string HIS_ICD_SERVICE__ALLOW_UPDATE = "HIS.HIS_ICD_SERVICE.ALLOW_UPDATE";
 
+        internal const string CONFIG_KEY__DONT_PRES_EXPIRED_ITEM = "MOS.HIS_MEDI_STOCK.DONT_PRES_EXPIRED_ITEM";
         internal const string SAVE_PRINT_MPS_DEFAULT = "HIS.Desktop.Plugins.Library.PrintPrescription.Mps";
         internal const string CHECK_SAME_HEIN_KEY = "HIS.DESKTOP.TREATMENT_FINISH.CHECK_SAME_HEIN";
         internal const string TUTORIAL_NUMBER_IS_FRAC = "HIS.Desktop.Plugins.AssignPrescription.TutorialNumberIsFrac";
@@ -81,6 +83,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         /// <summary>
         /// 1: Kê nhiều ngày theo cả đơn; 2: Kê nhiều ngày theo từng thuốc
         /// </summary>
+        /// 
+        internal static bool IsDontPresExpiredTime;
+        internal static bool IsCheckDepartmentInTimeWhenPresOrAssign;
         internal static long ManyDayPrescriptionOption;
         internal static bool IsAutoTickExpendWithAssignPresPTTT;
         internal static bool IsNotAllowingExpendWithoutHavingParent;
@@ -211,7 +216,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
                 }
 
                 IsDefaultFocusMedicineTabPage = GetValue(CONFIG_KEY__IsDefaultFocusMedicineTabPage);
-
+                IsCheckDepartmentInTimeWhenPresOrAssign = (GetValue(IS_CHECK_DEPARTMENT_IN_TIME_WHEN_PRES_OR_ASSIGN) == "1");
+                IsDontPresExpiredTime = GetValue(CONFIG_KEY__DONT_PRES_EXPIRED_ITEM) == GlobalVariables.CommonStringTrue;
                 IsMultiCheckservice = GetValue(CONFIG_KEY__IsMultiCheckservice);
                 PatientTypeCode__BHYT = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT);
                 PatientTypeId__BHYT = GetPatientTypeByCode(PatientTypeCode__BHYT).ID;

@@ -94,10 +94,13 @@ namespace MPS.Processor.Mps000279
 
                     if (sereServ.STENT_ORDER.HasValue && sereServ.STENT_ORDER.Value > 1)
                     {
-                        sereServ.TOTAL_PRICE_BHYT =
-                              (sereServ.VIR_TOTAL_HEIN_PRICE ?? 0)
-                            + (sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0)
-                            + (sereServ.OTHER_SOURCE_PRICE ?? 0);
+                        decimal quyBHTT = sereServ.VIR_TOTAL_HEIN_PRICE ?? 0;
+                        decimal bnCungChiTra = sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0;
+                        decimal nguonKhac = sereServ.OTHER_SOURCE_PRICE ?? 0;
+
+                        decimal bnHoacNguonKhac = bnCungChiTra > 0 ? bnCungChiTra : nguonKhac;
+
+                        sereServ.TOTAL_PRICE_BHYT = quyBHTT + bnHoacNguonKhac;
                     }
                 }
 

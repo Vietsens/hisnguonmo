@@ -219,7 +219,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     }
                 }
 
-                success = ProcessAfterSaveForIn(isave, isSaveAndPrint, (InPatientPresResultSDO)rsData);
+                success = rsData is InPatientPresResultSDO ? ProcessAfterSaveForIn(isave, isSaveAndPrint, (InPatientPresResultSDO)rsData) : ProcessAfterSaveForOut(isave, isSaveAndPrint, (OutPatientPresResultSDO)rsData);
 
                 if (success)
                 {
@@ -265,7 +265,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             }
         }
 
-        private bool ProcessAfterSaveForIn(ISave isave, bool isSaveAndPrint, InPatientPresResultSDO rsIn)
+        private bool ProcessAfterSaveForIn(ISave isave, bool isSaveAndPrint, object rsIn)
         {
             bool success = false;
             this.inPrescriptionResultSDOs = (rsIn as InPatientPresResultSDO);
@@ -287,6 +287,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     Inventec.Common.Logging.LogSystem.Warn("Goi ham cap nhat du lieu tu delegate module goi vao that bai (call processDataResult fail)", ex);
                 }
 
+                success = true;
+            }
+            return success;
+        }
+
+
+        private bool ProcessAfterSaveForOut(ISave isave, bool isSaveAndPrint, OutPatientPresResultSDO rsOut)
+        {
+            bool success = false;
+            var outPrescriptionResultSDOs = (rsOut as OutPatientPresResultSDO);
+            if (outPrescriptionResultSDOs != null
+                && outPrescriptionResultSDOs.ServiceReqs != null && outPrescriptionResultSDOs.ServiceReqs.Count > 0
+                && ((outPrescriptionResultSDOs.ServiceReqMaties != null && outPrescriptionResultSDOs.ServiceReqMaties.Count > 0)
+                    || (outPrescriptionResultSDOs.ServiceReqMeties != null && outPrescriptionResultSDOs.ServiceReqMeties.Count > 0)
+                    || (outPrescriptionResultSDOs.Materials != null && outPrescriptionResultSDOs.Materials.Count > 0)
+                    || (outPrescriptionResultSDOs.Medicines != null && outPrescriptionResultSDOs.Medicines.Count > 0))
+                )
+            {
                 success = true;
             }
             return success;

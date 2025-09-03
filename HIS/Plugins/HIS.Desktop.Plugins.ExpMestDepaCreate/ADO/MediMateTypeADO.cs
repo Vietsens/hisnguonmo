@@ -147,15 +147,15 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate.ADO
                 {
                     this.IsBlood = true;
                     this.IsMedicine = false;
-                    this.SERVICE_ID = blood.ServiceId ?? 0;
-                    this.MEDI_MATE_TYPE_ID = blood.Id ?? 0;
+                    this.SERVICE_ID = blood.ServiceId;
+                    this.MEDI_MATE_TYPE_ID = blood.Id;
                     this.MEDI_MATE_TYPE_CODE = blood.BloodTypeCode;
                     this.MEDI_MATE_TYPE_NAME = blood.BloodTypeName;
                     this.SERVICE_UNIT_NAME = "Túi";
                     this.VOLUME = blood.Volume;
                     this.AVAILABLE_AMOUNT = blood.Amount;
                     this.ExpBlood = new ExpBloodTypeSDO();
-                    this.ExpBlood.BloodTypeId = blood.Id ?? 0;
+                    this.ExpBlood.BloodTypeId = blood.Id;
                 }
             }
             catch (Exception ex)

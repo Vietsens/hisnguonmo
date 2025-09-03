@@ -28,7 +28,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney
         public const string HIS_SERVICE_REQ_MATY__GETVIEW = "api/HisServiceReqMaty/GetView";
 
         public const string HIS_SERVICE_REQ__IN_PATIENT_PRES_CREATE = "api/HisServiceReq/InPatientPresCreate";
-        public const string HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE = "api/HisServiceReq/OutPatientPresCreate";
+        public const string HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE = "api/HisServiceReq/OutPatientPresCreateList";
         public const string HIS_SERVICE_REQ__IN_PATIENT_PRES_UPDATE = "api/HisServiceReq/InPatientPresUpdate";
         public const string HIS_SERVICE_REQ__OUTPATIENT_PRES_UPDATE = "api/HisServiceReq/OutPatientPresUpdate";
         public const string HIS_EXP_MEST__GET = "api/HisExpMest/Get";

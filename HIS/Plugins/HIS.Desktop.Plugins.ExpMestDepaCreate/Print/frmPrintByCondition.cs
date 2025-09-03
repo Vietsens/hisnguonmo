@@ -349,6 +349,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate.Print
                 txtTitlePrint.Text.ToString().ToUpper()
                             );
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.resultSdo?.ExpMest?.REQ_ROOM_ID);
                 if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000134RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
@@ -357,6 +358,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate.Print
                 {
                     PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000134RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                 }
+                PrintData.EmrInputADO = inputADO;
                 result = MPS.MpsPrinter.Run(PrintData);
                 //if (result)
                 //{

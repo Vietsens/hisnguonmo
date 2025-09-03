@@ -43,6 +43,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Save.Update
                 prescriptionSDO.Id = OldServiceReq.ID;
                 prescriptionSDO.TreatmentId = this.TreatmentId;
                 prescriptionSDO.PrescriptionTypeId = PrescriptionType.NEW;
+                prescriptionSDO.IsExecuteKidneyPres = true;
+                prescriptionSDO.KidneyServiceReqId = frmAssignPrescription.oldServiceReq.KIDNEY_SERVICE_REQ_ID;
                 this.ProcessPrescriptionUpdateSDO(prescriptionSDO);
                 this.ProcessPrescriptionUpdateSDOICD(prescriptionSDO);
 

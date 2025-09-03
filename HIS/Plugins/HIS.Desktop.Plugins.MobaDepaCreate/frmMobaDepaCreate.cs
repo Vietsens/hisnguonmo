@@ -761,7 +761,8 @@ namespace HIS.Desktop.Plugins.MobaDepaCreate
                 }
 
                 MPS.Processor.Mps000214.PDO.Mps000214PDO rdo = new MPS.Processor.Mps000214.PDO.Mps000214PDO(this.resultMobaSdo.ImpMest, this.resultMobaSdo.ImpMedicines, this.resultMobaSdo.ImpMaterials, expMestMedicines, expMestMaterials, expMest);
-                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
+                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "") { EmrInputADO = inputADO });
                 if (result)
                 {
                     this.Close();

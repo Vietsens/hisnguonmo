@@ -60,6 +60,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Worker
             bool valid = true;
             try
             {
+                if (serviceId <= 0)
+                    return true;
                 int age = 0;
                 var sv = BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => o.ID == serviceId).FirstOrDefault();
                 var medi = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o => o.SERVICE_ID == serviceId).FirstOrDefault();
