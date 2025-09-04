@@ -1488,7 +1488,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                      mps000203Ado,
                      lstBloodGiver
                       );
-                    result = MpsPrinterRun(printTypeCode, fileName, mps000203Ado);
+                    result = MpsPrinterRun(printTypeCode, fileName, mps000203PDO);
                 }
             }
             catch (Exception ex)
