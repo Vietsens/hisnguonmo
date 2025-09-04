@@ -73,7 +73,12 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
         internal List<HIS_EXECUTE_ROLE_USER> listExecuteRoleUser = new List<HIS_EXECUTE_ROLE_USER>();
         internal List<HIS_IMP_USER_TEMP> listImpUserTemp = new List<HIS_IMP_USER_TEMP>();
 
-        public bool MpsPrinterRun(string printTypeCode, string fileName, object data, MPS.ProcessorBase.PrintConfig.PreviewType previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog)
+        public bool MpsPrinterRun(
+            string treatmentCode,
+            string printTypeCode, 
+            string fileName, 
+            object data, 
+            MPS.ProcessorBase.PrintConfig.PreviewType previewType)
         {
             bool result = false;
             try
@@ -90,7 +95,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                     ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2 ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : previewType,
                     printerName);
                 printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(
-                    printTypeCode,
+                    treatmentCode,
                     printTypeCode,
                     this.currentModule != null ?
                     this.currentModule.RoomId : 0);
@@ -885,7 +890,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 );
 
                 WaitingManager.Hide();
-                result = MpsPrinterRun(printTypeCode, fileName, pdo);
+                result = MpsPrinterRun(printTypeCode,printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -904,7 +909,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                  this.impMestBloods
                 );
 
-                result = MpsPrinterRun(printTypeCode, fileName, pdo);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -947,7 +952,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                 expMestMaterials
                 );
                 WaitingManager.Hide();
-                result = MpsPrinterRun(printTypeCode, fileName, pdo);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -967,7 +972,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                  this.impMest,
                  this.impMestMedicines
                 );
-                result = MpsPrinterRun(printTypeCode, fileName, pdo);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -986,7 +991,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                  this.impMest,
                  this.impMestMedicines
                 );
-                result = MpsPrinterRun(printTypeCode, fileName, pdo);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -1019,7 +1024,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                         mps000143Key.EXP_MEDI_STOCK_NAME = expMestView.FirstOrDefault().MEDI_STOCK_NAME;
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule != null ? this.currentModule.RoomId : 0);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode("", printTypeCode, this.currentModule != null ? this.currentModule.RoomId : 0);
                     WaitingManager.Hide();
 
                     long keyPrintType = ConfigApplicationWorker.Get<long>(Base.AppConfigKeys.CONFIG_KEY__HIS_DESKTOP__CHE_DO_IN_GOP_PHIEU_TRA);
@@ -1188,7 +1193,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                  _Materials,
                  BackendDataWorker.Get<HIS_IMP_SOURCE>()
                 );
-                result = MpsPrinterRun(printTypeCode, fileName, pdo);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -1260,7 +1265,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                         impMestBloods,
                         _ImpMestUser
                         );
-                    result = MpsPrinterRun(printTypeCode, fileName, Mps000199RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
+                    result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, Mps000199RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 WaitingManager.Hide();
             }
@@ -1328,7 +1333,7 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
                  _Supplier
                   );
                 WaitingManager.Hide();
-                result = MpsPrinterRun(printTypeCode, fileName, mps0000085RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, mps0000085RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
             }
             catch (Exception ex)
             {
