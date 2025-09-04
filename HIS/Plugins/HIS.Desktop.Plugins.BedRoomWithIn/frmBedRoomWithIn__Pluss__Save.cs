@@ -344,6 +344,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 }
                 departmentTranReceiveSDO.DepartmentId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId).DepartmentId;
                 departmentTranReceiveSDO.RequestRoomId = this.currentModule.RoomId;
+                departmentTranReceiveSDO.IsCAPD = chkPatientCAPD.Checked;
 
                 IcdInputADO OjecIcd = (IcdInputADO)icdProcessor.GetValue(ucIcd);
                 departmentTranReceiveSDO.IcdName = OjecIcd != null ? OjecIcd.ICD_NAME : "";
