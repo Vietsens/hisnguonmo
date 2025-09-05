@@ -336,7 +336,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 // UCOtherServiceReqInfo
                 //qtcode
                 this.IS_CAPD = this.serviceReqInfoValue.IS_CAPD;
-                this.IsCAPD = this.serviceReqInfoValue.isCAPD; 
+                this.IsCAPD = this.serviceReqInfoValue.IsCAPD; 
                 this.chkExamOnline = this.serviceReqInfoValue.IsExamOnline;
                 this.chkEmergency = this.serviceReqInfoValue.IsEmergency;
                 this.intructionTime = this.serviceReqInfoValue.IntructionTime;
@@ -683,7 +683,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                     this.patientProfile.HisPatient.PASSPORT_PLACE = this.cMNDPlace;
                 }
                 //qtcode
-                this.patientProfile.HisPatient.IS_CAPD = this.IS_CAPD ? (short?)1 : null;
+                this.patientProfile.HisPatient.IS_CAPD = this.IS_CAPD;
+                this.patientProfile.IsCAPD = this.IsCAPD;
                 this.patientProfile.HisPatient.COMMUNE_CODE = this.communeCode;
                 this.patientProfile.HisPatient.HT_ADDRESS = this.addressNow;
                 this.patientProfile.HisPatient.HT_COMMUNE_NAME = this.communeNowName;
