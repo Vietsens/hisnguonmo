@@ -827,6 +827,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                     var _Patient = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>(HisRequestUriStore
                     .HIS_PATIENT_GET, ApiConsumers.MosConsumer, filterPatient, null).FirstOrDefault();
                     lblNote.Text = _Patient != null ? _Patient.NOTE : "";
+                    chkPatientCAPD.Checked = _Patient != null && _Patient.IS_CAPD == 1;
                     toolTipController1.SetToolTip(lblNote, lblNote.Text);
                 }
 
@@ -893,7 +894,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        
         private void dtLogTime_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try

@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraEditors.DXErrorProvider;
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO;
@@ -28,6 +29,7 @@ using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt;
 using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.Base;
 using HIS.Desktop.Plugins.Library.PrintTreatmentFinish;
 using HIS.UC.MenuPrint.ADO;
+using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
@@ -238,6 +240,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                         var logDatail = String.Join("||||", this.mediMatyTypeADOs.Select(o => o.MEDICINE_TYPE_NAME + "(" + o.MEDICINE_TYPE_CODE + ") - IsExpend = " + o.IsExpend + " - IsExpendType=" + o.IsExpendType));
                         Inventec.Common.Logging.LogSystem.Debug(String.Format("Tai khoan {0} da sua don thuoc(ServiceReqCode ={1})   thanh cong, log chi tiet: {2}", loginName, this.oldServiceReq.SERVICE_REQ_CODE, logDatail));
                     }
+                    ReloadPeriousExpMestList();
                 }
                 else
                 {
@@ -264,7 +267,38 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void ReloadPeriousExpMestList()
+        {
+            try
+            {
+                if (this.currentPrescriptionFilter == null)
+                    this.currentPrescriptionFilter = new MOS.Filter.HisServiceReqView7Filter();
 
+                this.currentPrescriptionFilter.TDL_PATIENT_ID = VHistreatment.PATIENT_ID;
+                this.currentPrescriptionFilter.ORDER_DIRECTION = "DESC";
+                this.currentPrescriptionFilter.ORDER_FIELD = "INTRUCTION_TIME";
+
+                if (this.periousExpMestListProcessor != null && this.ucPeriousExpMestList != null)
+                {
+                    var serviceReqs = new BackendAdapter(paramCommon)
+                        .Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_7>>(
+                            "/api/HisServiceReq/GetView7",
+                            ApiConsumers.MosConsumer,
+                            this.currentPrescriptionFilter,
+                            paramCommon
+                        );
+                    serviceReqs = serviceReqs
+                        .OrderByDescending(x => x.INTRUCTION_TIME)
+                        .ToList();
+
+                    this.periousExpMestListProcessor.Reload(this.ucPeriousExpMestList, serviceReqs);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private bool ProcessAfterSaveForIn(ISave isave, bool isSaveAndPrint, object rsIn)
         {
             bool success = false;

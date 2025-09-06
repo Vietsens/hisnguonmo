@@ -483,6 +483,7 @@ namespace HIS.UC.PeriousExpMestList.Run
                     this.serviceReqView7Filter.NULL_OR_NOT_IN_EXP_MEST_TYPE_IDs.Remove(IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DTT);
                 this.serviceReqView7Filter.ORDER_DIRECTION = this.currentPrescriptionFilter.ORDER_DIRECTION;
                 this.serviceReqView7Filter.ORDER_FIELD = this.currentPrescriptionFilter.ORDER_FIELD;
+                this.serviceReqView7Filter.IS_EXECUTE_KIDNEY_PRES = this.currentPrescriptionFilter.IS_EXECUTE_KIDNEY_PRES;
                 this.ListServiceReqs = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_7>>(HisRequestUriStore.HIS_SERVICE_REQ_GETVIEW7, ApiConsumers.MosConsumer, this.serviceReqView7Filter, param);
 
                 if (this.ListServiceReqs != null && this.ListServiceReqs.Count > 0)

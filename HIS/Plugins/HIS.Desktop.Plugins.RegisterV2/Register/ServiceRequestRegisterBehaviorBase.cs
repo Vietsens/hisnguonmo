@@ -197,6 +197,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         //qtcode
         protected string TransferInCode { get; set; }
         protected short? IsTransferIn { get; set; }
+        protected short? IS_CAPD { get; set; }
+        protected bool IsCAPD { get; set; }
 
         // UCTransPatin
         protected string icd_Code { get; set; }
@@ -332,6 +334,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 //this.height = this.addressInfoValue.Height;
 
                 // UCOtherServiceReqInfo
+                //qtcode
+                this.IS_CAPD = this.serviceReqInfoValue.IS_CAPD;
+                this.IsCAPD = this.serviceReqInfoValue.isCAPD; 
                 this.chkExamOnline = this.serviceReqInfoValue.IsExamOnline;
                 this.chkEmergency = this.serviceReqInfoValue.IsEmergency;
                 this.intructionTime = this.serviceReqInfoValue.IntructionTime;
@@ -677,6 +682,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                     this.patientProfile.HisPatient.PASSPORT_NUMBER = this.passPortNumber;
                     this.patientProfile.HisPatient.PASSPORT_PLACE = this.cMNDPlace;
                 }
+                //qtcode
+                this.patientProfile.HisPatient.IS_CAPD = this.IS_CAPD ? (short?)1 : null;
                 this.patientProfile.HisPatient.COMMUNE_CODE = this.communeCode;
                 this.patientProfile.HisPatient.HT_ADDRESS = this.addressNow;
                 this.patientProfile.HisPatient.HT_COMMUNE_NAME = this.communeNowName;
