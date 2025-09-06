@@ -194,7 +194,7 @@ namespace MPS.Processor.Mps000088
 
                                     if (itemValue > 0)
                                     {
-                                        propertyInfo.SetValue(ado, itemValue.ToString());
+                                        propertyInfo.SetValue(ado, itemValue);
                                     }
                                 }
                                 PropertyInfo propertyInfo2 = ps.FirstOrDefault(o => o.Name == string.Format("MORNING_Day{0}", j + 1));
@@ -291,7 +291,7 @@ namespace MPS.Processor.Mps000088
 
                                     if (itemValue > 0)
                                     {
-                                        propertyInfo.SetValue(ado, itemValue.ToString());
+                                        propertyInfo.SetValue(ado, itemValue);
                                     }
                                 }
                                 PropertyInfo propertyInfo2 = ps.FirstOrDefault(o => o.Name == string.Format("MORNING_Day{0}", j + 1));
