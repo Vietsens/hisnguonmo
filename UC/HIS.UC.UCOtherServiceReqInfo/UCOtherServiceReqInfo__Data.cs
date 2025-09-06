@@ -179,6 +179,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             {
                 dataServiceReqInfoADO.HospitalizationReason = !string.IsNullOrEmpty(txtHosReason.Text.Trim()) ? txtHosReason.Text.Trim() : null;
                 dataServiceReqInfoADO.IntructionTime = Inventec.Common.TypeConvert.Parse.ToInt64(DateTimeHelper.ConvertDateTimeStringToSystemTime(this.txtIntructionTime.Text).Value.ToString("yyyyMMddHHmm") + "00");
+                //qtcode
+                dataServiceReqInfoADO.IsCAPD = this.chkCAPD.Checked;
+                dataServiceReqInfoADO.IS_CAPD = this.chkCAPD.Checked ? (short?)1 : (short?)null;
                 if (chkCapMaMS.Checked)
                     dataServiceReqInfoADO.IsCapMaMS = true;
                 else
@@ -457,6 +460,8 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 this.chkIsChronic.Checked = data.IS_CHRONIC == 1;
                 this.chkTuberculosis.Checked = data.IS_TUBERCULOSIS == 1;
                 this.cboPatientClassify.EditValue = null;
+                //qtcode
+                this.chkCAPD.Checked = data.IS_CAPD == 1;
                 this.cboPatientClassify.EditValue = data.PATIENT_CLASSIFY_ID;
                 this.chkIsHiv.Checked = data.IS_HIV == 1;
                 GetTreatment();
@@ -575,6 +580,8 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 this.chkTuberculosis.Checked = false;
                 this.txtHosReason.Text = null;
                 this.txtHosReasonNt.Text = null;
+                //qtcode
+                this.chkCAPD.Checked = false;
             }
             catch (Exception ex)
             {

@@ -63,7 +63,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
         List<HIS_BRANCH_TIME> _BranchTimes = null;
 
         bool _IsAutoSetOweType = false;
-
+        //qtcode
+        public short? IS_CAPD { get; set; }
+        public bool IsCAPD { get; set; }
         bool hasDataAutoCheckPriority = false;
         bool IsChangeFromClassify = false;
         List<HIS_OTHER_PAY_SOURCE> dataOtherPayTemp = null;
