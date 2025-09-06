@@ -98,6 +98,10 @@ namespace MPS.Processor.Mps000100
                 objectTag.AddObjectData(store, "ImpMestAggregates", ImpMestManuMedicineSumForPrints);
                 objectTag.AddObjectData(store, "MedicineGroup", lstMedicineType);
                 objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent);
+
+                objectTag.AddObjectData(store, "ImpMestMedicines", rdo._ImpMestMedicines);
+                objectTag.AddObjectData(store, "ImpMestMaterials", rdo._ImpMestMaterials);
+
                 objectTag.AddRelationship(store, "MedicineGroup", "ImpMestAggregates", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
                 objectTag.AddRelationship(store, "MedicineParent", "ImpMestAggregates", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
                 result = true;
