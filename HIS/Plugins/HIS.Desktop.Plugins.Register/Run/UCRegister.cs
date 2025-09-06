@@ -211,11 +211,14 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void timerInitForm_Tick()
         {
+            lciDistrict.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            layoutControlItem24.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             this.InitControlState();
             this.SetToolTipTog(togChangeStructAdress);
+            RegisterTimer(currentModule.ModuleLink, "timerNewForm", 500, timerNewForm_Tick);
+            StartTimer(currentModule.ModuleLink, "timerNewForm");
             StopTimer(currentModule.ModuleLink, "timerInitForm");
         }
 
@@ -625,7 +628,11 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.isAlertTreatmentEndInDay = false;
                 this.chkIsChronic.Checked = false;
                 this.chkIsChronic.ReadOnly = false;
+                this.chkCAPD.Checked = false;
+                this.chkCAPD.ReadOnly = false;
                 this.chkNoCCCD.Checked = false;
+                this.chkCAPD.Checked = false;
+                this.chkCAPD.ReadOnly = false;
                 if (GlobalVariables.AcsAuthorizeSDO != null)
                 {
                     var controlAcs = GlobalVariables.AcsAuthorizeSDO.ControlInRoles;

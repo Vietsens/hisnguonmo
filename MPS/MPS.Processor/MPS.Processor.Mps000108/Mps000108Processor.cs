@@ -52,10 +52,10 @@ namespace MPS.Processor.Mps000108
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
 
-                objectTag.AddObjectData(store, "ExpMestBlood", rdo.HisExpMestBltys);
-                objectTag.AddObjectData(store, "ExpMestBltys", rdo.HisExpMestBltys);
-                objectTag.AddObjectData(store, "ViewExpMestBlood", rdo.ExpMestBloodList);
-                objectTag.AddObjectData(store, "Services", rdo.sereServ1s);
+                objectTag.AddObjectData(store, "ExpMestBlood", rdo.HisExpMestBltys??new List<V_HIS_EXP_MEST_BLTY_REQ_1>());
+                objectTag.AddObjectData(store, "ExpMestBltys", rdo.HisExpMestBltys??new List<V_HIS_EXP_MEST_BLTY_REQ_1>());
+                objectTag.AddObjectData(store, "ViewExpMestBlood", rdo.ExpMestBloodList??new List<V_HIS_EXP_MEST_BLOOD>());
+                objectTag.AddObjectData(store, "Services", rdo.sereServ1s ?? new List<V_HIS_SERE_SERV_1>());
                 objectTag.AddRelationship(store, "ExpMestBltys", "ViewExpMestBlood", "ID", "EXP_MEST_BLTY_REQ_ID");
 
                 result = true;

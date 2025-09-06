@@ -235,7 +235,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 ValidateMaxLength validateMaxLength = new ValidateMaxLength();
                 validateMaxLength.textEdit = txtActiveIngrBhytCode;
-                validateMaxLength.maxLength = 500;
+                validateMaxLength.maxLength = 1000;
                 validateMaxLength.ErrorType = ErrorType.Warning;
                 dxValidationMedicineType.SetValidationRule(txtActiveIngrBhytCode, validateMaxLength);
             }
@@ -251,7 +251,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 ValidateMaxLength validateMaxLength = new ValidateMaxLength();
                 validateMaxLength.textEdit = txtActiveIngrBhytName;
-                validateMaxLength.maxLength = 500;
+                validateMaxLength.maxLength = 1000;
                 validateMaxLength.ErrorType = ErrorType.Warning;
                 dxValidationMedicineType.SetValidationRule(txtActiveIngrBhytCode, validateMaxLength);
             }

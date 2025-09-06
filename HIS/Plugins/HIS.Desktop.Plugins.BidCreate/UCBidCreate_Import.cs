@@ -302,14 +302,15 @@ namespace HIS.Desktop.Plugins.BidCreate
 
                     medicineType.BATCH_DIVISION_CODE = medicineTypeImport.BATCH_DIVISION_CODE;
 
-                    if (String.IsNullOrWhiteSpace(medicineType.BATCH_DIVISION_CODE))
-                    {
-                        medicineType.ErrorDescriptions.Add("Không có mã phân lô");
-                    }
-                    else if (Encoding.UTF8.GetByteCount(medicineType.BATCH_DIVISION_CODE) > 25)
-                    {
-                        medicineType.ErrorDescriptions.Add("Mã phân lô quá độ dài cho phép (25)");
-                    }
+                    //bỏ bắt buộc mã phần lô do nhiều gói thầu không có mã phần lô
+                    //if (String.IsNullOrWhiteSpace(medicineType.BATCH_DIVISION_CODE))
+                    //{
+                    //    medicineType.ErrorDescriptions.Add("Không có mã phân lô");
+                    //}
+                    //else if (Encoding.UTF8.GetByteCount(medicineType.BATCH_DIVISION_CODE) > 25)
+                    //{
+                    //    medicineType.ErrorDescriptions.Add("Mã phân lô quá độ dài cho phép (25)");
+                    //}
 
                     medicineType.IMP_PRICE = Inventec.Common.TypeConvert.Parse.ToDecimal(medicineTypeImport.IMP_PRICE.ToString());
                     if ((medicineType.IMP_PRICE ?? 0) < 0)
@@ -687,14 +688,14 @@ namespace HIS.Desktop.Plugins.BidCreate
 
                     medicineType.BATCH_DIVISION_CODE = materialTypeImport.BATCH_DIVISION_CODE;
 
-                    if (String.IsNullOrWhiteSpace(medicineType.BATCH_DIVISION_CODE))
-                    {
-                        medicineType.ErrorDescriptions.Add("Không có mã phân lô");
-                    }
-                    else if (Encoding.UTF8.GetByteCount(medicineType.BATCH_DIVISION_CODE) > 25)
-                    {
-                        medicineType.ErrorDescriptions.Add("Mã phân lô quá độ dài cho phép (25)");
-                    }
+                    //if (String.IsNullOrWhiteSpace(medicineType.BATCH_DIVISION_CODE))
+                    //{
+                    //    medicineType.ErrorDescriptions.Add("Không có mã phân lô");
+                    //}
+                    //else if (Encoding.UTF8.GetByteCount(medicineType.BATCH_DIVISION_CODE) > 25)
+                    //{
+                    //    medicineType.ErrorDescriptions.Add("Mã phân lô quá độ dài cho phép (25)");
+                    //}
 
                     medicineType.IMP_PRICE = materialTypeImport.IMP_PRICE;
                     if ((medicineType.IMP_PRICE ?? 0) < 0)

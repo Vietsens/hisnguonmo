@@ -306,4 +306,10 @@
   <data name="frmPatientUpdate.lciChucVu.Text" xml:space="preserve">
     <value>Position:</value>
   </data>
+  <data name="frmPatientUpdate.lcCAPDText" xml:space="preserve">
+    <value>Bệnh nhân điều trị lọc máu màng bụng</value>
+  </data>
+  <data name="frmPatientUpdate.lcCAPD.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bệnh nhân điều trị lọc máu màng bụng</value>
+  </data>
 </root>
