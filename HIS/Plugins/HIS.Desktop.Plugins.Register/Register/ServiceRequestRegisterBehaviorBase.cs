@@ -99,6 +99,7 @@ namespace HIS.Desktop.Plugins.Register.Register
         protected long treatmentTypeId { get; set; }
         protected long oweTypeId { get; set; }
         protected bool chkChronic { get; set; }
+        protected bool chkIsCapd { get; set; }
         protected string blood_Code { get; set; }
         protected string blood_Rh_Code { get; set; }
         protected HisCardSDO cardSearch { get; set; }
@@ -215,6 +216,7 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.patientData = ucServiceRequestRegiter.currentPatientSDO;
                 this.isNotPatientDayDob = ucServiceRequestRegiter.isNotPatientDayDob;
                 this.chkChronic = ucServiceRequestRegiter.chkIsChronic.Checked;//BN man tinh
+                this.chkIsCapd = ucServiceRequestRegiter.chkCAPD.Checked;
                 this.kskContractId = GetKskContractValue(ucServiceRequestRegiter);
                 this.hrmEmployeeCode = this.codeFind == this.typeCodeFind__MaNV ? ucServiceRequestRegiter.txtPatientCode.Text : "";
                 this.hrmKskCode = this.codeFind == this.typeCodeFind__MaNV ? ucServiceRequestRegiter.txtKskCode.Text : "";
@@ -445,8 +447,10 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.patientProfile.HisPatient.HT_DISTRICT_CODE = this.districtNowCode;
                 this.patientProfile.HisPatient.HT_PROVINCE_CODE = this.provinceNowCode;
                 this.patientProfile.IsChronic = this.chkChronic;
-                if (this.chkChronic)
-                    this.patientProfile.HisPatient.IS_CHRONIC = 1;
+                this.patientProfile.IsCAPD = this.chkIsCapd;
+                this.patientProfile.HisPatient.IS_CHRONIC = this.chkChronic ? (short?)1 : null;
+                this.patientProfile.HisPatient.IS_CAPD = this.chkIsCapd ? (short?)1 : null;
+
                 if (!string.IsNullOrEmpty(this.hrmEmployeeCode))
                     this.patientProfile.HisPatient.HRM_EMPLOYEE_CODE = this.hrmEmployeeCode;
 
@@ -494,8 +498,8 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.patientProfile.DistrictCode = districtCode;
                 this.patientProfile.TreatmentTime = intructionTime;
 
-                if(uCMainHein != null && ucHein__BHYT != null)
-                //Đồng bộ dữ liệu thay đổi từ uchein sang đối tượng dữ liệu phục vụ làm đầu vào cho gọi api
+                if (uCMainHein != null && ucHein__BHYT != null)
+                    //Đồng bộ dữ liệu thay đổi từ uchein sang đối tượng dữ liệu phục vụ làm đầu vào cho gọi api
                     this.uCMainHein.UpdateDataFormIntoPatientProfile(this.ucHein__BHYT, this.patientProfile);
 
                 if (!string.IsNullOrEmpty(this.hrmKskCode))
@@ -533,7 +537,9 @@ namespace HIS.Desktop.Plugins.Register.Register
                     }
 
                     patientProfile.HisPatientTypeAlter = Mapper.Map<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER, MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER>(dataPatientProfile.HisPatientTypeAlter);
-                    patientProfile.HisTreatment.HEIN_PATIENT_TYPE_CODE = dataPatientProfile.HisTreatment.HEIN_PATIENT_TYPE_CODE; 
+                    if (dataPatientProfile.HisTreatment?.HEIN_PATIENT_TYPE_CODE != null)
+                        patientProfile.HisTreatment.HEIN_PATIENT_TYPE_CODE = dataPatientProfile.HisTreatment.HEIN_PATIENT_TYPE_CODE;
+
                     if (patientTypeId == HisConfigCFG.PatientTypeId__KSK && this.kskContractId.HasValue)
                     {
                         patientProfile.HisPatientTypeAlter.KSK_CONTRACT_ID = this.kskContractId.Value;

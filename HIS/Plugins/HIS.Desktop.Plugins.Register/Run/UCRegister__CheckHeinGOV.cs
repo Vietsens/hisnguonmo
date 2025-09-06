@@ -70,7 +70,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 if (!HisConfigCFG.IsCheckExamHistory) return;
                 if (this.isNotCheckTT) { return; }
                 if (heinCard == null) heinCard = new HeinCardData();
-
+                this.ResultDataADO = null;
                 heinCard.Dob = txtPatientDob.Text;
                 heinCard.PatientName = txtPatientName.Text.Trim();
                 var gender = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_GENDER>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboGender.EditValue ?? "0").ToString()));
@@ -100,13 +100,15 @@ namespace HIS.Desktop.Plugins.Register.Run
                                 heinCard.FineYearMonthDate = Inventec.Common.DateTime.Convert.TimeNumberToDateString(patientProfileSDO.HisPatientTypeAlter.JOIN_5_YEAR_TIME.ToString());
                             }
                         }
+                        HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
+
+                        this.ResultDataADO = await heinGOVManager.Check(heinCard, null, true, (this.currentPatientSDO != null && this.currentPatientSDO.ID > 0 ? this.currentPatientSDO.HeinAddress : ""), this.dtIntructionTime.DateTime, this.isReadQrCode);
+                        mainHeinProcessor.SetResultDataADOBhyt(ucHeinBHYT, this.ResultDataADO);
+
                     }
                 }
 
-                HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
-
-                this.ResultDataADO = await heinGOVManager.Check(heinCard, null, true, (this.currentPatientSDO != null && this.currentPatientSDO.ID > 0 ? this.currentPatientSDO.HeinAddress : ""), this.dtIntructionTime.DateTime, this.isReadQrCode);
-                mainHeinProcessor.SetResultDataADOBhyt(ucHeinBHYT, this.ResultDataADO);
+              
                 if (this.ResultDataADO != null)//nếu không thay đổi thông tin sẽ chỉ trả ra kết quả check thông tuyến và không thực hiện tìm kiếm
                 {
                     //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
