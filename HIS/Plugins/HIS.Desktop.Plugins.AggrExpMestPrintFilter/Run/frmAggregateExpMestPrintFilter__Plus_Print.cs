@@ -994,6 +994,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         _ExpMests_Print_Temp = _ExpMests_Print_Temp.Where(o => o.TDL_USE_TIME <= IntructionTimeTo).ToList();
                     }
                 }
+                if (!chkPlanned.Checked) // NEW
+                {
+                    _ExpMests_Print_Temp = _ExpMests_Print_Temp
+                        .Where(o => !o.TDL_USE_TIME.HasValue) // TDL_USE_TIME == null
+                        .ToList();
+                } // NEW
                 if (_ExpMests_Print_Temp != null && _ExpMests_Print_Temp.Count > 0)
                 {
                     int count = 0;
