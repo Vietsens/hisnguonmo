@@ -127,7 +127,26 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Add.MediStockD1SDO
 
                     foreach (var item in mediMatyTypeADOTemps)
                     {
+                        item.PrimaryKey = (this.medicineTypeSDO.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
+
                         item.TotalPrice = frmAssignPrescription.CalculatePrice(item);
+                        if (frmAssignPrescription.serviceReqWorking != null && frmAssignPrescription.serviceReqWorking.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK ||
+                   frmAssignPrescription.oldServiceReq != null && frmAssignPrescription.oldServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK)
+                        {
+                            if (TakeOrReleaseBeanWorker.TakeForCreateBean( this.expMestId, item, false, Param))
+                            {
+                                success = true;
+                                this.SaveDataAndRefesh(item);
+                                frmAssignPrescription.ReloadDataAvaiableMediBeanInCombo();
+                                LogSystem.Debug("SaveDataAndRefesh => 4");
+                            }
+                            else
+                            {
+                                //Release stent
+                                MessageManager.Show(Param, success);
+                                return success = false;
+                            }
+                        }
                         //if (frmAssignPrescription.servicePatyAllows != null && frmAssignPrescription.servicePatyAllows.ContainsKey(item.SERVICE_ID))
                         //{
                         //    var data_ServicePrice = frmAssignPrescription.servicePatyAllows[item.SERVICE_ID].Where(o => o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID).OrderByDescending(m => m.MODIFY_TIME).ToList();
@@ -136,10 +155,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Add.MediStockD1SDO
                         //        item.TotalPrice = (data_ServicePrice[0].PRICE * item.AMOUNT) ?? 0;
                         //    }
                         //}
-
-                        success = true;
-                        this.SaveDataAndRefesh(item);
-                        frmAssignPrescription.ReloadDataAvaiableMediBeanInCombo();
                     }
                 }
             }

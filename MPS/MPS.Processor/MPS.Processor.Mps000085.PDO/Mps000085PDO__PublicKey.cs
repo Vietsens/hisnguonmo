@@ -63,6 +63,8 @@ namespace MPS.Processor.Mps000085.PDO
 
     public class Mps000085ADO
     {
+        //qtcode
+        public Dictionary<string, decimal> DicMediMate { get; set; }
         public string MEDI_MATE_TYPE_NAME { get; set; }
         public string SERVICE_UNIT_NAME { get; set; }
         public string REGISTER_NUMBER { get; set; }
@@ -181,7 +183,9 @@ namespace MPS.Processor.Mps000085.PDO
             try
             {
                 if (medicine != null)
-                {
+                {     
+                    //qtcode
+                    this.DicMediMate = medicine.DicMediMate;
                     this.MEDI_MATE_TYPE_NAME = medicine.MEDICINE_TYPE_NAME;
                     this.SERVICE_UNIT_NAME = medicine.SERVICE_UNIT_NAME;
                     this.REGISTER_NUMBER = medicine.REGISTER_NUMBER;
@@ -239,6 +243,7 @@ namespace MPS.Processor.Mps000085.PDO
             {
                 if (material != null)
                 {
+                    this.DicMediMate = material.DicMediMate;
                     this.MEDI_MATE_TYPE_NAME = material.MATERIAL_TYPE_NAME;
                     this.SERVICE_UNIT_NAME = material.SERVICE_UNIT_NAME;
                     this.REGISTER_NUMBER = material.MATERIAL_REGISTER_NUMBER;
@@ -312,6 +317,8 @@ namespace MPS.Processor.Mps000085.PDO
 
     public class ImpMestMedicineADO : V_HIS_IMP_MEST_MEDICINE
     {
+        //qtcode
+        public Dictionary<string, decimal> DicMediMate { get; set; }
         public string TDL_BID_GROUP_CODE { get; set; }
         public string TDL_BID_NUM_ORDER { get; set; }
         public string TDL_BID_NUMBER { get; set; }
@@ -330,6 +337,8 @@ namespace MPS.Processor.Mps000085.PDO
 
     public class ImpMestMaterialADO : V_HIS_IMP_MEST_MATERIAL
     {
+        //qtcode
+        public Dictionary<string, decimal> DicMediMate { get; set; }
         public string TDL_BID_GROUP_CODE { get; set; }
         public string TDL_BID_NUM_ORDER { get; set; }
         public string TDL_BID_NUMBER { get; set; }

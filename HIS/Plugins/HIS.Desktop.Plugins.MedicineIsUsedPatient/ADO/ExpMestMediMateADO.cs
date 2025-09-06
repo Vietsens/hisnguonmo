@@ -31,7 +31,8 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.ADO
         public string SERVICE_REQ_CODE { get; set; }
         public string REQUEST_LOGINNAME { get; set; }
         public string REQUEST_USERNAME { get; set; }
-        public string INTRUCTION_TIME { get; set; }
+        public string INTRUCTION_DATE { get; set; }
+        public long INTRUCTION_TIME { get; set; }
         public long? MEDIMATE_ID { get; set; }
         public string MEDIMATE_TYPE_CODE { get; set; }
         public string MEDIMATE_TYPE_NAME { get; set; }
@@ -55,6 +56,8 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.ADO
         public short? NOON_IS_USED { get; set; }
         public short? AFTERNOON_IS_USED { get; set; }
         public short? EVENING_IS_USED { get; set; }
+        public long? USED_TIME { get; set; }
+        public bool IS_IN_VALID_NODE_EXCEPTION { get; set; }
         public ExpMestMediMateADO()
         {
         }

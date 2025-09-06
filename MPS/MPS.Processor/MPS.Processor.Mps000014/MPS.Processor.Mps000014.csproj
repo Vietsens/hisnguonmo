@@ -34,7 +34,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ApiConsumer">
-      <HintPath>..\..\..\..\lib_1\HIS\HIS.Desktop.IsAdmin\HIS.Desktop.ApiConsumer.dll</HintPath>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.Desktop.ApiConsumer.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -104,8 +104,9 @@
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000014.PDO">
-      <HintPath>..\..\..\..\lib_1\MPSv2\MPS.PDO\MPS.Processor.Mps000014.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000014.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000014.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>

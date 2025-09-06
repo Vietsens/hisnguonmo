@@ -107,6 +107,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
         protected bool? IsAssignPackage { get; set; }
         protected long? MAME_ID { get; set; }
         protected bool IsMultiDateState { get; set; }
+        protected bool IsDisableExpend { get; set; }
         protected List<long> IntructionTimeSelecteds { get; set; }
 
         public OptionChonThuocThayThe ChonThuocThayThe { get; set; }
@@ -207,6 +208,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
             medicineTypeSDO.TUTORIAL = this.Tutorial;
             medicineTypeSDO.HTU_TEXT = this.HtuText;
             medicineTypeSDO.IsExpend = this.IsExpend;
+            medicineTypeSDO.IsDisableExpend = this.IsDisableExpend;
             if (this.MedicineUseFormId > 0)
                 medicineTypeSDO.MEDICINE_USE_FORM_ID = this.MedicineUseFormId;
             if (this.HtuId > 0)
@@ -745,6 +747,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
                 medicineTypeSDO__Category__SameMediAcin.MEDI_STOCK_ID = null;
                 medicineTypeSDO__Category__SameMediAcin.MEDI_STOCK_CODE = null;
                 medicineTypeSDO__Category__SameMediAcin.MEDI_STOCK_NAME = null;
+                medicineTypeSDO__Category__SameMediAcin.IsDisableExpend = this.IsDisableExpend;
             }
             catch (Exception ex)
             {
@@ -818,6 +821,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
                 medicineTypeSDO__Category__SameMediAcin.MEDI_STOCK_ID = null;
                 medicineTypeSDO__Category__SameMediAcin.MEDI_STOCK_CODE = null;
                 medicineTypeSDO__Category__SameMediAcin.MEDI_STOCK_NAME = null;
+                medicineTypeSDO__Category__SameMediAcin.IsDisableExpend = this.IsDisableExpend;
             }
             catch (Exception ex)
             {

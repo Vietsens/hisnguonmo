@@ -69,17 +69,19 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn4 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn_IsUsed = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn7 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn10 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn5 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn6 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn8 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn9 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryItemCheckEditUsed = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemCheckAll = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemCheckEditMorning = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemCheckEditLunch = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemCheckEditAfternoon = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemCheckEditDinner = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemCheckEditD = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryUsedTime = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
             this.btnReset = new DevExpress.XtraEditors.SimpleButton();
             this.lblHeinRatio = new DevExpress.XtraEditors.LabelControl();
             this.lblRightRoute = new DevExpress.XtraEditors.LabelControl();
@@ -118,6 +120,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.timerLoadData = new System.Windows.Forms.Timer(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboIsUse.Properties)).BeginInit();
@@ -130,13 +133,15 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeMedicineIsUsePt)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditUsed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckAll)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditMorning)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditLunch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditAfternoon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditDinner)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryUsedTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryUsedTime.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
@@ -160,6 +165,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -389,6 +395,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn4,
             this.treeListColumn_IsUsed,
             this.treeListColumn7,
+            this.treeListColumn10,
             this.treeListColumn5,
             this.treeListColumn6,
             this.treeListColumn8,
@@ -406,6 +413,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             null,
             null,
             null,
+            new System.DateTime(2025, 8, 14, 0, 0, 0),
             null,
             null,
             null,
@@ -417,6 +425,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             null,
             null,
             null,
+            new System.DateTime(2025, 8, 15, 0, 0, 0),
             null,
             null,
             null,
@@ -426,6 +435,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeMedicineIsUsePt.OptionsBehavior.AllowPixelScrolling = DevExpress.Utils.DefaultBoolean.True;
             this.treeMedicineIsUsePt.OptionsBehavior.AutoPopulateColumns = false;
             this.treeMedicineIsUsePt.OptionsBehavior.EnableFiltering = true;
+            this.treeMedicineIsUsePt.OptionsBehavior.PopulateServiceColumns = true;
             this.treeMedicineIsUsePt.OptionsFilter.FilterMode = DevExpress.XtraTreeList.FilterMode.Smart;
             this.treeMedicineIsUsePt.OptionsFind.FindDelay = 100;
             this.treeMedicineIsUsePt.OptionsFind.ShowClearButton = false;
@@ -441,19 +451,23 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeMedicineIsUsePt.OptionsView.ShowVertLines = false;
             this.treeMedicineIsUsePt.ParentFieldName = "PARENT_ID__IN_SETY";
             this.treeMedicineIsUsePt.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repositoryItemCheckEdit1,
+            this.repositoryItemCheckEditUsed,
             this.repositoryItemCheckAll,
             this.repositoryItemCheckEditMorning,
             this.repositoryItemCheckEditLunch,
             this.repositoryItemCheckEditAfternoon,
             this.repositoryItemCheckEditDinner,
-            this.repositoryItemCheckEditD});
+            this.repositoryItemCheckEditD,
+            this.repositoryUsedTime});
             this.treeMedicineIsUsePt.ShowButtonMode = DevExpress.XtraTreeList.ShowButtonModeEnum.ShowAlways;
             this.treeMedicineIsUsePt.Size = new System.Drawing.Size(1292, 439);
             this.treeMedicineIsUsePt.TabIndex = 0;
             this.treeMedicineIsUsePt.CustomNodeCellEdit += new DevExpress.XtraTreeList.GetCustomNodeCellEditEventHandler(this.treeMedicineIsUsePt_CustomNodeCellEdit);
+            this.treeMedicineIsUsePt.CustomNodeCellEditForEditing += new DevExpress.XtraTreeList.GetCustomNodeCellEditEventHandler(this.treeMedicineIsUsePt_CustomNodeCellEditForEditing);
             this.treeMedicineIsUsePt.NodeCellStyle += new DevExpress.XtraTreeList.GetCustomNodeCellStyleEventHandler(this.treeMedicineIsUsePt_NodeCellStyle);
             this.treeMedicineIsUsePt.CustomUnboundColumnData += new DevExpress.XtraTreeList.CustomColumnDataEventHandler(this.treeMedicineIsUsePt_CustomUnboundColumnData);
+            this.treeMedicineIsUsePt.InvalidNodeException += new DevExpress.XtraTreeList.InvalidNodeExceptionEventHandler(this.treeMedicineIsUsePt_InvalidNodeException);
+            this.treeMedicineIsUsePt.ValidateNode += new DevExpress.XtraTreeList.ValidateNodeEventHandler(this.treeMedicineIsUsePt_ValidateNode);
             this.treeMedicineIsUsePt.CustomDrawColumnHeader += new DevExpress.XtraTreeList.CustomDrawColumnHeaderEventHandler(this.treeMedicineIsUsePt_CustomDrawColumnHeader);
             this.treeMedicineIsUsePt.CustomDrawNodeCell += new DevExpress.XtraTreeList.CustomDrawNodeCellEventHandler(this.treeMedicineIsUsePt_CustomDrawNodeCell);
             this.treeMedicineIsUsePt.MouseClick += new System.Windows.Forms.MouseEventHandler(this.treeMedicineIsUsePt_MouseClick);
@@ -468,7 +482,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn1.Name = "treeListColumn1";
             this.treeListColumn1.Visible = true;
             this.treeListColumn1.VisibleIndex = 0;
-            this.treeListColumn1.Width = 141;
+            this.treeListColumn1.Width = 128;
             // 
             // treeListColumn2
             // 
@@ -478,7 +492,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn2.Name = "treeListColumn2";
             this.treeListColumn2.Visible = true;
             this.treeListColumn2.VisibleIndex = 1;
-            this.treeListColumn2.Width = 311;
+            this.treeListColumn2.Width = 431;
             // 
             // treeListColumn3
             // 
@@ -489,7 +503,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn3.Name = "treeListColumn3";
             this.treeListColumn3.Visible = true;
             this.treeListColumn3.VisibleIndex = 2;
-            this.treeListColumn3.Width = 181;
+            this.treeListColumn3.Width = 100;
             // 
             // treeListColumn4
             // 
@@ -500,7 +514,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn4.Name = "treeListColumn4";
             this.treeListColumn4.Visible = true;
             this.treeListColumn4.VisibleIndex = 3;
-            this.treeListColumn4.Width = 162;
+            this.treeListColumn4.Width = 60;
             // 
             // treeListColumn_IsUsed
             // 
@@ -512,13 +526,25 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn_IsUsed.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn_IsUsed.Visible = true;
             this.treeListColumn_IsUsed.VisibleIndex = 4;
-            this.treeListColumn_IsUsed.Width = 267;
+            this.treeListColumn_IsUsed.Width = 135;
             // 
             // treeListColumn7
             // 
             this.treeListColumn7.Caption = "IS_MEDICINE";
             this.treeListColumn7.FieldName = "IS_MEDICINE";
             this.treeListColumn7.Name = "treeListColumn7";
+            // 
+            // treeListColumn10
+            // 
+            this.treeListColumn10.Caption = "Thời gian dùng";
+            this.treeListColumn10.FieldName = "USED_TIME_STR";
+            this.treeListColumn10.Format.FormatString = "dd/MM/yyyy HH:mm";
+            this.treeListColumn10.Format.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.treeListColumn10.Name = "treeListColumn10";
+            this.treeListColumn10.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
+            this.treeListColumn10.Visible = true;
+            this.treeListColumn10.VisibleIndex = 5;
+            this.treeListColumn10.Width = 120;
             // 
             // treeListColumn5
             // 
@@ -528,8 +554,8 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn5.ToolTip = "Thuốc buổi sáng đã sử dụng";
             this.treeListColumn5.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn5.Visible = true;
-            this.treeListColumn5.VisibleIndex = 5;
-            this.treeListColumn5.Width = 57;
+            this.treeListColumn5.VisibleIndex = 6;
+            this.treeListColumn5.Width = 60;
             // 
             // treeListColumn6
             // 
@@ -539,8 +565,8 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn6.ToolTip = "Thuốc buổi trưa đã sử dụng";
             this.treeListColumn6.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn6.Visible = true;
-            this.treeListColumn6.VisibleIndex = 6;
-            this.treeListColumn6.Width = 57;
+            this.treeListColumn6.VisibleIndex = 7;
+            this.treeListColumn6.Width = 60;
             // 
             // treeListColumn8
             // 
@@ -550,8 +576,8 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn8.ToolTip = "Thuốc buổi chiều đã sử dụng";
             this.treeListColumn8.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn8.Visible = true;
-            this.treeListColumn8.VisibleIndex = 7;
-            this.treeListColumn8.Width = 57;
+            this.treeListColumn8.VisibleIndex = 8;
+            this.treeListColumn8.Width = 60;
             // 
             // treeListColumn9
             // 
@@ -561,24 +587,27 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.treeListColumn9.ToolTip = "Thuốc buổi tối đã sử dụng";
             this.treeListColumn9.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn9.Visible = true;
-            this.treeListColumn9.VisibleIndex = 8;
-            this.treeListColumn9.Width = 57;
+            this.treeListColumn9.VisibleIndex = 9;
+            this.treeListColumn9.Width = 60;
             // 
-            // repositoryItemCheckEdit1
+            // repositoryItemCheckEditUsed
             // 
-            this.repositoryItemCheckEdit1.AppearanceFocused.BackColor = System.Drawing.Color.Transparent;
-            this.repositoryItemCheckEdit1.AppearanceFocused.BackColor2 = System.Drawing.Color.Transparent;
-            this.repositoryItemCheckEdit1.AppearanceFocused.Options.UseBackColor = true;
-            this.repositoryItemCheckEdit1.AutoHeight = false;
-            this.repositoryItemCheckEdit1.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Buffered;
-            this.repositoryItemCheckEdit1.FullFocusRect = true;
-            this.repositoryItemCheckEdit1.Name = "repositoryItemCheckEdit1";
-            this.repositoryItemCheckEdit1.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.repositoryItemCheckEdit1.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEdit1_CheckedChanged);
+            this.repositoryItemCheckEditUsed.AppearanceFocused.BackColor = System.Drawing.Color.Transparent;
+            this.repositoryItemCheckEditUsed.AppearanceFocused.BackColor2 = System.Drawing.Color.Transparent;
+            this.repositoryItemCheckEditUsed.AppearanceFocused.Options.UseBackColor = true;
+            this.repositoryItemCheckEditUsed.AutoHeight = false;
+            this.repositoryItemCheckEditUsed.Caption = " ";
+            this.repositoryItemCheckEditUsed.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Buffered;
+            this.repositoryItemCheckEditUsed.FullFocusRect = true;
+            this.repositoryItemCheckEditUsed.GlyphVAlignment = DevExpress.Utils.VertAlignment.Default;
+            this.repositoryItemCheckEditUsed.Name = "repositoryItemCheckEditUsed";
+            this.repositoryItemCheckEditUsed.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEditUsed.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.repositoryItemCheckEditUsed_EditValueChanging);
             // 
             // repositoryItemCheckAll
             // 
             this.repositoryItemCheckAll.AutoHeight = false;
+            this.repositoryItemCheckAll.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.repositoryItemCheckAll.Name = "repositoryItemCheckAll";
             // 
             // repositoryItemCheckEditMorning
@@ -587,6 +616,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.repositoryItemCheckEditMorning.Name = "repositoryItemCheckEditMorning";
             this.repositoryItemCheckEditMorning.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.repositoryItemCheckEditMorning.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEditMorning_CheckedChanged);
+            this.repositoryItemCheckEditMorning.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.repositoryItemCheckEditMorning_EditValueChanging);
             // 
             // repositoryItemCheckEditLunch
             // 
@@ -594,6 +624,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.repositoryItemCheckEditLunch.Name = "repositoryItemCheckEditLunch";
             this.repositoryItemCheckEditLunch.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.repositoryItemCheckEditLunch.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEditLunch_CheckedChanged);
+            this.repositoryItemCheckEditLunch.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.repositoryItemCheckEditLunch_EditValueChanging);
             // 
             // repositoryItemCheckEditAfternoon
             // 
@@ -601,6 +632,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.repositoryItemCheckEditAfternoon.Name = "repositoryItemCheckEditAfternoon";
             this.repositoryItemCheckEditAfternoon.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.repositoryItemCheckEditAfternoon.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEditAfternoon_CheckedChanged);
+            this.repositoryItemCheckEditAfternoon.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.repositoryItemCheckEditAfternoon_EditValueChanging);
             // 
             // repositoryItemCheckEditDinner
             // 
@@ -608,6 +640,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.repositoryItemCheckEditDinner.Name = "repositoryItemCheckEditDinner";
             this.repositoryItemCheckEditDinner.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.repositoryItemCheckEditDinner.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEditDinner_CheckedChanged);
+            this.repositoryItemCheckEditDinner.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.repositoryItemCheckEditDinner_EditValueChanging);
             // 
             // repositoryItemCheckEditD
             // 
@@ -616,6 +649,23 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.repositoryItemCheckEditD.Name = "repositoryItemCheckEditD";
             this.repositoryItemCheckEditD.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.repositoryItemCheckEditD.ReadOnly = true;
+            // 
+            // repositoryUsedTime
+            // 
+            this.repositoryUsedTime.AutoHeight = false;
+            this.repositoryUsedTime.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryUsedTime.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryUsedTime.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.repositoryUsedTime.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.repositoryUsedTime.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.repositoryUsedTime.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.repositoryUsedTime.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.repositoryUsedTime.Mask.ShowPlaceHolders = false;
+            this.repositoryUsedTime.Mask.UseMaskAsDisplayFormat = true;
+            this.repositoryUsedTime.Name = "repositoryUsedTime";
+            this.repositoryUsedTime.EditValueChanged += new System.EventHandler(this.repositoryUsedTime_EditValueChanged);
             // 
             // btnReset
             // 
@@ -1116,13 +1166,15 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.treeMedicineIsUsePt)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditUsed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckAll)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditMorning)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditLunch)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditAfternoon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditDinner)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryUsedTime.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryUsedTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
@@ -1146,6 +1198,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1205,7 +1258,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn3;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn4;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn_IsUsed;
-        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit1;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditUsed;
         internal DevExpress.XtraTreeList.TreeList treeMedicineIsUsePt;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn7;
         private DevExpress.XtraEditors.GridLookUpEdit cboIsUse;
@@ -1225,5 +1278,8 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditAfternoon;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditDinner;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditD;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn10;
+        private DevExpress.XtraEditors.Repository.RepositoryItemDateEdit repositoryUsedTime;
+        private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
     }
 }

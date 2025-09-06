@@ -137,8 +137,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 ado.LanguageInputADO.licPrintNHBHXH_Text = Inventec.Common.Resource.Get.Value("licPrintNHBHXH_Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 ado.LanguageInputADO.licPrintTrichLuc_Text = Inventec.Common.Resource.Get.Value("licPrintTrichLuc_Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 ado.LanguageInputADO.lciHisCareer__Text = Inventec.Common.Resource.Get.Value("lciHisCareer__Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-
-                this.ucTreatmentFinish = (UserControl)this.treatmentFinishProcessor.Run(ado);
+                string PatientTypeBhyt = Config.HisConfigCFG.PatientTypeCode__BHYT;
+                this.ucTreatmentFinish = (UserControl)this.treatmentFinishProcessor.Run(ado, PatientTypeBhyt);
                 if (this.ucTreatmentFinish != null)
                 {
                     this.pnlUCPanelRightBottom.Controls.Add(this.ucTreatmentFinish);

@@ -42,6 +42,7 @@ using System.Linq;
 using System.Resources;
 using System.Windows.Forms;
 
+
 namespace His.UC.UCHein.Design.TemplateHeinBHYT1
 {
     public partial class Template__HeinBHYT1 : UserControl
@@ -174,10 +175,23 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 Inventec.Common.Logging.LogSystem.Debug("Template__HeinBHYT1_Load()");
                 this.SetCaptionByLanguageKeyNew();
                 Config.HisConfigCFG.LoadConfig();
+                ResetPatientCode(); 
                 if (this.isDefaultInit)
                     this.InitData(this.entity);
             }
             catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ResetPatientCode()
+        {
+            try
+            {
+                txtPatientCode.Text = "";
+            }
+            catch(Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
@@ -326,7 +340,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 this.lcirdoRightRoute.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lcirdoRightRoute.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.lciKhongKTHSD.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lciKhongKTHSD.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.lciFreeCoPainTime.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lciFreeCoPainTime.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                this.lciInCode.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lciInCode.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                //this.lciInCode.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lciInCode.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.lciHNCode.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lciHNCode.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.lcichkJoin5Year.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lcichkJoin5Year.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.lcichkPaid6Month.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lcichkPaid6Month.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());

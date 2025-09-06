@@ -196,6 +196,21 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 if (this.ExamTreatmentFinishInitADO != null)
                 {
                     cboCareer.EditValue = this.ExamTreatmentFinishInitADO.CareerId;
+                    txtHeinPatientTypeCode.EditValue = this.ExamTreatmentFinishInitADO.Treatment.HEIN_PATIENT_TYPE_CODE;
+                    if (0 == 0
+                        && !string.IsNullOrEmpty(HisConfig.WarningHeinPatientTypeCode)
+                        && this.ExamTreatmentFinishInitADO.Treatment.TDL_PATIENT_TYPE_ID == HisConfig.PATIENT_TYPE_ID__BHYT)
+                    {
+                        if (HisConfig.WarningHeinPatientTypeCode == "3")
+                        {
+                            lciHeinPatientTypeCode.AppearanceItemCaption.ForeColor = Color.Maroon;
+                            ValidationHeinPatientTypeCode();
+                        }
+                        else if (HisConfig.WarningHeinPatientTypeCode == "1")
+                        {
+                            XtraMessageBox.Show("Vui lòng kiểm tra lại mã đối tượng của hồ sơ điều trị.");
+                        }
+                    }
                 }
 
                 InitControlState();

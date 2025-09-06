@@ -88,6 +88,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         string moduleLink = "HIS.Desktop.Plugins.MaterialTypeCreate";
 
+
+        //qtcode
+        private List<HIS_DEPA_PATIENT_TYPE> depaPatientTypes = new List<HIS_DEPA_PATIENT_TYPE>();
+        public bool isCalledApi = false;
+        public bool isClickPick = false;
+
         #endregion
 
         #region Contructor
@@ -1452,6 +1458,24 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 if (this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd)
                 {
                     resultData = new BackendAdapter(param).Post<HIS_MATERIAL_TYPE>(HisRequestUriStore.HIS_MATERIAL_TYPE_CREATE, ApiConsumers.MosConsumer, currentMedicineTypeDTO, param);
+                    if (resultData != null)
+                    {
+                        success = true;
+                        if (this.depaPatientTypes != null && this.depaPatientTypes.Count > 0)
+                        {
+                            foreach (var item in this.depaPatientTypes)
+                            {
+                                item.SERVICE_ID = resultData.SERVICE_ID;
+                            }
+                            var createResult = new BackendAdapter(param).Post<List<HIS_DEPA_PATIENT_TYPE>>("api/HisDepaPatientType/CreateList", ApiConsumers.MosConsumer, this.depaPatientTypes, param);
+                            if (createResult == null)
+                            {
+                                success = false;
+                            }
+                        }
+                        BackendDataWorker.Reset<HIS_MATERIAL_TYPE>();
+                        BackendDataWorker.Reset<HIS_DEPA_PATIENT_TYPE>();
+                    }
                 }
                 else if (this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
                 {
@@ -1459,12 +1483,39 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                     materialTypeSdo.HisMaterialType = currentMedicineTypeDTO;
                     UpdateData(materialTypeSdo);
                     resultData = new BackendAdapter(param).Post<HIS_MATERIAL_TYPE>("api/HisMaterialType/UpdateSdo", ApiConsumers.MosConsumer, materialTypeSdo, param);
+                    HisDepaPatientTypeFilter filter = new HisDepaPatientTypeFilter();
+                    filter.SERVICE_ID = resultData.SERVICE_ID;
+                    var oldDepaPatientTypes = new BackendAdapter(param).Get<List<HIS_DEPA_PATIENT_TYPE>>("api/HisDepaPatientType/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (oldDepaPatientTypes != null && oldDepaPatientTypes.Count > 0 && this.isClickPick == true)
+                    {
+                        var deleteResult = new BackendAdapter(param).Post<bool>("api/HisDepaPatientType/DeleteList", ApiConsumers.MosConsumer, oldDepaPatientTypes.Select(p => p.ID).ToList(), param);
+                        if (!deleteResult)
+                        {
+                            success = false;
+                        }
+                    }
+                    if (this.depaPatientTypes != null && this.depaPatientTypes.Count > 0)
+                    {
+                        foreach (var item in this.depaPatientTypes)
+                        {
+                            item.SERVICE_ID = resultData.SERVICE_ID;
+                        }
+                        var createResult = new BackendAdapter(param).Post<List<HIS_DEPA_PATIENT_TYPE>>("api/HisDepaPatientType/CreateList", ApiConsumers.MosConsumer, this.depaPatientTypes, param);
+                        if (createResult == null)
+                        {
+                            success = false;
+                        }
+                    }
+                    BackendDataWorker.Reset<HIS_MATERIAL_TYPE>();
+                    BackendDataWorker.Reset<HIS_DEPA_PATIENT_TYPE>();
+
                 }
 
                 if (resultData != null)
                 {
                     success = true;
                     btnSave.Enabled = false;
+                    btnDepartmentPatientType.Enabled = false;
                     btnRefresh.Enabled = true;
                     txtMedicineTypeCode.Text = resultData.MATERIAL_TYPE_CODE;
                     WaitingManager.Hide();
@@ -4886,6 +4937,32 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 LogSystem.Error(ex);
             }
         }
+
+        private void btnDepartmentPatientType_Click(object sender, EventArgs e)
+        {
+            var serviceId = BackendDataWorker.Get<HIS_MATERIAL_TYPE>().Where(p => p.ID == this.materialTypeId).Select(p => p.SERVICE_ID).FirstOrDefault();
+            frmDepartmentPatientType frm = serviceId != 0
+                ? new frmDepartmentPatientType(serviceId, this.depaPatientTypes ?? new List<HIS_DEPA_PATIENT_TYPE>(), this.isCalledApi, this.isClickPick)
+                : new frmDepartmentPatientType(this.depaPatientTypes ?? new List<HIS_DEPA_PATIENT_TYPE>());
+
+            frm.OnDepaPatientTypeSaved += Frm_OnDepaPatientTypeSaved;
+            frm.Show();
+        }
+
+        private void Frm_OnDepaPatientTypeSaved(List<HIS_DEPA_PATIENT_TYPE> depaPatientTypes, bool isCalledApi, bool isClickPick)
+        {
+            try
+            {
+                this.isCalledApi = isCalledApi;
+                this.depaPatientTypes = depaPatientTypes != null ? depaPatientTypes : new List<HIS_DEPA_PATIENT_TYPE>();
+                this.isClickPick = isClickPick;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
     }
 }
 

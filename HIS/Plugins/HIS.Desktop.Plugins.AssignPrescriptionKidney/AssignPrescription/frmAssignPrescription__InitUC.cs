@@ -26,6 +26,7 @@ using HIS.UC.PatientSelect;
 using HIS.UC.PeriousExpMestList;
 using HIS.UC.SecondaryIcd;
 using HIS.UC.TreatmentFinish;
+using IMSys.DbConfig.HIS_RS;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Core;
@@ -48,10 +49,69 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 this.InitUcCauseIcd();
                 this.InitUcSecondaryIcd();
                 this.InitUcDate();
+                this.InitUCPeriousExpMestList();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void InitUCPeriousExpMestList()
+        {
+            try
+            {
+                this.periousExpMestListProcessor = new PeriousExpMestListProcessor();
+                HIS.UC.PeriousExpMestList.ADO.PeriousExpMestInitADO ado = new HIS.UC.PeriousExpMestList.ADO.PeriousExpMestInitADO();
+                ado.btnSelected_Click = ProcessChoicePrescriptionPrevious;
+                ado.btnView_Click = ViewPrescriptionPreviousButtonClick;
+                ado.IsAutoWidth = true;
+                this.currentPrescriptionFilter = new MOS.Filter.HisServiceReqView7Filter();
+                ado.LanguageInputADO = new UC.PeriousExpMestList.ADO.LanguageInputADO();
+                ado.LanguageInputADO.btnSelectPrescriptionPrevious__ToolTip = Inventec.Common.Resource.Get.Value("btnSelectPrescriptionPrevious__ToolTip", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.LanguageInputADO.btnShowPrescriptionPrevious__ToolTip = Inventec.Common.Resource.Get.Value("btnShowPrescriptionPrevious__ToolTip", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.LanguageInputADO.gridControlPreviousprescription__gcolIntructionTime__Caption = Inventec.Common.Resource.Get.Value("gridControlPreviousprescription__gcolIntructionTime__Caption", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.LanguageInputADO.gridControlPreviousprescription__gcolIntructionUser__Caption = Inventec.Common.Resource.Get.Value("gridControlPreviousprescription__gcolIntructionUser__Caption", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.LanguageInputADO.lciPrePrescription__Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.lciPriviousExpMest.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.LanguageInputADO.BenhChinh__Text = Inventec.Common.Resource.Get.Value("UCPeriousExpMestList.BenhChinh__Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.LanguageInputADO.BenhPhu__Text = Inventec.Common.Resource.Get.Value("UCPeriousExpMestList.BenhPhu__Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.LanguageInputADO.lciCheckBox__Text = Inventec.Common.Resource.Get.Value("UCPeriousExpMestList.lciCheckBox__Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.LanguageInputADO.cboItem1_Text = Inventec.Common.Resource.Get.Value("UCPeriousExpMestList.cboItem1__Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.LanguageInputADO.cboItem2_Text = Inventec.Common.Resource.Get.Value("UCPeriousExpMestList.cboItem2__Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.LanguageInputADO.cboItem3_Text = Inventec.Common.Resource.Get.Value("UCPeriousExpMestList.cboItem3__Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.LanguageInputADO.cboItem4_Text = Inventec.Common.Resource.Get.Value("UCPeriousExpMestList.cboItem4__Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.LanguageInputADO.gridControlPreviousprescription__gcol4__Caption = Inventec.Common.Resource.Get.Value("UCPeriousExpMestList.gridControlPreviousprescription__gcol4__Caption", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.IsPresPK = (!GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet);
+                //this.currentPrescriptionFilter.TDL_PATIENT_ID = this.currentTreatmentWithPatientType.PATIENT_ID;
+                this.currentPrescriptionFilter.NULL_OR_NOT_IN_EXP_MEST_TYPE_IDs = new List<long>() {
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BAN,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCS,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BL,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__CK,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DM,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__HPKP,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__KHAC,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__PL,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__TNCC };
+
+                this.currentPrescriptionFilter.PRESCRIPTION_TYPE_ID = 1;
+                this.currentPrescriptionFilter.ORDER_DIRECTION = "DESC";
+                this.currentPrescriptionFilter.IS_EXECUTE_KIDNEY_PRES = true;
+                this.currentPrescriptionFilter.ORDER_FIELD = "INTRUCTION_TIME";
+                this.currentPrescriptionFilter.TDL_PATIENT_ID = VHistreatment.PATIENT_ID;
+                ado.ServiceReqView7Filter = this.currentPrescriptionFilter;              
+                this.ucPeriousExpMestList = (UserControl)periousExpMestListProcessor.Run(ado);
+                if (this.ucPeriousExpMestList != null)
+                {
+                    //if (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)// 
+                    //    this.pnlUCPanelRightBottom.Controls.Add(this.ucPeriousExpMestList);
+                    //else
+                        this.pnlUCPanelRightTop.Controls.Add(this.ucPeriousExpMestList);
+                    this.ucPeriousExpMestList.Dock = DockStyle.Fill;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

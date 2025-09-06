@@ -741,7 +741,7 @@ namespace MPS.Processor.Mps000096
                     {
                         var testIndexCodes = testIndexs.Select(o => o.TEST_INDEX_CODE).Distinct().ToList();
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("testIndexCodes: ", testIndexCodes));
-                        testIndexRanges = rdo.testIndexRangeAll.Where(o => testIndexCodes.Contains(o.TEST_INDEX_CODE)).ToList();
+                        testIndexRanges = rdo.testIndexRangeAll.Where(o => testIndexCodes.Contains(o.TEST_INDEX_CODE) && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                         Inventec.Common.Logging.LogSystem.Debug("testIndexRanges count: " + testIndexRanges.Count);
                     }
                 }
@@ -854,22 +854,17 @@ namespace MPS.Processor.Mps000096
 
 
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("lstResultItem[0]: ", lstResultItem[0]));
-                            //hisSereServTeinSDO.MODIFIER = lstResultItem[0].MODIFIER;
-                            //hisSereServTeinSDO.TEST_INDEX_CODE = lstResultItem[0].TEST_INDEX_CODE;
-                            //hisSereServTeinSDO.TEST_INDEX_NAME = lstResultItem[0].TEST_INDEX_NAME;
-                            //hisSereServTeinSDO.IS_NO_EXECUTE = lstResultItem[0].IS_NO_EXECUTE;
-                            //hisSereServTeinSDO.TEST_INDEX_UNIT_NAME = testIndFist.TEST_INDEX_UNIT_NAME;
-                            //hisSereServTeinSDO.IS_IMPORTANT = testIndFist.IS_IMPORTANT;
-                            //hisSereServTeinSDO.VALUE_STR = lstResultItem[0].VALUE;
-                            //hisSereServTeinSDO.VALUE_HL = lstResultItem[0].VALUE;
-                            //hisSereServTeinSDO.ID = lstResultItem[0].ID;
-                            //hisSereServTeinSDO.NOTE = lstResultItem[0].DESCRIPTION;
-                            hisSereServTeinSDO.TEST_INDEX_CODE = null; 
-                            hisSereServTeinSDO.TEST_INDEX_NAME = null; 
-                            hisSereServTeinSDO.MODIFIER = null;
-                            hisSereServTeinSDO.IS_NO_EXECUTE = null;
-                            hisSereServTeinSDO.IS_IMPORTANT = null;
-                            hisSereServTeinSDO.NOTE = null;
+                            hisSereServTeinSDO.MODIFIER = lstResultItem[0].MODIFIER;
+                            hisSereServTeinSDO.TEST_INDEX_CODE = lstResultItem[0].TEST_INDEX_CODE;
+                            hisSereServTeinSDO.TEST_INDEX_NAME = lstResultItem[0].TEST_INDEX_NAME;
+                            hisSereServTeinSDO.IS_NO_EXECUTE = lstResultItem[0].IS_NO_EXECUTE;
+                            hisSereServTeinSDO.TEST_INDEX_UNIT_NAME = testIndFist.TEST_INDEX_UNIT_NAME;
+                            hisSereServTeinSDO.IS_IMPORTANT = testIndFist.IS_IMPORTANT;
+                            hisSereServTeinSDO.VALUE_STR = lstResultItem[0].VALUE;
+                            hisSereServTeinSDO.VALUE_HL = lstResultItem[0].VALUE;
+                            hisSereServTeinSDO.ID = lstResultItem[0].ID;
+                            hisSereServTeinSDO.NOTE = lstResultItem[0].DESCRIPTION;
+
 
                             // them con 
                             TestLisResultADO hisSereServTeinSDOChild = new TestLisResultADO();
@@ -881,16 +876,6 @@ namespace MPS.Processor.Mps000096
                             hisSereServTeinSDOChild.SERVICE_NUM_ORDER = hisSereServTeinSDO.SERVICE_NUM_ORDER;
                             hisSereServTeinSDOChild.SERVICE_ORDER = hisSereServTeinSDO.SERVICE_ORDER;
                             hisSereServTeinSDOChild.SERVICE_PARENT_ORDER = hisSereServTeinSDO.SERVICE_PARENT_ORDER;
-                            hisSereServTeinSDOChild.MODIFIER = hisSereServTeinSDO.MODIFIER;
-                            hisSereServTeinSDOChild.TEST_INDEX_CODE = hisSereServTeinSDO.TEST_INDEX_CODE;
-                            hisSereServTeinSDOChild.TEST_INDEX_NAME = hisSereServTeinSDO.TEST_INDEX_NAME;
-                            hisSereServTeinSDOChild.IS_NO_EXECUTE = hisSereServTeinSDO.IS_NO_EXECUTE;
-                            hisSereServTeinSDOChild.TEST_INDEX_UNIT_NAME = hisSereServTeinSDO.TEST_INDEX_UNIT_NAME;
-                            hisSereServTeinSDOChild.IS_IMPORTANT = hisSereServTeinSDO.IS_IMPORTANT;
-                            hisSereServTeinSDOChild.VALUE_STR = hisSereServTeinSDO.VALUE_STR;
-                            hisSereServTeinSDOChild.VALUE_HL = hisSereServTeinSDO.VALUE_HL;
-                            hisSereServTeinSDOChild.ID = hisSereServTeinSDO.ID;
-                            hisSereServTeinSDOChild.NOTE = hisSereServTeinSDO.DESCRIPTION;
 
                             this.ListTestChild.Add(hisSereServTeinSDOChild);
                         }
@@ -987,7 +972,7 @@ namespace MPS.Processor.Mps000096
                     }
                 }
 
-                var testIndexRangeAll = rdo.testIndexRangeAll;
+                var testIndexRangeAll = rdo.testIndexRangeAll.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 Inventec.Common.Logging.LogSystem.Debug("testIndexRangeAll count: " + testIndexRangeAll.Count);
                 foreach (var hisSereServTeinSDO in this.ListTestChild)
                 {

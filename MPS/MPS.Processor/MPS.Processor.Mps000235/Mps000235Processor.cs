@@ -92,7 +92,19 @@ namespace MPS.Processor.Mps000235
                 //Dangth
 
                 objectTag.AddObjectData(store, "PatientTypeAlter", _PATIENT_TYPE_ALTERs);              
-                objectTag.AddObjectData(store, "ExpMestAggregates", rdo.listAdo);
+                objectTag.AddObjectData(store, "ExpMestAggregates", rdo.listAdo.GroupBy(m => m.MEDICINE_TYPE_CODE).Select(g => 
+                {
+                    var first = g.First();
+                    var totalSoLuongMoiThang = g.Sum(x => x.AMOUNT_REQUEST);
+                    return new Mps000235ADO()
+                    {
+                        MEDICINE_TYPE_CODE = first.MEDICINE_TYPE_CODE,
+                        MEDICINE_TYPE_NAME = first.MEDICINE_TYPE_NAME,
+                        SERVICE_UNIT_NAME = first.SERVICE_UNIT_NAME,
+                        REMEDY_COUNT = first.REMEDY_COUNT,
+                        AMOUNT_REQUEST = totalSoLuongMoiThang
+                    };
+                }).ToList());
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
                 objectTag.SetUserFunction(store, "FuncMergeData12", new CalculateMergerData());
                 objectTag.SetUserFunction(store, "FuncMergeData13", new CalculateMergerData());

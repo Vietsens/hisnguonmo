@@ -26,6 +26,8 @@ namespace HIS.UC.TreatmentFinish
 {
     public class ConfigKeyCFG
     {
+        public const string KEY__TREATMENT_FINISH_ISREQUIRED_PATHOLOGICAL_PROCESS_TRANSFER_PATIENT_BHYT = "HIS.Desktop.Plugins.TreatmentFinish.IsRequiredPathologicalProcessTransferPatientBHYT";
+        public const string KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
         public const string KEY__MOS_HIS_SERVICE_REQ_NUM_ORDER_ISSUE_OPTION = "MOS.HIS_SERVICE_REQ.NUM_ORDER_ISSUE_OPTION";
         /// <summary>
         /// Giá trị loại ra viện khi kết thúc điều trị tại màn hình XỬ LÝ KHÁM, KÊ ĐƠN- Giá trị 0 hoặc không khai báo: mặc định để trống- Giá trị 1: mặc định là hẹn khám- Giá trị 2: Mặc định cấp toa cho về
@@ -81,11 +83,15 @@ namespace HIS.UC.TreatmentFinish
         internal static string PatientTypeCode__HospitalFee;
         internal static long PatientTypeId__HospitalFee;
         internal static string PatientTypeName__HospitalFee;
+        internal static string WarningHeinPatientTypeCode;
+        internal static string IsRequiredPathologicalProcessTransferPatientBHYT;
 
         internal static void GetConfig()
         {
             try
             {
+                IsRequiredPathologicalProcessTransferPatientBHYT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__TREATMENT_FINISH_ISREQUIRED_PATHOLOGICAL_PROCESS_TRANSFER_PATIENT_BHYT);
+                WarningHeinPatientTypeCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE);
                 EndDepartmentSubsHeadOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__EndDepartmentSubsHeadOption);
                 AllowManyTreatmentOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__ALLOW_MANY_TREATMENT_OPENING_OPTION);
                 NumOrderIssueOption = "1";//HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_HIS_SERVICE_REQ_NUM_ORDER_ISSUE_OPTION);

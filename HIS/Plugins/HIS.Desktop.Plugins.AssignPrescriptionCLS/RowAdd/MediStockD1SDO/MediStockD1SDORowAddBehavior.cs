@@ -80,6 +80,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add.MediStockD1SDO
             this.ExpiredDate = frmAssignPrescription.currentMedicineTypeADOForEdit.EXPIRED_DATE;
             this.IsAssignPackage = frmAssignPrescription.currentMedicineTypeADOForEdit.IsAssignPackage;
             this.MAME_ID = frmAssignPrescription.currentMedicineTypeADOForEdit.MAME_ID;
+            var stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == this.MediStockId);
+            if (stock != null && stock.IS_EXPEND == 1)
+            {
+                this.IsExpend = true;
+                this.IsDisableExpend = true;
+            }
             //Chi dinh tu man hinh phau thuat, thu thuat
             if (
                 ((frmAssignPrescription.currentMedicineTypeADOForEdit.IS_AUTO_EXPEND ?? -1) == 1)

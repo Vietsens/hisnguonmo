@@ -973,10 +973,11 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     txtBatchDivisionCode.Text = this.materialType.BATCH_DIVISION_CODE;
                     txtTenBHYT.Text = this.materialType.HEIN_SERVICE_BHYT_NAME;
                     txtPackingType.Text = this.materialType.PACKING_TYPE_NAME;
+                    txtRegisterNumber.Text = this.materialType.REGISTER_NUMBER;
                     EnableLeftControl(true);
-                    txtRegisterNumber.Enabled = false;
-                    txtPackingType.Enabled = false;
-                    txtTenBHYT.Enabled = false;
+                    //txtRegisterNumber.Enabled = false;
+                    //txtPackingType.Enabled = false;
+                    //txtTenBHYT.Enabled = false;
                     cboDosageForm.Enabled = false;
                     txtActiveBhyt.Enabled = false;
                     cboMediUseForm.Enabled = false;
@@ -1945,8 +1946,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 else if (xtraTabControl1.SelectedTabPageIndex == 1 && this.materialType != null && !String.IsNullOrEmpty(this.materialType.MATERIAL_TYPE_CODE))
                 {
                     var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().Where(o => o.NATIONAL_NAME == this.materialType.NATIONAL_NAME).ToList();
-                    txtRegisterNumber.Text = "";
-                    txtRegisterNumber.Enabled = false;
+                    txtRegisterNumber.Text = this.materialType.REGISTER_NUMBER ?? "";
+                    txtTenBHYT.Text = this.materialType.HEIN_SERVICE_BHYT_NAME ?? "";
+                    txtPackingType.Text = this.materialType.PACKING_TYPE_NAME ?? "";
+                    //txtRegisterNumber.Enabled = false;
                     if (national != null && national.Count() > 0)
                     {
                         txtNationalMainText.Text = national[0].NATIONAL_NAME;
@@ -2159,6 +2162,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.materialType.BID_NUM_ORDER = txtBidNumOrder.Text;
                 this.materialType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.materialType.AMOUNT = spinAmount.Value;
+                this.materialType.REGISTER_NUMBER = txtRegisterNumber.Text.Trim();
+                this.materialType.HEIN_SERVICE_BHYT_NAME = txtTenBHYT.Text.Trim();
+                this.materialType.PACKING_TYPE_NAME = txtPackingType.Text.Trim();
                 if (!string.IsNullOrEmpty(txtBatchDivisionCode.Text))
                 {
                     this.materialType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
@@ -3265,9 +3271,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     EnableLeftControl(true);
                     if (spinImpMoreRatio.EditValue == null)
                         spinImpMoreRatio.EditValue = 0;
-                    txtRegisterNumber.Enabled = false;
-                    txtPackingType.Enabled = false;
-                    txtTenBHYT.Enabled = false;
+                    //txtRegisterNumber.Enabled = false;
+                    //txtPackingType.Enabled = false;
+                    //txtTenBHYT.Enabled = false;
                     cboDosageForm.Enabled = false;
                     txtActiveBhyt.Enabled = false;
                     cboMediUseForm.Enabled = false;

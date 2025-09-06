@@ -482,12 +482,11 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 sampleRaw.CARTRIDGE_LOT = txtCartridgeLot.Text;
                 sampleRaw.CARTRIDGE_CAL = txtCartridgeCal.Text;
                 sampleRaw.RANGE_TIMES = txtRangeTimes.Text;
-
+                sampleRaw.BIO_PRODUCT_NAME = txtProductName.Text;
                 sampleRaw.NOTE = txtNote.Text.Trim();
 
                 LisSampleInfoSDO sdo = new LisSampleInfoSDO();
                 sdo.Sample = sampleRaw;
-
                 V_HIS_ROOM room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModuleBase.RoomId);
                 if (room != null)
                 {
@@ -499,10 +498,11 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                     sdo.WorkingRoomName = room.ROOM_NAME;
                 }
 
-                LogSystem.Info(LogUtil.TraceData("SampleInfoSDO", sdo));
+                LogSystem.Info(LogUtil.TraceData("Input_SampleInfoSDO", sdo));
 
                 LIS_SAMPLE rowBe = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/UpdateInfo", ApiConsumers.LisConsumer, sdo, null);
-                if (rowBe != null)
+                LogSystem.Info(LogUtil.TraceData("output_SampleInfoSDO", rowBe));
+                if (rowBe != null)    
                 {
                     success = true;
                     this.sample = rowBe;
@@ -1891,6 +1891,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 txtSampleState.Text = this.sample != null ? this.sample.SAMPLE_STATE : "";
                 txtSamplePosition.Text = this.sample != null ? this.sample.SAMPLE_POSITION : "";
                 txtCartridgeLot.Text = this.sample != null ? this.sample.CARTRIDGE_LOT : "";
+                txtProductName.Text = this.sample != null ? this.sample.BIO_PRODUCT_NAME : "";
                 txtCartridgeCal.Text = this.sample != null ? this.sample.CARTRIDGE_CAL : "";
                 txtRangeTimes.Text = this.sample != null ? this.sample.RANGE_TIMES : null;
                 if (!String.IsNullOrWhiteSpace(this.sample.SAMPLE_SENDER_CODE) || !String.IsNullOrWhiteSpace(this.sample.SAMPLE_SENDER))

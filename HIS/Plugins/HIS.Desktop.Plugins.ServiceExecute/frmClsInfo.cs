@@ -5604,7 +5604,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     {
                         txtIcdCmCode.ErrorText = "";
                         dxValidationProvider1.RemoveControlError(txtIcdCmCode);
-                        ValidationICD(10, 500, false, txtIcdCmCode, txtIcdCmName, cboIcdCmName, chkIcdCm, layoutControlItem33);
+                        ValidationICD(20, 500, false, txtIcdCmCode, txtIcdCmName, cboIcdCmName, chkIcdCm, layoutControlItem33);
                     }
                 }
             }

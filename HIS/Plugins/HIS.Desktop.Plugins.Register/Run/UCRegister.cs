@@ -87,6 +87,7 @@ namespace HIS.Desktop.Plugins.Register.Run
         internal string typeCodeFind__CCCDCMND = "CCCD/CMND";
         internal long programId = 0;
         internal string appointmentCode = "";
+        internal string heinPatientTypeCode = "";
         internal long _TreatmnetIdByAppointmentCode = 0;
         internal bool isNotPatientDayDob = false;
         internal List<long> serviceReqPrintIds { get; set; }
@@ -210,11 +211,14 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void timerInitForm_Tick()
         {
+            lciDistrict.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            layoutControlItem24.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             this.InitControlState();
             this.SetToolTipTog(togChangeStructAdress);
+            RegisterTimer(currentModule.ModuleLink, "timerNewForm", 500, timerNewForm_Tick);
+            StartTimer(currentModule.ModuleLink, "timerNewForm");
             StopTimer(currentModule.ModuleLink, "timerInitForm");
         }
 
@@ -624,7 +628,11 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.isAlertTreatmentEndInDay = false;
                 this.chkIsChronic.Checked = false;
                 this.chkIsChronic.ReadOnly = false;
+                this.chkCAPD.Checked = false;
+                this.chkCAPD.ReadOnly = false;
                 this.chkNoCCCD.Checked = false;
+                this.chkCAPD.Checked = false;
+                this.chkCAPD.ReadOnly = false;
                 if (GlobalVariables.AcsAuthorizeSDO != null)
                 {
                     var controlAcs = GlobalVariables.AcsAuthorizeSDO.ControlInRoles;
@@ -2753,7 +2761,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     }
                     else
                     {
-                        var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.ETHNIC_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
+                        var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE ==  1 && o.ETHNIC_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
                         var searchResult = (data != null && data.Count > 0) ? (data.Count == 1 ? data : data.Where(o => o.ETHNIC_CODE.ToUpper() == searchCode.ToUpper()).ToList()) : null;
                         if (searchResult != null && searchResult.Count == 1)
                         {
@@ -4522,6 +4530,8 @@ namespace HIS.Desktop.Plugins.Register.Run
                         }
                     }
                 }
+                togChangeStructAdress.IsOn = true;
+                layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             }
             catch (Exception ex)
             {

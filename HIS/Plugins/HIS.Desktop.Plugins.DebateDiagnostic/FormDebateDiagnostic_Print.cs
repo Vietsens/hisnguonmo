@@ -288,6 +288,12 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 {
                     single.IN_CODE = vHisTreatment.IN_CODE;
                 }
+                //
+                //Thông tin bảo hiểm y tế
+                long instructionTime = Inventec.Common.DateTime.Get.Now() ?? 0;
+                var patyAlterBhyt = new MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER();
+                PrintGlobalStore.LoadCurrentPatientTypeAlter(treatment_id, instructionTime, ref patyAlterBhyt);
+
                 WaitingManager.Hide();
 
                 if (lstHisDebateUser == null)
@@ -298,8 +304,10 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                    v_his_debate,
                    departmentTran,
                    single,
+                   lstHisDebateUser,
                    vHisTreatment,
-                   lstHisDebateUser);
+                   patyAlterBhyt
+                   );
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
 
                 string printerName = "";

@@ -166,6 +166,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Create
                 prescriptionSDO.RequestLoginName = this.RequestLoginname;
                 prescriptionSDO.RequestUserName = this.RequestUserName;
                 //prescriptionSDO.ExpMestReasonId = this.ExpMestReasonId;
+                if (frmAssignPrescription.chkPreKidneyShift.Checked)
+                {
+                    prescriptionSDO.IsKidney = true;
+                    prescriptionSDO.KidneyTimes = Convert.ToInt64(frmAssignPrescription.spinKidneyCount.Value);
+                }
+                if (frmAssignPrescription.chkHomePres.Checked)
+                {
+                    prescriptionSDO.IsHomePres = true;
+                }
                 if (this.ParentServiceReqId > 0)
                     prescriptionSDO.ParentServiceReqId = this.ParentServiceReqId;
                 prescriptionSDO.InstructionTime = intructionTime;

@@ -52,12 +52,12 @@ namespace HIS.UC.TreatmentFinish
         {
         }
 
-        public object Run(TreatmentFinishInitADO arg)
+        public object Run(TreatmentFinishInitADO arg, string bhyt)
         {
             uc = null;
             try
             {
-                IRun behavior = RunFactory.MakeIDepositRequestList(param, arg);
+                IRun behavior = RunFactory.MakeIDepositRequestList(param, arg, bhyt);
                 uc = behavior != null ? (behavior.Run()) : null;
             }
             catch (Exception ex)

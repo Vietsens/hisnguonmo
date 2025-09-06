@@ -492,6 +492,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaUpdate
                             {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                             }
+                            PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                             result = MPS.MpsPrinter.Run(PrintData);
                         }
                         #endregion
@@ -522,6 +523,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaUpdate
                             {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                             }
+                            PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                             result = MPS.MpsPrinter.Run(PrintData);
                         }
                         #endregion
@@ -550,6 +552,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaUpdate
                             {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                             }
+                            PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                             result = MPS.MpsPrinter.Run(PrintData);
                         }
                         #endregion
@@ -579,6 +582,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaUpdate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion
@@ -607,6 +611,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaUpdate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion
@@ -635,6 +640,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaUpdate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion
@@ -680,6 +686,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaUpdate
                             {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                             }
+                            PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                             result = MPS.MpsPrinter.Run(PrintData);
                         }
                         #endregion
@@ -708,6 +715,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaUpdate
                             {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                             }
+                            PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                             result = MPS.MpsPrinter.Run(PrintData);
                         }
                         #endregion
@@ -738,6 +746,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaUpdate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion
@@ -766,6 +775,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaUpdate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion
@@ -794,6 +804,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaUpdate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion
@@ -822,6 +833,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaUpdate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentModule.RoomId);
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion

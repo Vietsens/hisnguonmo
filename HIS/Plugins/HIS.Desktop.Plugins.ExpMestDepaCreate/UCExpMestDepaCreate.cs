@@ -160,12 +160,12 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                 ado.IsShowButtonAdd = false;
                 ado.IsShowCheckNode = false;
                 ado.IsShowSearchPanel = true;
-                ado.IsAutoWidth = true;
-                ado.IsShowButtonExpand = false;
+                //ado.IsAutoWidth = true;
+                //ado.IsShowButtonExpand = false;
                 ado.HisBloodTypeInStockClick = bloodInStockTree_Click;
                 ado.HisBloodTypeInStockRowEnter = bloodInStockTree_RowEnter;
                 ado.HisBloodTypeInStockColumns = new List<HisBloodTypeInStockColumn>();
-                ado.Keyword_NullValuePrompt = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_EXP_MEST_DEPA_CREATE__TXT_KEYWORD__NULL_VALUE", langManager, culture);
+                //ado.Keyword_NullValuePrompt = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_EXP_MEST_DEPA_CREATE__TXT_KEYWORD__NULL_VALUE", langManager, culture);
 
                 HisBloodTypeInStockColumn colMedicineTypeCode = new HisBloodTypeInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_EXP_MEST_DEPA_CREATE__MEDICINE_TREE__COLUMN_MEDICINE_TYPE_CODE", langManager, culture), "BloodTypeCode", 70, false);
                 colMedicineTypeCode.VisibleIndex = 0;
@@ -1064,7 +1064,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                 }
                 else
                 {
-                    this.mauInStockProcessor.FocusKeyword(this.ucMau);
+                    //this.mauInStockProcessor.FocusKeyword(this.ucMau);
                     this.lciRemedyCount.Enabled = false;
                     this.spinRemedyCount.EditValue = null;
 

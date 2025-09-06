@@ -1848,27 +1848,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     if (DepaPatientType != null && DepaPatientType.Count > 0)
                     {
                         List<long> PatientTypeId = DepaPatientType.Where(o => o.DEPARTMENT_ID == Department.ID).Select(o => o.PATIENT_TYPE_ID ?? 0).ToList();
-                        List<HIS_PATIENT_TYPE> listSource = currentPatientTypeWithPatientTypeAlter;
-                        listSource = listSource.Where(o => PatientTypeId.Contains(o.ID)).ToList();
-                        this.InitComboPatientType(patientTypeCombo, listSource);
+                        //currentPatientTypeWithPatientTypeAlter = currentPatientTypeWithPatientTypeAlter.Where(o => PatientTypeId.Contains(o.ID)).ToList();
+                        this.listSourcePatientType = currentPatientTypeWithPatientTypeAlter;
+                        this.listSourcePatientType = this.listSourcePatientType.Where(o => PatientTypeId.Contains(o.ID)).ToList();
+                        this.InitComboPatientType(patientTypeCombo, listSourcePatientType);
                     }
                     else
                     {
                         var dt = IsFullHeinInfo(data);
-                        List<HIS_PATIENT_TYPE> listSource = currentPatientTypeWithPatientTypeAlter;
+                        this.listSourcePatientType = currentPatientTypeWithPatientTypeAlter;
                         if (!dt)
-                            listSource = listSource.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
-                        this.InitComboPatientType(patientTypeCombo, listSource);
+                            this.listSourcePatientType = this.listSourcePatientType.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
+                        this.InitComboPatientType(patientTypeCombo, this.listSourcePatientType);
                     }
                 }
                 else
                 {
                     var dt = IsFullHeinInfo(data);
-                    List<HIS_PATIENT_TYPE> listSource = currentPatientTypeWithPatientTypeAlter;
+                    this.listSourcePatientType = currentPatientTypeWithPatientTypeAlter;
                     if (!dt)
-                        listSource = listSource.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
-                    this.InitComboPatientType(patientTypeCombo, listSource);
-                }          
+                        this.listSourcePatientType = this.listSourcePatientType.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
+                    this.InitComboPatientType(patientTypeCombo, this.listSourcePatientType);
+                }
             }
             catch (Exception ex)
             {

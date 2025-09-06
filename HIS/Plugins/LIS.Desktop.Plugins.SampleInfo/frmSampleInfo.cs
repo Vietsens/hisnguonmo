@@ -75,6 +75,7 @@ namespace LIS.Desktop.Plugins.SampleInfo
 
         bool IsFirstLoadForm { get; set; }
         bool IsSaveAndPrint;
+        private bool isSaving = false;
         public frmSampleInfo(Inventec.Desktop.Common.Modules.Module module, List<V_LIS_SAMPLE> data)
            : base(module)
         {
@@ -406,6 +407,7 @@ namespace LIS.Desktop.Plugins.SampleInfo
                 lblGenderName.Text = this.sample.GENDER_CODE == "01" ? "Nữ" : "Nam";
                 lblPatientDob.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.sample.DOB ?? 0);
                 lblPatientName.Text = (this.sample.LAST_NAME ?? "") + " " + (this.sample.FIRST_NAME ?? "");
+                txtBioProductName.Text = this.sample.BIO_PRODUCT_NAME ?? "";
                 if (sampleList != null && sampleList.Count > 0)
                 {
                     lblServiceReqCode.Text = string.Join(", ", this.sampleList.Select(o => o.SERVICE_REQ_CODE));
@@ -473,11 +475,12 @@ namespace LIS.Desktop.Plugins.SampleInfo
                     serviceIds = serviceIds.Distinct().ToList();
                     List<V_HIS_SERVICE> listService = BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => serviceIds.Contains(o.ID)).ToList() ?? new List<V_HIS_SERVICE>();
                     List<string> listSampleTypeCode = listService.Select(s => s.SAMPLE_TYPE_CODE ?? "").ToList() ?? new List<string>();
-                    List<LIS_SAMPLE_TYPE> listSampleType = this.sampleTypes.Where(o => !String.IsNullOrWhiteSpace(o.SAMPLE_TYPE_CODE)
-                                                                                    && listSampleTypeCode.Contains(o.SAMPLE_TYPE_CODE)).ToList();
+                    List<LIS_SAMPLE_TYPE> listSampleType = (this.sampleTypes != null) ? this.sampleTypes.Where(o => !String.IsNullOrWhiteSpace(o.SAMPLE_TYPE_CODE)
+                                                                                    && listSampleTypeCode.Contains(o.SAMPLE_TYPE_CODE)).ToList()
+                                                                                    : new List<LIS_SAMPLE_TYPE>();
                     if (listSampleType != null
                         && listSampleType.Count == 1
-                        && ((sampleList == null && !this.sample.SAMPLE_TYPE_ID.HasValue) || (sampleList.Where(o => o.SAMPLE_TYPE_ID.HasValue).Count() == 0)))
+                        && ((sampleList == null && !this.sample.SAMPLE_TYPE_ID.HasValue) || (sampleList == null && sampleList.Where(o => o.SAMPLE_TYPE_ID.HasValue).Count() == 0)))
                     {
                         cboSampleType.EditValue = listSampleType[0].ID;
                     }
@@ -963,13 +966,19 @@ namespace LIS.Desktop.Plugins.SampleInfo
         {
             try
             {
-                positionHandleControl = -1;
                 if (!btnSave.Enabled || !dxValidationProvider1.Validate() || this.sample == null) return;
+
+                if (isSaving) return;
+                isSaving = true;
+                positionHandleControl = -1;   
+                btnSave.Enabled = false; 
                 WaitingManager.Show();
                 bool success = false;
                 CommonParam param = new CommonParam();
                 bool IsNotSave = false;
                 success = ProcessSave(ref param, ref IsNotSave);
+                if(!success)
+                    btnSave.Enabled = true;
                 WaitingManager.Hide();
                 if (!IsNotSave)
                     MessageManager.Show(this, param, success);
@@ -977,11 +986,20 @@ namespace LIS.Desktop.Plugins.SampleInfo
                 #region Process has exception
                 SessionManager.ProcessTokenLost(param);
                 #endregion
+
+                isSaving = false;
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                isSaving = false;
+                btnSave.Enabled = true;
+            }
+            finally
+            {
+                isSaving = false;
+                btnSave.Enabled = true;
             }
         }
 
@@ -994,6 +1012,8 @@ namespace LIS.Desktop.Plugins.SampleInfo
                 sdo.IsBedRoom = this.currentModuleBase.RoomTypeId == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BUONG;
                 sdo.RequestDepartmentCode = this.room.DEPARTMENT_CODE;
                 sdo.RequestRoomCode = this.room.ROOM_CODE;
+                sdo.BioProductName = txtBioProductName.Text?.Trim();
+
                 if (cboSampleUser.EditValue != null)
                 {
                     var user = BackendDataWorker.Get<ACS_USER>().FirstOrDefault(o => o.LOGINNAME == cboSampleUser.EditValue.ToString());
@@ -1072,7 +1092,7 @@ namespace LIS.Desktop.Plugins.SampleInfo
                     {
                         IsSuccess = true;
                     }
-                }
+                } 
                 else
                 {
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
@@ -1080,6 +1100,7 @@ namespace LIS.Desktop.Plugins.SampleInfo
                     if (rs != null)
                     {
                         IsSuccess = true;
+                        this.sample.BIO_PRODUCT_NAME = rs.BIO_PRODUCT_NAME;
                         this.sample.SAMPLE_STT_ID = rs.SAMPLE_STT_ID;
                         this.sample.SAMPLE_TYPE_ID = rs.SAMPLE_TYPE_ID;
                         this.sample.SAMPLE_TIME = rs.SAMPLE_TIME;
@@ -1125,7 +1146,7 @@ namespace LIS.Desktop.Plugins.SampleInfo
                 {
                     if (chkPreviousStatus.Checked == true)
                     {
-                        csAddOrUpdate.VALUE = cboPatientStatus.EditValue.ToString() ?? "";
+                        csAddOrUpdate.VALUE = cboPatientStatus.EditValue?.ToString() ?? "";
                     }
                     else
                     {
@@ -1226,6 +1247,8 @@ namespace LIS.Desktop.Plugins.SampleInfo
             {
                 positionHandleControl = -1;
                 if (!btnSaveAndPrint.Enabled || !dxValidationProvider1.Validate() || this.sample == null) return;
+                if (isSaving) return;
+                isSaving = true;
                 WaitingManager.Show();
                 bool success = false;
                 CommonParam param = new CommonParam();

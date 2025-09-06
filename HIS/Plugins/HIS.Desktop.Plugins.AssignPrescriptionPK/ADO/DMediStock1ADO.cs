@@ -67,5 +67,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public string ODD_WARNING_CONTENT { get; set; }
         public bool IsExistAssignPres { get; set; }
         public long IdRow { get; set; }
+        public decimal? IS_PRIORITY { get; set; }
     }
 }

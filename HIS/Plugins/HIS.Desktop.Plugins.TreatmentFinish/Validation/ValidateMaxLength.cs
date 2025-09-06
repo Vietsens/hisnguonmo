@@ -27,6 +27,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Validation
     class ValidateMaxLength : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
         internal DevExpress.XtraEditors.BaseControl memoEdit;
+        
         internal int? maxLength;
         internal bool isBHXH;
         public override bool Validate(Control control, object value)

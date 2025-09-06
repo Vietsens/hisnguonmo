@@ -213,6 +213,7 @@
       <DependentUpon>UCHisKskDriverList.cs</DependentUpon>
     </Compile>
     <Compile Include="UCHisKskDriverListProcessor.cs" />
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

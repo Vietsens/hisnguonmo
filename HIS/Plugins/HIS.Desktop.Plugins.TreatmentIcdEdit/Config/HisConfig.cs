@@ -42,6 +42,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         internal static bool SuaThongTinHoSoDieuTri_;
 
         internal static string IsCheckSubIcdExceedLimit;
+        internal static string warningConfig_;
+        internal static string warningConfig = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
+        internal static long patientTypeBHYT_;
+        internal static string patientTypeBHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";
 
         internal static void GetConfig()
         {
@@ -54,6 +58,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
                 checkSovaovien_ = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(checkSovaovien) == IS__TRUE;
                 SuaThongTinHoSoDieuTri_ = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SuaThongTinHoSoDieuTri) == IS__TRUE;
+                warningConfig_ = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(warningConfig);
+                patientTypeBHYT_ = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(patientTypeBHYT);
             }
             catch (Exception ex)
             {

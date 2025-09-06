@@ -15,7 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
+using Inventec.Common.Logging;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +29,8 @@ namespace HIS.UC.ExamTreatmentFinish.Config
 {
     class HisConfig
     {
+        private const string KEY_WARNING_HEIN_PATIENT_TYPE_CODE = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
+
         private const string KEY__HIS_DESKTOP_PLUGINS_TREATMENTFINISH_ENDDEPARTMENTSUBSHEADOPTION = "HIS.Desktop.Plugins.TreatmentFinish.EndDepartmentSubsHeadOption";
 
         public const string KEY__MOS_HIS_TREATMENT_AUTO_CREATE_WHEN_APPOINTMENT = "MOS.HIS_TREATMENT.AUTO_CREATE_WHEN_APPOINTMENT";
@@ -67,7 +72,7 @@ namespace HIS.UC.ExamTreatmentFinish.Config
         private const string KEY_PathologicalProcessOption = "HIS.Desktop.Plugins.TreatmentFinish.PathologicalProcessOption";
         internal static bool IsRequiredPathologicalProcessTransferPatientBHYT;
         internal static int PathologicalProcessOption;
-
+        internal static string WarningHeinPatientTypeCode;
 
         internal static void GetConfig()
         {
@@ -108,11 +113,43 @@ namespace HIS.UC.ExamTreatmentFinish.Config
                 {
                     WarningOptionWhenExceedingMaxOfAppointmentDays = null;
                 }
-            
+                WarningHeinPatientTypeCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_WARNING_HEIN_PATIENT_TYPE_CODE);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private static long GetId(string code)
+        {
+            long result = 0;
+            try
+            {
+                var data = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == code);
+                if (!(data != null && data.ID > 0)) throw new ArgumentNullException(code + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => code), code));
+                result = data.ID;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Debug(ex);
+                result = 0;
+            }
+            return result;
+        }
+        private static long patientTypeIdIsHein;
+        public static long PATIENT_TYPE_ID__BHYT
+        {
+            get
+            {
+                if (patientTypeIdIsHein == 0)
+                {
+                    patientTypeIdIsHein = GetId(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT"));
+                }
+                return patientTypeIdIsHein;
+            }
+            set
+            {
+                patientTypeIdIsHein = value;
             }
         }
     }

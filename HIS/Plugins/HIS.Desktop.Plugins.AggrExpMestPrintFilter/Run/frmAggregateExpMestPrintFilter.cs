@@ -68,7 +68,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
         bool isPrint = false;
         internal long timeType = 1;
         #endregion
-
+         
         #region contructor
         internal frmAggregateExpMestPrintFilter(Inventec.Desktop.Common.Modules.Module currrentModule, V_HIS_EXP_MEST aggrExpMest, long printType, Desktop.ADO.AggrExpMestPrintSDO printSdo)
             : base(currrentModule)

@@ -473,6 +473,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (!string.IsNullOrEmpty(txtKskCode.Text.Trim()))
                     hisTreatmentFinishSDO.HrmKskCode = txtKskCode.Text.Trim();
 
+                if (!string.IsNullOrEmpty(txtObjectCode.Text.Trim()))
+                    hisTreatmentFinishSDO.HeinPatientTypeCode = txtObjectCode.Text.Trim();
                 if (string.IsNullOrEmpty(hisTreatmentFinishSDO.IcdCode))
                 {
                     result = true;

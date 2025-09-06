@@ -424,6 +424,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.cboProvinceKS.EditValue = bornProvinceCode;
 
                 this.chkIsChronic.Checked = (patientDTO.IS_CHRONIC == 1);
+                this.chkCAPD.Checked = (patientDTO.IS_CAPD == 1);
                 //this.AutoCheckPriorityByPriorityType(patientDTO);
                 this.cboPatientClassify.EditValue = patientDTO.PATIENT_CLASSIFY_ID;
 
@@ -431,7 +432,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(patientDTO.NOTE, ResourceMessage.TieuDeCuaSoThongBaoLaThongBao, System.Windows.Forms.MessageBoxButtons.OK);
                 }
-                if ((string.IsNullOrEmpty(patientDTO.DISTRICT_NAME) && string.IsNullOrEmpty(patientDTO.DISTRICT_CODE) && IsChangeStrucAddress) || (string.IsNullOrEmpty(patientDTO.DISTRICT_CODE) && !string.IsNullOrEmpty(patientDTO.COMMUNE_CODE)))
+                //if ((string.IsNullOrEmpty(patientDTO.DISTRICT_NAME) && string.IsNullOrEmpty(patientDTO.DISTRICT_CODE) && IsChangeStrucAddress) || (string.IsNullOrEmpty(patientDTO.DISTRICT_CODE) && !string.IsNullOrEmpty(patientDTO.COMMUNE_CODE)))
                 {
                     if (!togChangeStructAdress.IsOn)
                     {

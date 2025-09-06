@@ -34,6 +34,7 @@ namespace MPS.Processor.Mps000085
     class Mps000085Processor : AbstractProcessor
     {
         Mps000085PDO rdo;
+        //Dictionary<string, decimal> PatientTypePriceDict = new Dictionary<string, decimal>();
         public Mps000085Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -54,12 +55,15 @@ namespace MPS.Processor.Mps000085
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
+
                 ProcessSingleKey();
                 singleTag.ProcessData(store, singleValueDictionary);
                 objectTag.AddObjectData(store, "ListMediMate", rdo.listAdo);
+                objectTag.AddObjectData(store, "Mps000085ADO", rdo.listAdo);
                 objectTag.AddObjectData(store, "ListImpMestUser", rdo._ImpMestUserPrint);
                 objectTag.AddObjectData(store, "ListRoleUserEnd", rdo.roleAdo);
                 objectTag.AddObjectData(store, "ListImpMestBlood", rdo._ListAdo);
+                objectTag.SetUserFunction(store, "FlFuncElement", new FlFuncElementFunction());
                 result = true;
             }
             catch (Exception ex)
@@ -69,6 +73,78 @@ namespace MPS.Processor.Mps000085
             return result;
         }
 
+        private class FlFuncElementFunction : TFlexCelUserFunction // FlexCel trong Excel có thể lấy giá trị theo key từ một Dictionary
+        {
+
+            object result = null;
+            public override object Evaluate(object[] parameters)
+            {
+                if (parameters == null || parameters.Length < 2)
+                    throw new ArgumentException("Bad parameter count in call to Orders() user-defined function");
+
+                try
+                {
+                    //string KeyGet = Convert.ToString(parameters[1]);
+                    string KeyGet = "";
+                    if (!String.IsNullOrEmpty(parameters[1].ToString()))
+                    {
+                        KeyGet = parameters[1].ToString().Replace("\"", string.Empty).Trim();
+                    }
+
+                    if (parameters[0] is Dictionary<string, int>)
+                    {
+                        Dictionary<string, int> DicGet = parameters[0] as Dictionary<string, int>;
+                        if (String.IsNullOrEmpty(KeyGet)) return DicGet.Values.Sum();
+                        if (!DicGet.ContainsKey(KeyGet))
+                        {
+                            return null;//
+                        }
+                        result = DicGet[KeyGet];
+                    }
+                    else if (parameters[0] is Dictionary<string, long>)
+                    {
+                        Dictionary<string, long> DicGet = parameters[0] as Dictionary<string, long>;
+                        if (String.IsNullOrEmpty(KeyGet)) return DicGet.Values.Sum();
+                        if (!DicGet.ContainsKey(KeyGet))
+                        {
+                            return null;
+                        }
+                        result = DicGet[KeyGet];
+                    }
+                    else if (parameters[0] is Dictionary<string, decimal>)
+                    {
+                        Dictionary<string, decimal> DicGet = parameters[0] as Dictionary<string, decimal>;
+                        if (String.IsNullOrEmpty(KeyGet)) return DicGet.Values.Sum();
+                        if (!DicGet.ContainsKey(KeyGet))
+                        {
+                            return null;
+                        }
+                        result = DicGet[KeyGet];
+                    }
+                    else if (parameters[0] is Dictionary<string, string>)
+                    {
+                        Dictionary<string, string> DicGet = parameters[0] as Dictionary<string, string>;
+                        if (String.IsNullOrEmpty(KeyGet)) return null;
+                        if (!DicGet.ContainsKey(KeyGet))
+                        {
+                            return null;
+                        }
+                        result = DicGet[KeyGet];
+                    }
+                    else
+                    {
+                        result = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                    return null;
+                }
+
+                return result;
+            }
+        }
         void ProcessSingleKey()
         {
             try
@@ -76,8 +152,8 @@ namespace MPS.Processor.Mps000085
                 decimal totalPrice = 0;
                 decimal sumPrice = 0;
                 decimal sumPriceNoVat = 0;
-                List<string> listSupplier = new List<string>();   
-                string supplierString = "";      
+                List<string> listSupplier = new List<string>();
+                string supplierString = "";
                 if (rdo._ListImpMestBlood != null && rdo._ListImpMestBlood.Count > 0)
                 {
                     rdo._ListAdo = (from r in rdo._ListImpMestBlood select new MPS.Processor.Mps000085.PDO.Mps000085PDO.BLOODADO(r)).ToList();
@@ -98,6 +174,45 @@ namespace MPS.Processor.Mps000085
                         ado.BATCH_REGISTER_NUMBER = item.MEDICINE_REGISTER_NUMBER;
                         ado.BATCH_MANUFACTURER_CODE = item.MEDICINE_MANUFACTURER_CODE;
                         ado.BATCH_MANUFACTURER_NAME = item.MEDICINE_MANUFACTURER_NAME;
+                        //qtcode
+                        var medicine = rdo._Medicines != null ? rdo._Medicines.FirstOrDefault(o => o.ID == item.MEDICINE_ID) : null;
+                        var medicinePaties = rdo._MedicinePaties != null ? rdo._MedicinePaties.Where(o => o.MEDICINE_ID == item.MEDICINE_ID).ToList() : new List<V_HIS_MEDICINE_PATY>();
+                        Dictionary<string, decimal> dicPrice = new Dictionary<string, decimal>();
+                        if (medicine != null)
+                        {
+                            foreach (var paty in medicinePaties)
+                            {
+                                decimal price = 0;
+                                if (medicine.IS_SALE_EQUAL_IMP_PRICE != 1)
+                                {
+                                    if (item.TDL_IMP_UNIT_ID.HasValue)
+                                    {
+                                        price = (paty.IMP_UNIT_EXP_PRICE ?? 0) * (1 + (paty.EXP_VAT_RATIO));
+                                    }
+                                    else
+                                    {
+                                        price = (paty.EXP_PRICE) * (1 + (paty.EXP_VAT_RATIO));
+                                    }
+                                }
+                                else
+                                {
+                                    if (item.TDL_IMP_UNIT_ID.HasValue)
+                                    {
+                                        price = (medicine.IMP_UNIT_PRICE ?? 0) * (1 + (item.IMP_VAT_RATIO));
+                                    }
+                                    else
+                                    {
+                                        price = (medicine.IMP_PRICE) * (1 + (item.IMP_VAT_RATIO));
+                                    }
+                                }
+                                if (!dicPrice.ContainsKey(paty.PATIENT_TYPE_CODE))
+                                {
+                                    dicPrice[paty.PATIENT_TYPE_CODE] = price;
+                                }
+                            }
+                        }
+                        ado.DicMediMate = dicPrice;
+                        //qtcode
                         if (rdo._Medicines != null && rdo._Medicines.Count > 0)
                         {
                             ado.TDL_BID_GROUP_CODE = rdo._Medicines.FirstOrDefault(o => o.ID == item.MEDICINE_ID).TDL_BID_GROUP_CODE;
@@ -139,6 +254,43 @@ namespace MPS.Processor.Mps000085
                         ado.BATCH_REGISTER_NUMBER = item.MATERIAL_REGISTER_NUMBER;
                         ado.BATCH_MANUFACTURER_CODE = item.MATERIAL_MANUFACTURER_CODE;
                         ado.BATCH_MANUFACTURER_NAME = item.MATERIAL_MANUFACTURER_NAME;
+                        var material = rdo._Materials != null ? rdo._Materials.FirstOrDefault(o => o.ID == item.MATERIAL_ID) : null;
+                        var materialPaties = rdo._MaterialPaties != null ? rdo._MaterialPaties.Where(o => o.MATERIAL_ID == item.MATERIAL_ID).ToList() : new List<V_HIS_MATERIAL_PATY>();
+                        Dictionary<string, decimal> dicPrice = new Dictionary<string, decimal>();
+                        if (material != null)
+                        {
+                            foreach (var paty in materialPaties)
+                            {
+                                decimal price = 0;
+                                if (material.IS_SALE_EQUAL_IMP_PRICE != 1)
+                                {
+                                    if (item.TDL_IMP_UNIT_ID.HasValue)
+                                    {
+                                        price = (paty.IMP_UNIT_EXP_PRICE ?? 0) * (1 + (paty.EXP_VAT_RATIO));
+                                    }
+                                    else
+                                    {
+                                        price = (paty.EXP_PRICE) * (1 + (paty.EXP_VAT_RATIO));
+                                    }
+                                }
+                                else
+                                {
+                                    if (item.TDL_IMP_UNIT_ID.HasValue)
+                                    {
+                                        price = (material.IMP_UNIT_PRICE ?? 0) * (1 + (item.IMP_VAT_RATIO));
+                                    }
+                                    else
+                                    {
+                                        price = (material.IMP_PRICE) * (1 + (item.IMP_VAT_RATIO));
+                                    }
+                                }
+                                if (!dicPrice.ContainsKey(paty.PATIENT_TYPE_CODE))
+                                {
+                                    dicPrice[paty.PATIENT_TYPE_CODE] = price;
+                                }
+                            }
+                        }
+                        ado.DicMediMate = dicPrice;
                         if (rdo._Materials != null && rdo._Materials.Count > 0)
                         {
                             ado.TDL_BID_GROUP_CODE = rdo._Materials.FirstOrDefault(o => o.ID == item.MATERIAL_ID).TDL_BID_GROUP_CODE;
@@ -332,4 +484,6 @@ namespace MPS.Processor.Mps000085
             return result;
         }
     }
+
+
 }

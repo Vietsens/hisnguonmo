@@ -60,7 +60,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControlMain = new DevExpress.XtraLayout.LayoutControl();
-            this.cboCareer = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.txtObjectCode = new DevExpress.XtraEditors.TextEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
@@ -69,6 +69,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.cboCareer = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView9 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtHosReasonNt = new DevExpress.XtraEditors.ButtonEdit();
@@ -253,14 +254,16 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.lciDeleteEndInfo = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciHosReason = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem47 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem48 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.dxValidationProvider_ForOutPatientDateFromTo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlMain)).BeginInit();
             this.layoutControlMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtObjectCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView9)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtHosReasonNt.Properties)).BeginInit();
@@ -426,6 +429,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             ((System.ComponentModel.ISupportInitialize)(this.lciDeleteEndInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHosReason)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem48)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_ForOutPatientDateFromTo)).BeginInit();
@@ -433,6 +437,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             // 
             // layoutControlMain
             // 
+            this.layoutControlMain.Controls.Add(this.txtObjectCode);
             this.layoutControlMain.Controls.Add(this.cboCareer);
             this.layoutControlMain.Controls.Add(this.panel1);
             this.layoutControlMain.Controls.Add(this.btnDeleteEndInfo);
@@ -525,19 +530,18 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.layoutControlMain.TabIndex = 0;
             this.layoutControlMain.Text = "layoutControl1";
             // 
-            // cboCareer
+            // txtObjectCode
             // 
-            this.cboCareer.Location = new System.Drawing.Point(628, 279);
-            this.cboCareer.MenuManager = this.barManager1;
-            this.cboCareer.Name = "cboCareer";
-            this.cboCareer.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboCareer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboCareer.Properties.NullText = "";
-            this.cboCareer.Properties.View = this.gridView9;
-            this.cboCareer.Size = new System.Drawing.Size(314, 20);
-            this.cboCareer.StyleController = this.layoutControlMain;
-            this.cboCareer.TabIndex = 81;
+            this.txtObjectCode.Location = new System.Drawing.Point(355, 327);
+            this.txtObjectCode.MenuManager = this.barManager1;
+            this.txtObjectCode.Name = "txtObjectCode";
+            this.txtObjectCode.Properties.Mask.EditMask = "[0-9\\.]{0,10}";
+            this.txtObjectCode.Properties.MaxLength = 10;
+            this.txtObjectCode.Properties.NullValuePrompt = "Chỉ cho phép nhập số và dấu chấm";
+            this.txtObjectCode.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtObjectCode.Size = new System.Drawing.Size(164, 20);
+            this.txtObjectCode.StyleController = this.layoutControlMain;
+            this.txtObjectCode.TabIndex = 82;
             // 
             // barManager1
             // 
@@ -627,6 +631,20 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(944, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 614);
+            // 
+            // cboCareer
+            // 
+            this.cboCareer.Location = new System.Drawing.Point(628, 279);
+            this.cboCareer.MenuManager = this.barManager1;
+            this.cboCareer.Name = "cboCareer";
+            this.cboCareer.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboCareer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboCareer.Properties.NullText = "";
+            this.cboCareer.Properties.View = this.gridView9;
+            this.cboCareer.Size = new System.Drawing.Size(314, 20);
+            this.cboCareer.StyleController = this.layoutControlMain;
+            this.cboCareer.TabIndex = 81;
             // 
             // gridView9
             // 
@@ -945,7 +963,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.popupControlContainerPrintConfig.Location = new System.Drawing.Point(181, 324);
             this.popupControlContainerPrintConfig.Manager = this.barManager1;
             this.popupControlContainerPrintConfig.Name = "popupControlContainerPrintConfig";
-            this.popupControlContainerPrintConfig.Size = new System.Drawing.Size(252, 25);
+            this.popupControlContainerPrintConfig.Size = new System.Drawing.Size(75, 25);
             this.popupControlContainerPrintConfig.TabIndex = 18;
             this.popupControlContainerPrintConfig.Visible = false;
             // 
@@ -955,7 +973,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.gridControlContainerPrintConfig.Location = new System.Drawing.Point(0, 0);
             this.gridControlContainerPrintConfig.MainView = this.gridViewContainerPrintConfig;
             this.gridControlContainerPrintConfig.Name = "gridControlContainerPrintConfig";
-            this.gridControlContainerPrintConfig.Size = new System.Drawing.Size(252, 25);
+            this.gridControlContainerPrintConfig.Size = new System.Drawing.Size(75, 25);
             this.gridControlContainerPrintConfig.TabIndex = 0;
             this.gridControlContainerPrintConfig.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewContainerPrintConfig});
@@ -1834,7 +1852,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.layoutControlItem46,
             this.lciDeleteEndInfo,
             this.lciHosReason,
-            this.layoutControlItem47});
+            this.layoutControlItem47,
+            this.layoutControlItem48});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -2725,7 +2744,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.lciNewTreatmentTime.Location = new System.Drawing.Point(258, 301);
             this.lciNewTreatmentTime.Name = "lciNewTreatmentTime";
             this.lciNewTreatmentTime.OptionsToolTip.ToolTip = "Thời gian vào viện của hồ sơ mới";
-            this.lciNewTreatmentTime.Size = new System.Drawing.Size(263, 48);
+            this.lciNewTreatmentTime.Size = new System.Drawing.Size(263, 24);
             this.lciNewTreatmentTime.Text = "Thời gian:";
             this.lciNewTreatmentTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciNewTreatmentTime.TextSize = new System.Drawing.Size(90, 20);
@@ -2899,6 +2918,19 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.layoutControlItem47.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem47.TextToControlDistance = 5;
             // 
+            // layoutControlItem48
+            // 
+            this.layoutControlItem48.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem48.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem48.Control = this.txtObjectCode;
+            this.layoutControlItem48.Location = new System.Drawing.Point(258, 325);
+            this.layoutControlItem48.Name = "layoutControlItem48";
+            this.layoutControlItem48.Size = new System.Drawing.Size(263, 24);
+            this.layoutControlItem48.Text = "Mã đối tượng: ";
+            this.layoutControlItem48.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem48.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem48.TextToControlDistance = 5;
+            // 
             // dxValidationProvider
             // 
             this.dxValidationProvider.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider_ValidationFailed);
@@ -2928,9 +2960,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.Controls.SetChildIndex(this.layoutControlMain, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlMain)).EndInit();
             this.layoutControlMain.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtObjectCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView9)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtHosReasonNt.Properties)).EndInit();
@@ -3096,6 +3129,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             ((System.ComponentModel.ISupportInitialize)(this.lciDeleteEndInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHosReason)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem48)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_ForOutPatientDateFromTo)).EndInit();
@@ -3303,5 +3337,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         private DevExpress.XtraEditors.GridLookUpEdit cboCareer;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView9;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem47;
+        private DevExpress.XtraEditors.TextEdit txtObjectCode;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem48;
     }
 }

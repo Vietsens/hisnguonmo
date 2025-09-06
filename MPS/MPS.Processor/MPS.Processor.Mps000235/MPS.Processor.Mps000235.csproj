@@ -57,9 +57,8 @@
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000235.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\CTDL\MPS.Processor.Mps000235.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000235.PDO">
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000235.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>

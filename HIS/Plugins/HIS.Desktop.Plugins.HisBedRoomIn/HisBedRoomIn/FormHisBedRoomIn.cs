@@ -1371,6 +1371,16 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             }
         }
 
+        private void btnHospitalizeReason_EditValueChanged(object sender, EventArgs e)
+        {
+            string findReasonName = btnHospitalizeReason.Text;
+            if (!string.IsNullOrEmpty(findReasonName))
+            {
+                btnHospitalizeReason.Properties.Buttons[1].Visible = true;
+                var ketQua = lstHopitalReason.Where(i => i.HOSPITALIZE_REASON_NAME.Contains(findReasonName) || i.HOSPITALIZE_REASON_CODE.Contains(findReasonName)).ToList();
+                lstHopitalReasonSave = ketQua;
+            }
+        }
     }
 }
 

@@ -98,6 +98,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         private decimal? parentAvailableAmount { get; set; }
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        
         string ModuleLink = "HIS.Desktop.Plugins.MediStockSummary";
         bool IsInitForm = false;
         #endregion
@@ -292,7 +293,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
          
             {
             try
-            {
+            {  
                 hisMediInStockProcessor = new HisMedicineInStockProcessor();
                 HisMedicineInStockInitADO ado = new HisMedicineInStockInitADO();
                 ado.HisMedicineInStockColumns = new List<HisMedicineInStockColumn>();
@@ -891,7 +892,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
 
                         lstMediInStocks = new List<HisMedicineInStockSDO>();
                         lstMediInStocks = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE, ApiConsumers.MosConsumer, mediFilter, param);
-
+                       
                         if (lstMediInStocks != null && lstMediInStocks.Count > 0)
                         {
                             var dataMediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => this.mediStockIds.Contains(p.ID) && p.IS_BUSINESS == 1).ToList();

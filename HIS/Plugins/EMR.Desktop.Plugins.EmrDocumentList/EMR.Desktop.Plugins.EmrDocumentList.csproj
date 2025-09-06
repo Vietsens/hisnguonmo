@@ -42,7 +42,7 @@
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EMR.EFMODEL">
-      <HintPath>..\..\..\..\LIB\EMR\EMR.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\EMR\EMR.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="EMR.Filter">
       <HintPath>..\..\..\..\LIB\EMR\EMR.Filter.dll</HintPath>
@@ -121,7 +121,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\itextsharp.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>

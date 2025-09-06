@@ -180,10 +180,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                     if (!CheckDuplicateCCCD())
                         return;
-
                     try
                     {
                         WaitingManager.Show(this.ParentForm);
+                        //đoạn lưu
                         HIS.Desktop.Common.IAppDelegacyT delegacy = new Register.ServiceRequestRegister(param, this, currentPatientSDO);
                         switch (GlobalStore.currentFactorySaveType)
                         {
@@ -194,8 +194,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                                 if (this.currentHisExamServiceReqResultSDO != null
                                     && this.currentHisExamServiceReqResultSDO.HisPatientProfile != null
-                                    //&& this.currentHisExamServiceReqResultSDO.SereServs != null
-                                    //&& this.currentHisExamServiceReqResultSDO.SereServs.Count > 0
                                     && this.currentHisExamServiceReqResultSDO.ServiceReqs != null
                                     && this.currentHisExamServiceReqResultSDO.ServiceReqs.Count > 0)
                                 {

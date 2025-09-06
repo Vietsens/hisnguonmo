@@ -393,6 +393,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     columnInfos.Add(new ColumnInfo("PATIENT_TYPE_CODE", "", 100, 1));
                     columnInfos.Add(new ColumnInfo("PATIENT_TYPE_NAME", "", 250, 2));
                     ControlEditorADO controlEditorADO = new ControlEditorADO("PATIENT_TYPE_NAME", "ID", columnInfos, false, 350);
+
                     if (data != null)
                     {
                         ControlEditorLoader.Load(repositoryItemcboPatientType, data, controlEditorADO);

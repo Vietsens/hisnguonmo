@@ -940,7 +940,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 this.txtDialogText.Enabled = enable;
                 this.txtMaChanDoanTD.Enabled = enable;
                 this.cboChanDoanTD.Enabled = enable;
-                this.txtInCode.Enabled = enable;
+                //if (!(cboHeinRightRoute.EditValue.ToString() == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT) && cboHeinRightRoute.EditValue == null)
+                    this.txtInCode.Enabled = enable;
                 this.lblEditIcd.Enabled = enable;
 
                 if (!enable)
@@ -958,7 +959,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.txtDialogText.EditValue = null;
                     this.txtMaChanDoanTD.EditValue = null;
                     this.cboChanDoanTD.EditValue = null;
-                    this.txtInCode.EditValue = null;
+                    //if (!(cboHeinRightRoute.EditValue.ToString() == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT) && cboHeinRightRoute.EditValue == null)
+                        this.txtInCode.EditValue = null;
                 }
             }
             catch (Exception ex)

@@ -27,21 +27,22 @@ namespace HIS.UC.TreatmentFinish.Run
     public sealed class RunBehavior : IRun
     {
         ADO.TreatmentFinishInitADO entity;
-
+        string BHYT { get; set; }
         public RunBehavior()
             : base()
         {
         }
-        public RunBehavior(CommonParam param,ADO.TreatmentFinishInitADO data)
+        public RunBehavior(CommonParam param,ADO.TreatmentFinishInitADO data, string BHYT)
             : base()
         {
             this.entity = data;
+            this.BHYT = BHYT;
         }
         object IRun.Run()
         {
             try
             {
-                return new UCTreatmentFinish(this.entity);
+                return new UCTreatmentFinish(this.entity, this.BHYT);
             }
             catch (Exception ex)
             {

@@ -20,6 +20,7 @@ using HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription;
 using Inventec.Common.Logging;
 using MOS.SDO;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Save.Create
@@ -45,6 +46,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Save.Create
                 prescriptionSDO.TreatmentId = this.TreatmentId;
                 prescriptionSDO.PrescriptionTypeId = PrescriptionType.NEW;
                 prescriptionSDO.ClientSessionKey = GlobalStore.ClientSessionKey;
+                prescriptionSDO.IsExecuteKidneyPres = true;
+                prescriptionSDO.KidneyServiceReqId = frmAssignPrescription.serviceReqWorking.ID;
                 if (this.ParentServiceReqId > 0)
                     prescriptionSDO.ParentServiceReqId = this.ParentServiceReqId;
 
@@ -52,10 +55,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Save.Create
                 this.ProcessPrescriptionUpdateSDOICD(prescriptionSDO);
                 this.ProcessPrescriptionSDOForSereServInKip(prescriptionSDO);
                 this.ProcessPrescriptionSDOForTreatmentFinish(prescriptionSDO);
-                
-                Inventec.Common.Logging.LogSystem.Debug("Goi api ke don thuoc. Du lieu dau vao____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => prescriptionSDO), prescriptionSDO) + ". Du lieu dau ra____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Param), Param));
+
+                List<OutPatientPresSDO> listInput = new List<OutPatientPresSDO>() { prescriptionSDO };
+                Inventec.Common.Logging.LogSystem.Debug("Goi api ke don thuoc. Du lieu dau vao____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listInput), listInput) + ". Du lieu dau ra____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Param), Param));
                 LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => prescriptionSDO), prescriptionSDO));
-                result = new Inventec.Common.Adapter.BackendAdapter(Param).Post<OutPatientPresResultSDO>(RequestUriStore.HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE, ApiConsumers.MosConsumer, prescriptionSDO, Param);
+                result = new Inventec.Common.Adapter.BackendAdapter(Param).Post<OutPatientPresResultSDO>(RequestUriStore.HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE, ApiConsumers.MosConsumer, listInput, Param);
                 if (result == null
                     || result.ServiceReqs == null || result.ServiceReqs.Count == 0
                     || ((result.ServiceReqMaties == null || result.ServiceReqMaties.Count == 0)
@@ -142,8 +146,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Save.Create
         {
             try
             {
-                if (prescriptionSDO.Materials.Count > 0
-                    || prescriptionSDO.Medicines.Count > 0
+                if (prescriptionSDO.Materials != null &&prescriptionSDO.Materials.Count > 0
+                    || prescriptionSDO.Medicines != null && prescriptionSDO.Medicines.Count > 0 
                     )
                 {
                     if (frmAssignPrescription.currentSereServ != null)

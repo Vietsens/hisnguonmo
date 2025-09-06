@@ -31,6 +31,7 @@ using HIS.Desktop.Plugins.Library.EmrGenerate;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -1652,9 +1653,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 WaitingManager.Show();
 
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
-
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.resultADO != null && this.resultADO.HisInitSDO != null && this.resultADO.HisInitSDO.ImpMest != null) ? this.resultADO.HisInitSDO.ImpMest.TDL_TREATMENT_CODE : "", printTypeCode, roomId);
-
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, roomId);
                 if (resultADO.ImpMestTypeId == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DK && resultADO.HisInitSDO != null)
                 {
                     CommonParam param = new CommonParam();
@@ -1766,6 +1765,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000199RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
+                    PrintData.EmrInputADO = inputADO;
                 }
                 else if (resultADO.ImpMestTypeId == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__KK && resultADO.HisInveSDO != null)
                 {
@@ -1878,6 +1878,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000170RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
+                    PrintData.EmrInputADO = inputADO;
                 }
                 else if (resultADO.ImpMestTypeId == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__KHAC && resultADO.HisOtherSDO != null)
                 {
@@ -1990,11 +1991,12 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000199RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
+                    PrintData.EmrInputADO = inputADO;
                 }
+
                 WaitingManager.Hide();
                 if (PrintData != null)
                 {
-                    PrintData.EmrInputADO = inputADO;
                     result = MPS.MpsPrinter.Run(PrintData);
                 }
                 else
@@ -2020,7 +2022,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 }
                 WaitingManager.Show();
 
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.resultADO.HisManuSDO != null && this.resultADO.HisManuSDO.ImpMest != null) ? this.resultADO.HisManuSDO.ImpMest.TDL_TREATMENT_CODE : "", printTypeCode, roomId);
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, roomId);
 
                 HisImpMestViewFilter manuImpMestFilter = new HisImpMestViewFilter();
                 manuImpMestFilter.ID = this.resultADO.HisManuSDO.ImpMest.ID;

@@ -17,6 +17,7 @@
  */
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription;
 using HIS.Desktop.Plugins.AssignPrescriptionKidney.Config;
@@ -147,7 +148,385 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Save
 
         protected void InitBase()
         {
-            this.InGenerateListMediMaty();
+            if (frmAssignPrescription.serviceReqWorking != null && frmAssignPrescription.serviceReqWorking.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT ||
+                frmAssignPrescription.oldServiceReq != null && frmAssignPrescription.oldServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT)
+                this.InGenerateListMediMaty();
+            else
+                this.OutGenerateListMediMaty();
+        }
+        private void ProcessOutPatientPresMedicineSDOs(MediMatyTypeADO item, List<long> beanIds, long useTime = 0)
+        {
+            try
+            {
+                if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC)
+                {
+                    PresMedicineSDO pres = new PresMedicineSDO();
+                    pres.MedicineInfoSdos = new List<MedicineInfoSDO>();
+                    pres.HtuText = item.HTU_TEXT;
+                    pres.UseOriginalUnitForPres = (item.IsUseOrginalUnitForPres ?? false);
+                    pres.MedicineId = ((item.IsAssignPackage.HasValue && item.IsAssignPackage.Value) ? item.MAME_ID : null);
+                    if (item.IS_SUB_PRES != 1)
+                    {
+                        if (item.MedicineBean1Result != null && item.MedicineBean1Result.Count > 0)
+                            pres.MedicineBeanIds = beanIds;
+                        else if (item.BeanIds != null && item.BeanIds.Count > 0)
+                        {
+                            pres.MedicineBeanIds = item.BeanIds;
+                        }
+                    }
+                    else
+                    {
+                        pres.MedicineBeanIds = null;
+                    }
+                    #region
+                    pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
+                    pres.MedicineTypeId = item.ID;
+                    pres.PatientTypeId = item.PATIENT_TYPE_ID ?? 0;
+                    pres.IsExpend = item.IsExpend;
+                    if (item.IsOutKtcFee.HasValue && item.IsOutKtcFee.Value)
+                        pres.IsOutParentFee = true;
+                    pres.MedicineUseFormId = item.MEDICINE_USE_FORM_ID;
+                    pres.Tutorial = item.TUTORIAL;
+                    pres.NumOfDays = GetNumOfDays(item);
+                    pres.NumOrder = item.NUM_ORDER;
+                    pres.MediStockId = item.MEDI_STOCK_ID ?? 0;
+                    pres.IsBedExpend = item.IsExpendType;
+
+                    pres.SereServParentId = item.SereServParentId;
+
+                    pres.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
+                    pres.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
+                    if (item.ALERT_MAX_IN_TREATMENT.HasValue && item.IsAlertInTreatPresciption)
+                        pres.ExceedLimitInTreatmentReason = item.EXCEED_LIMIT_IN_BATCH_REASON;
+                    pres.OddPresReason = item.ODD_PRES_REASON;
+
+                    //đối tượng thanh toán, hao phí... khiến cho 2 dòng có cùng loại thuốc nhưng các trường thông tin khác không giống nhau hoàn toàn thì vẫn gửi lên server như bình thường hiện tại.
+                    //Còn trường hợp 2 dòng giống hệt nhau thì client khi gửi lên server nên gộp lại thành 1 dòng số lượng.
+                    var checkPresExists = OutPatientPresMedicineSDOs
+                            .FirstOrDefault(
+                            o => o.MedicineTypeId == pres.MedicineTypeId
+                                && ((o.MedicineId == null && pres.MedicineId == null) || (o.MedicineId == pres.MedicineId))
+                                && o.MediStockId == pres.MediStockId
+                                && o.PatientTypeId == pres.PatientTypeId
+                                && o.IsExpend == pres.IsExpend
+                                && o.IsBedExpend == pres.IsBedExpend
+                                && o.IsOutParentFee == pres.IsOutParentFee
+                                && o.SereServParentId == pres.SereServParentId
+                                && o.MixedInfusion == pres.MixedInfusion
+                                && o.Tutorial == pres.Tutorial
+                                && o.ExpMestReasonId == pres.ExpMestReasonId
+                            );
+                    #endregion
+                    if (checkPresExists != null && checkPresExists.MedicineTypeId > 0)
+                    {
+                        checkPresExists.Amount += pres.Amount;
+                        if (pres.MedicineBeanIds != null && pres.MedicineBeanIds.Count > 0)
+                        {
+                            if (checkPresExists.MedicineBeanIds == null) checkPresExists.MedicineBeanIds = new List<long>();
+                            checkPresExists.MedicineBeanIds.AddRange(pres.MedicineBeanIds);
+
+                            checkPresExists.MedicineBeanIds = checkPresExists.MedicineBeanIds.Distinct().ToList();
+                        }
+                        if (pres.MedicineInfoSdos != null && pres.MedicineInfoSdos.Count > 0)
+                        {
+                            checkPresExists.MedicineInfoSdos = pres.MedicineInfoSdos;
+                        }
+                    }
+                    else
+                    {
+                        OutPatientPresMedicineSDOs.Add(pres);
+                    }
+
+                }
+                else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)
+                {
+                    PresMaterialSDO pres = new PresMaterialSDO();
+                    pres.MaterialId = ((item.IsAssignPackage.HasValue && item.IsAssignPackage.Value) ? item.MAME_ID : null);
+                    if (item.IS_SUB_PRES != 1)
+                    {
+                        if (item.MaterialBean1Result != null && item.MaterialBean1Result.Count > 0)
+                            pres.MaterialBeanIds = beanIds;
+                        else if (item.BeanIds != null && item.BeanIds.Count > 0)
+                        {
+                            pres.MaterialBeanIds = item.BeanIds;
+                        }
+                    }
+                    else
+                    {
+                        pres.MaterialBeanIds = null;
+                    }
+
+                    pres.HtuText = item.HTU_TEXT;
+                    pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
+                    pres.MaterialTypeId = item.ID;
+                    pres.Tutorial = item.TUTORIAL;
+                    pres.PatientTypeId = item.PATIENT_TYPE_ID ?? 0;
+                    pres.IsExpend = item.IsExpend;
+                    pres.IsOutParentFee = (item.IsOutKtcFee.HasValue && item.IsOutKtcFee.Value);
+                    pres.IsBedExpend = item.IsExpendType;
+                    pres.NumOrder = item.NUM_ORDER;
+                    pres.MediStockId = item.MEDI_STOCK_ID ?? 0;
+                    pres.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
+                    pres.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
+
+                    if (item.EQUIPMENT_SET_ID.HasValue && item.EQUIPMENT_SET_ID.Value > 0)
+                    {
+                        pres.EquipmentSetId = item.EQUIPMENT_SET_ID ?? 0;
+                    }
+                    pres.SereServParentId = item.SereServParentId;
+                    //đối tượng thanh toán, hao phí... khiến cho 2 dòng có cùng loại thuốc nhưng các trường thông tin khác không giống nhau hoàn toàn thì vẫn gửi lên server như bình thường hiện tại.
+                    //Còn trường hợp 2 dòng giống hệt nhau thì client khi gửi lên server nên gộp lại thành 1 dòng số lượng.
+                    var checkPresExists = this.OutPatientPresMaterialSDOs
+                       .FirstOrDefault(o =>
+                           o.MaterialTypeId == pres.MaterialTypeId
+                           && ((o.MaterialId == null && pres.MaterialId == null) || (o.MaterialId == pres.MaterialId))
+                           && o.MediStockId == pres.MediStockId
+                           && o.PatientTypeId == pres.PatientTypeId
+                           && o.IsExpend == pres.IsExpend
+                           && o.IsBedExpend == pres.IsBedExpend
+                           && o.IsOutParentFee == pres.IsOutParentFee
+                           && o.EquipmentSetId == pres.EquipmentSetId
+                           && o.ExpMestReasonId == pres.ExpMestReasonId
+                       );
+
+                    if (checkPresExists != null && checkPresExists.MaterialTypeId > 0 && item.IsStent == false)
+                    {
+                        checkPresExists.Amount += pres.Amount;
+                        if (pres.MaterialBeanIds != null && pres.MaterialBeanIds.Count > 0)
+                        {
+                            if (checkPresExists.MaterialBeanIds == null) checkPresExists.MaterialBeanIds = new List<long>();
+                            checkPresExists.MaterialBeanIds.AddRange(pres.MaterialBeanIds);
+                            checkPresExists.MaterialBeanIds = checkPresExists.MaterialBeanIds.Distinct().ToList();
+                        }
+                    }
+                    else
+                        this.OutPatientPresMaterialSDOs.Add(pres);
+                }
+                else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
+                {
+                    PresMaterialSDO pres = new PresMaterialSDO();
+                    if (item.IS_SUB_PRES != 1)
+                    {
+                        if (item.MaterialBean1Result != null && item.MaterialBean1Result.Count > 0)
+                            pres.MaterialBeanIds = beanIds;
+                        else if (item.BeanIds != null && item.BeanIds.Count > 0)
+                        {
+                            pres.MaterialBeanIds = item.BeanIds;
+                        }
+                    }
+                    else
+                    {
+                        pres.MaterialBeanIds = null;
+                    }
+
+                    pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
+                    pres.MaterialTypeId = item.ID;
+                    pres.Tutorial = item.TUTORIAL;
+                    pres.PatientTypeId = item.PATIENT_TYPE_ID ?? 0;
+                    pres.IsExpend = item.IsExpend;
+                    pres.IsOutParentFee = (item.IsOutKtcFee.HasValue && item.IsOutKtcFee.Value);
+                    pres.IsBedExpend = item.IsExpendType;
+                    pres.NumOrder = item.NUM_ORDER;
+                    pres.MediStockId = item.MEDI_STOCK_ID ?? 0;
+                    pres.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
+                    pres.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
+                    if (item.EQUIPMENT_SET_ID.HasValue && item.EQUIPMENT_SET_ID.Value > 0)
+                    {
+                        pres.EquipmentSetId = item.EQUIPMENT_SET_ID ?? 0;
+                    }
+                    pres.SereServParentId = item.SereServParentId;
+                    //đối tượng thanh toán, hao phí... khiến cho 2 dòng có cùng loại thuốc nhưng các trường thông tin khác không giống nhau hoàn toàn thì vẫn gửi lên server như bình thường hiện tại.
+                    //Còn trường hợp 2 dòng giống hệt nhau thì client khi gửi lên server nên gộp lại thành 1 dòng số lượng.
+                    var checkPresExists = this.OutPatientPresMaterialSDOs
+                    .FirstOrDefault(o => o.MaterialTypeId == pres.MaterialTypeId
+                    && o.MediStockId == pres.MediStockId
+                    && o.PatientTypeId == pres.PatientTypeId
+                    && o.IsExpend == pres.IsExpend
+                    && o.IsBedExpend == pres.IsBedExpend
+                    && o.IsOutParentFee == pres.IsOutParentFee
+                    && o.EquipmentSetId == pres.EquipmentSetId
+                    && o.ExpMestReasonId == pres.ExpMestReasonId
+                    );
+                    if (checkPresExists != null && checkPresExists.MaterialTypeId > 0 && item.IsStent == false)
+                    {
+                        checkPresExists.Amount += pres.Amount;
+                        if (pres.MaterialBeanIds != null && pres.MaterialBeanIds.Count > 0)
+                        {
+                            if (checkPresExists.MaterialBeanIds == null) checkPresExists.MaterialBeanIds = new List<long>();
+                            checkPresExists.MaterialBeanIds.AddRange(pres.MaterialBeanIds);
+
+                            checkPresExists.MaterialBeanIds = checkPresExists.MaterialBeanIds.Distinct().ToList();
+                        }
+                    }
+                    else
+                        this.OutPatientPresMaterialSDOs.Add(pres);
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void OutGenerateListMediMaty()
+        {
+            //this.OutPatientPresMedicineSDOs = new List<PresMedicineSDO>();
+            this.OutPatientPresMedicineSDOs = new List<PresMedicineSDO>();
+            //this.OutPatientPresMaterialSDOs = new List<PresMaterialSDO>();
+            this.OutPatientPresMaterialSDOs = new List<PresMaterialSDO>();
+            this.ServiceReqMaties = new List<PresOutStockMatySDO>();
+            this.ServiceReqMeties = new List<PresOutStockMetySDO>();
+
+            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => frmAssignPrescription.lstOutPatientPres), frmAssignPrescription.lstOutPatientPres));
+
+            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => MediMatyTypeADOs.Select(o => o.DataType).ToList()), MediMatyTypeADOs.Select(o => o.DataType).ToList()));
+            foreach (var item in this.MediMatyTypeADOs)
+            {
+                if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC ||
+                    item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU ||
+                    item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
+                {
+                    List<long> lstIds = null;
+                    if (item.MedicineBean1Result != null && item.MedicineBean1Result.Count > 0)
+                        lstIds = item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC ? item.MedicineBean1Result.Select(o => o.ID).ToList() : item.MaterialBean1Result.Select(o => o.ID).ToList();
+                    else lstIds = item.BeanIds;
+                    ProcessOutPatientPresMedicineSDOs(item, lstIds);
+                }
+                else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_DM)
+                {
+                    PresOutStockMetySDO mety = new PresOutStockMetySDO();
+                    mety.MedicineInfoSdos = new List<MedicineInfoSDO>();
+                    if (frmAssignPrescription.IsSaveOverResultReasonTest)
+                    {
+                        foreach (var intructionTime in frmAssignPrescription.intructionTimeSelecteds)
+                        {
+                            if (item.dicTreatmentOverResultTestReason != null && item.dicTreatmentOverResultTestReason.Count > 0 && item.dicTreatmentOverResultTestReason.ContainsKey(intructionTime))
+                            {
+                                var ListData = item.dicTreatmentOverResultTestReason[intructionTime];
+                                if (ListData.LastOrDefault(o => o.treatmentId == this.TreatmentId) != null)
+                                    mety.MedicineInfoSdos.Add(new MedicineInfoSDO() { IntructionTime = intructionTime, IsNoPrescription = item.IsNoPrescription, OverResultTestReason = ListData.LastOrDefault(o => o.treatmentId == this.TreatmentId).overReason });
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(item.OVER_RESULT_TEST_REASON))
+                                    mety.MedicineInfoSdos.Add(new MedicineInfoSDO() { IntructionTime = frmAssignPrescription.InstructionTime, IsNoPrescription = false, OverResultTestReason = item.OVER_RESULT_TEST_REASON });
+                            }
+                            if (item.dicTreatmentOverKidneyReason != null && item.dicTreatmentOverKidneyReason.Count > 0 && item.dicTreatmentOverKidneyReason.ContainsKey(intructionTime))
+                            {
+                                var ListData = item.dicTreatmentOverKidneyReason[intructionTime];
+                                if (ListData.LastOrDefault(o => o.treatmentId == this.TreatmentId) != null)
+                                    mety.MedicineInfoSdos.Add(new MedicineInfoSDO() { IntructionTime = intructionTime, IsNoPrescription = item.IsNoPrescription, OverKidneyReason = ListData.LastOrDefault(o => o.treatmentId == this.TreatmentId).overReason });
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(item.OVER_KIDNEY_REASON))
+                                    mety.MedicineInfoSdos.Add(new MedicineInfoSDO() { IntructionTime = frmAssignPrescription.InstructionTime, IsNoPrescription = false, OverKidneyReason = item.OVER_KIDNEY_REASON });
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(item.OVER_RESULT_TEST_REASON))
+                            mety.MedicineInfoSdos.Add(new MedicineInfoSDO() { IntructionTime = frmAssignPrescription.InstructionTime, IsNoPrescription = false, OverResultTestReason = item.OVER_RESULT_TEST_REASON });
+                        if (!string.IsNullOrEmpty(item.OVER_KIDNEY_REASON))
+                            mety.MedicineInfoSdos.Add(new MedicineInfoSDO() { IntructionTime = frmAssignPrescription.InstructionTime, IsNoPrescription = false, OverResultTestReason = item.OVER_KIDNEY_REASON });
+                    }
+                    mety.HtuText = item.HTU_TEXT;
+                    mety.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
+                    mety.MedicineTypeId = item.ID;
+                    mety.MedicineTypeName = item.MEDICINE_TYPE_NAME;
+                    mety.MedicineUseFormId = item.MEDICINE_USE_FORM_ID;
+                    mety.UnitName = item.SERVICE_UNIT_NAME;
+                    mety.NumOrder = item.NUM_ORDER;
+                    mety.Tutorial = item.TUTORIAL;
+                    mety.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
+                    mety.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
+                    if (item.ALERT_MAX_IN_TREATMENT.HasValue && item.IsAlertInTreatPresciption)
+                        mety.ExceedLimitInTreatmentReason = item.EXCEED_LIMIT_IN_BATCH_REASON;
+
+                    mety.OddPresReason = item.ODD_PRES_REASON;
+                    mety.UseTimeTo = item.UseTimeTo;
+                    mety.Price = item.PRICE ?? 0;
+                    //if (item.SERVICE_CONDITION_ID.HasValue && item.SERVICE_CONDITION_ID.Value > 0)
+                    //    mety.ServiceConditionId = item.SERVICE_CONDITION_ID;
+
+                    var checkPresExists = this.ServiceReqMeties
+                        .FirstOrDefault(o => o.MedicineTypeId == mety.MedicineTypeId
+                            && o.MedicineUseFormId == mety.MedicineUseFormId
+                            && o.Tutorial == mety.Tutorial
+                            && o.ExpMestReasonId == mety.ExpMestReasonId
+                        );
+                    if (checkPresExists != null && checkPresExists.MedicineTypeId > 0)
+                    {
+                        checkPresExists.Amount += mety.Amount;
+                        if (mety.MedicineInfoSdos != null && mety.MedicineInfoSdos.Count > 0)
+                        {
+                            checkPresExists.MedicineInfoSdos = mety.MedicineInfoSdos;
+                        }
+                    }
+                    else
+                        this.ServiceReqMeties.Add(mety);
+                }
+                else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM)
+                {
+                    PresOutStockMatySDO maty = new PresOutStockMatySDO();
+                    maty.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
+                    maty.MaterialTypeId = item.ID;
+                    maty.Tutorial = item.TUTORIAL;
+                    maty.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
+                    maty.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
+                    maty.MaterialTypeName = item.MEDICINE_TYPE_NAME;
+                    maty.UnitName = item.SERVICE_UNIT_NAME;
+                    maty.NumOrder = item.NUM_ORDER;
+                    //maty.SERVICE_REQ_ID = item.SERVICE_REQ_ID;
+                    //maty.ID = item.SERVICE_REQ_METY_MATY_ID;
+                    maty.Price = item.PRICE ?? 0;
+                    //if (item.SERVICE_CONDITION_ID.HasValue && item.SERVICE_CONDITION_ID.Value > 0)
+                    //    maty.ServiceConditionId = item.SERVICE_CONDITION_ID;
+
+                    maty.HtuText = item.HTU_TEXT;
+
+                    var checkPresExists = this.ServiceReqMaties
+                        .FirstOrDefault(o => o.MaterialTypeId == maty.MaterialTypeId
+                            && o.ExpMestReasonId == maty.ExpMestReasonId
+                        );
+                    if (checkPresExists != null && checkPresExists.MaterialTypeId > 0)
+                        checkPresExists.Amount += maty.Amount;
+                    else
+                        this.ServiceReqMaties.Add(maty);
+                }
+                else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC)
+                {
+                    PresOutStockMetySDO orty = new PresOutStockMetySDO();
+                    orty.Amount = item.AMOUNT ?? 0;
+                    orty.NumOrder = item.NUM_ORDER;
+                    orty.MedicineTypeName = item.MEDICINE_TYPE_NAME;
+                    orty.UnitName = item.SERVICE_UNIT_NAME;
+                    orty.MedicineUseFormId = item.MEDICINE_USE_FORM_ID;
+                    orty.Tutorial = item.TUTORIAL;
+                    orty.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
+                    orty.ExceedLimitInDayReason = item.EXCEED_LIMIT_IN_DAY_REASON;
+                    if (item.ALERT_MAX_IN_TREATMENT.HasValue && item.IsAlertInTreatPresciption)
+                        orty.ExceedLimitInTreatmentReason = item.EXCEED_LIMIT_IN_BATCH_REASON;
+                    orty.HtuText = item.HTU_TEXT;
+                    orty.OddPresReason = item.ODD_PRES_REASON;
+
+                    //orty.SERVICE_REQ_ID = item.SERVICE_REQ_ID;
+                    orty.UseTimeTo = item.UseTimeTo;
+                    orty.Price = item.PRICE ?? 0;
+                    var checkPresExists = this.ServiceReqMeties
+                        .FirstOrDefault(o => o.MedicineTypeName == orty.MedicineTypeName
+                            && o.MedicineUseFormId == orty.MedicineUseFormId
+                            && o.Tutorial == orty.Tutorial
+                            && o.ExpMestReasonId == orty.ExpMestReasonId
+                        );
+                    if (checkPresExists != null && String.IsNullOrEmpty(checkPresExists.MedicineTypeName))
+                        checkPresExists.Amount += orty.Amount;
+                    else
+                        this.ServiceReqMeties.Add(orty);
+                }
+            }
         }
 
         private void InGenerateListMediMaty()

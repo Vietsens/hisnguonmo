@@ -278,8 +278,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.ProcessFilterDontPresExpiredTime(ref filter);//TODO
 
                 this.mediMatyTypeAvailables = new BackendAdapter(param).Get<List<D_HIS_MEDI_STOCK_2>>(HisRequestUriStore.HIS_MEDISTOCKDISDO_GET1, ApiConsumers.MosConsumer, filter, ProcessLostToken, param);
+                LogSystem.Info("count mediMatyTypeAvailables: " + mediMatyTypeAvailables.Where(o => o.IS_PRIORITY == 1).ToList().Count);
                 this.mediStockD1ADOs = ConvertToDMediStockForNhaThuoc(this.mediMatyTypeAvailables);
-
+                //this.PriorityMedicine(this.mediStockD1ADOs, mediStockIds);
+                //this.PriorityMaterials(this.mediStockD1ADOs, mediStockIds);
                 this.RebuildPopupContainerNhaThuocShowMediMatyForSelect(this.mediStockD1ADOs);
             }
             catch (Exception ex)
@@ -532,6 +534,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
                 long index = 1;
                 dMediStock1ADOs.ForEach(o => o.IdRow = index++);
+                dMediStock1ADOs = dMediStock1ADOs.OrderByDescending(o => o.IS_PRIORITY).ThenBy(o => o.PARENT_NAME).ToList();
                 gridViewMediMaty.GridControl.DataSource = dMediStock1ADOs;
                 //TickIsAssignPres();
                 gridViewMediMaty.EndUpdate();

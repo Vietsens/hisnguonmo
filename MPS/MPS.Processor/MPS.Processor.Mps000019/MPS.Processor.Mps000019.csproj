@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FlexCel">
-      <HintPath>..\..\..\FE\YTE\DESKTOP\TEST\HIS\x64\ReferencedAssemblies\FlexCel.dll</HintPath>
+      <HintPath>..\..\..\..\lib\FlexCellReport\FlexCel.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.BarcodeLib">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.dll</HintPath>

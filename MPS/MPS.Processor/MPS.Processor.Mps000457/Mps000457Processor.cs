@@ -42,10 +42,46 @@ namespace MPS.Processor.Mps000457
         }
         NumberStyles style = NumberStyles.Any;
         List<TestLisResultADO> ListTestParent = new List<TestLisResultADO>();
+        List<TestLisResultADO> ListTestParentHIV = new List<TestLisResultADO>();
         List<TestLisResultADO> ListTestChild = new List<TestLisResultADO>();
+        List<TestLisResultADO> ListTestChildHIV = new List<TestLisResultADO>();
         List<V_HIS_SERVICE> ListServiceParent = new List<V_HIS_SERVICE>();
         List<TestLisResultADO> ListTestParentService = new List<TestLisResultADO>();
 
+        public void SetConcludeHIVKey()
+        {
+            try
+            {
+                this.ListTestParentHIV = this.ListTestParent?.Where(w => w.IS_HIV == 1).ToList();
+                this.ListTestChildHIV = this.ListTestChild?.Where(w => w.IS_HIV == 1).ToList();
+                if (ListTestParentHIV != null && ListTestChildHIV != null)
+                {
+                    List<string> concludeHIV = new List<string>();
+                    foreach (var par in ListTestParentHIV)
+                    {
+                        if (par.IS_NOT_SHOW_SERVICE == 1)
+                        {
+                            concludeHIV.Add(par.VALUE_HL_NEW);
+                        }
+                        else
+                        {
+                            var paVa = $"{par.SERVICE_NAME} ({par.SERVICE_CODE}){(!string.IsNullOrEmpty(par.VALUE_HL_NEW) ? "" : " - ") + par.VALUE_HL_NEW}";
+                            concludeHIV.Add(paVa);
+                            foreach (var chi in ListTestChildHIV.Where(w => w.PARENT_ID == par.CHILD_ID && w.IS_HAS_ONE_CHILD != 1))
+                            {
+                                var chiVa = $"{chi.TEST_INDEX_NAME} ({chi.TEST_INDEX_CODE}){(!string.IsNullOrEmpty(chi.VALUE_HL_NEW) ? "" : " - ") + chi.VALUE_HL_NEW}";
+                                concludeHIV.Add(chiVa);
+                            }
+                        }
+                    }
+                    SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.CONCLUDE_HIV, string.Join("; ", concludeHIV)));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         public void SetBarcodeKey()
         {
             try
@@ -184,6 +220,15 @@ namespace MPS.Processor.Mps000457
                     SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.ICD_NAME, ""));
                     SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.BED_NAME, ""));
                     SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.RIGHT_ROUTE_TYPE_NAME_CC, ""));
+                    SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.CMND_NUMBER, rdo.currentSample.CMND_NUMBER));
+                    SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.CCCD_NUMBER, rdo.currentSample.CCCD_NUMBER));
+                    SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.BARCODE, rdo.currentSample.BARCODE));
+                    SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.SAMPLE_TIME, rdo.currentSample.SAMPLE_TIME));
+                    SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.BIO_PRODUCT_NAME, rdo.currentSample.BIO_PRODUCT_NAME));
+                    if (rdo.currentPatient != null)
+                    {
+                        SetSingleKey(new KeyValue(Mps000457ExtendSingleKey.VIR_DOB_YEAR, rdo.currentPatient.VIR_DOB_YEAR));
+                    }
                 }
                 if (rdo.PatientTypeAlter != null && !String.IsNullOrWhiteSpace(rdo.PatientTypeAlter.HEIN_CARD_NUMBER))
                 {
@@ -264,7 +309,7 @@ namespace MPS.Processor.Mps000457
                         {
                             if (item.AGE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_AGE_TYPE.ID__YEAR)
                             {
-                                age = Inventec.Common.DateTime.Calculation.DifferenceTime(dob, now ?? 0, Inventec.Common.DateTime.Calculation.UnitDifferenceTime.DAY)/365;
+                                age = Inventec.Common.DateTime.Calculation.DifferenceTime(dob, now ?? 0, Inventec.Common.DateTime.Calculation.UnitDifferenceTime.DAY) / 365;
                             }
                             else if (item.AGE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_AGE_TYPE.ID__MONTH)
                             {
@@ -723,7 +768,13 @@ namespace MPS.Processor.Mps000457
                         hisSereServTeinSDO.SERVICE_NUM_ORDER = firstItem.SERVICE_NUM_ORDER;
                         hisSereServTeinSDO.ISO_PROCESS_CODE = firstItem.TDL_ISO_PROCESS_CODE;
                         hisSereServTeinSDO.IS_MEET_ISO_STANDARD = firstItem.TDL_IS_MEET_ISO_STANDARD;
-
+                        hisSereServTeinSDO.SERVICE_RESULT_NAME = firstItem.SERVICE_RESULT_NAME;
+                        var tFist = testIndexs.FirstOrDefault(o => o.TEST_INDEX_CODE == firstItem.TEST_INDEX_CODE);
+                        if (tFist != null)
+                        {
+                            hisSereServTeinSDO.IS_HIV = tFist.IS_HIV;
+                            hisSereServTeinSDO.IS_NOT_SHOW_SERVICE = tFist.IS_NOT_SHOW_SERVICE;
+                        }
                         V_HIS_SERVICE service = rdo.ListTestService != null ? rdo.ListTestService.FirstOrDefault(o => o.SERVICE_CODE == group.Key.SERVICE_CODE) : null;
                         V_HIS_SERVICE parent = null;
                         if (service != null)
@@ -788,12 +839,13 @@ namespace MPS.Processor.Mps000457
                             hisSereServTeinSDOChild.SERVICE_NUM_ORDER = hisSereServTeinSDO.SERVICE_NUM_ORDER;
                             hisSereServTeinSDOChild.SERVICE_ORDER = hisSereServTeinSDO.SERVICE_ORDER;
                             hisSereServTeinSDOChild.SERVICE_PARENT_ORDER = hisSereServTeinSDO.SERVICE_PARENT_ORDER;
+                            hisSereServTeinSDOChild.IS_HIV = hisSereServTeinSDO.IS_HIV;
+                            hisSereServTeinSDOChild.IS_NOT_SHOW_SERVICE = hisSereServTeinSDO.IS_NOT_SHOW_SERVICE;
 
                             this.ListTestChild.Add(hisSereServTeinSDOChild);
                         }
 
-                        hisSereServTeinSDO.VALUE_HL_NEW = !String.IsNullOrEmpty(hisSereServTeinSDO.VALUE_HL) ? hisSereServTeinSDO.VALUE_HL.Replace(',', '.') : "";
-
+                        hisSereServTeinSDO.VALUE_HL_NEW = !String.IsNullOrEmpty(hisSereServTeinSDO.VALUE_HL) ? hisSereServTeinSDO.VALUE_HL.Replace(',', '.') : hisSereServTeinSDO.SERVICE_RESULT_NAME;
                         this.ListTestParent.Add(hisSereServTeinSDO);
 
                         if (lstResultItem != null && (lstResultItem.Count > 1 || (lstResultItem.Count == 1 && testIndFist != null && testIndFist.IS_NOT_SHOW_SERVICE != 1)))
@@ -849,6 +901,8 @@ namespace MPS.Processor.Mps000457
                                 hisSereServTein.ISO_LOGO_URL = ssTein.ISO_LOGO_URL;
 
                                 hisSereServTein.VALUE_HL_NEW = !String.IsNullOrEmpty(hisSereServTein.VALUE_HL) ? hisSereServTein.VALUE_HL.Replace(',', '.') : "";
+                                hisSereServTein.IS_HIV = hisSereServTeinSDO.IS_HIV;
+                                hisSereServTein.IS_NOT_SHOW_SERVICE = hisSereServTeinSDO.IS_NOT_SHOW_SERVICE;
 
                                 this.ListTestChild.Add(hisSereServTein);
                             }
@@ -944,14 +998,19 @@ namespace MPS.Processor.Mps000457
                 SetTreatmentQrCodeBase();
 
                 this.SetSignatureKeyImageByCFG();
+                // Conclude
+                this.SetConcludeHIVKey();
 
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
                 objectTag.AddObjectData(store, "ListTestParent", this.ListTestParent);
+                objectTag.AddObjectData(store, "ListTestParentHIV", this.ListTestParentHIV);
                 objectTag.AddObjectData(store, "ListTestChild", this.ListTestChild);
+                objectTag.AddObjectData(store, "ListTestChildHIV", this.ListTestChildHIV);
                 objectTag.AddObjectData(store, "ServiceParent", this.ListServiceParent);
                 objectTag.AddObjectData(store, "TestParentService", this.ListTestParentService);
                 objectTag.AddRelationship(store, "ListTestParent", "ListTestChild", "CHILD_ID", "PARENT_ID");
+                objectTag.AddRelationship(store, "ListTestParentHIV", "ListTestChildHIV", "CHILD_ID", "PARENT_ID");
                 objectTag.AddRelationship(store, "ServiceParent", "ListTestParent", "ID", "SERVICE_PARENT_ID");
 
                 objectTag.AddRelationship(store, "TestParentService", "ListTestChild", "SERVICE_CODE", "SERVICE_CODE");

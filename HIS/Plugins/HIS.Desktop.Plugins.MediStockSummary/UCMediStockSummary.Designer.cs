@@ -45,9 +45,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCMediStockSummary));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.chkHienThiLoHet = new DevExpress.XtraEditors.CheckEdit();
             this.cboIsActive = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.dtValidToTime = new DevExpress.XtraEditors.DateEdit();
@@ -83,6 +85,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciHienThiLoHet = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.txtKeyWork = new DevExpress.XtraEditors.TextEdit();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
@@ -107,15 +110,14 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.imageListIcon = new System.Windows.Forms.ImageList();
-            this.chkHienThiLoHet = new DevExpress.XtraEditors.CheckEdit();
-            this.lciHienThiLoHet = new DevExpress.XtraLayout.LayoutControlItem();
+            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkHienThiLoHet.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboIsActive.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtValidToTime.Properties.CalendarTimeProperties)).BeginInit();
@@ -151,6 +153,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHienThiLoHet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWork.Properties)).BeginInit();
@@ -170,8 +173,6 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkHienThiLoHet.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciHienThiLoHet)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -212,6 +213,17 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControl3.Size = new System.Drawing.Size(990, 768);
             this.layoutControl3.TabIndex = 5;
             this.layoutControl3.Text = "layoutControl3";
+            // 
+            // chkHienThiLoHet
+            // 
+            this.chkHienThiLoHet.Enabled = false;
+            this.chkHienThiLoHet.Location = new System.Drawing.Point(465, 28);
+            this.chkHienThiLoHet.Name = "chkHienThiLoHet";
+            this.chkHienThiLoHet.Properties.Caption = "Hiển thị lô hết";
+            this.chkHienThiLoHet.Size = new System.Drawing.Size(108, 19);
+            this.chkHienThiLoHet.StyleController = this.layoutControl3;
+            this.chkHienThiLoHet.TabIndex = 21;
+            this.chkHienThiLoHet.CheckedChanged += new System.EventHandler(this.chkHienThiLoHet_CheckedChanged);
             // 
             // cboIsActive
             // 
@@ -262,7 +274,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             // 
             // cboPatientType
             // 
-            this.cboPatientType.Location = new System.Drawing.Point(702, 28);
+            this.cboPatientType.Location = new System.Drawing.Point(702, 26);
             this.cboPatientType.Name = "cboPatientType";
             this.cboPatientType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboPatientType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -499,10 +511,10 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControlItem19.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem19.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem19.Control = this.cboPatientType;
-            this.layoutControlItem19.Location = new System.Drawing.Point(575, 26);
+            this.layoutControlItem19.Location = new System.Drawing.Point(575, 24);
             this.layoutControlItem19.Name = "layoutControlItem19";
             this.layoutControlItem19.OptionsToolTip.ToolTip = "Giá bán theo đối tượng";
-            this.layoutControlItem19.Size = new System.Drawing.Size(213, 24);
+            this.layoutControlItem19.Size = new System.Drawing.Size(213, 26);
             this.layoutControlItem19.Text = "Giá bán theo ĐT:";
             this.layoutControlItem19.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem19.TextSize = new System.Drawing.Size(120, 20);
@@ -610,11 +622,20 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControlItem22.Location = new System.Drawing.Point(575, 0);
             this.layoutControlItem22.Name = "layoutControlItem22";
             this.layoutControlItem22.OptionsToolTip.ToolTip = "Trạng thái khóa lô";
-            this.layoutControlItem22.Size = new System.Drawing.Size(213, 26);
+            this.layoutControlItem22.Size = new System.Drawing.Size(213, 24);
             this.layoutControlItem22.Text = "Trạng thái khóa lô:";
             this.layoutControlItem22.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem22.TextSize = new System.Drawing.Size(110, 20);
             this.layoutControlItem22.TextToControlDistance = 5;
+            // 
+            // lciHienThiLoHet
+            // 
+            this.lciHienThiLoHet.Control = this.chkHienThiLoHet;
+            this.lciHienThiLoHet.Location = new System.Drawing.Point(463, 26);
+            this.lciHienThiLoHet.Name = "lciHienThiLoHet";
+            this.lciHienThiLoHet.Size = new System.Drawing.Size(112, 24);
+            this.lciHienThiLoHet.TextSize = new System.Drawing.Size(0, 0);
+            this.lciHienThiLoHet.TextVisible = false;
             // 
             // layoutControl2
             // 
@@ -716,7 +737,6 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.gridColumnCheck.Caption = "Check";
             this.gridColumnCheck.ColumnEdit = this.repositoryItemCheck_E;
             this.gridColumnCheck.FieldName = "IsCheck";
-            //this.gridColumnCheck.Image = global::HIS.Desktop.Plugins.MediStockSummary.Properties.Resources.dau_tích_02;
             this.gridColumnCheck.ImageAlignment = System.Drawing.StringAlignment.Center;
             this.gridColumnCheck.Name = "gridColumnCheck";
             this.gridColumnCheck.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
@@ -896,26 +916,6 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.imageListIcon.Images.SetKeyName(5, "dau tích-01.jpg");
             this.imageListIcon.Images.SetKeyName(6, "dau tích-02.jpg");
             // 
-            // chkHienThiLoHet
-            // 
-            this.chkHienThiLoHet.Enabled = false;
-            this.chkHienThiLoHet.Location = new System.Drawing.Point(465, 28);
-            this.chkHienThiLoHet.Name = "chkHienThiLoHet";
-            this.chkHienThiLoHet.Properties.Caption = "Hiển thị lô hết";
-            this.chkHienThiLoHet.Size = new System.Drawing.Size(108, 19);
-            this.chkHienThiLoHet.StyleController = this.layoutControl3;
-            this.chkHienThiLoHet.TabIndex = 21;
-            this.chkHienThiLoHet.CheckedChanged += new System.EventHandler(this.chkHienThiLoHet_CheckedChanged);
-            // 
-            // lciHienThiLoHet
-            // 
-            this.lciHienThiLoHet.Control = this.chkHienThiLoHet;
-            this.lciHienThiLoHet.Location = new System.Drawing.Point(463, 26);
-            this.lciHienThiLoHet.Name = "lciHienThiLoHet";
-            this.lciHienThiLoHet.Size = new System.Drawing.Size(112, 24);
-            this.lciHienThiLoHet.TextSize = new System.Drawing.Size(0, 0);
-            this.lciHienThiLoHet.TextVisible = false;
-            // 
             // UCMediStockSummary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -928,6 +928,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkHienThiLoHet.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboIsActive.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtValidToTime.Properties.CalendarTimeProperties)).EndInit();
@@ -963,6 +964,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHienThiLoHet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWork.Properties)).EndInit();
@@ -982,8 +984,6 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkHienThiLoHet.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciHienThiLoHet)).EndInit();
             this.ResumeLayout(false);
 
         }

@@ -30,6 +30,7 @@ using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Common.SignLibrary.DTO;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
@@ -1538,15 +1539,60 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 bool isFullHeinInfoData = IsFullHeinInfo(medimaty);
                 if (patientTypeId == HisConfigCFG.PatientTypeId__BHYT && isFullHeinInfoData)
                 {
-                    result = currentPatientTypeWithPatientTypeAlter.Where(o => o.ID == HisConfigCFG.PatientTypeId__BHYT).FirstOrDefault();
+                    var data = listSourcePatientType.Where(o => o.ID == HisConfigCFG.PatientTypeId__BHYT).ToList();
+                    if (data.Count > 0 && data != null)
+                    {
+                        result = data.FirstOrDefault();
+                    }
+                    else
+                    {
+                        if (cboPatientType.EditValue != null && long.TryParse(cboPatientType.EditValue.ToString(), out long id))
+                        {
+                            result = listSourcePatientType.FirstOrDefault(o => o.ID == id);
+                        }
+                        else
+                        {
+                            result = listSourcePatientType.FirstOrDefault();
+                        }
+                    }
                 }
                 else if (patientTypeId == HisConfigCFG.PatientTypeId__BHYT && !isFullHeinInfoData)
                 {
-                    result = currentPatientTypeWithPatientTypeAlter.Where(o => o.ID == HisConfigCFG.PatientTypeId__VP).FirstOrDefault();
+                    var data = listSourcePatientType.Where(o => o.ID == HisConfigCFG.PatientTypeId__VP).ToList();
+                    if (data.Count > 0 && data != null)
+                    {
+                        result = data.FirstOrDefault();
+                    }
+                    else
+                    {
+                        if (cboPatientType.EditValue != null && long.TryParse(cboPatientType.EditValue.ToString(), out long id))
+                        {
+                            result = listSourcePatientType.FirstOrDefault(o => o.ID == id);
+                        }
+                        else
+                        {
+                            result = listSourcePatientType.FirstOrDefault();
+                        }
+                    }
                 }
                 else
                 {
-                    result = currentPatientTypeWithPatientTypeAlter.Where(o => o.ID == patientTypeId).FirstOrDefault();
+                    var data = listSourcePatientType.Where(o => o.ID == patientTypeId).ToList();
+                    if (data.Count > 0 && data != null)
+                    {
+                        result = data.FirstOrDefault();
+                    }
+                    else
+                    {
+                        if (cboPatientType.EditValue != null && long.TryParse(cboPatientType.EditValue.ToString(), out long id))
+                        {
+                            result = listSourcePatientType.FirstOrDefault(o => o.ID == id);
+                        }
+                        else
+                        {
+                            result = listSourcePatientType.FirstOrDefault();
+                        }
+                    }
                 }
                 if (result == null || result.ID == 0)
                 {
@@ -1599,6 +1645,37 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     };
                 }
 
+                if (HisConfigCFG.UsePaymentObjectByDept == "1" && mediMatyTypeADO != null)
+                {
+                    var Department = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>().Where(o => o.ID == requestRoom.DEPARTMENT_ID).FirstOrDefault();
+                    CommonParam common = new CommonParam();
+                    HisDepaPatientTypeFilter filter = new HisDepaPatientTypeFilter();
+                    filter.SERVICE_ID = mediMatyTypeADO.SERVICE_ID;
+
+                    var DepaPatientType = new BackendAdapter(common).Get<List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>>(RequestUriStore.HIS_DEPA_PATIENT_TYPE__GET, ApiConsumers.MosConsumer, filter, common);
+
+                    if (DepaPatientType != null && DepaPatientType.Count > 0)
+                    {
+                        List<long> PatientTypeId = DepaPatientType.Where(o => o.DEPARTMENT_ID == Department.ID).Select(o => o.PATIENT_TYPE_ID ?? 0).ToList();
+                        //currentPatientTypeWithPatientTypeAlter = currentPatientTypeWithPatientTypeAlter.Where(o => PatientTypeId.Contains(o.ID)).ToList();
+                        this.listSourcePatientType = currentPatientTypeWithPatientTypeAlter;
+                        this.listSourcePatientType = this.listSourcePatientType.Where(o => PatientTypeId.Contains(o.ID)).ToList();
+                    }
+                    else
+                    {
+                        var dt = IsFullHeinInfo(mediMatyTypeADO);
+                        this.listSourcePatientType = currentPatientTypeWithPatientTypeAlter;
+                        if (!dt)
+                            this.listSourcePatientType = this.listSourcePatientType.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
+                    }
+                }
+                else
+                {
+                    var dt = IsFullHeinInfo(mediMatyTypeADO);
+                    this.listSourcePatientType = currentPatientTypeWithPatientTypeAlter;
+                    if (!dt)
+                        this.listSourcePatientType = this.listSourcePatientType.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
+                }
                 return this.ChoosePatientTypeDefaultlService(patientTypeId, mediMatyTypeADO);
             }
             catch (Exception ex)            

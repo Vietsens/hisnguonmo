@@ -41,7 +41,7 @@ namespace HIS.UC.UCRelativeInfo
         {
             bool valid = true;
             try
-            {
+            {    
 
                 this.positionHandleControl = -1;
                 if (this.IsObligatory && (relativesInforOptionIs1 || relativesInforOptionIs2))
@@ -55,12 +55,12 @@ namespace HIS.UC.UCRelativeInfo
                 {
                     this.ValidControl(this.txtHomePerson, 100, this.IsObligatory);
                 }
-                if (this.dxValidationProviderControl.Validate(txtFather))
+                if (this.dxValidationProviderControl.Validate(txtFather) && lciFather.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                 {
                     dxValidationProviderControl.SetValidationRule(txtMother, null);
                     this.ValidControl(this.txtHomePerson, 100, false);
                     this.ValidControl(this.txtCorrelated, 50, false);
-                }else if (this.dxValidationProviderControl.Validate(txtMother))
+                }else if (this.dxValidationProviderControl.Validate(txtMother) && lciMother.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                 {
                     dxValidationProviderControl.SetValidationRule(txtFather, null);
                     this.ValidControl(this.txtHomePerson, 100, false);

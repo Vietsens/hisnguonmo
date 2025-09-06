@@ -137,7 +137,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                     DateTime? timeAppointment = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentTreatmentFinishSDO.AppointmentTime.Value);
                     dtTimeAppointments.EditValue = timeAppointment;
                 }
-                else
+                else     
                 {
                     DateTime time = new DateTime();
                     MOS.Filter.HisServiceReqFilter filter = new MOS.Filter.HisServiceReqFilter();

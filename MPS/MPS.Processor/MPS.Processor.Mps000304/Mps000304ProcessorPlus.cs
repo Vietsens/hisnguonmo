@@ -69,7 +69,8 @@ namespace MPS.Processor.Mps000304
                         o.NUMBER_OF_FILM,
                         o.KEY_PATY_ALTER,
                         o.HEIN_SERVICE_TYPE_ID,
-                        o.GROUP_DEPARTMENT_ID
+                        o.GROUP_DEPARTMENT_ID,
+                        o.STENT_ORDER
                     }).ToList();
 
                 ProcessOtherSource(sereServADOTemps);
@@ -90,6 +91,17 @@ namespace MPS.Processor.Mps000304
                     sereServ.TOTAL_PATIENT_LEFT = sereServBHYTGroup.Sum(o => o.TOTAL_PATIENT_LEFT);
                     sereServ.TOTAL_PRICE_VP = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_VP);
                     sereServADOs.Add(sereServ);
+
+                    if (sereServ.STENT_ORDER.HasValue && sereServ.STENT_ORDER.Value > 1)
+                    {
+                        decimal quyBHTT = sereServ.VIR_TOTAL_HEIN_PRICE ?? 0;
+                        decimal bnCungChiTra = sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0;
+                        decimal nguonKhac = sereServ.OTHER_SOURCE_PRICE ?? 0;
+
+                        decimal bnHoacNguonKhac = bnCungChiTra > 0 ? bnCungChiTra : nguonKhac;
+
+                        sereServ.TOTAL_PRICE_BHYT = quyBHTT + bnHoacNguonKhac;
+                    }
                 }
 
                 sereServADOs = sereServADOs.OrderBy(o => o.SERVICE_NAME).ToList();

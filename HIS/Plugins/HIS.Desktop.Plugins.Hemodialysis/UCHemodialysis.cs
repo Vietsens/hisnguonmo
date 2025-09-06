@@ -265,6 +265,11 @@ namespace HIS.Desktop.Plugins.Hemodialysis
             }
         }
 
+
+
+
+
+        
         private void LoadPagingOldPres(object param)
         {
             try
@@ -274,14 +279,37 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                 this.oldLimit = ((CommonParam)param).Limit ?? 0;
                 List<HIS_SERVICE_REQ> listData = new List<HIS_SERVICE_REQ>();
                 CommonParam paramCommon = new CommonParam(this.oldStart, this.oldLimit);
+                //if (this.currentServiceReq != null)
+                //{
+                //    HisServiceReqFilter filter = new HisServiceReqFilter();
+                //    filter.ORDER_DIRECTION = "DESC";
+                //    filter.ORDER_FIELD = "INTRUCTION_TIME";
+                //    filter.TREATMENT_ID = this.currentServiceReq.TREATMENT_ID;
+                //    filter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT;
+                //    filter.IS_KIDNEY = true;
+                //    var rs = new BackendAdapter(paramCommon).GetRO<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                //    if (rs != null)
+                //    {
+                //        listData = (List<HIS_SERVICE_REQ>)rs.Data;
+                //        this.oldRowCount = (listData == null ? 0 : listData.Count);
+                //        this.oldTotalData = (rs.Param == null ? 0 : rs.Param.Count ?? 0);
+                //    }
+                //}
+
+
                 if (this.currentServiceReq != null)
                 {
                     HisServiceReqFilter filter = new HisServiceReqFilter();
                     filter.ORDER_DIRECTION = "DESC";
                     filter.ORDER_FIELD = "INTRUCTION_TIME";
                     filter.TREATMENT_ID = this.currentServiceReq.TREATMENT_ID;
-                    filter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT;
                     filter.IS_KIDNEY = true;
+                    
+                    filter.SERVICE_REQ_TYPE_IDs = new List<long>
+            {
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT,
+                IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK  
+            };
                     var rs = new BackendAdapter(paramCommon).GetRO<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, paramCommon);
                     if (rs != null)
                     {
@@ -290,6 +318,7 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                         this.oldTotalData = (rs.Param == null ? 0 : rs.Param.Count ?? 0);
                     }
                 }
+
                 gridControlOldPres.BeginUpdate();
                 gridControlOldPres.DataSource = listData;
                 gridControlOldPres.EndUpdate();
@@ -325,15 +354,19 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                         }
                     }
 
+                     
+
+
                     HisServiceReqMetyFilter metyFilter = new HisServiceReqMetyFilter();
                     metyFilter.SERVICE_REQ_ID = this.currentPrescription.ID;
-                    var metyReqs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ_METY>>("api/HisServiceReqMety/Get", ApiConsumers.MosConsumer, metyFilter, null);
+                    //var metyReqs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ_METY>>("api/HisServiceReqMety/Get", ApiConsumers.MosConsumer, metyFilter, null);
+                    var metyReqs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_SERVICE_REQ_METY>>("api/HisServiceReqMety/GetView", ApiConsumers.MosConsumer, metyFilter, null);
                     if (metyReqs != null && metyReqs.Count > 0)
                     {
                         foreach (var item in metyReqs)
                         {
-                            if (!item.MEDICINE_TYPE_ID.HasValue) continue;
-                            MetyMatyADO ado = new MetyMatyADO(item, BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == item.MEDICINE_TYPE_ID.Value));
+                             if (!item.MEDICINE_TYPE_ID.HasValue) continue;
+            MetyMatyADO ado = new MetyMatyADO(item, BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == item.MEDICINE_TYPE_ID.Value));
                             listData.Add(ado);
                         }
                     }
@@ -790,7 +823,8 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                             && this.currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL
                             && (!this.currentServiceReq.EXECUTE_KIDNEY_SERVICE_REQ_ID.HasValue || this.currentServiceReq.EXECUTE_KIDNEY_SERVICE_REQ_ID.Value <= 0)
                             && data.IsKidney
-                            && data.IsRequest)
+                            && data.IsRequest || data.KidneyAmountLeft > 0
+                             )
                         {
                             e.RepositoryItem = repositoryItemBtn_InPres;
                         }
@@ -799,6 +833,7 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                             e.RepositoryItem = repositoryItemBtn_InPres__Disable;
                         }
                     }
+                    
                 }
             }
             catch (Exception ex)
@@ -896,8 +931,17 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                     {
                         List<object> listArgs = new List<object>();
                         HIS.Desktop.ADO.AssignPrescriptionKidneyADO assignServiceADO = new HIS.Desktop.ADO.AssignPrescriptionKidneyADO();
+
                         assignServiceADO.ServiceReq = this.currentPrescription;
-                        assignServiceADO.ServiceReqMety = row.ReqMety;
+
+                        //assignServiceADO.ServiceReqMety = row.ReqMety;
+                        assignServiceADO.ServiceReqMety = new HIS_SERVICE_REQ_METY
+                        {
+                            ID = row.ReqMety.ID,
+                            SERVICE_REQ_ID = row.ReqMety.SERVICE_REQ_ID,
+                            MEDICINE_TYPE_ID = row.ReqMety.MEDICINE_TYPE_ID,
+                            AMOUNT = row.ReqMety.AMOUNT
+                        };
                         assignServiceADO.ServiceReqParentId = this.currentServiceReq.ID;
                         listArgs.Add(assignServiceADO);
                         listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModuleBase.RoomId, this.currentModuleBase.RoomTypeId));

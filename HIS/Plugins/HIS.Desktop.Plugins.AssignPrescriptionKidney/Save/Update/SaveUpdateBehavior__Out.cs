@@ -44,6 +44,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Save.Update
                 prescriptionSDO.Id = OldServiceReq.ID;
                 prescriptionSDO.TreatmentId = this.TreatmentId;
                 prescriptionSDO.ClientSessionKey = GlobalStore.ClientSessionKey;
+                prescriptionSDO.IsExecuteKidneyPres = true;
+                prescriptionSDO.KidneyServiceReqId = frmAssignPrescription.oldServiceReq.KIDNEY_SERVICE_REQ_ID;
                 if (this.ParentServiceReqId > 0)
                     prescriptionSDO.ParentServiceReqId = this.ParentServiceReqId;
 

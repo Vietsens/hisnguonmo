@@ -31,6 +31,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
 {
     class HisConfigCFG
     {
+        private const string CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
         internal const string TUTORIAL_FORMAT = "HIS.Desktop.Plugins.AssignPrescription.TutorialFormat";
         internal const string CONFIG_KEY__DONT_PRES_EXPIRED_ITEM = "MOS.HIS_MEDI_STOCK.DONT_PRES_EXPIRED_ITEM";
         private const string CONFIG_KEY__MOS_HIS_SERVICE_REQ_MANY_DAYS_PRESCRIPTION_OPTION = "MOS.HIS_SERVICE_REQ.MANY_DAYS_PRESCRIPTION_OPTION";
@@ -202,6 +203,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         internal static bool DrugStoreComboboxOption;
 
         internal static bool IsAutoCreateSaleExpMest;
+        internal static string WarningHeinPatientTypeCode;
 
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
@@ -238,6 +240,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         {
             try
             {
+                WarningHeinPatientTypeCode = GetValue(CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE);
                 //dangth
                 UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);
                 AllowSignaturePrintModules = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);

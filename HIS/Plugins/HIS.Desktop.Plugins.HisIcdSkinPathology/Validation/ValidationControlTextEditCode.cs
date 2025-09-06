@@ -22,16 +22,16 @@ namespace HIS.Desktop.Plugins.HisIcdSkinPathology.Validation
                 }
                 else
                 {
-                    if (Inventec.Common.String.CountVi.Count(txtMa.Text) > 10)
+                    if (Inventec.Common.String.CountVi.Count(txtMa.Text) > 20)
                     {
-                        this.ErrorText = "Độ dài mã vượt quá" + 10;
+                        this.ErrorText = "Độ dài mã vượt quá" + 20;
                         return valid;
                     }
                     else
                     {
-                        if (Inventec.Common.String.CountVi.Count(txtMa.Text) > 10)
+                        if (Inventec.Common.String.CountVi.Count(txtMa.Text) > 20)
                         {
-                            this.ErrorText = "Độ dài không vượt quá" + 10;
+                            this.ErrorText = "Độ dài không vượt quá" + 20;
                             return valid;
                         }
                         else valid = true;

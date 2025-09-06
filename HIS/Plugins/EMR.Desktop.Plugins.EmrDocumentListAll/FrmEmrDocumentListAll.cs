@@ -51,6 +51,8 @@ using EMR.Filter;
 using Inventec.Common.Adapter;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using EMR.SDO;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 
 namespace EMR.Desktop.Plugins.EmrDocumentListAll
 {
@@ -109,7 +111,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
         #endregion
 
         #region Private method
-
+        
         private List<EMR.EFMODEL.DataModels.EMR_DOCUMENT_TYPE> GetDocumentType()
         {
             List<EMR.EFMODEL.DataModels.EMR_DOCUMENT_TYPE> result = new List<EFMODEL.DataModels.EMR_DOCUMENT_TYPE>();
@@ -429,6 +431,14 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
                 {
                     filter.CURRENT_DEPARTMENT_CODEs = this.departmentSelecteds.Select(o => o.DEPARTMENT_CODE).Distinct().ToList();
                 }
+                if(chkOtherDocuments.Checked)
+                {
+                    filter.IS_OUTSIDE_TREATMENT = true;
+                }
+                else
+                {
+                    filter.IS_OUTSIDE_TREATMENT = false; 
+                }
             }
             catch (Exception ex)
             {
@@ -535,7 +545,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
                         }
                         else if (e.Column.FieldName == "DOB_STR")
                         {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.DOB);
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.DOB ?? 0);
                         }
                         else if (e.Column.FieldName == "NEXT_SIGNER_STR")
                         {
@@ -622,7 +632,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
                 LoadKeysFromlanguage();
 
                 InitComboSTT(LoadDataToComboStatus());
-
+                InitStatusChkOtherDocuments();
                 //Gan gia tri mac dinh
                 SetDefaultValueControl();
 
@@ -646,6 +656,32 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        //qtcode
+        private void InitStatusChkOtherDocuments()
+        {
+            try
+            {
+                if(this.roomTypeId == 5 || this.roomTypeId == 6) // 5: tủ bệnh án, 6: phòng thu ngân
+                {
+                    chkOtherDocuments.Enabled = true; 
+                }
+                else
+                {
+                    chkOtherDocuments.Enabled = false; 
+                }
+
+                if(this.roomTypeId == 2) // 2: kho
+                {
+                    chkOtherDocuments.Checked = true; 
+                }
+            }
+            catch(Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex); 
+            } 
+            
+        }
+
         private void InitCombo(GridLookUpEdit cbo, object data, string DisplayValue, string ValueMember)
         {
             try
@@ -974,6 +1010,151 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private List<EmrDocumentFileSDO> GetEmrDocumentFile(long documentId, bool? IsMerge, bool? IsShowPatientSign, bool? IsShowWatermark, ref CommonParam paramCommon)
+        {
+            EmrDocumentDownloadFileSDO sdo = new EmrDocumentDownloadFileSDO();
+            var emrFilter = new EMR.Filter.EmrDocumentViewFilter();
+            emrFilter.ID = documentId;
+            sdo.EmrDocumentViewFilter = emrFilter;
+            sdo.IsMerge = IsMerge;
+            sdo.IsShowPatientSign = IsShowPatientSign;
+            sdo.IsShowWatermark = IsShowWatermark;
+            sdo.IsView = null;
+            var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.moduleData.RoomId);
+            sdo.RoomCode = room != null ? room.ROOM_CODE : null;
+            sdo.DepartmentCode = room != null ? room.DEPARTMENT_CODE : null;
+            return new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, paramCommon);
+        }
+        private void repositoryItemButtonEdit1_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void gridView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                GridHitInfo hi = view.CalcHitInfo(e.Location);
+                if ((Control.ModifierKeys & Keys.Control) != Keys.Control)
+                {
+                    if (hi.InRowCell)
+                    {
+                        var row = (V_EMR_DOCUMENT)gridView1.GetRow(hi.RowHandle);
+                        if (row != null)
+                        {
+                            if (hi.Column.FieldName == "DETAIL")
+                            {
+                                #region ----- DETAIL -----
+                                try
+                                {
+                                    CommonParam param = new CommonParam();
+                                    var apiResult = GetEmrDocumentFile(row.ID, false, null, false, ref param);
+                                    if (apiResult != null && apiResult.Count > 0)
+                                    {
+                                        //goi tool view
+                                        var temFile = System.IO.Path.Combine(Application.StartupPath + "\\temp\\");
+                                        if (!Directory.Exists(temFile)) Directory.CreateDirectory(temFile);
+
+                                        temFile = System.IO.Path.Combine(temFile, string.Format("{0}.pdf", Guid.NewGuid()));
+                                        List<string> joinStreams = new List<string>();
+
+                                        List<MemoryStream> documentData = new List<MemoryStream>();
+                                        foreach (var item in apiResult)
+                                        {
+                                            if (item.Extension.ToLower().Equals("pdf"))
+                                            {
+                                                string pdfAddFile = Utils.GenerateTempFileWithin();
+                                                Utils.ByteToFile(Utils.StreamToByte(new MemoryStream(Convert.FromBase64String(item.Base64Data))), pdfAddFile);
+                                                joinStreams.Add(pdfAddFile);
+                                            }
+                                        }
+
+                                        Stream currentStream = File.Open(temFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+
+                                        var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
+
+                                        var pages = new List<int>();
+                                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Đây là dữ liệu joinStreams: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => joinStreams), joinStreams));
+
+                                        foreach (var file in joinStreams)
+                                        {
+                                            iTextSharp.text.pdf.PdfReader pdfReader = null;
+                                            pdfReader = new iTextSharp.text.pdf.PdfReader(file);
+                                            pages = new List<int>();
+                                            for (int i = 0; i <= pdfReader.NumberOfPages; i++)
+                                            {
+                                                pages.Add(i);
+                                            }
+                                            pdfReader.SelectPages(pages);
+                                            pdfConcat.AddPages(pdfReader);
+                                            pdfReader.Close();
+                                        }
+                                        try
+                                        {
+                                            pdfConcat.Close();
+                                        }
+                                        catch { }
+
+                                        foreach (var file in joinStreams)
+                                        {
+                                            try
+                                            {
+                                                File.Delete(file);
+                                            }
+                                            catch { }
+                                        }
+
+                                        SignLibraryGUIProcessor libraryProcessor = new SignLibraryGUIProcessor();
+                                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADO(row.TREATMENT_CODE, row.DOCUMENT_CODE, row.DOCUMENT_NAME, moduleData.RoomId);
+
+                                        // truyền paper
+                                        if (row.WIDTH != null && row.HEIGHT != null && row.RAW_KIND != null)
+                                        {
+                                            inputADO.PaperSizeDefault = new System.Drawing.Printing.PaperSize(row.PAPER_NAME, (int)row.WIDTH, (int)row.HEIGHT);
+                                            if (row.RAW_KIND != null)
+                                            {
+                                                inputADO.PaperSizeDefault.RawKind = (int)row.RAW_KIND;
+                                            }
+                                        }
+                                        //qtcode
+                                        inputADO.IsOutsideTreatment = (short)(row.TREATMENT_CODE.ToUpper().Contains("MPS") ? 1 : 0);
+                                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputADO.PaperSizeDefault), inputADO.PaperSizeDefault));
+
+                                        if (!String.IsNullOrWhiteSpace(temFile) && File.Exists(temFile))
+                                            libraryProcessor.ShowPopup(temFile, inputADO);
+                                        else
+                                        {
+                                            XtraMessageBox.Show("Không tìm thấy được văn bản ký");
+                                        }
+
+                                        if (File.Exists(temFile)) File.Delete(temFile);
+                                    }
+                                    else
+                                    {
+                                        MessageManager.Show(this.ParentForm, param, false);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Inventec.Common.Logging.LogSystem.Error(ex);
+                                }
+                                #endregion
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void checkEdit1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
         //private void InitCboDepartment()
         //{
         //    try

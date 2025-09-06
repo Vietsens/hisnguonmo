@@ -41,7 +41,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Save.Create
                 prescriptionSDO.SerialNumbers = this.PatientPresMaterialBySerialNumberSDOs;
                 prescriptionSDO.PrescriptionTypeId = PrescriptionType.NEW;
                 prescriptionSDO.TreatmentId = this.TreatmentId;
-
+                prescriptionSDO.IsExecuteKidneyPres = true;
+                prescriptionSDO.KidneyServiceReqId = frmAssignPrescription.serviceReqWorking.ID;
                 this.ProcessPrescriptionUpdateSDO(prescriptionSDO);
                 this.ProcessPrescriptionUpdateSDOICD(prescriptionSDO);
                 LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => prescriptionSDO), prescriptionSDO));

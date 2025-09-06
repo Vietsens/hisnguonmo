@@ -3096,7 +3096,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         query = query.Where(o => o.IS_FEMALE == 1).ToList();
                     }
-                    testIndexRange = query.FirstOrDefault();
+                    testIndexRange = query.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault();
                 }
             }
             catch (Exception ex)

@@ -239,7 +239,7 @@
             // 
             this.txtMa.Location = new System.Drawing.Point(87, 2);
             this.txtMa.Name = "txtMa";
-            this.txtMa.Properties.MaxLength = 10;
+            this.txtMa.Properties.MaxLength = 20;
             this.txtMa.Size = new System.Drawing.Size(293, 20);
             this.txtMa.StyleController = this.lcEditorInfo;
             this.txtMa.TabIndex = 4;

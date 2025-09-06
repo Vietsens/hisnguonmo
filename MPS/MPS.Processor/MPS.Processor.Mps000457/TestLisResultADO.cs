@@ -55,5 +55,6 @@ namespace MPS.Processor.Mps000457
         public string ISO_PROCESS_CODE { get; set; }
         public short? IS_MEET_ISO_STANDARD { get; set; }
         public string ISO_LOGO_URL { get; set; }
+        public string SERVICE_RESULT_NAME { get; set; }
     }
 }

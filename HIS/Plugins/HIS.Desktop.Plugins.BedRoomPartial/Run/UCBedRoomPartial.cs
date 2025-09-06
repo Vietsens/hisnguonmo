@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
+using System;  
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -77,6 +77,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         bool isUseAddedTime = false;
         internal L_HIS_TREATMENT_BED_ROOM treatmentBedRoomRow { get; set; }
         internal L_HIS_TREATMENT_BED_ROOM RowCellClickBedRoom { get; set; }
+        internal L_HIS_TREATMENT_BED_ROOM treatmentBedRoomRow2 { get; set; }
 
         internal ServiceReqGroupByDateADO rowClickByDate { get; set; }
 
@@ -124,6 +125,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             : base(null)
         {
             InitializeComponent();
+             
         }
 
         public UCBedRoomPartial(Inventec.Desktop.Common.Modules.Module currentModule)
@@ -997,12 +999,15 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         rowHandle = hi.RowHandle;
                         this.treatmentBedRoomRow = (L_HIS_TREATMENT_BED_ROOM)gridViewTreatmentBedRoom.GetRow(rowHandle);
                         this.RowCellClickBedRoom = (L_HIS_TREATMENT_BED_ROOM)gridViewTreatmentBedRoom.GetRow(rowHandle);
+                        this.treatmentBedRoomRow2 = (L_HIS_TREATMENT_BED_ROOM)gridViewTreatmentBedRoom.GetRow(rowHandle);
+
                     }
                     else
                     {
                         rowHandle = gridViewTreatmentBedRoom.GetVisibleRowHandle(hi.RowHandle);
                         this.treatmentBedRoomRow = (L_HIS_TREATMENT_BED_ROOM)gridViewTreatmentBedRoom.GetRow(rowHandle);
                         this.RowCellClickBedRoom = (L_HIS_TREATMENT_BED_ROOM)gridViewTreatmentBedRoom.GetRow(rowHandle);
+                        this.treatmentBedRoomRow2 = (L_HIS_TREATMENT_BED_ROOM)gridViewTreatmentBedRoom.GetRow(rowHandle);
                     }
 
                     this.ProcessUpdateWorkplaceByRoomWithTreatment();
@@ -1109,6 +1114,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 
             try
             {
+                treatmentBedRoomRow2 = data;
                 bool hasAllergyCard = false;
                 CommonParam param = new CommonParam();
                 if (data != null)
@@ -1201,6 +1207,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     lblPatientPhone.Text = data.TDL_PATIENT_PHONE ?? data.TDL_PATIENT_MOBILE;
                     lblCccd.Text = data.TDL_PATIENT_CCCD_NUMBER ?? data.TDL_PATIENT_CMND_NUMBER ?? data.TDL_PATIENT_PASSPORT_NUMBER;
                     lblTreatmentMethod.Text = data.TREATMENT_METHOD;
+
+                    string abo = data.TDL_PATIENT_BLOOD_ABO_CODE ?? "";
+                    string rh = data.TDL_PATIENT_BLOOD_RH_CODE ?? "";
+
+                    lblBloodType.Text = (abo + rh).Trim();
+                    lblTreatmentMethod.Text = data.TREATMENT_METHOD;
                     var treatmentEndType = BackendDataWorker.Get<HIS_TREATMENT_END_TYPE>().FirstOrDefault(o => o.ID == data.TREATMENT_END_TYPE_ID);
                     lblTreatmentEndType.Text = treatmentEndType != null ? treatmentEndType.TREATMENT_END_TYPE_NAME : "";
 
@@ -1217,7 +1229,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     }
                 }
                 else
-                {
+                {     
                     lblPatientCode.Text = null;
                     lblPatientName.Text = null;
                     lblGender.Text = null;
@@ -1232,10 +1244,13 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     lblApprovalNote.Text = "";
                     lblPatientPhone.Text = null;
                     lblCccd.Text = null;
+                    lblBloodType.Text = null;
                     lblTreatmentEndType.Text = "";
                     lblTreatmentMethod.Text = "";
                     string pathLocal = GetPathDefault();
                     pictureEditAvatar.Image = Image.FromFile(pathLocal);
+                    
+
                 }
                 ProcessUpdateWorkplaceByRoomWithTreatment();
             }
@@ -2882,7 +2897,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         private void gridViewTreatmentBedRoom_CustomDrawGroupRow(object sender, RowObjectCustomDrawEventArgs e)
         {
             try
-            {
+            {   
                 var info = e.Info as DevExpress.XtraGrid.Views.Grid.ViewInfo.GridGroupRowInfo;
                 info.GroupText = Convert.ToString(this.gridViewTreatmentBedRoom.GetGroupRowValue(e.RowHandle, this.grdColRoomName) ?? "");
             }
@@ -2896,6 +2911,17 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         {
             if (cboEmployee.EditValue != null && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
                 cboEmployee.EditValue = null;
+        }
+
+        private void lblPatientCode_Click(object sender, EventArgs e)
+        {
+              
+
+            if (lblPatientCode.Appearance.Image != null && treatmentBedRoomRow2 != null && treatmentBedRoomRow2.TREATMENT_ID > 0)
+            {
+                List<object> args = new List<object> { treatmentBedRoomRow2.TREATMENT_ID };
+                CallModule("HIS.Desktop.Plugins.AllergyCard", args);
+            }
         }
 
         private string GetPathDefault()

@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 {
     class HisConfigCFG
     {
+        private const string CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
         private const string CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT = "MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT";
         private const string CONFIG_KEY__HIS_ICD_SERVICE__HAS_REQUIRE__PATIENT_BHYT = "HIS.HIS_ICD_SERVICE.HAS_REQUIRE.PATIENT.BHYT";
         private const string CONFIG_KEY__IsCheckServiceFollwWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
@@ -154,6 +155,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_IsRequiredHtu = "HIS.Desktop.Plugins.AssignPrescription.IsRequiredHtu"; 
         private const string KEY_SaveButtonOption = "HIS.Desktop.Plugins.AssignPrescriptionPK.SaveButtonOption";
         private const string KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX = "MOS.BHYT.ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX";
+        private const string KEY_HIS_DESKTOP_PLUGINS_ASSIGNPRESCRIPTION_ALLOWKIDNEYPRESOUTPATIENT = "HIS.Desktop.Plugins.AssignPrescription.AllowKidneyPresOutPatient";
+        internal static string AllowKidneyPresOutPatient;
         internal static string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix;
         internal static string IsSaveButtonOption;
         internal static string IsRequiredHtu;
@@ -420,6 +423,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static bool IsReasonRequired;
 
         internal static string IcdCodeToApplyRestrictPatientTypeByOtherSourcePaid;
+        internal static string WarningHeinPatientTypeCode;
 
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
@@ -455,6 +459,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         {
             try
             {
+                WarningHeinPatientTypeCode = GetValue(CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE);
                 UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);
                 HisIcdServiceHasRequirePatientBhyt = GetValue(CONFIG_KEY__HIS_ICD_SERVICE__HAS_REQUIRE__PATIENT_BHYT);
                 IsCheckServiceFollowWhenOut = GetValue(CONFIG_KEY__IsCheckServiceFollwWhenOut);    
@@ -609,6 +614,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 IsCheckDepartmentInTimeWhenPresOrAssign = (GetValue(IS_CHECK_DEPARTMENT_IN_TIME_WHEN_PRES_OR_ASSIGN) == "1");
                 MestRoomOption = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(CONFIG_KEY__MestRoomOption));
                 DefaultPatientTypeOption = (GetValue(CONFIG_KEY__DefaultPatientTypeOption) == "1");
+                AllowKidneyPresOutPatient = GetValue(KEY_HIS_DESKTOP_PLUGINS_ASSIGNPRESCRIPTION_ALLOWKIDNEYPRESOUTPATIENT);
 
                 GroupOption = (GetValue(CONFIG_KEY__GroupOption) == "1");
                 IsReasonRequired = (GetValue(CONFIG_KEY__IS_REASON_REQUIRED) == "1");

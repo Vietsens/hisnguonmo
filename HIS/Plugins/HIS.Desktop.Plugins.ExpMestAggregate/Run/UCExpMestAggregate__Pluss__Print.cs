@@ -406,7 +406,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 foreach (var item in dicMedi)
                 {
                     string printTypeCode = "Mps000047";
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.currentAggrExpMest != null ? this.currentAggrExpMest.TDL_TREATMENT_CODE : ""), "Mps000047", this.currentModule.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, "Mps000047", this.currentModule.RoomId);
                     MPS.Processor.Mps000047.PDO.Mps000047PDO mps000047RDO = new MPS.Processor.Mps000047.PDO.Mps000047PDO(
                       item.Value,
                      this.currentAggrExpMest,

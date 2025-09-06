@@ -105,8 +105,8 @@ namespace EMR.Desktop.Plugins.EmrSign
 
                 FillDataToControl();
 
-                EnableSetting();
-                AddPatientByKey();
+                //EnableSetting();
+                AddPatientByKey();    
             }
             catch (Exception ex)
             {
@@ -243,24 +243,24 @@ namespace EMR.Desktop.Plugins.EmrSign
         {
             try
             {
-                var acsUser = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.LOGINNAME == this.LoginName);
+                //var acsUser = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.LOGINNAME == this.LoginName);
 
-                if (acsUser != null)
-                {
-                    var acsRoleUserList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_ROLE_USER>().Where(o => o.USER_ID == acsUser.ID).ToList();
-                    var controlSetting = controlAcs != null && controlAcs.Count > 0 ? controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ControlCode.BtnSetting) : null;
-                    if (acsRoleUserList != null && acsRoleUserList.Count > 0 && controlSetting != null)
-                    {
-                        isEdit = null;
-                    }
-                    else
-                    {
-                        isEdit = false;
-                        gridControlSign.Enabled = false;
-                        BtnAddPatient.Enabled = false;
-                        BtnSave.Enabled = false;
-                    }
-                }
+                //if (acsUser != null)
+                //{
+                //    var acsRoleUserList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_ROLE_USER>().Where(o => o.USER_ID == acsUser.ID).ToList();
+                //    var controlSetting = controlAcs != null && controlAcs.Count > 0 ? controlAcs.FirstOrDefault(o => o.CONTROL_CODE == ControlCode.BtnSetting) : null;
+                //    if (acsRoleUserList != null && acsRoleUserList.Count > 0 && controlSetting != null)
+                //    {
+                //        isEdit = null;
+                //    }
+                //    else
+                //    {
+                //        isEdit = false;
+                //        gridControlSign.Enabled = false;
+                //        BtnAddPatient.Enabled = false;
+                //        BtnSave.Enabled = false;
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -276,7 +276,7 @@ namespace EMR.Desktop.Plugins.EmrSign
                 ListDataSign = new List<SignADO>();
                 SignADO ado = new SignADO();
                 ado.Action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd;
-                ado.NUM_ORDER = MaxOrder + 100;
+                ado.NUM_ORDER = MaxOrder + 1;
                 ado.IdRow = ado.NUM_ORDER;
                 ado.DOCUMENT_ID = this.DocumentId;
 
@@ -379,18 +379,18 @@ namespace EMR.Desktop.Plugins.EmrSign
 
                     if (e.Column.FieldName == "ADD")
                     {
-                        if (action == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd && !this.isEdit.HasValue)
+                        if (action == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd)
                         {
                             e.RepositoryItem = repositoryItemButtonAdd;
                         }
-                        else if (action == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit && !this.isEdit.HasValue)
+                        else if (action == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
                         {
                             e.RepositoryItem = repositoryItemButtonRemove;
                         }
                     }
                     else if (e.Column.FieldName == "DELETE")
                     {
-                        if ((signTime > 0 || rejectTime > 0) || this.isEdit.HasValue)// || loginname.ToLower() != this.LoginName.ToLower())
+                        if ((signTime > 0 || rejectTime > 0))// || loginname.ToLower() != this.LoginName.ToLower())
                         {
                             e.RepositoryItem = repositoryItemButtonDeleteDisable;
                         }
@@ -399,9 +399,9 @@ namespace EMR.Desktop.Plugins.EmrSign
                             e.RepositoryItem = repositoryItemButtonDelete;
                         }
                     }
-                    else if (e.Column.FieldName == "UP")
+                    else if (e.Column.FieldName == "UP")    
                     {
-                        if (signTime > 0 || rejectTime > 0 || this.isEdit.HasValue)
+                        if (signTime > 0 || rejectTime > 0 )
                         {
                             e.RepositoryItem = repositoryItemButtonUpDisable;
                         }
@@ -412,7 +412,7 @@ namespace EMR.Desktop.Plugins.EmrSign
                     }
                     else if (e.Column.FieldName == "DOWN")
                     {
-                        if (signTime > 0 || rejectTime > 0 || this.isEdit.HasValue)
+                        if (signTime > 0 || rejectTime > 0)
                         {
                             e.RepositoryItem = repositoryItemButtonDownDisable;
                         }
@@ -431,7 +431,7 @@ namespace EMR.Desktop.Plugins.EmrSign
                         {
                             if (this.isEdit.HasValue && this.isEdit.Value == true)
                             {
-                                if (loginname == this.LoginName)
+                                if (loginname == this.LoginName)    
                                 {
                                     e.RepositoryItem = repositoryItemCboSigner;
                                 }
@@ -447,7 +447,7 @@ namespace EMR.Desktop.Plugins.EmrSign
                     }
                     else if (e.Column.FieldName == "TITLE")
                     {
-                        if (IsPatient || flowId > 0 || this.isEdit.HasValue)
+                        if (IsPatient || flowId > 0 )
                         {
                             e.RepositoryItem = repositoryItemText;
                         }
@@ -458,7 +458,7 @@ namespace EMR.Desktop.Plugins.EmrSign
                     }
                     else if (e.Column.FieldName == "DEPARTMENT_ID")
                     {
-                        if (IsPatient || flowId > 0 || this.isEdit.HasValue)
+                        if (IsPatient || flowId > 0 )
                         {
                             e.RepositoryItem = repositoryItemText;
                         }
@@ -541,8 +541,8 @@ namespace EMR.Desktop.Plugins.EmrSign
                 if (row != null)
                 {
                     //chưa ký thì luôn ở dưới đã ký nên kiểm tra để tránh đẩy lên trên dòng đã ký
-                    if (row.REJECT_TIME.HasValue || row.SIGN_TIME.HasValue || row.IdRow < MinOrder + 100) return;
-
+                    if (row.REJECT_TIME.HasValue || row.SIGN_TIME.HasValue || row.IdRow < MinOrder + 1) return;
+                        
                     var changeRow = ListDataSign.LastOrDefault(o => o.IdRow < row.IdRow);
                     if (changeRow != null && !changeRow.REJECT_TIME.HasValue && !changeRow.SIGN_TIME.HasValue)
                     {
@@ -650,12 +650,12 @@ namespace EMR.Desktop.Plugins.EmrSign
         }
 
         private void repositoryItemButtonAdd_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
-        {
+        {      
             try
             {
                 SignADO ado = new SignADO();
                 ado.Action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit;
-                ado.NUM_ORDER = MaxOrder + 100;
+                ado.NUM_ORDER = MaxOrder + 1;
                 ado.IdRow = ado.NUM_ORDER;
                 ado.DOCUMENT_ID = this.DocumentId;
 
@@ -918,7 +918,7 @@ namespace EMR.Desktop.Plugins.EmrSign
                         adop.NUM_ORDER = MaxOrder - 1;
                     }
                     else 
-                        adop.NUM_ORDER = MaxOrder + 100;
+                        adop.NUM_ORDER = MaxOrder + 1;
                     adop.IdRow = adop.NUM_ORDER;
                     adop.DOCUMENT_ID = this.DocumentId;
                     adop.PATIENT_CODE = this.Document.PATIENT_CODE;

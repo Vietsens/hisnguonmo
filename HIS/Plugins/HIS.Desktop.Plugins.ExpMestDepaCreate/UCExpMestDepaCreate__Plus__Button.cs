@@ -544,6 +544,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                     }
                     #endregion
                     long keyGOP = HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<long>(AppConfigKeys.CONFIG_KEY__HIS_DESKTOP__IN_GOP_GAY_NGHIEN_HUONG_THAN);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, this.currentRoom.ID);
                     if (keyGOP == 1)
                     {
                         #region ---- GN HT ----
@@ -570,6 +571,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                             {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                             }
+                            PrintData.EmrInputADO = inputADO;
                             result = MPS.MpsPrinter.Run(PrintData);
                         }
                         #endregion
@@ -600,6 +602,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                             {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                             }
+                            PrintData.EmrInputADO = inputADO;
                             result = MPS.MpsPrinter.Run(PrintData);
                         }
                         #endregion
@@ -628,6 +631,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                             {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                             }
+                            PrintData.EmrInputADO = inputADO;
                             result = MPS.MpsPrinter.Run(PrintData);
                         }
                         #endregion
@@ -657,6 +661,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = inputADO;
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion
@@ -685,6 +690,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = inputADO;
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion
@@ -713,6 +719,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = inputADO;
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion
@@ -748,6 +755,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = inputADO;
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
 
@@ -793,6 +801,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                             {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                             }
+                            PrintData.EmrInputADO = inputADO;
                             result = MPS.MpsPrinter.Run(PrintData);
                         }
                         if (_ExpMestMatyReq_HCs != null && _ExpMestMatyReq_HCs.Count > 0)
@@ -818,6 +827,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                             {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                             }
+                            PrintData.EmrInputADO = inputADO;
                             result = MPS.MpsPrinter.Run(PrintData);
                         }
                     }
@@ -847,6 +857,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = inputADO;
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion
@@ -875,6 +886,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = inputADO;
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion
@@ -903,6 +915,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = inputADO;
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion
@@ -931,6 +944,7 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                         }
+                        PrintData.EmrInputADO = inputADO;
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
                     #endregion

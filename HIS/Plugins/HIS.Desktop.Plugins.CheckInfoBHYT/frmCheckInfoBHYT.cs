@@ -515,13 +515,10 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                 gridControlHistoryExam.DataSource = null;
                 if (_resultHistoryLDO.dsLichSuKCB2018 != null)
                 {
-                    var query = _resultHistoryLDO.dsLichSuKCB2018.OrderByDescending(o => o.ngayRa).AsQueryable();
-                    //if (_resultHistoryLDO.dsLichSuKCB2018.Count > 5)
-                    //{
-                    //    query = query.Skip(0).Take(5);
-                    //}
-
-                    gridControlHistoryExam.DataSource = query.ToList();
+                    var query = _resultHistoryLDO.dsLichSuKCB2018
+                        .OrderByDescending(o => o.ngayRa)
+                        .ToList();
+                    gridControlHistoryExam.DataSource = query;
                 }
             }
             catch (Exception ex)
@@ -553,6 +550,8 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                                 e.Value = "Trốn viện";
                             else if (data.tinhTrang == "4")
                                 e.Value = "Xin ra viện";
+                            else if (data.tinhTrang == "5")
+                                e.Value = "Kiểm tra thẻ";
                         }
                         else if (e.Column.FieldName == "kqDieuTri_str")
                         {

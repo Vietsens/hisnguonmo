@@ -180,8 +180,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 ado.DelegateGetStoreStateValue = GetStateTratmentFinishCheck;
                 ado.DelegateSetStoreStateValue = SetStateTratmentFinishCheck;
-
-                this.ucTreatmentFinish = (UserControl)this.treatmentFinishProcessor.Run(ado);
+                string PatientTypeBHYT = Config.HisConfigCFG.PatientTypeCode__BHYT;
+                this.ucTreatmentFinish = (UserControl)this.treatmentFinishProcessor.Run(ado, PatientTypeBHYT);
                 if (this.ucTreatmentFinish != null)
                 {
                     this.pnlUCPanelRightBottom.Controls.Clear();

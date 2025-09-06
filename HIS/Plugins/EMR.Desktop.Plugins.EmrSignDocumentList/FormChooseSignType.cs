@@ -162,6 +162,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                     //inputADO.RoomName = currentRoom.ROOM_NAME;
                     //inputADO.RoomTypeCode = currentRoom.ROOM_TYPE_CODE;
 
+                    inputADO.IsOutsideTreatment = (short)(row.TREATMENT_CODE.ToUpper().Contains("MPS") ? 1 : 0);
                     if (row.WIDTH != null && row.HEIGHT != null && row.RAW_KIND != null)
                     {
                         inputADO.PaperSizeDefault = new System.Drawing.Printing.PaperSize(row.PAPER_NAME, (int)row.WIDTH, (int)row.HEIGHT);
