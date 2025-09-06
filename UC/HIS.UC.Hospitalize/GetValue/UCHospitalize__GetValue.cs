@@ -43,7 +43,7 @@ namespace HIS.UC.Hospitalize.Run
         public HospitalizeExamADO GetValue()
         {
             HospitalizeExamADO hospitalize = null;
-            try
+            try       
             {
                 this.positionHandleControl = -1;
                 if (!dxValidationProvider1.Validate())
@@ -107,6 +107,14 @@ namespace HIS.UC.Hospitalize.Run
                     hospitalize.HisDepartmentTranHospitalizeSDO.IsEmergency = false;
                 }
 
+                if (chkCAPD.CheckState == CheckState.Checked)
+                {
+                    hospitalize.HisDepartmentTranHospitalizeSDO.IsCAPD = true;
+                }
+                else
+                {
+                    hospitalize.HisDepartmentTranHospitalizeSDO.IsCAPD = false;
+                }
 
                 hospitalize.HisDepartmentTranHospitalizeSDO.RelativeName = txtRELATIVE_NAME.Text;
                 hospitalize.HisDepartmentTranHospitalizeSDO.RelativePhone = txtRELATIVE_PHONE.Text;

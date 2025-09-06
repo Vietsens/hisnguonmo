@@ -93,8 +93,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT\HIS.Desktop.Plugins.Library.AlertHospitalFeeNotBHYT.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.ConnectBloodPressure">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.ConnectBloodPressure\HIS.Desktop.Plugins.Library.ConnectBloodPressure.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.ConnectBloodPressure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.ConnectBloodPressure.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.ElectronicBill, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -163,13 +164,14 @@
     </Reference>
     <Reference Include="HIS.UC.ExamTreatmentFinish, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\UC\HIS.UC.ExamTreatmentFinish\bin\Debug\HIS.UC.ExamTreatmentFinish.dll</HintPath>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.ExamTreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.HisExamServiceAdd">
       <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.HisExamServiceAdd.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.Hospitalize">
-      <HintPath>..\..\..\UC\HIS.UC.Hospitalize\bin\Debug\HIS.UC.Hospitalize.dll</HintPath>
+    <Reference Include="HIS.UC.Hospitalize, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.Hospitalize.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Icd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -42,7 +42,7 @@ namespace HIS.UC.Hospitalize.ADO
         public CheckEdit_CheckChange CheckEditSign_CheckChange { get; set; }
         public CheckEdit_CheckChange CheckEditPrintDocumentSign_CheckChange { get; set; }
         public string ModuleLink { get; set; }
-        public HIS_TREATMENT Treatment {get;set;}
+        public HIS_TREATMENT Treatment { get; set; }
         public string IcdCode { get; set; }
         public string IcdName { get; set; }
         public string IcdSubCode { get; set; }
@@ -52,7 +52,7 @@ namespace HIS.UC.Hospitalize.ADO
         public string TraditionalIcdSubCode { get; set; }
         public string TraditionalIcdText { get; set; }
 
-        public bool isEmergency  { get; set; }
+        public bool isEmergency { get; set; }
 
         public string RelativeName { get; set; }
         public string RelativePhone { get; set; }
@@ -61,5 +61,6 @@ namespace HIS.UC.Hospitalize.ADO
         public string InHospitalizationReasonCode { get; set; }
         public string InHospitalizationReasonName { get; set; }
         public string Note { get; set; }
+        public bool IsCAPD { get; set; }
     }
 }
