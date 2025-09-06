@@ -1765,6 +1765,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             serviceReqUpdateSDO.HospitalizeSDO.TreatmentTypeId = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.TreatmentTypeId;
                             serviceReqUpdateSDO.HospitalizeSDO.Time = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.Time;
                             serviceReqUpdateSDO.HospitalizeSDO.IsEmergency = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.IsEmergency;
+                            serviceReqUpdateSDO.HospitalizeSDO.IsCAPD = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.IsCAPD;
                             serviceReqUpdateSDO.FinishTime = hisDepartmentTranHospitalizeSDO.FinishTime;
                             serviceReqUpdateSDO.HospitalizeSDO.RelativeName = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.RelativeName;
                             serviceReqUpdateSDO.HospitalizeSDO.RelativePhone = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.RelativePhone;
