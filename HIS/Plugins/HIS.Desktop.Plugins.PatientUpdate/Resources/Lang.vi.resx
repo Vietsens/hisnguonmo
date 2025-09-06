@@ -189,9 +189,6 @@
   <data name="frmPatientUpdate.lcFatherName.Text" xml:space="preserve">
     <value>Họ tên bố:</value>
   </data>
-  <data name="frmPatientUpdate.lcHtAddress.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Địa chỉ hiện tại</value>
-  </data>
   <data name="frmPatientUpdate.lcHtAddress.Text" xml:space="preserve">
     <value>Địa chỉ HT:</value>
   </data>
@@ -303,6 +300,18 @@
   <data name="frmPatientUpdate.lciEmrUpdate.Text" xml:space="preserve">
     <value>Cập nhật Emr</value>
   </data>
+  <data name="frmPatientUpdate.IciCardCode.Text" xml:space="preserve">
+    <value>Số thẻ:</value>
+  </data>
+  <data name="frmPatientUpdate.lciChucVu.Text" xml:space="preserve">
+    <value>Chức vụ:</value>
+  </data>
+  <data name="frmPatientUpdate.lcCAPDText" xml:space="preserve">
+    <value>Bệnh nhân điều trị lọc máu màng bụng</value>
+  </data>
+  <data name="frmPatientUpdate.lcHtAddress.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Địa chỉ hiện tại</value>
+  </data>
   <data name="frmPatientUpdate.lciFatherCareer.Text" xml:space="preserve">
     <value>Nghề nghiệp:</value>
   </data>
@@ -333,10 +342,7 @@
   <data name="frmPatientUpdate.layoutControlItem6.Text" xml:space="preserve">
     <value>Số thẻ:</value>
   </data>
-  <data name="frmPatientUpdate.IciCardCode.Text" xml:space="preserve">
-    <value>Số thẻ:</value>
-  </data>
-  <data name="frmPatientUpdate.lciChucVu.Text" xml:space="preserve">
-    <value>Chức vụ:</value>
+  <data name="frmPatientUpdate.lcCAPD.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bệnh nhân điều trị lọc máu màng bụng</value>
   </data>
 </root>
