@@ -1627,30 +1627,20 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             wcfSignDCO.fieldSigned = "CHUKYDONVI";
                             string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
                             SignProcessorClient signProcessorClient = new SignProcessorClient();
-                            var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
-                            if (wcfSignResultDCO != null && wcfSignResultDCO.Success)
+                            if (VerifyServiceSignProcessorIsRunning())
                             {
-                                pathAfterFileSign = wcfSignResultDCO.OutputFile;
-                                if (!File.Exists(pathAfterFileSign) || new FileInfo(pathAfterFileSign).Length == 0)
+                                var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                                if (wcfSignResultDCO != null && wcfSignResultDCO.Success)
                                 {
-                                    XtraMessageBox.Show("Ký số thất bại: file output không tồn tại hoặc rỗng.");
-                                    isSuccess = false;
-                                    return "";
+                                    pathAfterFileSign = wcfSignResultDCO.OutputFile;
+                                    if (!File.Exists(pathAfterFileSign) || new FileInfo(pathAfterFileSign).Length == 0)
+                                    {
+                                        XtraMessageBox.Show("Ký số thất bại: file output không tồn tại hoặc rỗng.");
+                                        isSuccess = false;
+                                        return "";
+                                    }
+                                    Inventec.Common.Logging.LogSystem.Debug("wcfSignResultDCO.OutputFile: " + Inventec.Common.Logging.LogUtil.TraceData("output file", wcfSignResultDCO.OutputFile));
                                 }
-                                Inventec.Common.Logging.LogSystem.Debug("wcfSignResultDCO.OutputFile: " + Inventec.Common.Logging.LogUtil.TraceData("output file", wcfSignResultDCO.OutputFile));
-                            }
-                            if (!string.IsNullOrEmpty(pathAfterFileSign))
-                            {
-                                saveFilePath = Path.Combine(this.savePathADO.pathXml, fullFileName);
-                                File.Copy(pathAfterFileSign, saveFilePath, true);
-                            }
-                            else
-                            {
-                                XtraMessageBox.Show("Ký số thất bại, file chưa được lưu vào thư mục chính.");
-                            }
-                            foreach (string ifile in Directory.GetFiles(tempFolderPath))
-                            {
-                                File.Delete(ifile);
                             }
                         }
                         if (this.savePathADO == null || string.IsNullOrEmpty(this.savePathADO.pathCollinearXml))
@@ -1939,16 +1929,19 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         wcfSignDCO.fieldSigned = "CHUKYDONVI";
                         string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
                         SignProcessorClient signProcessorClient = new SignProcessorClient();
-                        var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
-                        pathAfterFileSign = wcfSignDCO.SourceFile;
-                        if (wcfSignResultDCO != null && wcfSignResultDCO.Success)
+                        if (VerifyServiceSignProcessorIsRunning())
                         {
-                            pathAfterFileSign = wcfSignResultDCO.OutputFile;
-                            Inventec.Common.Logging.LogSystem.Debug("wcfSignResultDCO.OutputFile: " + Inventec.Common.Logging.LogUtil.TraceData("output file", wcfSignResultDCO.OutputFile));
-
-                            if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathXml))
+                            var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                            pathAfterFileSign = wcfSignDCO.SourceFile;
+                            if (wcfSignResultDCO != null && wcfSignResultDCO.Success)
                             {
-                                File.Copy(wcfSignDCO.OutputFile, pathAfterFileSign);
+                                pathAfterFileSign = wcfSignResultDCO.OutputFile;
+                                Inventec.Common.Logging.LogSystem.Debug("wcfSignResultDCO.OutputFile: " + Inventec.Common.Logging.LogUtil.TraceData("output file", wcfSignResultDCO.OutputFile));
+
+                                if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathXml))
+                                {
+                                    File.Copy(wcfSignDCO.OutputFile, pathAfterFileSign);
+                                }
                             }
                         }
                     }
