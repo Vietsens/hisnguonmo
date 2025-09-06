@@ -158,7 +158,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         {
             try
             {
-                  lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE")).ToList();
+                lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE")).ToList();
             }
             catch (Exception ex)
             {
