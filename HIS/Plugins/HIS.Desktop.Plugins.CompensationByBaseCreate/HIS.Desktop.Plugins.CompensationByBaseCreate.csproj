@@ -124,11 +124,8 @@
     <Reference Include="MPS">
       <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000215">
-      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000215\obj\Debug\MPS.Processor.Mps000215.dll</HintPath>
-    </Reference>
     <Reference Include="MPS.Processor.Mps000215.PDO">
-      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000215\bin\Debug\MPS.Processor.Mps000215.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000215.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000254.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000254.PDO.dll</HintPath>
