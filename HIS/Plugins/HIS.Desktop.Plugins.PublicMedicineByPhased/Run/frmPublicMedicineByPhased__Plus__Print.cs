@@ -784,7 +784,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
 
                                 if (info != null)
                                 {
-                                    info.SetValue(sereServPrint, TimeNumberToDateString(group.Key.INTRUCTION_DATE) == (string)infoSdo.GetValue(sdo) ? amount : "");
+                                    info.SetValue(sereServPrint, TimeNumberToDateString(group.Key.INTRUCTION_DATE) == (string)infoSdo.GetValue(sdo) ? decimal.Parse(amount) : (decimal?)null);
                                 }
                                 PropertyInfo info2 = pp.FirstOrDefault(o => o.Name == string.Format("MORNING_Day{0}", j + 1));
                                 if (info2 != null)
