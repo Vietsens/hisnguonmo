@@ -57,7 +57,7 @@ namespace HIS.Desktop.Plugins.ExpMestBCSCreate.Run
                    GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2 ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog,
                    "");
             PrintData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(
-                (printTypeCode),
+                (_BcsExpMest != null && _BcsExpMest.TDL_TREATMENT_CODE  != null ? _BcsExpMest.TDL_TREATMENT_CODE : printTypeCode),
                 printTypeCode,
                 this._Module.RoomId); ;
             return PrintData;
