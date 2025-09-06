@@ -97,12 +97,11 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             InVatTuTSD
         }
 
-        private bool MpsPrinterRun(string treatmentCode, 
-            string printTypeCode, 
-            string fileName, 
-            object data, 
-            MPS.ProcessorBase.PrintConfig.PreviewType previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, 
-            Inventec.Common.FlexCelPrint.DelegateEventLog eventLog = null)
+        private bool MpsPrinterRun(string treatmentCode,
+            string printTypeCode,
+            string fileName,
+            object data,
+            MPS.ProcessorBase.PrintConfig.PreviewType previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog)
         {
             bool result = false;
             try
@@ -117,7 +116,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     fileName,
                     data,
                     ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2 ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : previewType,
-                    printerName, eventLog);
+                    printerName);
                 printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(
                     treatmentCode,
                     printTypeCode,
@@ -145,7 +144,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
 
-                inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this._CurrentExpMest != null ? this._CurrentExpMest.TDL_TREATMENT_CODE : ""), printTypeCode, this.moduleData != null ? this.moduleData.RoomId : 0);
+                inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this._CurrentExpMest != null && this._CurrentExpMest.TDL_TREATMENT_CODE != null ? this._CurrentExpMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.moduleData != null ? this.moduleData.RoomId : 0);
             }
             catch (Exception ex)
             {
@@ -655,8 +654,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     }
                     MPS.Processor.Mps000494.PDO.Mps000494PDO rdo = new MPS.Processor.Mps000494.PDO.Mps000494PDO(lstSend);
 
-                    //RunPrint(printTypeCode, fileName, rdo, (Inventec.Common.FlexCelPrint.DelegateEventLog)EventLogPrint, result, moduleData.RoomId);
-                    result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, rdo, eventLog: (Inventec.Common.FlexCelPrint.DelegateEventLog)EventLogPrint);
+                    RunPrint(printTypeCode, fileName, rdo, (Inventec.Common.FlexCelPrint.DelegateEventLog)EventLogPrint, result, moduleData.RoomId);
                 }
             }
             catch (Exception ex)
@@ -694,7 +692,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 }
                 else
                 {
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, roomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, roomId);
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, data, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName, EventLogPrint) { EmrInputADO = inputADO });
                 }
             }
@@ -2607,9 +2605,9 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 _ExpMestMetyReq_LAOs = new List<HIS_EXP_MEST_METY_REQ>();
                 List<HIS_MEDICINE> _Medicines = new List<HIS_MEDICINE>();
                 List<HIS_MATERIAL> _Materials = new List<HIS_MATERIAL>();
-                List<HIS_BLOOD> _Bloods = new List<HIS_BLOOD>(); 
-                List<V_HIS_MEDICINE_PATY> _Medicines_PATY = new List<V_HIS_MEDICINE_PATY >();
-                List<V_HIS_MATERIAL_PATY> _Materials_PATY = new List<V_HIS_MATERIAL_PATY >();
+                List<HIS_BLOOD> _Bloods = new List<HIS_BLOOD>();
+                List<V_HIS_MEDICINE_PATY> _Medicines_PATY = new List<V_HIS_MEDICINE_PATY>();
+                List<V_HIS_MATERIAL_PATY> _Materials_PATY = new List<V_HIS_MATERIAL_PATY>();
                 CommonParam param = new CommonParam();
 
                 if (this._ExpMestMedicines_Print != null && this._ExpMestMedicines_Print.Count > 0)
@@ -2629,27 +2627,27 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
 
                     }
                     _Medicines = _Medicines.Distinct().ToList();
-                   var his_medipaty = BackendDataWorker.Get<V_HIS_MEDICINE_PATY>().ToList();
-                    if(_Medicines != null && _Medicines.Count >0)
+                    var his_medipaty = BackendDataWorker.Get<V_HIS_MEDICINE_PATY>().ToList();
+                    if (_Medicines != null && _Medicines.Count > 0)
                     {
-                       foreach(var item in _Medicines)
-                       {
-                            if(item.IS_SALE_EQUAL_IMP_PRICE != 1)
+                        foreach (var item in _Medicines)
+                        {
+                            if (item.IS_SALE_EQUAL_IMP_PRICE != 1)
                             {
-                                var data = his_medipaty.Where(o=> o.MEDICINE_ID == item.ID).ToList();
-                                if(data != null && data.Count>0)
+                                var data = his_medipaty.Where(o => o.MEDICINE_ID == item.ID).ToList();
+                                if (data != null && data.Count > 0)
                                 {
-                                   _Medicines_PATY.AddRange(data);
+                                    _Medicines_PATY.AddRange(data);
                                 }
                             }
-                       }
+                        }
                     }
                 }
 
                 if (this._ExpMestMaterials_Print != null && this._ExpMestMaterials_Print.Count > 0)
                 {
                     List<long> _MaterialIds = this._ExpMestMaterials_Print.Select(p => p.MATERIAL_ID ?? 0).ToList();
-                  
+
                     int skip = 0;
                     while (_MaterialIds.Count - skip > 0)
                     {
@@ -2664,19 +2662,19 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     }
                     _Materials = _Materials.Distinct().ToList();
                     var his_matepaty = BackendDataWorker.Get<V_HIS_MATERIAL_PATY>().ToList();
-                    if(_Materials!=null&& _Materials.Count >0)
+                    if (_Materials != null && _Materials.Count > 0)
                     {
-                       foreach(var item in _Materials)
-                       {
-                            if(item.IS_SALE_EQUAL_IMP_PRICE != 1)
+                        foreach (var item in _Materials)
+                        {
+                            if (item.IS_SALE_EQUAL_IMP_PRICE != 1)
                             {
-                                var data = his_matepaty.Where(o=> o.MATERIAL_ID == item.ID).ToList();
-                                if(data != null && data.Count>0)
+                                var data = his_matepaty.Where(o => o.MATERIAL_ID == item.ID).ToList();
+                                if (data != null && data.Count > 0)
                                 {
-                                   _Materials_PATY.AddRange(data);
+                                    _Materials_PATY.AddRange(data);
                                 }
                             }
-                       }
+                        }
                     }
                 }
 
@@ -3313,7 +3311,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3348,7 +3346,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3384,7 +3382,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3420,7 +3418,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3455,7 +3453,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3490,7 +3488,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3525,7 +3523,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3560,7 +3558,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3595,7 +3593,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3630,7 +3628,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3665,7 +3663,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3700,7 +3698,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3906,7 +3904,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3943,7 +3941,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -3980,7 +3978,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -4017,7 +4015,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -4054,7 +4052,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000346PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -4091,7 +4089,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -4128,7 +4126,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -4164,7 +4162,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -4200,7 +4198,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -4236,7 +4234,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -4272,7 +4270,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000347PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
                     }
 
-                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE, printTypeCode, this.moduleData.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
                     PrintData.EmrInputADO = inputADO;
 
                     result = MPS.MpsPrinter.Run(PrintData);
@@ -5454,7 +5452,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 MPS.Processor.Mps000351.PDO.Mps000351PDO pdo = new MPS.Processor.Mps000351.PDO.Mps000351PDO(_ExpMest_Sale_Prints, _ExpMestMedi_Sale__TPCNs, _ExpMestMaterials_Print, _Transaction_Sale_Print, impMests);
-                result = MpsPrinterRun(printTypeCode, printTypeCode,  fileName, pdo);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo);
             }
             catch (Exception ex)
             {
@@ -5574,7 +5572,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 HisTransfusionFilter filterTrans = new HisTransfusionFilter();
                 filterTrans.IDs = v_HIS_TRANSFUSION_SUMs.Select(o => o.ID).ToList();
                 List<HIS_TRANSFUSION> hIS_TRANSFUSION = new BackendAdapter(new CommonParam()).Get<List<HIS_TRANSFUSION>>("/api/HisTransfusion/GetView", ApiConsumers.MosConsumer, filterTrans, null);
-                
+
                 List<V_HIS_EXP_BLTY_SERVICE> ExpBltyService = new List<V_HIS_EXP_BLTY_SERVICE>();
 
                 HisExpBltyServiceViewFilter BltyServicefilter = new HisExpBltyServiceViewFilter();
@@ -5635,7 +5633,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 WaitingManager.Show();
                 ProcessPrint(printTypeCode);
 
-                MOS.Filter.HisExpMestViewFilter expMestFilter = new HisExpMestViewFilter();   
+                MOS.Filter.HisExpMestViewFilter expMestFilter = new HisExpMestViewFilter();
                 expMestFilter.ID = this._CurrentExpMest.ID;
                 var lstExpMest = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumer.ApiConsumers.MosConsumer, expMestFilter, new CommonParam()).FirstOrDefault();
 
