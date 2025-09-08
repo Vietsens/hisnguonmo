@@ -28,6 +28,7 @@ using HIS.Desktop.Plugins.Library.PrintPrescription;
 using HIS.Desktop.Print;
 using Inventec.Common.Adapter;
 using Inventec.Common.SignLibrary.ADO;
+using Inventec.Common.SignLibrary.Popup;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -38,6 +39,7 @@ using MPS.Processor.Mps000048.PDO;
 using MPS.Processor.Mps000086.PDO;
 using MPS.Processor.Mps000118.PDO;
 using MPS.Processor.Mps000135.PDO;
+using MPS.Processor.Mps000215.PDO;
 using MPS.Processor.Mps000254.PDO;
 using MPS.Processor.Mps000346.PDO;
 using MPS.Processor.Mps000347.PDO;
@@ -101,7 +103,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             string printTypeCode,
             string fileName,
             object data,
-            MPS.ProcessorBase.PrintConfig.PreviewType previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog)
+            MPS.ProcessorBase.PrintConfig.PreviewType previewType)
         {
             bool result = false;
             try
@@ -117,11 +119,14 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     data,
                     ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2 ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : previewType,
                     printerName);
+                if (treatmentCode == null)
+                {
+                    treatmentCode = !string.IsNullOrEmpty(this._CurrentExpMest?.TDL_TREATMENT_CODE) ? this._CurrentExpMest.TDL_TREATMENT_CODE : printTypeCode;
+                }
                 printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(
                     treatmentCode,
                     printTypeCode,
-                    this.moduleData != null ?
-                    this.moduleData.RoomId : 0);
+                    this.moduleData != null ? this.moduleData.RoomId : 0);
                 WaitingManager.Hide();
                 result = MPS.MpsPrinter.Run(printData);
             }
@@ -133,24 +138,26 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             return result;
         }
 
-        string printerName = "";
-        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new Inventec.Common.SignLibrary.ADO.InputADO();
-        private void ProcessPrint(String printTypeCode)
-        {
-            try
-            {
-                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
-                {
-                    printerName = GlobalVariables.dicPrinter[printTypeCode];
-                }
+        //printerName = "";
+        //Inventec.Common.SignLibrary.ADO.InputADO inputADO = new Inventec.Common.SignLibrary.ADO.InputADO();
+        //private Inventec.Common.SignLibrary.ADO.InputADO ProcessPrint(String printTypeCode)
+        //{
+        //    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new Inventec.Common.SignLibrary.ADO.InputADO();
+        //    try
+        //    {
+        //        if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+        //        {
+        //            printerName = GlobalVariables.dicPrinter[printTypeCode];
+        //        }
 
-                inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this._CurrentExpMest != null && this._CurrentExpMest.TDL_TREATMENT_CODE != null ? this._CurrentExpMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.moduleData != null ? this.moduleData.RoomId : 0);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //        inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this._CurrentExpMest != null && this._CurrentExpMest.TDL_TREATMENT_CODE != null ? this._CurrentExpMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.moduleData != null ? this.moduleData.RoomId : 0);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //    return inputADO;
+        //}
 
         public void InitMenuToButtonPrint()
         {
@@ -1061,24 +1068,12 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 WaitingManager.Show();
                 MOS.Filter.HisExpMestViewFilter e1 = new HisExpMestViewFilter();
 
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
 
-                MPS.Processor.Mps000216.PDO.Mps000216PDO rdo = new MPS.Processor.Mps000216.PDO.Mps000216PDO(
+                MPS.Processor.Mps000216.PDO.Mps000216PDO pdo = new MPS.Processor.Mps000216.PDO.Mps000216PDO(
                     this._CurrentExpMest, this._ExpMestMedicines_Print, this._ExpMestMaterials_Print);
 
-                MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    //PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-                else
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-
-                WaitingManager.Hide();
-                result = MPS.MpsPrinter.Run(PrintData);
+                result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -1188,7 +1183,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 #region TT Chung
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 _ExpMestMedicinesBCS = new List<V_HIS_EXP_MEST_MEDICINE>();
                 _ExpMestMaterialsBCS = new List<V_HIS_EXP_MEST_MATERIAL>();
                 if (this._ExpMestMedicines_Print != null && this._ExpMestMedicines_Print.Count > 0)
@@ -1359,19 +1354,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          Config.HisConfigCFG.ODER_OPTION
                          );
 
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            //PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000215PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000215PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000215PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-
-                        WaitingManager.Hide();
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000215PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -1395,18 +1378,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          Config.HisConfigCFG.ODER_OPTION
                          );
 
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000215PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000215PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-
-                        WaitingManager.Hide();
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000215PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -1425,7 +1397,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 WaitingManager.Show();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
 
                 List<HIS_EXP_MEST_BLTY_REQ> expMestBltyReqs = new List<HIS_EXP_MEST_BLTY_REQ>();
                 foreach (var expMestBltyReq1 in this._ExpMestBltyReqs_Print)
@@ -1464,20 +1436,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  configKeyMert,
                  keyPhieuTra
                    );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        //PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000198PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000198PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        //PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000198PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000198PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000198PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
 
                 WaitingManager.Hide();
@@ -1493,7 +1452,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         {
             try
             {
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 CommonParam param = new CommonParam();
                 MOS.Filter.HisExpMestView1Filter expMestViewFilter = new MOS.Filter.HisExpMestView1Filter();
                 expMestViewFilter.ID = this._CurrentExpMest.ID;
@@ -1505,19 +1464,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     this._ExpMestMaterials_Print,
                     expMest1
                     );
-                MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    //PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000168PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "");
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000168PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                }
-                else
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000168PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-
-                WaitingManager.Hide();
-                result = MPS.MpsPrinter.Run(PrintData);
+                result = MpsPrinterRun(null, printTypeCode, fileName, mps000168PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -1531,7 +1478,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 CommonParam param = new CommonParam();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 if (this._ExpMestBloods != null && this._ExpMestBloods.Count > 0)
                 {
                     WaitingManager.Show();
@@ -1575,19 +1522,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                      mps000203Ado,
                      lstBloodGiver
                       );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        //PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000203PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, "");
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000203PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000203PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000203Ado, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
                 }
             }
             catch (Exception ex)
@@ -1617,22 +1552,11 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 WaitingManager.Show();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
 
                 MPS.Processor.Mps000165.PDO.Mps000165PDO rdo = new MPS.Processor.Mps000165.PDO.Mps000165PDO(
                     this._CurrentExpMest, this._ExpMestMedicines_Print, this._ExpMestMaterials_Print);
-                MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-                else
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-
-                WaitingManager.Hide();
-                result = MPS.MpsPrinter.Run(PrintData);
+                result = MpsPrinterRun(null, printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -1647,7 +1571,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 CommonParam param = new CommonParam();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 //Thong tin thuoc / vat tu
                 if (this._CurrentExpMest != null && this._CurrentExpMest.SERVICE_REQ_ID > 0)
                 {
@@ -1694,7 +1618,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 CommonParam param = new CommonParam();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 WaitingManager.Show();
 
                 // get expMest
@@ -1704,18 +1628,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     this._ExpMestMaterials_Print
                     );
 
-                MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                }
-                else
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-
-                WaitingManager.Hide();
-                result = MPS.MpsPrinter.Run(PrintData);
+                result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -1728,7 +1641,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         {
             try
             {
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 CommonParam param = new CommonParam();
                 WaitingManager.Show();
                 MPS.Processor.Mps000154.PDO.Mps000154PDO pdo = new MPS.Processor.Mps000154.PDO.Mps000154PDO(
@@ -1737,18 +1650,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     this._ExpMestMaterials_Print
                     );
 
-                MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                }
-                else
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-
-                WaitingManager.Hide();
-                result = MPS.MpsPrinter.Run(PrintData);
+                result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -1762,7 +1664,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 HIS.Desktop.LocalStorage.HisConfig.ConfigLoader.Refresh();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 CommonParam param = new CommonParam();
                 var _ExpMest = this._CurrentExpMest;
                 List<V_HIS_EXP_MEST_MEDICINE> _ExpMestMedicines = new List<V_HIS_EXP_MEST_MEDICINE>();
@@ -1923,16 +1825,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                                 BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                                 MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuGN_HT
                                 );
-                            MPS.ProcessorBase.Core.PrintData PrintData = null;
-                            if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                            }
-                            else
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                            }
-                            result = MPS.MpsPrinter.Run(PrintData);
+                            result = MpsPrinterRun(null, printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                         #endregion
                     }
@@ -1953,16 +1846,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                                 BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                                 MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuGayNghien
                                 );
-                            MPS.ProcessorBase.Core.PrintData PrintData = null;
-                            if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                            }
-                            else
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                            }
-                            result = MPS.MpsPrinter.Run(PrintData);
+                            result = MpsPrinterRun(null, printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                         #endregion
 
@@ -1981,16 +1865,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                                 BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                                MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuHuongThan
                                 );
-                            MPS.ProcessorBase.Core.PrintData PrintData = null;
-                            if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                            }
-                            else
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                            }
-                            result = MPS.MpsPrinter.Run(PrintData);
+                            result = MpsPrinterRun(null, printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                         #endregion
                     }
@@ -2010,16 +1885,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                                 BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                                 MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuThuocDoc
                                 );
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -2038,16 +1904,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                             MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuThuocPhongXa
                                 );
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -2066,16 +1923,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                             MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuThuocThuong
                                 );
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -2111,16 +1959,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                     MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuVatTu
                                 );
-                            MPS.ProcessorBase.Core.PrintData PrintData = null;
-                            if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                            }
-                            else
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                            }
-                            result = MPS.MpsPrinter.Run(PrintData);
+                            result = MpsPrinterRun(null, printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                         #endregion
 
@@ -2139,16 +1978,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                     MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.phieuHoaChat
                                 );
-                            MPS.ProcessorBase.Core.PrintData PrintData = null;
-                            if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                            }
-                            else
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                            }
-                            result = MPS.MpsPrinter.Run(PrintData);
+                            result = MpsPrinterRun(null, printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                         #endregion
                     }
@@ -2173,16 +2003,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                BackendDataWorker.Get<V_HIS_BLOOD_TYPE>(),
                MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.Mau
                            );
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
 
                     #endregion
@@ -2202,16 +2023,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                             MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.Corticoid
                                 );
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -2230,16 +2042,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                             MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.DichTruyen
                                 );
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -2258,16 +2061,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                             MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.KhangSinh
                                 );
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -2286,16 +2080,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                             MPS.Processor.Mps000135.PDO.Mps000135PDO.keyTitles.Lao
                                 );
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000135RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
                 }
@@ -2311,7 +2096,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 CommonParam param = new CommonParam();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 WaitingManager.Show();
                 MPS.Processor.Mps000090.PDO.Mps000090PDO pdo = new MPS.Processor.Mps000090.PDO.Mps000090PDO(
                  this._CurrentExpMest,
@@ -2319,18 +2104,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  this._ExpMestMaterials_Print
                  );
 
-                MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                }
-                else
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-
-                WaitingManager.Hide();
-                result = MPS.MpsPrinter.Run(PrintData);
+                result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -2344,24 +2118,13 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 CommonParam param = new CommonParam();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 WaitingManager.Show();
                 MPS.Processor.Mps000089.PDO.Mps000089PDO pdo = new MPS.Processor.Mps000089.PDO.Mps000089PDO(
                  this._CurrentExpMest,
                  this._ExpMestMedicines_Print
                  );
-                MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                }
-                else
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-
-                WaitingManager.Hide();
-                result = MPS.MpsPrinter.Run(PrintData);
+                result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -2375,7 +2138,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 CommonParam param = new CommonParam();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 WaitingManager.Show();
                 string genderName = "";
                 long? dob = null;
@@ -2403,18 +2166,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  this._ExpMestMaterials_Print
                  );
 
-                MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                }
-                else
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-
-                WaitingManager.Hide();
-                result = MPS.MpsPrinter.Run(PrintData);
+                result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
 
 
             }
@@ -2433,7 +2185,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
 
                 if (this._CurrentExpMest != null)
                 {
-                    ProcessPrint(printTypeCode);
+                    //ProcessPrint(printTypeCode);
                     MOS.Filter.HisServiceReqViewFilter filter = new HisServiceReqViewFilter();
                     filter.ID = this._CurrentExpMest.SERVICE_REQ_ID;
                     var serviceReqs = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GETVIEW, ApiConsumers.MosConsumer, filter, param);
@@ -2465,18 +2217,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             this._ExpMestBloods_Print
                         );
 
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                        }
-
-                        WaitingManager.Hide();
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
                     }
                 }
             }
@@ -2496,7 +2237,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 WaitingManager.Show();
                 if (this._CurrentExpMest.SERVICE_REQ_ID == null)
                     return;
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ serviceReq = null;
                 HisServiceReqViewFilter hisServiceReqViewFilter = new HisServiceReqViewFilter();
                 hisServiceReqViewFilter.ID = this._CurrentExpMest.SERVICE_REQ_ID;
@@ -2514,17 +2255,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  expMestBltyReqs,
                  this._ExpMestBloods_Print
                  );
-                MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                }
-                else
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-                WaitingManager.Hide();
-                result = MPS.MpsPrinter.Run(PrintData);
+                result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -2552,7 +2283,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  BackendDataWorker.Get<V_HIS_MEDI_STOCK>()
                  );
 
-                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -2584,7 +2315,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             {
                 Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("Config.HisConfigCFG.ODER_OPTION", Config.HisConfigCFG.ODER_OPTION));
 
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
 
                 #region TT Chung
                 WaitingManager.Show();
@@ -2932,18 +2663,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         {
                             Inventec.Common.Logging.LogSystem.Info("lstConfig NULL ");
                         }
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-
-                        WaitingManager.Hide();
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -3019,18 +2739,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             {
                                 Inventec.Common.Logging.LogSystem.Info("lstConfig NULL ");
                             }
-                            MPS.ProcessorBase.Core.PrintData PrintData = null;
-                            if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                            }
-                            else
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                            }
-
-                            WaitingManager.Hide();
-                            result = MPS.MpsPrinter.Run(PrintData);
+                            result = MpsPrinterRun(null, printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                         if (_ExpMestMatyReq_VTs != null && _ExpMestMatyReq_VTs.Count > 0)
                         {
@@ -3088,18 +2797,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             {
                                 Inventec.Common.Logging.LogSystem.Info("lstConfig NULL ");
                             }
-                            MPS.ProcessorBase.Core.PrintData PrintData = null;
-                            if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                            }
-                            else
-                            {
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                            }
-
-                            WaitingManager.Hide();
-                            result = MPS.MpsPrinter.Run(PrintData);
+                            result = MpsPrinterRun(null, printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                         }
                     }
                     #endregion
@@ -4326,7 +4024,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         {
             try
             {
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 WaitingManager.Show();
 
                 long keyPrintType = ConfigApplicationWorker.Get<long>(AppConfigKeys.CONFIG_KEY__HIS_DESKTOP__IN_GOP_GAY_NGHIEN_HUONG_THAN);
@@ -4349,18 +4047,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          MoreInfo
                              );
 
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                        }
-
-                        WaitingManager.Hide();
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
                     }
                     #endregion
 
@@ -4381,18 +4068,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     MoreInfo
                         );
 
-                        MPS.ProcessorBase.Core.PrintData PrintDataDC = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintDataDC = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDODC, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintDataDC = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDODC, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                        }
-
-                        WaitingManager.Hide();
-                        result = MPS.MpsPrinter.Run(PrintDataDC);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000254PDODC, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
                     }
                     #endregion
                 }
@@ -4415,18 +4091,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          MoreInfo
                              );
 
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-
-                        WaitingManager.Hide();
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -4446,18 +4111,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                              ListTreatment,
                          MoreInfo
                              );
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-
-                        WaitingManager.Hide();
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -4478,18 +4132,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          MoreInfo
                              );
 
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-
-                        WaitingManager.Hide();
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -4509,18 +4152,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                              ListTreatment,
                          MoreInfo
                              );
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-
-                        WaitingManager.Hide();
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
                 }
@@ -4541,18 +4173,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          ListTreatment,
                          MoreInfo
                          );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -4572,18 +4193,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          ListTreatment,
                          MoreInfo
                          );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -4603,17 +4213,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          ListTreatment,
                          MoreInfo
                          );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -4633,18 +4233,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          ListTreatment,
                          MoreInfo
                          );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -4664,18 +4253,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          ListTreatment,
                          MoreInfo
                          );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -4695,18 +4273,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          ListTreatment,
                          MoreInfo
                          );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000254PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
                 WaitingManager.Hide();
@@ -4722,7 +4289,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         {
             try
             {
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 WaitingManager.Show();
                 long configKeyMert = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.DESKTOP.MPS.AGGR_EXP_MEST_MEDICINE.MERGER_DATA"));
 
@@ -4765,17 +4332,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                      configKeyMert,
                      keyPhieuTra
                        );
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-                        WaitingManager.Hide();
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
                 }
@@ -4817,17 +4374,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                      configKeyMert,
                      keyPhieuTra
                        );
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-                        WaitingManager.Hide();
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
@@ -4867,17 +4414,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                      configKeyMert,
                      keyPhieuTra
                        );
-                        MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                        }
-                        WaitingManager.Hide();
-                        result = MPS.MpsPrinter.Run(PrintData);
+                        result = MpsPrinterRun(null, printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
                 }
@@ -4919,18 +4456,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  keyPhieuTra
                    );
 
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -4970,17 +4496,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  configKeyMert,
                  keyPhieuTra
                    );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -5020,17 +4536,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  configKeyMert,
                  keyPhieuTra
                    );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -5070,17 +4576,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  configKeyMert,
                  keyPhieuTra
                    );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -5120,17 +4616,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  configKeyMert,
                  keyPhieuTra
                    );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
 
@@ -5170,17 +4656,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  configKeyMert,
                  keyPhieuTra
                    );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
                 WaitingManager.Hide();
@@ -5197,7 +4673,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 WaitingManager.Show();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 long configKeyMert = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.DESKTOP.MPS.AGGR_EXP_MEST_MEDICINE.MERGER_DATA"));
                 if (this._ExpMestBltyReqs_Print != null && this._ExpMestBltyReqs_Print.Count > 0)
                 {
@@ -5228,17 +4704,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  configKeyMert,
                  keyPhieuTra
                    );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000198PDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000198PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
-                    }
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000198PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 WaitingManager.Hide();
             }
@@ -5272,7 +4738,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 _ExpMest_Sale_Prints.Add(_CurrentExpMest);
                 transactions = new List<V_HIS_TRANSACTION>();
 
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
 
                 if (_CurrentExpMest.BILL_ID.HasValue)
                 {
@@ -5394,18 +4860,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  treatment,
                  impMests
                  );
-                    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                    }
-
-                    WaitingManager.Hide();
-                    result = MPS.MpsPrinter.Run(PrintData);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
                 }
 
             }
@@ -5422,7 +4877,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 MPS.Processor.Mps000349.PDO.Mps000349PDO pdo = new MPS.Processor.Mps000349.PDO.Mps000349PDO(_ExpMest_Sale_Prints, _ExpMestMedi_Sale__GNs, _Transaction_Sale_Print, impMests);
-                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -5437,7 +4892,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 MPS.Processor.Mps000350.PDO.Mps000350PDO pdo = new MPS.Processor.Mps000350.PDO.Mps000350PDO(_ExpMest_Sale_Prints, _ExpMestMedi_Sale__HTs, _Transaction_Sale_Print, impMests);
-                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -5452,7 +4907,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 MPS.Processor.Mps000351.PDO.Mps000351PDO pdo = new MPS.Processor.Mps000351.PDO.Mps000351PDO(_ExpMest_Sale_Prints, _ExpMestMedi_Sale__TPCNs, _ExpMestMaterials_Print, _Transaction_Sale_Print, impMests);
-                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -5467,7 +4922,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             try
             {
                 MPS.Processor.Mps000352.PDO.Mps000352PDO pdo = new MPS.Processor.Mps000352.PDO.Mps000352PDO(_ExpMest_Sale_Prints, _ExpMestMedi_Sale__Ts, _Transaction_Sale_Print, impMests);
-                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo);
+                result = MpsPrinterRun(printTypeCode, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -5487,7 +4942,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     return;
                 }
                 WaitingManager.Show();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
                 V_HIS_TRANSACTION transaction = null;
 
                 HisTransactionViewFilter tranFilter = new HisTransactionViewFilter();
@@ -5520,18 +4975,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  lstExpMest,
                  impMests
                  );
-                MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                }
-                else
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-
-                WaitingManager.Hide();
-                result = MPS.MpsPrinter.Run(PrintData);
+                result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
             {
@@ -5545,7 +4989,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             {
                 CommonParam param = new CommonParam();
                 WaitingManager.Show();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
 
                 MOS.Filter.HisTreatmentViewFilter treatmentFilter = new HisTreatmentViewFilter();
                 treatmentFilter.ID = this._CurrentExpMest.TDL_TREATMENT_ID;
@@ -5603,18 +5047,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  ExpMest,
                  hIS_TRANSFUSION
                  );
-                MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                }
-                else
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-
-                WaitingManager.Hide();
-                result = MPS.MpsPrinter.Run(PrintData);
+                result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
 
             }
             catch (Exception ex)
@@ -5631,7 +5064,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             {
                 CommonParam param = new CommonParam();
                 WaitingManager.Show();
-                ProcessPrint(printTypeCode);
+                //ProcessPrint(printTypeCode);
 
                 MOS.Filter.HisExpMestViewFilter expMestFilter = new HisExpMestViewFilter();
                 expMestFilter.ID = this._CurrentExpMest.ID;
@@ -5647,18 +5080,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  lstExpMest,
                  lstExpBltyService
                  );
-                MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
-                }
-                else
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
-                }
-
-                WaitingManager.Hide();
-                result = MPS.MpsPrinter.Run(PrintData);
+                result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
 
             }
             catch (Exception ex)
