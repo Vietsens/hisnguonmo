@@ -4470,6 +4470,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     toi = is4Control ? this.GetValueSpin(this.spinToi.Text) : 0;
                     tocdotho = !is4Control ? this.GetValueSpin(this.txtTocDoTho.Text) : 0;
                     thoigiantho = !is4Control ? this.GetValueSpin(this.txtThoiGianTho.Text) : 0;
+                    
                     if (sang > 0
                         || trua > 0
                         || chieu > 0
@@ -4543,10 +4544,26 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             else
                             {
                                 if (is4Control)
-                                {   
+                                {
                                     if (HisConfigCFG.TutorialFormat == 2)
                                     {
-                                        huongDan.Append(tongCong > 0 ? String.Format(format__NgayUongTemp2, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), "", "", solan) : "");
+                                        if (solan > 0)
+                                        {
+                                            huongDan.Append(String.Format("Ngày uống {0} lần", solan));
+
+                                            if (sang > 0)
+                                                huongDan.Append(String.Format(", sáng: {0} {1}", ConvertNumber.ConvertDecToFracByConfig(sang, 4), serviceUnitName));
+                                            if (trua > 0)
+                                                huongDan.Append(String.Format(", trưa: {0} {1}", ConvertNumber.ConvertDecToFracByConfig(trua, 4), serviceUnitName));
+                                            if (chieu > 0)
+                                                huongDan.Append(String.Format(", chiều: {0} {1}", ConvertNumber.ConvertDecToFracByConfig(chieu, 4), serviceUnitName));
+                                            if (toi > 0)
+                                                huongDan.Append(String.Format(", tối: {0} {1}", ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName));
+                                        }
+                                        if (HisConfigCFG.TutorialFormatDay == 1 && !String.IsNullOrEmpty(this.spinSoLuongNgay.Text))
+                                        {
+                                            huongDan.Append(String.Format(" * {0} ngày", this.spinSoLuongNgay.Text));
+                                        }
                                     }
                                     else
                                     {
@@ -4554,15 +4571,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                             huongDan.Append(tongCong > 0 ? String.Format(format__NgayUong, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), " " + (int)tongCong, serviceUnitName, solan) : "");
                                         else
                                             huongDan.Append(tongCong > 0 ? String.Format(format__NgayUong, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName, solan) : "");
-                                    }
 
-                                    huongDan.Append(sang > 0 ? (String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Sang, ConvertNumber.ConvertDecToFracByConfig(sang, 4), serviceUnitName) : "");
-                                    huongDan.Append(trua > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Trua, ConvertNumber.ConvertDecToFracByConfig(trua, 4), serviceUnitName)) : "");
-                                    huongDan.Append(chieu > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Chieu, ConvertNumber.ConvertDecToFracByConfig(chieu, 4), serviceUnitName)) : "");
-                                    huongDan.Append(toi > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Toi, ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName)) : "");
-                                    if (HisConfigCFG.TutorialFormatDay == 1 && !String.IsNullOrEmpty(this.spinSoLuongNgay.Text))
-                                    {
-                                        huongDan.Append(String.Format(" * {0} ngày", this.spinSoLuongNgay.Text));
+                                        huongDan.Append(sang > 0 ? (String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Sang, ConvertNumber.ConvertDecToFracByConfig(sang, 4), serviceUnitName) : "");
+                                        huongDan.Append(trua > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Trua, ConvertNumber.ConvertDecToFracByConfig(trua, 4), serviceUnitName)) : "");
+                                        huongDan.Append(chieu > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Chieu, ConvertNumber.ConvertDecToFracByConfig(chieu, 4), serviceUnitName)) : "");
+                                        huongDan.Append(toi > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Toi, ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName)) : "");
+
                                     }
                                 }
                                 else
