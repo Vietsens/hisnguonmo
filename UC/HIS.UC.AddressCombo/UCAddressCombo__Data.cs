@@ -49,7 +49,7 @@ namespace HIS.UC.AddressCombo
                 {
                     if (data._FocusNextUserControl != null)
                         this.dlgFocusNextUserControl = data._FocusNextUserControl;
-                    if ((string.IsNullOrEmpty(data.District_Code) && string.IsNullOrEmpty(data.District_Name) && IsChangeStrucAdreess) || data.IsNoDistrict || (string.IsNullOrEmpty(data.District_Code) && !string.IsNullOrEmpty(data.Province_Code) && !string.IsNullOrEmpty(data.Commune_Code)))
+                    //if ((string.IsNullOrEmpty(data.District_Code) && string.IsNullOrEmpty(data.District_Name) && IsChangeStrucAdreess) || data.IsNoDistrict || (string.IsNullOrEmpty(data.District_Code) && !string.IsNullOrEmpty(data.Province_Code) && !string.IsNullOrEmpty(data.Commune_Code)))
                     {
                         if (!togChangeStructAdress.IsOn)
                         {
