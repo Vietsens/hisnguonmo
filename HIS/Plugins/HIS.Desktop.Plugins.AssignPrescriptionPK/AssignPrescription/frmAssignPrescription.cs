@@ -4707,7 +4707,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         this.spinSoNgay.Value = this.spinSoLuongNgay.Value;
                     }
                     this.CalculateAmount();
-                    this.SetHuongDanFromSoLuongNgay();
+                    if (!IsSetByMedicineTut)
+                        this.SetHuongDanFromSoLuongNgay();
                 }
             }
             catch (Exception ex)
