@@ -4527,6 +4527,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 if (HisConfigCFG.TutorialFormat == 2)
                                 {
                                     huongDan.Append(tongCong > 0 ? String.Format(format__NgayUongTemp2, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), "", "", solan) : "");
+                                    if (HisConfigCFG.TutorialFormatDay == 1 && !String.IsNullOrEmpty(this.spinSoLuongNgay.Text))
+                                    {
+                                        huongDan.Append(String.Format(" * {0} ngày", this.spinSoLuongNgay.Text));
+                                    }
                                 }
                                 else
                                 {
@@ -4539,7 +4543,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             else
                             {
                                 if (is4Control)
-                                {
+                                {   
                                     if (HisConfigCFG.TutorialFormat == 2)
                                     {
                                         huongDan.Append(tongCong > 0 ? String.Format(format__NgayUongTemp2, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), "", "", solan) : "");
@@ -4556,7 +4560,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                     huongDan.Append(trua > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Trua, ConvertNumber.ConvertDecToFracByConfig(trua, 4), serviceUnitName)) : "");
                                     huongDan.Append(chieu > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Chieu, ConvertNumber.ConvertDecToFracByConfig(chieu, 4), serviceUnitName)) : "");
                                     huongDan.Append(toi > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Toi, ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName)) : "");
-                                    //}
+                                    if (HisConfigCFG.TutorialFormatDay == 1 && !String.IsNullOrEmpty(this.spinSoLuongNgay.Text))
+                                    {
+                                        huongDan.Append(String.Format(" * {0} ngày", this.spinSoLuongNgay.Text));
+                                    }
                                 }
                                 else
                                 {
@@ -4569,10 +4576,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 huongDan.Append(!String.IsNullOrEmpty(this.cboHtu.Text) ? " (" + string.Join(", ", DataHtuList.Where(o => o.IsChecked).OrderByDescending(o => o.CHECK_ACIN_INTERACTIVE ?? Int64.MaxValue).ThenBy(o => o.NUM_ORDER).Select(o => o.HTU_NAME).ToList()).ToLower() + ")" : "");
 
                             huongDan = new StringBuilder().Append(FirstCharToUpper(huongDan.ToString()));
-                            if (HisConfigCFG.TutorialFormatDay == 1 && (int)spinSoLuongNgay.Value > 0)
-                            {
-                                huongDan.Append(" * " + (((int)spinSoLuongNgay.Value >= 1 && (int)spinSoLuongNgay.Value < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) + " ngày");
-                            }
                         }
 
                         if (HisConfigCFG.TutorialFormat == 3)
