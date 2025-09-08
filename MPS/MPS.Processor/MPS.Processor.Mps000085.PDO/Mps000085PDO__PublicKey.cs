@@ -114,6 +114,7 @@ namespace MPS.Processor.Mps000085.PDO
         public string BATCH_REGISTER_NUMBER { get; set; }
         public string BATCH_MANUFACTURER_CODE { get; set; }
         public string BATCH_MANUFACTURER_NAME { get; set; }
+        public long? MEDICINE_GROUP_ID { get; set; }
         //public Mps000085ADO(V_HIS_IMP_MEST_MEDICINE medicine)
         //{
         //    try
@@ -185,6 +186,7 @@ namespace MPS.Processor.Mps000085.PDO
                 if (medicine != null)
                 {     
                     //qtcode
+                    this.MEDICINE_GROUP_ID = medicine.MEDICINE_GROUP_ID;
                     this.DicMediMate = medicine.DicMediMate;
                     this.MEDI_MATE_TYPE_NAME = medicine.MEDICINE_TYPE_NAME;
                     this.SERVICE_UNIT_NAME = medicine.SERVICE_UNIT_NAME;
