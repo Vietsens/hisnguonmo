@@ -132,7 +132,7 @@ namespace HIS.Desktop.Plugins.ManuImpMestUpdate
         private void frmManuImpMestEdit_Load(object sender, EventArgs e)
         {
             try
-            {
+            {////TEST
                 WaitingManager.Show();
                 SetIcon();
 
