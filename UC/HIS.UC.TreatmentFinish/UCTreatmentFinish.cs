@@ -91,6 +91,7 @@ namespace HIS.UC.TreatmentFinish.Run
         IcdTemp currentIcd = new IcdTemp();
         HIS_TREATMENT HisTreatment = new HIS_TREATMENT();
         private List<AcsUserADO> lstReAcsUserADO;
+        List<HIS_HEIN_PATIENT_TYPE> HisHeinPatientType;
         string PatientTypeBHYT { get; set; }
         /// <summary>
         ///  Cấu hình cho phép mở nhiều hồ sơ điều trị của cùng 1 bệnh nhân hay không.
@@ -2536,13 +2537,26 @@ namespace HIS.UC.TreatmentFinish.Run
         {
             try
             {
-                CommonParam param = new CommonParam();
-                var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 ).ToList();
+                if (!BackendDataWorker.IsExistsKey<HIS_HEIN_PATIENT_TYPE>())
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    MOS.Filter.HisTreatmentResultFilter filter = new MOS.Filter.HisTreatmentResultFilter();
+                    filter.IS_ACTIVE = 1;
+                    HisHeinPatientType = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE>>("api/HisHeinPatientType/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                    if (HisHeinPatientType != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE), HisHeinPatientType, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+                else
+                {
+                    HisHeinPatientType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1).ToList();
+                }
+                HisHeinPatientType = HisHeinPatientType != null ? HisHeinPatientType.OrderBy(o => o.DESCRIPTION).ToList() : HisHeinPatientType;
+
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "Mã", 100, 1));
                 columnInfos.Add(new ColumnInfo("DESCRIPTION ", "Mô tả", 150, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "DESCRIPTION", columnInfos, true, 400);
-                ControlEditorLoader.Load(cbo, data, controlEditorADO);
+                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, true, 400);
+                ControlEditorLoader.Load(cbo, HisHeinPatientType, controlEditorADO);
                 cbo.Properties.ImmediatePopup = true;
                 cbo.Properties.PopupFormMinSize = new System.Drawing.Size(400, cbo.Properties.PopupFormSize.Height);
             }
