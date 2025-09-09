@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HIS.Desktop.Common;
 using Inventec.Core;
 using Inventec.Desktop.Core;
 using Inventec.Desktop.Core.Tools;
@@ -52,7 +53,7 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate.ConnectionTest
                 if (entity != null && entity.Length > 0)
                 {
                     V_LIS_SAMPLE currentSample = null;
-
+                    DelegateSelectData delegateSelectData = null;
                     foreach (var item in entity)
                     {
                         if (item is Inventec.Desktop.Common.Modules.Module)
@@ -63,9 +64,16 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate.ConnectionTest
                         {
                             currentSample = (V_LIS_SAMPLE)item;
                         }
+                        else if (item is DelegateSelectData)
+                        {
+                            delegateSelectData = (DelegateSelectData)item;
+                        }
                     }
-
-                    if (currentModule != null && currentSample != null)
+                    if (currentModule != null && currentSample != null && delegateSelectData != null)
+                    {
+                        result = new frmUpdateLisSample(currentModule, currentSample, delegateSelectData);
+                    }
+                    else if(currentModule != null && currentSample != null)
                     {
                         result = new frmUpdateLisSample(currentModule, currentSample);
                     }
