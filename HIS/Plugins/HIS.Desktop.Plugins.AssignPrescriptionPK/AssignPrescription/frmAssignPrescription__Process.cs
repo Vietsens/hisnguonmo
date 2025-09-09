@@ -621,7 +621,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
-        private void RefeshResourceGridMedicine()   
+        private void RefeshResourceGridMedicine()
         {
             try
             {
@@ -1648,7 +1648,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (String.IsNullOrEmpty(txtLadder.Text))
                     this.txtTutorial.Text = "";
                 this.memHtu.Text = "";
-                
+
                 this.VisibleInputControl(true);
 
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidProviderBoXung, this.dxErrorProvider1);
@@ -2012,10 +2012,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 repositoryItemchkIsExpendType_Disable.ReadOnly = true;
                 repositoryItemChkIsExpend__MedicinePage_Disable.Enabled = false;
                 repositoryItemChkIsExpend__MedicinePage_Disable.ReadOnly = true;
-                lciHomePres.Visibility = (HisConfigCFG.AllowKidneyPresOutPatient == "1") ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lciHomePres.Visibility = ((GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) || HisConfigCFG.AllowKidneyPresOutPatient == "1") ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciForchkThongTinMat.Visibility = (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                lciForchkPreKidneyShift.Visibility = (HisConfigCFG.AllowKidneyPresOutPatient == "1") ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                lciForspinKidneyCount.Visibility = (HisConfigCFG.AllowKidneyPresOutPatient == "1") ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lciForchkPreKidneyShift.Visibility = ((GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) || HisConfigCFG.AllowKidneyPresOutPatient == "1") ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lciForspinKidneyCount.Visibility = ((GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet) || HisConfigCFG.AllowKidneyPresOutPatient == "1") ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciForspinKidneyCount.Enabled = false;
                 lciForchkShowLo.Enabled = HisConfigCFG.IsAllowAssignPresByPackage ? true : false;
 
@@ -2826,7 +2826,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         //    listSource = listSource.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
                         //List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE> dataCombo = this.currentPatientTypeWithPatientTypeAlter.Where(o => arrPatientTypeCode.Contains(o.PATIENT_TYPE_CODE) && mediStockInMestPatientTypeIds.Contains(o.ID)).ToList();
 
-                        if (HisConfigCFG.UsePaymentObjectByDept == "1")   
+                        if (HisConfigCFG.UsePaymentObjectByDept == "1")
                         {
                             var Department = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>().Where(o => o.ID == requestRoom.DEPARTMENT_ID).FirstOrDefault();
                             CommonParam common = new CommonParam();
@@ -2835,12 +2835,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                             var DepaPatientType = new BackendAdapter(common).Get<List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>>(RequestUriStore.HIS_DEPA_PATIENT_TYPE__GET, ApiConsumers.MosConsumer, filter, common);
 
-                            if (DepaPatientType != null && DepaPatientType.Count > 0)    
+                            if (DepaPatientType != null && DepaPatientType.Count > 0)
                             {
                                 List<long> PatientTypeId = DepaPatientType.Where(o => o.DEPARTMENT_ID == Department.ID).Select(o => o.PATIENT_TYPE_ID ?? 0).ToList();
                                 //currentPatientTypeWithPatientTypeAlter = currentPatientTypeWithPatientTypeAlter.Where(o => PatientTypeId.Contains(o.ID)).ToList();
                                 this.listSourcePatientType = currentPatientTypeWithPatientTypeAlter;
-                                this.listSourcePatientType = this.listSourcePatientType.Where(o => PatientTypeId.Contains(o.ID)).ToList();    
+                                this.listSourcePatientType = this.listSourcePatientType.Where(o => PatientTypeId.Contains(o.ID)).ToList();
                                 this.InitComboPatientType(patientTypeCombo, listSourcePatientType);
                             }
                             else
@@ -3082,7 +3082,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         this.ProcessAddListRowDataIntoGridWithTakeBean();
                     }
-                    else     
+                    else
                     {
                         List<MediMatyTypeADO> mediMatycheck = new List<MediMatyTypeADO>();
                         if (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
@@ -3572,7 +3572,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                     //Check trong kho
                     this.ProcessDataMediStock(mediMatyTypeADOAdds);
-                }   
+                }
             }
             catch (Exception ex)
             {
@@ -4445,7 +4445,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     int numberDisplaySeperateFormatAmountTemp = GetNumberDisplaySeperateFormat();
 
                     StringBuilder huongDan = new StringBuilder();
-                    
+
                     string format__ThoVoiTocDoXTrongYGio = ResourceMessage.ThoVoiTocDoXTrongYGio;
                     string format__NgayUong = ResourceMessage.NgayUong;
                     string format__NgayUongTemp2 = ResourceMessage.NgayUongTemp2;
@@ -4470,6 +4470,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     toi = is4Control ? this.GetValueSpin(this.spinToi.Text) : 0;
                     tocdotho = !is4Control ? this.GetValueSpin(this.txtTocDoTho.Text) : 0;
                     thoigiantho = !is4Control ? this.GetValueSpin(this.txtThoiGianTho.Text) : 0;
+
                     if (sang > 0
                         || trua > 0
                         || chieu > 0
@@ -4527,6 +4528,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 if (HisConfigCFG.TutorialFormat == 2)
                                 {
                                     huongDan.Append(tongCong > 0 ? String.Format(format__NgayUongTemp2, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), "", "", solan) : "");
+                                    if (HisConfigCFG.TutorialFormatDay == 1 && !String.IsNullOrEmpty(this.spinSoLuongNgay.Text))
+                                    {
+                                        huongDan.Append(String.Format(" * {0} ngày", this.spinSoLuongNgay.Text));
+                                    }
                                 }
                                 else
                                 {
@@ -4542,7 +4547,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 {
                                     if (HisConfigCFG.TutorialFormat == 2)
                                     {
-                                        huongDan.Append(tongCong > 0 ? String.Format(format__NgayUongTemp2, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), "", "", solan) : "");
+                                        if (solan > 0)
+                                        {
+                                            huongDan.Append(String.Format("Ngày uống {0} lần", solan));
+
+                                            if (sang > 0)
+                                                huongDan.Append(String.Format(", sáng: {0} {1}", ConvertNumber.ConvertDecToFracByConfig(sang, 4), serviceUnitName));
+                                            if (trua > 0)
+                                                huongDan.Append(String.Format(", trưa: {0} {1}", ConvertNumber.ConvertDecToFracByConfig(trua, 4), serviceUnitName));
+                                            if (chieu > 0)
+                                                huongDan.Append(String.Format(", chiều: {0} {1}", ConvertNumber.ConvertDecToFracByConfig(chieu, 4), serviceUnitName));
+                                            if (toi > 0)
+                                                huongDan.Append(String.Format(", tối: {0} {1}", ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName));
+                                        }
+                                        if (HisConfigCFG.TutorialFormatDay == 1 && !String.IsNullOrEmpty(this.spinSoLuongNgay.Text))
+                                        {
+                                            huongDan.Append(String.Format(" * {0} ngày", this.spinSoLuongNgay.Text));
+                                        }
                                     }
                                     else
                                     {
@@ -4550,13 +4571,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                             huongDan.Append(tongCong > 0 ? String.Format(format__NgayUong, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), " " + (int)tongCong, serviceUnitName, solan) : "");
                                         else
                                             huongDan.Append(tongCong > 0 ? String.Format(format__NgayUong, (String.IsNullOrEmpty(this.cboMedicineUseForm.Text) ? "" : " " + this.cboMedicineUseForm.Text.ToLower() + " "), ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName, solan) : "");
-                                    }
 
-                                    huongDan.Append(sang > 0 ? (String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Sang, ConvertNumber.ConvertDecToFracByConfig(sang, 4), serviceUnitName) : "");
-                                    huongDan.Append(trua > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Trua, ConvertNumber.ConvertDecToFracByConfig(trua, 4), serviceUnitName)) : "");
-                                    huongDan.Append(chieu > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Chieu, ConvertNumber.ConvertDecToFracByConfig(chieu, 4), serviceUnitName)) : "");
-                                    huongDan.Append(toi > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Toi, ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName)) : "");
-                                    //}
+                                        huongDan.Append(sang > 0 ? (String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Sang, ConvertNumber.ConvertDecToFracByConfig(sang, 4), serviceUnitName) : "");
+                                        huongDan.Append(trua > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Trua, ConvertNumber.ConvertDecToFracByConfig(trua, 4), serviceUnitName)) : "");
+                                        huongDan.Append(chieu > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Chieu, ConvertNumber.ConvertDecToFracByConfig(chieu, 4), serviceUnitName)) : "");
+                                        huongDan.Append(toi > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Toi, ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName)) : "");
+
+                                    }
                                 }
                                 else
                                 {
@@ -4592,49 +4613,87 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             huongDan.Append(sang > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Sang, ConvertNumber.ConvertDecToFracByConfig(sang, 4), serviceUnitName)) : "");
                             huongDan.Append(trua > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Trua, ConvertNumber.ConvertDecToFracByConfig(trua, 4), serviceUnitName)) : "");
                             huongDan.Append(chieu > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Chieu, ConvertNumber.ConvertDecToFracByConfig(chieu, 4), serviceUnitName)) : "");
-                            huongDan.Append(toi > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Toi,
-                              ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName)) : "");
+                            huongDan.Append(toi > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Toi, ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName)) : "");
+
+                            if (HisConfigCFG.TutorialFormatDay == 1)
+                            {
+                                huongDan.Append(" * " + (((int)spinSoLuongNgay.Value >= 1 && (int)spinSoLuongNgay.Value < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) + " ngày");
+                            }
                         }
                     }
                     if (HisConfigCFG.TutorialFormat == 6)
                     {
-                        //Ví dụ: Liều dùng của thuốc A: 2 viên/lần, 2 lần/ngày, sử dụng trong 5 ngày thì được ghi như sau: 2 viên/lần * 2 lần/ngày * 5 ngày [4 viên/ngày].
-                        //Liều dùng của thuốc A, sáng: 3 viên, chiều: 2 viên, tối: 1 viên.Như vậy, sẽ ghi như sau: Sáng: 3 viên, Chiều: 2 viên, Tối: 1 viên[6 viên / ngày].
-                        huongDan = new StringBuilder();
 
-                        if (sang > 0 || trua > 0 || chieu > 0 || toi > 0)
+                        huongDan = new StringBuilder();
+                        if (HisConfigCFG.TutorialFormatDay == 1)
                         {
-                            List<double> lst = new List<double>() { sang, trua, chieu, toi };
-                            lst = lst.Where(o => o > 0).Distinct().ToList();
-                            if (lst.Count == 1)
+                            double valuePerTime = (double)this.GetValueSpin(this.spinAmount.Text) / (int)spinSoLuongNgay.Value;
+                            if (sang > 0)
+                                huongDan.Append(String.Format(format__Sang, ConvertNumber.ConvertDecToFracByConfig(sang, 4), serviceUnitName));
+                            if (trua > 0)
+                                huongDan.Append((huongDan.Length > 0 ? strSeperator : "") + String.Format(format__Trua, ConvertNumber.ConvertDecToFracByConfig(trua, 4), serviceUnitName));
+                            if (chieu > 0)
+                                huongDan.Append((huongDan.Length > 0 ? strSeperator : "") + String.Format(format__Chieu, ConvertNumber.ConvertDecToFracByConfig(chieu, 4), serviceUnitName));
+                            if (toi > 0)
+                                huongDan.Append((huongDan.Length > 0 ? strSeperator : "") + String.Format(format__Toi, ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName));
+                            if (spinSoLuongNgay.Value > 0)
                             {
-                                huongDan.Append(solan > 0 ? String.Format("{0} {1}/lần * {2} lần/ngày * {3} ngày", Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)lst[0], 2), serviceUnitName, solan, (((int)spinSoLuongNgay.Value) >= 1 && ((int)spinSoLuongNgay.Value) < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) : "");
+                                if (tongCong == 0)
+                                    huongDan.Append(String.Format("{0} {1}", ConvertNumber.ConvertDecToFracByConfig(valuePerTime, 4), serviceUnitName));
+                                huongDan.Append(" * " + (((int)spinSoLuongNgay.Value >= 1 && (int)spinSoLuongNgay.Value < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) + " ngày");
+
+                                if (tongCong > 0)
+                                {
+                                    if ((int)tongCong == tongCong)
+                                        huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? string.Format(" [{0} {1}/ngày]", (int)tongCong, serviceUnitName) : "");
+                                    else
+                                        huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? String.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName) : "");
+                                }
+                                else if (valuePerTime > 0)
+                                {
+                                    huongDan.Append(valuePerTime > 0 ? string.Format(" [{0} {1}/ngày]", valuePerTime, serviceUnitName) : "");
+                                }
                             }
-                            else
-                            {
-                                huongDan.Append(sang > 0 ? (String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Sang, ConvertNumber.ConvertDecToFracByConfig(sang, 4), serviceUnitName) : "");
-                                huongDan.Append(trua > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Trua, ConvertNumber.ConvertDecToFracByConfig(trua, 4), serviceUnitName)) : "");
-                                huongDan.Append(chieu > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Chieu, ConvertNumber.ConvertDecToFracByConfig(chieu, 4), serviceUnitName)) : "");
-                                huongDan.Append(toi > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Toi, ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName)) : "");
-                            }
-                            if ((int)tongCong == tongCong)
-                                huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? string.Format(" [{0} {1}/ngày]", (int)tongCong, serviceUnitName) : "");
-                            else
-                                huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? String.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName) : "");
+
                         }
                         else
                         {
-                            solan = 1;
-                            List<double> lst = new List<double>() { (double)((double)this.GetValueSpin(this.spinAmount.Text) / ((int)spinSoLuongNgay.Value)) };
-                            lst = lst.Where(o => o > 0).Distinct().ToList();
-                            if (lst.Count == 1)
+                            //Ví dụ: Liều dùng của thuốc A: 2 viên/lần, 2 lần/ngày, sử dụng trong 5 ngày thì được ghi như sau: 2 viên/lần * 2 lần/ngày * 5 ngày [4 viên/ngày].
+                            //Liều dùng của thuốc A, sáng: 3 viên, chiều: 2 viên, tối: 1 viên.Như vậy, sẽ ghi như sau: Sáng: 3 viên, Chiều: 2 viên, Tối: 1 viên[6 viên / ngày].                           
+                            if (sang > 0 || trua > 0 || chieu > 0 || toi > 0)
                             {
-                                huongDan.Append(solan > 0 ? String.Format("{0} {1}/lần * {2} lần/ngày * {3} ngày", Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)lst[0], 2), serviceUnitName, solan, (((int)spinSoLuongNgay.Value) >= 1 && ((int)spinSoLuongNgay.Value) < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) : "");
-
-                                if ((int)tongCong == tongCong)
-                                    huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? string.Format(" [{0} {1}/ngày]", Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)lst[0], 2), serviceUnitName) : "");
+                                List<double> lst = new List<double>() { sang, trua, chieu, toi };
+                                lst = lst.Where(o => o > 0).Distinct().ToList();
+                                if (lst.Count == 1)
+                                {
+                                    huongDan.Append(solan > 0 ? String.Format("{0} {1}/lần * {2} lần/ngày * {3} ngày", Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)lst[0], 2), serviceUnitName, solan, (((int)spinSoLuongNgay.Value) >= 1 && ((int)spinSoLuongNgay.Value) < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) : "");
+                                }
                                 else
-                                    huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? String.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig((double)lst[0], 4), serviceUnitName) : "");
+                                {
+                                    huongDan.Append(sang > 0 ? (String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Sang, ConvertNumber.ConvertDecToFracByConfig(sang, 4), serviceUnitName) : "");
+                                    huongDan.Append(trua > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Trua, ConvertNumber.ConvertDecToFracByConfig(trua, 4), serviceUnitName)) : "");
+                                    huongDan.Append(chieu > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Chieu, ConvertNumber.ConvertDecToFracByConfig(chieu, 4), serviceUnitName)) : "");
+                                    huongDan.Append(toi > 0 ? ((String.IsNullOrEmpty(huongDan.ToString()) ? "" : strSeperator) + String.Format(format__Toi, ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName)) : "");
+                                }
+                                if ((int)tongCong == tongCong)
+                                    huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? string.Format(" [{0} {1}/ngày]", (int)tongCong, serviceUnitName) : "");
+                                else
+                                    huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? String.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName) : "");
+                            }
+                            else
+                            {
+                                solan = 1;
+                                List<double> lst = new List<double>() { (double)((double)this.GetValueSpin(this.spinAmount.Text) / ((int)spinSoLuongNgay.Value)) };
+                                lst = lst.Where(o => o > 0).Distinct().ToList();
+                                if (lst.Count == 1)
+                                {
+                                    huongDan.Append(solan > 0 ? String.Format("{0} {1}/lần * {2} lần/ngày * {3} ngày", Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)lst[0], 2), serviceUnitName, solan, (((int)spinSoLuongNgay.Value) >= 1 && ((int)spinSoLuongNgay.Value) < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) : "");
+
+                                    if ((int)tongCong == tongCong)
+                                        huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? string.Format(" [{0} {1}/ngày]", Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)lst[0], 2), serviceUnitName) : "");
+                                    else
+                                        huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? String.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig((double)lst[0], 4), serviceUnitName) : "");
+                                }
                             }
                         }
                     }
@@ -4835,7 +4894,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 decimal vlTmp = 0;
                 CultureInfo culture = new CultureInfo("en-US");
                 spinAmount.Text = GetAmount().ToString();
-                if (spinAmount.Text.Contains(","))  
+                if (spinAmount.Text.Contains(","))
                     culture = new CultureInfo("fr-FR");
                 decimal amountTmp = Convert.ToDecimal(spinAmount.EditValue.ToString(), culture);
                 if ((currentMedicineTypeADOForEdit != null && currentMedicineTypeADOForEdit.ID > 0 && amountTmp != (currentMedicineTypeADOForEdit.AMOUNT ?? 0)) || (currentMedicineTypeADOForEdit == null && txt.EditValue.ToString() != txt.OldEditValue.ToString()))

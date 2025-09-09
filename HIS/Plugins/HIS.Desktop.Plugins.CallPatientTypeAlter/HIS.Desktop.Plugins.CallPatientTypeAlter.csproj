@@ -62,9 +62,6 @@
     <Reference Include="His.EventLog">
       <HintPath>..\..\..\..\lib\HIS\His.EventLog\His.EventLog.dll</HintPath>
     </Reference>
-    <Reference Include="His.UC.UCHein">
-      <HintPath>..\..\..\..\lib\HIS\His.UC.UCHein\His.UC.UCHein.dll</HintPath>
-    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -266,6 +263,10 @@
     <Compile Include="Resources\ResourceLanguageManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\UC\His.UC.UCHein\His.UC.UCHein.csproj">
+      <Project>{a96b3683-4fdc-496e-b630-bf62adddbd5e}</Project>
+      <Name>His.UC.UCHein</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

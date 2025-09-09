@@ -1377,10 +1377,12 @@ namespace HIS.UC.AddressCombo
                     {
                         if (item_.KEY == togChangeStructAdress.Name)
                         {
-                            togChangeStructAdress.IsOn = item_.VALUE == "1";
+                            //togChangeStructAdress.IsOn = item_.VALUE == "1";
                         }
                     }
                 }
+                togChangeStructAdress.IsOn = true;
+                layoutControlItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 IsInitForm = false;
             }
             catch (Exception ex)

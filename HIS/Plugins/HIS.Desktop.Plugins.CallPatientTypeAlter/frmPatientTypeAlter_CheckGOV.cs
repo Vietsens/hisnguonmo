@@ -82,7 +82,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                             if (currenPatient != null)
                             {
                                 HIS_PATIENT patient = GetCurrentpatient(currenPatient);
-                                if (string.IsNullOrEmpty(patient.COMMUNE_CODE) || string.IsNullOrEmpty(patient.PROVINCE_CODE) || string.IsNullOrEmpty(patient.DISTRICT_CODE))
+                                if (string.IsNullOrEmpty(patient.COMMUNE_CODE) || string.IsNullOrEmpty(patient.PROVINCE_CODE))
                                 {
                                     message = "Bệnh nhân thiếu thông tin địa chỉ ";
                                 }

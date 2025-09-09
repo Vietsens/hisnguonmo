@@ -218,6 +218,15 @@ namespace HIS.UC.Hospitalize.Run
                     chkEmergency.CheckState = CheckState.Unchecked;
                 }
 
+                if (this.hospitalizeInitADO.IsCAPD)
+                {
+                    chkCAPD.CheckState = CheckState.Checked;
+                }
+                else
+                {
+                    chkCAPD.CheckState = CheckState.Unchecked;
+                }
+
                 LoadIcdToControl(this.hospitalizeInitADO.IcdCode, this.hospitalizeInitADO.IcdName);
                 LoadTraditionalIcdToControl(this.hospitalizeInitADO.TraditionalIcdCode, this.hospitalizeInitADO.TraditionalIcdName);
                 LoadTraditionalSubIcdToControl(this.hospitalizeInitADO.TraditionalIcdSubCode, this.hospitalizeInitADO.TraditionalIcdText);
