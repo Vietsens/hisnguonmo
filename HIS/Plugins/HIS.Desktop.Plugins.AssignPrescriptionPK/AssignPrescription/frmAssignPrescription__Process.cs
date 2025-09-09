@@ -4470,7 +4470,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     toi = is4Control ? this.GetValueSpin(this.spinToi.Text) : 0;
                     tocdotho = !is4Control ? this.GetValueSpin(this.txtTocDoTho.Text) : 0;
                     thoigiantho = !is4Control ? this.GetValueSpin(this.txtThoiGianTho.Text) : 0;
-                    
+
                     if (sang > 0
                         || trua > 0
                         || chieu > 0
@@ -4623,6 +4623,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
                     if (HisConfigCFG.TutorialFormat == 6)
                     {
+
                         huongDan = new StringBuilder();
                         if (HisConfigCFG.TutorialFormatDay == 1)
                         {
@@ -4635,21 +4636,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 huongDan.Append((huongDan.Length > 0 ? strSeperator : "") + String.Format(format__Chieu, ConvertNumber.ConvertDecToFracByConfig(chieu, 4), serviceUnitName));
                             if (toi > 0)
                                 huongDan.Append((huongDan.Length > 0 ? strSeperator : "") + String.Format(format__Toi, ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName));
-                            if (tongCong == 0)
-                                huongDan.Append(String.Format("{0} {1}", ConvertNumber.ConvertDecToFracByConfig(valuePerTime, 4), serviceUnitName));
-                            huongDan.Append(" * " + (((int)spinSoLuongNgay.Value >= 1 && (int)spinSoLuongNgay.Value < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) + " ngày");
-
-
-                            if (tongCong > 0)
+                            if (spinSoLuongNgay.Value > 0)
                             {
-                                if ((int)tongCong == tongCong)
-                                    huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? string.Format(" [{0} {1}/ngày]", (int)tongCong, serviceUnitName) : "");
-                                else
-                                    huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? String.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName) : "");
-                            }
-                            else if (valuePerTime > 0)
-                            {
-                                huongDan.Append(valuePerTime > 0 ? string.Format(" [{0} {1}/ngày]", valuePerTime, serviceUnitName) : "");
+                                if (tongCong == 0)
+                                    huongDan.Append(String.Format("{0} {1}", ConvertNumber.ConvertDecToFracByConfig(valuePerTime, 4), serviceUnitName));
+                                huongDan.Append(" * " + (((int)spinSoLuongNgay.Value >= 1 && (int)spinSoLuongNgay.Value < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) + " ngày");
+
+                                if (tongCong > 0)
+                                {
+                                    if ((int)tongCong == tongCong)
+                                        huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? string.Format(" [{0} {1}/ngày]", (int)tongCong, serviceUnitName) : "");
+                                    else
+                                        huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? String.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName) : "");
+                                }
+                                else if (valuePerTime > 0)
+                                {
+                                    huongDan.Append(valuePerTime > 0 ? string.Format(" [{0} {1}/ngày]", valuePerTime, serviceUnitName) : "");
+                                }
                             }
 
                         }
