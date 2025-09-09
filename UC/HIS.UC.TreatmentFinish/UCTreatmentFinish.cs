@@ -276,7 +276,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 }
 
                 dtEndTime.Enabled = txtTreatmentEndTypeCode.Enabled
-                    =txtPatientType.Enabled
+                    =cboPatientType.Enabled
                     = cboTreatmentEndType.Enabled
                     = chkAutoPrintGHK.Enabled
                     = chkSignGHK.Enabled
@@ -367,7 +367,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 }
 
                 SetEnableCheckSoLuuTruBANTByConfig();
-                this.txtPatientType.Text = this.Treatment.HEIN_PATIENT_TYPE_CODE;
+                this.cboPatientType.EditValue = this.Treatment.HEIN_PATIENT_TYPE_CODE;
                 if (!chkIssueOutPatientStoreCode.Checked)      
                 {
                     lciForlblSoLuuTruBANT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -948,11 +948,11 @@ namespace HIS.UC.TreatmentFinish.Run
                     HisTreatmentFinishSDO treatmentFinishSDOExt = new HisTreatmentFinishSDO();
                     treatmentFinishSDOExt.TreatmentFinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
                     treatmentFinishSDOExt.DocumentBookId = treatmentFinishSDO != null ? treatmentFinishSDO.DocumentBookId : null;
-                    if (!string.IsNullOrEmpty(txtPatientType.Text.Trim()))
+                    if (cboPatientType.EditValue != null && !string.IsNullOrWhiteSpace(cboPatientType.EditValue.ToString()))
                     {
-                        treatmentFinishSDOExt.HeinPatientTypeCode = txtPatientType.Text;
+                        treatmentFinishSDOExt.HeinPatientTypeCode = cboPatientType.EditValue.ToString();
                     }
-                    
+
                     if (String.IsNullOrEmpty(treatmentFinishSDOExt.SickLoginname))
                     {
                         treatmentFinishSDOExt.SickLoginname = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
@@ -1472,7 +1472,7 @@ namespace HIS.UC.TreatmentFinish.Run
 
                     this.InitCarrer();
 
-                    this.SetDataCboPatientType(this.txtPatientType);
+                    this.SetDataCboPatientType(this.cboPatientType);
                     if (this.useCapSoBABNCT.HasValue && this.useCapSoBABNCT.Value)
                         this.InitCapSoLuuTruBNCT();
                     else
@@ -1525,7 +1525,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 Inventec.Common.Logging.LogSystem.Debug("AutoTreatmentFinishCheckedChanged");
 
                 dtEndTime.Enabled = txtTreatmentEndTypeCode.Enabled
-                    = txtPatientType.Enabled
+                    = cboPatientType.Enabled
                     = cboTreatmentEndType.Enabled
                     //= chkAutoPrintGHK.Enabled
                     //= chkSignGHK.Enabled
@@ -2112,7 +2112,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 treatmentFinishSDO.EndDeptSubsHeadUsername = cboEndDeptSubs.EditValue != null ? cboEndDeptSubs.Text.ToString() : null;
                 treatmentFinishSDO.HospSubsDirectorLoginname = cboHospSubs.EditValue != null ? cboHospSubs.EditValue.ToString() : null;
                 treatmentFinishSDO.HospSubsDirectorUsername = cboHospSubs.EditValue != null ? cboHospSubs.Text.ToString() : null;
-                treatmentFinishSDO.HeinPatientTypeCode = txtPatientType.Text != null ? txtPatientType.Text.ToString() : null;
+                treatmentFinishSDO.HeinPatientTypeCode = cboPatientType.EditValue != null ? cboPatientType.EditValue.ToString() : null;
                 return this.treatmentFinishSDO;
             }
             catch (Exception ex)
@@ -2127,7 +2127,7 @@ namespace HIS.UC.TreatmentFinish.Run
             DataOutputADO result = new DataOutputADO();
             try
             {
-                result.HeinPatientTypeCode = txtPatientType.Text;
+                result.HeinPatientTypeCode = cboPatientType.EditValue != null ? cboPatientType.EditValue.ToString() : null;
                 result.IsSignExam = chkSignExam.Checked;
                 result.IsPrintExam = chkPrintExam.Checked;
                 result.IsAutoTreatmentFinish = chkAutoTreatmentFinish.Checked;
@@ -2756,8 +2756,8 @@ namespace HIS.UC.TreatmentFinish.Run
 
         public void ValidateTxtPatientType()         
         {
-            ValidateMaxLength(txtPatientType, dxErrorProvider1);
-            txtPatientType.Focus();
+            ValidateMaxLength(cboPatientType, dxErrorProvider1);
+            cboPatientType.Focus();
         }
 
         private void txtPatientType_EditValueChanged(object sender, EventArgs e)
