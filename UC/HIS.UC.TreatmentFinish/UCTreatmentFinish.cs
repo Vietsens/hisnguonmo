@@ -1472,6 +1472,7 @@ namespace HIS.UC.TreatmentFinish.Run
 
                     this.InitCarrer();
 
+                    this.SetDataCboPatientType(this.txtPatientType);
                     if (this.useCapSoBABNCT.HasValue && this.useCapSoBABNCT.Value)
                         this.InitCapSoLuuTruBNCT();
                     else
@@ -2526,6 +2527,26 @@ namespace HIS.UC.TreatmentFinish.Run
                     LoadDefaultEndDept();
             }
             catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetDataCboPatientType(DevExpress.XtraEditors.GridLookUpEdit cbo)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 ).ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "Mã", 100, 1));
+                columnInfos.Add(new ColumnInfo("DESCRIPTION ", "Mô tả", 150, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "DESCRIPTION", columnInfos, true, 400);
+                ControlEditorLoader.Load(cbo, data, controlEditorADO);
+                cbo.Properties.ImmediatePopup = true;
+                cbo.Properties.PopupFormMinSize = new System.Drawing.Size(400, cbo.Properties.PopupFormSize.Height);
+            }
+            catch (System.Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }

@@ -69,7 +69,7 @@ namespace HIS.UC.TreatmentFinish.Run
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.gBoxTreatmentFinishInfo = new System.Windows.Forms.GroupBox();
             this.layoutControlEditor = new DevExpress.XtraLayout.LayoutControl();
-            this.txtPatientType = new DevExpress.XtraEditors.TextEdit();
+            this.txtPatientType = new DevExpress.XtraEditors.GridLookUpEdit();
             this.chkSignTL = new DevExpress.XtraEditors.CheckEdit();
             this.chkPrintTL = new DevExpress.XtraEditors.CheckEdit();
             this.chkSignBK = new DevExpress.XtraEditors.CheckEdit();
@@ -297,8 +297,11 @@ namespace HIS.UC.TreatmentFinish.Run
             this.txtPatientType.StyleController = this.layoutControlEditor;
             this.txtPatientType.TabIndex = 118;
             this.txtPatientType.ToolTip = "Mã đối tượng khám bệnh, chữa bệnh";
-            this.txtPatientType.EditValueChanged += new System.EventHandler(this.txtPatientType_EditValueChanged);
-            this.txtPatientType.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPatientType_KeyPress);
+            this.txtPatientType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.txtPatientType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.txtPatientType.Properties.NullText = "";
+            this.txtPatientType.Properties.View = this.gridView1;
             // 
             // chkSignTL
             // 
@@ -1436,7 +1439,7 @@ namespace HIS.UC.TreatmentFinish.Run
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
-        public DevExpress.XtraEditors.TextEdit txtPatientType;
+        public DevExpress.XtraEditors.GridLookUpEdit txtPatientType;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
     }
