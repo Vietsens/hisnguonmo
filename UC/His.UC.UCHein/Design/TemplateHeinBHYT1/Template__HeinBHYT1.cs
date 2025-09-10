@@ -1330,6 +1330,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     }
                     valid = false;
                 }
+                valid = valid && ValidateHeinPatientTypeCode();
             }
             catch (Exception ex)
             {

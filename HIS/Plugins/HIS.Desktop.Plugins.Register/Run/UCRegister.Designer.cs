@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.Register.Run
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -191,7 +190,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.layoutControlReasonVV = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.gboxServiceRoomInformation = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -233,10 +231,11 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lciRecalPatient = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.dxValidationProviderPlusInfomation = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.timer1 = new System.Windows.Forms.Timer();
+            this.dxValidationProviderPlusInfomation = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.lciRegisterEditor)).BeginInit();
             this.lciRegisterEditor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkCAPD.Properties)).BeginInit();
@@ -354,7 +353,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlReasonVV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gboxServiceRoomInformation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
@@ -396,6 +394,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.lciRecalPatient)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderPlusInfomation)).BeginInit();
@@ -574,10 +573,10 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // txtReasonVV
             // 
-            this.txtReasonVV.Location = new System.Drawing.Point(1290, 286);
+            this.txtReasonVV.Location = new System.Drawing.Point(1270, 286);
             this.txtReasonVV.Margin = new System.Windows.Forms.Padding(4);
             this.txtReasonVV.Name = "txtReasonVV";
-            this.txtReasonVV.Size = new System.Drawing.Size(173, 22);
+            this.txtReasonVV.Size = new System.Drawing.Size(193, 22);
             this.txtReasonVV.StyleController = this.lciRegisterEditor;
             this.txtReasonVV.TabIndex = 72;
             this.txtReasonVV.ToolTip = "Lý do vào viện";
@@ -749,7 +748,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.btnRecallPatient.Location = new System.Drawing.Point(215, 640);
             this.btnRecallPatient.Margin = new System.Windows.Forms.Padding(4);
             this.btnRecallPatient.Name = "btnRecallPatient";
-            this.btnRecallPatient.Size = new System.Drawing.Size(87, 34);
+            this.btnRecallPatient.Size = new System.Drawing.Size(310, 34);
             this.btnRecallPatient.StyleController = this.lciRegisterEditor;
             this.btnRecallPatient.TabIndex = 62;
             this.btnRecallPatient.Text = "Gọi lại (F7)";
@@ -2168,14 +2167,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lcibtnDeposit.TextSize = new System.Drawing.Size(0, 0);
             this.lcibtnDeposit.TextVisible = false;
             // 
-            // emptySpaceItem2
-            // 
-            this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(305, 637);
-            this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(223, 40);
-            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
-            // 
             // gboxHeinCardInformation
             // 
             this.gboxHeinCardInformation.CustomizationFormText = "layoutControlGroup10";
@@ -2369,20 +2360,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.emptySpaceItem3.Name = "emptySpaceItem3";
             this.emptySpaceItem3.Size = new System.Drawing.Size(1048, 10);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
-            // 
-            // layoutControlItem19
-            // 
-            this.layoutControlItem19.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem19.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem19.Control = this.chkCAPD;
-            this.layoutControlItem19.Location = new System.Drawing.Point(367, 24);
-            this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.OptionsToolTip.ToolTip = "Bệnh nhân điều trị lọc máu màng bụng";
-            this.layoutControlItem19.Size = new System.Drawing.Size(108, 24);
-            this.layoutControlItem19.Text = "CAPD:";
-            this.layoutControlItem19.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem19.TextSize = new System.Drawing.Size(80, 13);
-            this.layoutControlItem19.TextToControlDistance = 5;
             // 
             // gboxServiceRoomInformation
             // 
@@ -2881,7 +2858,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lciRecalPatient.MaxSize = new System.Drawing.Size(0, 40);
             this.lciRecalPatient.MinSize = new System.Drawing.Size(70, 40);
             this.lciRecalPatient.Name = "lciRecalPatient";
-            this.lciRecalPatient.Size = new System.Drawing.Size(93, 40);
+            this.lciRecalPatient.Size = new System.Drawing.Size(316, 40);
             this.lciRecalPatient.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciRecalPatient.TextSize = new System.Drawing.Size(0, 0);
             this.lciRecalPatient.TextVisible = false;
@@ -2910,6 +2887,20 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.layoutControlItem15.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
+            // 
+            // layoutControlItem19
+            // 
+            this.layoutControlItem19.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem19.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem19.Control = this.chkCAPD;
+            this.layoutControlItem19.Location = new System.Drawing.Point(367, 24);
+            this.layoutControlItem19.Name = "layoutControlItem19";
+            this.layoutControlItem19.OptionsToolTip.ToolTip = "Bệnh nhân điều trị lọc máu màng bụng";
+            this.layoutControlItem19.Size = new System.Drawing.Size(108, 24);
+            this.layoutControlItem19.Text = "CAPD:";
+            this.layoutControlItem19.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem19.TextSize = new System.Drawing.Size(80, 13);
+            this.layoutControlItem19.TextToControlDistance = 5;
             // 
             // dxValidationProviderControl
             // 
@@ -3058,7 +3049,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlReasonVV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gboxServiceRoomInformation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
@@ -3100,6 +3090,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.lciRecalPatient)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderPlusInfomation)).EndInit();

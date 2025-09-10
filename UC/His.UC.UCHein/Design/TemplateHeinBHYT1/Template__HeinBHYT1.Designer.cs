@@ -532,7 +532,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.chkBaby.Name = "chkBaby";
             this.chkBaby.Properties.Caption = "";
             this.chkBaby.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkBaby.Size = new System.Drawing.Size(80, 20);
+            this.chkBaby.Size = new System.Drawing.Size(80, 19);
             this.chkBaby.StyleController = this.layoutControl1;
             this.chkBaby.TabIndex = 35;
             this.chkBaby.ToolTip = "Trẻ cần điều trị ngay sau khi sinh";

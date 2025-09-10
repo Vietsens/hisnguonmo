@@ -977,12 +977,12 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 if (this.isCallByRegistor == false)
                 {
                     layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    txtPatientCode.Visible = false;
+                    cboPatientCode.Visible = false;
                 }
                 else
                 { 
                     layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    txtPatientCode.Visible = true;
+                    cboPatientCode.Visible = true;
                 }
 
             }

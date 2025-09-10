@@ -43,7 +43,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 this.ValidAddress();
                 this.ValidHNCode();
                 //this.ValidNoiChuyenDen();
-                this.ValidateHeinPatientTypeCode();
                 this.ValidIcd();
             }
             catch (Exception ex)
@@ -73,6 +72,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             if (HisConfigCFG.WarningHeinPatientTypeCode == "1")
             {
                 this.layoutControlItem7.AppearanceItemCaption.ForeColor = Color.Maroon;
+
+                ValidPatientTypeCode();
             }
         }
         public bool ValidateHeinPatientTypeCode()
@@ -81,25 +82,16 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             try
             {
                 if (PatientTypeIdBHYT == Convert.ToInt64(Config.HisConfigCFG.PatientTypeCode__BHYT) &&
-                    string.IsNullOrEmpty(cboPatientCode.EditValue?.ToString()))
+                    string.IsNullOrEmpty(cboPatientCode.EditValue.ToString()) && (HisConfigCFG.WarningHeinPatientTypeCode == "2"))
                 {
-                    if (HisConfigCFG.WarningHeinPatientTypeCode == "1")
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Chưa nhập mã đối tượng khám chữa bệnh. Bạn có muốn tiếp tục?",
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        MessageBoxButtons.YesNo) == DialogResult.No)
                     {
                         valid = false;
-                        //this.ValidationSingleControl(cboPatientCode, dxValidationProvider1);
-                        ValidPatientTypeCode();
-                    }
-                    else if (HisConfigCFG.WarningHeinPatientTypeCode == "2")
-                    {
-                        if (DevExpress.XtraEditors.XtraMessageBox.Show(
-                            "Chưa nhập mã đối tượng khám chữa bệnh. Bạn có muốn tiếp tục?",
-                            Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
-                            MessageBoxButtons.YesNo) == DialogResult.No)
-                        {
-                            valid = false;
-                            cboPatientCode.Focus();
-                            cboPatientCode.ShowPopup();
-                        }
+                        cboPatientCode.Focus();
+                        cboPatientCode.ShowPopup();
                     }
                 }
             }
@@ -110,348 +102,348 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             }
             return valid;
         }
-        private void ValidHNCode()
+private void ValidHNCode()
+{
+    try
+    {
+        TemplateHeinBHYT1__HNCode__ValidationRule oDateRule = new TemplateHeinBHYT1__HNCode__ValidationRule();
+        oDateRule.txtHNCode = txtHNCode;
+        oDateRule.ErrorText = Inventec.Common.Resource.Get.Value("His.UC.UCHein.Message.MaHoNgheoKhongHopLe", Resources.ResourceLanguageManager.LanguageUCHeinBHYT, Base.LanguageManager.GetCulture());
+        oDateRule.ErrorType = ErrorType.Warning;
+        this.dxValidationProvider1.SetValidationRule(txtHNCode, oDateRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
+
+private void ValidFreeCoPainTime(bool _isValidate)
+{
+    if (_isValidate == true)
+    {
+        TemplateHeinBHYT1__FreeCoPainTime__ValidationRule oDateRule = new TemplateHeinBHYT1__FreeCoPainTime__ValidationRule();
+        oDateRule.txtFreeCoPainTime = this.txtFreeCoPainTime;
+        oDateRule.chkJoin5Year = this.chkJoin5Year;
+        oDateRule.chkPaid6Month = this.chkPaid6Month;
+        oDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.NguoiDungNhapNgayKhongHopLe);
+        oDateRule.ErrorType = ErrorType.Warning;
+        this.dxValidationProvider1.SetValidationRule(this.txtFreeCoPainTime, oDateRule);
+    }
+    else
+    {
+        this.dxValidationProvider1.SetValidationRule(this.txtFreeCoPainTime, null);
+    }
+
+}
+
+private void ValidHeinCardToTime()
+{
+    TemplateHeinBHYT1__HeinCardToTime__ValidationRule oDateRule = new TemplateHeinBHYT1__HeinCardToTime__ValidationRule();
+    oDateRule.txtHeinCardToTime = this.txtHeinCardToTime;
+    oDateRule.txtHeinCardFromTime = this.txtHeinCardFromTime;
+    oDateRule.checkKhongKTHSD = this.checkKhongKTHSD;
+    oDateRule.isShowCheckKhongKTHSD = this.isShowCheckKhongKTHSD;
+    oDateRule.IsEdit = this.IsEdit;
+    oDateRule.ExceedDayAllow = this.ExceedDayAllow;
+    oDateRule.PatientTypeId = this.PatientTypeId;
+    oDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.NguoiDungNhapNgayKhongHopLe);
+    oDateRule.ErrorType = ErrorType.Warning;
+    this.dxValidationProvider1.SetValidationRule(this.txtHeinCardToTime, oDateRule);
+}
+
+private void ValidHeinCardFromTime()
+{
+    TemplateHeinBHYT1__HeinCardFromTime__ValidationRule oDateRule = new TemplateHeinBHYT1__HeinCardFromTime__ValidationRule();
+    oDateRule.txtHeinCardFromTime = this.txtHeinCardFromTime;
+    oDateRule.PatientTypeId = this.PatientTypeId;
+    oDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.NguoiDungNhapNgayKhongHopLe);
+    oDateRule.ErrorType = ErrorType.Warning;
+    this.dxValidationProvider1.SetValidationRule(this.txtHeinCardFromTime, oDateRule);
+}
+
+private void ValidRightRouteType(string heinMediOrgCode)
+{
+    try
+    {
+        TemplateHeinBHYT1__RightRouteType__ValidationRule oDobDateRule = new TemplateHeinBHYT1__RightRouteType__ValidationRule();
+        oDobDateRule.txtHeinRightRouteCode = txtHeinRightRouteCode;
+        oDobDateRule.cboHeinRightRoute = cboHeinRightRoute;
+        oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+        oDobDateRule.ErrorType = ErrorType.Warning;
+        this.dxValidationProvider1.SetValidationRule(txtHeinRightRouteCode, oDobDateRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
+
+private void ValidRightRouteType()
+{
+    try
+    {
+        lblRightRouteType.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+        TemplateHeinBHYT1__RightRouteType__ValidationRule oDobDateRule = new TemplateHeinBHYT1__RightRouteType__ValidationRule();
+        oDobDateRule.txtHeinRightRouteCode = this.txtHeinRightRouteCode;
+        oDobDateRule.cboHeinRightRoute = this.cboHeinRightRoute;
+        oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+        oDobDateRule.ErrorType = ErrorType.Warning;
+        this.dxValidationProvider1.SetValidationRule(this.txtHeinRightRouteCode, oDobDateRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
+
+private void ValidPatientTypeCode()
+{
+    try
+    {
+        TemplateHeinBHYT1__PatientTypeCode__ValidationRule oDobDateRule = new TemplateHeinBHYT1__PatientTypeCode__ValidationRule();
+        oDobDateRule.cboPatientCode = this.cboPatientCode;
+        oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+        oDobDateRule.ErrorType = ErrorType.Warning;
+        this.dxValidationProvider1.SetValidationRule(this.cboPatientCode, oDobDateRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
+
+private void ValidAddress()
+{
+    try
+    {
+        TemplateHeinBHYT1__Address__ValidationRule oDobDateRule = new TemplateHeinBHYT1__Address__ValidationRule();
+        oDobDateRule.txtAddress = this.txtAddress;
+        oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+        oDobDateRule.ErrorType = ErrorType.Warning;
+        this.dxValidationProvider1.SetValidationRule(this.txtAddress, oDobDateRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
+
+private void ValidNoiChuyenDen()
+{
+    try
+    {
+        TemplateHeinBHYT1__NoiChuyenDen__ValidationRule oDobDateRule = new TemplateHeinBHYT1__NoiChuyenDen__ValidationRule();
+        oDobDateRule.cboNoiChuyenDen = this.cboNoiChuyenDen;
+        oDobDateRule.txtMaNoiChuyenDen = this.txtMaNoiChuyenDen;
+        oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+        oDobDateRule.ErrorType = ErrorType.Warning;
+        this.dxValidationProvider1.SetValidationRule(this.txtMaNoiChuyenDen, oDobDateRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
+
+private void ValidChuyenTuyen()
+{
+    try
+    {
+        TemplateHeinBHYT1__ChuyenTuyen__ValidationRule oDobDateRule = new TemplateHeinBHYT1__ChuyenTuyen__ValidationRule();
+        oDobDateRule.chkMediRecordNoRouteTransfer = this.chkMediRecordNoRouteTransfer;
+        oDobDateRule.chkMediRecordRouteTransfer = this.chkMediRecordRouteTransfer;
+        oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+        oDobDateRule.ErrorType = ErrorType.Warning;
+        this.dxValidationProvider1.SetValidationRule(this.chkMediRecordRouteTransfer, oDobDateRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
+
+private void ValidTxtSoThe()
+{
+    try
+    {
+        TemplateHeinBHYT1__HeinCardNumber__ValidationRule oDobDateRule = new TemplateHeinBHYT1__HeinCardNumber__ValidationRule();
+        oDobDateRule.txtSoThe = this.txtSoThe;
+        oDobDateRule.PatientTypeId = this.PatientTypeId;
+        oDobDateRule.chkHasDobCertificate = this.chkHasDobCertificate;
+        oDobDateRule.BhytBlackLists = this.entity.BhytBlackLists;
+        oDobDateRule.BhytWhiteLists = this.entity.BhytWhiteLists;
+        oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+        oDobDateRule.ErrorType = ErrorType.Warning;
+        this.dxValidationProvider1.SetValidationRule(this.txtSoThe, oDobDateRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
+
+private void ValidNoiDKKCBBD()
+{
+    try
+    {
+        TemplateHeinBHYT1__MediOrg__ValidationRule oDobDateRule = new TemplateHeinBHYT1__MediOrg__ValidationRule();
+        oDobDateRule.txtMaDKKCBBD = this.txtMaDKKCBBD;
+        oDobDateRule.cboDKKCBBD = this.cboDKKCBBD;
+        oDobDateRule.PatientTypeId = this.PatientTypeId;
+        oDobDateRule.chkHasDobCertificate = this.chkHasDobCertificate;
+        oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+        oDobDateRule.ErrorType = ErrorType.Warning;
+        this.dxValidationProvider1.SetValidationRule(this.txtMaDKKCBBD, oDobDateRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
+
+private void ValidIcdByDTGT()
+{
+    try
+    {
+        TemplateHeinBHYT1__Icd__ValidationRule_Is_MediOrg oDobDateRule = new TemplateHeinBHYT1__Icd__ValidationRule_Is_MediOrg();
+        oDobDateRule.txtIcdName = this.txtDialogText;
+        oDobDateRule.ErrorText = ResourceMessage.BatBuocNhapTenBenhVoiTruongHopBenhNhanLaDungTuyenGioiThieu;
+        oDobDateRule.ErrorType = ErrorType.Warning;
+        this.dxValidationProvider1.SetValidationRule(txtMaChanDoanTD, oDobDateRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
+
+private void dxValidationProvider1_ValidationFailed(object sender, DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventArgs e)
+{
+    try
+    {
+        BaseEdit edit = e.InvalidControl as BaseEdit;
+        if (edit == null)
+            return;
+
+        BaseEditViewInfo viewInfo = edit.GetViewInfo() as BaseEditViewInfo;
+        if (viewInfo == null)
+            return;
+
+        if (this.positionHandleControl == -1)
         {
-            try
+            this.positionHandleControl = edit.TabIndex;
+            if (edit.Visible)
             {
-                TemplateHeinBHYT1__HNCode__ValidationRule oDateRule = new TemplateHeinBHYT1__HNCode__ValidationRule();
-                oDateRule.txtHNCode = txtHNCode;
-                oDateRule.ErrorText = Inventec.Common.Resource.Get.Value("His.UC.UCHein.Message.MaHoNgheoKhongHopLe", Resources.ResourceLanguageManager.LanguageUCHeinBHYT, Base.LanguageManager.GetCulture());
-                oDateRule.ErrorType = ErrorType.Warning;
-                this.dxValidationProvider1.SetValidationRule(txtHNCode, oDateRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                edit.SelectAll();
+                edit.Focus();
             }
         }
-
-        private void ValidFreeCoPainTime(bool _isValidate)
+        if (this.positionHandleControl > edit.TabIndex)
         {
-            if (_isValidate == true)
+            this.positionHandleControl = edit.TabIndex;
+            if (edit.Visible)
             {
-                TemplateHeinBHYT1__FreeCoPainTime__ValidationRule oDateRule = new TemplateHeinBHYT1__FreeCoPainTime__ValidationRule();
-                oDateRule.txtFreeCoPainTime = this.txtFreeCoPainTime;
-                oDateRule.chkJoin5Year = this.chkJoin5Year;
-                oDateRule.chkPaid6Month = this.chkPaid6Month;
-                oDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.NguoiDungNhapNgayKhongHopLe);
-                oDateRule.ErrorType = ErrorType.Warning;
-                this.dxValidationProvider1.SetValidationRule(this.txtFreeCoPainTime, oDateRule);
-            }
-            else
-            {
-                this.dxValidationProvider1.SetValidationRule(this.txtFreeCoPainTime, null);
-            }
-
-        }
-
-        private void ValidHeinCardToTime()
-        {
-            TemplateHeinBHYT1__HeinCardToTime__ValidationRule oDateRule = new TemplateHeinBHYT1__HeinCardToTime__ValidationRule();
-            oDateRule.txtHeinCardToTime = this.txtHeinCardToTime;
-            oDateRule.txtHeinCardFromTime = this.txtHeinCardFromTime;
-            oDateRule.checkKhongKTHSD = this.checkKhongKTHSD;
-            oDateRule.isShowCheckKhongKTHSD = this.isShowCheckKhongKTHSD;
-            oDateRule.IsEdit = this.IsEdit;
-            oDateRule.ExceedDayAllow = this.ExceedDayAllow;
-            oDateRule.PatientTypeId = this.PatientTypeId;
-            oDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.NguoiDungNhapNgayKhongHopLe);
-            oDateRule.ErrorType = ErrorType.Warning;
-            this.dxValidationProvider1.SetValidationRule(this.txtHeinCardToTime, oDateRule);
-        }
-
-        private void ValidHeinCardFromTime()
-        {
-            TemplateHeinBHYT1__HeinCardFromTime__ValidationRule oDateRule = new TemplateHeinBHYT1__HeinCardFromTime__ValidationRule();
-            oDateRule.txtHeinCardFromTime = this.txtHeinCardFromTime;
-            oDateRule.PatientTypeId = this.PatientTypeId;
-            oDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.NguoiDungNhapNgayKhongHopLe);
-            oDateRule.ErrorType = ErrorType.Warning;
-            this.dxValidationProvider1.SetValidationRule(this.txtHeinCardFromTime, oDateRule);
-        }
-
-        private void ValidRightRouteType(string heinMediOrgCode)
-        {
-            try
-            {
-                TemplateHeinBHYT1__RightRouteType__ValidationRule oDobDateRule = new TemplateHeinBHYT1__RightRouteType__ValidationRule();
-                oDobDateRule.txtHeinRightRouteCode = txtHeinRightRouteCode;
-                oDobDateRule.cboHeinRightRoute = cboHeinRightRoute;
-                oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                oDobDateRule.ErrorType = ErrorType.Warning;
-                this.dxValidationProvider1.SetValidationRule(txtHeinRightRouteCode, oDobDateRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                edit.SelectAll();
+                edit.Focus();
             }
         }
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
 
-        private void ValidRightRouteType()
+private void ResetErrorValidateRule()
+{
+    try
+    {
+        IList<Control> invalidControls = this.dxValidationProvider1.GetInvalidControls();
+        for (int i = invalidControls.Count - 1; i >= 0; i--)
         {
-            try
-            {
-                lblRightRouteType.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
-                TemplateHeinBHYT1__RightRouteType__ValidationRule oDobDateRule = new TemplateHeinBHYT1__RightRouteType__ValidationRule();
-                oDobDateRule.txtHeinRightRouteCode = this.txtHeinRightRouteCode;
-                oDobDateRule.cboHeinRightRoute = this.cboHeinRightRoute;
-                oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                oDobDateRule.ErrorType = ErrorType.Warning;
-                this.dxValidationProvider1.SetValidationRule(this.txtHeinRightRouteCode, oDobDateRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+            this.dxValidationProvider1.RemoveControlError(invalidControls[i]);
         }
+        this.dxErrorProvider1.ClearErrors();
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
 
-        private void ValidPatientTypeCode()
+protected void ValidateLookupWithTextEdit(LookUpEdit cbo, TextEdit textEdit, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor)
+{
+    try
+    {
+        LookupEditWithTextEditValidationRule validRule = new LookupEditWithTextEditValidationRule();
+        validRule.txtTextEdit = textEdit;
+        validRule.cbo = cbo;
+        validRule.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+        validRule.ErrorType = ErrorType.Warning;
+        dxValidationProviderEditor.SetValidationRule(textEdit, validRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
+
+protected void ValidateGridLookupWithTextEdit(GridLookUpEdit cbo, TextEdit textEdit, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor)
+{
+    try
+    {
+        GridLookupEditWithTextEditValidationRule validRule = new GridLookupEditWithTextEditValidationRule();
+        validRule.txtTextEdit = textEdit;
+        validRule.cbo = cbo;
+        validRule.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+        validRule.ErrorType = ErrorType.Warning;
+        dxValidationProviderEditor.SetValidationRule(textEdit, validRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
+
+protected void ValidationSingleControl(BaseEdit control, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor)
+{
+    try
+    {
+        ControlEditValidationRule validRule = new ControlEditValidationRule();
+        validRule.editor = control;
+        validRule.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+        validRule.ErrorType = ErrorType.Warning;
+        dxValidationProviderEditor.SetValidationRule(control, validRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
+
+protected void ValidationSingleControl(Control control, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor, string messageErr, IsValidControl isValidControl)
+{
+    try
+    {
+        ControlEditValidationRule validRule = new ControlEditValidationRule();
+        validRule.editor = control;
+        if (isValidControl != null)
         {
-            try
-            {
-                TemplateHeinBHYT1__PatientTypeCode__ValidationRule oDobDateRule = new TemplateHeinBHYT1__PatientTypeCode__ValidationRule();
-                oDobDateRule.cboPatientCode = this.cboPatientCode;
-                oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                oDobDateRule.ErrorType = ErrorType.Warning;
-                this.dxValidationProvider1.SetValidationRule(this.cboPatientCode, oDobDateRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+            validRule.isUseOnlyCustomValidControl = true;
+            validRule.isValidControl = isValidControl;
         }
-
-        private void ValidAddress()
-        {
-            try
-            {
-                TemplateHeinBHYT1__Address__ValidationRule oDobDateRule = new TemplateHeinBHYT1__Address__ValidationRule();
-                oDobDateRule.txtAddress = this.txtAddress;
-                oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                oDobDateRule.ErrorType = ErrorType.Warning;
-                this.dxValidationProvider1.SetValidationRule(this.txtAddress, oDobDateRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void ValidNoiChuyenDen()
-        {
-            try
-            {
-                TemplateHeinBHYT1__NoiChuyenDen__ValidationRule oDobDateRule = new TemplateHeinBHYT1__NoiChuyenDen__ValidationRule();
-                oDobDateRule.cboNoiChuyenDen = this.cboNoiChuyenDen;
-                oDobDateRule.txtMaNoiChuyenDen = this.txtMaNoiChuyenDen;
-                oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                oDobDateRule.ErrorType = ErrorType.Warning;
-                this.dxValidationProvider1.SetValidationRule(this.txtMaNoiChuyenDen, oDobDateRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void ValidChuyenTuyen()
-        {
-            try
-            {
-                TemplateHeinBHYT1__ChuyenTuyen__ValidationRule oDobDateRule = new TemplateHeinBHYT1__ChuyenTuyen__ValidationRule();
-                oDobDateRule.chkMediRecordNoRouteTransfer = this.chkMediRecordNoRouteTransfer;
-                oDobDateRule.chkMediRecordRouteTransfer = this.chkMediRecordRouteTransfer;
-                oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                oDobDateRule.ErrorType = ErrorType.Warning;
-                this.dxValidationProvider1.SetValidationRule(this.chkMediRecordRouteTransfer, oDobDateRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void ValidTxtSoThe()
-        {
-            try
-            {
-                TemplateHeinBHYT1__HeinCardNumber__ValidationRule oDobDateRule = new TemplateHeinBHYT1__HeinCardNumber__ValidationRule();
-                oDobDateRule.txtSoThe = this.txtSoThe;
-                oDobDateRule.PatientTypeId = this.PatientTypeId;
-                oDobDateRule.chkHasDobCertificate = this.chkHasDobCertificate;
-                oDobDateRule.BhytBlackLists = this.entity.BhytBlackLists;
-                oDobDateRule.BhytWhiteLists = this.entity.BhytWhiteLists;
-                oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                oDobDateRule.ErrorType = ErrorType.Warning;
-                this.dxValidationProvider1.SetValidationRule(this.txtSoThe, oDobDateRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void ValidNoiDKKCBBD()
-        {
-            try
-            {
-                TemplateHeinBHYT1__MediOrg__ValidationRule oDobDateRule = new TemplateHeinBHYT1__MediOrg__ValidationRule();
-                oDobDateRule.txtMaDKKCBBD = this.txtMaDKKCBBD;
-                oDobDateRule.cboDKKCBBD = this.cboDKKCBBD;
-                oDobDateRule.PatientTypeId = this.PatientTypeId;
-                oDobDateRule.chkHasDobCertificate = this.chkHasDobCertificate;
-                oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                oDobDateRule.ErrorType = ErrorType.Warning;
-                this.dxValidationProvider1.SetValidationRule(this.txtMaDKKCBBD, oDobDateRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void ValidIcdByDTGT()
-        {
-            try
-            {
-                TemplateHeinBHYT1__Icd__ValidationRule_Is_MediOrg oDobDateRule = new TemplateHeinBHYT1__Icd__ValidationRule_Is_MediOrg();
-                oDobDateRule.txtIcdName = this.txtDialogText;
-                oDobDateRule.ErrorText = ResourceMessage.BatBuocNhapTenBenhVoiTruongHopBenhNhanLaDungTuyenGioiThieu;
-                oDobDateRule.ErrorType = ErrorType.Warning;
-                this.dxValidationProvider1.SetValidationRule(txtMaChanDoanTD, oDobDateRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void dxValidationProvider1_ValidationFailed(object sender, DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventArgs e)
-        {
-            try
-            {
-                BaseEdit edit = e.InvalidControl as BaseEdit;
-                if (edit == null)
-                    return;
-
-                BaseEditViewInfo viewInfo = edit.GetViewInfo() as BaseEditViewInfo;
-                if (viewInfo == null)
-                    return;
-
-                if (this.positionHandleControl == -1)
-                {
-                    this.positionHandleControl = edit.TabIndex;
-                    if (edit.Visible)
-                    {
-                        edit.SelectAll();
-                        edit.Focus();
-                    }
-                }
-                if (this.positionHandleControl > edit.TabIndex)
-                {
-                    this.positionHandleControl = edit.TabIndex;
-                    if (edit.Visible)
-                    {
-                        edit.SelectAll();
-                        edit.Focus();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void ResetErrorValidateRule()
-        {
-            try
-            {
-                IList<Control> invalidControls = this.dxValidationProvider1.GetInvalidControls();
-                for (int i = invalidControls.Count - 1; i >= 0; i--)
-                {
-                    this.dxValidationProvider1.RemoveControlError(invalidControls[i]);
-                }
-                this.dxErrorProvider1.ClearErrors();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        protected void ValidateLookupWithTextEdit(LookUpEdit cbo, TextEdit textEdit, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor)
-        {
-            try
-            {
-                LookupEditWithTextEditValidationRule validRule = new LookupEditWithTextEditValidationRule();
-                validRule.txtTextEdit = textEdit;
-                validRule.cbo = cbo;
-                validRule.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                validRule.ErrorType = ErrorType.Warning;
-                dxValidationProviderEditor.SetValidationRule(textEdit, validRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        protected void ValidateGridLookupWithTextEdit(GridLookUpEdit cbo, TextEdit textEdit, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor)
-        {
-            try
-            {
-                GridLookupEditWithTextEditValidationRule validRule = new GridLookupEditWithTextEditValidationRule();
-                validRule.txtTextEdit = textEdit;
-                validRule.cbo = cbo;
-                validRule.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                validRule.ErrorType = ErrorType.Warning;
-                dxValidationProviderEditor.SetValidationRule(textEdit, validRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        protected void ValidationSingleControl(BaseEdit control, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor)
-        {
-            try
-            {
-                ControlEditValidationRule validRule = new ControlEditValidationRule();
-                validRule.editor = control;
-                validRule.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                validRule.ErrorType = ErrorType.Warning;
-                dxValidationProviderEditor.SetValidationRule(control, validRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        protected void ValidationSingleControl(Control control, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor, string messageErr, IsValidControl isValidControl)
-        {
-            try
-            {
-                ControlEditValidationRule validRule = new ControlEditValidationRule();
-                validRule.editor = control;
-                if (isValidControl != null)
-                {
-                    validRule.isUseOnlyCustomValidControl = true;
-                    validRule.isValidControl = isValidControl;
-                }
-                if (!String.IsNullOrEmpty(messageErr))
-                    validRule.ErrorText = messageErr;
-                else
-                    validRule.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                validRule.ErrorType = ErrorType.Warning;
-                dxValidationProviderEditor.SetValidationRule(control, validRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        if (!String.IsNullOrEmpty(messageErr))
+            validRule.ErrorText = messageErr;
+        else
+            validRule.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+        validRule.ErrorType = ErrorType.Warning;
+        dxValidationProviderEditor.SetValidationRule(control, validRule);
+    }
+    catch (Exception ex)
+    {
+        Inventec.Common.Logging.LogSystem.Warn(ex);
+    }
+}
     }
 }
