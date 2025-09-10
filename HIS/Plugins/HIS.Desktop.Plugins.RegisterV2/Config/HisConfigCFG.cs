@@ -55,6 +55,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Config
 
         private const string CONFIG_KEY__IS_USE_HID_SYNC = "CONFIG_KEY__IS_USE_HID_SYNC";
         private const string CONFIG_KEY__WarningOverExamBhyt = "HIS.Desktop.WarningOverExamBhyt";
+        //qtcode
+        private const string CONFIG_KEY__WarningHeinPatientTypeCode = "HIS.Desktop.Plugins.RegisterV2.WarningHeinPatientTypeCode";
 
         const string valueString__true = "1";
         const int valueInt__true = 1;

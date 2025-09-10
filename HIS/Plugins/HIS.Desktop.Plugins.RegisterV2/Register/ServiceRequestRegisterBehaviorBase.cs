@@ -57,7 +57,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         protected string addressKS { get; set; }
         protected string hohName { get; set; }
         //qtcode
-        internal UC.UCHeniInfo.UCHeinInfo ucHeinInfo1;
+        internal HIS.UC.UCHeniInfo.UCHeinInfo ucHeinInfo1;
         // UCPatientRaw
         protected string PeopleCode { get; set; }
         protected string patientName { get; set; }
@@ -336,7 +336,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 // UCOtherServiceReqInfo
                 //qtcode
                 this.IS_CAPD = this.serviceReqInfoValue.IS_CAPD;
-                this.IsCAPD = this.serviceReqInfoValue.IsCAPD; 
+                this.IsCAPD = this.serviceReqInfoValue.IsCAPD;
                 this.chkExamOnline = this.serviceReqInfoValue.IsExamOnline;
                 this.chkEmergency = this.serviceReqInfoValue.IsEmergency;
                 this.intructionTime = this.serviceReqInfoValue.IntructionTime;
@@ -522,7 +522,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                     this.transferInTimeTo = this.UCTransPatiADO.TRANSFER_IN_TIME_TO;
                     this.transferInReviews = this.UCTransPatiADO.TRANSFER_IN_REVIEWS;
                     this.ImgTransferInData = this.UCTransPatiADO.ImgTransferInData;
-                    this.IsTransferIn = 1; 
+                    this.IsTransferIn = 1;
                 }
 
                 // Other
@@ -597,6 +597,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
 
                 //Process treatment from input data
                 this.ProcessTreatmentData();
+
+                this.ProcessHeinPatientTypeCode();
 
                 if (this.chkEmergency)
                     this.ProcessEmergency();
@@ -762,6 +764,20 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        //qtcode
+        void ProcessHeinPatientTypeCode()
+        {
+            try
+            {
+                var input = this.HeinPatientCode ?? "";
+                var result = new BackendAdapter(param).Post<HIS_HEIN_PATIENT_TYPE>(
+            "api/HisServiceReq/ExamRegister", ApiConsumers.MosConsumer, input, param);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
             }
         }
 

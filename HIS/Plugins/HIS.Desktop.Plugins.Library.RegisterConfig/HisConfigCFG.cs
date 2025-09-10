@@ -51,6 +51,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         private const string CONFIG_KEY__NOT_CHECK_EXPIRED_IS_SHOW = "HIS.DESKTOP.REGISTER.HEIN_CARD.NOT_CHECK_EXPIRED.IS_SHOW";
         private const string CONFIG_KEY__ICD_GENERATE = "HIS.Desktop.Plugins.AutoCheckIcd";
         internal const string CONFIG_KEY__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";//Doi tuong BHYT
+        internal const string CONFIG_KEY__PATIENT_TYPE_CODE__BHYT_HIS = "HIS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";//Doi tuong BHYT
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__KSK = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.KSK";//Doi tuong KSK
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__QN = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.QN"; // Doi tuong Quan Nhan
         private const string CONFIG_KEY__HIS_TREATMENT_IS_CHECK_TODAY_FINISH_TREATMENT = "MOS.HIS_TREATMENT.IS_CHECK_TODAY_FINISH_TREATMENT";
@@ -124,6 +125,8 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         private const string CONFIG_KEY__WarningInvalidCheckHistoryHeinCard = "HIS.Desktop.Plugins.Register.WarningInvalidCheckHistoryHeinCard";
 
         private const string CONFIG_KEY__CHECK_DUPLICATION = "MOS.HIS_PATIENT.CCCD_NUMBER.CHECK_DUPLICATION";
+        //qtcode
+        private const string CONFIG_KEY__WarningHeinPatientTypeCode = "HIS.Desktop.Plugins.RegisterV2.WarningHeinPatientTypeCode";
         public static string CHECK_DUPLICATION;
         public static string MODULELINKS;
 
@@ -168,6 +171,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         public static bool IsShowingExamRoomInDepartment;
         public static bool IsAutoShowTransferFormInCaseOfAppointment;//đúng tuyến hẹn khám hiển thị popup chuyển tuyến
         public static string IsAllowProgramPatientOld;
+        public static string WarningHeinPatientTypeCode;
         /// <summary>
         /// 1: Các trường "Người nhà", "Quan hệ", "CMND", "Địa chỉ" đều bắt buộc nhập. 2: Chỉ bắt buộc nhập với trường "Người nhà
         /// </summary>
@@ -183,8 +187,11 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         public static bool IsCheckExamHistory;
         public static string AutoCheckIcd;
         public static string PatientTypeCode__BHYT;
+        //qtcode
+        public static string PatientTypeCode__BHYT_HIS;
         public static string PatientTypeCode__KSK;
         public static long PatientTypeId__BHYT;
+        public static long PatientTypeId__BHYT_HIS;
         public static long PatientTypeId__KSK;
         public static string PatientTypeCode__QN;
         public static long PatientTypeId__QN;
@@ -259,6 +266,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
                 LogSystem.Debug("LoadConfig => 1");
                 //Get BHYT
                 BHXHLoginCFG.LoadConfig();
+                WarningHeinPatientTypeCode = GetValue(CONFIG_KEY__WarningHeinPatientTypeCode);
                 IsAllowProgramPatientOld = GetValue("HIS.Desktop.Plugins.RegisterV2.IsAllowProgramPatientOld");
                 PrimaryPatientTypeByService = GetValue(CONFIG_KEY_PrimaryPatientTypeByService);
                 MODULELINKS = GetValue(CONFIG_KEY__ModuleLinks);    
@@ -295,8 +303,12 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
                 KeyValueObligatoryTranferMediOrg = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(HIS_UC_UCHein_IS_OBLIGATORY_TRANFER_MEDI_ORG));
                 IsObligatoryTranferMediOrg = (GetValue(HIS_UC_UCHein_IS_OBLIGATORY_TRANFER_MEDI_ORG) == valueString__true || GetValue(HIS_UC_UCHein_IS_OBLIGATORY_TRANFER_MEDI_ORG) == "2");
                 PatientTypeCode__BHYT = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT);
+                PatientTypeCode__BHYT_HIS = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT_HIS);
+                //qtcode
                 PatientTypeCode__KSK = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__KSK);
                 PatientTypeId__BHYT = GetPatientTypeByCode(PatientTypeCode__BHYT).ID;
+                PatientTypeId__BHYT_HIS = GetPatientTypeByCode(PatientTypeCode__BHYT_HIS).ID;
+
                 PatientTypeId__KSK = GetPatientTypeByCode(PatientTypeCode__KSK).ID;
                 PatientTypeCode__QN = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__QN);
                 PatientTypeId__QN = GetPatientTypeByCode(PatientTypeCode__QN).ID;
