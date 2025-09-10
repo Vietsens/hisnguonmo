@@ -49,6 +49,7 @@ using HIS.UC.UCHeniInfo.CustomValidateRule;
 using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 using HIS.UC.UCHeniInfo.Design;
 using MOS.EFMODEL.DataModels;
+using Inventec.Common.Controls.EditorLoader;
 
 namespace HIS.UC.UCHeniInfo
 {
@@ -92,7 +93,7 @@ namespace HIS.UC.UCHeniInfo
         long treatmentId;
         Inventec.Desktop.Common.Modules.Module module;
         object dataSourceCboHeinRightRouteTemp;
-
+        List<HIS_HEIN_PATIENT_TYPE> heinPatientTypeData; 
         bool IsCheckAutoDT = false;
         bool IsShowMessage = false;
         enum RightRouterFactory
@@ -119,6 +120,10 @@ namespace HIS.UC.UCHeniInfo
         {
             Inventec.Common.Logging.LogSystem.Debug("UCHeinInfo .1");
             InitializeComponent();
+            //qtcode
+            InitializeComboHeinPatientType();
+            SetColorForHeinPatientType();
+            this.cboHeinPatientType.Properties.ImmediatePopup = true;
             Inventec.Common.Logging.LogSystem.Debug("UCHeinInfo .2");
         }
 
@@ -259,7 +264,7 @@ namespace HIS.UC.UCHeniInfo
                 this.cboSoThe.EditValue = null;
                 this.cboSoThe.Properties.DataSource = null;
                 this.txtAddress.Text = "";
-                this.txtHeinPatientTypeCode.Text = "";
+                //this.txtHeinPatientTypeCode.Text = "";
                 this.txtHeinCardFromTime.Text = "";
                 this.dtHeinCardFromTime.Text = "";
                 this.txtHeinCardToTime.Text = "";
@@ -295,6 +300,7 @@ namespace HIS.UC.UCHeniInfo
                 //qtcode
                 this.transferInCode = null;
                 this.isTransferIn = false;
+                this.cboHeinPatientType.EditValue = null; 
             }
             catch (Exception ex)
             {
@@ -382,8 +388,37 @@ namespace HIS.UC.UCHeniInfo
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        //qtcode
+        private void InitializeComboHeinPatientType()
+        {
+            try
+            {
+                heinPatientTypeData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
+            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+            .ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("DESCRIPTION", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboHeinPatientType, heinPatientTypeData, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("InitializeComboHeinPatientTypeCode: \n" + ex);
+            }
+        }
 
 
+
+        public void SetColorForHeinPatientType()
+        {
+            //qtcode
+            if (HisConfigCFG.WarningHeinPatientTypeCode == "1")
+            {
+                this.lciHeinPatientType.AppearanceItemCaption.ForeColor = Color.Maroon;
+            }
+        }
+        //qtcode
         #region Event SoThe
 
         private void txtSoThe_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
@@ -2327,7 +2362,6 @@ namespace HIS.UC.UCHeniInfo
             }
             catch (Exception ex)
             {
-
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

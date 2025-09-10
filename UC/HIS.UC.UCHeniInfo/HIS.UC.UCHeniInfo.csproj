@@ -55,6 +55,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\HIS\HIS.UC.UCRelativeInfo\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\HIS\Plugins\HIS.Desktop.Plugins.Library.RegisterConfig\bin\Debug\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
+    </Reference>
     <Reference Include="His.UC.LibraryMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\HIS\His.UC.LibraryMessage\His.UC.LibraryMessage.dll</HintPath>
@@ -314,10 +318,6 @@
     <ProjectReference Include="..\..\HIS\Plugins\HIS.Desktop.Plugins.Library.CheckHeinGOV\HIS.Desktop.Plugins.Library.CheckHeinGOV.csproj">
       <Project>{FFB3080E-3030-46E2-A2FF-1D53243B3946}</Project>
       <Name>HIS.Desktop.Plugins.Library.CheckHeinGOV</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS\Plugins\HIS.Desktop.Plugins.Library.RegisterConfig\HIS.Desktop.Plugins.Library.RegisterConfig.csproj">
-      <Project>{9247dd49-482c-4227-88df-616a8aaf3f38}</Project>
-      <Name>HIS.Desktop.Plugins.Library.RegisterConfig</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
