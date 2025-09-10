@@ -976,12 +976,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         {
                             ado.Warms.Add(HIS.Desktop.Plugins.ImpMestCreate.ADO.VHisServiceADO.Warm.KhongHopLe);
                         }
-                        else if (String.IsNullOrWhiteSpace(ado.MONTH_LIFESPAN.ToString()) &&
-                            String.IsNullOrWhiteSpace(ado.DAY_LIFESPAN.ToString()) &&
-                            String.IsNullOrWhiteSpace(ado.HOUR_LIFESPAN.ToString()))
-                        {
-                            ado.Warms.Add(HIS.Desktop.Plugins.ImpMestCreate.ADO.VHisServiceADO.Warm.KhongCoTuoiTho);
-                        }
+                        // Tài liệu 1345: 19267 - Bỏ bắt buộc nhập "Tuổi thọ" khi import ở màn nhập thuốc vật tư
+                        //else if (String.IsNullOrWhiteSpace(ado.MONTH_LIFESPAN.ToString()) &&
+                        //    String.IsNullOrWhiteSpace(ado.DAY_LIFESPAN.ToString()) &&
+                        //    String.IsNullOrWhiteSpace(ado.HOUR_LIFESPAN.ToString()))
+                        //{
+                        //    ado.Warms.Add(HIS.Desktop.Plugins.ImpMestCreate.ADO.VHisServiceADO.Warm.KhongCoTuoiTho);
+                        //}
 
                         if (item != null && !String.IsNullOrEmpty(item.MANUFACTURER_CODE))
                         {
