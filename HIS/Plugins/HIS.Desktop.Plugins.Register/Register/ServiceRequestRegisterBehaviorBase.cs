@@ -115,6 +115,7 @@ namespace HIS.Desktop.Plugins.Register.Register
         protected HisPatientSDO patientData { get; set; }
         protected HisPatientProfileSDO patientProfile { get; set; }
         protected MainHisHeinBhyt uCMainHein { get; set; }
+        protected His.UC.UCHein.Design.TemplateHeinBHYT1.Template__HeinBHYT1 Template__HeinBHYT1 { get; set; }
         protected UserControl ucHein__BHYT { get; set; }
         protected Module currentModule { get; set; }
         protected UCRegister ucRequestService;
@@ -291,6 +292,7 @@ namespace HIS.Desktop.Plugins.Register.Register
 
                 //Process treatment from input data
                 this.ProcessTreatmentData();
+                this.ProcessExamRegister();
 
                 if (this.chkEmergency)
                     this.ProcessEmergency();
@@ -459,7 +461,19 @@ namespace HIS.Desktop.Plugins.Register.Register
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        void ProcessExamRegister()
+        {
+            try
+            {
+                var input = this.HeinPatientTypeCode ?? "";
+                var result = new BackendAdapter(param).Post<HIS_HEIN_PATIENT_TYPE>(
+            "api/HisServiceReq/ExamRegister", ApiConsumers.MosConsumer, input, param);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
         void ProcessTreatmentData()
         {
             try

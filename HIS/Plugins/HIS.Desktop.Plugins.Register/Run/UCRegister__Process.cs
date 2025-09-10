@@ -37,6 +37,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Markup;
+using His.UC.UCHein;
 
 namespace HIS.Desktop.Plugins.Register.Run
 {
@@ -147,8 +148,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
-
+        }       
         private void SaveProcess(HisPatientSDO patient, bool printNow)
         {
             try
@@ -252,19 +252,22 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private bool Check(CommonParam param)
         {
             bool valid = true;
             bool validPatientInfo = true;
             bool validPatientPlusInfo = true;
             bool validPhoneNumber = true;
+            //bool validHeinPatientTypeCode = true;
+            //long patientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(cboPatientType.EditValue.ToString());
+            //bool isUseUCHeinInfo = (patientTypeId == HisConfigCFG.PatientTypeId__BHYT || patientTypeId == HisConfigCFG.PatientTypeId__QN);
             try
             {
                 this.UpdatepatientDob();
 
                 this.positionHandleControl = -1;
                 this.positionHandlePlusInfoControl = -1;
+                //validHeinPatientTypeCode = isUseUCHeinInfo ? this.uCMainHein.ValidateHeinPatientTypeCode(patientTypeId) : true;
 
 
                 validPatientPlusInfo = this.dxValidationProviderPlusInfomation.Validate();
