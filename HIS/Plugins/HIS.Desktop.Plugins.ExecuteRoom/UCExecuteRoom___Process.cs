@@ -130,7 +130,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             {
                 serviceReq.Start();
                 //serviceReq.Join();
-             
+
             }
             catch (Exception ex)
             {
@@ -200,42 +200,46 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 .Post<MOS.EFMODEL.DataModels.L_HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_START, ApiConsumers.MosConsumer, serviceReqInput.ID, param);
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
-                
+
                 switch (serviceReqInput.SERVICE_REQ_TYPE_ID)
-                       {
-                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH:
-                              {
-                                break;
-                              }
-                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT:
-                              {
-                                  break;
-                              }
-                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM:
-                              {
-                                  break;
-                              }
-                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT:
-                              {
-                                  break;
-                              }
-                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G:
-                              {
-                                  break;
-                              }
-                          case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__AN:
-                              {
-                                  break;
-                              }
-                          default:
-                              {
-                                  if (HisConfigCFG.SendToExtWhenStart != null)
-                                  {
-                                      CreateThreadLoadDataDefault(serviceReqInput);
-                                  }
-                                  break;
-                              }
-                       }
+                {
+                    case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH:
+                        {
+                            break;
+                        }
+                    case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT:
+                        {
+                            break;
+                        }
+                    case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM:
+                        {
+                            break;
+                        }
+                    case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT:
+                        {
+                            break;
+                        }
+                    case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G:
+                        {
+                            break;
+                        }
+                    case IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__AN:
+                        {
+                            break;
+                        }
+                    default:
+                        {
+                            if (!string.IsNullOrEmpty(HisConfigCFG.SendToExtWhenStart))
+                            {
+                                var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.roomId);
+                                if (currentRoom != null && string.Equals(currentRoom.ROOM_CODE, HisConfigCFG.SendToExtWhenStart, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    CreateThreadLoadDataDefault(serviceReqInput);
+                                }
+                            }
+                            break;
+                        }
+                }
                 if (serviceReqResult == null)
                 {
                     bool IsShowMessErr = true;
