@@ -465,8 +465,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 HisHeinPatientType = HisHeinPatientType?.Where(o => o.IS_ACTIVE == 1).OrderBy(o => o.DESCRIPTION).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo(nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE), "", 100, 1));
-                columnInfos.Add(new ColumnInfo(nameof(HIS_HEIN_PATIENT_TYPE.DESCRIPTION), "", 350, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, false, 450);
+                columnInfos.Add(new ColumnInfo(nameof(HIS_HEIN_PATIENT_TYPE.DESCRIPTION), "", 650, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, false, 750);
                 ControlEditorLoader.Load(cboHeinPatientTypeCode, HisHeinPatientType, controlEditorADO);
             }
             catch (Exception ex)
