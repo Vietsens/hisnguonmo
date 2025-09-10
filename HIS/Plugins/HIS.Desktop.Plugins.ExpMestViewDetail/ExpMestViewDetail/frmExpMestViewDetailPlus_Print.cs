@@ -1522,7 +1522,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                      mps000203Ado,
                      lstBloodGiver
                       );
-                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000203Ado, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
+                    result = MpsPrinterRun(null, printTypeCode, fileName, mps000203PDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
                 }
             }
             catch (Exception ex)
