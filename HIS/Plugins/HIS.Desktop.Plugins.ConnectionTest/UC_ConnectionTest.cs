@@ -6413,6 +6413,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 Inventec.Common.Mapper.DataObjectMapper.Map<V_LIS_SAMPLE>(lisSample, row);
                 listArgs.Add(lisSample);
                 listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+                listArgs.Add((DelegateSelectData)RefreshSampleInfo);
                 var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                 if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                 ((Form)extenceInstance).ShowDialog();
@@ -6422,7 +6423,24 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        private void RefreshSampleInfo(object rowSampleInfo)
+        {
+            try
+            {
+                if (rowSampleInfo is LIS.EFMODEL.DataModels.LIS_SAMPLE lSAMPLE)
+                {
+                    var currentSampleInfo = (LisSampleADO)gridViewSample.GetFocusedRow();
+                    if (currentSampleInfo != null)
+                    {
+                        currentSampleInfo.BIO_PRODUCT_NAME = lSAMPLE.BIO_PRODUCT_NAME;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void AttachTestFile(LisSampleADO row)
         {
             try

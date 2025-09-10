@@ -37,6 +37,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Markup;
+using His.UC.UCHein;
 
 namespace HIS.Desktop.Plugins.Register.Run
 {
@@ -147,8 +148,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
-
+        }       
         private void SaveProcess(HisPatientSDO patient, bool printNow)
         {
             try
@@ -252,7 +252,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private bool Check(CommonParam param)
         {
             bool valid = true;
@@ -265,7 +264,6 @@ namespace HIS.Desktop.Plugins.Register.Run
 
                 this.positionHandleControl = -1;
                 this.positionHandlePlusInfoControl = -1;
-
 
                 validPatientPlusInfo = this.dxValidationProviderPlusInfomation.Validate();
 

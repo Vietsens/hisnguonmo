@@ -447,5 +447,32 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             }
             return rs;
         }
+        private void LoadComboHisHeinPatientType()
+        {
+            try
+            {
+                if (!BackendDataWorker.IsExistsKey<HIS_HEIN_PATIENT_TYPE>())
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    var filter = new MOS.Filter.HisHeinPatientTypeFilter();
+                    HisHeinPatientType = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE>>("api/HisHeinPatientType/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                    if (HisHeinPatientType != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE), HisHeinPatientType, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+                else
+                {
+                    HisHeinPatientType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>();
+                }
+                HisHeinPatientType = HisHeinPatientType?.Where(o => o.IS_ACTIVE == 1).OrderBy(o => o.DESCRIPTION).ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo(nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE), "", 100, 1));
+                columnInfos.Add(new ColumnInfo(nameof(HIS_HEIN_PATIENT_TYPE.DESCRIPTION), "", 350, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, false, 450);
+                ControlEditorLoader.Load(cboHeinPatientTypeCode, HisHeinPatientType, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

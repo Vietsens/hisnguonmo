@@ -318,6 +318,7 @@
     <Compile Include="Design\TemplateHeinBHYT1\Template__HeinBHYT1__Validation.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Design\TemplateHeinBHYT1\ValidationRule\TemplateHeinBHYT1__PatientTypeCode__ValidationRule.cs" />
     <Compile Include="Design\TemplateHeinBHYT1\ValidationRule\TemplateHeinBHYT1__CheckBox__ValidationRule.cs" />
     <Compile Include="Design\TemplateHeinBHYT1\ValidationRule\TemplateHeinBHYT1__ChuyenTuyen__ValidationRule.cs" />
     <Compile Include="Design\TemplateHeinBHYT1\ValidationRule\TemplateHeinBHYT1__HeinMediOrg__ValidationRule .cs" />

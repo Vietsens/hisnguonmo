@@ -91,6 +91,7 @@ namespace HIS.UC.TreatmentFinish.Run
         IcdTemp currentIcd = new IcdTemp();
         HIS_TREATMENT HisTreatment = new HIS_TREATMENT();
         private List<AcsUserADO> lstReAcsUserADO;
+        List<HIS_HEIN_PATIENT_TYPE> HisHeinPatientType;
         string PatientTypeBHYT { get; set; }
         /// <summary>
         ///  Cấu hình cho phép mở nhiều hồ sơ điều trị của cùng 1 bệnh nhân hay không.
@@ -276,7 +277,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 }
 
                 dtEndTime.Enabled = txtTreatmentEndTypeCode.Enabled
-                    =txtPatientType.Enabled
+                    =cboPatientType.Enabled
                     = cboTreatmentEndType.Enabled
                     = chkAutoPrintGHK.Enabled
                     = chkSignGHK.Enabled
@@ -367,7 +368,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 }
 
                 SetEnableCheckSoLuuTruBANTByConfig();
-                this.txtPatientType.Text = this.Treatment.HEIN_PATIENT_TYPE_CODE;
+                this.cboPatientType.EditValue = this.Treatment.HEIN_PATIENT_TYPE_CODE;
                 if (!chkIssueOutPatientStoreCode.Checked)      
                 {
                     lciForlblSoLuuTruBANT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -948,11 +949,11 @@ namespace HIS.UC.TreatmentFinish.Run
                     HisTreatmentFinishSDO treatmentFinishSDOExt = new HisTreatmentFinishSDO();
                     treatmentFinishSDOExt.TreatmentFinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
                     treatmentFinishSDOExt.DocumentBookId = treatmentFinishSDO != null ? treatmentFinishSDO.DocumentBookId : null;
-                    if (!string.IsNullOrEmpty(txtPatientType.Text.Trim()))
+                    if (cboPatientType.EditValue != null && !string.IsNullOrWhiteSpace(cboPatientType.EditValue.ToString()))
                     {
-                        treatmentFinishSDOExt.HeinPatientTypeCode = txtPatientType.Text;
+                        treatmentFinishSDOExt.HeinPatientTypeCode = cboPatientType.EditValue.ToString();
                     }
-                    
+
                     if (String.IsNullOrEmpty(treatmentFinishSDOExt.SickLoginname))
                     {
                         treatmentFinishSDOExt.SickLoginname = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
@@ -1472,6 +1473,7 @@ namespace HIS.UC.TreatmentFinish.Run
 
                     this.InitCarrer();
 
+                    this.SetDataCboPatientType(this.cboPatientType);
                     if (this.useCapSoBABNCT.HasValue && this.useCapSoBABNCT.Value)
                         this.InitCapSoLuuTruBNCT();
                     else
@@ -1524,7 +1526,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 Inventec.Common.Logging.LogSystem.Debug("AutoTreatmentFinishCheckedChanged");
 
                 dtEndTime.Enabled = txtTreatmentEndTypeCode.Enabled
-                    = txtPatientType.Enabled
+                    = cboPatientType.Enabled
                     = cboTreatmentEndType.Enabled
                     //= chkAutoPrintGHK.Enabled
                     //= chkSignGHK.Enabled
@@ -2111,7 +2113,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 treatmentFinishSDO.EndDeptSubsHeadUsername = cboEndDeptSubs.EditValue != null ? cboEndDeptSubs.Text.ToString() : null;
                 treatmentFinishSDO.HospSubsDirectorLoginname = cboHospSubs.EditValue != null ? cboHospSubs.EditValue.ToString() : null;
                 treatmentFinishSDO.HospSubsDirectorUsername = cboHospSubs.EditValue != null ? cboHospSubs.Text.ToString() : null;
-                treatmentFinishSDO.HeinPatientTypeCode = txtPatientType.Text != null ? txtPatientType.Text.ToString() : null;
+                treatmentFinishSDO.HeinPatientTypeCode = cboPatientType.EditValue != null ? cboPatientType.EditValue.ToString() : null;
                 return this.treatmentFinishSDO;
             }
             catch (Exception ex)
@@ -2126,7 +2128,7 @@ namespace HIS.UC.TreatmentFinish.Run
             DataOutputADO result = new DataOutputADO();
             try
             {
-                result.HeinPatientTypeCode = txtPatientType.Text;
+                result.HeinPatientTypeCode = cboPatientType.EditValue != null ? cboPatientType.EditValue.ToString() : null;
                 result.IsSignExam = chkSignExam.Checked;
                 result.IsPrintExam = chkPrintExam.Checked;
                 result.IsAutoTreatmentFinish = chkAutoTreatmentFinish.Checked;
@@ -2531,6 +2533,39 @@ namespace HIS.UC.TreatmentFinish.Run
             }
         }
 
+        private void SetDataCboPatientType(DevExpress.XtraEditors.GridLookUpEdit cbo)
+        {
+            try
+            {
+                if (!BackendDataWorker.IsExistsKey<HIS_HEIN_PATIENT_TYPE>())
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    MOS.Filter.HisTreatmentResultFilter filter = new MOS.Filter.HisTreatmentResultFilter();
+                    filter.IS_ACTIVE = 1;
+                    HisHeinPatientType = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE>>("api/HisHeinPatientType/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                    if (HisHeinPatientType != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE), HisHeinPatientType, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+                else
+                {
+                    HisHeinPatientType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1).ToList();
+                }
+                HisHeinPatientType = HisHeinPatientType != null ? HisHeinPatientType.OrderBy(o => o.DESCRIPTION).ToList() : HisHeinPatientType;
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "Mã", 100, 1));
+                columnInfos.Add(new ColumnInfo("DESCRIPTION ", "Mô tả", 150, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, true, 400);
+                ControlEditorLoader.Load(cbo, HisHeinPatientType, controlEditorADO);
+                cbo.Properties.ImmediatePopup = true;
+                cbo.Properties.PopupFormMinSize = new System.Drawing.Size(400, cbo.Properties.PopupFormSize.Height);
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void txtEndDeptSubs_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
@@ -2735,8 +2770,8 @@ namespace HIS.UC.TreatmentFinish.Run
 
         public void ValidateTxtPatientType()         
         {
-            ValidateMaxLength(txtPatientType, dxErrorProvider1);
-            txtPatientType.Focus();
+            ValidateMaxLength(cboPatientType, dxErrorProvider1);
+            cboPatientType.Focus();
         }
 
         private void txtPatientType_EditValueChanged(object sender, EventArgs e)

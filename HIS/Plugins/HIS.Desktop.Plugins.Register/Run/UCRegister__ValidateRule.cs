@@ -249,7 +249,7 @@ namespace HIS.Desktop.Plugins.Register.Run
         //        Inventec.Common.Logging.LogSystem.Warn(ex);
         //    }
         //}
-
+       
         private void ValidateTreatmentType()
         {
             try
