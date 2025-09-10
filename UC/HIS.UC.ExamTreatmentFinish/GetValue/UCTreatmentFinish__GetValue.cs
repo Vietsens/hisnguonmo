@@ -337,9 +337,9 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                         ExamTreatmentFinish.TreatmentFinishSDO.IcdText = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                     }
                 }
-                if (txtHeinPatientTypeCode.Text.Trim() != "")
+                if (cboHeinPatientTypeCode.EditValue != null)
                 {
-                    ExamTreatmentFinish.TreatmentFinishSDO.HeinPatientTypeCode = txtHeinPatientTypeCode.Text.Trim();
+                    ExamTreatmentFinish.TreatmentFinishSDO.HeinPatientTypeCode = cboHeinPatientTypeCode.EditValue.ToString();
                 }
                 LogSystem.Debug("UCExamTreatmentFinish.GetValue. End: \n" + LogUtil.TraceData("ExamTreatmentFinish", ExamTreatmentFinish));
             }
