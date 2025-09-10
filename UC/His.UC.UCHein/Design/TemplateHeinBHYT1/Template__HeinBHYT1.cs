@@ -33,6 +33,8 @@ using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
 using Inventec.Common.QrCodeBHYT;
 using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using MOS.SDO;
 using System;
 using System.Collections.Generic;
@@ -116,7 +118,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             try
             {
                 InitializeComponent();
-
+                SetColorForHeinPatientType();
                 if (data != null)
                 {
                     this.entity = data;
@@ -175,7 +177,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 Inventec.Common.Logging.LogSystem.Debug("Template__HeinBHYT1_Load()");
                 this.SetCaptionByLanguageKeyNew();
                 Config.HisConfigCFG.LoadConfig();
-                ResetPatientCode(); 
+                ResetPatientCode();
+                InitComboPatientCode();
                 if (this.isDefaultInit)
                     this.InitData(this.entity);
             }
@@ -184,12 +187,32 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private void InitComboPatientCode()
+        {
+            try
+            {
+                List<HIS_HEIN_PATIENT_TYPE> heinData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", heinData));
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("DESCRIPTION", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, false, 350);
+                //Load data vao combobox
+                ControlEditorLoader.Load(cboPatientCode, heinData, controlEditorADO);
+                cboPatientCode.Properties.ImmediatePopup = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void ResetPatientCode()
         {
             try
             {
-                txtPatientCode.Text = "";
+                cboPatientCode.Text = "";
             }
             catch(Exception ex)
             {
@@ -540,6 +563,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     txtSoThe.EditValue = null;
                     cboSoThe.EditValue = null;
                     txtAddress.Text = "";
+                    cboPatientCode.EditValue = null;
 
                     IList<Control> invalidControls = this.dxValidationProvider1.GetInvalidControls();
                     for (int i = invalidControls.Count - 1; i >= 0; i--)
@@ -623,7 +647,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             }
             return (result ?? new MOS.EFMODEL.DataModels.HIS_TRAN_PATI_REASON());
         }
-
+        
         internal void ProcessFillDataTranPatiInForm(long treatmentId)
         {
             try
@@ -1274,7 +1298,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             }
             return valid;
         }
-
         internal void ResetValidationControl()
         {
             try

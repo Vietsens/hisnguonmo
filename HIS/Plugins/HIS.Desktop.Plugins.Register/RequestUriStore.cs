@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -39,7 +39,7 @@ namespace HIS.Desktop.Plugins.Register
         public const string HIS_PATIENT_GETSDOADVANCE = "api/HisPatient/GetSdoAdvance";
         public const string HIS_SERE_SERV_GETVIEW_12 = "api/HisSereServ/GetView12";
         public const string HID_PERSON_GET = "api/HidPerson/Get";
-
+        public const string HIS_SERVICE_REQ_EXAM_REGISTER = "api/HisServiceReq/ExamRegister";
         public const string HID_HOUSEHOLD_RELATION_GET = "api/HidHouseHoldRelation/Get";
     }
 }

@@ -36,7 +36,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using His.UC.UCHein;
 namespace HIS.Desktop.Plugins.Register.Run
 {
     public partial class UCRegister : UserControlBase
@@ -345,7 +345,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void SetDataAddress(AddressADO data)
         {
 

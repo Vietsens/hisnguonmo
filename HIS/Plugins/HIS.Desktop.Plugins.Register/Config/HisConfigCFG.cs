@@ -30,7 +30,9 @@ namespace HIS.Desktop.Plugins.Register.Config
 {
     internal class HisConfigCFG
     {
-        //private const string CONFIG_KEY__IS_AUTO_FILL_DATA_RECENT_SERVICE_ROOM = "HIS.IS_AUTO_FILL_DATA_RECENT_SERVICE_ROOM";
+        //private const string CONFIG_KEY__IS_AUTO_FILL_DATA_RECENT_SERVICE_ROOM = "HIS.IS_AUTO_FILL_DATA_RECENT_SERVICE_ROOM"; 
+        private const string CONFIG_KEY__WARNINGHEINPATIENTTYPECODE = "HIS.Desktop.Plugins.RegisterV2.WarningHeinPatientTypeCode";
+        private const string CONFIG_KEY__HIS_PATIENT_TYPE_PATIENT_TYPE_CODE_BHYT = "HIS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";
         private const string CONFIG_KEY__IS_CHECK_EXAM_HISTORY_TODAY = "HIS.Desktop.Plugins.Register.IS_CHECK_EXAM_HISTORY_TODAY";
         private const string CONFIG_KEY__IS_CHECK_HEIN_CARD = "HIS.Desktop.Plugins.Register.IsCheckHeinCard";
         private const string CONFIG_KEY__IS_CHECK_PREVIOUS_DEBT = "MOS.HIS_TREATMENT.IS_CHECK_PREVIOUS_DEBT";
@@ -74,6 +76,8 @@ namespace HIS.Desktop.Plugins.Register.Config
         /// - Cấu hình chế độ kiểm tra thẻ bhyt trên cổng bhxh. Đặt 1 là tự động kiểm tra khi tìm thấy bệnh nhân cũ, đặt số khác là không kiểm tra.
         /// </summary>
         internal static bool IsCheckExamHistory;
+        internal static string WarningHeinPatientTypeCode;
+        internal static string PatientTypeCodeBHYT;
         internal static string AutoCheckIcd;
         internal static string PatientTypeCode__BHYT;
         internal static string PatientTypeCode__KSK;
@@ -117,6 +121,8 @@ namespace HIS.Desktop.Plugins.Register.Config
             try
             {
                 LogSystem.Debug("LoadConfig => 1");
+                WarningHeinPatientTypeCode = GetValue(CONFIG_KEY__WARNINGHEINPATIENTTYPECODE);
+                PatientTypeCodeBHYT = GetValue(CONFIG_KEY__HIS_PATIENT_TYPE_PATIENT_TYPE_CODE_BHYT);
                 ExecuteRoomShow = GetListValue(HIS_DESKTOP_REGISER__EXECUTE_ROOM_SHOW);
                 IsSetDefaultDepositPrice = (Inventec.Common.TypeConvert.Parse.ToInt32(GetValue(CONFIG_KEY__HIS_DEPOSIT__DEFAULT_PRICE_FOR_BHYT_OUT_PATIENT)) == valueInt__true);
                 MustHaveNCSInfoForChild = (GetValue(CONFIG_KEY__MOS__HIS_PATIENT__MUST_HAVE_NCS_INFO_FOR_CHILD) == valueString__true);
