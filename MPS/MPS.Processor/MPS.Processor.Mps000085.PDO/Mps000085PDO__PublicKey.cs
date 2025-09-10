@@ -66,6 +66,7 @@ namespace MPS.Processor.Mps000085.PDO
         //qtcode
         public Dictionary<string, decimal> DicMediMate { get; set; }
         public string MEDI_MATE_TYPE_NAME { get; set; }
+        public string DOSAGE_FORM { get; set; }
         public string SERVICE_UNIT_NAME { get; set; }
         public string REGISTER_NUMBER { get; set; }
         public string PACKAGE_NUMBER { get; set; }
@@ -189,6 +190,7 @@ namespace MPS.Processor.Mps000085.PDO
                     this.MEDICINE_GROUP_ID = medicine.MEDICINE_GROUP_ID;
                     this.DicMediMate = medicine.DicMediMate;
                     this.MEDI_MATE_TYPE_NAME = medicine.MEDICINE_TYPE_NAME;
+                    this.DOSAGE_FORM = medicine.DOSAGE_FORM;
                     this.SERVICE_UNIT_NAME = medicine.SERVICE_UNIT_NAME;
                     this.REGISTER_NUMBER = medicine.REGISTER_NUMBER;
                     this.PACKAGE_NUMBER = medicine.PACKAGE_NUMBER;
