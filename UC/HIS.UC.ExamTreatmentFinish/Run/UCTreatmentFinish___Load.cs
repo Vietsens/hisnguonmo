@@ -462,12 +462,42 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 {
                     HisHeinPatientType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>();
                 }
-                HisHeinPatientType = HisHeinPatientType?.Where(o => o.IS_ACTIVE == 1).OrderBy(o => o.DESCRIPTION).ToList();
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo(nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE), "", 100, 1));
-                columnInfos.Add(new ColumnInfo(nameof(HIS_HEIN_PATIENT_TYPE.DESCRIPTION), "", 650, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, false, 750);
-                ControlEditorLoader.Load(cboHeinPatientTypeCode, HisHeinPatientType, controlEditorADO);
+                HisHeinPatientType = HisHeinPatientType?.Where(o => o.IS_ACTIVE == 1).OrderBy(o => o.NUM_ORDER).ToList();
+                var cbo = this.cboHeinPatientTypeCode;
+                cbo.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboHeinPatientTypeCode_Closed);
+                cbo.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboHeinPatientTypeCode_Closed);
+                cbo.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboHeinPatientTypeCode_ButtonClick);
+                cbo.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboHeinPatientTypeCode_ButtonClick);
+                cbo.EditValueChanged -= new System.EventHandler(this.cboHeinPatientTypeCode_EditValueChanged);
+                cbo.EditValueChanged += new System.EventHandler(this.cboHeinPatientTypeCode_EditValueChanged);
+                cbo.TextChanged -= new System.EventHandler(this.cboHeinPatientTypeCode_TextChanged);
+                cbo.TextChanged += new System.EventHandler(this.cboHeinPatientTypeCode_TextChanged);
+                cbo.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboHeinPatientTypeCode_KeyUp);
+                cbo.Properties.View.OptionsView.ShowColumnHeaders = false;
+                cbo.Properties.DataSource = HisHeinPatientType;
+                cbo.Properties.DisplayMember = nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE);
+                cbo.Properties.ValueMember = nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE);
+                cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cbo.Properties.ImmediatePopup = true;
+                cbo.Properties.View.OptionsView.RowAutoHeight = true;
+                cbo.ForceInitialize();
+                cbo.Properties.View.Columns.Clear();
+                cbo.Properties.PopupFormSize = new System.Drawing.Size(900, 250);
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cbo.Properties.View.Columns.AddField(nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE));
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 100;
+                aColumnCode.ColumnEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnName = cbo.Properties.View.Columns.AddField(nameof(HIS_HEIN_PATIENT_TYPE.DESCRIPTION));
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 2;
+                aColumnName.Width = 800;
+                aColumnName.ColumnEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
             }
             catch (Exception ex)
             {
