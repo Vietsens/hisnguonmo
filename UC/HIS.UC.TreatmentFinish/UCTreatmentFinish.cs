@@ -277,7 +277,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 }
 
                 dtEndTime.Enabled = txtTreatmentEndTypeCode.Enabled
-                    =cboPatientType.Enabled
+                    =cboHeinPatientTypeCode.Enabled
                     = cboTreatmentEndType.Enabled
                     = chkAutoPrintGHK.Enabled
                     = chkSignGHK.Enabled
@@ -368,7 +368,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 }
 
                 SetEnableCheckSoLuuTruBANTByConfig();
-                this.cboPatientType.EditValue = this.Treatment.HEIN_PATIENT_TYPE_CODE;
+                this.cboHeinPatientTypeCode.EditValue = this.Treatment.HEIN_PATIENT_TYPE_CODE;
                 if (!chkIssueOutPatientStoreCode.Checked)      
                 {
                     lciForlblSoLuuTruBANT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -949,9 +949,9 @@ namespace HIS.UC.TreatmentFinish.Run
                     HisTreatmentFinishSDO treatmentFinishSDOExt = new HisTreatmentFinishSDO();
                     treatmentFinishSDOExt.TreatmentFinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
                     treatmentFinishSDOExt.DocumentBookId = treatmentFinishSDO != null ? treatmentFinishSDO.DocumentBookId : null;
-                    if (cboPatientType.EditValue != null && !string.IsNullOrWhiteSpace(cboPatientType.EditValue.ToString()))
+                    if (cboHeinPatientTypeCode.EditValue != null && !string.IsNullOrWhiteSpace(cboHeinPatientTypeCode.EditValue.ToString()))
                     {
-                        treatmentFinishSDOExt.HeinPatientTypeCode = cboPatientType.EditValue.ToString();
+                        treatmentFinishSDOExt.HeinPatientTypeCode = cboHeinPatientTypeCode.EditValue.ToString();
                     }
 
                     if (String.IsNullOrEmpty(treatmentFinishSDOExt.SickLoginname))
@@ -1473,7 +1473,8 @@ namespace HIS.UC.TreatmentFinish.Run
 
                     this.InitCarrer();
 
-                    this.SetDataCboPatientType(this.cboPatientType);
+                    //this.SetDataCboPatientType(this.cboPatientType);
+                    this.LoadComboHisHeinPatientType();
                     if (this.useCapSoBABNCT.HasValue && this.useCapSoBABNCT.Value)
                         this.InitCapSoLuuTruBNCT();
                     else
@@ -1526,7 +1527,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 Inventec.Common.Logging.LogSystem.Debug("AutoTreatmentFinishCheckedChanged");
 
                 dtEndTime.Enabled = txtTreatmentEndTypeCode.Enabled
-                    = cboPatientType.Enabled
+                    = cboHeinPatientTypeCode.Enabled
                     = cboTreatmentEndType.Enabled
                     //= chkAutoPrintGHK.Enabled
                     //= chkSignGHK.Enabled
@@ -2113,7 +2114,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 treatmentFinishSDO.EndDeptSubsHeadUsername = cboEndDeptSubs.EditValue != null ? cboEndDeptSubs.Text.ToString() : null;
                 treatmentFinishSDO.HospSubsDirectorLoginname = cboHospSubs.EditValue != null ? cboHospSubs.EditValue.ToString() : null;
                 treatmentFinishSDO.HospSubsDirectorUsername = cboHospSubs.EditValue != null ? cboHospSubs.Text.ToString() : null;
-                treatmentFinishSDO.HeinPatientTypeCode = cboPatientType.EditValue != null ? cboPatientType.EditValue.ToString() : null;
+                treatmentFinishSDO.HeinPatientTypeCode = cboHeinPatientTypeCode.EditValue != null ? cboHeinPatientTypeCode.EditValue.ToString() : null;
                 return this.treatmentFinishSDO;
             }
             catch (Exception ex)
@@ -2128,7 +2129,7 @@ namespace HIS.UC.TreatmentFinish.Run
             DataOutputADO result = new DataOutputADO();
             try
             {
-                result.HeinPatientTypeCode = cboPatientType.EditValue != null ? cboPatientType.EditValue.ToString() : null;
+                result.HeinPatientTypeCode = cboHeinPatientTypeCode.EditValue != null ? cboHeinPatientTypeCode.EditValue.ToString() : null;
                 result.IsSignExam = chkSignExam.Checked;
                 result.IsPrintExam = chkPrintExam.Checked;
                 result.IsAutoTreatmentFinish = chkAutoTreatmentFinish.Checked;
@@ -2540,27 +2541,177 @@ namespace HIS.UC.TreatmentFinish.Run
                 if (!BackendDataWorker.IsExistsKey<HIS_HEIN_PATIENT_TYPE>())
                 {
                     CommonParam paramCommon = new CommonParam();
-                    MOS.Filter.HisTreatmentResultFilter filter = new MOS.Filter.HisTreatmentResultFilter();
+                    HisHeinPatientTypeFilter filter = new HisHeinPatientTypeFilter();
                     filter.IS_ACTIVE = 1;
-                    HisHeinPatientType = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE>>("api/HisHeinPatientType/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                    HisHeinPatientType = new BackendAdapter(paramCommon).Get<List<HIS_HEIN_PATIENT_TYPE>>("api/HisHeinPatientType/Get", ApiConsumers.MosConsumer, filter, paramCommon);
 
+                    if (HisHeinPatientType != null) BackendDataWorker.UpdateToRam(typeof(HIS_HEIN_PATIENT_TYPE), HisHeinPatientType, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+                else
+                {
+                    HisHeinPatientType = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1).ToList();
+                }
+                HisHeinPatientType = HisHeinPatientType != null ? HisHeinPatientType.OrderBy(o => o.NUM_ORDER).ToList() : HisHeinPatientType;
+
+                //List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                //columnInfos.Add(new ColumnInfo(nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE), "Mã", 100, 1));
+                //columnInfos.Add(new ColumnInfo(nameof(HIS_HEIN_PATIENT_TYPE.DESCRIPTION), "Mô tả", 300, 2));
+                //ControlEditorADO controlEditorADO = new ControlEditorADO(nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE), nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE), columnInfos, true, 400);
+                //ControlEditorLoader.Load(cbo, HisHeinPatientType, controlEditorADO);
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "", 150, 1));
+                columnInfos.Add(new ColumnInfo("DESCRIPTION", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, false, 400);
+                ControlEditorLoader.Load(cbo, HisHeinPatientType, controlEditorADO);
+                //cbo.Properties.ImmediatePopup = true;
+                //cbo.Properties.PopupFormMinSize = new System.Drawing.Size(400, cbo.Properties.PopupFormSize.Height);
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadComboHisHeinPatientType()
+        {
+            try
+            {
+                if (!BackendDataWorker.IsExistsKey<HIS_HEIN_PATIENT_TYPE>())
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    var filter = new MOS.Filter.HisHeinPatientTypeFilter();
+                    HisHeinPatientType = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE>>("api/HisHeinPatientType/Get", ApiConsumers.MosConsumer, filter, paramCommon);
                     if (HisHeinPatientType != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE), HisHeinPatientType, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                 }
                 else
                 {
-                    HisHeinPatientType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1).ToList();
+                    HisHeinPatientType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>();
                 }
-                HisHeinPatientType = HisHeinPatientType != null ? HisHeinPatientType.OrderBy(o => o.DESCRIPTION).ToList() : HisHeinPatientType;
-
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "Mã", 100, 1));
-                columnInfos.Add(new ColumnInfo("DESCRIPTION ", "Mô tả", 150, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, true, 400);
-                ControlEditorLoader.Load(cbo, HisHeinPatientType, controlEditorADO);
+                HisHeinPatientType = HisHeinPatientType?.Where(o => o.IS_ACTIVE == 1).OrderBy(o => o.NUM_ORDER).ToList();
+                var cbo = this.cboHeinPatientTypeCode;
+                cbo.Properties.View.OptionsView.ColumnAutoWidth = false;
+                cbo.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboHeinPatientTypeCode_Closed);
+                cbo.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboHeinPatientTypeCode_Closed);
+                cbo.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboHeinPatientTypeCode_ButtonClick);
+                cbo.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboHeinPatientTypeCode_ButtonClick);
+                cbo.EditValueChanged -= new System.EventHandler(this.cboHeinPatientTypeCode_EditValueChanged);
+                cbo.EditValueChanged += new System.EventHandler(this.cboHeinPatientTypeCode_EditValueChanged);
+                cbo.TextChanged -= new System.EventHandler(this.cboHeinPatientTypeCode_TextChanged);
+                cbo.TextChanged += new System.EventHandler(this.cboHeinPatientTypeCode_TextChanged);
+                cbo.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboHeinPatientTypeCode_KeyUp);
+                cbo.Properties.View.OptionsView.ShowColumnHeaders = false;
+                cbo.Properties.DataSource = HisHeinPatientType;
+                cbo.Properties.DisplayMember = nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE);
+                cbo.Properties.ValueMember = nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE);
+                cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
                 cbo.Properties.ImmediatePopup = true;
-                cbo.Properties.PopupFormMinSize = new System.Drawing.Size(400, cbo.Properties.PopupFormSize.Height);
+                cbo.Properties.View.OptionsView.RowAutoHeight = true;
+                cbo.ForceInitialize();
+                cbo.Properties.View.Columns.Clear();
+                cbo.Properties.PopupFormSize = new System.Drawing.Size(900, 250);
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cbo.Properties.View.Columns.AddField(nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE));
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 70;
+                aColumnCode.ColumnEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnName = cbo.Properties.View.Columns.AddField(nameof(HIS_HEIN_PATIENT_TYPE.DESCRIPTION));
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 2;
+                aColumnName.Width = 750;
+                aColumnName.ColumnEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+                cbo.Properties.View.OptionsView.ColumnAutoWidth = true;
+
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboHeinPatientTypeCode_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
+                {
+                    if (cboHeinPatientTypeCode.EditValue != null)
+                    { }
+                    else
+                        SendKeys.Send("{TAB}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboHeinPatientTypeCode_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    if (!cboHeinPatientTypeCode.Properties.Buttons[1].Visible)
+                        return;
+                    cboHeinPatientTypeCode.EditValue = null;
+                    cboHeinPatientTypeCode.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboHeinPatientTypeCode_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(cboHeinPatientTypeCode.Text))
+                {
+                    cboHeinPatientTypeCode.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboHeinPatientTypeCode_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cboHeinPatientTypeCode.Properties.Buttons[1].Visible = !String.IsNullOrEmpty(cboHeinPatientTypeCode.EditValue?.ToString());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void cboHeinPatientTypeCode_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Control & e.KeyCode == Keys.A)
+                {
+                    cboHeinPatientTypeCode.ClosePopup();
+                    cboHeinPatientTypeCode.SelectAll();
+                }
+                else if (e.KeyCode == Keys.Enter)
+                {
+                    cboHeinPatientTypeCode.ClosePopup();
+                }
+                else
+                    cboHeinPatientTypeCode.ShowPopup();
+                e.Handled = true;
+            }
+            catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
@@ -2770,13 +2921,14 @@ namespace HIS.UC.TreatmentFinish.Run
 
         public void ValidateTxtPatientType()         
         {
-            ValidateMaxLength(cboPatientType, dxErrorProvider1);
-            cboPatientType.Focus();
+            ValidateMaxLength(cboHeinPatientTypeCode, dxErrorProvider1);
+            cboHeinPatientTypeCode.Focus();
         }
 
         private void txtPatientType_EditValueChanged(object sender, EventArgs e)
         {
             ValidateTxtPatientType();
         }
+
     }
 }

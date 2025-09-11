@@ -69,8 +69,8 @@ namespace HIS.UC.TreatmentFinish.Run
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.gBoxTreatmentFinishInfo = new System.Windows.Forms.GroupBox();
             this.layoutControlEditor = new DevExpress.XtraLayout.LayoutControl();
-            this.cboPatientType = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboHeinPatientTypeCode = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
+            this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.chkSignTL = new DevExpress.XtraEditors.CheckEdit();
             this.chkPrintTL = new DevExpress.XtraEditors.CheckEdit();
             this.chkSignBK = new DevExpress.XtraEditors.CheckEdit();
@@ -152,8 +152,8 @@ namespace HIS.UC.TreatmentFinish.Run
             this.gBoxTreatmentFinishInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlEditor)).BeginInit();
             this.layoutControlEditor.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cboPatientType.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboHeinPatientTypeCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSignTL.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintTL.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSignBK.Properties)).BeginInit();
@@ -252,7 +252,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             // layoutControlEditor
             // 
-            this.layoutControlEditor.Controls.Add(this.cboPatientType);
+            this.layoutControlEditor.Controls.Add(this.cboHeinPatientTypeCode);
             this.layoutControlEditor.Controls.Add(this.chkSignTL);
             this.layoutControlEditor.Controls.Add(this.chkPrintTL);
             this.layoutControlEditor.Controls.Add(this.chkSignBK);
@@ -289,26 +289,28 @@ namespace HIS.UC.TreatmentFinish.Run
             this.layoutControlEditor.Text = "layoutControl2";
             this.layoutControlEditor.Visible = false;
             // 
-            // cboPatientType
+            // cboHeinPatientTypeCode
             // 
-            this.cboPatientType.Location = new System.Drawing.Point(82, 19);
-            this.cboPatientType.Name = "cboPatientType";
-            this.cboPatientType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboPatientType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboPatientType.Properties.NullText = "";
-            this.cboPatientType.Properties.View = this.gridView1;
-            this.cboPatientType.Size = new System.Drawing.Size(345, 20);
-            this.cboPatientType.StyleController = this.layoutControlEditor;
-            this.cboPatientType.TabIndex = 118;
-            this.cboPatientType.ToolTip = "Mã đối tượng khám bệnh, chữa bệnh";
+            this.cboHeinPatientTypeCode.Location = new System.Drawing.Point(82, 19);
+            this.cboHeinPatientTypeCode.Name = "cboHeinPatientTypeCode";
+            this.cboHeinPatientTypeCode.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboHeinPatientTypeCode.Properties.AutoComplete = false;
+            this.cboHeinPatientTypeCode.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboHeinPatientTypeCode.Properties.NullText = "";
+            this.cboHeinPatientTypeCode.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboHeinPatientTypeCode.Properties.View = this.customGridViewWithFilterMultiColumn1;
+            this.cboHeinPatientTypeCode.Size = new System.Drawing.Size(345, 20);
+            this.cboHeinPatientTypeCode.StyleController = this.layoutControlEditor;
+            this.cboHeinPatientTypeCode.TabIndex = 120;
             // 
-            // gridView1
+            // customGridViewWithFilterMultiColumn1
             // 
-            this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView1.Name = "gridView1";
-            this.gridView1.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView1.OptionsView.ShowGroupPanel = false;
+            this.customGridViewWithFilterMultiColumn1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumn1.Name = "customGridViewWithFilterMultiColumn1";
+            this.customGridViewWithFilterMultiColumn1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumn1.OptionsView.ShowGroupPanel = false;
             // 
             // chkSignTL
             // 
@@ -462,7 +464,6 @@ namespace HIS.UC.TreatmentFinish.Run
             this.cboCareer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboCareer.Properties.NullText = "";
-            this.cboCareer.Properties.View = this.gridView1;
             this.cboCareer.Size = new System.Drawing.Size(345, 20);
             this.cboCareer.StyleController = this.layoutControlEditor;
             this.cboCareer.TabIndex = 106;
@@ -1124,7 +1125,7 @@ namespace HIS.UC.TreatmentFinish.Run
             // 
             this.layoutControlItem5.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem5.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem5.Control = this.cboPatientType;
+            this.layoutControlItem5.Control = this.cboHeinPatientTypeCode;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 17);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Size = new System.Drawing.Size(429, 24);
@@ -1281,8 +1282,8 @@ namespace HIS.UC.TreatmentFinish.Run
             this.gBoxTreatmentFinishInfo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlEditor)).EndInit();
             this.layoutControlEditor.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.cboPatientType.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboHeinPatientTypeCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSignTL.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintTL.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSignBK.Properties)).EndInit();
@@ -1407,7 +1408,6 @@ namespace HIS.UC.TreatmentFinish.Run
         private DevExpress.XtraEditors.SimpleButton btnShowIcd;
         private DevExpress.XtraLayout.LayoutControlItem LayoutShowIcd;
         private DevExpress.XtraEditors.GridLookUpEdit cboCareer;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraLayout.LayoutControlItem lciHisCareer;
         DevExpress.Utils.ToolTipItem toolTipItem1;
         DevExpress.Utils.ToolTipItem toolTipItem2;
@@ -1439,8 +1439,9 @@ namespace HIS.UC.TreatmentFinish.Run
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
-        public DevExpress.XtraEditors.GridLookUpEdit cboPatientType;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
+        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboHeinPatientTypeCode;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
     }
 }
