@@ -1330,6 +1330,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     }
                     valid = false;
                 }
+                valid = valid && ValidateHeinPatientTypeCode();
+                ClearHeinPatientCodeError();
             }
             catch (Exception ex)
             {
@@ -2008,6 +2010,32 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     rdoRightRoute.Checked = true;
                 if (rdoRightRoute.Checked)
                     ValidateRightRouteType();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboPatientCode_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                ClearHeinPatientCodeError();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void ClearHeinPatientCodeError()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(cboPatientCode.EditValue?.ToString()))
+                {
+                    this.dxValidationProvider1.SetValidationRule(this.cboPatientCode, null);
+                }
             }
             catch (Exception ex)
             {

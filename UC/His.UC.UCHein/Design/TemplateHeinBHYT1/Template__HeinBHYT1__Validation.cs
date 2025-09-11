@@ -43,7 +43,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 this.ValidAddress();
                 this.ValidHNCode();
                 //this.ValidNoiChuyenDen();
-                this.ValidateHeinPatientTypeCode();
                 this.ValidIcd();
             }
             catch (Exception ex)
@@ -73,43 +72,40 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             if (HisConfigCFG.WarningHeinPatientTypeCode == "1")
             {
                 this.layoutControlItem7.AppearanceItemCaption.ForeColor = Color.Maroon;
+
+                ValidPatientTypeCode();
             }
         }
         public bool ValidateHeinPatientTypeCode()
         {
-            bool valid = true;
             try
             {
+                var patientCode = cboPatientCode.EditValue?.ToString();
+
                 if (PatientTypeIdBHYT == Convert.ToInt64(Config.HisConfigCFG.PatientTypeCode__BHYT) &&
-                    string.IsNullOrEmpty(cboPatientCode.EditValue?.ToString()))
+                    string.IsNullOrEmpty(patientCode) &&
+                    HisConfigCFG.WarningHeinPatientTypeCode == "2")
                 {
-                    if (HisConfigCFG.WarningHeinPatientTypeCode == "1")
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Chưa nhập mã đối tượng khám chữa bệnh. Bạn có muốn tiếp tục?",
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                            Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        MessageBoxButtons.YesNo) == DialogResult.No)
                     {
-                        valid = false;
-                        //this.ValidationSingleControl(cboPatientCode, dxValidationProvider1);
-                        ValidPatientTypeCode();
-                    }
-                    else if (HisConfigCFG.WarningHeinPatientTypeCode == "2")
-                    {
-                        if (DevExpress.XtraEditors.XtraMessageBox.Show(
-                            "Chưa nhập mã đối tượng khám chữa bệnh. Bạn có muốn tiếp tục?",
-                            Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
-                            MessageBoxButtons.YesNo) == DialogResult.No)
-                        {
-                            valid = false;
-                            cboPatientCode.Focus();
-                            cboPatientCode.ShowPopup();
-                        }
+                        cboPatientCode.Focus();
+                        cboPatientCode.ShowPopup();
+                        return false;
                     }
                 }
             }
             catch (Exception ex)
             {
-                valid = false;
                 Inventec.Common.Logging.LogSystem.Warn("ValidateHeinPatientTypeCode: \n" + ex);
+                return false;
             }
-            return valid;
+            return true;
         }
+
         private void ValidHNCode()
         {
             try

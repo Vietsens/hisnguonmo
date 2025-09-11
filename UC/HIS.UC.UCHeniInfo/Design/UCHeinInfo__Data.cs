@@ -136,12 +136,13 @@ namespace HIS.UC.UCHeniInfo
 				patientProfileSDO.HisPatientTypeAlter.ADDRESS = this.txtAddress.Text.Trim();
                 if (patientProfileSDO.HisTreatment == null)
                     patientProfileSDO.HisTreatment = new MOS.EFMODEL.DataModels.HIS_TREATMENT();
-                if (this.txtHeinPatientTypeCode != null)
-					patientProfileSDO.HisTreatment.HEIN_PATIENT_TYPE_CODE = this.txtHeinPatientTypeCode.Text.Trim();
-                else
-                    patientProfileSDO.HisTreatment.HEIN_PATIENT_TYPE_CODE = null;
-				//qtcode
-				if(!string.IsNullOrEmpty(this.transferInCode))
+				if (!string.IsNullOrEmpty(this.cboHeinPatientType.EditValue?.ToString()))
+					patientProfileSDO.HisTreatment.HEIN_PATIENT_TYPE_CODE = this.cboHeinPatientType.EditValue.ToString(); 
+				else
+					patientProfileSDO.HisTreatment.HEIN_PATIENT_TYPE_CODE = null;
+                //qtcode
+
+                if (!string.IsNullOrEmpty(this.transferInCode))
                 {
 					patientProfileSDO.HisTreatment.TRANSFER_IN_CODE = this.transferInCode;
 					patientProfileSDO.HisTreatment.IS_TRANSFER_IN = 1; 

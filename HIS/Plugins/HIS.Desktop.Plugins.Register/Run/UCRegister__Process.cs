@@ -258,17 +258,12 @@ namespace HIS.Desktop.Plugins.Register.Run
             bool validPatientInfo = true;
             bool validPatientPlusInfo = true;
             bool validPhoneNumber = true;
-            //bool validHeinPatientTypeCode = true;
-            //long patientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(cboPatientType.EditValue.ToString());
-            //bool isUseUCHeinInfo = (patientTypeId == HisConfigCFG.PatientTypeId__BHYT || patientTypeId == HisConfigCFG.PatientTypeId__QN);
             try
             {
                 this.UpdatepatientDob();
 
                 this.positionHandleControl = -1;
                 this.positionHandlePlusInfoControl = -1;
-                //validHeinPatientTypeCode = isUseUCHeinInfo ? this.uCMainHein.ValidateHeinPatientTypeCode(patientTypeId) : true;
-
 
                 validPatientPlusInfo = this.dxValidationProviderPlusInfomation.Validate();
 

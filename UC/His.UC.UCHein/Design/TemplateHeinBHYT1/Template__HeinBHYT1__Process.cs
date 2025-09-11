@@ -974,16 +974,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             try
             {
                 this.isCallByRegistor = isByRegistor;
-                if (this.isCallByRegistor == false)
-                {
-                    layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    txtPatientCode.Visible = false;
-                }
-                else
-                { 
-                    layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    txtPatientCode.Visible = true;
-                }
 
             }
             catch (Exception ex)
