@@ -2424,13 +2424,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         {
             try
             {
-                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
-                {
-                    if (cboHeinPatientTypeCode.EditValue != null)
-                    { }    
-                    else
-                        SendKeys.Send("{TAB}");
-                }
+                var cbo = sender as DevExpress.XtraEditors.GridLookUpEdit;
+                cbo.Properties.Buttons[1].Visible = cbo.EditValue != null;
             }
             catch (Exception ex)
             {
@@ -2473,7 +2468,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         {
             try
             {
-                cboHeinPatientTypeCode.Properties.Buttons[1].Visible = !String.IsNullOrEmpty(cboHeinPatientTypeCode.EditValue?.ToString());
+
             }
             catch (Exception ex)
             {
