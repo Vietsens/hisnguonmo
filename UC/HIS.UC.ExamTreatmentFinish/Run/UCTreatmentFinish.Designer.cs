@@ -59,7 +59,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboHeinPatientTypeCode = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
-            this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.customGridViewWithFilterMultiColumn2 = new HIS.UC.ExamTreatmentFinish.CustomControl.CustomGridView();
             this.btnCheckIcd = new DevExpress.XtraEditors.SimpleButton();
             this.panelControlSubIcd = new DevExpress.XtraEditors.PanelControl();
             this.cboCareer = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -2089,7 +2089,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         private DevExpress.XtraEditors.MemoEdit memNote;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem36;
         private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboHeinPatientTypeCode;
-        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn2;
+        private HIS.UC.ExamTreatmentFinish.CustomControl.CustomGridView customGridViewWithFilterMultiColumn2;
         private DevExpress.XtraLayout.LayoutControlItem lciHeinPatientTypeCode;
     }
 }
