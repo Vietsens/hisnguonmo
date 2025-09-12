@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Columns;
 using System;
 using System.Collections.Generic;
@@ -62,7 +63,6 @@ namespace Inventec.Common.Controls.EditorLoader
                 cboEditor.Properties.DisplayMember = controlEditorADO.DisplayMember;
                 cboEditor.Properties.ValueMember = controlEditorADO.ValueMember;
                 cboEditor.Properties.ForceInitialize();
-
                 cboEditor.Properties.Columns.Clear();
                 foreach (var columnInfo in controlEditorADO.ColumnInfos)
                 {
@@ -105,8 +105,7 @@ namespace Inventec.Common.Controls.EditorLoader
                         default:
                             break;
                     }
-
-                    cboEditor.Properties.Columns.Add(new LookUpColumnInfo(columnInfo.fieldName, columnInfo.caption, columnInfo.width, formType, columnInfo.formatString, columnInfo.visible, horzAlignment));
+                   cboEditor.Properties.Columns.Add(new LookUpColumnInfo(columnInfo.fieldName, columnInfo.caption, columnInfo.width, formType, columnInfo.formatString, columnInfo.visible, horzAlignment));
                 }
 
                 cboEditor.Properties.ShowHeader = controlEditorADO.ShowHeader;
@@ -162,18 +161,34 @@ namespace Inventec.Common.Controls.EditorLoader
                     aColumnCode.Width = (columnInfo.width == 0 ? ControlEditorADO.DEFAULT__COLUMN_WIDTH : columnInfo.width);
                     aColumnCode.AppearanceCell.TextOptions.HAlignment = horzAlignment;
                     aColumnCode.OptionsColumn.FixedWidth = columnInfo.FixedWidth;
+
+                    ApplyMemoEdit(aColumnCode);
                 }
 
-                cboEditor.Properties.View.OptionsView.ColumnAutoWidth = false;
+                cboEditor.Properties.View.OptionsView.RowAutoHeight = true;
+                cboEditor.Properties.View.OptionsView.ColumnAutoWidth = true;
                 cboEditor.Properties.View.OptionsView.ShowIndicator = false;
                 cboEditor.Properties.View.OptionsView.ShowGroupPanel = false;
                 cboEditor.Properties.PopupFormSize = new System.Drawing.Size(controlEditorADO.PopupWidth + 20, 200);
                 cboEditor.Properties.View.OptionsView.ShowColumnHeaders = controlEditorADO.ShowHeader;
+                //cboEditor.Properties.View.BestFitColumns();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        private static void ApplyMemoEdit(GridColumn col)
+        {
+            var memoEdit = new RepositoryItemMemoEdit();
+            memoEdit.Appearance.Options.UseTextOptions = true;
+            memoEdit.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
+            memoEdit.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            memoEdit.Name = Guid.NewGuid().ToString();
+
+            col.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
+            col.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            col.ColumnEdit = memoEdit;
         }
 
         static void LoadDataToLookUpEdit(DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit cboEditor, object dataSource, ControlEditorADO controlEditorADO)
@@ -311,15 +326,21 @@ namespace Inventec.Common.Controls.EditorLoader
                     aColumnCode.Width = (columnInfo.width == 0 ? ControlEditorADO.DEFAULT__COLUMN_WIDTH : columnInfo.width);
                     aColumnCode.AppearanceCell.TextOptions.HAlignment = horzAlignment;
                     aColumnCode.OptionsColumn.FixedWidth = columnInfo.FixedWidth;
+
+                    // Áp dụng MemoEdit cho tất cả các cột
+                    ApplyMemoEdit(aColumnCode);
                 }
                 if (controlEditorADO.PopupWidth > 0)
                 {
                     cboEditor.PopupFormWidth = controlEditorADO.PopupWidth;
                 }
+
+                cboEditor.View.OptionsView.RowAutoHeight = true;
                 cboEditor.View.OptionsView.ColumnAutoWidth = true;
                 cboEditor.View.OptionsView.ShowColumnHeaders = controlEditorADO.ShowHeader;
                 cboEditor.View.OptionsView.ShowIndicator = false;
                 cboEditor.View.OptionsView.ShowGroupPanel = false;
+                //cboEditor.View.BestFitColumns();
             }
             catch (Exception ex)
             {

@@ -72,11 +72,22 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 }
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("PTTT_METHOD_CODE", "", 150, 1));
-                columnInfos.Add(new ColumnInfo("PTTT_METHOD_NAME", "", 250, 2));
+                columnInfos.Add(new ColumnInfo("PTTT_METHOD_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("PTTT_METHOD_NAME", "", 200, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("PTTT_METHOD_NAME", "ID", columnInfos, false, 250);
                 controlEditorADO.ImmediatePopup = true;
                 ControlEditorLoader.Load(cboMethod, datas, controlEditorADO);
+
+                cboMethod.Properties.PopupFormSize = new System.Drawing.Size(500, 350);
+
+                // Cho phép hàng tự giãn chiều cao theo nội dung
+                cboMethod.Properties.View.OptionsView.RowAutoHeight = true;
+
+                // Không ép cột cố định để nó co giãn theo kéo thả
+                cboMethod.Properties.View.OptionsView.ColumnAutoWidth = false;
+
+                // Nếu muốn nó tự căn chiều rộng theo dữ liệu
+                cboMethod.Properties.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
 
                 if (this.sereServPTTT != null && this.sereServPTTT.PTTT_METHOD_ID > 0)
                 {
@@ -117,6 +128,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 ControlEditorADO controlEditorADO = new ControlEditorADO("PTTT_GROUP_NAME", "ID", columnInfos, false, 250);
                 controlEditorADO.ImmediatePopup = true;
                 ControlEditorLoader.Load(cbbPtttGroup, datas, controlEditorADO);
+                cboMethod.Properties.PopupFormSize = new System.Drawing.Size(600, 300);
                 this.SetDefaultCboPTTTGroupOnly(sereServ);
                 if (this.sereServPTTT != null && this.sereServPTTT.PTTT_GROUP_ID != null)
                 {
