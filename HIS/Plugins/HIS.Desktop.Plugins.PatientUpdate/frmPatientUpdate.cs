@@ -177,7 +177,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             {
                 WaitingManager.Show();
                 SetDefaultData();
-                SetDefaultControlsProperties();
+                //SetDefaultControlsProperties();
                 SetCaptionByLanguageKey();
                 FillDataToControlsForm();//1
                 SetIcon();
@@ -337,17 +337,17 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void SetDefaultControlsProperties()
-        {
-            try
-            {
-                emptySpaceItemBNManTinh.Width = lcFatherName.Width - lcBNManTinh.Width;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void SetDefaultControlsProperties()
+        //{
+        //    try
+        //    {
+        //        emptySpaceItemBNManTinh.Width = lcFatherName.Width - lcBNManTinh.Width;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
         private void SetEditInfo()
         {
