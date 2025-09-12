@@ -258,6 +258,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 IsAutoCheck = false;
                 this.txtAddress.Text = patientTypeAlter.ADDRESS;
                 this.txtHNCode.Text = patientTypeAlter.HNCODE;
+                if (this.HeinPatientCode != null)
+                {
+                    cboPatientCode.EditValue = this.HeinPatientCode;
+                }
                 if ((patientTypeAlter.FREE_CO_PAID_TIME ?? 0) > 0)
                 {
                     this.txtFreeCoPainTime.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(patientTypeAlter.FREE_CO_PAID_TIME ?? 0);
