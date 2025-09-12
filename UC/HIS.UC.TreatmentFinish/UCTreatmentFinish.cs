@@ -2615,7 +2615,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 cbo.Properties.View.OptionsView.RowAutoHeight = true;
                 cbo.ForceInitialize();
                 cbo.Properties.View.Columns.Clear();
-                cbo.Properties.PopupFormSize = new System.Drawing.Size(900, 250);
+                cbo.Properties.PopupFormSize = new System.Drawing.Size(400, 250);
 
                 DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cbo.Properties.View.Columns.AddField(nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE));
                 aColumnCode.Caption = "Mã";
@@ -2628,7 +2628,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 aColumnName.Caption = "Tên";
                 aColumnName.Visible = true;
                 aColumnName.VisibleIndex = 2;
-                aColumnName.Width = 750;
+                aColumnName.Width = 300;
                 aColumnName.ColumnEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
                 cbo.Properties.View.OptionsView.ColumnAutoWidth = true;
 
