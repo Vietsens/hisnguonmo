@@ -18,12 +18,12 @@
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
-using HIS.Desktop.ApiConsumer;       
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.Library.TreatmentEndTypeExt;
 using HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.Data;
-using HIS.UC.TreatmentFinish.ADO;    
+using HIS.UC.TreatmentFinish.ADO;
 using HIS.UC.TreatmentFinish.CloseTreatment;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
@@ -156,7 +156,7 @@ namespace HIS.UC.TreatmentFinish.Run
                     this.IsShowButtonIcd = data.IsShowButtonIcd;
                 }
                 this.PatientTypeBHYT = PatientTypeBHYT;
-                      
+
                 //SetCaptionByLanguageKey();
                 SetCaptionByLanguageKeyNew();
                 LogSystem.Debug("UCTreatmentFinish. 2");
@@ -277,7 +277,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 }
 
                 dtEndTime.Enabled = txtTreatmentEndTypeCode.Enabled
-                    =cboHeinPatientTypeCode.Enabled
+                    = cboHeinPatientTypeCode.Enabled
                     = cboTreatmentEndType.Enabled
                     = chkAutoPrintGHK.Enabled
                     = chkSignGHK.Enabled
@@ -318,7 +318,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 }
                 LogSystem.Debug("UCTreatmentFinish_Load. 4");
 
-                this.LableTxtPatientType();    
+                this.LableTxtPatientType();
                 this.InitTreatmentEndType();
 
                 this.ValidHeadDepartmentAndDirectorBranch();
@@ -363,19 +363,19 @@ namespace HIS.UC.TreatmentFinish.Run
                             filter.INTRUCTION_TIME = this.dataInputADO.UseTime;
                     }
 
-                    this.Treatment = new BackendAdapter(param).Get<List<HisTreatmentWithPatientTypeInfoSDO>>("api/HisTreatment/GetTreatmentWithPatientTypeInfoSdo", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();   
-                    
+                    this.Treatment = new BackendAdapter(param).Get<List<HisTreatmentWithPatientTypeInfoSDO>>("api/HisTreatment/GetTreatmentWithPatientTypeInfoSdo", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+
                 }
 
                 SetEnableCheckSoLuuTruBANTByConfig();
                 this.cboHeinPatientTypeCode.EditValue = this.Treatment.HEIN_PATIENT_TYPE_CODE;
-                if (!chkIssueOutPatientStoreCode.Checked)      
+                if (!chkIssueOutPatientStoreCode.Checked)
                 {
                     lciForlblSoLuuTruBANT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lciForcboProgram.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
-                     
-                ProcessStoreCodeDisplay();    
+
+                ProcessStoreCodeDisplay();
             }
             catch (Exception ex)
             {
@@ -639,7 +639,7 @@ namespace HIS.UC.TreatmentFinish.Run
         bool IsCheckAutoTreatmentFinish;
         public bool IsCheck;
         private void chkAutoTreatmentFinish_CheckedChanged(object sender, EventArgs e)
-        
+
         {
             try
             {
@@ -2588,7 +2588,12 @@ namespace HIS.UC.TreatmentFinish.Run
                 {
                     HisHeinPatientType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>();
                 }
-                HisHeinPatientType = HisHeinPatientType?.Where(o => o.IS_ACTIVE == 1).OrderBy(o => o.NUM_ORDER).ToList();
+                HisHeinPatientType = HisHeinPatientType?
+                    .Where(o => o.IS_ACTIVE == 1)
+                    .OrderBy(o => o.NUM_ORDER.HasValue ? 0 : 1)
+                    .ThenBy(o => o.NUM_ORDER)
+                    .ThenBy(o => o.ID)
+                    .ToList();
                 var cbo = this.cboHeinPatientTypeCode;
                 cbo.Properties.View.OptionsView.ColumnAutoWidth = false;
                 cbo.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboHeinPatientTypeCode_Closed);
@@ -2638,13 +2643,7 @@ namespace HIS.UC.TreatmentFinish.Run
         {
             try
             {
-                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
-                {
-                    if (cboHeinPatientTypeCode.EditValue != null)
-                    { }
-                    else
-                        SendKeys.Send("{TAB}");
-                }
+                cboHeinPatientTypeCode.Properties.Buttons[1].Visible = cboHeinPatientTypeCode.EditValue != null;
             }
             catch (Exception ex)
             {
@@ -2687,7 +2686,7 @@ namespace HIS.UC.TreatmentFinish.Run
         {
             try
             {
-                cboHeinPatientTypeCode.Properties.Buttons[1].Visible = !String.IsNullOrEmpty(cboHeinPatientTypeCode.EditValue?.ToString());
+
             }
             catch (Exception ex)
             {
@@ -2911,7 +2910,7 @@ namespace HIS.UC.TreatmentFinish.Run
             {
                 errorProvider.SetErrorType(textEdit, ErrorType.Warning);
                 errorProvider.SetError(textEdit, "Mã điều trị không vượt quá 10 ký tự");
-                
+
             }
             else
             {
@@ -2919,7 +2918,7 @@ namespace HIS.UC.TreatmentFinish.Run
             }
         }
 
-        public void ValidateTxtPatientType()         
+        public void ValidateTxtPatientType()
         {
             ValidateMaxLength(cboHeinPatientTypeCode, dxErrorProvider1);
             cboHeinPatientTypeCode.Focus();
