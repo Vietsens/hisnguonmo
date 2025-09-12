@@ -464,6 +464,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 }
                 HisHeinPatientType = HisHeinPatientType?.Where(o => o.IS_ACTIVE == 1).OrderBy(o => o.NUM_ORDER).ToList();
                 var cbo = this.cboHeinPatientTypeCode;
+                cbo.Properties.View.OptionsView.ColumnAutoWidth = false;
                 cbo.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboHeinPatientTypeCode_Closed);
                 cbo.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboHeinPatientTypeCode_Closed);
                 cbo.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboHeinPatientTypeCode_ButtonClick);
@@ -472,6 +473,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 cbo.EditValueChanged += new System.EventHandler(this.cboHeinPatientTypeCode_EditValueChanged);
                 cbo.TextChanged -= new System.EventHandler(this.cboHeinPatientTypeCode_TextChanged);
                 cbo.TextChanged += new System.EventHandler(this.cboHeinPatientTypeCode_TextChanged);
+                cbo.KeyUp -= new System.Windows.Forms.KeyEventHandler(this.cboHeinPatientTypeCode_KeyUp);
                 cbo.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboHeinPatientTypeCode_KeyUp);
                 cbo.Properties.View.OptionsView.ShowColumnHeaders = false;
                 cbo.Properties.DataSource = HisHeinPatientType;
@@ -483,21 +485,23 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 cbo.Properties.View.OptionsView.RowAutoHeight = true;
                 cbo.ForceInitialize();
                 cbo.Properties.View.Columns.Clear();
-                cbo.Properties.PopupFormSize = new System.Drawing.Size(900, 250);
+                cbo.Properties.PopupFormSize = new System.Drawing.Size(470, 250);
 
                 DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cbo.Properties.View.Columns.AddField(nameof(HIS_HEIN_PATIENT_TYPE.HEIN_PATIENT_TYPE_CODE));
                 aColumnCode.Caption = "Mã";
                 aColumnCode.Visible = true;
                 aColumnCode.VisibleIndex = 1;
-                aColumnCode.Width = 100;
+                aColumnCode.Width = 70;
                 aColumnCode.ColumnEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
 
                 DevExpress.XtraGrid.Columns.GridColumn aColumnName = cbo.Properties.View.Columns.AddField(nameof(HIS_HEIN_PATIENT_TYPE.DESCRIPTION));
                 aColumnName.Caption = "Tên";
                 aColumnName.Visible = true;
                 aColumnName.VisibleIndex = 2;
-                aColumnName.Width = 800;
+                aColumnName.Width = 400;
                 aColumnName.ColumnEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+
+                cbo.Properties.View.OptionsView.ColumnAutoWidth = true;
             }
             catch (Exception ex)
             {

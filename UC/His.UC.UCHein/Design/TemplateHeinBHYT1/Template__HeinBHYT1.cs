@@ -17,6 +17,7 @@
  */
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Columns;
 using His.UC.UCHein.Base;
 using His.UC.UCHein.Config;
@@ -65,6 +66,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         DataInitHeinBhyt entity;
         ResultDataADO ResultDataADO { get; set; }
         string SysMediOrgCode { get; set; }
+        string HeinPatientCode;
         string HeinLevelCodeCurrent { get; set; }
         string MediOrgCodeCurrent { get; set; }
         List<string> MediOrgCodesAccepts { get; set; }
@@ -123,6 +125,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 {
                     this.entity = data;
                     this.isDefaultInit = true;
+                    this.HeinPatientCode = data.HeinPatientCode;
                     DataStore.MediOrgs = (from m in data.MediOrgs select new MediOrgADO(m)).ToList();
                     DataStore.IcdADOs = (from m in data.Icds select new IcdADO(m)).ToList();
                     DataStore.LiveAreas = data.LiveAreas;
@@ -194,14 +197,36 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 List<HIS_HEIN_PATIENT_TYPE> heinData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     .ToList();
-                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", heinData));
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "", 100, 1));
-                columnInfos.Add(new ColumnInfo("DESCRIPTION", "", 250, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, false, 350);
-                //Load data vao combobox
-                ControlEditorLoader.Load(cboPatientCode, heinData, controlEditorADO);
+
+                cboPatientCode.Properties.DataSource = heinData;
+                cboPatientCode.Properties.DisplayMember = "HEIN_PATIENT_TYPE_CODE";
+                cboPatientCode.Properties.ValueMember = "HEIN_PATIENT_TYPE_CODE";
+
+                cboPatientCode.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboPatientCode.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cboPatientCode.ForceInitialize();
+                cboPatientCode.Properties.View.Columns.Clear();
                 cboPatientCode.Properties.ImmediatePopup = true;
+
+                // Cột mã
+                DevExpress.XtraGrid.Columns.GridColumn colCode = cboPatientCode.Properties.View.Columns.AddField("HEIN_PATIENT_TYPE_CODE");
+                colCode.Caption = "Mã";
+                colCode.Visible = true;
+                colCode.VisibleIndex = 0;
+                colCode.Width = 100;
+
+                // Cột mô tả (xuống dòng)
+                DevExpress.XtraGrid.Columns.GridColumn colDesc = cboPatientCode.Properties.View.Columns.AddField("DESCRIPTION");
+                colDesc.Caption = "Mô tả";
+                colDesc.Visible = true;
+                colDesc.VisibleIndex = 1;
+                colDesc.ColumnEdit = repositoryItemMemoEdit1; // dùng memo edit
+                colDesc.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
+                colDesc.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+                colDesc.Width = 250;
+
+                // Cho phép auto height
+                cboPatientCode.Properties.View.OptionsView.RowAutoHeight = true;
             }
             catch (Exception ex)
             {

@@ -27,7 +27,7 @@ namespace His.UC.UCHein.Data
     public class DataInitHeinBhyt
     {
         public DataInitHeinBhyt() { }
-
+        public string HeinPatientCode { get; set; }
         public string Template { get; set; }
         public List<MOS.EFMODEL.DataModels.HIS_MEDI_ORG> MediOrgs { get; set; }
         public List<MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaData> LiveAreas { get; set; }
