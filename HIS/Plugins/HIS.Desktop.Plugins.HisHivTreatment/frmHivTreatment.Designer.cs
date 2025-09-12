@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -102,10 +103,20 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
-            this.cboGroupPatient = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.cboArvPatientBeginAddress = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.customGridLookUpEditWithFilterMultiColumn2View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.cboTestPlaceKD = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
+            this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.cboTestSamplePlace = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
+            this.customGridLookUpEditWithFilterMultiColumn1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.cboGroupPatient = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboRegimenHivReason = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -116,9 +127,6 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.cboTuberculosisScreening = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.dtRegimenHivDate = new DevExpress.XtraEditors.DateEdit();
-            this.txtArvPatientBeginAddress = new DevExpress.XtraEditors.TextEdit();
-            this.txtTestPlaceKD = new DevExpress.XtraEditors.TextEdit();
-            this.txtTestSamplePlace = new DevExpress.XtraEditors.TextEdit();
             this.btnGetInfo = new DevExpress.XtraEditors.SimpleButton();
             this.spnPrescriptionArcDay = new DevExpress.XtraEditors.SpinEdit();
             this.cboHivTreatment = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -192,9 +200,6 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.lciNoiLayMauXN = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciNoiXNKD = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciNoiBDDTARV = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem40 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -202,6 +207,9 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.lciGiaiDoanlamSang = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem38 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciNhomDoiTuong = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.lblPatientAddress = new DevExpress.XtraEditors.LabelControl();
@@ -225,13 +233,9 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.layoutControlItem60 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciBtnDelete = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
@@ -243,14 +247,20 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.barDockControl7 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl8 = new DevExpress.XtraBars.BarDockControl();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cboGroupPatient.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboArvPatientBeginAddress.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn2View)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTestPlaceKD.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTestSamplePlace.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboGroupPatient.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboRegimenHivReason.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
@@ -262,9 +272,6 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtRegimenHivDate.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtRegimenHivDate.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtArvPatientBeginAddress.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtTestPlaceKD.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtTestSamplePlace.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spnPrescriptionArcDay.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboHivTreatment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit14View)).BeginInit();
@@ -349,9 +356,6 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciNoiLayMauXN)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciNoiXNKD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciNoiBDDTARV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).BeginInit();
@@ -359,6 +363,9 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             ((System.ComponentModel.ISupportInitialize)(this.lciGiaiDoanlamSang)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciNhomDoiTuong)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
@@ -376,9 +383,9 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnDelete)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
@@ -432,15 +439,15 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             // 
             // layoutControl3
             // 
+            this.layoutControl3.Controls.Add(this.cboArvPatientBeginAddress);
+            this.layoutControl3.Controls.Add(this.cboTestPlaceKD);
+            this.layoutControl3.Controls.Add(this.cboTestSamplePlace);
             this.layoutControl3.Controls.Add(this.cboGroupPatient);
             this.layoutControl3.Controls.Add(this.cboRegimenHivReason);
             this.layoutControl3.Controls.Add(this.cboClinicalStage);
             this.layoutControl3.Controls.Add(this.cboTuberculosisTreatmentResult);
             this.layoutControl3.Controls.Add(this.cboTuberculosisScreening);
             this.layoutControl3.Controls.Add(this.dtRegimenHivDate);
-            this.layoutControl3.Controls.Add(this.txtArvPatientBeginAddress);
-            this.layoutControl3.Controls.Add(this.txtTestPlaceKD);
-            this.layoutControl3.Controls.Add(this.txtTestSamplePlace);
             this.layoutControl3.Controls.Add(this.btnGetInfo);
             this.layoutControl3.Controls.Add(this.spnPrescriptionArcDay);
             this.layoutControl3.Controls.Add(this.cboHivTreatment);
@@ -478,24 +485,31 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
             // 
-            // cboGroupPatient
+            // cboArvPatientBeginAddress
             // 
-            this.cboGroupPatient.Location = new System.Drawing.Point(1003, 28);
-            this.cboGroupPatient.MenuManager = this.barManager1;
-            this.cboGroupPatient.Name = "cboGroupPatient";
-            this.cboGroupPatient.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboGroupPatient.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.cboArvPatientBeginAddress.Location = new System.Drawing.Point(719, 28);
+            this.cboArvPatientBeginAddress.MenuManager = this.barManager1;
+            this.cboArvPatientBeginAddress.Name = "cboArvPatientBeginAddress";
+            this.cboArvPatientBeginAddress.Properties.AutoComplete = false;
+            this.cboArvPatientBeginAddress.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboGroupPatient.Properties.NullText = "";
-            this.cboGroupPatient.Properties.View = this.gridView5;
-            this.cboGroupPatient.Size = new System.Drawing.Size(154, 20);
-            this.cboGroupPatient.StyleController = this.layoutControl3;
-            this.cboGroupPatient.TabIndex = 100;
+            this.cboArvPatientBeginAddress.Properties.ImmediatePopup = true;
+            this.cboArvPatientBeginAddress.Properties.NullText = "";
+            this.cboArvPatientBeginAddress.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboArvPatientBeginAddress.Properties.View = this.customGridLookUpEditWithFilterMultiColumn2View;
+            this.cboArvPatientBeginAddress.Size = new System.Drawing.Size(150, 20);
+            this.cboArvPatientBeginAddress.StyleController = this.layoutControl3;
+            this.cboArvPatientBeginAddress.TabIndex = 106;
+            this.cboArvPatientBeginAddress.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboArvPatientBeginAddress_KeyUp);
             // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItemSave});
@@ -519,6 +533,103 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.barButtonItemSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
             this.barButtonItemSave.Name = "barButtonItemSave";
             this.barButtonItemSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItemSave_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1169, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 427);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1169, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 398);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1169, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 398);
+            // 
+            // customGridLookUpEditWithFilterMultiColumn2View
+            // 
+            this.customGridLookUpEditWithFilterMultiColumn2View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridLookUpEditWithFilterMultiColumn2View.Name = "customGridLookUpEditWithFilterMultiColumn2View";
+            this.customGridLookUpEditWithFilterMultiColumn2View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridLookUpEditWithFilterMultiColumn2View.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboTestPlaceKD
+            // 
+            this.cboTestPlaceKD.Location = new System.Drawing.Point(424, 28);
+            this.cboTestPlaceKD.MenuManager = this.barManager1;
+            this.cboTestPlaceKD.Name = "cboTestPlaceKD";
+            this.cboTestPlaceKD.Properties.AutoComplete = false;
+            this.cboTestPlaceKD.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboTestPlaceKD.Properties.ImmediatePopup = true;
+            this.cboTestPlaceKD.Properties.NullText = "";
+            this.cboTestPlaceKD.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboTestPlaceKD.Properties.View = this.customGridViewWithFilterMultiColumn1;
+            this.cboTestPlaceKD.Size = new System.Drawing.Size(161, 20);
+            this.cboTestPlaceKD.StyleController = this.layoutControl3;
+            this.cboTestPlaceKD.TabIndex = 105;
+            this.cboTestPlaceKD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboTestPlaceKD_KeyUp);
+            // 
+            // customGridViewWithFilterMultiColumn1
+            // 
+            this.customGridViewWithFilterMultiColumn1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumn1.Name = "customGridViewWithFilterMultiColumn1";
+            this.customGridViewWithFilterMultiColumn1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumn1.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboTestSamplePlace
+            // 
+            this.cboTestSamplePlace.Location = new System.Drawing.Point(132, 28);
+            this.cboTestSamplePlace.MenuManager = this.barManager1;
+            this.cboTestSamplePlace.Name = "cboTestSamplePlace";
+            this.cboTestSamplePlace.Properties.AutoComplete = false;
+            this.cboTestSamplePlace.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboTestSamplePlace.Properties.ImmediatePopup = true;
+            this.cboTestSamplePlace.Properties.NullText = "";
+            this.cboTestSamplePlace.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboTestSamplePlace.Properties.View = this.customGridLookUpEditWithFilterMultiColumn1View;
+            this.cboTestSamplePlace.Size = new System.Drawing.Size(158, 20);
+            this.cboTestSamplePlace.StyleController = this.layoutControl3;
+            this.cboTestSamplePlace.TabIndex = 104;
+            this.cboTestSamplePlace.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboTestSamplePlace_PreviewKeyDown);
+            // 
+            // customGridLookUpEditWithFilterMultiColumn1View
+            // 
+            this.customGridLookUpEditWithFilterMultiColumn1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridLookUpEditWithFilterMultiColumn1View.Name = "customGridLookUpEditWithFilterMultiColumn1View";
+            this.customGridLookUpEditWithFilterMultiColumn1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridLookUpEditWithFilterMultiColumn1View.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboGroupPatient
+            // 
+            this.cboGroupPatient.Location = new System.Drawing.Point(1003, 28);
+            this.cboGroupPatient.MenuManager = this.barManager1;
+            this.cboGroupPatient.Name = "cboGroupPatient";
+            this.cboGroupPatient.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboGroupPatient.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboGroupPatient.Properties.NullText = "";
+            this.cboGroupPatient.Properties.View = this.gridView5;
+            this.cboGroupPatient.Size = new System.Drawing.Size(154, 20);
+            this.cboGroupPatient.StyleController = this.layoutControl3;
+            this.cboGroupPatient.TabIndex = 100;
             // 
             // gridView5
             // 
@@ -633,33 +744,6 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.dtRegimenHivDate.TabIndex = 95;
             this.dtRegimenHivDate.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.dtRegimenHivDate_ButtonClick);
             // 
-            // txtArvPatientBeginAddress
-            // 
-            this.txtArvPatientBeginAddress.Location = new System.Drawing.Point(719, 28);
-            this.txtArvPatientBeginAddress.MenuManager = this.barManager1;
-            this.txtArvPatientBeginAddress.Name = "txtArvPatientBeginAddress";
-            this.txtArvPatientBeginAddress.Size = new System.Drawing.Size(150, 20);
-            this.txtArvPatientBeginAddress.StyleController = this.layoutControl3;
-            this.txtArvPatientBeginAddress.TabIndex = 89;
-            // 
-            // txtTestPlaceKD
-            // 
-            this.txtTestPlaceKD.Location = new System.Drawing.Point(424, 28);
-            this.txtTestPlaceKD.MenuManager = this.barManager1;
-            this.txtTestPlaceKD.Name = "txtTestPlaceKD";
-            this.txtTestPlaceKD.Size = new System.Drawing.Size(161, 20);
-            this.txtTestPlaceKD.StyleController = this.layoutControl3;
-            this.txtTestPlaceKD.TabIndex = 88;
-            // 
-            // txtTestSamplePlace
-            // 
-            this.txtTestSamplePlace.Location = new System.Drawing.Point(132, 28);
-            this.txtTestSamplePlace.MenuManager = this.barManager1;
-            this.txtTestSamplePlace.Name = "txtTestSamplePlace";
-            this.txtTestSamplePlace.Size = new System.Drawing.Size(158, 20);
-            this.txtTestSamplePlace.StyleController = this.layoutControl3;
-            this.txtTestSamplePlace.TabIndex = 87;
-            // 
             // btnGetInfo
             // 
             this.btnGetInfo.Location = new System.Drawing.Point(136, 2);
@@ -717,6 +801,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.cboHivTreatment.StyleController = this.layoutControl3;
             this.cboHivTreatment.TabIndex = 83;
             this.cboHivTreatment.EditValueChanged += new System.EventHandler(this.cboHivTreatment_EditValueChanged);
+            this.cboHivTreatment.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboHivTreatment_CustomDisplayText);
             this.cboHivTreatment.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboHivTreatment_PreviewKeyDown);
             // 
             // gridLookUpEdit14View
@@ -1366,16 +1451,16 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.layoutControlItem6,
             this.emptySpaceItem3,
             this.emptySpaceItem4,
-            this.lciNoiLayMauXN,
-            this.lciNoiXNKD,
-            this.lciNoiBDDTARV,
             this.emptySpaceItem5,
             this.layoutControlItem39,
             this.layoutControlItem40,
             this.lciKetQuaDieuTriLao,
             this.lciGiaiDoanlamSang,
             this.layoutControlItem38,
-            this.lciNhomDoiTuong});
+            this.lciNhomDoiTuong,
+            this.layoutControlItem33,
+            this.layoutControlItem24,
+            this.layoutControlItem34});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "Root";
             this.layoutControlGroup3.Size = new System.Drawing.Size(1159, 267);
@@ -1779,48 +1864,6 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.emptySpaceItem4.Size = new System.Drawing.Size(134, 26);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // lciNoiLayMauXN
-            // 
-            this.lciNoiLayMauXN.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciNoiLayMauXN.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciNoiLayMauXN.Control = this.txtTestSamplePlace;
-            this.lciNoiLayMauXN.Location = new System.Drawing.Point(0, 26);
-            this.lciNoiLayMauXN.Name = "lciNoiLayMauXN";
-            this.lciNoiLayMauXN.OptionsToolTip.ToolTip = "Nơi lấy mẫu xét nghiệm";
-            this.lciNoiLayMauXN.Size = new System.Drawing.Size(292, 24);
-            this.lciNoiLayMauXN.Text = "Nơi lấy mẫu XN:";
-            this.lciNoiLayMauXN.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciNoiLayMauXN.TextSize = new System.Drawing.Size(125, 20);
-            this.lciNoiLayMauXN.TextToControlDistance = 5;
-            // 
-            // lciNoiXNKD
-            // 
-            this.lciNoiXNKD.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciNoiXNKD.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciNoiXNKD.Control = this.txtTestPlaceKD;
-            this.lciNoiXNKD.Location = new System.Drawing.Point(292, 26);
-            this.lciNoiXNKD.Name = "lciNoiXNKD";
-            this.lciNoiXNKD.OptionsToolTip.ToolTip = "Nơi xét nghiệm khẳng định nhiễm HIV";
-            this.lciNoiXNKD.Size = new System.Drawing.Size(295, 24);
-            this.lciNoiXNKD.Text = "Nơi XNKĐ:";
-            this.lciNoiXNKD.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciNoiXNKD.TextSize = new System.Drawing.Size(125, 20);
-            this.lciNoiXNKD.TextToControlDistance = 5;
-            // 
-            // lciNoiBDDTARV
-            // 
-            this.lciNoiBDDTARV.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciNoiBDDTARV.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciNoiBDDTARV.Control = this.txtArvPatientBeginAddress;
-            this.lciNoiBDDTARV.Location = new System.Drawing.Point(587, 26);
-            this.lciNoiBDDTARV.Name = "lciNoiBDDTARV";
-            this.lciNoiBDDTARV.OptionsToolTip.ToolTip = "Nơi bắt đâu điều trị ARV";
-            this.lciNoiBDDTARV.Size = new System.Drawing.Size(284, 24);
-            this.lciNoiBDDTARV.Text = "NOI_BDDT_ARV:";
-            this.lciNoiBDDTARV.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciNoiBDDTARV.TextSize = new System.Drawing.Size(125, 20);
-            this.lciNoiBDDTARV.TextToControlDistance = 5;
-            // 
             // emptySpaceItem5
             // 
             this.emptySpaceItem5.AllowHotTrack = false;
@@ -1906,6 +1949,49 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.lciNhomDoiTuong.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciNhomDoiTuong.TextSize = new System.Drawing.Size(125, 20);
             this.lciNhomDoiTuong.TextToControlDistance = 5;
+            // 
+            // layoutControlItem33
+            // 
+            this.layoutControlItem33.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem33.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem33.Control = this.cboTestSamplePlace;
+            this.layoutControlItem33.Location = new System.Drawing.Point(0, 26);
+            this.layoutControlItem33.Name = "layoutControlItem33";
+            this.layoutControlItem33.OptionsToolTip.ToolTip = "Nơi lấy mẫu xét nghiệm";
+            this.layoutControlItem33.Size = new System.Drawing.Size(292, 24);
+            this.layoutControlItem33.Text = "Nơi lấy mẫu XN: ";
+            this.layoutControlItem33.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem33.TextSize = new System.Drawing.Size(125, 20);
+            this.layoutControlItem33.TextToControlDistance = 5;
+            // 
+            // layoutControlItem24
+            // 
+            this.layoutControlItem24.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem24.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem24.Control = this.cboTestPlaceKD;
+            this.layoutControlItem24.CustomizationFormText = "Nơi XN KĐ: ";
+            this.layoutControlItem24.Location = new System.Drawing.Point(292, 26);
+            this.layoutControlItem24.Name = "layoutControlItem24";
+            this.layoutControlItem24.OptionsToolTip.ToolTip = "Nơi xét nghiệm khẳng định";
+            this.layoutControlItem24.Size = new System.Drawing.Size(295, 24);
+            this.layoutControlItem24.Text = "Nơi XN KĐ: ";
+            this.layoutControlItem24.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem24.TextSize = new System.Drawing.Size(125, 20);
+            this.layoutControlItem24.TextToControlDistance = 5;
+            // 
+            // layoutControlItem34
+            // 
+            this.layoutControlItem34.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem34.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem34.Control = this.cboArvPatientBeginAddress;
+            this.layoutControlItem34.Location = new System.Drawing.Point(587, 26);
+            this.layoutControlItem34.Name = "layoutControlItem34";
+            this.layoutControlItem34.OptionsToolTip.ToolTip = "Nơi bắt đầu điều trị ARV";
+            this.layoutControlItem34.Size = new System.Drawing.Size(284, 24);
+            this.layoutControlItem34.Text = "Nơi BĐĐT ARV:";
+            this.layoutControlItem34.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem34.TextSize = new System.Drawing.Size(125, 20);
+            this.layoutControlItem34.TextToControlDistance = 5;
             // 
             // groupBox1
             // 
@@ -2169,42 +2255,6 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.lciBtnDelete.TextVisible = false;
             this.lciBtnDelete.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1169, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 427);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1169, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 398);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1169, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 398);
-            // 
-            // emptySpaceItem2
-            // 
-            this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 170);
-            this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(1160, 10);
-            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
-            // 
             // layoutControl4
             // 
             this.layoutControl4.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -2224,6 +2274,14 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlGroup4.Size = new System.Drawing.Size(1240, 450);
             this.layoutControlGroup4.TextVisible = false;
+            // 
+            // emptySpaceItem2
+            // 
+            this.emptySpaceItem2.AllowHotTrack = false;
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 170);
+            this.emptySpaceItem2.Name = "emptySpaceItem2";
+            this.emptySpaceItem2.Size = new System.Drawing.Size(1160, 10);
+            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // barDockControl1
             // 
@@ -2343,8 +2401,14 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.cboGroupPatient.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboArvPatientBeginAddress.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn2View)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTestPlaceKD.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTestSamplePlace.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboGroupPatient.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboRegimenHivReason.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
@@ -2356,9 +2420,6 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtRegimenHivDate.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtRegimenHivDate.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtArvPatientBeginAddress.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtTestPlaceKD.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtTestSamplePlace.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spnPrescriptionArcDay.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboHivTreatment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit14View)).EndInit();
@@ -2443,9 +2504,6 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciNoiLayMauXN)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciNoiXNKD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciNoiBDDTARV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).EndInit();
@@ -2453,6 +2511,9 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             ((System.ComponentModel.ISupportInitialize)(this.lciGiaiDoanlamSang)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciNhomDoiTuong)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).EndInit();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
@@ -2470,9 +2531,9 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnDelete)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
@@ -2608,12 +2669,6 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
-        private DevExpress.XtraEditors.TextEdit txtArvPatientBeginAddress;
-        private DevExpress.XtraEditors.TextEdit txtTestPlaceKD;
-        private DevExpress.XtraEditors.TextEdit txtTestSamplePlace;
-        private DevExpress.XtraLayout.LayoutControlItem lciNoiLayMauXN;
-        private DevExpress.XtraLayout.LayoutControlItem lciNoiXNKD;
-        private DevExpress.XtraLayout.LayoutControlItem lciNoiBDDTARV;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
         private DevExpress.XtraEditors.DateEdit dtRegimenHivDate;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem39;
@@ -2633,5 +2688,14 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem38;
         private DevExpress.XtraLayout.LayoutControlItem lciNhomDoiTuong;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
+        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboTestSamplePlace;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridLookUpEditWithFilterMultiColumn1View;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem33;
+        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboArvPatientBeginAddress;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridLookUpEditWithFilterMultiColumn2View;
+        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboTestPlaceKD;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem24;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem34;
     }
 }
