@@ -1,5 +1,6 @@
 ﻿using DevExpress.Data;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraGrid.Views.Base;
 using HIS.Desktop.ApiConsumer;
@@ -11,6 +12,7 @@ using HIS.Desktop.Plugins.HisHeinPatientType.Validtion;
 using HIS.Desktop.Utilities.Extensions;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using Inventec.UC.Paging;
@@ -21,10 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -36,9 +35,9 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
         int dataTotal = 0;
         int startPage = 0;
         PagingGrid pagingGrid;
-        int ActionType = -1;
+        int ActionType = 1;
         int positionHandle = -1;
-        MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE currentData;
+        MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE currentData;     
         Inventec.Desktop.Common.Modules.Module moduleData;
         List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE> lstTreatmentType;
         public frmHisHeinPatientType(Inventec.Desktop.Common.Modules.Module moduleData) : base(moduleData)
@@ -296,6 +295,7 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                 else
                 {
                     var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE>(HisRequestUriStore.HIS_HEIN_PATIENT_TYPE_UPDATE, ApiConsumers.MosConsumer, updateDTO, param);
+                    LogSystem.Info("data: " + LogUtil.TraceData("resul: ", resultData));
                     if (resultData != null)
                     {
                         success = true;
@@ -337,7 +337,11 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
 
                 if (selectedItems.Any())
                 {
-                    updateDTO.TREATMENT_TYPE_IDS = string.Join(",", selectedItems.Select(x => x.ID));
+                    updateDTO.TREATMENT_TYPE_IDS = string.Join(",", selectedItems.Select(x => x.ID));        
+                }
+                else
+                {
+                    updateDTO.TREATMENT_TYPE_IDS = "";
                 }
 
                 updateDTO.HEIN_PATIENT_TYPE_CODE = txtHeinPatientTypeCode.Text.Trim();
@@ -350,13 +354,28 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                 {
                     updateDTO.RIGHT_ROUTE_CODE = "TT";
                 }
+                else if (!chkDT.Checked && !chkTT.Checked)
+                {
+                    updateDTO.RIGHT_ROUTE_CODE = "";
+                }
 
                 if (!string.IsNullOrEmpty(txtRightRouteTypeCode.Text))
                 {
                     updateDTO.RIGHT_ROUTE_TYPE_CODE = txtRightRouteTypeCode.Text;
                 }
+                else
+                {
+                    updateDTO.RIGHT_ROUTE_TYPE_CODE = "";
+                }
 
-                updateDTO.NUM_ORDER = Convert.ToInt64(sprinNumOrder.EditValue ?? 0);
+                if (string.IsNullOrEmpty(sprinNumOrder.EditValue?.ToString()))
+                {
+                    updateDTO.NUM_ORDER = null;
+                }
+                else
+                {
+                    updateDTO.NUM_ORDER = Convert.ToInt64(sprinNumOrder.EditValue);
+                }
 
             }
             catch (Exception ex)
@@ -521,8 +540,34 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
+                    else if (e.Column.FieldName == "RIGHT_ROUTE_CODE_DT" && pData.RIGHT_ROUTE_CODE == "DT")
+                    {
+                        e.Value = true;
+                    }
+                    else if (e.Column.FieldName == "RIGHT_ROUTE_CODE_TT" && pData.RIGHT_ROUTE_CODE == "TT")
+                    {
+                        e.Value = true; 
+                    }
+                    else if (e.Column.FieldName == "RIGHT_ROUTE_TYPE_CODE_NAME")
+                    {
+                        if (pData.RIGHT_ROUTE_TYPE_CODE == "CC")
+                        {
+                            e.Value = "Cấp cứu";
+                        }
+                        else if (pData.RIGHT_ROUTE_TYPE_CODE == "GT")
+                        {
+                            e.Value = "Giới thiệu";
+                        }
+                        else if (pData.RIGHT_ROUTE_TYPE_CODE == "HK")
+                        {
+                            e.Value = "Hẹn khám";
+                        }
+                        else if (pData.RIGHT_ROUTE_TYPE_CODE == "TH")
+                        {
+                            e.Value = "Thông tuyến";
+                        }
+                    }
                 }
-
                 gridControlHeinPatientType.RefreshDataSource();
             }
             catch (Exception ex)
@@ -758,6 +803,7 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
         {
             try
             {
+                btnReset_Click(null, null);       
                 var rowData = (MOS.EFMODEL.DataModels.HIS_HEIN_PATIENT_TYPE)gridViewHeinPatientType.GetFocusedRow();
                 if (rowData != null)
                 {
@@ -804,6 +850,14 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                     cboRightRouteTypeCode.Enabled = true;
                     LoadRightRouteType(cboRightRouteTypeCode);
                 }
+                else
+                {
+                    chkDT.Checked = false;
+                    txtRightRouteTypeCode.Enabled = false;
+                    txtRightRouteTypeCode.Text = "";
+                    cboRightRouteTypeCode.Enabled = false;
+                    cboRightRouteTypeCode.EditValue = null;
+                }
             }
             catch (Exception ex)
             {
@@ -817,7 +871,8 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
             {
                 new { Code = "CC", Name = "Cấp cứu" },
                 new { Code = "GT", Name = "Giới thiệu" },
-                new { Code = "HK", Name = "Hẹn khám" }
+                new { Code = "HK", Name = "Hẹn khám" },
+                new { Code = "TH", Name = "Thông tuyến" }
             };
 
             List<ColumnInfo> columnInfos = new List<ColumnInfo>();
@@ -862,6 +917,22 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
             {
                 GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cbo.Properties);
                 gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(eventSelect);
+                cbo.Properties.View.SelectionChanged += (s, e) =>
+                {
+                    // Sử dụng BeginInvoke để đảm bảo chạy sau khi selection đã được cập nhật
+                    cbo.BeginInvoke(new MethodInvoker(() =>
+                    {
+                        eventSelect(gridCheck, EventArgs.Empty);
+                        cbo.RefreshEditValue();
+                    }));
+                };
+
+                // Event khi đóng popup
+                cbo.CloseUp += (s, e) =>
+                {
+                    eventSelect(gridCheck, EventArgs.Empty);
+                    cbo.RefreshEditValue();
+                };
                 cbo.Properties.Tag = gridCheck;
                 cbo.Properties.View.OptionsSelection.MultiSelect = true;
                 GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
@@ -959,7 +1030,7 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
         {
             spinEdit.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             spinEdit.Properties.NullText = string.Empty;
-            spinEdit.Properties.MinValue = 0;
+            spinEdit.Properties.MinValue = 1;
             spinEdit.EditValue = null;
             spinEdit.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
             spinEdit.Properties.Mask.EditMask = "n0"; // số nguyên
@@ -980,9 +1051,20 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
 
         private void sprinNumOrder_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == '-' || e.KeyChar == '+')
+            if (e.KeyChar == '-' || e.KeyChar == '+' || e.KeyChar == '0')
             {
                 e.Handled = true;
+            }
+        }
+
+        private void cboRightRouteTypeCode_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind == ButtonPredefines.Delete)
+            {
+                txtRightRouteTypeCode.Text = string.Empty;
+                cboRightRouteTypeCode.Text = string.Empty;
+                cboRightRouteTypeCode.EditValue = null;
+                
             }
         }
     }
