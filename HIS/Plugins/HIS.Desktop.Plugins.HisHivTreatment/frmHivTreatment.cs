@@ -63,6 +63,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
         List<HIS_REGIMEN_HIV> beginRegimenHivNameSelecteds;
         List<HIS_REGIMEN_HIV> regimenHivNameSelecteds;
         List<ComboADO> hivPatientStatusSelecteds;
+        private List<ComboADO> hivTreatmentSelecteds = new List<ComboADO>();
         ComboADO comboAdo = new ComboADO();
 
         int prescriptionArcDay = 0;
@@ -100,6 +101,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                 ValidControls();
                 FillDataToControlsForm();
                 FillDataToControl();
+                
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -246,12 +248,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                 this.lciKetQuaDieuTriLao.Text = Inventec.Common.Resource.Get.Value("frmHivTreatment.lciKetQuaDieuTriLao.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem40.Text = Inventec.Common.Resource.Get.Value("frmHivTreatment.layoutControlItem40.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem39.Text = Inventec.Common.Resource.Get.Value("frmHivTreatment.layoutControlItem39.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciNoiLayMauXN.Text = Inventec.Common.Resource.Get.Value("frmHivTreatment.lciNoiLayMauXN.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciNoiXNKD.Text = Inventec.Common.Resource.Get.Value("frmHivTreatment.lciNoiXNKD.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciNoiBDDTARV.Text = Inventec.Common.Resource.Get.Value("frmHivTreatment.lciNoiBDDTARV.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciNoiLayMauXN.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHivTreatment.lciNoiLayMauXN.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciNoiXNKD.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHivTreatment.lciNoiXNKD.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciNoiBDDTARV.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHivTreatment.lciNoiBDDTARV.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+               
 
                 this.Text = Inventec.Common.Resource.Get.Value("frmHivTreatment.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
@@ -277,6 +274,9 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                     this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmHivTreatment.btnSave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                     ActionType = GlobalVariables.ActionAdd;
                 }
+                dtTuberculosisTreatmentBegin.Enabled = false;
+                dtTuberculosisTreatmentEnd.Enabled = false;
+                cboTuberculosisRegimen.Enabled = false;
                 cboPatientStatus.Focus();
             }
             catch (Exception ex)
@@ -303,6 +303,12 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             }
 
         }
+        private void InitHivTreatment()
+        {
+            InitCheck(cboHivTreatment, SelectionGrid__cboHivTreatment);
+            InitCombo(cboHivTreatment, comboAdo.listHivTreatment(), "Name", "Value");
+        }
+
         private void InitHivPatientStatus()
         {
 
@@ -476,6 +482,95 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void SelectionGrid__cboHivTreatment(object sender, EventArgs e)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    List<ComboADO> selected = new List<ComboADO>();
+                    foreach (ComboADO item in gridCheckMark.Selection)
+                    {
+                        if (item != null)
+                        {
+                            if (sb.Length > 0) sb.Append("; ");
+                            sb.Append(item.Name);
+                            selected.Add(item);
+                        }
+                    }
+                    this.hivTreatmentSelecteds = new List<ComboADO>();
+                    this.hivTreatmentSelecteds.AddRange(selected);
+                }
+                this.cboHivTreatment.Text = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadCboTestSamplePlace()
+        {
+            try
+            {
+                List<HIS_MEDI_ORG> mediData = BackendDataWorker.Get<HIS_MEDI_ORG>()
+            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+            .ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("MEDI_ORG_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("MEDI_ORG_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("MEDI_ORG_NAME", "MEDI_ORG_CODE", columnInfos, false, 350);
+               
+                ControlEditorLoader.Load(cboTestSamplePlace, mediData, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("InitializeComboHeinPatientTypeCode: \n" + ex);
+            }
+        }
+        private void LoadcboTestPlaceKD()
+        {
+            try
+            {
+                List<HIS_MEDI_ORG> mediData = BackendDataWorker.Get<HIS_MEDI_ORG>()
+            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+            .ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("MEDI_ORG_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("MEDI_ORG_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("MEDI_ORG_NAME", "MEDI_ORG_CODE", columnInfos, false, 350);
+
+                ControlEditorLoader.Load(cboTestPlaceKD, mediData, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("InitializeComboHeinPatientTypeCode: \n" + ex);
+            }
+        }
+        private void LoadcboArvPatientBeginAddress()
+        {
+            try
+            {
+                List<HIS_MEDI_ORG> mediData = BackendDataWorker.Get<HIS_MEDI_ORG>()
+            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+            .ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("MEDI_ORG_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("MEDI_ORG_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("MEDI_ORG_NAME", "MEDI_ORG_CODE", columnInfos, false, 350);
+
+                ControlEditorLoader.Load(cboArvPatientBeginAddress, mediData, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("InitializeComboHeinPatientTypeCode: \n" + ex);
+            }
+        }
+
+
+
         #endregion
         private void SetValueRegimen(GridLookUpEdit gridLookUpEdit, List<HIS_REGIMEN_HIV> listSelect, List<HIS_REGIMEN_HIV> listAll)
         {
@@ -539,8 +634,21 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                     if (currentHivTreatment != null)
                     {
                         this.isInit = true;
+                        cboTestSamplePlace.EditValue = currentHivTreatment.TEST_SAMPLE_PLACE;
+                        cboTestPlaceKD.EditValue = currentHivTreatment.TEST_PLACE_KD;
+                        cboArvPatientBeginAddress.EditValue = currentHivTreatment.ARV_PATIENT_BEGIN_PLACE;
+
+
+
                         cboPatientType.EditValue = currentHivTreatment.HIV_PATIENT_TYPE;
                         ProcessSelectBusinessCombo(cboPatientStatus, currentHivTreatment.HIV_PATIENT_STATUS);
+                        Inventec.Common.Logging.LogSystem.Debug(
+    Inventec.Common.Logging.LogUtil.TraceData("After ProcessSelectBusinessCombo - SelectedValue:", cboPatientStatus.EditValue)
+);
+
+                        Inventec.Common.Logging.LogSystem.Debug(
+                            Inventec.Common.Logging.LogUtil.TraceData("After ProcessSelectBusinessCombo - SelectedText:", cboPatientStatus.Text)
+                        );
                         cboTreatmentReason.EditValue = currentHivTreatment.HIV_TREATMENT_REASON;
                         dtInfection.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentHivTreatment.HIV_INFECTION_DATE ?? 0);
                         dtArvPatientBegin.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentHivTreatment.ARV_PATIENT_BEGIN ?? 0);
@@ -565,7 +673,19 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                             dtTestPcrResult.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentHivTreatment.TEST_PCR_RESULT_DATE ?? 0);
                             cboTestPcrResult.EditValue = currentHivTreatment.TEST_PCR_RESULT;
                         }
-                        cboHivTreatment.EditValue = currentHivTreatment.HIV_TREATMENT_CODE;
+                        //huannh
+                        //cboHivTreatment.EditValue = currentHivTreatment.HIV_TREATMENT_CODE;
+                        ProcessSelectBusinessCombo(cboHivTreatment, currentHivTreatment.HIV_TREATMENT_CODE);
+
+                        Inventec.Common.Logging.LogSystem.Debug(
+    Inventec.Common.Logging.LogUtil.TraceData("After ProcessSelectBusinessCombo - SelectedValue22:", cboHivTreatment.EditValue)
+);
+
+                        Inventec.Common.Logging.LogSystem.Debug(
+                            Inventec.Common.Logging.LogUtil.TraceData("After ProcessSelectBusinessCombo22 - SelectedText:", cboHivTreatment.Text)
+                        );
+
+
                         dtArvTreatmentBegin.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentHivTreatment.ARV_TREATMEN_BEGIN ?? 0);
                         dtArvTreatmentEnd.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentHivTreatment.ARV_TREATMEN_END ?? 0);
                         spnPrescriptionArcDay.EditValue = currentHivTreatment.PRESCRIPTION_ARV_DAY;
@@ -574,15 +694,18 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                         cboClinicalStage.EditValue = currentHivTreatment.CLINICAL_STAGE;
                         cboTuberculosisTreatmentResult.EditValue = currentHivTreatment.TUBERCULOSIS_TREATMENT_RESULT;
                         cboTuberculosisScreening.EditValue = currentHivTreatment.TUBERCULOSIS_SCREENING;
-                        txtTestSamplePlace.Text = currentHivTreatment.TEST_SAMPLE_PLACE;
-                        txtTestPlaceKD.Text = currentHivTreatment.TEST_PLACE_KD;
-                        txtArvPatientBeginAddress.Text = currentHivTreatment.ARV_PATIENT_BEGIN_PLACE;
+                        
                         dtRegimenHivDate.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentHivTreatment.REGIMEN_HIV_DATE ?? 0);
                         this.isInit = false;
                     }
                     else
                     {
                         this.isInit = false;
+
+                        cboTestSamplePlace.EditValue = null;
+                        cboArvPatientBeginAddress.EditValue = null;
+                        cboTestPlaceKD.EditValue = null;
+
                         cboPatientType.EditValue = null;
                         cboPatientStatus.EditValue = null;
                         cboTreatmentReason.EditValue = null;
@@ -617,9 +740,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                         cboClinicalStage.EditValue = null;
                         cboTuberculosisTreatmentResult.EditValue = null;
                         cboTuberculosisScreening.EditValue = null;
-                        txtTestSamplePlace.Text = null;
-                        txtTestPlaceKD.Text = null;
-                        txtArvPatientBeginAddress.Text = null;
+                       
                         dtRegimenHivDate.EditValue = null;
                     }
                 }
@@ -714,6 +835,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                         this.isInit = true;
                         cboPatientType.EditValue = hivVTreatment.HIV_PATIENT_TYPE;
                         ProcessSelectBusinessCombo(cboPatientStatus, hivVTreatment.HIV_PATIENT_STATUS);
+
                         cboTreatmentReason.EditValue = hivVTreatment.HIV_TREATMENT_REASON;
                         dtInfection.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(hivVTreatment.HIV_INFECTION_DATE ?? 0);
                         dtArvPatientBegin.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(hivVTreatment.ARV_PATIENT_BEGIN ?? 0);
@@ -738,7 +860,12 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                             dtTestPcrResult.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(hivVTreatment.TEST_PCR_RESULT_DATE ?? 0);
                             cboTestPcrResult.EditValue = hivVTreatment.TEST_PCR_RESULT;
                         }
-                        cboHivTreatment.EditValue = hivVTreatment.HIV_TREATMENT_CODE;
+                        //cboHivTreatment.EditValue = hivVTreatment.HIV_TREATMENT_CODE;
+                        ProcessSelectBusinessCombo(cboHivTreatment,
+      hivVTreatment.HIV_TREATMENT_CODE?.ToString() ?? string.Empty);
+
+
+
                         dtArvTreatmentBegin.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(hivVTreatment.ARV_TREATMEN_BEGIN ?? 0);
                         dtArvTreatmentEnd.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(hivVTreatment.ARV_TREATMEN_END ?? 0);
                         spnPrescriptionArcDay.EditValue = hivVTreatment.PRESCRIPTION_ARV_DAY;
@@ -747,9 +874,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                         cboClinicalStage.EditValue = currentHivTreatment.CLINICAL_STAGE;
                         cboTuberculosisTreatmentResult.EditValue = currentHivTreatment.TUBERCULOSIS_TREATMENT_RESULT;
                         cboTuberculosisScreening.EditValue = currentHivTreatment.TUBERCULOSIS_SCREENING;
-                        txtTestSamplePlace.Text = currentHivTreatment.TEST_SAMPLE_PLACE;
-                        txtTestPlaceKD.Text = currentHivTreatment.TEST_PLACE_KD;
-                        txtArvPatientBeginAddress.Text = currentHivTreatment.ARV_PATIENT_BEGIN_PLACE;
+                       
                         dtRegimenHivDate.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentHivTreatment.REGIMEN_HIV_DATE ?? 0);
                         this.isInit = false;
                     }
@@ -829,6 +954,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                     GridCheckMarksSelection gridCheckMarkBusinessCodes = cbo.Properties.Tag as GridCheckMarksSelection;
                     gridCheckMarkBusinessCodes.ClearSelection(cbo.Properties.View);
                 }
+                
 
             }
             catch (Exception ex)
@@ -867,7 +993,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
         }
         public void FillDataToControlsForm()
         {
-            try
+            try  
             {
                 FillDataToGridLookupEdit(this.cboPatientType, comboAdo.listHivPatientType());
                 FillDataToGridLookupEdit(this.cboTreatmentReason, comboAdo.listHivTreatmentReason());
@@ -879,7 +1005,8 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                 FillDataToGridLookupEdit(this.cboTestPcrRnaResult, comboAdo.listTestPcrRnaResult());
                 FillDataToGridLookupEdit(this.cboTestPcrTimes, comboAdo.listTestTime());
                 FillDataToGridLookupEdit(this.cboTestPcrResult, comboAdo.listTestPcrResult());
-                FillDataToGridLookupEdit(this.cboHivTreatment, comboAdo.listHivTreatment());
+                //FillDataToGridLookupEdit(this.cboHivTreatment, comboAdo.listHivTreatment());
+                
                 FillDataToGridLookupEdit(this.cboRegimenHivReason, comboAdo.listRegimenHivReason());
                 InitComboGroupPatient();
                 //FillDataToGridLookupEdit(this.cboGroupPatient, GetDataGroup());
@@ -889,6 +1016,10 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                 InitRegimenHivBegin();
                 InitRegimenHiv();
                 InitHivPatientStatus();
+                InitHivTreatment();
+                LoadCboTestSamplePlace();
+                LoadcboTestPlaceKD();
+                LoadcboArvPatientBeginAddress();
             }
             catch (Exception ex)
             {
@@ -984,6 +1115,24 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             }
         }
 
+        private void cboHivTreatment_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            GridCheckMarksSelection gridCheckMark = sender is GridLookUpEdit ? (sender as GridLookUpEdit).Properties.Tag as GridCheckMarksSelection : (sender as DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit).Tag as GridCheckMarksSelection;
+            if (gridCheckMark == null || gridCheckMark.Selection == null || gridCheckMark.Selection.Count == 0)
+            {
+                e.DisplayText = "";
+                return;
+            }
+            foreach (ComboADO rv in gridCheckMark.Selection)
+            {
+                if (sb.ToString().Length > 0) { sb.Append("; "); }
+
+                sb.Append(rv.Name.ToString());
+            }
+            e.DisplayText = sb.ToString();
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             CommonParam param = new CommonParam();
@@ -1053,7 +1202,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                 CommonParam param = new CommonParam();
                 HisHivTreatmentFilter filter = new HisHivTreatmentFilter();
                 filter.ID = currentId;
-                currentDTO = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_HIV_TREATMENT>>("api/HisHivTreatment/GetById", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                currentDTO = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_HIV_TREATMENT>>("api/HisHivTreatment/Get", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -1065,6 +1214,24 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             try
             {
                 hivTreatmentDTO.TREATMENT_ID = currentTreatment.ID;
+             
+                if (cboTestSamplePlace!= null && cboTestSamplePlace?.EditValue != null)
+                  hivTreatmentDTO.TEST_SAMPLE_PLACE = cboTestSamplePlace.EditValue.ToString();
+                
+                else
+                    hivTreatmentDTO.TEST_SAMPLE_PLACE = null;
+
+                if (cboTestPlaceKD != null && cboTestPlaceKD.EditValue != null)
+                    hivTreatmentDTO.TEST_PLACE_KD = cboTestPlaceKD.EditValue.ToString();
+                else
+                    hivTreatmentDTO.TEST_PLACE_KD = null;
+
+                if (cboArvPatientBeginAddress != null && cboArvPatientBeginAddress.EditValue != null)
+                    hivTreatmentDTO.ARV_PATIENT_BEGIN_PLACE = cboArvPatientBeginAddress.EditValue.ToString();
+                else
+                    hivTreatmentDTO.ARV_PATIENT_BEGIN_PLACE = null;
+
+
                 if (cboPatientType.EditValue != null)
                     hivTreatmentDTO.HIV_PATIENT_TYPE = Inventec.Common.TypeConvert.Parse.ToInt16(cboPatientType.EditValue.ToString());
                 else
@@ -1213,11 +1380,20 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                     hivTreatmentDTO.TEST_PCR_RESULT = Inventec.Common.TypeConvert.Parse.ToInt16(cboTestPcrResult.EditValue.ToString());
                 else
                     hivTreatmentDTO.TEST_PCR_RESULT = null;
+                //huannh
+                //if (cboHivTreatment.EditValue != null)
+                //    hivTreatmentDTO.HIV_TREATMENT_CODE = Inventec.Common.TypeConvert.Parse.ToInt16(cboHivTreatment.EditValue.ToString());
+                //else
+                //    hivTreatmentDTO.HIV_TREATMENT_CODE = null;
 
-                if (cboHivTreatment.EditValue != null)
-                    hivTreatmentDTO.HIV_TREATMENT_CODE = Inventec.Common.TypeConvert.Parse.ToInt16(cboHivTreatment.EditValue.ToString());
+               
+
+
+                if (hivTreatmentSelecteds != null && hivTreatmentSelecteds.Count > 0)
+                    hivTreatmentDTO.HIV_TREATMENT_CODE = String.Join(";", hivTreatmentSelecteds.Select(x => x.Value).ToList());
                 else
                     hivTreatmentDTO.HIV_TREATMENT_CODE = null;
+
 
                 if (dtArvTreatmentBegin.EditValue != null && dtArvTreatmentBegin.DateTime != DateTime.MinValue)
                 {
@@ -1270,20 +1446,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                 else
                     hivTreatmentDTO.TUBERCULOSIS_SCREENING = null;
 
-                if (txtArvPatientBeginAddress.Text != null)
-                    hivTreatmentDTO.ARV_PATIENT_BEGIN_PLACE = txtArvPatientBeginAddress.Text;
-                else
-                    hivTreatmentDTO.ARV_PATIENT_BEGIN_PLACE = null;
-
-                if (txtTestPlaceKD.Text != null)
-                    hivTreatmentDTO.TEST_PLACE_KD = txtTestPlaceKD.Text;
-                else
-                    hivTreatmentDTO.TEST_PLACE_KD = null;
-
-                if (txtTestSamplePlace.Text != null)
-                    hivTreatmentDTO.TEST_SAMPLE_PLACE = txtTestSamplePlace.Text;
-                else
-                    hivTreatmentDTO.TEST_SAMPLE_PLACE = null;
+               
 
             }
             catch (Exception ex)
@@ -1429,10 +1592,31 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                 if (cboTuberculosisTreatmentType.EditValue == null)
                 {
                     cboTuberculosisTreatmentType.Properties.Buttons[1].Visible = false;
+                    dtTuberculosisTreatmentBegin.Enabled = false;
+                    dtTuberculosisTreatmentEnd.Enabled = false;
+                    cboTuberculosisRegimen.Enabled = false;
+                    return;
+
                 }
                 else
                 {
                     cboTuberculosisTreatmentType.Properties.Buttons[1].Visible = true;
+                }
+                var value = Convert.ToInt64(cboTuberculosisTreatmentType.EditValue);
+                if (value == 0)
+                {
+                    dtTuberculosisTreatmentBegin.Enabled = false;
+                    dtTuberculosisTreatmentEnd.Enabled = false;
+                    cboTuberculosisRegimen.Enabled = false;
+                    dtTuberculosisTreatmentBegin.EditValue = null;
+                    dtTuberculosisTreatmentEnd.EditValue = null;
+                    cboTuberculosisRegimen.EditValue = null;
+                }
+                else
+                {
+                    dtTuberculosisTreatmentBegin.Enabled = true;
+                    dtTuberculosisTreatmentEnd.Enabled = true;
+                    cboTuberculosisRegimen.Enabled = true;
                 }
 
             }
@@ -1684,8 +1868,8 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
-
+        }  
+          
         private void cboPatientType_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
@@ -2338,9 +2522,9 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
         {
             try
             {
-                ValidBidControlMaxlength(txtTestSamplePlace, 5);
-                ValidBidControlMaxlength(txtTestPlaceKD, 5);
-                ValidBidControlMaxlength(txtArvPatientBeginAddress, 5);
+                //ValidBidControlMaxlength(txtTestSamplePlace, 5);
+                //ValidBidControlMaxlength(txtTestPlaceKD, 5);
+                //ValidBidControlMaxlength(txtArvPatientBeginAddress, 5);
             }
             catch (Exception ex)
             {
@@ -2409,6 +2593,33 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                         edit.SelectAll();
                         edit.Focus();
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        private void cboTestPlaceKD_KeyUp(object sender, KeyEventArgs e)
+        {
+            this.cboTestPlaceKD.Properties.ImmediatePopup = true;
+        }
+
+        private void cboArvPatientBeginAddress_KeyUp(object sender, KeyEventArgs e)
+        {
+            this.cboArvPatientBeginAddress.Properties.ImmediatePopup = true;
+        }
+
+        private void cboTestSamplePlace_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    cboTestSamplePlace.Focus();
+                    cboTestSamplePlace.ShowPopup();
                 }
             }
             catch (Exception ex)

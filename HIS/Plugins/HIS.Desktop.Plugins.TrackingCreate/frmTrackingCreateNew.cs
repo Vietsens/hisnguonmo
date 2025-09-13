@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using ACS.EFMODEL.DataModels;
+using DevExpress.XtraBars.Customization;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
@@ -1029,17 +1030,30 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 trackingFilter.TREATMENT_ID = this.treatmentId;
                 trackingFilter.ORDER_FIELD = "TRACKING_TIME";
                 trackingFilter.ORDER_DIRECTION = "DESC";
-                trackingOlds = new BackendAdapter(param).Get<List<HIS_TRACKING>>(HisRequestUriStore.HIS_TRACKING_GET, ApiConsumers.MosConsumer, trackingFilter, param);
+                trackingOlds = new BackendAdapter(param).Get<List<HIS_TRACKING>>(HisRequestUriStore.HIS_TRACKING_GET, ApiConsumers.MosConsumer, trackingFilter, param) ?? new List<HIS_TRACKING>();
                 if (trackingOlds != null && trackingOlds.Count > 0)
                 {
+                    var departments = BackendDataWorker.Get<HIS_DEPARTMENT>() ?? new List<HIS_DEPARTMENT>();
+                    var depNameById = departments
+                        .GroupBy(d => d.ID)
+                        .ToDictionary(g => g.Key, g => g.First().DEPARTMENT_NAME);
                     foreach (var item in trackingOlds)
                     {
                         HisTrackingADO AddItem = new HisTrackingADO();
 
                         Inventec.Common.Mapper.DataObjectMapper.Map<HisTrackingADO>(AddItem, item);
                         AddItem.ID = item.ID;
-                        AddItem.DEPARTMENT_NAME = BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(p => p.ID == item?.DEPARTMENT_ID)?.DEPARTMENT_NAME;
-                        AddItem.TRACKING_TIME_STR = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(item.TRACKING_TIME);
+                        long? depId = item.DEPARTMENT_ID;
+                        if (depId.HasValue && depNameById.TryGetValue(depId.Value, out var depName))
+                            AddItem.DEPARTMENT_NAME = depName;
+                        else
+                            AddItem.DEPARTMENT_NAME = null;
+                        //AddItem.DEPARTMENT_NAME = BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(p => p.ID == item?.DEPARTMENT_ID)?.DEPARTMENT_NAME;
+                        //AddItem.TRACKING_TIME_STR = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(item.TRACKING_TIME);
+                        long? trackingTime = item.TRACKING_TIME;
+                        AddItem.TRACKING_TIME_STR = (trackingTime.HasValue && trackingTime.Value > 0)
+                            ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(trackingTime.Value)
+                            : string.Empty;
 
                         result.Add(AddItem);
 
@@ -5040,11 +5054,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
         }
 
-        private void btnPDF_Click(object sender, EventArgs e)
-        {
-            long departmentId = BackendDataWorker.Get<HIS_ROOM>().Where(r => r.ID == this.currentModule.RoomId).Select(r=> r.DEPARTMENT_ID).FirstOrDefault();
-            frmAttach frm = new frmAttach(departmentId);
-            frm.Show(); 
-        }
+        //private void btnPDF_Click(object sender, EventArgs e)
+        //{
+        //    long departmentId = BackendDataWorker.Get<HIS_ROOM>().Where(r => r.ID == this.currentModule.RoomId).Select(r=> r.DEPARTMENT_ID).FirstOrDefault();
+        //    frmAttach frm = new frmAttach(departmentId);
+        //    frm.Show(); 
+        //}
     }
 }

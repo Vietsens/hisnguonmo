@@ -99,13 +99,17 @@ namespace MPS.Processor.Mps000169.PDO
         public string MEDICINE_GROUP_CODE { get; set; }
         public string MEDICINE_GROUP_NAME { get; set; }
         public long? MEDICINE_GROUP_ID { get; set; }
+        public string MEDICINE_PARENT_CODE { get; set; }
+        public long? MEDICINE_PARENT_ID { get; set; }
+        public string MEDICINE_PARENT_NAME { get; set; }
 
         public Mps000169ADO(
             V_HIS_EXP_MEST _expMest,
             List<V_HIS_EXP_MEST_MEDICINE> _expMestMedicines,
             long _expMesttSttId__Approval,
             long _expMesttSttId__Export,
-            long PatientTypeId__BHYT
+            long PatientTypeId__BHYT,
+            List<V_HIS_MEDICINE_TYPE> vHisMedicineTypes
             )
         {
             try
@@ -176,6 +180,17 @@ namespace MPS.Processor.Mps000169.PDO
                     this.MEDICINE_GROUP_CODE = _expMestMedicines[0].MEDICINE_GROUP_CODE;
                     this.MEDICINE_GROUP_NAME = _expMestMedicines[0].MEDICINE_GROUP_NAME;
                     this.MEDICINE_GROUP_ID = _expMestMedicines[0].MEDICINE_GROUP_ID;
+                    if (vHisMedicineTypes != null && vHisMedicineTypes.Count > 0)
+                    {
+                        V_HIS_MEDICINE_TYPE MedicineType = vHisMedicineTypes.FirstOrDefault(o => o.ID == _expMestMedicines[0].MEDICINE_TYPE_ID);
+                        if (MedicineType != null)
+                        {
+                            this.MEDICINE_PARENT_ID = MedicineType.PARENT_ID;
+                            this.MEDICINE_PARENT_CODE = MedicineType.PARENT_CODE;
+                            this.MEDICINE_PARENT_NAME = MedicineType.PARENT_NAME;
+                        }
+                    }
+
                 }
             }
             catch (Exception ex)

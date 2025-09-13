@@ -224,7 +224,9 @@ namespace MPS.Processor.Mps000169
                                                  r,
                                                  rdo.ConfigMps169._ExpMestSttId__Approved,
                                                  rdo.ConfigMps169._ExpMestSttId__Exported,
-                                                 rdo.ConfigMps169.PatientTypeId__BHYT));
+                                                 rdo.ConfigMps169.PatientTypeId__BHYT,
+                                                 rdo._MedicineTypes
+                                                 ));
                     }
                     else
                     {
@@ -242,7 +244,9 @@ namespace MPS.Processor.Mps000169
                                                  r,
                                                  rdo.ConfigMps169._ExpMestSttId__Approved,
                                                  rdo.ConfigMps169._ExpMestSttId__Exported,
-                                                 rdo.ConfigMps169.PatientTypeId__BHYT));
+                                                 rdo.ConfigMps169.PatientTypeId__BHYT, 
+                                                 rdo._MedicineTypes
+                                                 ));
                     }
                 }
 

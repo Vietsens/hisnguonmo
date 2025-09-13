@@ -15,69 +15,62 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;  
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using HIS.Desktop.LocalStorage.ConfigSystem;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.LocalStorage.Location;
-using Inventec.Core;
-using Inventec.Desktop.Common.Message;
-using MOS.LibraryHein.Bhyt.HeinTreatmentType;
-using Inventec.Common.Controls.EditorLoader;
-using System.Threading;
-using MOS.EFMODEL.DataModels;
-using MOS.Filter;
-using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Common.LocalStorage.SdaConfig;
-using HIS.Desktop.Utility;
-using Inventec.Common.Adapter;
-using System.Globalization;
-using Inventec.Desktop.Common.LanguageManager;
-using DevExpress.XtraEditors;
-using HIS.UC.Icd;
-using HIS.UC.SecondaryIcd;
-using HIS.UC.SecondaryIcd.ADO;
-using HIS.Desktop.LocalStorage.HisConfig;
-using HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt;
-using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.Base;
+using ACS.EFMODEL.DataModels;
 using DevExpress.Utils.Menu;
-using HIS.Desktop.Plugins.TreatmentFinish.Config;
-using HIS.Desktop.Plugins.TreatmentFinish.ADO;
+using DevExpress.XtraBars;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
-using HIS.Desktop.Plugins.TreatmentFinish.Validation;
-using MOS.SDO;
 using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraGrid.Views.Grid; 
+using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using EMR.SDO;
-using DevExpress.XtraBars;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
+using HIS.Desktop.Plugins.Library.PrintOtherForm.Config;
+using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt;
+using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.Base;
 using HIS.Desktop.Plugins.Library.TreatmentEndTypeExt;
 using HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.Data;
+using HIS.Desktop.Plugins.TreatmentFinish.ADO;
+using HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment;
+using HIS.Desktop.Plugins.TreatmentFinish.Config;
 using HIS.Desktop.Plugins.TreatmentFinish.FormWarning;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using HIS.Desktop.LibraryMessage;
-using HIS.UC.UCCauseOfDeath.ADO;
-using ACS.EFMODEL.DataModels;
-using HIS.Desktop.Plugins.Library.CheckHeinGOV;
-using Inventec.Common.QrCodeBHYT;
-using Inventec.Common.Logging;
-using HIS.UC.Death.ADO;
-using System.Resources;
-using Inventec.UC.Login.Base;
+using HIS.Desktop.Plugins.TreatmentFinish.Validation;
+using HIS.Desktop.Utility;
+using HIS.UC.Icd;
 using HIS.UC.Icd.ADO;
+using HIS.UC.SecondaryIcd;
+using HIS.UC.SecondaryIcd.ADO;
+using HIS.UC.UCCauseOfDeath.ADO;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using Inventec.UC.Login.Base;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Globalization;
+using System.Linq;
+using System.Resources;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using ColumnInfo = Inventec.Common.Controls.EditorLoader.ColumnInfo;
 using IcdADO = HIS.Desktop.Plugins.TreatmentFinish.ADO.IcdADO;
-using HIS.Desktop.Plugins.Library.PrintOtherForm.Config;
 
 
 namespace HIS.Desktop.Plugins.TreatmentFinish
@@ -137,6 +130,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         private List<HIS_DEPARTMENT_TRAN> ListDepartmentTran;
         private List<HIS_SERE_SERV> SereServCheck;
         private List<HIS_SERE_SERV> SereServTreatment;
+        private List<HIS_HEIN_PATIENT_TYPE> heinPatientTypes;
         internal List<PrintConfigADO> printConfigADOs = null;
         internal List<PrintConfigADO> printConfigADOLocalStores = null;
         internal List<WarningADO> warningADOs = null;
@@ -316,7 +310,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 time.Tick += Time_Tick;
                 ThreadLoadSereServ();
                 ThreadLoadDepartmentTran();
-
+                LoadDataToComboObjectCode();
                 SetEndOrder();
 
                 SetDefaultValueControl();
@@ -346,6 +340,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 CheckEnableBtnQR();
 
                 InitControlState();
+
                 Inventec.Common.Logging.LogSystem.Error("TreatmentFinish End");
                 //
                 chkOutHopitalCondition.MaximumSize = new System.Drawing.Size(txtDaysBedTreatment.Width, 0);
@@ -356,6 +351,78 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void LoadDataToComboObjectCode()
+        {
+            try
+            {
+                //heinPatientTypes = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
+                //.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                //.OrderBy(o => o.NUM_ORDER == null)
+                //.ThenBy(o => o.NUM_ORDER)
+                //.ToList();
+                heinPatientTypes = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
+                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                .OrderBy(o => o.NUM_ORDER == 0 ? 0 : 1)
+                .ThenBy(o => o.NUM_ORDER == null ? 1 : 0)
+                .ThenBy(o => o.NUM_ORDER ?? int.MaxValue)
+                .ToList();          
+
+                cboObjectCode.Properties.DataSource = heinPatientTypes;
+                cboObjectCode.Properties.DisplayMember = "HEIN_PATIENT_TYPE_CODE"; 
+                cboObjectCode.Properties.ValueMember = "ID";
+
+                var view = cboObjectCode.Properties.View;
+                view.OptionsView.ShowIndicator = false;  
+                cboObjectCode.Properties.ImmediatePopup = true;
+                view.OptionsView.ShowGroupPanel = false;
+
+                view.Columns.Clear();
+
+                var colCode = view.Columns.AddField("HEIN_PATIENT_TYPE_CODE");
+                colCode.Caption = "Mã";
+                colCode.VisibleIndex = 0;
+                colCode.Width = 120;
+
+
+                var colDesc = view.Columns.AddField("DESCRIPTION");
+                colDesc.Caption = "Mô tả";
+                colDesc.VisibleIndex = 1;
+                colDesc.Width = 280;
+
+                var memoEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+                memoEdit.WordWrap = true;  // bật wrap text
+                cboObjectCode.Properties.RepositoryItems.Add(memoEdit);
+                colDesc.ColumnEdit = memoEdit;
+
+                // Cho phép auto row height để vừa với nội dung
+                view.OptionsView.RowAutoHeight = true;
+                view.BeginSort();
+                view.SortInfo.Clear();     
+                view.EndSort();
+
+                view.OptionsCustomization.AllowSort = false;      
+                view.OptionsMenu.EnableColumnMenu = false; 
+
+
+
+                cboObjectCode.Properties.Buttons[1].Visible = (cboObjectCode.EditValue != null);
+
+                if (currentHisTreatment != null && !string.IsNullOrWhiteSpace(currentHisTreatment.HEIN_PATIENT_TYPE_CODE))
+                {
+                    var sel = heinPatientTypes.FirstOrDefault(x =>
+                        string.Equals(x.HEIN_PATIENT_TYPE_CODE, currentHisTreatment.HEIN_PATIENT_TYPE_CODE, StringComparison.OrdinalIgnoreCase));
+                    cboObjectCode.EditValue = sel?.ID;
+                }
+                else
+                {
+                    cboObjectCode.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         private void LoadDataTreatmentExt()
@@ -1531,7 +1598,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 txtStoreCode.Text = currentHisTreatment.STORE_CODE;
                 txtKskCode.Text = currentHisTreatment.HRM_KSK_CODE;
                 // huannh
-                txtObjectCode.Text = currentHisTreatment.HEIN_PATIENT_TYPE_CODE;
+                //txtObjectCode.Text = currentHisTreatment.HEIN_PATIENT_TYPE_CODE;
+                if (!string.IsNullOrEmpty(currentHisTreatment.HEIN_PATIENT_TYPE_CODE))
+                {
+                    var heinPatientType = heinPatientTypes.FirstOrDefault(o => o.HEIN_PATIENT_TYPE_CODE == currentHisTreatment.HEIN_PATIENT_TYPE_CODE);
+                    if (heinPatientType != null)
+                    {
+                        cboObjectCode.EditValue = heinPatientType.ID;
+                    }
+                }
                 var warningConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode");
                 if (currentHisTreatment.TDL_PATIENT_TYPE_ID == 1 && warningConfig == "3")
                     layoutControlItem48.AppearanceItemCaption.ForeColor = Color.Maroon;
@@ -2348,17 +2423,19 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            string input = txtObjectCode.Text.Trim();
+            string input = cboObjectCode.EditValue != null
+                            ? cboObjectCode.EditValue.ToString()
+                            : null;
 
-            
-              
-            
-            if (!System.Text.RegularExpressions.Regex.IsMatch(input, @"^[0-9.]+$") && !string.IsNullOrWhiteSpace(input))
-            {
-                dxErrorProvider1.SetError(txtObjectCode, "Chỉ cho phép nhập số và dấu chấm", ErrorType.Warning);
-                txtObjectCode.Focus();
-                return;
-            }
+
+
+
+            //if (!System.Text.RegularExpressions.Regex.IsMatch(input, @"^[0-9.]+$") && !string.IsNullOrWhiteSpace(input))
+            //{
+            //    dxErrorProvider1.SetError(txtObjectCode, "Chỉ cho phép nhập số và dấu chấm", ErrorType.Warning);
+            //    txtObjectCode.Focus();
+            //    return;
+            //}
             dxErrorProvider1.ClearErrors();
 
             LogTheadInSessionInfo(save, "btnSave_Click");
@@ -2599,16 +2676,18 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 //}
 
 
-
-
-
-
-
+                if (hisTreatmentFinishSDO_process == null)
+                    hisTreatmentFinishSDO_process = new MOS.SDO.HisTreatmentFinishSDO();
+                if (cboObjectCode.EditValue != null)
+                {
+                    var selected = heinPatientTypes.FirstOrDefault(x => x.ID.ToString() == cboObjectCode.EditValue.ToString()).HEIN_PATIENT_TYPE_CODE;
+                    hisTreatmentFinishSDO_process.HeinPatientTypeCode = selected;
+                }
                 //save Mã đối tượng
                 var warningConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode");
                 bool isBHYT = currentHisTreatment.TDL_PATIENT_TYPE_ID == 1;
 
-                string objectCode = txtObjectCode.Text?.Trim();
+                string objectCode = cboObjectCode.EditValue != null ? cboObjectCode.EditValue.ToString() : null;
                 if (isBHYT)
                 {
                     if (warningConfig == "2" && string.IsNullOrEmpty(objectCode))
@@ -2618,7 +2697,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                         if (result != DialogResult.Yes)
                         {
-                            txtObjectCode.Focus();
+                            cboObjectCode.Focus();
                             return;
                         }
                     }
@@ -2627,21 +2706,28 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         DevExpress.XtraEditors.XtraMessageBox.Show(
                             "Chưa nhập mã đối tượng của hồ sơ điều trị",
                             "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        txtObjectCode.Focus();
+                        cboObjectCode.Focus();
                         return;
                     }
                 }
 
               
-                if (hisTreatmentFinishSDO_process == null)
-                    hisTreatmentFinishSDO_process = new MOS.SDO.HisTreatmentFinishSDO();
-                hisTreatmentFinishSDO_process.HeinPatientTypeCode = txtObjectCode.Text?.Trim();
+                //if (hisTreatmentFinishSDO_process == null)
+                //    hisTreatmentFinishSDO_process = new MOS.SDO.HisTreatmentFinishSDO();
+                //if (cboObjectCode.EditValue != null)
+                //{
+                //    long selId = Convert.ToInt64(cboObjectCode.EditValue);
+                //    selectedHeinCode = heinPatientTypes
+                //        ?.FirstOrDefault(x => x.ID == selId)
+                //        ?.HEIN_PATIENT_TYPE_CODE;
+                //}
+                //hisTreatmentFinishSDO_process.HeinPatientTypeCode = selectedHeinCode;
                 Inventec.Common.Logging.LogSystem.Debug(
-     Inventec.Common.Logging.LogUtil.TraceData(
-         "txtObjectCode Filter input:",
-         hisTreatmentFinishSDO_process.HeinPatientTypeCode
-     )
- );
+                 Inventec.Common.Logging.LogUtil.TraceData(
+                     "cboObjectCode Filter input:",
+                     hisTreatmentFinishSDO_process.HeinPatientTypeCode
+                 )
+             );
 
 
 
@@ -2930,7 +3016,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 }
                 Inventec.Common.Logging.LogSystem.Info("Save treatmentFinish 6");
                 //qtcode
-                txtObjectCode.ReadOnly = true;
+                cboObjectCode.ReadOnly = true;
             }
             catch (Exception ex)
             {
@@ -2945,7 +3031,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         
         private bool CheckMustChooseSeviceExamOption()
         {
-            bool rs = true;
+            bool rs = true;                                                                                                                                                                       
             try
             {
                 bool isTreatmentFinish = false;
@@ -3178,13 +3264,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
         private void btnSaveTemp_Click(object sender, EventArgs e)
         {
-            string input = txtObjectCode.Text.Trim();
-            if (!System.Text.RegularExpressions.Regex.IsMatch(input, @"^[0-9.]+$") && !string.IsNullOrWhiteSpace(input))
-            {
-                dxErrorProvider1.SetError(txtObjectCode, "Chỉ cho phép nhập số và dấu chấm", ErrorType.Warning);
-                txtObjectCode.Focus();
-                return;
-            }
+            string input = cboObjectCode.EditValue.ToString();
+            //if (!System.Text.RegularExpressions.Regex.IsMatch(input, @"^[0-9.]+$") && !string.IsNullOrWhiteSpace(input))
+            //{
+            //    dxErrorProvider1.SetError(txtObjectCode, "Chỉ cho phép nhập số và dấu chấm", ErrorType.Warning);
+            //    txtObjectCode.Focus();
+            //    return;
+            //}
             dxErrorProvider1.ClearErrors();
             LogTheadInSessionInfo(saveTemp, "btnSaveTemp_Click");
         }
@@ -3265,7 +3351,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 //save Mã đối tượng
                 var warningConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode");
                 bool isBHYT = currentHisTreatment.TDL_PATIENT_TYPE_ID == 1;
-                string objectCode = txtObjectCode.Text?.Trim();
+                //string objectCode = txtObjectCode.Text?.Trim();
+                string objectCode = cboObjectCode.EditValue != null
+                ? cboObjectCode.EditValue.ToString()
+                : null;
                 if (isBHYT)
                 {
                     if (warningConfig == "2" && string.IsNullOrEmpty(objectCode))
@@ -3275,7 +3364,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                         if (result != DialogResult.Yes)
                         {
-                            txtObjectCode.Focus();
+                            cboObjectCode.Focus();
                             return;
                         }
                     }
@@ -3284,14 +3373,18 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         DevExpress.XtraEditors.XtraMessageBox.Show(
                             "Chưa nhập mã đối tượng của hồ sơ điều trị",
                             "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        txtObjectCode.Focus();
+                        cboObjectCode.Focus();
                         return;
                     }
                 }
                
                 if (hisTreatmentFinishSDO_process == null)
                     hisTreatmentFinishSDO_process = new MOS.SDO.HisTreatmentFinishSDO();
-                hisTreatmentFinishSDO_process.HeinPatientTypeCode = txtObjectCode.Text?.Trim();
+                if (cboObjectCode.EditValue != null)
+                {
+                    var selected = heinPatientTypes.FirstOrDefault(x => x.ID.ToString() == cboObjectCode.EditValue.ToString()).HEIN_PATIENT_TYPE_CODE;
+                    hisTreatmentFinishSDO_process.HeinPatientTypeCode = selected;
+                }
 
 
 
@@ -3396,7 +3489,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     return;
                 }
-
                 if (chkOutHopitalCondition.Checked == true)
                 {
                     hisTreatmentFinishSDO.IsApproveFinish = true;
@@ -3418,7 +3510,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     SetPrintMenu(hisTreatmentFinishSDO.TreatmentEndTypeId, hisTreatmentFinishSDO.TreatmentEndTypeExtId, this.currentHisTreatment.TDL_TREATMENT_TYPE_ID);
                     BtnEndCode.Enabled = CheckTreatmentEndCode();
                     btnDeleteEndInfo.Enabled = true;
-                    txtObjectCode.ReadOnly = true;
+                    cboObjectCode.ReadOnly = true;
                 }
             }
             catch (Exception ex)
@@ -3555,7 +3647,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         code = string.Format("{0:000000000}", Convert.ToInt64(code));
                         txtEndOrder.Text = code;
                     }
-                }
+                } 
             }
             catch (Exception ex)
             {
@@ -6263,22 +6355,34 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         }
 
         
-        private void txtObjectCode_TextChanged(object sender, EventArgs e)
+        //private void txtObjectCode_TextChanged(object sender, EventArgs e)
+        //{
+        //    string text = txtObjectCode.Text;
+
+        //    string filtered = new string(text.Where(c => char.IsDigit(c) || c == '.').ToArray());
+
+        //    if (filtered.Length > 10)
+        //        filtered = filtered.Substring(0, 10);
+        //    if (txtObjectCode.Text != filtered)
+        //    {
+        //        int selStart = txtObjectCode.SelectionStart;  
+        //        txtObjectCode.Text = filtered;
+        //        txtObjectCode.SelectionStart = Math.Min(selStart, filtered.Length);
+        //    }
+        //}
+
+
+        private void cboObjectCode_EditValueChanged(object sender, EventArgs e)
         {
-            string text = txtObjectCode.Text;
-
-            string filtered = new string(text.Where(c => char.IsDigit(c) || c == '.').ToArray());
-
-            if (filtered.Length > 10)
-                filtered = filtered.Substring(0, 10);
-            if (txtObjectCode.Text != filtered)
+            try
             {
-                int selStart = txtObjectCode.SelectionStart;  
-                txtObjectCode.Text = filtered;
-                txtObjectCode.SelectionStart = Math.Min(selStart, filtered.Length);
+                // Clear any previous error
+                dxErrorProvider1.ClearErrors();
             }
-        }   
-
-       
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

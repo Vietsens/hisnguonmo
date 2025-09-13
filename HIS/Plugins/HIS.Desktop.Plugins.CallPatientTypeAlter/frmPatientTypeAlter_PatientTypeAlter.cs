@@ -90,6 +90,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                     dataHein.TREATMENT_TYPE_ID__EXAM = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM;
                     dataHein.TreatmentTypes = BackendDataWorker.Get<HIS_TREATMENT_TYPE>();
                     dataHein.PatientTypeId = (long)(cboPatientType.EditValue ?? 0);
+                    dataHein.HeinPatientCode = this.HeinPatientCode;
                     dataHein.isVisibleControl = ConfigApplicationWorker.Get<long>(AppConfigKeys.CONFIG_KEY__TIEP_DON_HIEN_THI_THONG_TIN_THEM);
                     dataHein.IsDefaultRightRouteType = (HisConfigCFG.IsDefaultRightRouteType == "1" ? true : false);
                     dataHein.IsShowCheckKhongKTHSD = HisConfigCFG.IsShowCheckExpired;

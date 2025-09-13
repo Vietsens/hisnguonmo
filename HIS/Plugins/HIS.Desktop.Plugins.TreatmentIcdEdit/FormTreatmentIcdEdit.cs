@@ -14,7 +14,7 @@
  *  
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+ */  
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.LocalData;
 using Inventec.Core;
@@ -572,6 +572,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 WaitingManager.Hide();
 
                 validationControl();
+                //huannh
+                LoadCboDtKCB();
 
                 //Dangth
 
@@ -585,6 +587,16 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     if (HisConfig.SuaThongTinHoSoDieuTri_ == true)
                     {
                         btnSave.Enabled = true;
+                        // patientTypeAlter
+                        if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "1")
+                        {
+                            XtraMessageBox.Show("Vui lòng kiểm tra lại mã đối tượng của hồ sơ điều trị.",
+                            "Thông báo");
+                        }
+                        else if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "3")
+                        {
+                            lblDtKCB.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        }
                     }
                     else
                     {
@@ -973,7 +985,18 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     this.txtProvisionalDianosis.Text = currentVHisTreatment.PROVISIONAL_DIAGNOSIS;
                     this.txtTreatmentInstruction.Text = currentVHisTreatment.TREATMENT_METHOD;
                     //Ma Doi Tuong  
-                    this.txtHeinPatientTypeCode.Text = currentVHisTreatment.HEIN_PATIENT_TYPE_CODE;
+                    //this.txtHeinPatientTypeCode.Text = currentVHisTreatment.HEIN_PATIENT_TYPE_CODE;
+                    //Huannh
+
+                    if (!string.IsNullOrEmpty(currentVHisTreatment.HEIN_PATIENT_TYPE_CODE))
+                    {
+                        cboDtKCB.EditValue = currentVHisTreatment.HEIN_PATIENT_TYPE_CODE;
+                    }
+                    else
+                    {
+                        cboDtKCB.EditValue = null;
+                    }
+
 
                     if (!String.IsNullOrWhiteSpace(currentVHisTreatment.FUND_CUSTOMER_NAME))
                     {
@@ -1078,14 +1101,14 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         txtReasonVV.Text = "";
                     }
 
-                    if (!String.IsNullOrEmpty(currentVHisTreatment.HEIN_PATIENT_TYPE_CODE))
-                    {
-                        txtHeinPatientTypeCode.Text = currentVHisTreatment.HEIN_PATIENT_TYPE_CODE;
-                    }
-                    else
-                    {
-                        txtHeinPatientTypeCode.Text = "";
-                    }
+                    //if (!String.IsNullOrEmpty(currentVHisTreatment.HEIN_PATIENT_TYPE_CODE))
+                    //{
+                    //    txtHeinPatientTypeCode.Text = currentVHisTreatment.HEIN_PATIENT_TYPE_CODE;
+                    //}
+                    //else
+                    //{
+                    //    txtHeinPatientTypeCode.Text = "";
+                    //}
 
                     if (!String.IsNullOrEmpty(currentVHisTreatment.TDL_PATIENT_NOTE))
                     {
@@ -1140,10 +1163,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     //    txtNumManager.Enabled = true;
                     //    txtNumManager.Properties.MaxLength = 100;
                     //}
-                    if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "3")
-                    {
-                        lblHeinPatientTypeCode.AppearanceItemCaption.ForeColor = Color.Maroon;
-                    }
+                    //if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "3")
+                    //{
+                    //    lblDtKCB.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    //}
 
                 }
                 if (currentVHisTreatment.TREATMENT_ORDER.HasValue)
@@ -1939,27 +1962,43 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     data.TdlPatientNote = txtPatientNote.Text;
                 }
 
-                data.HeinPatientTypeCode = txtHeinPatientTypeCode.Text?.Trim();
+                //huannh
+
+                if (cboDtKCB.EditValue != null)
+                {
+                    data.HeinPatientTypeCode = cboDtKCB.EditValue.ToString();
+                }
+                else
+                {
+                    data.HeinPatientTypeCode = null;
+                }
+
+
+
+                //data.HeinPatientTypeCode = txtHeinPatientTypeCode.Text?.Trim();
 
                 if (string.IsNullOrEmpty(data.HeinPatientTypeCode))
                 {
-                    if (HisConfig.warningConfig_ == "2")
+                    if (currentVHisTreatment.IS_PAUSE != null || currentVHisTreatment.IS_PAUSE == IS_TRUE) //khóa mới thông báo
                     {
+                        if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "2")
+                        {
 
-                        if (XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị. Bạn có muốn tiếp tục?",
-                           "Thông báo",
-                          MessageBoxButtons.YesNo,
-                          MessageBoxIcon.Warning
-                          ) == DialogResult.No)
+                            if (XtraMessageBox.Show("Chưa chọn đối tượng khám chữa bệnh của hồ sơ điều trị. Bạn có muốn tiếp tục?",
+                               "Thông báo",
+                              MessageBoxButtons.YesNo,
+                              MessageBoxIcon.Warning
+                              ) == DialogResult.No)
+                                return;
+                        }
+                        else if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "3")
+                        {
+                            XtraMessageBox.Show("Chưa chọn đối tượng khám chữa bệnh  của hồ sơ điều trị.",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
                             return;
-                    }
-                    else if (HisConfig.warningConfig_ == "3")
-                    {
-                        XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị.",
-                            "Thông báo",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning);
-                        return;
+                        } 
                     }
                 }
                 //if(!string.IsNullOrEmpty(txtHeinPatientTypeCode.Text))
@@ -1973,7 +2012,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 //    }
                 //}
 
-
+                  
                 HisTreatmentCommonInfoUpdateSDO result = new BackendAdapter(param).Post<HisTreatmentCommonInfoUpdateSDO>(RequestUriStore.HIS_TREATMENT_UPDATE_COMMON_INFO, ApiConsumer.ApiConsumers.MosConsumer, data, param);
 
                 WaitingManager.Hide();
@@ -2717,6 +2756,26 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void LoadCboDtKCB()
+        {
+            try
+            {
+                List<HIS_HEIN_PATIENT_TYPE> heinData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
+           .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+           .OrderBy(o => o.NUM_ORDER == null) 
+           .ThenBy(o => o.NUM_ORDER)
+           .ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("DESCRIPTION", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboDtKCB, heinData, controlEditorADO);
+            }
+            catch (Exception ex)
+            {  
+                Inventec.Common.Logging.LogSystem.Warn("InitializeComboHeinPatientTypeCode: \n" + ex);
+            }
+        }
 
         private void LoadPatienTypeAlter()
         {
@@ -3384,5 +3443,65 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        //private void cboDtKCB_Closed(object sender, ClosedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
+        //        {
+        //            ChkUpdateSereServ.Focus();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
+
+        private void cboDtKCB_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboDtKCB.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+      
+      
+       
+
+       
+        private void cboDtKCB_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    cboDtKCB.Focus();
+                    cboDtKCB.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDtKCB_KeyDown(object sender, KeyEventArgs e)
+        {
+         
+            cboDtKCB.Properties.ImmediatePopup = true;
+          
+        } 
+
+      
     }
 }
