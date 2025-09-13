@@ -1979,23 +1979,26 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
                 if (string.IsNullOrEmpty(data.HeinPatientTypeCode))
                 {
-                    if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "2")
+                    if (currentVHisTreatment.IS_PAUSE != null || currentVHisTreatment.IS_PAUSE == IS_TRUE) //khóa mới thông báo
                     {
+                        if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "2")
+                        {
 
-                        if (XtraMessageBox.Show("Chưa chọn đối tượng khám chữa bệnh của hồ sơ điều trị. Bạn có muốn tiếp tục?",
-                           "Thông báo",
-                          MessageBoxButtons.YesNo,
-                          MessageBoxIcon.Warning
-                          ) == DialogResult.No)
+                            if (XtraMessageBox.Show("Chưa chọn đối tượng khám chữa bệnh của hồ sơ điều trị. Bạn có muốn tiếp tục?",
+                               "Thông báo",
+                              MessageBoxButtons.YesNo,
+                              MessageBoxIcon.Warning
+                              ) == DialogResult.No)
+                                return;
+                        }
+                        else if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "3")
+                        {
+                            XtraMessageBox.Show("Chưa chọn đối tượng khám chữa bệnh  của hồ sơ điều trị.",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
                             return;
-                    }
-                    else if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "3")
-                    {
-                        XtraMessageBox.Show("Chưa chọn đối tượng khám chữa bệnh  của hồ sơ điều trị.",
-                            "Thông báo",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning);
-                        return;
+                        } 
                     }
                 }
                 //if(!string.IsNullOrEmpty(txtHeinPatientTypeCode.Text))
