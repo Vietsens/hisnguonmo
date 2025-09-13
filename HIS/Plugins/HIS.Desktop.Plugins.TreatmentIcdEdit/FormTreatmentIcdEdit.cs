@@ -587,6 +587,16 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     if (HisConfig.SuaThongTinHoSoDieuTri_ == true)
                     {
                         btnSave.Enabled = true;
+                        // patientTypeAlter
+                        if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "1")
+                        {
+                            XtraMessageBox.Show("Vui lòng kiểm tra lại mã đối tượng của hồ sơ điều trị.",
+                            "Thông báo");
+                        }
+                        else if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "3")
+                        {
+                            lblDtKCB.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        }
                     }
                     else
                     {
@@ -1153,10 +1163,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     //    txtNumManager.Enabled = true;
                     //    txtNumManager.Properties.MaxLength = 100;
                     //}
-                    if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "3")
-                    {
-                        lblDtKCB.AppearanceItemCaption.ForeColor = Color.Maroon;
-                    }
+                    //if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "3")
+                    //{
+                    //    lblDtKCB.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    //}
 
                 }
                 if (currentVHisTreatment.TREATMENT_ORDER.HasValue)
@@ -1969,7 +1979,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
                 if (string.IsNullOrEmpty(data.HeinPatientTypeCode))
                 {
-                    if (HisConfig.warningConfig_ == "2")
+                    if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "2")
                     {
 
                         if (XtraMessageBox.Show("Chưa chọn đối tượng khám chữa bệnh của hồ sơ điều trị. Bạn có muốn tiếp tục?",
@@ -1979,7 +1989,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                           ) == DialogResult.No)
                             return;
                     }
-                    else if (HisConfig.warningConfig_ == "3")
+                    else if (currentVHisTreatment.TDL_PATIENT_TYPE_ID == HisConfig.patientTypeBHYT_ && HisConfig.warningConfig_ == "3")
                     {
                         XtraMessageBox.Show("Chưa chọn đối tượng khám chữa bệnh  của hồ sơ điều trị.",
                             "Thông báo",
