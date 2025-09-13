@@ -140,6 +140,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				this.ucHeinInfo1.SetInformationPatientRawFromUC(this.ucPatientRaw1);
 				this.ucHeinInfo1.SetCurrentModule(this.currentModule);
 				this.ucHeinInfo1.Send3WBhytCode(Send3WCode);
+				//qtcode
+				this.ucOtherServiceReqInfo1.GetTreatmentTypeId(this.ucHeinInfo1.ReceiveIdFromUcOtherSviceReqInfo);
+				this.ucHeinInfo1.SendTreatmentTypeId(this.ucOtherServiceReqInfo1.ReceiveTreatmentTypeId); 
 				this.EnableOrDisablechkTheTam();
 			}
 			catch (Exception ex)

@@ -75,7 +75,7 @@
     </Reference>
     <Reference Include="Inventec.Common.Controls.EditorLoader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.Controls.EditorLoader.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -140,7 +140,8 @@ namespace HIS.UC.UCHeniInfo
 					patientProfileSDO.HisTreatment.HEIN_PATIENT_TYPE_CODE = this.cboHeinPatientType.EditValue.ToString(); 
 				else
 					patientProfileSDO.HisTreatment.HEIN_PATIENT_TYPE_CODE = null;
-                //qtcode
+                //
+				//
 
                 if (!string.IsNullOrEmpty(this.transferInCode))
                 {

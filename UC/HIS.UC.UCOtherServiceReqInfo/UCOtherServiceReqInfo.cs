@@ -55,6 +55,8 @@ namespace HIS.UC.UCOtherServiceReqInfo
         Action<object> dlgFocusNextUserControl;
         Action<bool> dlgHeinRightRouteType;
         Action<long?> dlgPriorityNumberChanged;
+        //qtcode
+        Action<string> dlgGetTreatmentTypeId;
 
         internal HIS_TREATMENT _HisTreatment = null;
         HIS_PATIENT_TYPE workingPatientType;
@@ -73,7 +75,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         string moduleLink = "HIS.UC.UCOtherServiceReqInfo";
-
+        string treatmentTypeId; 
         public string HospitalizeReasonCode { get; private set; }
         public string HospitalizeReasonName { get; private set; }
         #region Constructor - Load
@@ -144,7 +146,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-            }           
+            }
         }
 
         /// <summary>
@@ -1311,11 +1313,22 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        //qtcode
+        public void GetTreatmentTypeId(Action<string> _dlgGetTreatmentTypeId)
+        {
+            this.dlgGetTreatmentTypeId = _dlgGetTreatmentTypeId;
+        }
+        public void ReceiveTreatmentTypeId(string treatmentTypeId)
+        {
+            this.treatmentTypeId = treatmentTypeId;
+            cboTreatmentType.EditValue = long.Parse(this.treatmentTypeId);
+        }
         private void cboTreatmentType_EditValueChanged(object sender, EventArgs e)
         {
             try
             {
+                if (this.dlgGetTreatmentTypeId != null)
+                    this.dlgGetTreatmentTypeId.Invoke(cboTreatmentType.EditValue.ToString());
                 long treatmentTypeId = cboTreatmentType.EditValue != null ? Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentType.EditValue ?? "").ToString()) : 0;
 
                 if (treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)

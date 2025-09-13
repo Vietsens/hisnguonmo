@@ -45,24 +45,26 @@ namespace HIS.UC.UCOtherServiceReqInfo
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SuperToolTip superToolTip3 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem3 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCOtherServiceReqInfo));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
-            DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCOtherServiceReqInfo));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.lcUCOtherServiceReqInfo = new DevExpress.XtraLayout.LayoutControl();
+            this.chkCAPD = new DevExpress.XtraEditors.CheckEdit();
             this.panel2 = new System.Windows.Forms.Panel();
             this.txtHosReasonNt = new DevExpress.XtraEditors.ButtonEdit();
             this.cboHosReason = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridLookUpEdit();
@@ -129,14 +131,14 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciHosReason = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationUCOtherReqInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.timerInitForm = new System.Windows.Forms.Timer();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.chkCAPD = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationUCOtherReqInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.timerInitForm = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.lcUCOtherServiceReqInfo)).BeginInit();
             this.lcUCOtherServiceReqInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCAPD.Properties)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtHosReasonNt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboHosReason.Properties)).BeginInit();
@@ -203,11 +205,10 @@ namespace HIS.UC.UCOtherServiceReqInfo
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHosReason)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationUCOtherReqInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkCAPD.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             this.SuspendLayout();
             // 
             // lcUCOtherServiceReqInfo
@@ -248,6 +249,17 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.lcUCOtherServiceReqInfo.Size = new System.Drawing.Size(568, 269);
             this.lcUCOtherServiceReqInfo.TabIndex = 0;
             this.lcUCOtherServiceReqInfo.Text = "layoutControl1";
+            // 
+            // chkCAPD
+            // 
+            this.chkCAPD.Location = new System.Drawing.Point(479, 117);
+            this.chkCAPD.Name = "chkCAPD";
+            this.chkCAPD.Properties.Caption = ":BN CAPD";
+            this.chkCAPD.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkCAPD.Size = new System.Drawing.Size(69, 19);
+            this.chkCAPD.StyleController = this.lcUCOtherServiceReqInfo;
+            this.chkCAPD.TabIndex = 52;
+            this.chkCAPD.ToolTip = "Bệnh nhân điều trị lọc máu màng bụng";
             // 
             // panel2
             // 
@@ -438,7 +450,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.cboOtherPaySource.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboOtherPaySource.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.cboOtherPaySource.Properties.NullText = "";
             this.cboOtherPaySource.Properties.View = this.gridView1;
             this.cboOtherPaySource.Size = new System.Drawing.Size(190, 20);
@@ -480,13 +492,13 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.cboPriorityType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboPriorityType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Clear, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Clear, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboPriorityType.Properties.NullText = "";
             this.cboPriorityType.Size = new System.Drawing.Size(170, 20);
             this.cboPriorityType.StyleController = this.lcUCOtherServiceReqInfo;
-            toolTipItem1.Text = "Trường hợp ưu tiên";
-            superToolTip1.Items.Add(toolTipItem1);
-            this.cboPriorityType.SuperTip = superToolTip1;
+            toolTipItem3.Text = "Trường hợp ưu tiên";
+            superToolTip3.Items.Add(toolTipItem3);
+            this.cboPriorityType.SuperTip = superToolTip3;
             this.cboPriorityType.TabIndex = 4;
             this.cboPriorityType.ToolTip = "Trường hợp ưu tiên";
             this.cboPriorityType.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboPriorityType_Closed);
@@ -529,9 +541,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             0});
             this.txtSTTPriority.Size = new System.Drawing.Size(62, 20);
             this.txtSTTPriority.StyleController = this.lcUCOtherServiceReqInfo;
-            toolTipItem2.Text = "Số thứ tự ưu tiên dành cho bệnh nhân đăng ký khám qua tổng đài";
-            superToolTip2.Items.Add(toolTipItem2);
-            this.txtSTTPriority.SuperTip = superToolTip2;
+            toolTipItem1.Text = "Số thứ tự ưu tiên dành cho bệnh nhân đăng ký khám qua tổng đài";
+            superToolTip1.Items.Add(toolTipItem1);
+            this.txtSTTPriority.SuperTip = superToolTip1;
             this.txtSTTPriority.TabIndex = 13;
             this.txtSTTPriority.EditValueChanged += new System.EventHandler(this.txtSTTPriority_EditValueChanged);
             // 
@@ -554,7 +566,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.cboCTT.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboCTT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.cboCTT.Properties.NullText = "";
             this.cboCTT.Properties.View = this.gridLookUpEdit1View;
             this.cboCTT.Size = new System.Drawing.Size(153, 20);
@@ -1155,6 +1167,23 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.lciHosReason.TextSize = new System.Drawing.Size(70, 20);
             this.lciHosReason.TextToControlDistance = 5;
             // 
+            // emptySpaceItem1
+            // 
+            this.emptySpaceItem1.AllowHotTrack = false;
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 96);
+            this.emptySpaceItem1.Name = "emptySpaceItem1";
+            this.emptySpaceItem1.Size = new System.Drawing.Size(476, 23);
+            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem9
+            // 
+            this.layoutControlItem9.Control = this.chkCAPD;
+            this.layoutControlItem9.Location = new System.Drawing.Point(476, 96);
+            this.layoutControlItem9.Name = "layoutControlItem9";
+            this.layoutControlItem9.Size = new System.Drawing.Size(73, 23);
+            this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem9.TextVisible = false;
+            // 
             // dxErrorProviderControl
             // 
             this.dxErrorProviderControl.ContainerControl = this;
@@ -1162,34 +1191,6 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // timerInitForm
             // 
             this.timerInitForm.Interval = 500;
-            // 
-            // emptySpaceItem1
-            // 
-            this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 96);
-            this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(492, 23);
-            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
-            // 
-            // chkCAPD
-            // 
-            this.chkCAPD.Location = new System.Drawing.Point(495, 117);
-            this.chkCAPD.Name = "chkCAPD";
-            this.chkCAPD.Properties.Caption = ":CAPD";
-            this.chkCAPD.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkCAPD.Size = new System.Drawing.Size(53, 19);
-            this.chkCAPD.StyleController = this.lcUCOtherServiceReqInfo;
-            this.chkCAPD.TabIndex = 52;
-            this.chkCAPD.ToolTip = "Bệnh nhân điều trị lọc máu màng bụng";
-            // 
-            // layoutControlItem9
-            // 
-            this.layoutControlItem9.Control = this.chkCAPD;
-            this.layoutControlItem9.Location = new System.Drawing.Point(492, 96);
-            this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(57, 23);
-            this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem9.TextVisible = false;
             // 
             // UCOtherServiceReqInfo
             // 
@@ -1201,6 +1202,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.Load += new System.EventHandler(this.UCOtherServiceReqInfo_Load);
             ((System.ComponentModel.ISupportInitialize)(this.lcUCOtherServiceReqInfo)).EndInit();
             this.lcUCOtherServiceReqInfo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkCAPD.Properties)).EndInit();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtHosReasonNt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboHosReason.Properties)).EndInit();
@@ -1267,11 +1269,10 @@ namespace HIS.UC.UCOtherServiceReqInfo
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHosReason)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationUCOtherReqInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkCAPD.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             this.ResumeLayout(false);
 
         }
