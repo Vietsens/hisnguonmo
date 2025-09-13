@@ -367,6 +367,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (impMest != null)
                 {
+                    this.impMestId = impMest.ID;
                     var impMestType = BackendDataWorker.Get<HIS_IMP_MEST_TYPE>().FirstOrDefault(o => o.ID == impMest.IMP_MEST_TYPE_ID);
                     if (impMestType != null)
                     {
@@ -408,6 +409,11 @@ namespace HIS.Desktop.Plugins.ImportBlood
 
                     txtDeliever.Text = impMest.DELIVERER;
                     txtDescription.Text = impMest.DESCRIPTION;
+
+                    var viewFilter = new HisImpMestViewFilter { ID = this.impMestId };
+                    var viewList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam())
+                                    .Get<List<V_HIS_IMP_MEST>>("api/HisImpMest/GetView", ApiConsumers.MosConsumer, viewFilter, null);
+                    this.impMest = viewList?.FirstOrDefault();
                 }
 
             }
@@ -1564,17 +1570,26 @@ namespace HIS.Desktop.Plugins.ImportBlood
         {
             try
             {
+                result = false;
+
+                if (string.IsNullOrWhiteSpace(printTypeCode))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("printTypeCode is null or empty");
+                    return;
+                }
+                fileName = fileName ?? string.Empty;
+
                 CommonParam param = new CommonParam();
                 List<HIS_MEDICINE> medicines = new List<HIS_MEDICINE>();
                 List<HIS_MATERIAL> materials = new List<HIS_MATERIAL>();
                 MOS.Filter.HisImpMestViewFilter impMestFilter = new MOS.Filter.HisImpMestViewFilter();
                 impMestFilter.ID = this.impMestId;
                 var rs = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_USER>>("/api/HisImpMestUser/GetView", ApiConsumers.MosConsumer, impMestFilter, param);
-                rs = rs.OrderBy(p => p.ID).ToList();
+                rs = (rs ?? new List<V_HIS_IMP_MEST_USER>()).OrderBy(p => p.ID).ToList();
                 MOS.Filter.HisImpMestBloodFilter bloodFilter = new MOS.Filter.HisImpMestBloodFilter();
                 bloodFilter.IMP_MEST_ID = this.impMestId;
                 var bloodData = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>("/api/HisImpMestBlood/GetView", ApiConsumers.MosConsumer, bloodFilter, param);
-                bloodData = bloodData.OrderBy(o => o.ID).ToList();
+                bloodData = (bloodData ?? new List<V_HIS_IMP_MEST_BLOOD>()).OrderBy(o => o.ID).ToList();
 
                 WaitingManager.Show();
 
@@ -1586,7 +1601,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
 
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, moduleData != null ? moduleData.RoomId : 0);
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this.impMest?.TDL_TREATMENT_CODE) ? this.impMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, moduleData != null ? moduleData.RoomId : 0);
 
                 MPS.Processor.Mps000085.PDO.Mps000085PDO mps0000085RDO = new MPS.Processor.Mps000085.PDO.Mps000085PDO(
                     this.impMest,
@@ -1644,6 +1659,16 @@ namespace HIS.Desktop.Plugins.ImportBlood
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(printTypeCode) || string.IsNullOrWhiteSpace(fileName))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Invalid printTypeCode or fileName provided.");
+                    return;
+                }
+                if (this.impMest == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("impMest is null.");
+                    return;
+                }
                 CommonParam param = new CommonParam();
 
                 WaitingManager.Show();
@@ -1661,10 +1686,10 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 string printerName = "";
                 if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
                 {
-                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                    printerName = GlobalVariables.dicPrinter[printTypeCode]; 
                 }  
                 
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, moduleData != null ? moduleData.RoomId : 0);
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this.impMest.TDL_TREATMENT_CODE) ? this.impMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, moduleData != null ? moduleData.RoomId : 0);
 
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
                 if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)

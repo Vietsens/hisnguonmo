@@ -256,7 +256,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
 
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(printTypeCode, printTypeCode, roomId);
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(impMests.TDL_TREATMENT_CODE) ? impMests.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, roomId);
 
                 MPS.Processor.Mps000141.PDO.Mps000141PDO pdo = new MPS.Processor.Mps000141.PDO.Mps000141PDO(
                  impMests,

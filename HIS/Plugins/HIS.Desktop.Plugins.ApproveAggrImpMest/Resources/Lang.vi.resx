@@ -117,119 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="frmApproveAggrImpMest.layoutControl1.Text" xml:space="preserve">
-    <value>layoutControl1</value>
-  </data>
-  <data name="frmApproveAggrImpMest.layoutControl3.Text" xml:space="preserve">
-    <value>layoutControl3</value>
-  </data>
-  <data name="frmApproveAggrImpMest.ddbPrint.Text" xml:space="preserve">
-    <value>In ấn</value>
-  </data>
   <data name="frmApproveAggrImpMest.bar1.Text" xml:space="preserve">
     <value>Tools</value>
-  </data>
-  <data name="frmApproveAggrImpMest.bbtnSave.Caption" xml:space="preserve">
-    <value>Lưu (Ctrl S)</value>
   </data>
   <data name="frmApproveAggrImpMest.bbtnNew.Caption" xml:space="preserve">
     <value>Mới (Ctrl N)</value>
   </data>
-  <data name="frmApproveAggrImpMest.xtraTabPageMobaImpMest.Text" xml:space="preserve">
-    <value>Phiếu trả</value>
+  <data name="frmApproveAggrImpMest.bbtnSave.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
   </data>
-  <data name="frmApproveAggrImpMest.layoutControl6.Text" xml:space="preserve">
-    <value>layoutControl6</value>
-  </data>
-  <data name="frmApproveAggrImpMest.layoutControl8.Text" xml:space="preserve">
-    <value>layoutControl8</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionColumnStt.Caption" xml:space="preserve">
-    <value>STT</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionMedicineTypeCode.Caption" xml:space="preserve">
-    <value>Mã</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionMedicineTypeName.Caption" xml:space="preserve">
-    <value>Tên</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionServiceUnitName.Caption" xml:space="preserve">
-    <value>Đơn vị tính</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionAmount.Caption" xml:space="preserve">
-    <value>Số lượng</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionPackageNumber.Caption" xml:space="preserve">
-    <value>Số lô</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionExpiredDate.Caption" xml:space="preserve">
-    <value>Hạn sử dụng</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionMedicineRegisterNumber.Caption" xml:space="preserve">
-    <value>Số đăng ký</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionActiveIngrBhytName.Caption" xml:space="preserve">
-    <value>Tên hoạt chất</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionActiveIngrBhytCode.Caption" xml:space="preserve">
-    <value>Mã hoạt chất</value>
-  </data>
-  <data name="frmApproveAggrImpMest.repositoryItemPictureEdit3.NullText" xml:space="preserve">
-    <value> </value>
-  </data>
-  <data name="frmApproveAggrImpMest.lciTreatmentCode.Text" xml:space="preserve">
-    <value>Mã điều trị:</value>
-  </data>
-  <data name="frmApproveAggrImpMest.lciExpMestCode.Text" xml:space="preserve">
-    <value>Mã phiếu xuất:</value>
-  </data>
-  <data name="frmApproveAggrImpMest.lciUseTime.Text" xml:space="preserve">
-    <value>Thời gian sử dụng:</value>
-  </data>
-  <data name="frmApproveAggrImpMest.lciVirPatientName.Text" xml:space="preserve">
-    <value>Họ tên BN:</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridControlPrescriptionColumnRemove.Caption" xml:space="preserve">
-    <value>Loại bỏ</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridControlPrescriptionExpMestCode.Caption" xml:space="preserve">
-    <value>Mã phiếu</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridColumnPrescriptionVirPatientName.Caption" xml:space="preserve">
-    <value>Kho nhập</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridColumnPrescriptionDob.Caption" xml:space="preserve">
-    <value>Thời gian tạo</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridColumnPrescriptionGenderName.Caption" xml:space="preserve">
-    <value>Người tạo</value>
+  <data name="frmApproveAggrImpMest.ddbPrint.Text" xml:space="preserve">
+    <value>In ấn</value>
   </data>
   <data name="frmApproveAggrImpMest.gridColumn1.Caption" xml:space="preserve">
     <value>Thời gian nhập</value>
   </data>
-  <data name="frmApproveAggrImpMest.gridColumn7.Caption" xml:space="preserve">
-    <value>Người nhập</value>
-  </data>
-  <data name="frmApproveAggrImpMest.xtraTabPageMedicine.Text" xml:space="preserve">
-    <value>Thuốc </value>
-  </data>
-  <data name="frmApproveAggrImpMest.layoutControl4.Text" xml:space="preserve">
-    <value>layoutControl4</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridColumnMedicineStt.Caption" xml:space="preserve">
-    <value>STT</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridColumnMedicineMedicineTypeCode.Caption" xml:space="preserve">
-    <value>Mã thuốc</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridColumnMedicineMedicineTypeName.Caption" xml:space="preserve">
-    <value>Tên thuốc</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridColumnMedicineServiceUnitName.Caption" xml:space="preserve">
-    <value>Đơn vị tính</value>
-  </data>
-  <data name="frmApproveAggrImpMest.gridColumnMedicineAmount.Caption" xml:space="preserve">
-    <value>Số lượng</value>
+  <data name="frmApproveAggrImpMest.gridColumn10.Caption" xml:space="preserve">
+    <value>Nhà cung cấp</value>
   </data>
   <data name="frmApproveAggrImpMest.gridColumn2.Caption" xml:space="preserve">
     <value>Hãng sản xuất</value>
@@ -246,17 +150,23 @@
   <data name="frmApproveAggrImpMest.gridColumn6.Caption" xml:space="preserve">
     <value>Nhà cung cấp</value>
   </data>
-  <data name="frmApproveAggrImpMest.repositoryItemPictureEdit1.NullText" xml:space="preserve">
-    <value> </value>
+  <data name="frmApproveAggrImpMest.gridColumn7.Caption" xml:space="preserve">
+    <value>Người nhập</value>
   </data>
-  <data name="frmApproveAggrImpMest.xtraTabPageMaterial.Text" xml:space="preserve">
-    <value>Vật tư</value>
+  <data name="frmApproveAggrImpMest.gridColumn8.Caption" xml:space="preserve">
+    <value>Hãng sản xuất</value>
   </data>
-  <data name="frmApproveAggrImpMest.layoutControl5.Text" xml:space="preserve">
-    <value>layoutControl5</value>
+  <data name="frmApproveAggrImpMest.gridColumn9.Caption" xml:space="preserve">
+    <value>Quốc gia</value>
   </data>
-  <data name="frmApproveAggrImpMest.gridColumnMaterialStt.Caption" xml:space="preserve">
-    <value>STT</value>
+  <data name="frmApproveAggrImpMest.gridColumnMaterialAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridColumnMaterialBidNumber.Caption" xml:space="preserve">
+    <value>Số đăng ký</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridColumnMaterialExpiredDate.Caption" xml:space="preserve">
+    <value>Hạn sử dụng</value>
   </data>
   <data name="frmApproveAggrImpMest.gridColumnMaterialMaterialTypeCode.Caption" xml:space="preserve">
     <value>Mã vật tư</value>
@@ -267,29 +177,119 @@
   <data name="frmApproveAggrImpMest.gridColumnMaterialServiceUnitName.Caption" xml:space="preserve">
     <value>Đơn vị tính</value>
   </data>
-  <data name="frmApproveAggrImpMest.gridColumnMaterialAmount.Caption" xml:space="preserve">
+  <data name="frmApproveAggrImpMest.gridColumnMaterialStt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridColumnMedicineAmount.Caption" xml:space="preserve">
     <value>Số lượng</value>
   </data>
-  <data name="frmApproveAggrImpMest.gridColumn8.Caption" xml:space="preserve">
-    <value>Hãng sản xuất</value>
+  <data name="frmApproveAggrImpMest.gridColumnMedicineMedicineTypeCode.Caption" xml:space="preserve">
+    <value>Mã thuốc</value>
   </data>
-  <data name="frmApproveAggrImpMest.gridColumnMaterialExpiredDate.Caption" xml:space="preserve">
+  <data name="frmApproveAggrImpMest.gridColumnMedicineMedicineTypeName.Caption" xml:space="preserve">
+    <value>Tên thuốc</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridColumnMedicineServiceUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridColumnMedicineStt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridColumnPrescriptionDob.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridColumnPrescriptionGenderName.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridColumnPrescriptionVirPatientName.Caption" xml:space="preserve">
+    <value>Kho nhập</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionActiveIngrBhytCode.Caption" xml:space="preserve">
+    <value>Mã hoạt chất</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionActiveIngrBhytName.Caption" xml:space="preserve">
+    <value>Tên hoạt chất</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionColumnStt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionExpiredDate.Caption" xml:space="preserve">
     <value>Hạn sử dụng</value>
   </data>
-  <data name="frmApproveAggrImpMest.gridColumnMaterialBidNumber.Caption" xml:space="preserve">
+  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionMedicineRegisterNumber.Caption" xml:space="preserve">
     <value>Số đăng ký</value>
   </data>
-  <data name="frmApproveAggrImpMest.gridColumn9.Caption" xml:space="preserve">
-    <value>Quốc gia</value>
+  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionMedicineTypeCode.Caption" xml:space="preserve">
+    <value>Mã</value>
   </data>
-  <data name="frmApproveAggrImpMest.gridColumn10.Caption" xml:space="preserve">
-    <value>Nhà cung cấp</value>
+  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionMedicineTypeName.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionPackageNumber.Caption" xml:space="preserve">
+    <value>Số lô</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridControlMedcineInPrescriptionServiceUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridControlPrescriptionColumnRemove.Caption" xml:space="preserve">
+    <value>Loại bỏ</value>
+  </data>
+  <data name="frmApproveAggrImpMest.gridControlPrescriptionExpMestCode.Caption" xml:space="preserve">
+    <value>Mã phiếu</value>
+  </data>
+  <data name="frmApproveAggrImpMest.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmApproveAggrImpMest.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmApproveAggrImpMest.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmApproveAggrImpMest.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="frmApproveAggrImpMest.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="frmApproveAggrImpMest.layoutControl8.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="frmApproveAggrImpMest.lciExpMestCode.Text" xml:space="preserve">
+    <value>Mã phiếu xuất:</value>
+  </data>
+  <data name="frmApproveAggrImpMest.lciTreatmentCode.Text" xml:space="preserve">
+    <value>Mã điều trị:</value>
+  </data>
+  <data name="frmApproveAggrImpMest.lciUseTime.Text" xml:space="preserve">
+    <value>Thời gian sử dụng:</value>
+  </data>
+  <data name="frmApproveAggrImpMest.lciVirPatientName.Text" xml:space="preserve">
+    <value>Họ tên BN:</value>
+  </data>
+  <data name="frmApproveAggrImpMest.repositoryItemPictureEdit1.NullText" xml:space="preserve">
+    <value> </value>
   </data>
   <data name="frmApproveAggrImpMest.repositoryItemPictureEdit2.NullText" xml:space="preserve">
     <value> </value>
   </data>
+  <data name="frmApproveAggrImpMest.repositoryItemPictureEdit3.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
   <data name="frmApproveAggrImpMest.Text" xml:space="preserve">
     <value>Chi tiết phiếu trả</value>
+  </data>
+  <data name="frmApproveAggrImpMest.xtraTabPageMaterial.Text" xml:space="preserve">
+    <value>Vật tư</value>
+  </data>
+  <data name="frmApproveAggrImpMest.xtraTabPageMedicine.Text" xml:space="preserve">
+    <value>Thuốc </value>
+  </data>
+  <data name="frmApproveAggrImpMest.xtraTabPageMobaImpMest.Text" xml:space="preserve">
+    <value>Phiếu trả</value>
   </data>
   <data name="frmAggregateImpMestPrintFilter.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
@@ -437,5 +437,8 @@
   </data>
   <data name="frmAggregateImpMestPrintFilter.Text" xml:space="preserve">
     <value>Điều kiện lọc - Phiếu tra đối thuốc</value>
+  </data>
+  <data name="frmAggregateImpMestPrintFilter.chkPlanned.Properties.Caption" xml:space="preserve">
+    <value>Dự trù</value>
   </data>
 </root>

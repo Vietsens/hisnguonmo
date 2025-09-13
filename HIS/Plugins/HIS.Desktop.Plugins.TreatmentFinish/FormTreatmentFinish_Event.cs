@@ -473,8 +473,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (!string.IsNullOrEmpty(txtKskCode.Text.Trim()))
                     hisTreatmentFinishSDO.HrmKskCode = txtKskCode.Text.Trim();
 
-                if (!string.IsNullOrEmpty(txtObjectCode.Text.Trim()))
-                    hisTreatmentFinishSDO.HeinPatientTypeCode = txtObjectCode.Text.Trim();
+
+                if (cboObjectCode.EditValue != null)
+                {
+                    var selected = heinPatientTypes.FirstOrDefault(x => x.ID.ToString() == cboObjectCode.EditValue.ToString()).HEIN_PATIENT_TYPE_CODE;
+                    hisTreatmentFinishSDO.HeinPatientTypeCode = selected;
+                }
+
                 if (string.IsNullOrEmpty(hisTreatmentFinishSDO.IcdCode))
                 {
                     result = true;
@@ -607,7 +612,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 && lciOutPatientDateTo.Enabled == true)
                 {
                     hisTreatmentFinishSDO.OutPatientDateFrom = dtOutPatientDateFrom.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtOutPatientDateFrom.DateTime) : null;
-                    hisTreatmentFinishSDO.OutPatientDateTo = dtOutPatientDateFrom.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtOutPatientDateTo.DateTime) : null;
+                    hisTreatmentFinishSDO.OutPatientDateTo = dtOutPatientDateTo.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtOutPatientDateTo.DateTime) : null;
                 }
 
                 hisTreatmentFinishSDO.NewTreatmentInTime = hisTreatmentFinishSDO_process.NewTreatmentInTime;
