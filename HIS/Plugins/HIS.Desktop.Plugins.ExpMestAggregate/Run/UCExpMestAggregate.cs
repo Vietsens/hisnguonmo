@@ -80,7 +80,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
         List<long> lstRoomSelectedId = new List<long>();
         List<long> lstBedRoomIds = new List<long>();
 
-        bool isCheckAll = true;
+        bool isCheckAll = true; 
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         string moduleLink = "HIS.Desktop.Plugins.AggrExpMestDetail";

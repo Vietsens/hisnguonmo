@@ -291,4 +291,7 @@
   <data name="frmApproveAggrImpMest.xtraTabPageMobaImpMest.Text" xml:space="preserve">
     <value>MobaImpMest</value>
   </data>
+  <data name="frmAggregateImpMestPrintFilter.chkPlanned.Properties.Caption" xml:space="preserve">
+    <value>Dự trù</value>
+  </data>
 </root>
