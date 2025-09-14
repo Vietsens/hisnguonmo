@@ -49,13 +49,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Inventec.Common.ToKhaiYTe;
 using System.Diagnostics;
+using HIS.Desktop.Common;
 
 namespace HIS.Desktop.Plugins.LisSampleUpdate
 {
     public partial class frmUpdateLisSample : FormBase
     {
         private int positionHandle = -1;
-
+        DelegateSelectData delegateSelectData;
         private LIS_SAMPLE sample;
         List<LIS_SAMPLE_TYPE> sampleTypes = new List<LIS_SAMPLE_TYPE>();
         V_LIS_SAMPLE _dataLisSample;
@@ -79,7 +80,11 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
             InitializeComponent();
             this._dataLisSample = dataLisSample;
         }
-
+        public frmUpdateLisSample(Inventec.Desktop.Common.Modules.Module module, V_LIS_SAMPLE dataLisSample, DelegateSelectData delegateSD)
+    : this(module, dataLisSample)
+        {
+            this.delegateSelectData = delegateSD;
+        }
         void InitControlState()
         {
             try
@@ -506,6 +511,10 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                 {
                     success = true;
                     this.sample = rowBe;
+                    if (this.delegateSelectData != null)
+                    {
+                        this.delegateSelectData(this.sample);
+                    }
                 }
                 WaitingManager.Hide();
 

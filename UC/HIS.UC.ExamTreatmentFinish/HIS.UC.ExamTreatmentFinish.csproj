@@ -247,6 +247,9 @@
     <Compile Include="BussinessBase.cs" />
     <Compile Include="Compare.cs" />
     <Compile Include="Config\HisConfig.cs" />
+    <Compile Include="CustomControl\CustomGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="EndTypeForm\UCAppointmentAdvise.cs">
       <SubType>UserControl</SubType>
     </Compile>

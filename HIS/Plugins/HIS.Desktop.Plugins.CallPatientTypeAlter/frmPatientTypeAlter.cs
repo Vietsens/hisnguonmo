@@ -89,6 +89,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
         UC_ImageBHYT ucImageBHYT;
         long patientId;
         long keyIsSetPrimaryPatientType;
+        string HeinPatientCode;
         List<MOS.EFMODEL.DataModels.HIS_POSITION> dataPosition = null;
         List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE> dataWorkPlace = null;
         List<MOS.EFMODEL.DataModels.HIS_MILITARY_RANK> dataMilitaryRank = null;
@@ -774,6 +775,10 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                     HisTreatmentView4Filter filter = new HisTreatmentView4Filter();
                     filter.ID = treatmentId;
                     this.currentHisTreatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_TREATMENT_4>>("api/HisTreatment/GetView4", ApiConsumers.MosConsumer, filter, param).ToList().First();
+                    if(this.currentHisTreatment != null)
+                    {
+                        this.HeinPatientCode = this.currentHisTreatment.HEIN_PATIENT_TYPE_CODE != null ? this.currentHisTreatment.HEIN_PATIENT_TYPE_CODE : null;
+                    }
                 }
             }
             catch (Exception ex)
@@ -1254,7 +1259,7 @@ listTL, lstSereServResult, DelegateSuccess);
 
                 if (patientTypeAlterAndTranPati.ImgBhytData == null || patientTypeAlterAndTranPati.ImgBhytData.Count() == 0)
                     patientTypeAlterAndTranPati.PatientTypeAlter.BHYT_URL = null;
-
+                //patientTypeAlterAndTranPati.PatientTypeAlter.HIS_TREATMENT.HEIN_PATIENT_TYPE_CODE = 
                 //issue 14637
                 if (!IsUnusedHeinCardNumberByAnother(patientTypeAlterAndTranPati.PatientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlterAndTranPati.PatientTypeAlter.TDL_PATIENT_ID))
                 {
@@ -2074,6 +2079,7 @@ listTL, lstSereServResult, DelegateSuccess);
                     tranpati.TransferInIcdCode = patientProfileSDO.HisTreatment.TRANSFER_IN_ICD_CODE;
                     tranpati.TransferInTimeFrom = patientProfileSDO.HisTreatment.TRANSFER_IN_TIME_FROM;
                     tranpati.TransferInTimeTo = patientProfileSDO.HisTreatment.TRANSFER_IN_TIME_TO;
+                    tranpati.HeinPatientTypeCode = patientProfileSDO.HisTreatment.HEIN_PATIENT_TYPE_CODE;
                 }
             }
             catch (Exception ex)
@@ -2569,7 +2575,7 @@ listTL, lstSereServResult, DelegateSuccess);
                                         heinCardData = null;
                                         mess = ResourceMessage.TheSaiNgaySinhGov070;
                                     }
-                                    else if (string.IsNullOrEmpty(patientSDO.COMMUNE_CODE) || string.IsNullOrEmpty(patientSDO.DISTRICT_CODE) || string.IsNullOrEmpty(patientSDO.PROVINCE_CODE))
+                                    else if (string.IsNullOrEmpty(patientSDO.COMMUNE_CODE) ||  string.IsNullOrEmpty(patientSDO.PROVINCE_CODE))
                                     {
                                         heinCardData = null;
                                         mess = "Bệnh nhân thiếu thông tin địa chỉ";
@@ -2682,7 +2688,7 @@ listTL, lstSereServResult, DelegateSuccess);
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientUpdateSdo), patientUpdateSdo));
                             currenPatient = new BackendAdapter(paramPatient).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, patientUpdateSdo, paramPatient);
                             LoadCurrentHisTreatment();
-                            if (string.IsNullOrEmpty(currenPatient.COMMUNE_CODE) && string.IsNullOrEmpty(currenPatient.DISTRICT_CODE) && string.IsNullOrEmpty(currenPatient.PROVINCE_CODE))
+                            if (string.IsNullOrEmpty(currenPatient.COMMUNE_CODE) &&  string.IsNullOrEmpty(currenPatient.PROVINCE_CODE))
                             {
 
                                 DialogResult drReslt = DevExpress.XtraEditors.XtraMessageBox.Show("Bệnh nhân thiếu thông tin địa chỉ", "Thông báo!", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, DevExpress.Utils.DefaultBoolean.True);

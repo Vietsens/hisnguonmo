@@ -101,7 +101,7 @@ namespace HIS.Desktop.Plugins.ExpMestDetailBCS.ExpMestViewDetail
                     ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2 ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : previewType,
                     printerName, eventLog);
                 printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(
-                    printTypeCode,
+                    this._CurrentExpMest != null && this._CurrentExpMest.TDL_TREATMENT_CODE != null ? this._CurrentExpMest.TDL_TREATMENT_CODE : printTypeCode,
                     printTypeCode,
                     this.moduleData != null ?
                     this.moduleData.RoomId : 0);

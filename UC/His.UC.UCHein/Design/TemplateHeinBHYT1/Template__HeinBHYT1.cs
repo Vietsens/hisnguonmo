@@ -17,6 +17,7 @@
  */
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Columns;
 using His.UC.UCHein.Base;
 using His.UC.UCHein.Config;
@@ -33,6 +34,8 @@ using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
 using Inventec.Common.QrCodeBHYT;
 using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using MOS.SDO;
 using System;
 using System.Collections.Generic;
@@ -63,6 +66,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         DataInitHeinBhyt entity;
         ResultDataADO ResultDataADO { get; set; }
         string SysMediOrgCode { get; set; }
+        string HeinPatientCode;
         string HeinLevelCodeCurrent { get; set; }
         string MediOrgCodeCurrent { get; set; }
         List<string> MediOrgCodesAccepts { get; set; }
@@ -116,11 +120,12 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             try
             {
                 InitializeComponent();
-
+                SetColorForHeinPatientType();
                 if (data != null)
                 {
                     this.entity = data;
                     this.isDefaultInit = true;
+                    this.HeinPatientCode = data.HeinPatientCode;
                     DataStore.MediOrgs = (from m in data.MediOrgs select new MediOrgADO(m)).ToList();
                     DataStore.IcdADOs = (from m in data.Icds select new IcdADO(m)).ToList();
                     DataStore.LiveAreas = data.LiveAreas;
@@ -175,7 +180,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 Inventec.Common.Logging.LogSystem.Debug("Template__HeinBHYT1_Load()");
                 this.SetCaptionByLanguageKeyNew();
                 Config.HisConfigCFG.LoadConfig();
-                ResetPatientCode(); 
+                ResetPatientCode();
+                InitComboPatientCode();
                 if (this.isDefaultInit)
                     this.InitData(this.entity);
             }
@@ -184,12 +190,54 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void InitComboPatientCode()
+        {
+            try
+            {
+                List<HIS_HEIN_PATIENT_TYPE> heinData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
 
+                cboPatientCode.Properties.DataSource = heinData;
+                cboPatientCode.Properties.DisplayMember = "HEIN_PATIENT_TYPE_CODE";
+                cboPatientCode.Properties.ValueMember = "HEIN_PATIENT_TYPE_CODE";
+
+                cboPatientCode.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboPatientCode.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cboPatientCode.ForceInitialize();
+                cboPatientCode.Properties.View.Columns.Clear();
+                cboPatientCode.Properties.ImmediatePopup = true;
+
+                // Cột mã
+                DevExpress.XtraGrid.Columns.GridColumn colCode = cboPatientCode.Properties.View.Columns.AddField("HEIN_PATIENT_TYPE_CODE");
+                colCode.Caption = "Mã";
+                colCode.Visible = true;
+                colCode.VisibleIndex = 0;
+                colCode.Width = 100;
+
+                // Cột mô tả (xuống dòng)
+                DevExpress.XtraGrid.Columns.GridColumn colDesc = cboPatientCode.Properties.View.Columns.AddField("DESCRIPTION");
+                colDesc.Caption = "Mô tả";
+                colDesc.Visible = true;
+                colDesc.VisibleIndex = 1;
+                colDesc.ColumnEdit = repositoryItemMemoEdit1; // dùng memo edit
+                colDesc.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
+                colDesc.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+                colDesc.Width = 250;
+
+                // Cho phép auto height
+                cboPatientCode.Properties.View.OptionsView.RowAutoHeight = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void ResetPatientCode()
         {
             try
             {
-                txtPatientCode.Text = "";
+                cboPatientCode.Text = "";
             }
             catch(Exception ex)
             {
@@ -540,6 +588,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     txtSoThe.EditValue = null;
                     cboSoThe.EditValue = null;
                     txtAddress.Text = "";
+                    cboPatientCode.EditValue = null;
 
                     IList<Control> invalidControls = this.dxValidationProvider1.GetInvalidControls();
                     for (int i = invalidControls.Count - 1; i >= 0; i--)
@@ -623,7 +672,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             }
             return (result ?? new MOS.EFMODEL.DataModels.HIS_TRAN_PATI_REASON());
         }
-
+        
         internal void ProcessFillDataTranPatiInForm(long treatmentId)
         {
             try
@@ -1274,7 +1323,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             }
             return valid;
         }
-
         internal void ResetValidationControl()
         {
             try
@@ -1307,6 +1355,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     }
                     valid = false;
                 }
+                valid = valid && ValidateHeinPatientTypeCode();
+                ClearHeinPatientCodeError();
             }
             catch (Exception ex)
             {
@@ -1985,6 +2035,32 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     rdoRightRoute.Checked = true;
                 if (rdoRightRoute.Checked)
                     ValidateRightRouteType();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboPatientCode_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                ClearHeinPatientCodeError();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void ClearHeinPatientCodeError()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(cboPatientCode.EditValue?.ToString()))
+                {
+                    this.dxValidationProvider1.SetValidationRule(this.cboPatientCode, null);
+                }
             }
             catch (Exception ex)
             {

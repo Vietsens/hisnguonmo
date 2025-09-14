@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.Utils;
-using DevExpress.XtraEditors;
+using DevExpress.XtraEditors; 
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.ViewInfo;
 using HIS.Desktop.ApiConsumer;
@@ -68,7 +68,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
         bool isPrint = false;
         internal long timeType = 1;
         #endregion
-         
+
         #region contructor
         internal frmAggregateExpMestPrintFilter(Inventec.Desktop.Common.Modules.Module currrentModule, V_HIS_EXP_MEST aggrExpMest, long printType, Desktop.ADO.AggrExpMestPrintSDO printSdo)
             : base(currrentModule)
@@ -160,6 +160,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                 cboChooseTime.Properties.ValueMember = "Id";
                 cboChooseTime.Properties.ImmediatePopup = true;
                 cboChooseTime.Properties.View.OptionsView.ShowColumnHeaders = false;
+                //chkPlanned.Checked = true;
                 DevExpress.XtraGrid.Columns.GridColumn col2 = cboChooseTime.Properties.View.Columns.AddField("TimeName");
                 col2.VisibleIndex = 1;
                 col2.Width = 200;
@@ -217,7 +218,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                     {
                         LoadDataMedicineAndMaterial_(this._AggrExpMests);
                     }
-                    else 
+                    else
                     {
                         LoadDataMedicineAndMaterial(this.aggrExpMest);
                     }
@@ -235,13 +236,13 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
 
                 WaitingManager.Hide();
 
-                Inventec.Common.Logging.LogSystem.Info("this.printType: " + this.printType + " ___"+this.isPrint);
+                Inventec.Common.Logging.LogSystem.Info("this.printType: " + this.printType + " ___" + this.isPrint);
                 if (this.printType == 3 || isPrint)
                 {
                     ProcessPrint();
                     this.Close();
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -394,6 +395,22 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         }
                     }
                 }
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == chkPlanned.Name) 
+                        {
+                            chkPlanned.Checked = item.VALUE == "1";
+                        }
+                    }
+                }
+
+                if (this.currentControlStateRDO == null
+                    || !this.currentControlStateRDO.Any(o => o.KEY == chkPlanned.Name))
+                {
+                    chkPlanned.Checked = true;
+                }
             }
             catch (Exception ex)
             {
@@ -402,16 +419,67 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             isNotLoadWhileChangeControlStateInFirst = false;
         }
 
-		private void frmAggregateExpMestPrintFilter_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			try
-			{
+        private void frmAggregateExpMestPrintFilter_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
                 this.Dispose(true);
             }
-			catch (Exception ex)
-			{
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-		}
-	}
+        }
+
+        private void cboChooseTime_EditValueChanged(object sender, EventArgs e)
+        {
+            //try
+            //{
+            //    if (cboChooseTime.EditValue != null)
+            //    {
+            //        timeType = (long)cboChooseTime.EditValue;
+            //    }
+            //    if (timeType == 2)
+            //    {
+            //        chkPlanned.Checked = true;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Warn(ex);
+            //}
+        }
+
+        private void chkPlanned_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst) return;
+
+                if (this.currentControlStateRDO == null)
+                    this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                var cs = this.currentControlStateRDO
+                    .FirstOrDefault(o => o.KEY == chkPlanned.Name && o.MODULE_LINK == currrentModule.ModuleLink);
+
+                if (cs == null)
+                {
+                    cs = new HIS.Desktop.Library.CacheClient.ControlStateRDO
+                    {
+                        KEY = chkPlanned.Name,
+                        MODULE_LINK = currrentModule.ModuleLink
+                    };
+                    this.currentControlStateRDO.Add(cs);
+                }
+
+                cs.VALUE = chkPlanned.Checked ? "1" : "";
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+    }
 }

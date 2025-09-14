@@ -1615,6 +1615,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.dxValidationProvider1.SetValidationRule(this.dtTransferInTimeTo, null);
                     this.dxValidationProvider1.SetValidationRule(this.txtMaHinhThucChuyen, null);
                     this.dxValidationProvider1.SetValidationRule(this.txtMaLyDoChuyen, null);
+                    this.dxValidationProvider1.SetValidationRule(this.cboPatientCode, null);
                 }
             }
             catch (Exception ex)

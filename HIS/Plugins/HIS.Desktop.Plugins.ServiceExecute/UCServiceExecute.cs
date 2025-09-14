@@ -4193,13 +4193,20 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                     else
                     {
-                        surgUpdate.EkipUsers = null;
+                        surgUpdate.EkipUsers = new List<HIS_EKIP_USER>();
+
+                        surgUpdate.EkipUsers.Add(new HIS_EKIP_USER
+                        {
+                            LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(),
+                            EXECUTE_ROLE_ID = BackendDataWorker.Get<HIS_EXECUTE_ROLE>().FirstOrDefault(o => o.ALLOW_SIMULTANEITY != 1).ID
+                        });
+
                         // lấy kíp theo tài khoản đăng nhập (bỏ do pmem chạy chậm)
                         //var resuilt = BackendDataWorker.Get<HIS_EKIP_USER>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault();
                         //if (resuilt != null)
                         //{
                         //    List<HIS_EKIP_USER> userList = new List<HIS_EKIP_USER> { resuilt };
-                        //    surgUpdate.EkipUsers = userList;
+                        //    surgUpdate.EkipUsers = userList;             
                         //}
                         //else
                         //{

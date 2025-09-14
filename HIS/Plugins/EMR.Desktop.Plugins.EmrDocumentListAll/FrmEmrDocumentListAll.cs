@@ -1016,6 +1016,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             var emrFilter = new EMR.Filter.EmrDocumentViewFilter();
             emrFilter.ID = documentId;
             sdo.EmrDocumentViewFilter = emrFilter;
+            sdo.EmrDocumentViewFilter.IS_OUTSIDE_TREATMENT = chkOtherDocuments.Checked ? true : false; 
             sdo.IsMerge = IsMerge;
             sdo.IsShowPatientSign = IsShowPatientSign;
             sdo.IsShowWatermark = IsShowWatermark;

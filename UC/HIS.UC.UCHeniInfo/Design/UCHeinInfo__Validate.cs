@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -31,6 +31,7 @@ using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.UC.UCHeniInfo.Data;
 using HIS.Desktop.Utility;
+using HIS.Desktop.Plugins.Library.RegisterConfig;
 
 namespace HIS.UC.UCHeniInfo
 {
@@ -50,6 +51,7 @@ namespace HIS.UC.UCHeniInfo
                     this.ValidRightRouteTypeA();
                     this.ValidFreeCoPainTime(false);
                     this.ValidComboDKKCBBD();
+                    //this.ValidateHeinPatientTypeCode(patientTypeID); 
                 }
                 else
                 {
@@ -132,7 +134,6 @@ namespace HIS.UC.UCHeniInfo
         {
             try
             {
-              
                 this.dxValidationProviderControl.SetValidationRule(this.txtAddress, null);
                 this.dxValidationProviderControl.SetValidationRule(this.txtMaDKKCBBD, null);
                 this.dxValidationProviderControl.SetValidationRule(this.txtSoThe, null);
@@ -140,6 +141,10 @@ namespace HIS.UC.UCHeniInfo
                 this.dxValidationProviderControl.SetValidationRule(this.txtHeinCardFromTime, null);
                 this.dxValidationProviderControl.SetValidationRule(this.cboHeinRightRoute, null);
                 this.dxValidationProviderControl.SetValidationRule(this.txtFreeCoPainTime, null);
+                //qtcode
+                this.dxValidationProviderControl.SetValidationRule(this.cboHeinPatientType, null);
+
+
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidationProviderControl, this.dxErrorProviderControl);
             }
             catch (Exception ex)
@@ -241,7 +246,43 @@ namespace HIS.UC.UCHeniInfo
                 Inventec.Common.Logging.LogSystem.Warn("Tiep don: UCHeinInfo/ValidRightRouteTypeA:\n" + ex);
             }
         }
-
+        //qtcode
+        public bool ValidateHeinPatientTypeCode(long patientTypeId)
+        {
+            bool valid = true;
+            try
+            {
+                if (patientTypeId == HisConfigCFG.PatientTypeId__BHYT_HIS &&
+                    string.IsNullOrEmpty(cboHeinPatientType.EditValue?.ToString()))
+                {
+                    if (HisConfigCFG.WarningHeinPatientTypeCode == "1")
+                    {
+                        valid = false;
+                        dxErrorProviderControl.SetError(cboHeinPatientType,
+                            HIS.UC.UCHeniInfo.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.ThieuTruongDuLieuBatBuoc), ErrorType.Warning);
+                    }
+                    else if (HisConfigCFG.WarningHeinPatientTypeCode == "2")
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Chưa nhập mã đối tượng khám chữa bệnh. Bạn có muốn tiếp tục?",
+                            HIS.UC.UCHeniInfo.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                            MessageBoxButtons.YesNo) == DialogResult.No)
+                        {
+                            valid = false;
+                            cboHeinPatientType.Focus();
+                            cboHeinPatientType.ShowPopup();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                valid = false;
+                Inventec.Common.Logging.LogSystem.Warn("ValidateHeinPatientTypeCode: \n" + ex);
+            }
+            return valid;
+        }
+        //qtcode
         private void ValidTxtSoThe()
         {
             try

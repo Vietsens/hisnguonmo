@@ -383,6 +383,13 @@ namespace MPS.Processor.Mps000049
                             case 4:
                                 dataMedis = dataMedis.OrderBy(p => p.SERVICE_UNIT_NAME).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
                                 break;
+                            case 5:
+                                dataMedis = dataMedis
+                                    .OrderBy(p => p.MEDICINE_TYPE_NUM_ORDER == null ? 1 : 0) 
+                                    .ThenBy(p => p.MEDICINE_TYPE_NUM_ORDER)                  
+                                    .ThenBy(p => p.MEDICINE_TYPE_NAME)                       
+                                    .ToList();
+                                break;
                         }
                         rdo.listAdo.AddRange(dataMedis);
                     }

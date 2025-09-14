@@ -237,7 +237,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 if (this.ExamTreatmentFinishInitADO != null && this.ExamTreatmentFinishInitADO.Treatment != null
                         && !string.IsNullOrEmpty(HisConfig.WarningHeinPatientTypeCode)
                         && this.ExamTreatmentFinishInitADO.Treatment.TDL_PATIENT_TYPE_ID == HisConfig.PATIENT_TYPE_ID__BHYT
-                        && (string.IsNullOrEmpty(txtHeinPatientTypeCode.Text))
+                        && (string.IsNullOrEmpty(cboHeinPatientTypeCode.Text))
                         )
                 {
                     if (HisConfig.WarningHeinPatientTypeCode == "2")
@@ -268,10 +268,10 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             try
             {
                 ControlEditValidationRule validate = new ControlEditValidationRule();
-                validate.editor = txtHeinPatientTypeCode;
+                validate.editor = cboHeinPatientTypeCode;
                 validate.ErrorText = String.Format(Resources.ResourceMessage.TruongDuLieuBatBuoc);
                 validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                this.dxValidationProvider1.SetValidationRule(txtHeinPatientTypeCode, validate);
+                this.dxValidationProvider1.SetValidationRule(cboHeinPatientTypeCode, validate);
             }
             catch (Exception ex)
             {

@@ -106,7 +106,7 @@ namespace HIS.Desktop.Plugins.ManuImpMestUpdate
                     this.currentSupplier = this.listSupplier.FirstOrDefault(o => o.ID == Convert.ToInt64(cboSupplier.EditValue));
                     CommonParam param = new CommonParam();
 
-                    var supplier = new BackendAdapter(param).Get<List<V_HIS_BID>>("api/HisBid/GetViewBySupplier", ApiConsumer.ApiConsumers.MosConsumer, this.currentSupplier.ID, param);
+                    var supplier = new BackendAdapter(param).Get<List<V_HIS_BID_1>>("api/HisBid/GetViewBySupplier", ApiConsumer.ApiConsumers.MosConsumer, this.currentSupplier.ID, param);
 
                     medicineProcessor.ReloadBid(this.ucMedicineTypeTree, supplier);
                     materialProcessor.ReloadBid(this.ucMaterialTypeTree, supplier);
@@ -1139,7 +1139,7 @@ namespace HIS.Desktop.Plugins.ManuImpMestUpdate
                     this.currentSupplier = this.listSupplier.FirstOrDefault(o => o.ID == Convert.ToInt64(cboSupplier.EditValue));
                     CommonParam param = new CommonParam();
 
-                    var supplier = new BackendAdapter(param).Get<List<V_HIS_BID>>("api/HisBid/GetViewBySupplier", ApiConsumer.ApiConsumers.MosConsumer, this.currentSupplier.ID, param);
+                    var supplier = new BackendAdapter(param).Get<List<V_HIS_BID_1>>("api/HisBid/GetViewBySupplier", ApiConsumer.ApiConsumers.MosConsumer, this.currentSupplier.ID, param);
 
                     medicineProcessor.ReloadBid(this.ucMedicineTypeTree, supplier);
                     materialProcessor.ReloadBid(this.ucMaterialTypeTree, supplier);

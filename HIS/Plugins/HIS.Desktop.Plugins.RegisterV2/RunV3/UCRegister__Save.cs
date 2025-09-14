@@ -396,17 +396,21 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             bool validPhoneNumber = true;
             bool validGuarantee = true;
             bool validIsBlockBhyt = true;
+            bool validHeinPatientTypeCode = true;
             try
             {
                 long patientTypeId = GetPatientTypeId();
                 bool isUseUCHeinInfo = (patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT || patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__QN);
-                validHeinInfo = isUseUCHeinInfo ? ucHeinInfo1.ValidateRequiredField() : true;
+                
                 validPatientRaw = ucPatientRaw1.ValidateRequiredField();
                 validRelative = ucRelativeInfo1.ValidateRequiredField();
                 validOtherServiceReq = ucOtherServiceReqInfo1.ValidateRequiredField();
                 validPlusInfo = ucPlusInfo1.ValidateRequiredField();
                 validServiceRoom = ucServiceRoomInfo1.ValidateRequiredField();
                 validAddress = ucAddressCombo1.ValidateRequiredField();
+                //qtcode
+                validHeinInfo = isUseUCHeinInfo ? ucHeinInfo1.ValidateRequiredField() : true;
+                validHeinPatientTypeCode = isUseUCHeinInfo ? ucHeinInfo1.ValidateHeinPatientTypeCode(patientTypeId) : true; 
                 if (isUseUCHeinInfo)
                     validIsBlockBhyt = this.BlockingHeinLevelCode() && this.BlockingInvalidBhyt();
                 //Check ksk             
@@ -516,6 +520,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 GlobalStore.currentFactorySaveType = this.GetEnumSaveType(param);
                 valid = (GlobalStore.currentFactorySaveType != UCServiceRequestRegisterFactorySaveType.VALID);
                 valid = valid
+                    && validHeinPatientTypeCode
                     && validHeinInfo
                     && validPatientRaw
                     && validRelative

@@ -36,7 +36,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Configuration;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Template;
-
+using System.Net; 
 namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
 {
     public class BKAVBehavior : IRun
@@ -148,6 +148,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
 
                     if (this.ElectronicBillTypeEnum == ElectronicBillType.ENUM.GET_INVOICE_LINK && IsError)
                     {
+                        ServicePointManager.Expect100Continue = true;
+                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                               | SecurityProtocolType.Tls11
+                               | SecurityProtocolType.Tls12
+                               | SecurityProtocolType.Ssl3;
                         Inventec.Common.EHoaDon.EHoaDonManager eHoaDon_Show = new Inventec.Common.EHoaDon.EHoaDonManager(serviceUrl, bkavPartner, invoiceDataWSs);
                         Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("invoiceDataWSs_SHOW: ", invoiceDataWSs));
                         List<Inventec.Common.EHoaDon.InvoiceResult> invoiceResults_Show = eHoaDon_Show.Run(Inventec.Common.EHoaDon.CmdType.GetInvoiceShow);

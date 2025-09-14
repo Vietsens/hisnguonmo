@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -57,15 +58,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAggregateExpMestPrintFilter));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.chkPrintNow = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnSendRequest = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControl6 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl9 = new DevExpress.XtraLayout.LayoutControl();
+            this.chkPlanned = new DevExpress.XtraEditors.CheckEdit();
             this.cboChooseTime = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.dtIntructionTimeTo = new DevExpress.XtraEditors.DateEdit();
@@ -97,6 +95,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciChkPlanned = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup5 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -104,7 +103,11 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciChkPrintNow = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager2 = new DevExpress.XtraBars.BarManager();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.barManager2 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
@@ -112,8 +115,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl4 = new DevExpress.XtraBars.BarDockControl();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.layoutControl13 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl14 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControlGroup13 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -189,6 +192,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.layoutControl6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl9)).BeginInit();
             this.layoutControl9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPlanned.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboChooseTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtIntructionTimeTo.Properties.CalendarTimeProperties)).BeginInit();
@@ -215,6 +219,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkPlanned)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
@@ -318,10 +323,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             // 
             // barManager1
             // 
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1});
@@ -334,34 +335,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.barButtonItem1.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
             this.barButtonItem1.Name = "barButtonItem1";
             this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(880, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 577);
-            this.barDockControlBottom.Size = new System.Drawing.Size(880, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 548);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(880, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 548);
             // 
             // btnSendRequest
             // 
@@ -388,6 +361,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             // 
             // layoutControl9
             // 
+            this.layoutControl9.Controls.Add(this.chkPlanned);
             this.layoutControl9.Controls.Add(this.cboChooseTime);
             this.layoutControl9.Controls.Add(this.dtIntructionTimeTo);
             this.layoutControl9.Controls.Add(this.dtIntructionTimeFrom);
@@ -405,6 +379,17 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.layoutControl9.TabIndex = 4;
             this.layoutControl9.Text = "layoutControl9";
             // 
+            // chkPlanned
+            // 
+            this.chkPlanned.Location = new System.Drawing.Point(779, 2);
+            this.chkPlanned.MenuManager = this.barManager1;
+            this.chkPlanned.Name = "chkPlanned";
+            this.chkPlanned.Properties.Caption = "Dự trù";
+            this.chkPlanned.Size = new System.Drawing.Size(95, 19);
+            this.chkPlanned.StyleController = this.layoutControl9;
+            this.chkPlanned.TabIndex = 22;
+            this.chkPlanned.CheckedChanged += new System.EventHandler(this.chkPlanned_CheckedChanged);
+            // 
             // cboChooseTime
             // 
             this.cboChooseTime.Location = new System.Drawing.Point(2, 2);
@@ -417,6 +402,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.cboChooseTime.Size = new System.Drawing.Size(130, 20);
             this.cboChooseTime.StyleController = this.layoutControl9;
             this.cboChooseTime.TabIndex = 21;
+            this.cboChooseTime.EditValueChanged += new System.EventHandler(this.cboChooseTime_EditValueChanged);
             // 
             // gridLookUpEdit1View
             // 
@@ -468,11 +454,11 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             // 
             // chkIsChemicalSustance
             // 
-            this.chkIsChemicalSustance.Location = new System.Drawing.Point(714, 2);
+            this.chkIsChemicalSustance.Location = new System.Drawing.Point(687, 2);
             this.chkIsChemicalSustance.MenuManager = this.barManager1;
             this.chkIsChemicalSustance.Name = "chkIsChemicalSustance";
             this.chkIsChemicalSustance.Properties.Caption = "Hóa chất";
-            this.chkIsChemicalSustance.Size = new System.Drawing.Size(160, 19);
+            this.chkIsChemicalSustance.Size = new System.Drawing.Size(88, 19);
             this.chkIsChemicalSustance.StyleController = this.layoutControl9;
             this.chkIsChemicalSustance.TabIndex = 17;
             // 
@@ -578,7 +564,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.chkMaterial.MenuManager = this.barManager1;
             this.chkMaterial.Name = "chkMaterial";
             this.chkMaterial.Properties.Caption = "Vật tư";
-            this.chkMaterial.Size = new System.Drawing.Size(112, 19);
+            this.chkMaterial.Size = new System.Drawing.Size(85, 19);
             this.chkMaterial.StyleController = this.layoutControl9;
             this.chkMaterial.TabIndex = 14;
             // 
@@ -670,7 +656,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.emptySpaceItem6,
             this.layoutControlItem1,
             this.layoutControlItem3,
-            this.layoutControlItem9});
+            this.layoutControlItem9,
+            this.lciChkPlanned});
             this.layoutControlGroup8.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup8.Name = "Root";
             this.layoutControlGroup8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -700,7 +687,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.lciChkMaterial.Control = this.chkMaterial;
             this.lciChkMaterial.Location = new System.Drawing.Point(596, 0);
             this.lciChkMaterial.Name = "lciChkMaterial";
-            this.lciChkMaterial.Size = new System.Drawing.Size(116, 24);
+            this.lciChkMaterial.Size = new System.Drawing.Size(89, 24);
             this.lciChkMaterial.TextSize = new System.Drawing.Size(0, 0);
             this.lciChkMaterial.TextVisible = false;
             // 
@@ -729,9 +716,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             // lciChkIsChemicalSubstance
             // 
             this.lciChkIsChemicalSubstance.Control = this.chkIsChemicalSustance;
-            this.lciChkIsChemicalSubstance.Location = new System.Drawing.Point(712, 0);
+            this.lciChkIsChemicalSubstance.Location = new System.Drawing.Point(685, 0);
             this.lciChkIsChemicalSubstance.Name = "lciChkIsChemicalSubstance";
-            this.lciChkIsChemicalSubstance.Size = new System.Drawing.Size(164, 24);
+            this.lciChkIsChemicalSubstance.Size = new System.Drawing.Size(92, 24);
             this.lciChkIsChemicalSubstance.TextSize = new System.Drawing.Size(0, 0);
             this.lciChkIsChemicalSubstance.TextVisible = false;
             // 
@@ -755,7 +742,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem1.TextSize = new System.Drawing.Size(25, 20);
             this.layoutControlItem1.TextToControlDistance = 5;
-            this.layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             // 
             // layoutControlItem3
             // 
@@ -769,7 +755,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.layoutControlItem3.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem3.TextSize = new System.Drawing.Size(40, 20);
             this.layoutControlItem3.TextToControlDistance = 5;
-            this.layoutControlItem3.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             // 
             // layoutControlItem9
             // 
@@ -779,6 +764,15 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.layoutControlItem9.Size = new System.Drawing.Size(134, 24);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
+            // 
+            // lciChkPlanned
+            // 
+            this.lciChkPlanned.Control = this.chkPlanned;
+            this.lciChkPlanned.Location = new System.Drawing.Point(777, 0);
+            this.lciChkPlanned.Name = "lciChkPlanned";
+            this.lciChkPlanned.Size = new System.Drawing.Size(99, 24);
+            this.lciChkPlanned.TextSize = new System.Drawing.Size(0, 0);
+            this.lciChkPlanned.TextVisible = false;
             // 
             // layoutControlGroup5
             // 
@@ -855,6 +849,34 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.lciChkPrintNow.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciChkPrintNow.TextSize = new System.Drawing.Size(70, 20);
             this.lciChkPrintNow.TextToControlDistance = 5;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(880, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 577);
+            this.barDockControlBottom.Size = new System.Drawing.Size(880, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 548);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(880, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 548);
             // 
             // barManager2
             // 
@@ -1692,6 +1714,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             this.layoutControl6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl9)).EndInit();
             this.layoutControl9.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkPlanned.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboChooseTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtIntructionTimeTo.Properties.CalendarTimeProperties)).EndInit();
@@ -1718,6 +1741,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkPlanned)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
@@ -1927,5 +1951,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
         private DevExpress.XtraEditors.GridLookUpEdit cboChooseTime;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
+        private DevExpress.XtraEditors.CheckEdit chkPlanned;
+        private DevExpress.XtraLayout.LayoutControlItem lciChkPlanned;
     }
 }

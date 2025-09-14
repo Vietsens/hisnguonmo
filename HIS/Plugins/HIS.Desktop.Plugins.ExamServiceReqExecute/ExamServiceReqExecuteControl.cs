@@ -2098,9 +2098,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (patient != null)
                     {
                         hospitalizeADO.RelativeAddress = patient.RELATIVE_ADDRESS;
-                        hospitalizeADO.RelativeName = patient.RELATIVE_NAME;
+                        hospitalizeADO.RelativeName = patient.RELATIVE_NAME;          
                         hospitalizeADO.RelativePhone = patient.RELATIVE_PHONE;
                         hospitalizeADO.CareerId = patient.CAREER_ID;
+                        hospitalizeADO.IsCAPD = this.patient.IS_CAPD != null ? true : false;
                     }
                     else
                     {
@@ -2109,6 +2110,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         hospitalizeADO.RelativePhone = "";
                     }
                     hospitalizeADO.isEmergency = this.treatment.IS_EMERGENCY != null ? true : false;
+                    
                     hospitalizeADO.InHospitalizationReasonCode = this.treatment.HOSPITALIZE_REASON_CODE;
                     hospitalizeADO.InHospitalizationReasonName = this.treatment.HOSPITALIZE_REASON_NAME;
                     hospitalizeADO.isAutoCheckChkHospitalizeExam = HisConfigCFG.IsAutoCheckPrintHospitalizeExam;

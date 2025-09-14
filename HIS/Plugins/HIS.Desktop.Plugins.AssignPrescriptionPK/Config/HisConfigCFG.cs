@@ -156,6 +156,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_SaveButtonOption = "HIS.Desktop.Plugins.AssignPrescriptionPK.SaveButtonOption";
         private const string KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX = "MOS.BHYT.ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX";
         private const string KEY_HIS_DESKTOP_PLUGINS_ASSIGNPRESCRIPTION_ALLOWKIDNEYPRESOUTPATIENT = "HIS.Desktop.Plugins.AssignPrescription.AllowKidneyPresOutPatient";
+        internal const string TUTORIAL_FORMAT_DAY = "HIS.Desktop.Plugins.AssignPrescription.TutorialFormatSoNgay";
+
         internal static string AllowKidneyPresOutPatient;
         internal static string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix;
         internal static string IsSaveButtonOption;
@@ -308,6 +310,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         /// ví dụ : Uống 4 ngày. Ngày uống 4 lần sáng 1, trưa 1, chiều 1, tối 1 sau ăn
         /// </summary>
         internal static long TutorialFormat;
+
+        internal static long TutorialFormatDay;
 
         internal static string MedicineHasPaymentLimitBHYT;
         internal static bool IsCheckPreviousPrescription;
@@ -596,7 +600,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 InitWarningOverCeiling();
 
                 TutorialFormat = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(TUTORIAL_FORMAT));
-
+                TutorialFormatDay = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(TUTORIAL_FORMAT_DAY));
                 IsWarningOverTotalPatientPrice = GetValue(WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK) == GlobalVariables.CommonStringTrue;
                 WarningOverTotalPatientPrice = Inventec.Common.TypeConvert.Parse.ToDecimal(GetValue(WARNING_OVER_TOTAL_PATIENT_PRICE));
                 IsWarringUseDayAndExpTimeBHYT = GetValue(WARRING_USE_DAY_AND_EXP_TIME_BHYT) == GlobalVariables.CommonStringTrue;

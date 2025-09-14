@@ -65,5 +65,8 @@ namespace HIS.UC.UCOtherServiceReqInfo.ADO
         public string HospitalizeReasonName { get; set; }
         public bool IsExamOnline { get; set; }
         public string HospitalizationReason { get; set; }
+        //qtcode
+        public bool IsCAPD { get; set; }
+        public short? IS_CAPD { get; set; }
     }
 }

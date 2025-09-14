@@ -177,7 +177,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             {
                 WaitingManager.Show();
                 SetDefaultData();
-                SetDefaultControlsProperties();
+                //SetDefaultControlsProperties();
                 SetCaptionByLanguageKey();
                 FillDataToControlsForm();//1
                 SetIcon();
@@ -337,17 +337,17 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void SetDefaultControlsProperties()
-        {
-            try
-            {
-                emptySpaceItemBNManTinh.Width = lcFatherName.Width - lcBNManTinh.Width;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void SetDefaultControlsProperties()
+        //{
+        //    try
+        //    {
+        //        emptySpaceItemBNManTinh.Width = lcFatherName.Width - lcBNManTinh.Width;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
         private void SetEditInfo()
         {
@@ -467,6 +467,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 this.lciCMNDRelative.Text = SetKey("frmPatientUpdate.lciCMNDRelative.Text");
                 this.groupBox3.Text = SetKey("frmPatientUpdate.groupBox3.Text");
                 this.lcBNManTinh.Text = SetKey("frmPatientUpdate.lcBNManTinh.Text");
+                this.lcCAPD.OptionsToolTip.ToolTip = SetKey("frmPatientUpdate.lcCAPD.OptionsToolTip.ToolTip");   
                 this.lcTienSuBenh.Text = SetKey("frmPatientUpdate.lcTienSuBenh.Text");
                 this.lcTienSuGiaDinh.Text = SetKey("frmPatientUpdate.lcTienSuGiaDinh.Text");
                 this.chkinTemBarcode.Text = SetKey("frmPatientUpdate.chkinTemBarcode.Text");
@@ -622,6 +623,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 cboPosition.EditValue = patientDto.POSITION_ID;
 
                 chkBNManTinh.Checked = (patientDto.IS_CHRONIC == 1 ? true : false);
+                chkCAPD.Checked = (patientDto.IS_CAPD == 1);
                 chkIsTuberculosis.Checked = (patientDto.IS_TUBERCULOSIS == 1 ? true : false);
                 chkIsHiv.Checked = (patientDto.IS_HIV == 1 ? true : false);
 
@@ -1282,6 +1284,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 patientDTO.RELATIVE_ADDRESS = txtContact.Text;
                 patientDTO.RELATIVE_NAME = txtPersonFamily.Text;
                 patientDTO.IS_CHRONIC = (short)(chkBNManTinh.Checked ? 1 : 0);
+                patientDTO.IS_CAPD = chkCAPD.Checked ? (short?)1 : (short?)null;
                 patientDTO.IS_TUBERCULOSIS = (short)(chkIsTuberculosis.Checked ? 1 : 0);
                 patientDTO.IS_HIV = (short)(chkIsHiv.Checked ? 1 : 0);
                 patientDTO.RELATIVE_CMND_NUMBER = txtCMNDRelative.Text;

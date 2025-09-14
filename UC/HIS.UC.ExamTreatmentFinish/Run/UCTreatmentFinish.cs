@@ -75,6 +75,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         List<HIS_TREATMENT_END_TYPE> treatmentEndTypes { get; set; }
         List<HIS_TREATMENT_END_TYPE_EXT> treatmentEndTypeExts { get; set; }
         List<HIS_TREATMENT_RESULT> treatmentResults { get; set; }  
+        List<HIS_HEIN_PATIENT_TYPE> HisHeinPatientType { get; set; }  
         List<ProgramADO> ProgramADOList { get; set; }
 
         private int positionHandle = -1;
@@ -185,7 +186,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 LoadShowICDInformationData();
                 LoadDataToControl();
                 LoadTreatmentEndTypeDefault();
-
+                LoadComboHisHeinPatientType();
                 LoadIcdToControl(this.ExamTreatmentFinishInitADO.IcdCode, this.ExamTreatmentFinishInitADO.IcdName);
                 Inventec.Common.Logging.LogSystem.Debug("this.ExamTreatmentFinishInitADO.Treatment________" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.ExamTreatmentFinishInitADO.Treatment), this.ExamTreatmentFinishInitADO.Treatment));
 
@@ -196,7 +197,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 if (this.ExamTreatmentFinishInitADO != null)
                 {
                     cboCareer.EditValue = this.ExamTreatmentFinishInitADO.CareerId;
-                    txtHeinPatientTypeCode.EditValue = this.ExamTreatmentFinishInitADO.Treatment.HEIN_PATIENT_TYPE_CODE;
+                    cboHeinPatientTypeCode.EditValue = this.ExamTreatmentFinishInitADO.Treatment.HEIN_PATIENT_TYPE_CODE;
                     if (0 == 0
                         && !string.IsNullOrEmpty(HisConfig.WarningHeinPatientTypeCode)
                         && this.ExamTreatmentFinishInitADO.Treatment.TDL_PATIENT_TYPE_ID == HisConfig.PATIENT_TYPE_ID__BHYT)
@@ -2419,5 +2420,83 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void cboHeinPatientTypeCode_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                var cbo = sender as DevExpress.XtraEditors.GridLookUpEdit;
+                cbo.Properties.Buttons[1].Visible = cbo.EditValue != null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboHeinPatientTypeCode_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    if (!cboHeinPatientTypeCode.Properties.Buttons[1].Visible)
+                        return;
+                    cboHeinPatientTypeCode.EditValue = null;
+                    cboHeinPatientTypeCode.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboHeinPatientTypeCode_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(cboHeinPatientTypeCode.Text))
+                {
+                    cboHeinPatientTypeCode.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboHeinPatientTypeCode_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void cboHeinPatientTypeCode_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Control & e.KeyCode == Keys.A)
+                {
+                    cboHeinPatientTypeCode.ClosePopup();
+                    cboHeinPatientTypeCode.SelectAll();
+                }
+                else if (e.KeyCode == Keys.Enter)
+                {
+                    cboHeinPatientTypeCode.ClosePopup();
+                }
+                else
+                    cboHeinPatientTypeCode.ShowPopup();
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
     }
 }

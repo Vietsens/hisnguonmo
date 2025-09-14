@@ -974,6 +974,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             try
             {
                 this.isCallByRegistor = isByRegistor;
+
             }
             catch (Exception ex)
             {

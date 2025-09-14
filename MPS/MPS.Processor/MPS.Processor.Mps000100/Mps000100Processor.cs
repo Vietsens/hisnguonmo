@@ -35,6 +35,7 @@ namespace MPS.Processor.Mps000100
     {
         Mps000100PDO rdo;
         List<Mps000100ADO> ImpMestManuMedicineSumForPrints = new List<Mps000100ADO>();
+        List<Mps000100ADO> ImpMestManuMedicineSumForPrintsV2 = new List<Mps000100ADO>();
         List<Mps000100ADO> lstMedicineType = new List<Mps000100ADO>();
         List<Mps000100ADO> lstMedicineParent = new List<Mps000100ADO>();
         public Mps000100Processor(CommonParam param, PrintData printData)
@@ -96,8 +97,16 @@ namespace MPS.Processor.Mps000100
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
                 objectTag.AddObjectData(store, "ImpMestAggregates", ImpMestManuMedicineSumForPrints);
+                objectTag.AddObjectData(store, "ImpMestAggregatesV2", ImpMestManuMedicineSumForPrintsV2);
                 objectTag.AddObjectData(store, "MedicineGroup", lstMedicineType);
                 objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent);
+
+                if (rdo._ImpMestMedicines != null)
+                    objectTag.AddObjectData(store, "ImpMestMedicines", rdo._ImpMestMedicines);
+
+                if (rdo._ImpMestMaterials != null)
+                    objectTag.AddObjectData(store, "ImpMestMaterials", rdo._ImpMestMaterials);
+
                 objectTag.AddRelationship(store, "MedicineGroup", "ImpMestAggregates", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
                 objectTag.AddRelationship(store, "MedicineParent", "ImpMestAggregates", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
                 result = true;
@@ -206,6 +215,60 @@ namespace MPS.Processor.Mps000100
                     }
 
                 }
+
+
+
+                // phân loại theo lô
+
+                ImpMestManuMedicineSumForPrintsV2 = new List<Mps000100ADO>();
+                if (rdo.IsMedicine && rdo._ImpMestMedicines != null && rdo._ImpMestMedicines.Count > 0)
+                {
+                    rdo._ImpMestMedicines = rdo._ImpMestMedicines.Where(p => Check(p)).ToList();
+
+                    if (rdo.RoomIds != null && rdo.RoomIds.Count > 0)
+                    {
+                        rdo._ImpMestMedicines = rdo._ImpMestMedicines.Where(o => rdo.RoomIds.Contains(o.REQ_ROOM_ID ?? 0)).ToList();
+                    }
+                    var dataGroups = rdo._ImpMestMedicines.GroupBy(p => p.MEDICINE_ID).Select(p => p.ToList()).ToList();
+                    ImpMestManuMedicineSumForPrintsV2.AddRange((from r in dataGroups select new Mps000100ADO(r, rdo._MedicineTypes, rdo.AggrImpMest.IMP_MEST_STT_ID, rdo.HisImpMestSttId__Imported, rdo.HisImpMestSttId__Approved)).ToList());
+                }
+                if (rdo.Ismaterial && rdo._ImpMestMaterials != null && rdo._ImpMestMaterials.Count > 0)
+                {
+                    rdo._ImpMestMaterials = rdo._ImpMestMaterials.Where(p => Check(p)).ToList();
+                    if (rdo.RoomIds != null && rdo.RoomIds.Count > 0)
+                    {
+                        rdo._ImpMestMaterials = rdo._ImpMestMaterials.Where(o => rdo.RoomIds.Contains(o.REQ_ROOM_ID ?? 0)).ToList();
+                    }
+                    var dataGroups = rdo._ImpMestMaterials.GroupBy(p => p.MATERIAL_ID).Select(p => p.ToList()).ToList();
+                    ImpMestManuMedicineSumForPrintsV2.AddRange((from r in dataGroups select new Mps000100ADO(r, rdo.AggrImpMest.IMP_MEST_STT_ID, rdo.HisImpMestSttId__Imported, rdo.HisImpMestSttId__Approved)).ToList());
+                }
+
+                if (ImpMestManuMedicineSumForPrintsV2 != null && ImpMestManuMedicineSumForPrintsV2.Count > 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("rdo.OderOption____", rdo.OderOption));
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("ImpMestManuMedicineSumForPrintsV2_____", ImpMestManuMedicineSumForPrintsV2));
+                    if (rdo.OderOption == 1)
+                    {
+                        ImpMestManuMedicineSumForPrintsV2 = ImpMestManuMedicineSumForPrintsV2.OrderBy(o => o.Type).ThenBy(o => o.NUM_ORDER ?? 99999).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
+                    }
+                    if (rdo.OderOption == 2)
+                    {
+                        ImpMestManuMedicineSumForPrintsV2 = ImpMestManuMedicineSumForPrintsV2.OrderBy(o => o.MEDICINE_USE_FORM_NUM_ORDER).ThenBy(o => o.MEDICINE_TYPE_NAME).ToList();
+                    }
+                    if (rdo.OderOption == 3)
+                    {
+                        ImpMestManuMedicineSumForPrintsV2 = ImpMestManuMedicineSumForPrintsV2.OrderByDescending(o => o.MEDICINE_USE_FORM_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
+                    }
+                    if (rdo.OderOption == 4)
+                    {
+                        ImpMestManuMedicineSumForPrintsV2 = ImpMestManuMedicineSumForPrintsV2.OrderBy(o => o.SERVICE_UNIT_NAME).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
+                    }
+
+                }
+
+
+
+
 
             }
             catch (Exception ex)

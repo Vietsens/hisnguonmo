@@ -1122,7 +1122,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     //
                     //
                     string autoCreateOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TRAN_REQ.AUTO_CREATE.OPTION");
-                    if (autoCreateOption == "1")
+                    decimal totalPatientPrice = data.listVHisSereServ.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0);
+                    if (autoCreateOption == "1" && totalPatientPrice > 0)
                     {
                         CommonParam param = new CommonParam();
                         // Tạo yêu cầu thanh toán

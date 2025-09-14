@@ -54,6 +54,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.chkOtherDocuments = new DevExpress.XtraEditors.CheckEdit();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
             this.navBarControl1 = new DevExpress.XtraNavBar.NavBarControl();
@@ -94,6 +95,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.GcSTT = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -122,14 +124,13 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.chkOtherDocuments = new DevExpress.XtraEditors.CheckEdit();
-            this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkOtherDocuments.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.navBarControl1)).BeginInit();
             this.navBarControl1.SuspendLayout();
             this.navBarGroupControlContainer1.SuspendLayout();
@@ -171,6 +172,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).BeginInit();
@@ -180,8 +182,6 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkOtherDocuments.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -232,6 +232,17 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControl3.Size = new System.Drawing.Size(197, 552);
             this.layoutControl3.TabIndex = 5;
             this.layoutControl3.Text = "layoutControl3";
+            // 
+            // chkOtherDocuments
+            // 
+            this.chkOtherDocuments.Location = new System.Drawing.Point(2, 74);
+            this.chkOtherDocuments.Name = "chkOtherDocuments";
+            this.chkOtherDocuments.Properties.Caption = "Văn bản khác";
+            this.chkOtherDocuments.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkOtherDocuments.Size = new System.Drawing.Size(193, 19);
+            this.chkOtherDocuments.StyleController = this.layoutControl3;
+            this.chkOtherDocuments.TabIndex = 14;
+            this.chkOtherDocuments.CheckedChanged += new System.EventHandler(this.checkEdit1_CheckedChanged);
             // 
             // btnRefresh
             // 
@@ -674,6 +685,15 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
+            // layoutControlItem7
+            // 
+            this.layoutControlItem7.Control = this.chkOtherDocuments;
+            this.layoutControlItem7.Location = new System.Drawing.Point(0, 72);
+            this.layoutControlItem7.Name = "layoutControlItem7";
+            this.layoutControlItem7.Size = new System.Drawing.Size(197, 23);
+            this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem7.TextVisible = false;
+            // 
             // gridControl1
             // 
             this.gridControl1.Location = new System.Drawing.Point(197, 0);
@@ -999,27 +1019,6 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
-            // chkOtherDocuments
-            // 
-            this.chkOtherDocuments.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chkOtherDocuments.Location = new System.Drawing.Point(2, 74);
-            this.chkOtherDocuments.Name = "chkOtherDocuments";
-            this.chkOtherDocuments.Properties.Caption = "Văn bản khác";
-            this.chkOtherDocuments.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkOtherDocuments.Size = new System.Drawing.Size(193, 19);
-            this.chkOtherDocuments.StyleController = this.layoutControl3;
-            this.chkOtherDocuments.TabIndex = 14;
-            this.chkOtherDocuments.CheckedChanged += new System.EventHandler(this.checkEdit1_CheckedChanged);
-            // 
-            // layoutControlItem7
-            // 
-            this.layoutControlItem7.Control = this.chkOtherDocuments;
-            this.layoutControlItem7.Location = new System.Drawing.Point(0, 72);
-            this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(197, 23);
-            this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem7.TextVisible = false;
-            // 
             // FrmEmrDocumentListAll
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1034,6 +1033,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkOtherDocuments.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.navBarControl1)).EndInit();
             this.navBarControl1.ResumeLayout(false);
             this.navBarGroupControlContainer1.ResumeLayout(false);
@@ -1075,6 +1075,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).EndInit();
@@ -1084,8 +1085,6 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkOtherDocuments.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             this.ResumeLayout(false);
 
         }

@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -18,13 +18,14 @@
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
+using His.UC.UCHein.Config;
 using His.UC.UCHein.Design.TemplateHeinBHYT1.ValidationRule;
 using His.UC.UCHein.ValidationRule;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
-
 namespace His.UC.UCHein.Design.TemplateHeinBHYT1
 {
     public partial class Template__HeinBHYT1 : UserControl
@@ -66,6 +67,44 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        public void SetColorForHeinPatientType()
+        {
+            if (HisConfigCFG.WarningHeinPatientTypeCode == "1")
+            {
+                this.layoutControlItem7.AppearanceItemCaption.ForeColor = Color.Maroon;
+
+                ValidPatientTypeCode();
+            }
+        }
+        public bool ValidateHeinPatientTypeCode()
+        {
+            try
+            {
+                var patientCode = cboPatientCode.EditValue?.ToString();
+
+                if (PatientTypeIdBHYT == Convert.ToInt64(Config.HisConfigCFG.PatientTypeCode__BHYT) &&
+                    string.IsNullOrEmpty(patientCode) &&
+                    HisConfigCFG.WarningHeinPatientTypeCode == "2")
+                {
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Chưa nhập mã đối tượng khám chữa bệnh. Bạn có muốn tiếp tục?",
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                            Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        MessageBoxButtons.YesNo) == DialogResult.No)
+                    {
+                        cboPatientCode.Focus();
+                        cboPatientCode.ShowPopup();
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("ValidateHeinPatientTypeCode: \n" + ex);
+                return false;
+            }
+            return true;
+        }
 
         private void ValidHNCode()
         {
@@ -99,7 +138,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 this.dxValidationProvider1.SetValidationRule(this.txtFreeCoPainTime, null);
             }
-            
+
         }
 
         private void ValidHeinCardToTime()
@@ -155,6 +194,22 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
                 oDobDateRule.ErrorType = ErrorType.Warning;
                 this.dxValidationProvider1.SetValidationRule(this.txtHeinRightRouteCode, oDobDateRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidPatientTypeCode()
+        {
+            try
+            {
+                TemplateHeinBHYT1__PatientTypeCode__ValidationRule oDobDateRule = new TemplateHeinBHYT1__PatientTypeCode__ValidationRule();
+                oDobDateRule.cboPatientCode = this.cboPatientCode;
+                oDobDateRule.ErrorText = His.UC.UCHein.Base.MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                oDobDateRule.ErrorType = ErrorType.Warning;
+                this.dxValidationProvider1.SetValidationRule(this.cboPatientCode, oDobDateRule);
             }
             catch (Exception ex)
             {

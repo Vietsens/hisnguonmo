@@ -61,6 +61,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         internal UserControl ucKskContract;
         internal int registerNumber = 0;
         internal bool isShowMess;
+        //qtcode
+        int TreatmentTypeIdPicked { get; set;  }
         internal List<long> serviceReqPrintIds { get; set; }
         const string IsDefaultRightRouteType__True = "1";
 
@@ -149,7 +151,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        //qtcode
+        
         private void UCRegister_Load(object sender, EventArgs e)
         {
             try

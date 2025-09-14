@@ -171,6 +171,7 @@ namespace MPS.Processor.Mps000049.PDO
         public string AMOUNT_REQUEST_STRING { get; set; }
 
         public long MEDI_MATE_NUM_ORDER { get; set; }
+        public long? MEDICINE_TYPE_NUM_ORDER { get; set; }
 
         public string CONCENTRA { get; set; }
         public string ACTIVE_INGR_BHYT_CODE { get; set; }
@@ -213,7 +214,6 @@ namespace MPS.Processor.Mps000049.PDO
                     {
                         this.IS_EXPEND_DISPLAY = "X";
                     }
-                    
                     this.DESCRIPTION = _expMestMedicines[0].DESCRIPTION;
                     this.MEDICINE_TYPE_CODE = _expMestMedicines[0].MEDICINE_TYPE_CODE;
                     this.MEDI_MATE_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64(_expMestMedicines[0].MEDICINE_TYPE_ID.ToString() + this.TYPE_ID.ToString());
@@ -229,6 +229,7 @@ namespace MPS.Processor.Mps000049.PDO
                     this.IMP_VAT_RATIO = _expMestMedicines[0].IMP_VAT_RATIO * 100;
                     this.DESCRIPTION = _expMestMedicines[0].DESCRIPTION;
                     this.MEDI_MATE_NUM_ORDER = _expMestMedicines[0].MEDICINE_NUM_ORDER ?? 0;
+                    this.MEDICINE_TYPE_NUM_ORDER = _expMestMedicines[0].MEDICINE_TYPE_NUM_ORDER;
                     this.NUM_ORDER = _expMestMedicines[0].NUM_ORDER;
                     this.CONCENTRA = _expMestMedicines[0].CONCENTRA;
                     this.ACTIVE_INGR_BHYT_CODE = _expMestMedicines[0].ACTIVE_INGR_BHYT_CODE;

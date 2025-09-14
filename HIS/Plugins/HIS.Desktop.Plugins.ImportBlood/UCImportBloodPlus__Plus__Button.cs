@@ -1046,6 +1046,13 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (this.resultADO != null)
                 {
+                    if (this.resultADO.ImpMestId > 0)
+                    {
+                        var viewFilter = new HisImpMestViewFilter { ID = this.resultADO.ImpMestId };
+                        var viewList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam())
+                                       .Get<List<V_HIS_IMP_MEST>>("api/HisImpMest/GetView", ApiConsumers.MosConsumer, viewFilter, null);
+                        this.impMest = viewList?.FirstOrDefault();
+                    }
                     cboImpMestType.EditValue = this.resultADO.ImpMestTypeId;
                     cboImpMestType.Enabled = false;
                     if (this._isHienMau)
