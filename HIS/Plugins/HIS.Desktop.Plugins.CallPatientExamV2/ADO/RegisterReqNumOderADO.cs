@@ -25,7 +25,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
 {
     public class ServiceReqGateADO
     {
-        public List<RoomGateSDO> roomGateSDOs { get; set; }
+        public List<RoomGateSDO> roomGateSDOs { get; set; } = new List<RoomGateSDO>();
         public long timeReload { get; set; }
         public long sizeTitle { get; set; }
         public string colorTitle { get; set; }

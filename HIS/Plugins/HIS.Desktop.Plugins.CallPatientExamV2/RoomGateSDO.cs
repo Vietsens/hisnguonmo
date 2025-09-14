@@ -26,6 +26,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
 {
     public class RoomGateSDO
     {
+        public long ROOM_ID { get; set; }
         public long ID { get; set; }
         public string ROOM_CODE { get; set; }
         public string ROOM_NAME { get; set; }

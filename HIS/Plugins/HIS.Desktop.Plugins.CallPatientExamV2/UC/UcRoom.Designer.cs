@@ -115,25 +115,27 @@
             // lblNumberEnd
             // 
             this.lblNumberEnd.AllowHtmlString = true;
-            this.lblNumberEnd.Appearance.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Bold);
+            this.lblNumberEnd.Appearance.Font = new System.Drawing.Font("Times New Roman", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNumberEnd.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.lblNumberEnd.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.lblNumberEnd.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.Vertical;
-            this.lblNumberEnd.Location = new System.Drawing.Point(2, 91);
+            this.lblNumberEnd.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
+            this.lblNumberEnd.AutoEllipsis = true;
+            this.lblNumberEnd.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblNumberEnd.Location = new System.Drawing.Point(0, 87);
             this.lblNumberEnd.Name = "lblNumberEnd";
-            this.lblNumberEnd.Size = new System.Drawing.Size(311, 24);
+            this.lblNumberEnd.Padding = new System.Windows.Forms.Padding(30, 0, 30, 15);
+            this.lblNumberEnd.Size = new System.Drawing.Size(315, 38);
             this.lblNumberEnd.StyleController = this.layoutControl4;
             this.lblNumberEnd.TabIndex = 6;
-            this.lblNumberEnd.Text = "3,5,9,10, ...";
             // 
             // lblContentEnd
             // 
             this.lblContentEnd.BackColor = System.Drawing.Color.Transparent;
-            this.lblContentEnd.Font = new System.Drawing.Font("Arial", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblContentEnd.Font = new System.Drawing.Font("Times New Roman", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblContentEnd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.lblContentEnd.Location = new System.Drawing.Point(0, 0);
             this.lblContentEnd.Name = "lblContentEnd";
-            this.lblContentEnd.Size = new System.Drawing.Size(315, 89);
+            this.lblContentEnd.Size = new System.Drawing.Size(315, 87);
             this.lblContentEnd.TabIndex = 4;
             this.lblContentEnd.Text = "CHỜ KHÁM";
             this.lblContentEnd.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -157,17 +159,17 @@
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem7.Size = new System.Drawing.Size(315, 89);
+            this.layoutControlItem7.Size = new System.Drawing.Size(315, 87);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.lblNumberEnd;
-            this.layoutControlItem9.Location = new System.Drawing.Point(0, 89);
+            this.layoutControlItem9.Location = new System.Drawing.Point(0, 87);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 10);
-            this.layoutControlItem9.Size = new System.Drawing.Size(315, 36);
+            this.layoutControlItem9.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlItem9.Size = new System.Drawing.Size(315, 38);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
@@ -195,22 +197,21 @@
             // 
             // lblContentNumber
             // 
-            this.lblContentNumber.Font = new System.Drawing.Font("Arial", 150F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblContentNumber.Font = new System.Drawing.Font("Times New Roman", 150F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblContentNumber.ForeColor = System.Drawing.Color.Red;
-            this.lblContentNumber.Location = new System.Drawing.Point(2, 72);
+            this.lblContentNumber.Location = new System.Drawing.Point(2, 85);
             this.lblContentNumber.Name = "lblContentNumber";
-            this.lblContentNumber.Size = new System.Drawing.Size(311, 238);
+            this.lblContentNumber.Size = new System.Drawing.Size(311, 225);
             this.lblContentNumber.TabIndex = 5;
-            this.lblContentNumber.Text = "8";
             this.lblContentNumber.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lblContentTitle
             // 
-            this.lblContentTitle.Font = new System.Drawing.Font("Arial", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblContentTitle.Font = new System.Drawing.Font("Times New Roman", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblContentTitle.ForeColor = System.Drawing.Color.Red;
             this.lblContentTitle.Location = new System.Drawing.Point(5, 5);
             this.lblContentTitle.Name = "lblContentTitle";
-            this.lblContentTitle.Size = new System.Drawing.Size(305, 60);
+            this.lblContentTitle.Size = new System.Drawing.Size(305, 73);
             this.lblContentTitle.TabIndex = 4;
             this.lblContentTitle.Text = "ĐANG KHÁM";
             this.lblContentTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -234,16 +235,16 @@
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Padding = new DevExpress.XtraLayout.Utils.Padding(5, 5, 5, 5);
-            this.layoutControlItem5.Size = new System.Drawing.Size(315, 70);
+            this.layoutControlItem5.Size = new System.Drawing.Size(315, 83);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.lblContentNumber;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 70);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 83);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(315, 242);
+            this.layoutControlItem6.Size = new System.Drawing.Size(315, 229);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -271,7 +272,7 @@
             // lblRoom
             // 
             this.lblRoom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.lblRoom.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRoom.Font = new System.Drawing.Font("Times New Roman", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRoom.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.lblRoom.Location = new System.Drawing.Point(0, 0);
             this.lblRoom.Name = "lblRoom";

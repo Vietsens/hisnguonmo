@@ -16,13 +16,15 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
     public partial class UcRoom : UserControl
     {
         private ServiceReqGateADO state { get; set; }
-        public UcRoom(ServiceReqGateADO ado)
+        private RoomGateSDO serviceReq { get; set; }
+        public UcRoom(ServiceReqGateADO ado, RoomGateSDO sdo)
         {
             InitializeComponent();
 
             try
             {
                 state = ado;
+                serviceReq = sdo;
             }
             catch (Exception ex)
             {
@@ -39,18 +41,20 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
         {
             try
             {
-                this.lblRoom.Font = new Font("Arial", state.sizeTitle);
+                lblRoom.Text = serviceReq != null ? serviceReq.ROOM_NAME : "";
+
+                this.lblRoom.Font = new Font("Times New Roman", state.sizeTitle, FontStyle.Bold);
                 this.lblRoom.ForeColor = ColorTranslator.FromHtml(state.colorTitle);
                 this.lblRoom.BackColor = ColorTranslator.FromHtml(state.bgColorTitle);
 
-                this.lblContentTitle.Font = new Font("Arial", state.sizeDangKham);
-                this.lblContentNumber.Font = new Font("Arial", state.sizeContentNumber);
+                this.lblContentTitle.Font = new Font("Times New Roman", state.sizeDangKham, FontStyle.Bold);
+                this.lblContentNumber.Font = new Font("Times New Roman", state.sizeContentNumber, FontStyle.Bold);
 
                 this.lblContentEnd.ForeColor = ColorTranslator.FromHtml(state.colorEnd);
                 this.lblNumberEnd.ForeColor = ColorTranslator.FromHtml(state.colorEnd);
 
-                this.lblNumberEnd.Font = new Font("Arial", state.sizeEndTitle);
-                this.lblContentEnd.Font = new Font("Arial", state.sizeChoKham);
+                this.lblNumberEnd.Font = new Font("Times New Roman", state.sizeEndTitle, FontStyle.Bold);
+                this.lblContentEnd.Font = new Font("Times New Roman", state.sizeChoKham, FontStyle.Bold);
 
                 this.lblContentEnd.BackColor = ColorTranslator.FromHtml(state.bgColorEnd);
                 this.lblNumberEnd.BackColor = ColorTranslator.FromHtml(state.bgColorEnd);
@@ -70,27 +74,22 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                     .FirstOrDefault();
                 this.lblContentNumber.Text = currentCall != null ? currentCall.NUM_ORDER.ToString() : "";
                 if (currentCall != null)
+                {
+                    ChooseRoomForWaitingScreenProcess.StackServiceReqCall.RemoveAll(
+                        x => x.ServiceReq != null && x.ServiceReq.EXECUTE_ROOM_ID == currentCall.EXECUTE_ROOM_ID
+                    );
                     ChooseRoomForWaitingScreenProcess.StackServiceReqCall.Add(
-                          new ServiceReqCallADO { ServiceReq = currentCall, IsCalling = true }
-                      );
+                        new ServiceReqCallADO { ServiceReq = currentCall, IsCalling = true }
+                    );
+                }
                 var waitingList = ServiceReqs
-                    .Where(o => o.CALL_COUNT == 0)
+                    .Where(o => (o.CALL_COUNT ?? -1) < 0)
                     .OrderBy(o => o.NUM_ORDER)
                     .ToList();
 
-                string waitingText = "";
-                int roomCount = state != null && state.roomGateSDOs != null ? state.roomGateSDOs.Count : 0;
-                if (roomCount > 5 && waitingList.Count > 8)
-                {
-                    var firstFive = waitingList.Take(5).Select(s => s.NUM_ORDER.ToString());
-                    waitingText = string.Join(", ", firstFive) + ", ...";
-                }
-                else
-                {
-                    waitingText = waitingList != null && waitingList.Count > 0
+                string waitingText = waitingList != null && waitingList.Count > 0
                         ? string.Join(", ", waitingList.Select(s => s.NUM_ORDER.ToString()))
                         : "";
-                }
                 this.lblNumberEnd.Text = waitingText;
             }
             catch (Exception ex)
@@ -98,6 +97,6 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-      
+
     }
 }

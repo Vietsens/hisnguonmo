@@ -49,7 +49,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
         frmWaitingScreen aFrmWaitingScreenQy = null;
         const string frmWaitingScreenStr = "frmWaitingScreen";
         int positionHandleControl;
-        List<RoomGateSDO> RoomGates;
+        List<RoomGateSDO> RoomGates = new List<RoomGateSDO>();
         long roomId = 0;
         string moduleLink = "HIS.Desktop.Plugins.CallPatientExamV2";
         internal ServiceReqGateADO currentAdo;
@@ -81,12 +81,13 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             try
             {
                 SetIcon();
-                var Rooms = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().Where(o=>o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                var Rooms = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 foreach (var item in Rooms)
                 {
                     RoomGateSDO sdo = new RoomGateSDO();
                     sdo.ROOM_CODE = item.EXECUTE_ROOM_CODE;
                     sdo.ROOM_NAME = item.EXECUTE_ROOM_NAME;
+                    sdo.ROOM_ID = item.ROOM_ID;
                     sdo.ID = item.ID;
                     RoomGates.Add(sdo);
                 }
@@ -106,18 +107,6 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             }
         }
 
-        private void ShowChooseRoomForWaitingScreen()
-        {
-            try
-            {
-                this.Show();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         private void InitControlState()
         {
             try
@@ -126,9 +115,10 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                 this.currentControlStateRDO = controlStateWorker.GetData(currentModuleBase.ModuleLink);
                 this.currentControlStateRDO = controlStateWorker.GetData(moduleLink);
 
+                this.currentAdo = new ServiceReqGateADO();
                 if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
                 {
-                    this.currentAdo = new ServiceReqGateADO();
+
                     foreach (var item in this.currentControlStateRDO)
                     {
                         if (item.KEY == "ServiceReqGateADO")
@@ -139,59 +129,63 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                             }
                         }
                     }
-                    if (currentAdo != null)
+                }
+
+                if (currentAdo != null)
+                {
+                    spnTimeReload.EditValue = currentAdo.timeReload;
+                    spnSizeTitle.EditValue = currentAdo.sizeTitle;
+                    if (!string.IsNullOrEmpty(currentAdo.colorTitle))
                     {
-                        spnTimeReload.EditValue = currentAdo.timeReload;
-                        spnSizeTitle.EditValue = currentAdo.sizeTitle;
-                        if (!string.IsNullOrEmpty(currentAdo.colorTitle))
-                        {
-                            List<int> backgroundColorStall = new List<int>();
-                            backgroundColorStall = GetColorValues(currentAdo.colorTitle);
-                            cboColorTitle.Color = Color.FromArgb(backgroundColorStall[0], backgroundColorStall[1], backgroundColorStall[2]);
-                        }
-
-                        if (!string.IsNullOrEmpty(currentAdo.bgColorTitle))
-                        {
-                            List<int> backgroundColorStall = new List<int>();
-                            backgroundColorStall = GetColorValues(currentAdo.bgColorTitle);
-                            cboBgColorTitle.Color = Color.FromArgb(backgroundColorStall[0], backgroundColorStall[1], backgroundColorStall[2]);
-                        }
-
-                        spnSizeContentNumber.EditValue = currentAdo.sizeContentNumber;
-                        if (!string.IsNullOrEmpty(currentAdo.colorContent))
-                        {
-                            List<int> backgroundColorStall = new List<int>();
-                            backgroundColorStall = GetColorValues(currentAdo.colorContent);
-                            cboColorContent.Color = Color.FromArgb(backgroundColorStall[0], backgroundColorStall[1], backgroundColorStall[2]);
-                        }
-
-                        spnSizeEndTitle.EditValue = currentAdo.sizeEndTitle;
-                        if (!string.IsNullOrEmpty(currentAdo.colorEnd))
-                        {
-                            List<int> backgroundColorStall = new List<int>();
-                            backgroundColorStall = GetColorValues(currentAdo.colorEnd);
-                            cboColorEnd.Color = Color.FromArgb(backgroundColorStall[0], backgroundColorStall[1], backgroundColorStall[2]);
-                        }
-
-                        if (!string.IsNullOrEmpty(currentAdo.bgColorEnd))
-                        {
-                            List<int> backgroundColorStall = new List<int>();
-                            backgroundColorStall = GetColorValues(currentAdo.bgColorEnd);
-                            cboBgColorEnd.Color = Color.FromArgb(backgroundColorStall[0], backgroundColorStall[1], backgroundColorStall[2]);
-                        }
-
-                        chkAutoOpenWaitingScreen.Checked = currentAdo.isAutoOpenWaitingScreen;
-
-                        txtConfigNotify.Text = currentAdo.configNotify;
-                        spnChoKham.EditValue = currentAdo.sizeChoKham;
-                        spnDangKham.EditValue = currentAdo.sizeDangKham;
-                        foreach (var item in RoomGates)
-                        {
-                            if (currentAdo.roomGateSDOs.Exists(o => o.ID == item.ID))
-                                item.checkStt = true;
-                        }
-                        RoomGates = RoomGates.OrderByDescending(o => o.checkStt). ThenBy(o=>o.POSITION).ToList();
+                        List<int> backgroundColorStall = new List<int>();
+                        backgroundColorStall = GetColorValues(currentAdo.colorTitle);
+                        cboColorTitle.Color = Color.FromArgb(backgroundColorStall[0], backgroundColorStall[1], backgroundColorStall[2]);
                     }
+
+                    if (!string.IsNullOrEmpty(currentAdo.bgColorTitle))
+                    {
+                        List<int> backgroundColorStall = new List<int>();
+                        backgroundColorStall = GetColorValues(currentAdo.bgColorTitle);
+                        cboBgColorTitle.Color = Color.FromArgb(backgroundColorStall[0], backgroundColorStall[1], backgroundColorStall[2]);
+                    }
+
+                    spnSizeContentNumber.EditValue = currentAdo.sizeContentNumber;
+                    if (!string.IsNullOrEmpty(currentAdo.colorContent))
+                    {
+                        List<int> backgroundColorStall = new List<int>();
+                        backgroundColorStall = GetColorValues(currentAdo.colorContent);
+                        cboColorContent.Color = Color.FromArgb(backgroundColorStall[0], backgroundColorStall[1], backgroundColorStall[2]);
+                    }
+
+                    spnSizeEndTitle.EditValue = currentAdo.sizeEndTitle;
+                    if (!string.IsNullOrEmpty(currentAdo.colorEnd))
+                    {
+                        List<int> backgroundColorStall = new List<int>();
+                        backgroundColorStall = GetColorValues(currentAdo.colorEnd);
+                        cboColorEnd.Color = Color.FromArgb(backgroundColorStall[0], backgroundColorStall[1], backgroundColorStall[2]);
+                    }
+
+                    if (!string.IsNullOrEmpty(currentAdo.bgColorEnd))
+                    {
+                        List<int> backgroundColorStall = new List<int>();
+                        backgroundColorStall = GetColorValues(currentAdo.bgColorEnd);
+                        cboBgColorEnd.Color = Color.FromArgb(backgroundColorStall[0], backgroundColorStall[1], backgroundColorStall[2]);
+                    }
+
+                    chkAutoOpenWaitingScreen.Checked = currentAdo.isAutoOpenWaitingScreen;
+
+                    txtConfigNotify.Text = currentAdo.configNotify;
+                    spnChoKham.EditValue = currentAdo.sizeChoKham;
+                    spnDangKham.EditValue = currentAdo.sizeDangKham;
+                    foreach (var item in RoomGates)
+                    {
+                        if (currentAdo.roomGateSDOs.Exists(o => o.ID == item.ID && o.checkStt))
+                        {
+                            item.checkStt = true;
+                            item.POSITION = currentAdo.roomGateSDOs.FirstOrDefault(o => o.ID == item.ID).POSITION;
+                        }
+                    }
+                    RoomGates = RoomGates.OrderByDescending(o => o.checkStt).ThenBy(o => o.POSITION).ToList();
                 }
             }
             catch (Exception ex)
@@ -200,19 +194,6 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             }
         }
 
-        private void SetDefaultState()
-        {
-
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-
-        }
         private static List<int> GetColorValues(string code)
         {
             List<int> result = new List<int>();
@@ -338,7 +319,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                         return;
                     }
 
-                    SavePin(hisRegisterGates);
+                    SavePin(displayScreen.ToList());
                     frmWaitingScreen frm = new frmWaitingScreen(currentAdo);
                     ShowFormInExtendMonitor(frm);
                     this.Close();
@@ -455,9 +436,9 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                 ServiceReqGateADO ado = new ServiceReqGateADO();
                 ado.roomGateSDOs = lstRegisterGate;
                 ado.timeReload = (long)spnTimeReload.Value;
-                ado.sizeTitle= (long)spnSizeTitle.Value;
+                ado.sizeTitle = (long)spnSizeTitle.Value;
                 ado.colorTitle = cboColorTitle.Text;
-                ado.bgColorTitle = cboBgColorTitle.Text; 
+                ado.bgColorTitle = cboBgColorTitle.Text;
                 ado.sizeContentNumber = (long)spnSizeContentNumber.Value;
                 ado.sizeChoKham = (long)spnChoKham.Value;
                 ado.sizeDangKham = (long)spnDangKham.Value;
@@ -500,7 +481,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             try
             {
                 DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-                
+
             }
             catch (Exception ex)
             {
@@ -538,6 +519,26 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void txtFind_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string keyword = Inventec.Common.String.Convert.UnSignVNese(this.txtFind.Text.ToLower().Trim());
+                var query = this.RoomGates.AsQueryable();
+                if (!string.IsNullOrEmpty(keyword))
+                    query = query.Where(o => o.ROOM_CODE.ToLower().Contains(keyword)
+                            || Inventec.Common.String.Convert.UnSignVNese(o.ROOM_NAME.ToLower()).Contains(keyword)
+                            || Inventec.Common.String.Convert.UnSignVNese(o.ROOM_CODE.ToLower()).Contains(keyword));
+                query = query.OrderByDescending(o => o.checkStt).ThenBy(o => o.POSITION);
+                gridControlRoom.DataSource = query.ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
     }
 }

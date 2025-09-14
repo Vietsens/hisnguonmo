@@ -1,6 +1,5 @@
 ﻿using DevExpress.XtraGrid;
 using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.Controls.Session;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
@@ -182,7 +181,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                 CommonParam param = new CommonParam();
                 MOS.Filter.HisServiceReqFilter filter = new MOS.Filter.HisServiceReqFilter();
 
-                filter.EXECUTE_ROOM_IDs = ServiceReqGateADO.roomGateSDOs.Select(s => s.ID).ToList();
+                filter.EXECUTE_ROOM_IDs = ServiceReqGateADO.roomGateSDOs.Select(s => s.ROOM_ID).ToList();
                 filter.HAS_EXECUTE = true;
                 filter.NOT_IN_SERVICE_REQ_TYPE_IDs = new List<long> {
                     IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK,
@@ -255,14 +254,15 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
         {
             try
             {
-                int ucCount = ServiceReqGateADO.roomGateSDOs.Count;
+                var sortedRoomGateSDOs = ServiceReqGateADO.roomGateSDOs.OrderBy(r => r.POSITION).ToList();
+                int ucCount = sortedRoomGateSDOs.Count;
                 int ucWidth = layoutControl1.Width / ucCount;
                 int xOffset = 0;
 
                 for (int i = 0; i < ucCount; i++)
                 {
-                    UcRoom uc = new UcRoom(ServiceReqGateADO);
-                    uc.Tag = ServiceReqGateADO.roomGateSDOs[i].ID;
+                    UcRoom uc = new UcRoom(ServiceReqGateADO, sortedRoomGateSDOs[i]);
+                    uc.Tag = sortedRoomGateSDOs[i].ROOM_ID;
                     uc.Width = ucWidth;
                     uc.Height = layoutControl1.Height;
                     uc.Location = new Point(xOffset, 0);

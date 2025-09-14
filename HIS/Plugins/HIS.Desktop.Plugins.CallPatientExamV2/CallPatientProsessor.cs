@@ -28,7 +28,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
 {
     [ExtensionOf(typeof(DesktopRootExtensionPoint),
        "HIS.Desktop.Plugins.CallPatientExamV2",
-       "Màn hình phòng khám 2",
+       "Màn hình chờ phòng khám 6",
        "Common",
        14,
        "CallPatient_32x32.png",

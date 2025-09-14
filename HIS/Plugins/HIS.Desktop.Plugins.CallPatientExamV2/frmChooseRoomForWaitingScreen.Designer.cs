@@ -45,8 +45,9 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.spnChoKham = new DevExpress.XtraEditors.SpinEdit();
+            this.spnDangKham = new DevExpress.XtraEditors.SpinEdit();
             this.cboColorEnd = new DevExpress.XtraEditors.ColorEdit();
             this.cboBgColorEnd = new DevExpress.XtraEditors.ColorEdit();
             this.txtConfigNotify = new DevExpress.XtraEditors.TextEdit();
@@ -85,14 +86,16 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.spnDangKham = new DevExpress.XtraEditors.SpinEdit();
             this.spnContentTitle = new DevExpress.XtraLayout.LayoutControlItem();
-            this.spnChoKham = new DevExpress.XtraEditors.SpinEdit();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.txtFind = new DevExpress.XtraEditors.TextEdit();
+            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spnChoKham.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spnDangKham.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboColorEnd.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBgColorEnd.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtConfigNotify.Properties)).BeginInit();
@@ -127,16 +130,17 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spnContentTitle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spnDangKham.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spnContentTitle)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spnChoKham.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtFind.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.txtFind);
             this.layoutControl1.Controls.Add(this.spnChoKham);
             this.layoutControl1.Controls.Add(this.spnDangKham);
             this.layoutControl1.Controls.Add(this.cboColorEnd);
@@ -159,6 +163,46 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.layoutControl1.Size = new System.Drawing.Size(436, 529);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // spnChoKham
+            // 
+            this.spnChoKham.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spnChoKham.Location = new System.Drawing.Point(157, 383);
+            this.spnChoKham.Name = "spnChoKham";
+            this.spnChoKham.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spnChoKham.Properties.MaxValue = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.spnChoKham.Size = new System.Drawing.Size(184, 20);
+            this.spnChoKham.StyleController = this.layoutControl1;
+            this.spnChoKham.TabIndex = 25;
+            // 
+            // spnDangKham
+            // 
+            this.spnDangKham.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spnDangKham.Location = new System.Drawing.Point(157, 311);
+            this.spnDangKham.Name = "spnDangKham";
+            this.spnDangKham.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spnDangKham.Properties.MaxValue = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.spnDangKham.Size = new System.Drawing.Size(184, 20);
+            this.spnDangKham.StyleController = this.layoutControl1;
+            this.spnDangKham.TabIndex = 24;
             // 
             // cboColorEnd
             // 
@@ -318,7 +362,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             // gridControlRoom
             // 
             this.gridControlRoom.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(2);
-            this.gridControlRoom.Location = new System.Drawing.Point(2, 2);
+            this.gridControlRoom.Location = new System.Drawing.Point(2, 26);
             this.gridControlRoom.MainView = this.gridViewRoom;
             this.gridControlRoom.Margin = new System.Windows.Forms.Padding(2);
             this.gridControlRoom.Name = "gridControlRoom";
@@ -326,7 +370,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.repositoryItemCheckEdit1,
             this.repositoryItemGridLookUpEdit1,
             this.repSpn});
-            this.gridControlRoom.Size = new System.Drawing.Size(432, 209);
+            this.gridControlRoom.Size = new System.Drawing.Size(432, 185);
             this.gridControlRoom.TabIndex = 4;
             this.gridControlRoom.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewRoom});
@@ -477,7 +521,8 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.layoutControlItem2,
             this.layoutControlItem1,
             this.spnContentTitle,
-            this.layoutControlItem5});
+            this.layoutControlItem5,
+            this.layoutControlItem4});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Size = new System.Drawing.Size(436, 529);
@@ -538,9 +583,9 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             // 
             this.layoutControlItem11.Control = this.gridControlRoom;
             this.layoutControlItem11.CustomizationFormText = "layoutControlItem4";
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(436, 213);
+            this.layoutControlItem11.Size = new System.Drawing.Size(436, 189);
             this.layoutControlItem11.Text = "layoutControlItem4";
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
@@ -671,34 +716,6 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.layoutControlItem1.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem1.TextToControlDistance = 5;
             // 
-            // dxErrorProvider1
-            // 
-            this.dxErrorProvider1.ContainerControl = this;
-            // 
-            // dxValidationProviderControl
-            // 
-            this.dxValidationProviderControl.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderControl_ValidationFailed);
-            // 
-            // spnDangKham
-            // 
-            this.spnDangKham.EditValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.spnDangKham.Location = new System.Drawing.Point(157, 311);
-            this.spnDangKham.Name = "spnDangKham";
-            this.spnDangKham.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.spnDangKham.Properties.MaxValue = new decimal(new int[] {
-            9999,
-            0,
-            0,
-            0});
-            this.spnDangKham.Size = new System.Drawing.Size(184, 20);
-            this.spnDangKham.StyleController = this.layoutControl1;
-            this.spnDangKham.TabIndex = 24;
-            // 
             // spnContentTitle
             // 
             this.spnContentTitle.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -711,26 +728,6 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.spnContentTitle.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.spnContentTitle.TextSize = new System.Drawing.Size(150, 20);
             this.spnContentTitle.TextToControlDistance = 5;
-            // 
-            // spnChoKham
-            // 
-            this.spnChoKham.EditValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.spnChoKham.Location = new System.Drawing.Point(157, 383);
-            this.spnChoKham.Name = "spnChoKham";
-            this.spnChoKham.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.spnChoKham.Properties.MaxValue = new decimal(new int[] {
-            9999,
-            0,
-            0,
-            0});
-            this.spnChoKham.Size = new System.Drawing.Size(184, 20);
-            this.spnChoKham.StyleController = this.layoutControl1;
-            this.spnChoKham.TabIndex = 25;
             // 
             // layoutControlItem5
             // 
@@ -745,6 +742,35 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.layoutControlItem5.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem5.TextToControlDistance = 5;
             // 
+            // dxErrorProvider1
+            // 
+            this.dxErrorProvider1.ContainerControl = this;
+            // 
+            // dxValidationProviderControl
+            // 
+            this.dxValidationProviderControl.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderControl_ValidationFailed);
+            // 
+            // txtFind
+            // 
+            this.txtFind.Location = new System.Drawing.Point(2, 2);
+            this.txtFind.Name = "txtFind";
+            this.txtFind.Properties.NullValuePrompt = "Nhập từ khóa để tìm kiếm phòng thực hiện";
+            this.txtFind.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtFind.Properties.ShowNullValuePromptWhenFocused = true;
+            this.txtFind.Size = new System.Drawing.Size(432, 20);
+            this.txtFind.StyleController = this.layoutControl1;
+            this.txtFind.TabIndex = 26;
+            this.txtFind.EditValueChanged += new System.EventHandler(this.txtFind_EditValueChanged);
+            // 
+            // layoutControlItem4
+            // 
+            this.layoutControlItem4.Control = this.txtFind;
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem4.Name = "layoutControlItem4";
+            this.layoutControlItem4.Size = new System.Drawing.Size(436, 24);
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem4.TextVisible = false;
+            // 
             // frmChooseRoomForWaitingScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -758,6 +784,8 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spnChoKham.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spnDangKham.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboColorEnd.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBgColorEnd.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtConfigNotify.Properties)).EndInit();
@@ -792,12 +820,12 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spnContentTitle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spnDangKham.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spnContentTitle)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spnChoKham.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtFind.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -850,5 +878,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
         private DevExpress.XtraEditors.SpinEdit spnDangKham;
         private DevExpress.XtraLayout.LayoutControlItem spnContentTitle;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
+        private DevExpress.XtraEditors.TextEdit txtFind;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
     }
 }
