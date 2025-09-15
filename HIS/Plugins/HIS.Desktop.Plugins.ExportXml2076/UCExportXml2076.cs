@@ -15,38 +15,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using ACS.EFMODEL.DataModels;
+using DevExpress.Utils;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using His.Bhyt.ExportXml.Base;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.ExportXml2076.Base;
+using HIS.Desktop.Plugins.ExportXml2076.Config;
+using HIS.Desktop.Plugins.ExportXml2076.Resources;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.Utility;
-using Inventec.Desktop.Common.Message;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Plugins.ExportXml2076.Base;
-using Inventec.Core;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using MOS.Filter;
-using Inventec.Common.Adapter;
-using HIS.Desktop.ApiConsumer;
-using Inventec.Common.Logging;
-using DevExpress.XtraEditors;
-using HIS.Desktop.Plugins.ExportXml2076.Resources;
-using HIS.Desktop.LibraryMessage;
-using His.Bhyt.ExportXml.Base;
-using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using HIS.Desktop.Plugins.ExportXml2076.Config;
-using ACS.EFMODEL.DataModels;
-using DevExpress.Utils;
-using DevExpress.XtraGrid;
 
 namespace HIS.Desktop.Plugins.ExportXml2076
 {
@@ -729,7 +731,12 @@ namespace HIS.Desktop.Plugins.ExportXml2076
             {
                 if (e.ListSourceRowIndex < 0 || !e.IsGetData || e.Column.UnboundType == DevExpress.Data.UnboundColumnType.Bound)
                     return;
-                var data = (V_HIS_TREATMENT_10)gridViewTreatment.GetRow(e.ListSourceRowIndex);
+                //var data = (V_HIS_TREATMENT_10)gridViewTreatment.GetRow(e.ListSourceRowIndex);
+                var data = (V_HIS_TREATMENT_10)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+
+
+
+
                 if (data != null)
                 {
                     if (e.Column.FieldName == "STT")
@@ -747,6 +754,7 @@ namespace HIS.Desktop.Plugins.ExportXml2076
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.TDL_PATIENT_DOB);
                         }
                     }
+
                     else if (e.Column.FieldName == "IN_TIME_STR")
                     {
                         e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(data.IN_TIME);
@@ -773,19 +781,6 @@ namespace HIS.Desktop.Plugins.ExportXml2076
                         else
                             e.Value = data.TDL_HEIN_CARD_NUMBER;
                     }
-                    //else if (e.Column.FieldName == "STATUS_ICON") 
-                    //{
-                    //    if (data.XML2076_RESULT == 1) // Lỗi đồng bộ
-                    //    {
-                    //        e.Value = !string.IsNullOrEmpty(data.XML130_DESC)
-                    //            ? Properties.Resources.caution 
-                    //            : Properties.Resources.cross;   
-                    //    }
-                    //    else if (data.XML2076_RESULT == 2) 
-                    //    {
-                    //        e.Value = Properties.Resources.check; 
-                    //    }
-                    //}
                 }
             }
             catch (Exception ex)
@@ -844,7 +839,7 @@ namespace HIS.Desktop.Plugins.ExportXml2076
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        
         private bool MakeFolderSave(string folderPath)
         {
             bool result = false;
@@ -1295,5 +1290,7 @@ namespace HIS.Desktop.Plugins.ExportXml2076
                 LogSystem.Error(ex);
             }
         }
+
+      
     }
 }
