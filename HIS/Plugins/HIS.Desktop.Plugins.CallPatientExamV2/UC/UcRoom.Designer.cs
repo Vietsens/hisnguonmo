@@ -31,7 +31,7 @@
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.panel3 = new System.Windows.Forms.Panel();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
-            this.lblNumberEnd = new DevExpress.XtraEditors.LabelControl();
+            this.lblNumberEnd = new System.Windows.Forms.Label();
             this.lblContentEnd = new System.Windows.Forms.Label();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -86,7 +86,7 @@
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(317, 617);
+            this.layoutControl1.Size = new System.Drawing.Size(317, 851);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -95,9 +95,9 @@
             this.panel3.BackColor = System.Drawing.Color.Transparent;
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.layoutControl4);
-            this.panel3.Location = new System.Drawing.Point(0, 488);
+            this.panel3.Location = new System.Drawing.Point(0, 511);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(317, 127);
+            this.panel3.Size = new System.Drawing.Size(317, 338);
             this.panel3.TabIndex = 6;
             // 
             // layoutControl4
@@ -108,34 +108,30 @@
             this.layoutControl4.Location = new System.Drawing.Point(0, 0);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup4;
-            this.layoutControl4.Size = new System.Drawing.Size(315, 125);
+            this.layoutControl4.Size = new System.Drawing.Size(315, 336);
             this.layoutControl4.TabIndex = 0;
             this.layoutControl4.Text = "layoutControl4";
             // 
             // lblNumberEnd
             // 
-            this.lblNumberEnd.AllowHtmlString = true;
-            this.lblNumberEnd.Appearance.Font = new System.Drawing.Font("Times New Roman", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNumberEnd.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.lblNumberEnd.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.lblNumberEnd.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
             this.lblNumberEnd.AutoEllipsis = true;
-            this.lblNumberEnd.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblNumberEnd.Location = new System.Drawing.Point(0, 87);
+            this.lblNumberEnd.Font = new System.Drawing.Font("Times New Roman", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNumberEnd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.lblNumberEnd.Location = new System.Drawing.Point(0, 80);
             this.lblNumberEnd.Name = "lblNumberEnd";
-            this.lblNumberEnd.Padding = new System.Windows.Forms.Padding(30, 0, 30, 15);
-            this.lblNumberEnd.Size = new System.Drawing.Size(315, 38);
-            this.lblNumberEnd.StyleController = this.layoutControl4;
+            this.lblNumberEnd.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblNumberEnd.Size = new System.Drawing.Size(315, 256);
             this.lblNumberEnd.TabIndex = 6;
+            this.lblNumberEnd.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblContentEnd
             // 
             this.lblContentEnd.BackColor = System.Drawing.Color.Transparent;
-            this.lblContentEnd.Font = new System.Drawing.Font("Times New Roman", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblContentEnd.Font = new System.Drawing.Font("Times New Roman", 21F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblContentEnd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.lblContentEnd.Location = new System.Drawing.Point(0, 0);
             this.lblContentEnd.Name = "lblContentEnd";
-            this.lblContentEnd.Size = new System.Drawing.Size(315, 87);
+            this.lblContentEnd.Size = new System.Drawing.Size(315, 80);
             this.lblContentEnd.TabIndex = 4;
             this.lblContentEnd.Text = "CHỜ KHÁM";
             this.lblContentEnd.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -150,26 +146,31 @@
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup4.Size = new System.Drawing.Size(315, 125);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(315, 336);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.lblContentEnd;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem7.MaxSize = new System.Drawing.Size(0, 80);
+            this.layoutControlItem7.MinSize = new System.Drawing.Size(20, 60);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem7.Size = new System.Drawing.Size(315, 87);
+            this.layoutControlItem7.Size = new System.Drawing.Size(315, 80);
+            this.layoutControlItem7.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.lblNumberEnd;
-            this.layoutControlItem9.Location = new System.Drawing.Point(0, 87);
+            this.layoutControlItem9.Location = new System.Drawing.Point(0, 80);
+            this.layoutControlItem9.MinSize = new System.Drawing.Size(19, 50);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem9.Size = new System.Drawing.Size(315, 38);
+            this.layoutControlItem9.Size = new System.Drawing.Size(315, 256);
+            this.layoutControlItem9.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
@@ -178,9 +179,9 @@
             this.panel2.BackColor = System.Drawing.Color.Transparent;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.layoutControl3);
-            this.panel2.Location = new System.Drawing.Point(0, 174);
+            this.panel2.Location = new System.Drawing.Point(0, 240);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(317, 314);
+            this.panel2.Size = new System.Drawing.Size(317, 271);
             this.panel2.TabIndex = 5;
             // 
             // layoutControl3
@@ -191,7 +192,7 @@
             this.layoutControl3.Location = new System.Drawing.Point(0, 0);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup3;
-            this.layoutControl3.Size = new System.Drawing.Size(315, 312);
+            this.layoutControl3.Size = new System.Drawing.Size(315, 269);
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
             // 
@@ -199,9 +200,9 @@
             // 
             this.lblContentNumber.Font = new System.Drawing.Font("Times New Roman", 150F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblContentNumber.ForeColor = System.Drawing.Color.Red;
-            this.lblContentNumber.Location = new System.Drawing.Point(2, 85);
+            this.lblContentNumber.Location = new System.Drawing.Point(2, 74);
             this.lblContentNumber.Name = "lblContentNumber";
-            this.lblContentNumber.Size = new System.Drawing.Size(311, 225);
+            this.lblContentNumber.Size = new System.Drawing.Size(311, 193);
             this.lblContentNumber.TabIndex = 5;
             this.lblContentNumber.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
@@ -211,7 +212,7 @@
             this.lblContentTitle.ForeColor = System.Drawing.Color.Red;
             this.lblContentTitle.Location = new System.Drawing.Point(5, 5);
             this.lblContentTitle.Name = "lblContentTitle";
-            this.lblContentTitle.Size = new System.Drawing.Size(305, 73);
+            this.lblContentTitle.Size = new System.Drawing.Size(305, 62);
             this.lblContentTitle.TabIndex = 4;
             this.lblContentTitle.Text = "ĐANG KHÁM";
             this.lblContentTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -226,7 +227,7 @@
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(315, 312);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(315, 269);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem5
@@ -235,16 +236,16 @@
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Padding = new DevExpress.XtraLayout.Utils.Padding(5, 5, 5, 5);
-            this.layoutControlItem5.Size = new System.Drawing.Size(315, 83);
+            this.layoutControlItem5.Size = new System.Drawing.Size(315, 72);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.lblContentNumber;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 83);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(315, 229);
+            this.layoutControlItem6.Size = new System.Drawing.Size(315, 197);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -255,7 +256,7 @@
             this.panel1.Controls.Add(this.layoutControl2);
             this.panel1.Location = new System.Drawing.Point(0, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(317, 172);
+            this.panel1.Size = new System.Drawing.Size(317, 238);
             this.panel1.TabIndex = 4;
             // 
             // layoutControl2
@@ -265,7 +266,7 @@
             this.layoutControl2.Location = new System.Drawing.Point(0, 0);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.layoutControlGroup2;
-            this.layoutControl2.Size = new System.Drawing.Size(315, 170);
+            this.layoutControl2.Size = new System.Drawing.Size(315, 236);
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl2";
             // 
@@ -276,7 +277,7 @@
             this.lblRoom.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.lblRoom.Location = new System.Drawing.Point(0, 0);
             this.lblRoom.Name = "lblRoom";
-            this.lblRoom.Size = new System.Drawing.Size(315, 170);
+            this.lblRoom.Size = new System.Drawing.Size(315, 236);
             this.lblRoom.TabIndex = 4;
             this.lblRoom.Text = "Phòng khám Nội chuyên khoa Tim Mạch 3";
             this.lblRoom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -290,7 +291,7 @@
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(315, 170);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(315, 236);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem4
@@ -299,7 +300,7 @@
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem4.Size = new System.Drawing.Size(315, 170);
+            this.layoutControlItem4.Size = new System.Drawing.Size(315, 236);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -314,7 +315,7 @@
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(317, 617);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(317, 851);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -323,27 +324,27 @@
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 2, 0);
-            this.layoutControlItem1.Size = new System.Drawing.Size(317, 174);
+            this.layoutControlItem1.Size = new System.Drawing.Size(317, 240);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.panel2;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 174);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 240);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem2.Size = new System.Drawing.Size(317, 314);
+            this.layoutControlItem2.Size = new System.Drawing.Size(317, 271);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.panel3;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 488);
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 511);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 2);
-            this.layoutControlItem3.Size = new System.Drawing.Size(317, 129);
+            this.layoutControlItem3.Size = new System.Drawing.Size(317, 340);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -353,7 +354,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl1);
             this.Name = "UcRoom";
-            this.Size = new System.Drawing.Size(317, 617);
+            this.Size = new System.Drawing.Size(317, 851);
             this.Load += new System.EventHandler(this.UcRoom_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
@@ -406,7 +407,7 @@
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
-        private DevExpress.XtraEditors.LabelControl lblNumberEnd;
+        private System.Windows.Forms.Label lblNumberEnd;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
     }
 }

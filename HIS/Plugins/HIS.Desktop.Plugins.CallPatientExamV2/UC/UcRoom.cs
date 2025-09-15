@@ -17,6 +17,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
     {
         private ServiceReqGateADO state { get; set; }
         private RoomGateSDO serviceReq { get; set; }
+        private HIS_SERVICE_REQ currentServiceReq { get; set; }
         public UcRoom(ServiceReqGateADO ado, RoomGateSDO sdo)
         {
             InitializeComponent();
@@ -75,21 +76,27 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                 this.lblContentNumber.Text = currentCall != null ? currentCall.NUM_ORDER.ToString() : "";
                 if (currentCall != null)
                 {
-                    ChooseRoomForWaitingScreenProcess.StackServiceReqCall.RemoveAll(
-                        x => x.ServiceReq != null && x.ServiceReq.EXECUTE_ROOM_ID == currentCall.EXECUTE_ROOM_ID
-                    );
-                    ChooseRoomForWaitingScreenProcess.StackServiceReqCall.Add(
-                        new ServiceReqCallADO { ServiceReq = currentCall, IsCalling = true }
-                    );
+                    if ((currentServiceReq != null && currentCall.CALL_TIME - currentServiceReq.CALL_TIME > 3) || currentServiceReq == null)
+                    {
+                        ChooseRoomForWaitingScreenProcess.StackServiceReqCall.RemoveAll(
+                            x => x.ServiceReq != null && x.ServiceReq.EXECUTE_ROOM_ID == currentCall.EXECUTE_ROOM_ID
+                        );
+                        ChooseRoomForWaitingScreenProcess.StackServiceReqCall.Add(
+                            new ServiceReqCallADO { ServiceReq = currentCall, IsCalling = true }
+                        );
+                    }
+                    currentServiceReq = currentCall;
                 }
                 var waitingList = ServiceReqs
                     .Where(o => (o.CALL_COUNT ?? -1) < 0)
                     .OrderBy(o => o.NUM_ORDER)
                     .ToList();
 
-                string waitingText = waitingList != null && waitingList.Count > 0
-                        ? string.Join(", ", waitingList.Select(s => s.NUM_ORDER.ToString()))
-                        : "";
+                string waitingText = "";
+                if (waitingList != null && waitingList.Count > 0)
+                {
+                    waitingText = string.Join(", ", waitingList.Select(s => s.NUM_ORDER.ToString()));
+                }
                 this.lblNumberEnd.Text = waitingText;
             }
             catch (Exception ex)
@@ -97,6 +104,17 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        public bool IsCalling()
+        {
+            try
+            {
+                return !string.IsNullOrEmpty(lblContentNumber.Text.Trim());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return false;
+        }
     }
 }

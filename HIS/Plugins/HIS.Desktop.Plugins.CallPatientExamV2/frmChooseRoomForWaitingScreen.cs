@@ -95,11 +95,11 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                 gridControlRoom.DataSource = RoomGates;
                 //ValidateControl();
                 ToogleExtendMonitor();
-                if (currentAdo != null && currentAdo.isAutoOpenWaitingScreen)
-                {
-                    chkAutoOpenWaitingScreen.Checked = true;
-                    tgExtendMonitor.IsOn = true;
-                }
+                //if (currentAdo != null && currentAdo.isAutoOpenWaitingScreen)
+                //{
+                //    chkAutoOpenWaitingScreen.Checked = true;
+                //    tgExtendMonitor.IsOn = true;
+                //}
             }
             catch (Exception ex)
             {
@@ -435,15 +435,21 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
 
                 ServiceReqGateADO ado = new ServiceReqGateADO();
                 ado.roomGateSDOs = lstRegisterGate;
-                ado.timeReload = (long)spnTimeReload.Value;
-                ado.sizeTitle = (long)spnSizeTitle.Value;
+                if (spnTimeReload.Value > 0)
+                    ado.timeReload = (long)spnTimeReload.Value;
+                if (spnSizeTitle.Value > 0)
+                    ado.sizeTitle = (long)spnSizeTitle.Value;
                 ado.colorTitle = cboColorTitle.Text;
                 ado.bgColorTitle = cboBgColorTitle.Text;
-                ado.sizeContentNumber = (long)spnSizeContentNumber.Value;
-                ado.sizeChoKham = (long)spnChoKham.Value;
-                ado.sizeDangKham = (long)spnDangKham.Value;
+                if (spnSizeContentNumber.Value > 0)
+                    ado.sizeContentNumber = (long)spnSizeContentNumber.Value;
+                if (spnChoKham.Value > 0)
+                    ado.sizeChoKham = (long)spnChoKham.Value;
+                if (spnDangKham.Value > 0)
+                    ado.sizeDangKham = (long)spnDangKham.Value;
                 ado.colorContent = cboColorContent.Text;
-                ado.sizeEndTitle = (long)spnSizeEndTitle.Value;
+                if (spnSizeEndTitle.Value > 0)
+                    ado.sizeEndTitle = (long)spnSizeEndTitle.Value;
                 ado.colorEnd = cboColorEnd.Text;
                 ado.bgColorEnd = cboBgColorEnd.Text;
                 ado.isAutoOpenWaitingScreen = chkAutoOpenWaitingScreen.Checked;

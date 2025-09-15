@@ -45,7 +45,9 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.txtFind = new DevExpress.XtraEditors.TextEdit();
             this.spnChoKham = new DevExpress.XtraEditors.SpinEdit();
             this.spnDangKham = new DevExpress.XtraEditors.SpinEdit();
             this.cboColorEnd = new DevExpress.XtraEditors.ColorEdit();
@@ -88,12 +90,12 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.spnContentTitle = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.txtFind = new DevExpress.XtraEditors.TextEdit();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtFind.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spnChoKham.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spnDangKham.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboColorEnd.Properties)).BeginInit();
@@ -132,10 +134,9 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spnContentTitle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtFind.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -163,6 +164,18 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.layoutControl1.Size = new System.Drawing.Size(436, 529);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // txtFind
+            // 
+            this.txtFind.Location = new System.Drawing.Point(2, 2);
+            this.txtFind.Name = "txtFind";
+            this.txtFind.Properties.NullValuePrompt = "Nhập từ khóa để tìm kiếm phòng thực hiện";
+            this.txtFind.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtFind.Properties.ShowNullValuePromptWhenFocused = true;
+            this.txtFind.Size = new System.Drawing.Size(432, 20);
+            this.txtFind.StyleController = this.layoutControl1;
+            this.txtFind.TabIndex = 26;
+            this.txtFind.EditValueChanged += new System.EventHandler(this.txtFind_EditValueChanged);
             // 
             // spnChoKham
             // 
@@ -563,6 +576,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem7.TextSize = new System.Drawing.Size(50, 20);
             this.layoutControlItem7.TextToControlDistance = 5;
+            this.layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem3
             // 
@@ -742,26 +756,6 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.layoutControlItem5.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem5.TextToControlDistance = 5;
             // 
-            // dxErrorProvider1
-            // 
-            this.dxErrorProvider1.ContainerControl = this;
-            // 
-            // dxValidationProviderControl
-            // 
-            this.dxValidationProviderControl.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderControl_ValidationFailed);
-            // 
-            // txtFind
-            // 
-            this.txtFind.Location = new System.Drawing.Point(2, 2);
-            this.txtFind.Name = "txtFind";
-            this.txtFind.Properties.NullValuePrompt = "Nhập từ khóa để tìm kiếm phòng thực hiện";
-            this.txtFind.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtFind.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtFind.Size = new System.Drawing.Size(432, 20);
-            this.txtFind.StyleController = this.layoutControl1;
-            this.txtFind.TabIndex = 26;
-            this.txtFind.EditValueChanged += new System.EventHandler(this.txtFind_EditValueChanged);
-            // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.txtFind;
@@ -770,6 +764,14 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.layoutControlItem4.Size = new System.Drawing.Size(436, 24);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
+            // 
+            // dxErrorProvider1
+            // 
+            this.dxErrorProvider1.ContainerControl = this;
+            // 
+            // dxValidationProviderControl
+            // 
+            this.dxValidationProviderControl.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderControl_ValidationFailed);
             // 
             // frmChooseRoomForWaitingScreen
             // 
@@ -784,6 +786,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtFind.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spnChoKham.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spnDangKham.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboColorEnd.Properties)).EndInit();
@@ -822,10 +825,9 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spnContentTitle)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtFind.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
