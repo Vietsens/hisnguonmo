@@ -2293,6 +2293,8 @@ listTL, lstSereServResult, DelegateSuccess);
                     {
                         txtTreatmentTypeCode.Text = data.TREATMENT_TYPE_CODE;
                     }
+                    else
+                        txtTreatmentTypeCode.Text = "";
                 }
                 //if (this.mainHeinProcessor != null && this.mainHeinProcessor != null)
                 //{
