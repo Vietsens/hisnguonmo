@@ -1375,7 +1375,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 if (this.rdoWrongRoute.Checked)
                 {
-                    firstCheck = false;
                     //if (MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.DISTRICT == this.HeinLevelCodeCurrent)
                     //{
                     //    LogSystem.Debug("rdoWrongRoute_CheckedChanged => benh nhan tuyen huyen luon chon vao dung tuyen");
@@ -1390,6 +1389,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.cboHeinRightRoute.EditValue = null;
                     this.cboHeinRightRoute.Properties.Buttons[1].Visible = false;
                     InitComboPatientCode();
+                    firstCheck = false;
                     this.SetEnableControlHein(RightRouterFactory.WRONG_ROUTER, true);
                     this.txtInCode.Enabled = false;
                     //}
@@ -1422,8 +1422,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 if (this.rdoRightRoute.Checked && !chkHasDobCertificate.Checked)
                 {
+                    InitComboPatientCode();
                     firstCheck = false;
-
                     this.ChangeDefaultHeinRatio();
                     this.rdoWrongRoute.Checked = false;
                     bool rightRoute = (MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.DISTRICT == this.HeinLevelCodeCurrent
@@ -1431,8 +1431,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.SetEnableControlHein(rightRoute ? RightRouterFactory.RIGHT_ROUTER : RightRouterFactory.WRONG_ROUTER__CHOICE_RIGHT, true);
                     txtInCode.Enabled = false;
                 }
-                InitComboPatientCode();
-
                 ValidateRightRouteType(false);
             }
             catch (Exception ex)
@@ -1553,6 +1551,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     cboHeinRightRoute.EditValue = null;
                     txtHeinRightRouteCode.Text = "";
                     this.SetEnableControlHein(RightRouterFactory.WRONG_ROUTER__CHOICE_RIGHT, true);
+                    InitComboPatientCode();
                 }
             }
             catch (Exception ex)
@@ -1565,7 +1564,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         {
             try
             {
-                firstCheck = false;
                 if (this.dlgautoCheckCC != null)
                 {
                     if (this.cboHeinRightRoute.EditValue != null
@@ -1593,7 +1591,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     txtInCode.Enabled = false;
                 }
 
-
+                InitComboPatientCode();
+                firstCheck = false;
                 ResetValidationRightRoute_Present();
                 //this.Template__HeinBHYT1_Load(null, null);
 
