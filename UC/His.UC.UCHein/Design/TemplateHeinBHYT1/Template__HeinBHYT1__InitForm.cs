@@ -258,6 +258,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 IsAutoCheck = false;
                 this.txtAddress.Text = patientTypeAlter.ADDRESS;
                 this.txtHNCode.Text = patientTypeAlter.HNCODE;
+                //if (this.ActionType > 0 && this.ActionType == 2)
+                //{
+
+                //}
                 if (this.HeinPatientCode != null)
                 {
                     cboPatientCode.EditValue = this.HeinPatientCode;

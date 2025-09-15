@@ -72,7 +72,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                     uCMainHein.SetResultDataADOBhyt(ucHein__BHYT, ResultDataADO);
                     //if (uCMainHein != null && ucHein__BHYT != null)
                     //    uCMainHein.FillDataAfterFindQrCode(ucHein__BHYT, dataHein);
-                    if (ResultDataADO != null)
+                    if (ResultDataADO != null && ResultDataADO.ResultHistoryLDO != null)
                     {
                         bool isNotWrongAddress = true;
                         string maKQ = ResultDataADO.ResultHistoryLDO.maKetQua;
