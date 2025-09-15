@@ -91,6 +91,8 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                     dataHein.TreatmentTypes = BackendDataWorker.Get<HIS_TREATMENT_TYPE>();
                     dataHein.PatientTypeId = (long)(cboPatientType.EditValue ?? 0);
                     dataHein.HeinPatientCode = this.HeinPatientCode;
+                    dataHein.treatmentTypeId = this.treatmentTypeId;
+                    dataHein.ActionType = this.ActionType;
                     dataHein.isVisibleControl = ConfigApplicationWorker.Get<long>(AppConfigKeys.CONFIG_KEY__TIEP_DON_HIEN_THI_THONG_TIN_THEM);
                     dataHein.IsDefaultRightRouteType = (HisConfigCFG.IsDefaultRightRouteType == "1" ? true : false);
                     dataHein.IsShowCheckKhongKTHSD = HisConfigCFG.IsShowCheckExpired;
@@ -114,6 +116,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                     dataHein.ObligatoryTranferMediOrg = HisConfigCFG.ObligatoryTranferMediOrg;
                     dataHein.IsAutoSelectEmergency = (currentHisTreatment != null && currentHisTreatment.IS_EMERGENCY == (short?)1) || IsHasEmergency;
                     dataHein.AutoCheckCC = CheckCCToEnablePrint;
+                    dataHein.DeleteTreatmentTypeId = DelegateTreatmentType;
                     dataHein.currentModule = module;
                     dataHein.IsInitFromCallPatientTypeAlter = true;
                     dataHein.PatientId = currentHisTreatment != null ? currentHisTreatment.PATIENT_ID : 0;
@@ -154,6 +157,29 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        public void ReceiveTreatmentTypeId(long treatmentTypeId)
+        {
+            try
+            {
+                this.treatmentTypeId = treatmentTypeId;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void DelegateTreatmentType(long value)
+        {
+            try
+            {
+                cboTreatmentType.EditValue = value;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+
             }
         }
 

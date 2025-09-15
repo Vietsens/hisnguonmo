@@ -1330,6 +1330,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                         heinCardNumber = heinCardNumber.Replace(" ", "").ToUpper().Trim();
                         heinCardNumber = Utils.HeinUtils.TrimHeinCardNumber(heinCardNumber);
                         this.CheckExamHistoryFromBHXHApi(heinCardNumber);
+                        firstCheck = true;
                     }
                     else
                         this.rdoWrongRoute.Focus();
@@ -1374,6 +1375,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 if (this.rdoWrongRoute.Checked)
                 {
+                    firstCheck = false;
                     //if (MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.DISTRICT == this.HeinLevelCodeCurrent)
                     //{
                     //    LogSystem.Debug("rdoWrongRoute_CheckedChanged => benh nhan tuyen huyen luon chon vao dung tuyen");
@@ -1387,6 +1389,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.txtHeinRightRouteCode.Text = "";
                     this.cboHeinRightRoute.EditValue = null;
                     this.cboHeinRightRoute.Properties.Buttons[1].Visible = false;
+                    InitComboPatientCode();
                     this.SetEnableControlHein(RightRouterFactory.WRONG_ROUTER, true);
                     this.txtInCode.Enabled = false;
                     //}
@@ -1419,6 +1422,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 if (this.rdoRightRoute.Checked && !chkHasDobCertificate.Checked)
                 {
+                    firstCheck = false;
+
                     this.ChangeDefaultHeinRatio();
                     this.rdoWrongRoute.Checked = false;
                     bool rightRoute = (MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.DISTRICT == this.HeinLevelCodeCurrent
@@ -1426,6 +1431,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.SetEnableControlHein(rightRoute ? RightRouterFactory.RIGHT_ROUTER : RightRouterFactory.WRONG_ROUTER__CHOICE_RIGHT, true);
                     txtInCode.Enabled = false;
                 }
+                InitComboPatientCode();
+
                 ValidateRightRouteType(false);
             }
             catch (Exception ex)
@@ -1558,6 +1565,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         {
             try
             {
+                firstCheck = false;
                 if (this.dlgautoCheckCC != null)
                 {
                     if (this.cboHeinRightRoute.EditValue != null
@@ -1576,7 +1584,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.ChangecboHeinRightRoute();
                 else
                     this.SetEnableControlHein(RightRouterFactory.WRONG_ROUTER__CHOICE_RIGHT__DELETE_CHOICE_TYPE, false);
-                if (cboHeinRightRoute.EditValue.ToString() == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT)
+                if (cboHeinRightRoute.EditValue != null && cboHeinRightRoute.EditValue.ToString() == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT)
                 {
                     txtInCode.Enabled = true;
                 }
@@ -1587,6 +1595,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
 
 
                 ResetValidationRightRoute_Present();
+                //this.Template__HeinBHYT1_Load(null, null);
 
             }
             catch (Exception ex)
@@ -1659,6 +1668,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                         this.cboNoiSong.SelectAll();
                         this.cboNoiSong.ShowPopup();
                     }
+                    InitComboPatientCode();
                     //        this.ChangecboHeinRightRoute();
                     //    if (this.cboHeinRightRoute.EditValue == null)
                     //        this.ChangecboHeinRightRoute();
