@@ -1330,7 +1330,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                         heinCardNumber = heinCardNumber.Replace(" ", "").ToUpper().Trim();
                         heinCardNumber = Utils.HeinUtils.TrimHeinCardNumber(heinCardNumber);
                         this.CheckExamHistoryFromBHXHApi(heinCardNumber);
-                        firstCheck = true;
                     }
                     else
                         this.rdoWrongRoute.Focus();
@@ -1388,10 +1387,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.txtHeinRightRouteCode.Text = "";
                     this.cboHeinRightRoute.EditValue = null;
                     this.cboHeinRightRoute.Properties.Buttons[1].Visible = false;
-                    InitComboPatientCode();
-                    firstCheck = false;
                     this.SetEnableControlHein(RightRouterFactory.WRONG_ROUTER, true);
                     this.txtInCode.Enabled = false;
+                    firstCheck = false;
+                    InitComboPatientCode();
                     //}
                 }
             }
@@ -1591,8 +1590,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     txtInCode.Enabled = false;
                 }
 
-                InitComboPatientCode();
-                firstCheck = false;
+                //InitComboPatientCode();
+                //firstCheck = false;
                 ResetValidationRightRoute_Present();
                 //this.Template__HeinBHYT1_Load(null, null);
 
