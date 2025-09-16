@@ -102,6 +102,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
         private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         private bool isInternalToggle = false;
+        private bool isTemporaryToggle = false;
         public frmInfantInformation()
         {
             InitializeComponent();
@@ -578,8 +579,8 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                btnEdit.Enabled = (action == GlobalVariables.ActionEdit);
-                btnAdd.Enabled = (action == GlobalVariables.ActionAdd);
+                //btnSave.Enabled = (action == GlobalVariables.ActionEdit);
+                //btnTepoSave.Enabled = (action == GlobalVariables.ActionAdd);
             }
             catch (Exception ex)
             {
@@ -860,7 +861,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 this.lcEditorInfo.Text = Inventec.Common.Resource.Get.Value("frmInfantInformation.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //this.chkInfantcheck.Properties.Caption = Inventec.Common.Resource.Get.Value("frmInfantInformation.chkInfantcheck.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnCancel.Text = Inventec.Common.Resource.Get.Value("frmInfantInformation.btndelete.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmInfantInformation.btnsave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmInfantInformation.btnsave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboInfantPosition.Properties.NullText = Inventec.Common.Resource.Get.Value("frmInfantInformation.cboInfantPosition.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboInfantTybe.Properties.NullText = Inventec.Common.Resource.Get.Value("frmInfantInformation.cboInfantTybe.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboInfantGendercode.Properties.NullText = Inventec.Common.Resource.Get.Value("frmInfantInformation.cboInfantGendercode.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -1095,7 +1096,8 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     EnableControlChanged(this.ActionType);
 
                     //Disable nút sửa nếu dữ liệu đã bị khóa
-                    btnEdit.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                    btnSave.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                    btnTepoSave.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
 
                     positionHandle = -1;
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
@@ -1269,10 +1271,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
             }
         }
 
-        private void btnEdit_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
+                isTemporaryToggle = false;
                 SaveProcess();
             }
             catch (Exception ex)
@@ -1296,7 +1299,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             {
                 this.isUpdatedPatient = true;
                 bool success = false;
-                //if (!btnEdit.Enabled)
+                //if (!btnSave.Enabled)
                 //    return;
                 if (lciDeathDate.Enabled)
                 {
@@ -1323,6 +1326,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 HisBabySDO updateDTO = new HisBabySDO();
 
                 UpdateDTOFromDataForm(ref updateDTO);
+                updateDTO.IsTemporary = this.isTemporaryToggle;
                 if (dxErrorProvider1.HasErrors) return;
                 WaitingManager.Show();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
@@ -1489,7 +1493,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                btnEdit_Click(null, null);
+                btnSave_Click(null, null);
             }
             catch (Exception ex)
             {
@@ -1611,13 +1615,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
 
         private void barButtonItem3_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            btnAdd_Click(null, null);
+            btnTepoSave_Click(null, null);
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void btnTepoSave_Click(object sender, EventArgs e)
         {
             try
             {
+                isTemporaryToggle = true;
                 SaveProcess();
             }
             catch (Exception ex)
@@ -2159,15 +2164,15 @@ namespace HIS.Desktop.Plugins.InfantInformation
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    //if (btnAdd.Enabled)
+                    //if (btnTepoSave.Enabled)
                     //{
-                    //    btnAdd.Focus();
-                    //    btnAdd.Select();
+                    //    btnTepoSave.Focus();
+                    //    btnTepoSave.Select();
                     //}
                     //else
                     //{
-                    //    btnEdit.Focus();
-                    //    btnEdit.Select();
+                    //    btnSave.Focus();
+                    //    btnSave.Select();
                     //}
                     txtProvinceCode.Focus();
                     txtProvinceCode.SelectAll();
@@ -4616,15 +4621,15 @@ namespace HIS.Desktop.Plugins.InfantInformation
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (btnAdd.Enabled)
+                    if (btnTepoSave.Enabled)
                     {
-                        btnAdd.Focus();
-                        btnAdd.Select();
+                        btnTepoSave.Focus();
+                        btnTepoSave.Select();
                     }
                     else
                     {
-                        btnEdit.Focus();
-                        btnEdit.Select();
+                        btnSave.Focus();
+                        btnSave.Select();
                     }
                 }
             }

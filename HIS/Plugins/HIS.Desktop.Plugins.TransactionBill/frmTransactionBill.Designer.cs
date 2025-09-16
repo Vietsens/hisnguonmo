@@ -1014,7 +1014,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // cboBuyerOrganzation2
             // 
-            this.cboBuyerOrganzation2.EditValue = "";
+            this.cboBuyerOrganzation2.EditValue = null;
             this.cboBuyerOrganzation2.Location = new System.Drawing.Point(57, 41);
             this.cboBuyerOrganzation2.MenuManager = this.barManager1;
             this.cboBuyerOrganzation2.Name = "cboBuyerOrganzation2";
