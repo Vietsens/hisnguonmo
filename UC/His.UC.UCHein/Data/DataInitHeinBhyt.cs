@@ -67,11 +67,14 @@ namespace His.UC.UCHein.Data
         public DelegateAutoCheckCC AutoCheckCC { get; set; }
         public CheckExamHistoryByHeinCardNumber CheckExamHistory { get; set; }
         public DelegateSetRelativeAddress SetRelativeAddress { get; set; }
+        public DeleteTreatmentTypeId DeleteTreatmentTypeId { get; set; }
         public Action ActChangePatientDob { get; set; }
         public bool IsSampleDepartment { get; set; }
         public MOS.EFMODEL.DataModels.V_HIS_TREATMENT_4 HisTreatment { get; set; }
         public Inventec.Desktop.Common.Modules.Module currentModule { get; set; }
         public bool IsInitFromCallPatientTypeAlter { get; set; }
         public long PatientId { get; set; }
+        public long treatmentTypeId { get; set; }
+        public long ActionType { get; set; }
     }
 }

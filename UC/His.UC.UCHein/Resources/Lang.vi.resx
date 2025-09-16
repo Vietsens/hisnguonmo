@@ -354,9 +354,6 @@
   <data name="lblEditIcd.Text" xml:space="preserve">
     <value>Sửa:</value>
   </data>
-  <data name="lciFreeCoPainTime.Text" xml:space="preserve">
-    <value>TDMC chi trả:</value>
-  </data>
   <data name="lciIcdMain.Text" xml:space="preserve">
     <value>Bệnh chính:</value>
   </data>

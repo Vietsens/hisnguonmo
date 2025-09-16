@@ -37,4 +37,5 @@ namespace His.UC.UCHein
     public delegate void CheckExamHistoryByHeinCardNumber(HeinCardData heinCardNumber);
     public delegate bool FillDataPatientSDOToRegisterForm(HisPatientSDO patientSDO);
     public delegate void DelegateSetRelativeAddress(bool value);
+    public delegate void DeleteTreatmentTypeId(long value);
 }

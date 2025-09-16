@@ -432,19 +432,19 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((rowSample != null ? rowSample.TREATMENT_CODE : ""), printTypeCode, this.currentModule.RoomId);
 
-                //LIS_SAMPLE same = new LIS_SAMPLE();
-                //Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(same, this.rowSample);
-                List<HIS_SERVICE_REQ> apiResult = null;
-                CommonParam paramCommon = new CommonParam();
-                HisServiceReqFilter filter = new HisServiceReqFilter();
-                filter.SERVICE_REQ_CODE__EXACT = this.rowSample.SERVICE_REQ_CODE;
-                filter.ORDER_DIRECTION = "DESC";
-                filter.ORDER_FIELD = "MODIFY_TIME";
-                apiResult = new BackendAdapter(paramCommon).Get<List<HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, filter, paramCommon);
                 HIS_SERVICE_REQ hisService = new HIS_SERVICE_REQ();
-                if (apiResult != null && apiResult.Count > 0)
+                if (!string.IsNullOrWhiteSpace(this.rowSample.SERVICE_REQ_CODE))
                 {
-                    hisService = apiResult.FirstOrDefault();
+                    CommonParam paramCommon = new CommonParam();
+                    HisServiceReqFilter filter = new HisServiceReqFilter();
+                    filter.SERVICE_REQ_CODE__EXACT = this.rowSample.SERVICE_REQ_CODE;
+                    filter.ORDER_DIRECTION = "DESC";
+                    filter.ORDER_FIELD = "MODIFY_TIME";
+                    List<HIS_SERVICE_REQ> apiResult = new BackendAdapter(paramCommon).Get<List<HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, filter, paramCommon);
+                    if (apiResult != null && apiResult.Count > 0)
+                    {
+                        hisService = apiResult.FirstOrDefault();
+                    }
                 }
 
                 List<LIS_PATIENT_CONDITION> lstpatientCondition;
@@ -452,17 +452,19 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                 LisPatientConditionFilter conditionFilter = new LisPatientConditionFilter();
                 lstpatientCondition = new BackendAdapter(paramCommonCondition).Get<List<LIS_PATIENT_CONDITION>>("api/LisPatientCondition/Get", ApiConsumer.ApiConsumers.LisConsumer, conditionFilter, paramCommonCondition);
 
-                List<HIS_TREATMENT> treatmentApiResult = null;
-                CommonParam paramCo = new CommonParam();
-                HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
-                filter.TREATMENT_CODE__EXACT = this.rowSample.TREATMENT_CODE;
-                filter.ORDER_DIRECTION = "DESC";
-                filter.ORDER_FIELD = "MODIFY_TIME";
-                treatmentApiResult = new BackendAdapter(paramCo).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, filter, paramCo);
                 HIS_TREATMENT treatment = new HIS_TREATMENT();
-                if (apiResult != null && apiResult.Count > 0)
+                CommonParam paramCo = new CommonParam();
+                if (!string.IsNullOrWhiteSpace(this.rowSample.TREATMENT_CODE))
                 {
-                    treatment = treatmentApiResult.FirstOrDefault();
+                    HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
+                    treatmentFilter.TREATMENT_CODE__EXACT = this.rowSample.TREATMENT_CODE;
+                    treatmentFilter.ORDER_DIRECTION = "DESC";
+                    treatmentFilter.ORDER_FIELD = "MODIFY_TIME";
+                    List<HIS_TREATMENT> treatmentApiResult = new BackendAdapter(paramCo).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, treatmentFilter, paramCo);
+                    if (treatmentApiResult != null && treatmentApiResult.Count > 0)
+                    {
+                        treatment = treatmentApiResult.FirstOrDefault();
+                    }
                 }
 
                 HIS_PATIENT patient = null;

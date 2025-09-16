@@ -74,6 +74,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
         ResultDataADO ResultDataADO { get; set; }
         int ActionType = 0;
         bool? IsView { get; set; }
+        public Action<long> dlgSendTreatmentId;
         int positionHandleControl = -1;
         string provindcode = null;
         HIS_PATIENT_TYPE_ALTER resultApi = null;
@@ -90,6 +91,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
         long patientId;
         long keyIsSetPrimaryPatientType;
         string HeinPatientCode;
+        long treatmentTypeId;
         List<MOS.EFMODEL.DataModels.HIS_POSITION> dataPosition = null;
         List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE> dataWorkPlace = null;
         List<MOS.EFMODEL.DataModels.HIS_MILITARY_RANK> dataMilitaryRank = null;
@@ -103,7 +105,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
         bool resultSuccess = false;
         bool isEdit = false;
         bool IsLoadForm;
-
+        internal His.UC.UCHein.MainHisHeinBhyt mainHeinProcessor;
 
         List<SDA.EFMODEL.DataModels.SDA_HIDE_CONTROL> currentHideControls;
         string APP_CODE__EXACT = "HIS";
@@ -128,6 +130,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             : base(_module)
         {
             InitializeComponent();
+            //this.SendTreatmentTypeId(this.ucHein__BHYT)
             this.module = _module;
             this.isEdit = true;
             this.currentTreatmentLogSDO = _HisTreatmentLogSDO;
@@ -815,14 +818,6 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             {
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
-                    if (cboTreatmentType.EditValue != null)
-                    {
-                        MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE data = BackendDataWorker.Get<HIS_TREATMENT_TYPE>().SingleOrDefault(o => o.ID == long.Parse((cboTreatmentType.EditValue ?? "").ToString()));
-                        if (data != null)
-                        {
-                            txtTreatmentTypeCode.Text = data.TREATMENT_TYPE_CODE;
-                        }
-                    }
                     txtPatientType.Focus();
                     txtPatientType.SelectAll();
                 }
@@ -2278,7 +2273,7 @@ listTL, lstSereServResult, DelegateSuccess);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        
         private void cboTreatmentType_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -2289,7 +2284,26 @@ listTL, lstSereServResult, DelegateSuccess);
                     if (currentTreatmentType == 0 || currentTreatmentType != dt)
                         uCMainHein.SetValueTreatmentType(ucHein__BHYT, dt);
                     currentTreatmentType = dt;
+                    this.treatmentTypeId = (long)(cboTreatmentType.EditValue ?? 0);
                 }
+                if (cboTreatmentType.EditValue != null)
+                {
+                    MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE data = BackendDataWorker.Get<HIS_TREATMENT_TYPE>().SingleOrDefault(o => o.ID == long.Parse((cboTreatmentType.EditValue ?? "").ToString()));
+                    if (data != null)
+                    {
+                        txtTreatmentTypeCode.Text = data.TREATMENT_TYPE_CODE;
+                    }
+                    else
+                        txtTreatmentTypeCode.Text = "";
+                }
+                //if (this.mainHeinProcessor != null && this.mainHeinProcessor != null)
+                //{
+                //    LogSystem.Debug("Bat dau goi ham : GoiUCTuManHinhTiepDon");
+                //    this.mainHeinProcessor.Rece(this.mainHeinProcessor, true);
+                //    LogSystem.Debug("Ket thuc goi ham : GoiUCTuManHinhTiepDon");
+                //}
+                //this.SendTreatmentTypeId(this.ucHein__BHYT.InitializeLifetimeService())
+                //ChoiceTemplateHeinCard(txtPatientType.Text, false);
             }
             catch (Exception ex)
             {

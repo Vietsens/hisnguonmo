@@ -751,7 +751,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     
                     if (isAutoFinishChecked)
                     {
-                        if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "2" && uc != null && !string.IsNullOrEmpty(uc.cboHeinPatientTypeCode.EditValue.ToString()))
+                        if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "2" && uc != null && string.IsNullOrEmpty(uc.cboHeinPatientTypeCode.EditValue?.ToString()))
                         {
                             var result = DevExpress.XtraEditors.XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị. Bạn có muốn tiếp tục?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
@@ -760,7 +760,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                                 return;
                             }
                         }
-                        else if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "3" && uc != null && !string.IsNullOrEmpty(uc.cboHeinPatientTypeCode.EditValue.ToString()))
+                        else if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "3" && uc != null && string.IsNullOrEmpty(uc.cboHeinPatientTypeCode.EditValue?.ToString()))
                         {
                             DevExpress.XtraEditors.XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
