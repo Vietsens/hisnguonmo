@@ -478,7 +478,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lciRegisterEditor.Controls.Add(this.cboCareer);
             this.lciRegisterEditor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lciRegisterEditor.Location = new System.Drawing.Point(0, 0);
-            this.lciRegisterEditor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lciRegisterEditor.Margin = new System.Windows.Forms.Padding(4);
             this.lciRegisterEditor.Name = "lciRegisterEditor";
             this.lciRegisterEditor.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(40, 321, 250, 350);
             this.lciRegisterEditor.OptionsFocus.EnableAutoTabOrder = false;
@@ -490,7 +490,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // chkCAPD
             // 
             this.chkCAPD.Location = new System.Drawing.Point(1293, 278);
-            this.chkCAPD.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkCAPD.Margin = new System.Windows.Forms.Padding(4);
             this.chkCAPD.Name = "chkCAPD";
             this.chkCAPD.Properties.Caption = "";
             this.chkCAPD.Size = new System.Drawing.Size(53, 19);
@@ -500,7 +500,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // togChangeStructAdress
             // 
             this.togChangeStructAdress.Location = new System.Drawing.Point(6, 60);
-            this.togChangeStructAdress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.togChangeStructAdress.Margin = new System.Windows.Forms.Padding(4);
             this.togChangeStructAdress.Name = "togChangeStructAdress";
             this.togChangeStructAdress.Properties.OffText = "";
             this.togChangeStructAdress.Properties.OnText = "";
@@ -512,7 +512,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // chkNoCCCD
             // 
             this.chkNoCCCD.Location = new System.Drawing.Point(1466, 373);
-            this.chkNoCCCD.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkNoCCCD.Margin = new System.Windows.Forms.Padding(4);
             this.chkNoCCCD.Name = "chkNoCCCD";
             this.chkNoCCCD.Properties.Caption = "Không CCCD";
             this.chkNoCCCD.Size = new System.Drawing.Size(110, 20);
@@ -527,7 +527,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.panelLayoutHosReason.Controls.Add(this.txtHosReason);
             this.panelLayoutHosReason.Controls.Add(this.cboHosReason);
             this.panelLayoutHosReason.Location = new System.Drawing.Point(1598, 277);
-            this.panelLayoutHosReason.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelLayoutHosReason.Margin = new System.Windows.Forms.Padding(4);
             this.panelLayoutHosReason.Name = "panelLayoutHosReason";
             this.panelLayoutHosReason.Size = new System.Drawing.Size(164, 24);
             this.panelLayoutHosReason.TabIndex = 73;
@@ -536,7 +536,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.txtHosReason.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtHosReason.Location = new System.Drawing.Point(0, 0);
-            this.txtHosReason.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtHosReason.Margin = new System.Windows.Forms.Padding(4);
             this.txtHosReason.Name = "txtHosReason";
             this.txtHosReason.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
@@ -553,7 +553,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.cboHosReason.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cboHosReason.EditValue = "";
             this.cboHosReason.Location = new System.Drawing.Point(0, 0);
-            this.cboHosReason.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboHosReason.Margin = new System.Windows.Forms.Padding(4);
             this.cboHosReason.Name = "cboHosReason";
             this.cboHosReason.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboHosReason.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -575,7 +575,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtReasonVV
             // 
             this.txtReasonVV.Location = new System.Drawing.Point(1417, 278);
-            this.txtReasonVV.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtReasonVV.Margin = new System.Windows.Forms.Padding(4);
             this.txtReasonVV.Name = "txtReasonVV";
             this.txtReasonVV.Size = new System.Drawing.Size(88, 22);
             this.txtReasonVV.StyleController = this.lciRegisterEditor;
@@ -586,7 +586,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // chkSignExam
             // 
             this.chkSignExam.Location = new System.Drawing.Point(1325, 644);
-            this.chkSignExam.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkSignExam.Margin = new System.Windows.Forms.Padding(4);
             this.chkSignExam.Name = "chkSignExam";
             this.chkSignExam.Properties.Caption = "Ký phiếu khám";
             this.chkSignExam.Size = new System.Drawing.Size(116, 20);
@@ -597,7 +597,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // chkWNext
             // 
             this.chkWNext.Location = new System.Drawing.Point(1370, 406);
-            this.chkWNext.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkWNext.Margin = new System.Windows.Forms.Padding(4);
             this.chkWNext.Name = "chkWNext";
             this.chkWNext.Properties.Caption = "Cảnh báo cho lần khám sau";
             this.chkWNext.Size = new System.Drawing.Size(203, 20);
@@ -608,7 +608,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtNote
             // 
             this.txtNote.Location = new System.Drawing.Point(624, 406);
-            this.txtNote.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtNote.Margin = new System.Windows.Forms.Padding(4);
             this.txtNote.Name = "txtNote";
             this.txtNote.Size = new System.Drawing.Size(740, 22);
             this.txtNote.StyleController = this.lciRegisterEditor;
@@ -617,7 +617,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboPatientClassify
             // 
             this.cboPatientClassify.Location = new System.Drawing.Point(353, 406);
-            this.cboPatientClassify.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboPatientClassify.Margin = new System.Windows.Forms.Padding(4);
             this.cboPatientClassify.Name = "cboPatientClassify";
             this.cboPatientClassify.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboPatientClassify.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -643,7 +643,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.dropDownButton_Other.Enabled = false;
             this.dropDownButton_Other.Location = new System.Drawing.Point(851, 640);
-            this.dropDownButton_Other.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dropDownButton_Other.Margin = new System.Windows.Forms.Padding(4);
             this.dropDownButton_Other.Name = "dropDownButton_Other";
             this.dropDownButton_Other.Size = new System.Drawing.Size(74, 34);
             this.dropDownButton_Other.StyleController = this.lciRegisterEditor;
@@ -654,7 +654,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtKskCode
             // 
             this.txtKskCode.Location = new System.Drawing.Point(1657, 373);
-            this.txtKskCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtKskCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtKskCode.Name = "txtKskCode";
             this.txtKskCode.Size = new System.Drawing.Size(91, 22);
             this.txtKskCode.StyleController = this.lciRegisterEditor;
@@ -664,7 +664,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.lblDescriptionForHID.Appearance.ForeColor = System.Drawing.Color.Blue;
             this.lblDescriptionForHID.Location = new System.Drawing.Point(1578, 408);
-            this.lblDescriptionForHID.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblDescriptionForHID.Margin = new System.Windows.Forms.Padding(4);
             this.lblDescriptionForHID.Name = "lblDescriptionForHID";
             this.lblDescriptionForHID.Size = new System.Drawing.Size(184, 16);
             this.lblDescriptionForHID.StyleController = this.lciRegisterEditor;
@@ -673,7 +673,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboProvinceKS
             // 
             this.cboProvinceKS.Location = new System.Drawing.Point(164, 405);
-            this.cboProvinceKS.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboProvinceKS.Margin = new System.Windows.Forms.Padding(4);
             this.cboProvinceKS.Name = "cboProvinceKS";
             this.cboProvinceKS.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -695,7 +695,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtProvinceCodeKS
             // 
             this.txtProvinceCodeKS.Location = new System.Drawing.Point(81, 405);
-            this.txtProvinceCodeKS.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtProvinceCodeKS.Margin = new System.Windows.Forms.Padding(4);
             this.txtProvinceCodeKS.Name = "txtProvinceCodeKS";
             this.txtProvinceCodeKS.Size = new System.Drawing.Size(83, 22);
             this.txtProvinceCodeKS.StyleController = this.lciRegisterEditor;
@@ -706,7 +706,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtRelativeCMNDNumber
             // 
             this.txtRelativeCMNDNumber.Location = new System.Drawing.Point(1165, 373);
-            this.txtRelativeCMNDNumber.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtRelativeCMNDNumber.Margin = new System.Windows.Forms.Padding(4);
             this.txtRelativeCMNDNumber.Name = "txtRelativeCMNDNumber";
             this.txtRelativeCMNDNumber.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
             this.txtRelativeCMNDNumber.Properties.Appearance.Options.UseForeColor = true;
@@ -720,7 +720,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.chkIsChronic.EnterMoveNextControl = true;
             this.chkIsChronic.Location = new System.Drawing.Point(1153, 278);
-            this.chkIsChronic.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkIsChronic.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsChronic.Name = "chkIsChronic";
             this.chkIsChronic.Properties.AppearanceFocused.BackColor = System.Drawing.Color.Silver;
             this.chkIsChronic.Properties.AppearanceFocused.Options.UseBackColor = true;
@@ -734,7 +734,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboOweType
             // 
             this.cboOweType.Location = new System.Drawing.Point(1597, 249);
-            this.cboOweType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboOweType.Margin = new System.Windows.Forms.Padding(4);
             this.cboOweType.Name = "cboOweType";
             this.cboOweType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -747,7 +747,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // btnRecallPatient
             // 
             this.btnRecallPatient.Location = new System.Drawing.Point(215, 640);
-            this.btnRecallPatient.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRecallPatient.Margin = new System.Windows.Forms.Padding(4);
             this.btnRecallPatient.Name = "btnRecallPatient";
             this.btnRecallPatient.Size = new System.Drawing.Size(310, 34);
             this.btnRecallPatient.StyleController = this.lciRegisterEditor;
@@ -758,7 +758,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // btnCallPatient
             // 
             this.btnCallPatient.Location = new System.Drawing.Point(147, 640);
-            this.btnCallPatient.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCallPatient.Margin = new System.Windows.Forms.Padding(4);
             this.btnCallPatient.Name = "btnCallPatient";
             this.btnCallPatient.Size = new System.Drawing.Size(62, 34);
             this.btnCallPatient.StyleController = this.lciRegisterEditor;
@@ -769,7 +769,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtStepNumber
             // 
             this.txtStepNumber.Location = new System.Drawing.Point(74, 644);
-            this.txtStepNumber.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtStepNumber.Margin = new System.Windows.Forms.Padding(4);
             this.txtStepNumber.Name = "txtStepNumber";
             this.txtStepNumber.Properties.Appearance.Options.UseTextOptions = true;
             this.txtStepNumber.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -786,7 +786,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtGateNumber
             // 
             this.txtGateNumber.Location = new System.Drawing.Point(2, 644);
-            this.txtGateNumber.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtGateNumber.Margin = new System.Windows.Forms.Padding(4);
             this.txtGateNumber.Name = "txtGateNumber";
             this.txtGateNumber.Properties.Appearance.Options.UseTextOptions = true;
             this.txtGateNumber.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -804,7 +804,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.layoutControl1.Controls.Add(this.gridControlExecuteRoomInfo);
             this.layoutControl1.Location = new System.Drawing.Point(3, 438);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.grboxExecuteRoomInfo;
             this.layoutControl1.Size = new System.Drawing.Size(1762, 196);
@@ -813,10 +813,10 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             // gridControlExecuteRoomInfo
             // 
-            this.gridControlExecuteRoomInfo.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlExecuteRoomInfo.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlExecuteRoomInfo.Location = new System.Drawing.Point(1, 24);
             this.gridControlExecuteRoomInfo.MainView = this.gridViewExecuteRoomInfo;
-            this.gridControlExecuteRoomInfo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlExecuteRoomInfo.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlExecuteRoomInfo.Name = "gridControlExecuteRoomInfo";
             this.gridControlExecuteRoomInfo.Size = new System.Drawing.Size(1760, 171);
             this.gridControlExecuteRoomInfo.TabIndex = 4;
@@ -996,7 +996,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboTreatmentType
             // 
             this.cboTreatmentType.Location = new System.Drawing.Point(1293, 250);
-            this.cboTreatmentType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboTreatmentType.Margin = new System.Windows.Forms.Padding(4);
             this.cboTreatmentType.Name = "cboTreatmentType";
             this.cboTreatmentType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1012,7 +1012,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.btnBill.Enabled = false;
             this.btnBill.Location = new System.Drawing.Point(1026, 640);
-            this.btnBill.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnBill.Margin = new System.Windows.Forms.Padding(4);
             this.btnBill.Name = "btnBill";
             this.btnBill.Size = new System.Drawing.Size(99, 34);
             this.btnBill.StyleController = this.lciRegisterEditor;
@@ -1023,7 +1023,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboCashierRoom
             // 
             this.cboCashierRoom.Location = new System.Drawing.Point(735, 644);
-            this.cboCashierRoom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboCashierRoom.Margin = new System.Windows.Forms.Padding(4);
             this.cboCashierRoom.Name = "cboCashierRoom";
             this.cboCashierRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1035,7 +1035,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // btnSaveAndPrint
             // 
             this.btnSaveAndPrint.Location = new System.Drawing.Point(1526, 640);
-            this.btnSaveAndPrint.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSaveAndPrint.Margin = new System.Windows.Forms.Padding(4);
             this.btnSaveAndPrint.Name = "btnSaveAndPrint";
             this.btnSaveAndPrint.Size = new System.Drawing.Size(84, 34);
             this.btnSaveAndPrint.StyleController = this.lciRegisterEditor;
@@ -1046,7 +1046,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtMaTHX
             // 
             this.txtMaTHX.Location = new System.Drawing.Point(160, 62);
-            this.txtMaTHX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMaTHX.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaTHX.Name = "txtMaTHX";
             this.txtMaTHX.Properties.Appearance.Options.UseTextOptions = true;
             this.txtMaTHX.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -1059,7 +1059,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboTHX
             // 
             this.cboTHX.Location = new System.Drawing.Point(266, 62);
-            this.cboTHX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboTHX.Margin = new System.Windows.Forms.Padding(4);
             this.cboTHX.Name = "cboTHX";
             this.cboTHX.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
@@ -1081,7 +1081,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.btnPatientNew.Appearance.Options.UseTextOptions = true;
             this.btnPatientNew.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.btnPatientNew.Location = new System.Drawing.Point(531, 640);
-            this.btnPatientNew.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnPatientNew.Margin = new System.Windows.Forms.Padding(4);
             this.btnPatientNew.Name = "btnPatientNew";
             this.btnPatientNew.Size = new System.Drawing.Size(114, 29);
             this.btnPatientNew.StyleController = this.lciRegisterEditor;
@@ -1093,7 +1093,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // btnPatientExtend
             // 
             this.btnPatientExtend.Location = new System.Drawing.Point(1370, 373);
-            this.btnPatientExtend.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnPatientExtend.Margin = new System.Windows.Forms.Padding(4);
             this.btnPatientExtend.Name = "btnPatientExtend";
             this.btnPatientExtend.Size = new System.Drawing.Size(90, 27);
             this.btnPatientExtend.StyleController = this.lciRegisterEditor;
@@ -1105,7 +1105,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.btnAddRow.Image = ((System.Drawing.Image)(resources.GetObject("btnAddRow.Image")));
             this.btnAddRow.Location = new System.Drawing.Point(674, 250);
-            this.btnAddRow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAddRow.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddRow.Name = "btnAddRow";
             this.btnAddRow.Size = new System.Drawing.Size(31, 27);
             this.btnAddRow.StyleController = this.lciRegisterEditor;
@@ -1116,7 +1116,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.pnlUCHeinInformation.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.pnlUCHeinInformation.Location = new System.Drawing.Point(7, 122);
-            this.pnlUCHeinInformation.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlUCHeinInformation.Margin = new System.Windows.Forms.Padding(4);
             this.pnlUCHeinInformation.Name = "pnlUCHeinInformation";
             this.pnlUCHeinInformation.Size = new System.Drawing.Size(1754, 91);
             this.pnlUCHeinInformation.TabIndex = 19;
@@ -1126,7 +1126,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.pnlInstructionTime.Controls.Add(this.txtIntructionTime);
             this.pnlInstructionTime.Controls.Add(this.dtIntructionTime);
             this.pnlInstructionTime.Location = new System.Drawing.Point(784, 250);
-            this.pnlInstructionTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlInstructionTime.Margin = new System.Windows.Forms.Padding(4);
             this.pnlInstructionTime.Name = "pnlInstructionTime";
             this.pnlInstructionTime.Size = new System.Drawing.Size(154, 22);
             this.pnlInstructionTime.TabIndex = 22;
@@ -1135,7 +1135,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.txtIntructionTime.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtIntructionTime.Location = new System.Drawing.Point(0, 0);
-            this.txtIntructionTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtIntructionTime.Margin = new System.Windows.Forms.Padding(4);
             this.txtIntructionTime.Name = "txtIntructionTime";
             this.txtIntructionTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Down)});
@@ -1154,7 +1154,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.dtIntructionTime.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtIntructionTime.EditValue = null;
             this.dtIntructionTime.Location = new System.Drawing.Point(0, 0);
-            this.dtIntructionTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtIntructionTime.Margin = new System.Windows.Forms.Padding(4);
             this.dtIntructionTime.Name = "dtIntructionTime";
             this.dtIntructionTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Down)});
@@ -1186,7 +1186,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.cboMilitaryRank.EnterMoveNextControl = true;
             this.cboMilitaryRank.Location = new System.Drawing.Point(1562, 346);
-            this.cboMilitaryRank.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboMilitaryRank.Margin = new System.Windows.Forms.Padding(4);
             this.cboMilitaryRank.Name = "cboMilitaryRank";
             this.cboMilitaryRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1200,7 +1200,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtMilitaryRankCode
             // 
             this.txtMilitaryRankCode.Location = new System.Drawing.Point(1444, 346);
-            this.txtMilitaryRankCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMilitaryRankCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtMilitaryRankCode.Name = "txtMilitaryRankCode";
             this.txtMilitaryRankCode.Size = new System.Drawing.Size(118, 22);
             this.txtMilitaryRankCode.StyleController = this.lciRegisterEditor;
@@ -1210,7 +1210,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtRelativeAddress
             // 
             this.txtRelativeAddress.Location = new System.Drawing.Point(895, 373);
-            this.txtRelativeAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtRelativeAddress.Margin = new System.Windows.Forms.Padding(4);
             this.txtRelativeAddress.Name = "txtRelativeAddress";
             this.txtRelativeAddress.Properties.MaxLength = 200;
             this.txtRelativeAddress.Size = new System.Drawing.Size(203, 22);
@@ -1221,7 +1221,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtCorrelated
             // 
             this.txtCorrelated.Location = new System.Drawing.Point(624, 373);
-            this.txtCorrelated.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtCorrelated.Margin = new System.Windows.Forms.Padding(4);
             this.txtCorrelated.Name = "txtCorrelated";
             this.txtCorrelated.Properties.MaxLength = 50;
             this.txtCorrelated.Size = new System.Drawing.Size(190, 22);
@@ -1232,7 +1232,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtHomePerson
             // 
             this.txtHomePerson.Location = new System.Drawing.Point(353, 373);
-            this.txtHomePerson.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtHomePerson.Margin = new System.Windows.Forms.Padding(4);
             this.txtHomePerson.Name = "txtHomePerson";
             this.txtHomePerson.Properties.MaxLength = 100;
             this.txtHomePerson.Size = new System.Drawing.Size(190, 22);
@@ -1243,7 +1243,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtPhone
             // 
             this.txtPhone.Location = new System.Drawing.Point(82, 373);
-            this.txtPhone.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPhone.Margin = new System.Windows.Forms.Padding(4);
             this.txtPhone.Name = "txtPhone";
             this.txtPhone.Properties.MaxLength = 12;
             this.txtPhone.Size = new System.Drawing.Size(190, 22);
@@ -1256,7 +1256,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.pnlWorkPlace.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.pnlWorkPlace.Location = new System.Drawing.Point(1104, 347);
-            this.pnlWorkPlace.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlWorkPlace.Margin = new System.Windows.Forms.Padding(4);
             this.pnlWorkPlace.Name = "pnlWorkPlace";
             this.pnlWorkPlace.Size = new System.Drawing.Size(260, 20);
             this.pnlWorkPlace.TabIndex = 37;
@@ -1264,7 +1264,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboNational
             // 
             this.cboNational.Location = new System.Drawing.Point(443, 346);
-            this.cboNational.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboNational.Margin = new System.Windows.Forms.Padding(4);
             this.cboNational.Name = "cboNational";
             this.cboNational.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1278,7 +1278,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtNationalCode
             // 
             this.txtNationalCode.Location = new System.Drawing.Point(352, 346);
-            this.txtNationalCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtNationalCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtNationalCode.Name = "txtNationalCode";
             this.txtNationalCode.Properties.Appearance.Options.UseTextOptions = true;
             this.txtNationalCode.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -1291,7 +1291,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboEthnic
             // 
             this.cboEthnic.Location = new System.Drawing.Point(164, 346);
-            this.cboEthnic.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboEthnic.Margin = new System.Windows.Forms.Padding(4);
             this.cboEthnic.Name = "cboEthnic";
             this.cboEthnic.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1305,7 +1305,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtEthnicCode
             // 
             this.txtEthnicCode.Location = new System.Drawing.Point(81, 346);
-            this.txtEthnicCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtEthnicCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtEthnicCode.Name = "txtEthnicCode";
             this.txtEthnicCode.Properties.Appearance.Options.UseTextOptions = true;
             this.txtEthnicCode.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -1330,7 +1330,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboCommune
             // 
             this.cboCommune.Location = new System.Drawing.Point(1266, 55);
-            this.cboCommune.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboCommune.Margin = new System.Windows.Forms.Padding(4);
             this.cboCommune.Name = "cboCommune";
             this.cboCommune.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1346,7 +1346,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtCommuneCode
             // 
             this.txtCommuneCode.Location = new System.Drawing.Point(1170, 55);
-            this.txtCommuneCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtCommuneCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtCommuneCode.Name = "txtCommuneCode";
             this.txtCommuneCode.Properties.Appearance.Options.UseTextOptions = true;
             this.txtCommuneCode.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -1359,7 +1359,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboDistrict
             // 
             this.cboDistrict.Location = new System.Drawing.Point(1005, 55);
-            this.cboDistrict.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboDistrict.Margin = new System.Windows.Forms.Padding(4);
             this.cboDistrict.Name = "cboDistrict";
             this.cboDistrict.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1375,7 +1375,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtDistrictCode
             // 
             this.txtDistrictCode.Location = new System.Drawing.Point(918, 55);
-            this.txtDistrictCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtDistrictCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtDistrictCode.Name = "txtDistrictCode";
             this.txtDistrictCode.Properties.Appearance.Options.UseTextOptions = true;
             this.txtDistrictCode.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -1419,7 +1419,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtAddress
             // 
             this.txtAddress.Location = new System.Drawing.Point(1453, 56);
-            this.txtAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtAddress.Margin = new System.Windows.Forms.Padding(4);
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Properties.MaxLength = 200;
             this.txtAddress.Size = new System.Drawing.Size(308, 22);
@@ -1434,7 +1434,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.btnSaveAndAssain.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnSaveAndAssain.Enabled = false;
             this.btnSaveAndAssain.Location = new System.Drawing.Point(1236, 640);
-            this.btnSaveAndAssain.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSaveAndAssain.Margin = new System.Windows.Forms.Padding(4);
             this.btnSaveAndAssain.Name = "btnSaveAndAssain";
             this.btnSaveAndAssain.Size = new System.Drawing.Size(84, 34);
             this.btnSaveAndAssain.StyleController = this.lciRegisterEditor;
@@ -1446,7 +1446,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.btnDepositDetail.Enabled = false;
             this.btnDepositDetail.Location = new System.Drawing.Point(931, 640);
-            this.btnDepositDetail.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnDepositDetail.Margin = new System.Windows.Forms.Padding(4);
             this.btnDepositDetail.Name = "btnDepositDetail";
             this.btnDepositDetail.Size = new System.Drawing.Size(89, 34);
             this.btnDepositDetail.StyleController = this.lciRegisterEditor;
@@ -1458,7 +1458,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.btnTreatmentBedRoom.Enabled = false;
             this.btnTreatmentBedRoom.Location = new System.Drawing.Point(1131, 640);
-            this.btnTreatmentBedRoom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnTreatmentBedRoom.Margin = new System.Windows.Forms.Padding(4);
             this.btnTreatmentBedRoom.Name = "btnTreatmentBedRoom";
             this.btnTreatmentBedRoom.Size = new System.Drawing.Size(99, 34);
             this.btnTreatmentBedRoom.StyleController = this.lciRegisterEditor;
@@ -1469,7 +1469,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // btnNewContinue
             // 
             this.btnNewContinue.Location = new System.Drawing.Point(1696, 640);
-            this.btnNewContinue.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnNewContinue.Margin = new System.Windows.Forms.Padding(4);
             this.btnNewContinue.Name = "btnNewContinue";
             this.btnNewContinue.Size = new System.Drawing.Size(69, 34);
             this.btnNewContinue.StyleController = this.lciRegisterEditor;
@@ -1481,7 +1481,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.btnPrint.Enabled = false;
             this.btnPrint.Location = new System.Drawing.Point(1616, 640);
-            this.btnPrint.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnPrint.Margin = new System.Windows.Forms.Padding(4);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(74, 34);
             this.btnPrint.StyleController = this.lciRegisterEditor;
@@ -1492,7 +1492,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // btnSave
             // 
             this.btnSave.Location = new System.Drawing.Point(1446, 640);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(74, 34);
             this.btnSave.StyleController = this.lciRegisterEditor;
@@ -1503,7 +1503,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtPatientCode
             // 
             this.txtPatientCode.Location = new System.Drawing.Point(134, 30);
-            this.txtPatientCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPatientCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtPatientCode.Name = "txtPatientCode";
             this.txtPatientCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtPatientCode.Properties.MaxLength = 5000;
@@ -1516,7 +1516,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtPatientName
             // 
             this.txtPatientName.Location = new System.Drawing.Point(349, 30);
-            this.txtPatientName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPatientName.Margin = new System.Windows.Forms.Padding(4);
             this.txtPatientName.Name = "txtPatientName";
             this.txtPatientName.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtPatientName.Properties.MaxLength = 70;
@@ -1531,7 +1531,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtAge
             // 
             this.txtAge.Location = new System.Drawing.Point(1170, 29);
-            this.txtAge.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtAge.Margin = new System.Windows.Forms.Padding(4);
             this.txtAge.Name = "txtAge";
             this.txtAge.Size = new System.Drawing.Size(96, 22);
             this.txtAge.StyleController = this.lciRegisterEditor;
@@ -1541,7 +1541,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboGender
             // 
             this.cboGender.Location = new System.Drawing.Point(694, 29);
-            this.cboGender.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboGender.Margin = new System.Windows.Forms.Padding(4);
             this.cboGender.Name = "cboGender";
             this.cboGender.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1555,7 +1555,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtGenderCode
             // 
             this.txtGenderCode.Location = new System.Drawing.Point(602, 29);
-            this.txtGenderCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtGenderCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtGenderCode.Name = "txtGenderCode";
             this.txtGenderCode.Properties.Appearance.Options.UseTextOptions = true;
             this.txtGenderCode.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -1571,7 +1571,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.panel1.Controls.Add(this.txtPatientDob);
             this.panel1.Controls.Add(this.dtPatientDob);
             this.panel1.Location = new System.Drawing.Point(919, 30);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(196, 20);
             this.panel1.TabIndex = 5;
@@ -1581,7 +1581,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.txtPatientDob.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtPatientDob.EditValue = "";
             this.txtPatientDob.Location = new System.Drawing.Point(0, 0);
-            this.txtPatientDob.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPatientDob.Margin = new System.Windows.Forms.Padding(4);
             this.txtPatientDob.Name = "txtPatientDob";
             this.txtPatientDob.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Down)});
@@ -1602,7 +1602,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.dtPatientDob.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtPatientDob.EditValue = null;
             this.dtPatientDob.Location = new System.Drawing.Point(0, 0);
-            this.dtPatientDob.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtPatientDob.Margin = new System.Windows.Forms.Padding(4);
             this.dtPatientDob.Name = "dtPatientDob";
             this.dtPatientDob.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.dtPatientDob.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1627,7 +1627,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboAge
             // 
             this.cboAge.Location = new System.Drawing.Point(1266, 29);
-            this.cboAge.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboAge.Margin = new System.Windows.Forms.Padding(4);
             this.cboAge.Name = "cboAge";
             this.cboAge.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1643,7 +1643,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.btnCodeFind.Appearance.Options.UseTextOptions = true;
             this.btnCodeFind.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.btnCodeFind.Location = new System.Drawing.Point(7, 30);
-            this.btnCodeFind.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCodeFind.Margin = new System.Windows.Forms.Padding(4);
             this.btnCodeFind.Name = "btnCodeFind";
             this.btnCodeFind.Size = new System.Drawing.Size(121, 27);
             this.btnCodeFind.StyleController = this.lciRegisterEditor;
@@ -1653,7 +1653,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // txtPatientTypeCode
             // 
             this.txtPatientTypeCode.Location = new System.Drawing.Point(1452, 29);
-            this.txtPatientTypeCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPatientTypeCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtPatientTypeCode.Name = "txtPatientTypeCode";
             this.txtPatientTypeCode.Size = new System.Drawing.Size(106, 22);
             this.txtPatientTypeCode.StyleController = this.lciRegisterEditor;
@@ -1663,7 +1663,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // chkIsNotRequireFee
             // 
             this.chkIsNotRequireFee.Location = new System.Drawing.Point(1029, 250);
-            this.chkIsNotRequireFee.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkIsNotRequireFee.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsNotRequireFee.Name = "chkIsNotRequireFee";
             this.chkIsNotRequireFee.Properties.AppearanceFocused.BackColor = System.Drawing.Color.Silver;
             this.chkIsNotRequireFee.Properties.AppearanceFocused.Options.UseBackColor = true;
@@ -1677,7 +1677,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // chkPriority
             // 
             this.chkPriority.Location = new System.Drawing.Point(1153, 250);
-            this.chkPriority.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkPriority.Margin = new System.Windows.Forms.Padding(4);
             this.chkPriority.Name = "chkPriority";
             this.chkPriority.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.chkPriority.Properties.Appearance.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
@@ -1695,7 +1695,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // chkEmergency
             // 
             this.chkEmergency.Location = new System.Drawing.Point(784, 278);
-            this.chkEmergency.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkEmergency.Margin = new System.Windows.Forms.Padding(4);
             this.chkEmergency.Name = "chkEmergency";
             this.chkEmergency.Properties.AppearanceFocused.BackColor = System.Drawing.Color.Silver;
             this.chkEmergency.Properties.AppearanceFocused.Options.UseBackColor = true;
@@ -1710,7 +1710,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboEmergencyTime
             // 
             this.cboEmergencyTime.Location = new System.Drawing.Point(924, 277);
-            this.cboEmergencyTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboEmergencyTime.Margin = new System.Windows.Forms.Padding(4);
             this.cboEmergencyTime.Name = "cboEmergencyTime";
             this.cboEmergencyTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1724,7 +1724,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // cboPatientType
             // 
             this.cboPatientType.Location = new System.Drawing.Point(1558, 29);
-            this.cboPatientType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboPatientType.Margin = new System.Windows.Forms.Padding(4);
             this.cboPatientType.Name = "cboPatientType";
             this.cboPatientType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1747,7 +1747,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // pnlServiceRoomInfomation
             // 
             this.pnlServiceRoomInfomation.Location = new System.Drawing.Point(7, 250);
-            this.pnlServiceRoomInfomation.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlServiceRoomInfomation.Margin = new System.Windows.Forms.Padding(4);
             this.pnlServiceRoomInfomation.MaximumSize = new System.Drawing.Size(0, 68);
             this.pnlServiceRoomInfomation.MinimumSize = new System.Drawing.Size(0, 68);
             this.pnlServiceRoomInfomation.Name = "pnlServiceRoomInfomation";
@@ -2930,7 +2930,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.Controls.Add(this.lciRegisterEditor);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "UCRegister";
             this.Size = new System.Drawing.Size(1768, 677);
             this.Load += new System.EventHandler(this.UCRegister_Load);
