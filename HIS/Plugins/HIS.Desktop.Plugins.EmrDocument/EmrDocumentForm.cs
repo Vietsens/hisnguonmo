@@ -1460,34 +1460,104 @@ namespace HIS.Desktop.Plugins.EmrDocument
             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
             return new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, paramCommon);
         }
+        private bool CanDeleteDocument(EmrDocumentADO doc)
+        {
+            try
+            {
+                string configValue = Config.ConfigKey.DoNotAllowDeletingIfExistServiceReq;
+                if (configValue != "1") return true; 
+
+                if (string.IsNullOrEmpty(doc.SIGNERS) || string.IsNullOrEmpty(doc.HIS_CODE)) return true;
+
+                string pattern = "SERVICE_REQ_CODE:";
+                int idx = doc.HIS_CODE.IndexOf(pattern, StringComparison.OrdinalIgnoreCase);
+                if (idx < 0) return true; 
+
+                int start = idx + pattern.Length; 
+
+                if (doc.HIS_CODE.Length < start + 12)
+                {
+                    return true;
+                }
+
+                string serviceReqCode = doc.HIS_CODE.Substring(start, 12);
+
+                // (Tùy chọn) chỉ giữ chữ số nếu muốn
+                serviceReqCode = new string(serviceReqCode.Where(char.IsDigit).ToArray());
+
+                if (string.IsNullOrEmpty(serviceReqCode)) return true;
+
+                // Gọi API kiểm tra y lệnh
+                var filter = new MOS.Filter.HisServiceReqViewFilter();
+                filter.SERVICE_REQ_CODE = serviceReqCode;
+
+                var serviceReqs = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>(
+                    "api/HisServiceReq/GetView", ApiConsumers.MosConsumer, filter, null);
+
+                bool isServiceResult = doc.DOCUMENT_TYPE_ID == IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_RESULT;
+
+                // Cho xóa nếu không có y lệnh hoặc là văn bản kết quả
+                if (serviceReqs == null || serviceReqs.Count == 0 || isServiceResult) return true;
+
+                // Nếu có y lệnh và chưa bị xóa thì chặn
+                var existReq = serviceReqs.FirstOrDefault(x => x.IS_DELETE != 1);
+                if (existReq != null)
+                {
+                    MessageBox.Show(
+                        string.Format("Văn bản được gắn với y lệnh {0}. Vui lòng xóa y lệnh trước!", serviceReqCode),
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                // An toàn: nếu lỗi khi kiểm tra thì không cho xóa
+                return false;
+            }
+        }
+
 
         private void repositoryItem__Delete_E_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
             {
-                if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show(
+                    LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong),
+                    "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 {
-                    var rowData = treeListDocument.GetDataRecordByNode(treeListDocument.FocusedNode) as EmrDocumentADO;
-
-                    CommonParam param = new CommonParam();
-                    EMR_DOCUMENT data = new EMR_DOCUMENT();
-                    data.ID = rowData.ID;
-                    var resultData = new BackendAdapter(param).Post<bool>(EMR.URI.EmrDocument.DELETE, ApiConsumers.EmrConsumer, data.ID, param);
-                    if (resultData)
-                    {
-                        this.documentUpdateStateForIntegrateSystem.UpdateStateIGSys(rowData, SignStateCode.DOCUMENT_DELETE);
-                        FillDatagctFormList();
-                    }
-                    #region Hien thi message thong bao
-                    MessageManager.Show(this, param, resultData);
-                    #endregion
+                    return;
                 }
+
+                var rowData = treeListDocument.GetDataRecordByNode(treeListDocument.FocusedNode) as EmrDocumentADO;
+                if (rowData == null) return;
+
+                // Gọi validate
+                if (!CanDeleteDocument(rowData)) return;
+
+                // Nếu pass validate thì gọi API xóa
+                CommonParam param = new CommonParam();
+                var resultData = new BackendAdapter(param).Post<bool>(
+                    EMR.URI.EmrDocument.DELETE, ApiConsumers.EmrConsumer, rowData.ID, param);
+
+                if (resultData)
+                {
+                    this.documentUpdateStateForIntegrateSystem.UpdateStateIGSys(rowData, SignStateCode.DOCUMENT_DELETE);
+                    FillDatagctFormList();
+                }
+
+                #region Hien thi message thong bao
+                MessageManager.Show(this, param, resultData);
+                #endregion
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         private void repositoryItem__SetingSign_E_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
@@ -3527,6 +3597,50 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 if (!Config.ConfigKey.IsHasConnectionEmr)
                     return;
+                string configValue = Config.ConfigKey.DoNotAllowDeletingIfExistServiceReq;
+                if (configValue == "1" && this.listDataTrue != null && this.listDataTrue.Count > 0)
+                {
+                    foreach (var doc in this.listDataTrue)
+                    {
+                        if (!string.IsNullOrEmpty(doc.SIGNERS) && !string.IsNullOrEmpty(doc.HIS_CODE))
+                        {
+                            // Tìm mã y lệnh trong HIS_CODE
+                            string serviceReqCode = null;
+                            var idx = doc.HIS_CODE.IndexOf("SERVICE_REQ_CODE:");
+                            if (idx >= 0 && doc.HIS_CODE.Length > idx + 17)
+                            {
+                                serviceReqCode = doc.HIS_CODE.Substring(idx + 17, 12);
+                                // Nếu lấy được mã y lệnh
+                                if (!string.IsNullOrEmpty(serviceReqCode))
+                                {
+                                    // Gọi API kiểm tra y lệnh
+                                    var filter = new MOS.Filter.HisServiceReqFilter();
+                                    filter.SERVICE_REQ_CODE__EXACT = serviceReqCode;
+                                    var serviceReqs = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>(
+                                        "api/HisServiceReq/GetView", ApiConsumers.MosConsumer, filter, null);
+                                    // Nếu không tồn tại y lệnh hoặc loại văn bản là kết quả thì cho phép xóa
+                                    bool isServiceResult = doc.DOCUMENT_TYPE_ID == IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_RESULT;
+                                    if (serviceReqs == null || serviceReqs.Count == 0 || isServiceResult)
+                                    {
+                                        continue;
+                                    }
+                                    // Nếu tồn tại y lệnh và chưa bị xóa thì không cho xóa
+                                    var existReq = serviceReqs.FirstOrDefault(x => x.IS_DELETE != 1);
+                                    if (existReq != null)
+                                    {
+                                        WaitingManager.Hide();
+                                        MessageBox.Show(
+                                            string.Format("Văn bản được gắn với y lệnh {0}. Vui lòng xóa y lệnh trước!", serviceReqCode),
+                                            "Thông báo",
+                                            MessageBoxButtons.OK,
+                                            MessageBoxIcon.Warning);
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 List<long> listEmrDocumentId = new List<long>();
