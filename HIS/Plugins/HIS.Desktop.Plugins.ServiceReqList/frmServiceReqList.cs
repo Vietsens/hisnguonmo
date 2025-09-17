@@ -26,24 +26,30 @@ using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraLayout.Utils;
+using DevExpress.XtraRichEdit;
+using DevExpress.XtraRichEdit.API.Native;
 using EMR.EFMODEL.DataModels;
 using EMR.Filter;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.IsAdmin;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Plugins.ServiceReqList.ADO;
 using HIS.Desktop.Plugins.ServiceReqList.Base;
+using HIS.Desktop.Plugins.ServiceReqList.Reason;
 using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Integrate.EditorLoader;
 using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -54,20 +60,15 @@ using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Reflection;
-using DevExpress.XtraRichEdit;
-using DevExpress.XtraRichEdit.API.Native;
-using HIS.Desktop.Plugins.ServiceReqList.Reason;
-using HIS.Desktop.Common;
-using HIS.Desktop.LocalStorage.HisConfig;
 
 namespace HIS.Desktop.Plugins.ServiceReqList
 {
@@ -719,7 +720,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }       
+            }
         }
 
         private void SetFilter(ref HisServiceReqFilter filter)
@@ -1557,13 +1558,13 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 {
                     var displayList = sereNmseList.Select(o => new ListMedicineADO
                     {
-                        TDL_SERVICE_NAME = o.TDL_NONE_MEDI_SERVICE_NAME, 
-                        AMOUNT = o.AMOUNT,                                
-                        PRICE = o.PRICE,                                  
-                        VAT_RATIO = o.VAT_RATIO,                          
-                        SERVICE_UNIT_NAME = o.TDL_SERVICE_UNIT_NAME,      
-                        VIR_TOTAL_PRICE = o.VIR_TOTAL_PRICE,              
-                        VIR_TOTAL_PATIENT_PRICE = o.VIR_TOTAL_PATIENT_PRICE,                                      
+                        TDL_SERVICE_NAME = o.TDL_NONE_MEDI_SERVICE_NAME,
+                        AMOUNT = o.AMOUNT,
+                        PRICE = o.PRICE,
+                        VAT_RATIO = o.VAT_RATIO,
+                        SERVICE_UNIT_NAME = o.TDL_SERVICE_UNIT_NAME,
+                        VIR_TOTAL_PRICE = o.VIR_TOTAL_PRICE,
+                        VIR_TOTAL_PATIENT_PRICE = o.VIR_TOTAL_PATIENT_PRICE,
                     }).ToList();
 
                     grdSereServServiceReq.DataSource = displayList;
@@ -1629,7 +1630,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 if (gridViewServiceReq.FocusedRowHandle >= 0)
                 {
                     var serviceClick = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("serviceClick___", serviceClick)); 
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("serviceClick___", serviceClick));
                     if (serviceClick != null && serviceClick.ID != 0)
                     {
                         this.currentServiceReq = serviceClick;
@@ -1885,7 +1886,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         {
                             if (isNoExecute != Base.GlobalStore.IS_TRUE)
                             {
-                                var a = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_MODIFYING_OF_STARTED"); 
+                                var a = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_MODIFYING_OF_STARTED");
                                 if ((reqSttId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL
                              || HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_MODIFYING_OF_STARTED") == "1" ||
                              HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_MODIFYING_OF_STARTED") == "2" && serReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH))
@@ -3589,7 +3590,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         EmrDocumentFilter filter = new EmrDocumentFilter();
                         Inventec.Common.Logging.LogSystem.Debug("TDL_TREATMENT_CODE_______________________________________" + data.TDL_TREATMENT_CODE);
                         filter.TREATMENT_CODE__EXACT = data.TDL_TREATMENT_CODE;
-                        filter.DOCUMENT_TYPE_ID = IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_ASSIGN;
+                        //filter.DOCUMENT_TYPE_ID = IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_ASSIGN;
                         var resultEmrDocument = new BackendAdapter(paramEmr).Get<List<EMR_DOCUMENT>>("api/EmrDocument/Get", ApiConsumers.EmrConsumer, filter, paramEmr);
                         if (resultEmrDocument != null && resultEmrDocument.Count() > 0)
                         {
@@ -3742,7 +3743,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     var data = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
                     if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__OT)
                     {
-                        return; 
+                        return;
                     }
                     List<string> lstServiceName = new List<string>();
                     if (!CheckLoginAdmin.IsAdmin(this.loginName))
@@ -3770,168 +3771,149 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     if (data != null && !IsBreak)// && data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
                     {
                         //65930
-                        if (HisConfigCFG.AutoDeleteEmrDocumentWhenEditReq == "1")
+                      
+                        if (HisConfigCFG.AutoDeleteEmrDocumentWhenEditReq == "0")
                         {
-                            EmrDocumentViewFilter emrDocumentFilter = new EmrDocumentViewFilter();
-                            emrDocumentFilter.TREATMENT_CODE__EXACT = data.TDL_TREATMENT_CODE;
-                            emrDocumentFilter.IS_DELETE = false;
-                            var documents = new BackendAdapter(new CommonParam()).Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, emrDocumentFilter, null);
-                            if (documents != null && documents.Count() > 0)
+                            var paramCommon = new CommonParam();
+                            var treatment = new HIS_TREATMENT();
+                            HisTreatmentFilter treatFilter = new HisTreatmentFilter();
+                            treatFilter.ID = data.TREATMENT_ID;
+                            var currentTreats = new BackendAdapter(paramCommon).Get<List<HIS_TREATMENT>>(RequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, treatFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
+                            if (currentTreats != null && currentTreats.Count == 1)
                             {
-                                var checkServiceReqCode = "SERVICE_REQ_CODE:" + data.SERVICE_REQ_CODE;
-                                var resultEmrDocumentLast = documents.Where(o => o.DOCUMENT_TYPE_ID != IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_RESULT && !string.IsNullOrEmpty(o.HIS_CODE) && o.HIS_CODE.Contains(checkServiceReqCode));
-                                if (resultEmrDocumentLast != null && resultEmrDocumentLast.Count() > 0)
+                                var treat = currentTreats.FirstOrDefault();
+                                if (treat.IS_PAUSE == Base.GlobalStore.IS_TRUE || treat.IS_ACTIVE != Base.GlobalStore.IS_TRUE)
                                 {
-                                    if (DevExpress.XtraEditors.XtraMessageBox.Show("Y lệnh đã tồn tại văn bản ký, tiếp tục sẽ tự động Xóa văn bản ký hiện tại. Bạn có muốn tiếp tục?", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
-                                        return;
-
-                                    WaitingManager.Show();
-                                    foreach (var item in resultEmrDocumentLast)
-                                    {
-                                        var result = new BackendAdapter(new CommonParam()).Post<bool>("api/EmrDocument/Delete", ApiConsumers.EmrConsumer, item.ID, null);
-                                    }
-                                    WaitingManager.Hide();
+                                    Inventec.Common.Logging.LogSystem.Debug(Resources.ResourceMessage.HoSoDieuTriDangTamKhoa);
+                                    MessageBox.Show(Resources.ResourceMessage.HoSoDieuTriDangTamKhoa);
+                                    return;
                                 }
+                            }
+                            else
+                            {
+                                Inventec.Common.Logging.LogSystem.Debug(Resources.ResourceMessage.KhongTimThayHoSoDieuTri);
+                                MessageBox.Show(Resources.ResourceMessage.KhongTimThayHoSoDieuTri);
+                                return;
+                            }
+
+                            this.serviceReqPrintRaw = GetServiceReqForPrint(data.ID);
+
+                            if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                            {
+                                WaitingManager.Show();
+                                List<object> sendObj = new List<object>() { this.serviceReqPrintRaw.ID };
+                                CallModule("HIS.Desktop.Plugins.UpdateExamServiceReq", sendObj);
+                                WaitingManager.Hide();
+                            }
+                            else if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK ||
+                                data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT ||
+                                data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT)
+                            {
+                                WaitingManager.Show();
+                                AssignPrescriptionEditADO assignEditADO = null;
+                                var serviceReq = new HIS_SERVICE_REQ();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE_REQ>(serviceReq, this.serviceReqPrintRaw);
+                                HisExpMestFilter expfilter = new HisExpMestFilter();
+                                expfilter.SERVICE_REQ_ID = this.serviceReqPrintRaw.ID;
+                                var expMests = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumer.ApiConsumers.MosConsumer, expfilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+
+                                if (expMests != null && expMests.Count == 1)
+                                {
+                                    var expMest = expMests.FirstOrDefault();
+                                    if (expMest.IS_NOT_TAKEN.HasValue && expMest.IS_NOT_TAKEN.Value == 1)
+                                    {
+                                        WaitingManager.Hide();
+                                        MessageBox.Show(Resources.ResourceMessage.DonKhongLayKhongChoPhepSua);
+                                        return;
+                                    }
+                                    assignEditADO = new AssignPrescriptionEditADO(serviceReq, expMest, FillDataApterSave);
+                                }
+                                else
+                                {
+                                    assignEditADO = new AssignPrescriptionEditADO(serviceReq, null, FillDataApterSave);
+                                }
+
+                                if (data.IS_EXECUTE_KIDNEY_PRES == 1)
+                                {
+                                    AssignPrescriptionKidneyADO assignPrescriptionKidneyADO = new AssignPrescriptionKidneyADO();
+                                    assignPrescriptionKidneyADO.AssignPrescriptionEditADO = assignEditADO;
+                                    List<object> sendObj = new List<object>() { assignPrescriptionKidneyADO };
+
+                                    CallModule("HIS.Desktop.Plugins.AssignPrescriptionKidney", sendObj);
+                                }
+                                else
+                                {
+                                    var assignServiceADO = new HIS.Desktop.ADO.AssignPrescriptionADO(data.TREATMENT_ID, 0, serviceReq.ID);
+                                    assignServiceADO.GenderName = data.TDL_PATIENT_GENDER_NAME;
+                                    assignServiceADO.PatientDob = data.TDL_PATIENT_DOB;
+                                    assignServiceADO.PatientName = data.TDL_PATIENT_NAME;
+
+                                    assignServiceADO.AssignPrescriptionEditADO = assignEditADO;
+
+                                    List<object> sendObj = new List<object>() { assignServiceADO };
+
+                                    if (data.PRESCRIPTION_TYPE_ID == 1)
+                                    {
+                                        if (data.PARENT_ID.HasValue)
+                                        {
+                                            HisSereServViewFilter ssfilter = new HisSereServViewFilter();
+                                            ssfilter.SERVICE_REQ_ID = data.PARENT_ID;
+                                            var listSereServ = new BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV>>("api/HisSereServ/GetView", ApiConsumers.MosConsumer, ssfilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                                            if (listSereServ != null && listSereServ.Count > 0 && listSereServ.FirstOrDefault().TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && listSereServ.FirstOrDefault().TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G)
+                                                assignServiceADO.SereServ = listSereServ.FirstOrDefault();
+                                        }
+                                        CallModule("HIS.Desktop.Plugins.AssignPrescriptionPK", sendObj);
+                                    }
+                                    else if (data.PRESCRIPTION_TYPE_ID == 2)
+                                    {
+                                        CallModule("HIS.Desktop.Plugins.AssignPrescriptionYHCT", sendObj);
+                                    }
+                                    else if (data.PRESCRIPTION_TYPE_ID == 3)
+                                    {
+                                        CallModule("HIS.Desktop.Plugins.AssignPrescriptionCLS", sendObj);
+                                    }
+                                }
+
+                                WaitingManager.Hide();
+                            }
+                            else if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM)
+                            {
+                                // MessageManager.Show(Resources.ResourceMessage.DonMauKhongChoPhepSua);
+                                var serviceReq = new HIS_SERVICE_REQ();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE_REQ>(serviceReq, this.serviceReqPrintRaw);
+
+                                HIS.Desktop.ADO.AssignBloodADO assignBloodADO = new HIS.Desktop.ADO.AssignBloodADO(data.TREATMENT_ID, 0, 0);
+                                assignBloodADO.PatientDob = data.TDL_PATIENT_DOB;
+                                assignBloodADO.DgProcessDataResult = FillDataApterSave;
+                                assignBloodADO.PatientName = data.TDL_PATIENT_NAME;
+                                assignBloodADO.GenderName = data.TDL_PATIENT_GENDER_NAME;
+                                List<object> sendObj = new List<object>() { assignBloodADO, serviceReq };
+                                CallModule("HIS.Desktop.Plugins.HisAssignBlood", sendObj);
+                            }
+                            else if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__AN)
+                            {
+                                AssignServiceEditADO ado = new AssignServiceEditADO(data.ID, data.INTRUCTION_TIME, RefreshClick);
+                                List<object> sendObj = new List<object>() { ado, currentModuleBase };
+                                CallModule("HIS.Desktop.Plugins.AssignNutritionEdit", sendObj);
+                            }
+                            else
+                            {
+                                if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL)
+                                {
+                                    if (data.SAMPLE_TIME != null)
+                                    {
+                                        DevExpress.XtraEditors.XtraMessageBox.Show("Y lệnh đã thực hiện lấy mẫu. Bạn phải thực hiện bỏ tích lấy mẫu.", Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
+                                        return;
+                                    }
+                                }
+                                AssignServiceEditADO assignServiceEditADO = new AssignServiceEditADO(data.ID, data.INTRUCTION_TIME, (HIS.Desktop.Common.RefeshReference)RefreshClick);
+                                List<object> sendObj = new List<object>() { assignServiceEditADO };
+                                CallModule("HIS.Desktop.Plugins.AssignServiceEdit", sendObj);
                             }
                         }
                         /////
 
-                        var paramCommon = new CommonParam();
-                        var treatment = new HIS_TREATMENT();
-                        HisTreatmentFilter treatFilter = new HisTreatmentFilter();
-                        treatFilter.ID = data.TREATMENT_ID;
-                        var currentTreats = new BackendAdapter(paramCommon).Get<List<HIS_TREATMENT>>(RequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, treatFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
-                        if (currentTreats != null && currentTreats.Count == 1)
-                        {
-                            var treat = currentTreats.FirstOrDefault();
-                            if (treat.IS_PAUSE == Base.GlobalStore.IS_TRUE || treat.IS_ACTIVE != Base.GlobalStore.IS_TRUE)
-                            {
-                                Inventec.Common.Logging.LogSystem.Debug(Resources.ResourceMessage.HoSoDieuTriDangTamKhoa);
-                                MessageBox.Show(Resources.ResourceMessage.HoSoDieuTriDangTamKhoa);
-                                return;
-                            }
-                        }
-                        else
-                        {
-                            Inventec.Common.Logging.LogSystem.Debug(Resources.ResourceMessage.KhongTimThayHoSoDieuTri);
-                            MessageBox.Show(Resources.ResourceMessage.KhongTimThayHoSoDieuTri);
-                            return;
-                        }
-
-                        this.serviceReqPrintRaw = GetServiceReqForPrint(data.ID);
-
-                        if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
-                        {
-                            WaitingManager.Show();
-                            List<object> sendObj = new List<object>() { this.serviceReqPrintRaw.ID };
-                            CallModule("HIS.Desktop.Plugins.UpdateExamServiceReq", sendObj);
-                            WaitingManager.Hide();
-                        }
-                        else if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK ||
-                            data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT ||
-                            data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT)
-                        {
-                            WaitingManager.Show();
-                            AssignPrescriptionEditADO assignEditADO = null;
-                            var serviceReq = new HIS_SERVICE_REQ();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE_REQ>(serviceReq, this.serviceReqPrintRaw);
-                            HisExpMestFilter expfilter = new HisExpMestFilter();
-                            expfilter.SERVICE_REQ_ID = this.serviceReqPrintRaw.ID;
-                            var expMests = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumer.ApiConsumers.MosConsumer, expfilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
-
-                            if (expMests != null && expMests.Count == 1)
-                            {
-                                var expMest = expMests.FirstOrDefault();
-                                if (expMest.IS_NOT_TAKEN.HasValue && expMest.IS_NOT_TAKEN.Value == 1)
-                                {
-                                    WaitingManager.Hide();
-                                    MessageBox.Show(Resources.ResourceMessage.DonKhongLayKhongChoPhepSua);
-                                    return;
-                                }
-                                assignEditADO = new AssignPrescriptionEditADO(serviceReq, expMest, FillDataApterSave);
-                            }
-                            else
-                            {
-                                assignEditADO = new AssignPrescriptionEditADO(serviceReq, null, FillDataApterSave);
-                            }
-
-                            if (data.IS_EXECUTE_KIDNEY_PRES == 1)
-                            {
-                                AssignPrescriptionKidneyADO assignPrescriptionKidneyADO = new AssignPrescriptionKidneyADO();
-                                assignPrescriptionKidneyADO.AssignPrescriptionEditADO = assignEditADO;
-                                List<object> sendObj = new List<object>() { assignPrescriptionKidneyADO };
-
-                                CallModule("HIS.Desktop.Plugins.AssignPrescriptionKidney", sendObj);
-                            }
-                            else
-                            {
-                                var assignServiceADO = new HIS.Desktop.ADO.AssignPrescriptionADO(data.TREATMENT_ID, 0, serviceReq.ID);
-                                assignServiceADO.GenderName = data.TDL_PATIENT_GENDER_NAME;
-                                assignServiceADO.PatientDob = data.TDL_PATIENT_DOB;
-                                assignServiceADO.PatientName = data.TDL_PATIENT_NAME;
-
-                                assignServiceADO.AssignPrescriptionEditADO = assignEditADO;
-
-                                List<object> sendObj = new List<object>() { assignServiceADO };
-
-                                if (data.PRESCRIPTION_TYPE_ID == 1)
-                                {
-                                    if (data.PARENT_ID.HasValue)
-                                    {
-                                        HisSereServViewFilter ssfilter = new HisSereServViewFilter();
-                                        ssfilter.SERVICE_REQ_ID = data.PARENT_ID;
-                                        var listSereServ = new BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV>>("api/HisSereServ/GetView", ApiConsumers.MosConsumer, ssfilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
-                                        if (listSereServ != null && listSereServ.Count > 0 && listSereServ.FirstOrDefault().TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH && listSereServ.FirstOrDefault().TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G)
-                                            assignServiceADO.SereServ = listSereServ.FirstOrDefault();
-                                    }
-                                    CallModule("HIS.Desktop.Plugins.AssignPrescriptionPK", sendObj);
-                                }
-                                else if (data.PRESCRIPTION_TYPE_ID == 2)
-                                {
-                                    CallModule("HIS.Desktop.Plugins.AssignPrescriptionYHCT", sendObj);
-                                }
-                                else if (data.PRESCRIPTION_TYPE_ID == 3)
-                                {
-                                    CallModule("HIS.Desktop.Plugins.AssignPrescriptionCLS", sendObj);
-                                }
-                            }
-
-                            WaitingManager.Hide();
-                        }
-                        else if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM)
-                        {
-                            // MessageManager.Show(Resources.ResourceMessage.DonMauKhongChoPhepSua);
-                            var serviceReq = new HIS_SERVICE_REQ();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE_REQ>(serviceReq, this.serviceReqPrintRaw);
-
-                            HIS.Desktop.ADO.AssignBloodADO assignBloodADO = new HIS.Desktop.ADO.AssignBloodADO(data.TREATMENT_ID, 0, 0);
-                            assignBloodADO.PatientDob = data.TDL_PATIENT_DOB;
-                            assignBloodADO.DgProcessDataResult = FillDataApterSave;
-                            assignBloodADO.PatientName = data.TDL_PATIENT_NAME;
-                            assignBloodADO.GenderName = data.TDL_PATIENT_GENDER_NAME;
-                            List<object> sendObj = new List<object>() { assignBloodADO, serviceReq };
-                            CallModule("HIS.Desktop.Plugins.HisAssignBlood", sendObj);
-                        }
-                        else if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__AN)
-                        {
-                            AssignServiceEditADO ado = new AssignServiceEditADO(data.ID, data.INTRUCTION_TIME, RefreshClick);
-                            List<object> sendObj = new List<object>() { ado, currentModuleBase };
-                            CallModule("HIS.Desktop.Plugins.AssignNutritionEdit", sendObj);
-                        }
-                        else
-                        {
-                            if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN && data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL)
-                            {
-                                if (data.SAMPLE_TIME != null)
-                                {
-                                    DevExpress.XtraEditors.XtraMessageBox.Show("Y lệnh đã thực hiện lấy mẫu. Bạn phải thực hiện bỏ tích lấy mẫu.", Resources.ResourceMessage.ThongBao, System.Windows.Forms.MessageBoxButtons.OK);
-                                    return;
-                                }
-                            }
-                            AssignServiceEditADO assignServiceEditADO = new AssignServiceEditADO(data.ID, data.INTRUCTION_TIME, (HIS.Desktop.Common.RefeshReference)RefreshClick);
-                            List<object> sendObj = new List<object>() { assignServiceEditADO };
-                            CallModule("HIS.Desktop.Plugins.AssignServiceEdit", sendObj);
-                        }
+                        
                     }
                 }
             }
@@ -4295,6 +4277,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         {
             try
             {
+                var data = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
                 if (string.IsNullOrWhiteSpace(txtServiceReqCode.Text) && string.IsNullOrWhiteSpace(txtTreatmentCode.Text) && !string.IsNullOrEmpty(HisConfigCFG.MaxTimeFilterOption))
                 {
                     if (dtIntructionTimeFrom.EditValue == null)
@@ -4304,14 +4287,43 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         return;
                     }
                     int value = int.Parse(HisConfigCFG.MaxTimeFilterOption);
-                    if ((dtIntructionTimeTo.EditValue != null && (dtIntructionTimeTo.DateTime.Date - dtIntructionTimeFrom.DateTime.Date).TotalDays > value) 
+                    if ((dtIntructionTimeTo.EditValue != null && (dtIntructionTimeTo.DateTime.Date - dtIntructionTimeFrom.DateTime.Date).TotalDays > value)
                         || (dtIntructionTimeTo.EditValue == null && (DateTime.Now.Date - dtIntructionTimeFrom.DateTime.Date).TotalDays > value))
                     {
                         XtraMessageBox.Show("Khoảng thời gian tìm kiếm quá dài, vui lòng tìm kiếm trong " + value + " ngày",
                             "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
-                    }   
+                    }
+                    if (HisConfigCFG.AutoDeleteEmrDocumentWhenEditReq == "1")
+                    {
+                        EmrDocumentViewFilter emrDocumentFilter = new EmrDocumentViewFilter();
+                        emrDocumentFilter.TREATMENT_CODE__EXACT = data.TDL_TREATMENT_CODE;
+                        emrDocumentFilter.IS_DELETE = false;
+                        var documents = new BackendAdapter(new CommonParam()).Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, emrDocumentFilter, null);
+                        if (documents != null && documents.Count() > 0)
+                        {
+                            var checkServiceReqCode = "SERVICE_REQ_CODE:" + data.SERVICE_REQ_CODE;
+                            //var resultEmrDocumentLast = documents.Where(o => o.DOCUMENT_TYPE_ID != IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_RESULT && !string.IsNullOrEmpty(o.HIS_CODE) && o.HIS_CODE.Contains(checkServiceReqCode));
+                            var resultEmrDocumentLast = documents.Where(o =>
+        !string.IsNullOrEmpty(o.HIS_CODE)
+        && o.HIS_CODE.Contains(checkServiceReqCode));
+                            if (resultEmrDocumentLast != null && resultEmrDocumentLast.Count() > 0)
+                            {
+                                if (DevExpress.XtraEditors.XtraMessageBox.Show("Y lệnh đã tồn tại văn bản ký, tiếp tục sẽ tự động Xóa văn bản ký hiện tại. Bạn có muốn tiếp tục?", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
+                                    return;
+
+                                WaitingManager.Show();
+                                foreach (var item in resultEmrDocumentLast)
+                                {
+                                    var result = new BackendAdapter(new CommonParam()).Post<bool>("api/EmrDocument/Delete", ApiConsumers.EmrConsumer, item.ID, null);
+                                }
+                                WaitingManager.Hide();
+                            }
+                        }
+                    }
                 }
+                    
+               
                 WaitingManager.Show();
                 FillDataToGrid();
                 WaitingManager.Hide();
@@ -6499,7 +6511,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 var selectedServiceReqs = listData.Where(o => o.isCheck).ToList();
 
                 if (selectedServiceReqs == null || selectedServiceReqs.Count == 0)
-                { 
+                {
                     DevExpress.XtraEditors.XtraMessageBox.Show("Bạn chưa chọn dịch vụ", "Thông báo");
                     return;
                 }
@@ -6513,7 +6525,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
 
                     if (sereServData != null && sereServData.Any())
                     {
-                        foreach (var req in selectedServiceReqs) 
+                        foreach (var req in selectedServiceReqs)
                         {
                             if (req.SERVICE_ID == null)
                             {
@@ -7047,7 +7059,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             }
         }
 
-        private void popupControlContainer1_CloseUp(object sender, EventArgs e) 
+        private void popupControlContainer1_CloseUp(object sender, EventArgs e)
         {
             try
             {
