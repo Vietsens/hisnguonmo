@@ -154,6 +154,9 @@
     <Reference Include="Inventec.UC.Login">
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
@@ -323,6 +326,7 @@
       <DependentUpon>frmImpSourceReturn.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

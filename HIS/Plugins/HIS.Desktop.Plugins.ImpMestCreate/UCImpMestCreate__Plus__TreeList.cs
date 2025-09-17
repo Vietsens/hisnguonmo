@@ -2157,6 +2157,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         listMedicineType = new List<MedicineTypeADO>();
                         foreach (var item in dicContractMety)
                         {
+                            if (item.Value == null || item.Value.IS_ACTIVE != 1) continue; 
                             var medicineType = listMedicineTypeTemp.FirstOrDefault(o => Base.StaticMethod.GetTypeKey(o.ID, item.Value.BID_GROUP_CODE) == item.Key.Substring(0, item.Key.LastIndexOf("_")));
                             if (medicineType == null)
                                 continue;
