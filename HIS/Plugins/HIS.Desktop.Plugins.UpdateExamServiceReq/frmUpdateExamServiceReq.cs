@@ -19,6 +19,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.ViewInfo;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
@@ -71,6 +72,7 @@ namespace HIS.Desktop.Plugins.UpdateExamServiceReq
         bool isSave = true;
 
         bool _isAllowEnableCboPrimaryPatientTypes = true;
+        RefeshReference Refesh;
 
         public frmUpdateExamServiceReq()
         {
@@ -113,6 +115,31 @@ namespace HIS.Desktop.Plugins.UpdateExamServiceReq
                     if (isExecuteRoom)
                         this.ModuleExeType = ModuleExecuteType.TYPE.FROM_EXECUTE_ROOM;
                 }
+                SetCaptionByLanguageKey();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        public frmUpdateExamServiceReq(Inventec.Desktop.Common.Modules.Module moduledata, long servciceReqId, bool isExecuteRoom, RefeshReference delegateRefeshReference)
+            : base(moduledata)
+        {
+            InitializeComponent();
+            try
+            {
+                this.roomId = moduledata.RoomId;
+                this.roomTypeId = moduledata.RoomTypeId;
+                HisConfigCFG.LoadConfig();
+                this.serviceReq = this.GetViewServiceReqFromId(servciceReqId);
+                if (servciceReqId > 0)
+                {
+
+                    ModuleExeType = ModuleExecuteType.TYPE.FROM_MODULE_OTHER;
+                    if (isExecuteRoom)
+                        this.ModuleExeType = ModuleExecuteType.TYPE.FROM_EXECUTE_ROOM;
+                }
+                this.Refesh = delegateRefeshReference;
                 SetCaptionByLanguageKey();
             }
             catch (Exception ex)
@@ -375,6 +402,10 @@ namespace HIS.Desktop.Plugins.UpdateExamServiceReq
                     btnSave.Enabled = false;
                     btnPrint.Enabled = true;
                     hisServiceReqResultSDO = result;
+                    if (Refesh != null)
+                    {
+                        Refesh();
+                    }
                 }
 
                 #region Show message

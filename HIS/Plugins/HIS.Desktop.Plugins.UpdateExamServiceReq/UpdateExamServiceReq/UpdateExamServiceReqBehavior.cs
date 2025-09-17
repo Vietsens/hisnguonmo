@@ -55,6 +55,7 @@ namespace Inventec.Desktop.Plugins.UpdateExamServiceReq.UpdateExamServiceReq
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = null;
                 long serviceReqId = 0;
+                RefeshReference delegateRefeshReference = null;
 
                 if (entity != null && entity.Count() > 0)
                 {
@@ -76,12 +77,18 @@ namespace Inventec.Desktop.Plugins.UpdateExamServiceReq.UpdateExamServiceReq
                         {
                             isExecuteRoom = true;
                         }
+                        else if (entity[i] is RefeshReference)
+                        {
+                            delegateRefeshReference = (RefeshReference)entity[i];
+                        }
                     }
                 }
                 if (moduleData != null)
                 {
-                    if (serviceReqId > 0)
+                    if (serviceReqId > 0 && delegateRefeshReference == null)
                         return new frmUpdateExamServiceReq(moduleData, serviceReqId, isExecuteRoom);
+                    else if (serviceReqId > 0 && delegateRefeshReference != null)
+                        return new frmUpdateExamServiceReq(moduleData, serviceReqId, isExecuteRoom, delegateRefeshReference);
                     else
                         return new frmUpdateExamServiceReq(moduleData);
                 }
