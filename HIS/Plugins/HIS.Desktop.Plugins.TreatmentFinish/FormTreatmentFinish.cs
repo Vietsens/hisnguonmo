@@ -392,18 +392,17 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 colDesc.Width = 280;
 
                 var memoEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
-                memoEdit.WordWrap = true;  // bật wrap text
+                memoEdit.WordWrap = true;  
                 cboObjectCode.Properties.RepositoryItems.Add(memoEdit);
                 colDesc.ColumnEdit = memoEdit;
 
-                // Cho phép auto row height để vừa với nội dung
                 view.OptionsView.RowAutoHeight = true;
                 view.BeginSort();
                 view.SortInfo.Clear();     
                 view.EndSort();
 
                 view.OptionsCustomization.AllowSort = false;      
-                view.OptionsMenu.EnableColumnMenu = false; 
+                view.OptionsMenu.EnableColumnMenu = false;
 
 
 
@@ -419,6 +418,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     cboObjectCode.EditValue = null;
                 }
+                cboObjectCode.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                cboObjectCode.Properties.NullText = "";
+                cboObjectCode.Properties.NullValuePromptShowForEmptyValue = true;
+
+                cboObjectCode.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             }
             catch (Exception ex)
             {
@@ -2965,6 +2969,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {  
                     return;
                 }
+                MergeFieldsFromTransferSDO();
                 //if (hisTreatmentFinishSDO != null && (string.IsNullOrEmpty(hisTreatmentFinishSDO.ClinicalNote) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentDirection) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentMethod) && string.IsNullOrEmpty(hisTreatmentFinishSDO.TransportVehicle) || (string.IsNullOrEmpty(hisTreatmentFinishSDO.TransporterLoginnames) && string.IsNullOrEmpty(hisTreatmentFinishSDO.Transporter)) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TransferOutMediOrgCode) || !hisTreatmentFinishSDO.TranPatiReasonId.HasValue || !hisTreatmentFinishSDO.TranPatiFormId.HasValue))
                 //{
                 //    XtraMessageBox.Show("Thiếu thông tin chuyển viện", "Thông báo");
@@ -3264,7 +3269,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
         private void btnSaveTemp_Click(object sender, EventArgs e)
         {
-            string input = cboObjectCode.EditValue.ToString();
+            //string input = cboObjectCode.EditValue.ToString();
             //if (!System.Text.RegularExpressions.Regex.IsMatch(input, @"^[0-9.]+$") && !string.IsNullOrWhiteSpace(input))
             //{
             //    dxErrorProvider1.SetError(txtObjectCode, "Chỉ cho phép nhập số và dấu chấm", ErrorType.Warning);
@@ -6378,10 +6383,53 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             {
                 // Clear any previous error
                 dxErrorProvider1.ClearErrors();
+
+                // Show/hide the delete button based on whether there's a value
+                cboObjectCode.Properties.Buttons[1].Visible = (cboObjectCode.EditValue != null);
+
+                // Update the HeinPatientTypeCode in the DTO
+                if (hisTreatmentFinishSDO_process != null)
+                {
+                    if (cboObjectCode.EditValue != null)
+                    {
+                        var selected = heinPatientTypes.FirstOrDefault(x =>
+                            x.ID.ToString() == cboObjectCode.EditValue.ToString())?.HEIN_PATIENT_TYPE_CODE;
+                        hisTreatmentFinishSDO_process.HeinPatientTypeCode = selected;
+                    }
+                    else
+                    {
+                        hisTreatmentFinishSDO_process.HeinPatientTypeCode = null;
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboObjectCode_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboObjectCode.CancelPopup();
+                    cboObjectCode.EditValue = null;
+                    var view = cboObjectCode.Properties.View;
+                    view.ClearSelection();
+                    view.FocusedRowHandle = DevExpress.XtraGrid.GridControl.InvalidRowHandle;
+
+                    if (hisTreatmentFinishSDO_process != null)
+                        hisTreatmentFinishSDO_process.HeinPatientTypeCode = null;
+
+                    // cập nhật nút xóa
+                    cboObjectCode.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }
