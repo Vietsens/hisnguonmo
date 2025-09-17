@@ -663,13 +663,24 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     hisTreatmentFinishSDO.CareerId = (long)cboCareer.EditValue;
                 }
 
-                if (currentTreatmentFinishSDO != null)
-                {
-                    hisTreatmentFinishSDO.SurgeryName = currentTreatmentFinishSDO.SurgeryName;
-                    hisTreatmentFinishSDO.SurgeryBeginTime = currentTreatmentFinishSDO.SurgeryBeginTime;
-                    hisTreatmentFinishSDO.SurgeryEndTime = currentTreatmentFinishSDO.SurgeryEndTime;
-                    hisTreatmentFinishSDO.Valid1Year = currentTreatmentFinishSDO.Valid1Year;
-                }
+                //if (currentTreatmentFinishSDO != null)
+                //{
+                //    hisTreatmentFinishSDO.SurgeryName = currentTreatmentFinishSDO.SurgeryName;
+                //    hisTreatmentFinishSDO.SurgeryBeginTime = currentTreatmentFinishSDO.SurgeryBeginTime;
+                //    hisTreatmentFinishSDO.SurgeryEndTime = currentTreatmentFinishSDO.SurgeryEndTime;
+                //    hisTreatmentFinishSDO.Valid1Year = currentTreatmentFinishSDO.Valid1Year;
+                //}
+                if (hisTreatmentFinishSDO_process != null)
+                    {
+                         if (string.IsNullOrWhiteSpace(hisTreatmentFinishSDO.SurgeryName))
+                         hisTreatmentFinishSDO.SurgeryName = hisTreatmentFinishSDO_process.SurgeryName;
+                         if (!hisTreatmentFinishSDO.SurgeryBeginTime.HasValue)
+                         hisTreatmentFinishSDO.SurgeryBeginTime = hisTreatmentFinishSDO_process.SurgeryBeginTime;
+                         if (!hisTreatmentFinishSDO.SurgeryEndTime.HasValue)
+                         hisTreatmentFinishSDO.SurgeryEndTime = hisTreatmentFinishSDO_process.SurgeryEndTime;
+                         if (!hisTreatmentFinishSDO.Valid1Year)
+                         hisTreatmentFinishSDO.Valid1Year = hisTreatmentFinishSDO_process.Valid1Year;
+                    }
             }
             catch (Exception ex)
             {
