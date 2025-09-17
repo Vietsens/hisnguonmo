@@ -53,7 +53,18 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void DelegateTreatmentType(long value)
+        {
+            try
+            {
+                cboTreatmentType.EditValue = value;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
 
+            }
+        }
         void ChoiceTemplateHeinCard(string patientTypeCode, bool focusMoveOut)
         {
             try
@@ -69,6 +80,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     Inventec.Common.Logging.LogSystem.Debug("t3.1.1: set default data to control hein");
                     His.UC.UCHein.Data.DataInitHeinBhyt dataHein = new His.UC.UCHein.Data.DataInitHeinBhyt();
+                    dataHein.DeleteTreatmentTypeId = DelegateTreatmentType;
                     dataHein.BhytWhiteLists = BackendDataWorker.Get<HIS_BHYT_WHITELIST>();
                     dataHein.BhytBlackLists = BackendDataWorker.Get<HIS_BHYT_BLACKLIST>();
                     dataHein.Genders = BackendDataWorker.Get<HIS_GENDER>();
