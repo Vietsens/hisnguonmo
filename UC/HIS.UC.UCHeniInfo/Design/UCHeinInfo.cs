@@ -448,9 +448,9 @@ namespace HIS.UC.UCHeniInfo
                 }
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "", 20, 1));
-                columnInfos.Add(new ColumnInfo("DESCRIPTION", "", 250, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, false, 350);
+                columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "", 6, 1));
+                columnInfos.Add(new ColumnInfo("DESCRIPTION", "", 800, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, false, 800);
                 ControlEditorLoader.Load(cboHeinPatientType, heinPatientTypeData, controlEditorADO);
 
                 this.cboHeinPatientType.Properties.ImmediatePopup = true;
