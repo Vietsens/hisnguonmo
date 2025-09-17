@@ -79,7 +79,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
     {
         #region Declare
         HisTreatmentFinishSDO hisTreatmentFinishSDO;
-        internal MOS.SDO.WorkPlaceSDO WorkPlaceSDO; 
+        internal MOS.SDO.WorkPlaceSDO WorkPlaceSDO;
         internal long treatmentId = 0;
         internal MOS.EFMODEL.DataModels.HIS_TREATMENT currentHisTreatment = null;
         //internal MOS.EFMODEL.DataModels.HIS_TREATMENT currentHisTreatment_ = null;
@@ -177,7 +177,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         /// <summary>
         /// internal static int PathologicalProcessOption;
         /// </summary>
-        
+
         #endregion
 
         #region Construct
@@ -239,7 +239,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
         }
         #endregion
-           
+
         #region Private method
         HIS_TRACKING tracking { get; set; }
         private void CreateThreadGetData1()
@@ -367,29 +367,31 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 .OrderBy(o => o.NUM_ORDER == 0 ? 0 : 1)
                 .ThenBy(o => o.NUM_ORDER == null ? 1 : 0)
                 .ThenBy(o => o.NUM_ORDER ?? int.MaxValue)
-                .ToList();          
+                .ToList();
 
                 cboObjectCode.Properties.DataSource = heinPatientTypes;
-                cboObjectCode.Properties.DisplayMember = "HEIN_PATIENT_TYPE_CODE"; 
+                cboObjectCode.Properties.DisplayMember = "HEIN_PATIENT_TYPE_CODE";
                 cboObjectCode.Properties.ValueMember = "ID";
 
                 var view = cboObjectCode.Properties.View;
-                view.OptionsView.ShowIndicator = false;  
+                view.OptionsView.ShowIndicator = false;
                 cboObjectCode.Properties.ImmediatePopup = true;
                 view.OptionsView.ShowGroupPanel = false;
-
+                //qtcode
+                view.OptionsView.ColumnAutoWidth = false;
                 view.Columns.Clear();
 
                 var colCode = view.Columns.AddField("HEIN_PATIENT_TYPE_CODE");
                 colCode.Caption = "Mã";
                 colCode.VisibleIndex = 0;
-                colCode.Width = 120;
+                colCode.Width = 100;
 
 
                 var colDesc = view.Columns.AddField("DESCRIPTION");
                 colDesc.Caption = "Mô tả";
                 colDesc.VisibleIndex = 1;
-                colDesc.Width = 280;
+                colDesc.Width = 800;
+                cboObjectCode.Properties.PopupFormWidth = colCode.Width + colDesc.Width + 30;
 
                 var memoEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
                 memoEdit.WordWrap = true;  // bật wrap text
@@ -399,11 +401,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 // Cho phép auto row height để vừa với nội dung
                 view.OptionsView.RowAutoHeight = true;
                 view.BeginSort();
-                view.SortInfo.Clear();     
+                view.SortInfo.Clear();
                 view.EndSort();
 
-                view.OptionsCustomization.AllowSort = false;      
-                view.OptionsMenu.EnableColumnMenu = false; 
+                view.OptionsCustomization.AllowSort = false;
+                view.OptionsMenu.EnableColumnMenu = false;
 
 
 
@@ -692,7 +694,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     var currentRoom = this.hisRooms.FirstOrDefault(o => o.ID == this.module.RoomId);
                     branchId = currentRoom.BRANCH_ID;
                 }
-               
+
                 MOS.Filter.HisDataStoreViewFilter dataStoreFilter = new HisDataStoreViewFilter();
                 dataStoreFilter.BRANCH_ID = branchId;
                 this.DataStores = new BackendAdapter(new CommonParam()).Get<List<V_HIS_DATA_STORE>>("api/HisDataStore/GetView", ApiConsumer.ApiConsumers.MosConsumer, dataStoreFilter, null);
@@ -1325,7 +1327,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     txtSoChuyenVien.Text = data.OUT_CODE;
                     txtSurgery.Text = data.SURGERY;
                     txtMaBHXH.Text = data.TDL_SOCIAL_INSURANCE_NUMBER;
-                    
+
 
                     if (!string.IsNullOrEmpty(data.ICD_CAUSE_CODE))
                     {
@@ -1474,7 +1476,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                                 txtEndDeptSubsHead.Text = USER;
                                 cboEndDeptSubsHead.EditValue = USER;
                             }
-                         }
+                        }
                     }
 
 
@@ -1502,9 +1504,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                                 txtHospSubsDirector.Text = depar.HOSP_SUBS_DIRECTOR_LOGINNAME;
                                 cboHospSubsDirector.EditValue = depar.HOSP_SUBS_DIRECTOR_LOGINNAME;
                             }
-                        }  
+                        }
                     }
-                    
+
                     // ket thu o day
 
                     //nếu có dữ liệu tại popup khác thì load dữ liệu cũ để không phải mở popup lưu lại
@@ -1863,18 +1865,18 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 }
                 else
                 {
-                    if (((treatmentResultId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__KTD 
+                    if (((treatmentResultId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__KTD
                         || treatmentResultId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG
-                        ) 
+                        )
                         &&
                         (treatmentEndTypeId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN ||
-                         treatmentEndTypeId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN)) ||   
+                         treatmentEndTypeId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN)) ||
                          treatmentEndTypeId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET
                         )
                     {
                         result = (int)((TimeSpan)(dtOut.Date - dtIn.Date)).TotalDays + 1;
                     }
-                    else if(treatmentResultId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__DO && treatmentEndTypeId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
+                    else if (treatmentResultId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__DO && treatmentEndTypeId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
                         result = (int)((TimeSpan)(dtOut.Date - dtIn.Date)).TotalDays + 1;
                     else
                         result = (int)((TimeSpan)(dtOut.Date - dtIn.Date)).TotalDays;
@@ -2176,10 +2178,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                     FormTransfer = new CloseTreatment.FormTransfer(this.module, currentHisTreatment);
                     FormTransfer.MyGetData = new CloseTreatment.FormTransfer.GetString(TranPatiDataTreatmentFinish);
-                    
+
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("MyGetData", FormTransfer.MyGetData));
-                    FormTransfer.Form = this; 
-                    FormTransfer.ShowDialog(); 
+                    FormTransfer.Form = this;
+                    FormTransfer.ShowDialog();
                     cboTTExt.EditValue = null;
                 }
                 else if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN)
@@ -2439,8 +2441,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             dxErrorProvider1.ClearErrors();
 
             LogTheadInSessionInfo(save, "btnSave_Click");
-            
-        }   
+
+        }
         private bool CheckWarningUnfinishedServiceOption()
         {
             bool valid = true;
@@ -2621,7 +2623,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             return isValid;
         }
         private async void save()
-        {  
+        {
             try
             {
                 //huannh
@@ -2711,7 +2713,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     }
                 }
 
-              
+
                 //if (hisTreatmentFinishSDO_process == null)
                 //    hisTreatmentFinishSDO_process = new MOS.SDO.HisTreatmentFinishSDO();
                 //if (cboObjectCode.EditValue != null)
@@ -2736,11 +2738,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 bool success = false;
                 this.positionHandle = -1;
                 bool isBHYTPatient = currentHisTreatment.TDL_PATIENT_TYPE_ID == HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT;
-                if (isBHYTPatient && Config.ConfigKey.IsRequiredPathologicalProcessTransferPatientBHYT == "1" && treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN) {
+                if (isBHYTPatient && Config.ConfigKey.IsRequiredPathologicalProcessTransferPatientBHYT == "1" && treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
+                {
 
                     ValidateTextEdit(txtDauHieuLamSang);
 
-                } 
+                }
 
 
 
@@ -2962,7 +2965,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 hisTreatmentFinishSDO = new MOS.SDO.HisTreatmentFinishSDO();
                 bool rs = await ProcessDataBeforeSaveAsync(this, true);
                 if (rs)
-                {  
+                {
                     return;
                 }
                 //if (hisTreatmentFinishSDO != null && (string.IsNullOrEmpty(hisTreatmentFinishSDO.ClinicalNote) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentDirection) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentMethod) && string.IsNullOrEmpty(hisTreatmentFinishSDO.TransportVehicle) || (string.IsNullOrEmpty(hisTreatmentFinishSDO.TransporterLoginnames) && string.IsNullOrEmpty(hisTreatmentFinishSDO.Transporter)) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TransferOutMediOrgCode) || !hisTreatmentFinishSDO.TranPatiReasonId.HasValue || !hisTreatmentFinishSDO.TranPatiFormId.HasValue))
@@ -2984,9 +2987,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         {
                             VoBenhAn(HisTreatment);
                         }
-                    }      
-                    
-                    if(AppointmentPrintOptionsStorageADO.InPhieuHenKham || AppointmentPrintOptionsStorageADO.KyPhieuHenKham || AppointmentPrintOptionsStorageADO.XemTruocKhiIn)
+                    }
+
+                    if (AppointmentPrintOptionsStorageADO.InPhieuHenKham || AppointmentPrintOptionsStorageADO.KyPhieuHenKham || AppointmentPrintOptionsStorageADO.XemTruocKhiIn)
                     {
                         var menuItem = new DevExpress.Utils.Menu.DXMenuItem("Hẹn khám lại");
                         menuItem.Tag = ModuleTypePrint.HEN_KHAM_LAI;
@@ -2996,7 +2999,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     {
                         RunAutoPrintByPrintConfig();
                     }
-                   
+
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisTreatmentFinishSDO), hisTreatmentFinishSDO));
                     if (hisTreatmentFinishSDO.TreatmentEndTypeExtId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM)
                     {
@@ -3028,10 +3031,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             throw new NotImplementedException();
         }
-        
+
         private bool CheckMustChooseSeviceExamOption()
         {
-            bool rs = true;                                                                                                                                                                       
+            bool rs = true;
             try
             {
                 bool isTreatmentFinish = false;
@@ -3377,7 +3380,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         return;
                     }
                 }
-               
+
                 if (hisTreatmentFinishSDO_process == null)
                     hisTreatmentFinishSDO_process = new MOS.SDO.HisTreatmentFinishSDO();
                 if (cboObjectCode.EditValue != null)
@@ -3398,7 +3401,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (!valid) return;
 
                 List<WarningADO> warningADONew = new List<WarningADO>();
-                
+
                 if (!this.CheckWarnNotRequiredCompleteHasNoSample(ValidationDataType.PopupMessage, ref warningADONew))
                 {
                     return;
@@ -3590,8 +3593,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
         }
         #endregion
-       
-       
+
+
 
         private void txtEndOrder_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -3647,7 +3650,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         code = string.Format("{0:000000000}", Convert.ToInt64(code));
                         txtEndOrder.Text = code;
                     }
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -3816,8 +3819,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                                 DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.HoSoKhongCoTtVaoBuong + ResourceMessage.CuaKhoaHienTai + ResourceMessage.KhongChoGanGiuong, ResourceMessage.ThongBao);
                                 return;
                             }
-                        }  
-                        else  
+                        }
+                        else
                         {
                             DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.KhoaKhongCoBuong + ResourceMessage.KhongChoGanGiuong, ResourceMessage.ThongBao);
                             return;
@@ -5487,7 +5490,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (rs)
                 {
                     return false;
-                }                     
+                }
 
                 if (!string.IsNullOrEmpty(txtMaBHXH.Text))
                 {
@@ -6121,7 +6124,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             BackendDataWorker.Reset<HIS_TREATMENT>();
                             currentHisTreatment = result;
                             FillDataCurrentTreatment(currentHisTreatment);
-                            EnableControlByTreatment();    
+                            EnableControlByTreatment();
 
                         }
                         MessageManager.Show(this, param, success);
@@ -6354,7 +6357,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
         }
 
-        
+
         //private void txtObjectCode_TextChanged(object sender, EventArgs e)
         //{
         //    string text = txtObjectCode.Text;
