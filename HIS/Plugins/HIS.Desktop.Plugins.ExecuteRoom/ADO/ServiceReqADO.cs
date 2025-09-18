@@ -34,6 +34,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom.ADO
         public string DISPLAY_COLOR { get; set; }
         public long? SAMPLE_TIME { get; set; }
         public long status { get; set; }
+        public short? IS_MAIN_EXAM_SERVICE { get; set; }
         public ServiceReqADO() { }
         public ServiceReqADO(L_HIS_SERVICE_REQ data)
         {
@@ -68,7 +69,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom.ADO
                 SAMPLE_TIME = data.SAMPLE_TIME;
                 HIS_DEPARTMENT department = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(o => o.ID == data.REQUEST_DEPARTMENT_ID);
                 REQUEST_DEPARTMENT_DISPLAY = department != null ? department.DEPARTMENT_NAME : null;
-
+                IS_MAIN_EXAM_SERVICE = data.IS_MAIN_EXAM > 0 ? data.IS_MAIN_EXAM : null;
                 V_HIS_ROOM room = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == data.REQUEST_ROOM_ID);
                 REQUEST_ROOM_DISPLAY = room != null ? room.ROOM_NAME : null;
                 REQUEST_USER_DISPLAY = string.Format("{0} {1}", data.REQUEST_USERNAME, data.REQUEST_LOGINNAME);

@@ -4228,7 +4228,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     return;
                 bool hasConfirmUser = false;
                 bool resultConfirmUser = false;
-                ProcessPrint(ref hasConfirmUser, ref resultConfirmUser);
+                bool isHIV = sender == btnPrintHIV;
+                ProcessPrint(ref hasConfirmUser, ref resultConfirmUser, isHIV);
             }
             catch (Exception ex)
             {
@@ -4255,7 +4256,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
             return lst;
         }
-        private void ProcessPrint(ref bool hasConfirmUser, ref bool resultConfirmUser)
+        private void ProcessPrint(ref bool hasConfirmUser, ref bool resultConfirmUser,bool hiv)
         {
             try
             {
@@ -4265,13 +4266,23 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 this.PrintOption = PRINT_OPTION.IN;
                 if (print)
                 {
+                    if (hiv)
+                    {
+                        SetDataToPrint(true);
+
+                        if (lstResultVS != null && lstResultVS.Count > 0)
+                        {
+                            PrintProcess(PrintTypeKXN.IN_VI_SINH);
+                        }
+                        return;
+                    }
                     if (!HisConfigCFG.PRINT_TEST_RESULT)
                     {
                         SetDataToPrint(false);
-                        PrintProcess(PrintTypeKXN.IN_KET_QUA_XET_NGHIEM);
-                    }
+                            PrintProcess(PrintTypeKXN.IN_KET_QUA_XET_NGHIEM);
+                        }
                     else
-                    {
+                    {                   
                         SetDataToPrint(true);
                         if (lstResultPrint != null && lstResultPrint.Count > 0)
                         {

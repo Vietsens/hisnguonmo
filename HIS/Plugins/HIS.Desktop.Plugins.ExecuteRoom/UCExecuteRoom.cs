@@ -61,7 +61,8 @@ using HIS.Desktop.LocalStorage.ConfigSystem;
 using MPS.ProcessorBase.Core;
 using MPS;
 using Inventec.Common.SignLibrary.ADO;
-using HIS.Desktop.ApiConsumer; 
+using HIS.Desktop.ApiConsumer;
+using EMR.EFMODEL.DataModels;
 
 
 namespace HIS.Desktop.Plugins.ExecuteRoom
@@ -1238,6 +1239,33 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             {
                 if (currentHisServiceReq != null)
                 {
+                    if (HisConfigCFG.MustSignBeforeStart == "1" && currentHisServiceReq.IS_MAIN_EXAM_SERVICE != 1)
+                    {
+                        var treatmentCode = currentHisServiceReq.TDL_TREATMENT_CODE;
+                        var serviceReqCode = currentHisServiceReq.SERVICE_REQ_CODE;
+                        var emrDocuments = BackendDataWorker.Get<EMR_DOCUMENT>()
+                            .Where(doc =>
+                                doc.TREATMENT_CODE == treatmentCode &&
+                                doc.DOCUMENT_TYPE_ID == IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_ASSIGN &&
+                                !string.IsNullOrEmpty(doc.HIS_CODE) &&
+                                doc.HIS_CODE.Contains("SERVICE_REQ_CODE:" + serviceReqCode)
+                            ).ToList();
+
+
+                        bool hasSignedDocument = emrDocuments.Any(doc => !string.IsNullOrEmpty(doc.SIGNERS));
+                        if (!emrDocuments.Any() || !hasSignedDocument)
+                        {
+                            MessageBox.Show(
+                                "Vui lòng ký phiếu chỉ định trước khi xử lý dịch vụ",
+                                Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                                    Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                            return;
+                        }
+                    }
+
                     if (currentHisServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
                     {
                         CancelFinish(currentHisServiceReq);

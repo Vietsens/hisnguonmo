@@ -18,6 +18,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1.ValidationRule
                 if (cboPatientCode == null) return valid;
                 if (cboPatientCode.Enabled  || cboPatientCode.EditValue == null)
                     return valid;
+                if(cboPatientCode.EditValue.ToString() == "")
+                    return valid;
 
                 valid = true;
             }

@@ -60,6 +60,13 @@ namespace MPS.Processor.Mps000254
 
         public string STORAGE_CONDITION_CODE { get; set; }
         public string STORAGE_CONDITION_NAME { get; set; }
+
+        public long? MEDICINE_PARENT_ID { get; set; }
+        public string MEDICINE_PARENT_CODE { get; set; }
+        public string MEDICINE_PARENT_NAME { get; set; }
+        public long? MEDICINE_GROUP_ID { get; set; }
+        public string MEDICINE_GROUP_CODE { get; set; }
+        public string MEDICINE_GROUP_NAME { get; set; }
         public Mps000254ADO()
         {
         }
@@ -87,6 +94,13 @@ namespace MPS.Processor.Mps000254
 
                     this.STORAGE_CONDITION_NAME = data.STORAGE_CONDITION_NAME;
                     this.STORAGE_CONDITION_CODE = data.STORAGE_CONDITION_CODE;
+
+                    this.MEDICINE_PARENT_ID = data.PARENT_ID;
+                    this.MEDICINE_PARENT_CODE = data.PARENT_CODE;
+                    this.MEDICINE_PARENT_NAME = data.PARENT_NAME;
+                    this.MEDICINE_GROUP_ID = data.MEDICINE_GROUP_ID;
+                    this.MEDICINE_GROUP_CODE = data.MEDICINE_GROUP_CODE;
+                    this.MEDICINE_GROUP_NAME = data.MEDICINE_GROUP_NAME;
                 }
 
                 if (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
@@ -133,6 +147,13 @@ namespace MPS.Processor.Mps000254
                     this.ACTIVE_INGR_BHYT_NAME = replace.ACTIVE_INGR_BHYT_NAME;
                     this.STORAGE_CONDITION_NAME = replace.STORAGE_CONDITION_NAME;
                     this.STORAGE_CONDITION_CODE = replace.STORAGE_CONDITION_CODE;
+
+                    this.MEDICINE_PARENT_ID = replace.PARENT_ID;
+                    this.MEDICINE_PARENT_CODE = replace.PARENT_CODE;
+                    this.MEDICINE_PARENT_NAME = replace.PARENT_NAME;
+                    this.MEDICINE_GROUP_ID = replace.MEDICINE_GROUP_ID;
+                    this.MEDICINE_GROUP_CODE = replace.MEDICINE_GROUP_CODE;
+                    this.MEDICINE_GROUP_NAME = replace.MEDICINE_GROUP_NAME;
                 }
                 var data = _medicineTypes.FirstOrDefault(p => p.ID == req.First().MEDICINE_TYPE_ID);
                 if (data != null)
