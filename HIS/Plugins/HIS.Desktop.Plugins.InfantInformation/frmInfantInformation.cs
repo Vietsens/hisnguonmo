@@ -1301,7 +1301,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 bool success = false;
                 //if (!btnSave.Enabled)
                 //    return;
-                if (lciDeathDate.Enabled)
+                if (lciDeathDate.Enabled && !isTemporaryToggle)
                 {
                     ValidationSingleControl(dtDeathDate, dxValidationProviderEditorInfo);
                 }
@@ -1309,7 +1309,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 {
                     dxValidationProviderEditorInfo.SetValidationRule(dtDeathDate, null);
                 }
-                if (this.lciBirthHospital.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                if (this.lciBirthHospital.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && !isTemporaryToggle)
                 {
                     ValidationSingleControl(cboBirthHospital, dxValidationProviderEditorInfo);
                 }
@@ -1319,7 +1319,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 }
                 positionHandle = -1;
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
-                if (!dxValidationProviderEditorInfo.Validate())
+                if (!dxValidationProviderEditorInfo.Validate() && !isTemporaryToggle)
                     return;
 
                
@@ -1623,6 +1623,22 @@ namespace HIS.Desktop.Plugins.InfantInformation
             try
             {
                 isTemporaryToggle = true;
+                // Check required fields
+                bool hasRequiredError = !dxValidationProviderEditorInfo.Validate();
+
+                if (hasRequiredError)
+                {
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Có trường bắt buộc nhưng chưa được nhập. Bạn có muốn lưu tạm không?",
+                    Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                        Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                    MessageBoxButtons.YesNo) == DialogResult.No)
+                    {
+                        dxValidationProviderEditorInfo.Validate();
+                        return;
+                    }
+
+                }
                 SaveProcess();
             }
             catch (Exception ex)
@@ -3344,12 +3360,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                GridLookUpEdit editor = sender as GridLookUpEdit;
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("BIRTH_CERT_BOOK_CODE", "", 10, 1, true));
-                columnInfos.Add(new ColumnInfo("BIRTH_CERT_BOOK_NAME", "", 100, 2, true));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("BIRTH_CERT_BOOK_NAME", "ID", columnInfos, false, 110);
-                ControlEditorLoader.Load(editor, lstBirthCertBook != null && lstBirthCertBook.Count > 0 ? lstBirthCertBook.Where(o => o.CURRENT_BIRTH_CERT_NUM < (o.FROM_NUM_ORDER + o.TOTAL - 1)).ToList() : null, controlEditorADO);
+                //GridLookUpEdit editor = sender as GridLookUpEdit;
+                //List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                //columnInfos.Add(new ColumnInfo("BIRTH_CERT_BOOK_CODE", "", 50, 1, true));
+                //columnInfos.Add(new ColumnInfo("BIRTH_CERT_BOOK_NAME", "", 250, 2, true));
+                //ControlEditorADO controlEditorADO = new ControlEditorADO("BIRTH_CERT_BOOK_NAME", "ID", columnInfos, false, 110);
+                //ControlEditorLoader.Load(editor, lstBirthCertBook != null && lstBirthCertBook.Count > 0 ? lstBirthCertBook.Where(o => o.CURRENT_BIRTH_CERT_NUM < (o.FROM_NUM_ORDER + o.TOTAL - 1)).ToList() : null, controlEditorADO);
+
             }
             catch (Exception ex)
             {
