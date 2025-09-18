@@ -3795,8 +3795,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
 
                         this.serviceReqPrintRaw = GetServiceReqForPrint(data.ID);
 
-                        if (HisConfigCFG.AutoDeleteEmrDocumentWhenEditReq == "1")
-                        {
+                        
 
                             if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
                             {
@@ -3914,7 +3913,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             }
                         }
                         /////
-                    }
+                    
                         
                     
                 }
