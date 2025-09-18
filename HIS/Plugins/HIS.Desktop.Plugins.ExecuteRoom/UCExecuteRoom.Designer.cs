@@ -46,7 +46,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCExecuteRoom));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -95,12 +94,12 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtCallPatientCPA = new DevExpress.XtraEditors.LabelControl();
             this.ckKQCLS = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
             this.btnNotEnter = new DevExpress.XtraEditors.SimpleButton();
             this.btnMissCall = new DevExpress.XtraEditors.SimpleButton();
             this.chkScreenSaver = new DevExpress.XtraEditors.CheckEdit();
@@ -245,7 +244,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumnSoPhieu = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnSereServServiceReqBlock = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.toolTipController2 = new DevExpress.Utils.ToolTipController(this.components);
+            this.toolTipController2 = new DevExpress.Utils.ToolTipController();
             this.layoutControlGroup5 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
@@ -420,14 +419,14 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.layoutControlItem42 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem53 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcCkhCPA = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageListPriority = new System.Windows.Forms.ImageList(this.components);
-            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
-            this.timerDoubleClick = new System.Windows.Forms.Timer(this.components);
-            this.timerAutoReload = new System.Windows.Forms.Timer(this.components);
-            this.imageListRefesh = new System.Windows.Forms.ImageList(this.components);
-            this.timerReloadMachineCounter = new System.Windows.Forms.Timer(this.components);
+            this.imageListPriority = new System.Windows.Forms.ImageList();
+            this.imageListIcon = new System.Windows.Forms.ImageList();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.timerDoubleClick = new System.Windows.Forms.Timer();
+            this.timerAutoReload = new System.Windows.Forms.Timer();
+            this.imageListRefesh = new System.Windows.Forms.ImageList();
+            this.timerReloadMachineCounter = new System.Windows.Forms.Timer();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ckKQCLS.Properties)).BeginInit();

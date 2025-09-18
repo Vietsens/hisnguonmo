@@ -35,6 +35,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.Desktop.Plugins.InfantInformation.ADO;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Repository;
 
 namespace HIS.Desktop.Plugins.InfantInformation
 {
@@ -140,11 +141,40 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("BIRTH_CERT_BOOK_CODE", "", 10, 1, true));
-                columnInfos.Add(new ColumnInfo("BIRTH_CERT_BOOK_NAME", "", 100, 2, true));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("BIRTH_CERT_BOOK_NAME", "ID", columnInfos, false, 110);
-                ControlEditorLoader.Load(cboHisBirthSertBook, lstBirthCertBook, controlEditorADO);
+                //List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                //columnInfos.Add(new ColumnInfo("BIRTH_CERT_BOOK_CODE", "", 40, 1, true));
+                //columnInfos.Add(new ColumnInfo("BIRTH_CERT_BOOK_NAME", "", 210, 2, true));
+                //ControlEditorADO controlEditorADO = new ControlEditorADO("BIRTH_CERT_BOOK_NAME", "ID", columnInfos, false, 250);
+                //ControlEditorLoader.Load(cboHisBirthSertBook, lstBirthCertBook, controlEditorADO);
+                //cboHisBirthSertBook.Properties.PopupFormMinSize = new Size(250, 250);
+                cboHisBirthSertBook.Properties.DataSource = lstBirthCertBook;
+                cboHisBirthSertBook.Properties.DisplayMember = "BIRTH_CERT_BOOK_CODE";
+                cboHisBirthSertBook.Properties.ValueMember = "ID";
+
+                cboHisBirthSertBook.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboHisBirthSertBook.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cboHisBirthSertBook.ForceInitialize();
+                cboHisBirthSertBook.Properties.View.Columns.Clear();
+                cboHisBirthSertBook.Properties.ImmediatePopup = true;
+
+                cboHisBirthSertBook.Properties.AutoComplete = false;
+                cboHisBirthSertBook.Properties.NullText = null;
+                cboHisBirthSertBook.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+
+                DevExpress.XtraGrid.Columns.GridColumn colCode = cboHisBirthSertBook.Properties.View.Columns.AddField("BIRTH_CERT_BOOK_CODE");
+                colCode.Caption = "Mã";
+                colCode.Visible = true;
+                colCode.VisibleIndex = 0;
+                colCode.Width = 80;
+
+                DevExpress.XtraGrid.Columns.GridColumn colDesc = cboHisBirthSertBook.Properties.View.Columns.AddField("BIRTH_CERT_BOOK_NAME");
+                colDesc.Caption = "Mô tả";
+                colDesc.Visible = true;
+                colDesc.VisibleIndex = 1;
+                colDesc.Width = 200;
+                cboHisBirthSertBook.Properties.View.OptionsView.RowAutoHeight = true;
+                cboHisBirthSertBook.Properties.View.OptionsView.ColumnAutoWidth = false;
+                cboHisBirthSertBook.Properties.PopupFormWidth = 300;
 
             }
             catch (Exception ex)

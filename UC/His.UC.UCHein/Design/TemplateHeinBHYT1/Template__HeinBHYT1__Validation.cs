@@ -44,7 +44,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 this.ValidHNCode();
                 //this.ValidNoiChuyenDen();
                 this.ValidIcd();
-                this.ValidPatientTypeCode();
+                //this.ValidPatientTypeCode();
             }
             catch (Exception ex)
             {
