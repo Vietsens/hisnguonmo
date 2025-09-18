@@ -269,7 +269,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 colCode.Caption = "Mã";
                 colCode.Visible = true;
                 colCode.VisibleIndex = 0;
-                colCode.Width = 30;
+                colCode.Width = 35;
+                colCode.MinWidth = 35;
 
                 // Cột mô tả
                 DevExpress.XtraGrid.Columns.GridColumn colDesc = cboPatientCode.Properties.View.Columns.AddField("DESCRIPTION");
@@ -282,9 +283,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 colDesc.Width = 500;
 
                 cboPatientCode.Properties.View.OptionsView.RowAutoHeight = true;
-                cboPatientCode.Properties.PopupFormWidth = 530;
+                cboPatientCode.Properties.View.OptionsView.ColumnAutoWidth = true;
 
                 //firstCheck = false;
+
             }
             catch (Exception ex)
             {
