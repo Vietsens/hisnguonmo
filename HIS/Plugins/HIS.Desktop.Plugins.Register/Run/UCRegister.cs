@@ -20,6 +20,7 @@ using DevExpress.Utils.Menu;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
+using His.UC.UCHein;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -4568,7 +4569,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        public long currentTreatmentType { get; set; }
         private void cboTreatmentType_EditValueChanged(object sender, EventArgs e)
         {
 
@@ -4579,6 +4580,13 @@ namespace HIS.Desktop.Plugins.Register.Run
                 panelLayoutHosReason.Visible = false;
                 layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 layoutControlReasonVV.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                if (mainHeinProcessor != null && ucHeinBHYT != null)
+                {
+                    var dt = cboTreatmentType.EditValue != null ? Int64.Parse(cboTreatmentType.EditValue.ToString()) : 0;
+                    if (currentTreatmentType == 0 || currentTreatmentType != dt)
+                        mainHeinProcessor.SetValueTreatmentType(ucHeinBHYT, dt);
+                    currentTreatmentType = dt;
+                }
 
                 if (cboTreatmentType.EditValue != null)
                 {
