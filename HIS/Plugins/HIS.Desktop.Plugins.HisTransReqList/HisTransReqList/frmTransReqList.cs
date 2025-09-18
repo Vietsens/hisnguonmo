@@ -48,6 +48,8 @@ namespace HIS.Desktop.Plugins.HisTransReqList.HisTransReqList
                 this.moduleData = module;
 
                 this.treatmentID = treatmentID;
+                dteTo.EditValue = DateTime.Now;
+                dteFrom.EditValue = DateTime.Now;
                 try
                 {
                     string iconPath = System.IO.Path.Combine
@@ -73,9 +75,6 @@ namespace HIS.Desktop.Plugins.HisTransReqList.HisTransReqList
                 FillDataToControl();
                 SetDefaultFocus();
                 SetResourceByLanguageKey();
-
-                dteTo.EditValue = DateTime.Now;
-                dteFrom.EditValue = DateTime.Now;
             }
             catch (Exception ex)
             {
@@ -203,7 +202,7 @@ namespace HIS.Desktop.Plugins.HisTransReqList.HisTransReqList
                     filter.CREATE_TIME_TO = Convert.ToInt64(dteTo.DateTime.ToString("yyyyMMdd") + "235959");
                 }
                 filter.ORDER_DIRECTION = "DESC";
-                filter.ORDER_FIELD = "MODIFY_TIME";
+                filter.ORDER_FIELD = "CREATE_TIME";
                 filter.TREATMENT_ID = treatmentID;
                 gridView1.BeginDataUpdate();
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<MOS.EFMODEL.DataModels.V_HIS_TRANS_REQ>>(TransReqUriStore.TRANS_REQ_GET,
@@ -266,14 +265,10 @@ namespace HIS.Desktop.Plugins.HisTransReqList.HisTransReqList
                             data.TRANS_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__FAILED)
                         {
                             e.RepositoryItem = btnLookUp;
-                            btnLookUp.ReadOnly = false;
-                            btnLookUp.Enabled = true;
                         }
                         else
                         {
-                            e.RepositoryItem = btnLookUp;
-                            btnLookUp.ReadOnly = true;
-                            btnLookUp.Enabled = false;
+                            e.RepositoryItem = btnDisLookUp;
                         }
                     }
                 }
