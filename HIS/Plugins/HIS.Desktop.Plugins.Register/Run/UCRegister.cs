@@ -1631,6 +1631,10 @@ namespace HIS.Desktop.Plugins.Register.Run
                     if (String.IsNullOrEmpty(maTHX))
                     {
                         this.SetSourceValueTHX(workingCommuneADO);
+
+                        this.cboTHX.Focus();
+                        this.cboTHX.ShowPopup();
+                        this.cboTHX.Properties.View.FocusedRowHandle = 0;
                         return;
                     }
                     this.cboTHX.EditValue = null;
@@ -1735,7 +1739,9 @@ namespace HIS.Desktop.Plugins.Register.Run
                             this.txtProvinceCode.Text = null;
                             this.cboDistrict.EditValue = null;
                             this.txtDistrictCode.Text = null;
-
+                            this.cboTHX.Focus();
+                            this.cboTHX.ShowPopup();
+                            this.cboTHX.Properties.View.FocusedRowHandle = 0;
                         }
                     }
                     //Nếu không tìm thấy kết quả nào -> reset giá trị combo THX
@@ -1748,6 +1754,9 @@ namespace HIS.Desktop.Plugins.Register.Run
                         this.txtProvinceCode.Text = null;
                         this.cboDistrict.EditValue = null;
                         this.txtDistrictCode.Text = null;
+                        this.cboTHX.Focus();
+                        this.cboTHX.ShowPopup();
+                        this.cboTHX.Properties.View.FocusedRowHandle = 0;
                     }
                 }
             }
