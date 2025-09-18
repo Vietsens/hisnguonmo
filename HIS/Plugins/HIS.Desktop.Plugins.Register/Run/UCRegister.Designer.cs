@@ -45,11 +45,11 @@ namespace HIS.Desktop.Plugins.Register.Run
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCRegister));
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.lciRegisterEditor = new DevExpress.XtraLayout.LayoutControl();
             this.chkCAPD = new DevExpress.XtraEditors.CheckEdit();
             this.togChangeStructAdress = new DevExpress.XtraEditors.ToggleSwitch();
@@ -97,7 +97,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.cboCashierRoom = new DevExpress.XtraEditors.LookUpEdit();
             this.btnSaveAndPrint = new DevExpress.XtraEditors.SimpleButton();
             this.txtMaTHX = new DevExpress.XtraEditors.TextEdit();
-            this.cboTHX = new DevExpress.XtraEditors.LookUpEdit();
             this.btnPatientNew = new DevExpress.XtraEditors.SimpleButton();
             this.btnPatientExtend = new DevExpress.XtraEditors.SimpleButton();
             this.btnAddRow = new DevExpress.XtraEditors.SimpleButton();
@@ -150,6 +149,8 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.pnlServiceRoomInfomation = new DevExpress.XtraEditors.XtraScrollableControl();
             this.cboCareer = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboTHX = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.gboxPatientInformation = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciPatientCode = new DevExpress.XtraLayout.LayoutControlItem();
@@ -269,7 +270,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCashierRoom.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMaTHX.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboTHX.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlUCHeinInformation)).BeginInit();
             this.pnlInstructionTime.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtIntructionTime.Properties)).BeginInit();
@@ -313,6 +313,8 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTHX.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gboxPatientInformation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientCode)).BeginInit();
@@ -429,7 +431,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lciRegisterEditor.Controls.Add(this.cboCashierRoom);
             this.lciRegisterEditor.Controls.Add(this.btnSaveAndPrint);
             this.lciRegisterEditor.Controls.Add(this.txtMaTHX);
-            this.lciRegisterEditor.Controls.Add(this.cboTHX);
             this.lciRegisterEditor.Controls.Add(this.btnPatientNew);
             this.lciRegisterEditor.Controls.Add(this.btnPatientExtend);
             this.lciRegisterEditor.Controls.Add(this.btnAddRow);
@@ -476,6 +477,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.lciRegisterEditor.Controls.Add(this.cboPatientType);
             this.lciRegisterEditor.Controls.Add(this.pnlServiceRoomInfomation);
             this.lciRegisterEditor.Controls.Add(this.cboCareer);
+            this.lciRegisterEditor.Controls.Add(this.cboTHX);
             this.lciRegisterEditor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lciRegisterEditor.Location = new System.Drawing.Point(0, 0);
             this.lciRegisterEditor.Margin = new System.Windows.Forms.Padding(4);
@@ -1055,24 +1057,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.txtMaTHX.StyleController = this.lciRegisterEditor;
             this.txtMaTHX.TabIndex = 10;
             this.txtMaTHX.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtMaTHX_PreviewKeyDown);
-            // 
-            // cboTHX
-            // 
-            this.cboTHX.Location = new System.Drawing.Point(266, 62);
-            this.cboTHX.Margin = new System.Windows.Forms.Padding(4);
-            this.cboTHX.Name = "cboTHX";
-            this.cboTHX.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
-            this.cboTHX.Properties.NullText = "";
-            this.cboTHX.Properties.PopupSizeable = false;
-            this.cboTHX.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboTHX.Properties.GetNotInListValue += new DevExpress.XtraEditors.Controls.GetNotInListValueEventHandler(this.cboTHX_Properties_GetNotInListValue);
-            this.cboTHX.Size = new System.Drawing.Size(267, 22);
-            this.cboTHX.StyleController = this.lciRegisterEditor;
-            this.cboTHX.TabIndex = 11;
-            this.cboTHX.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboTHX_Closed);
-            this.cboTHX.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTHX_ButtonClick);
             // 
             // btnPatientNew
             // 
@@ -1777,6 +1761,32 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.gridView3.Name = "gridView3";
             this.gridView3.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView3.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboTHX
+            // 
+            this.cboTHX.Location = new System.Drawing.Point(266, 62);
+            this.cboTHX.Margin = new System.Windows.Forms.Padding(4);
+            this.cboTHX.Name = "cboTHX";
+            this.cboTHX.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboTHX.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            this.cboTHX.Properties.NullText = "";
+            this.cboTHX.Properties.PopupSizeable = false;
+            this.cboTHX.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboTHX.Properties.View = this.gridView5;
+            this.cboTHX.Size = new System.Drawing.Size(267, 22);
+            this.cboTHX.StyleController = this.lciRegisterEditor;
+            this.cboTHX.TabIndex = 11;
+            this.cboTHX.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboTHX_Closed);
+            this.cboTHX.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTHX_ButtonClick);
+            // 
+            // gridView5
+            // 
+            this.gridView5.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView5.Name = "gridView5";
+            this.gridView5.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView5.OptionsView.ShowGroupPanel = false;
             // 
             // layoutControlGroup1
             // 
@@ -2967,7 +2977,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCashierRoom.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMaTHX.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboTHX.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlUCHeinInformation)).EndInit();
             this.pnlInstructionTime.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtIntructionTime.Properties)).EndInit();
@@ -3011,6 +3020,8 @@ namespace HIS.Desktop.Plugins.Register.Run
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCareer.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTHX.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gboxPatientInformation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientCode)).EndInit();
@@ -3208,7 +3219,6 @@ namespace HIS.Desktop.Plugins.Register.Run
         private DevExpress.XtraLayout.LayoutControlItem lciBtnPatientExtend;
         private DevExpress.XtraLayout.LayoutControlItem lcibtnPatientNewInfo;
         internal DevExpress.XtraEditors.TextEdit txtMaTHX;
-        internal DevExpress.XtraEditors.LookUpEdit cboTHX;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         internal DevExpress.XtraEditors.SimpleButton btnSaveAndPrint;
@@ -3288,5 +3298,7 @@ namespace HIS.Desktop.Plugins.Register.Run
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
         internal DevExpress.XtraEditors.CheckEdit chkCAPD;
+        private DevExpress.XtraEditors.GridLookUpEdit cboTHX;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
     }
 }
