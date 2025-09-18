@@ -3771,37 +3771,39 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     if (data != null && !IsBreak)// && data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
                     {
                         //65930
-                      
-                        if (HisConfigCFG.AutoDeleteEmrDocumentWhenEditReq == "0")
+                        var paramCommon = new CommonParam();
+                        var treatment = new HIS_TREATMENT();
+                        HisTreatmentFilter treatFilter = new HisTreatmentFilter();
+                        treatFilter.ID = data.TREATMENT_ID;
+                        var currentTreats = new BackendAdapter(paramCommon).Get<List<HIS_TREATMENT>>(RequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, treatFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
+                        if (currentTreats != null && currentTreats.Count == 1)
                         {
-                            var paramCommon = new CommonParam();
-                            var treatment = new HIS_TREATMENT();
-                            HisTreatmentFilter treatFilter = new HisTreatmentFilter();
-                            treatFilter.ID = data.TREATMENT_ID;
-                            var currentTreats = new BackendAdapter(paramCommon).Get<List<HIS_TREATMENT>>(RequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, treatFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
-                            if (currentTreats != null && currentTreats.Count == 1)
+                            var treat = currentTreats.FirstOrDefault();
+                            if (treat.IS_PAUSE == Base.GlobalStore.IS_TRUE || treat.IS_ACTIVE != Base.GlobalStore.IS_TRUE)
                             {
-                                var treat = currentTreats.FirstOrDefault();
-                                if (treat.IS_PAUSE == Base.GlobalStore.IS_TRUE || treat.IS_ACTIVE != Base.GlobalStore.IS_TRUE)
-                                {
-                                    Inventec.Common.Logging.LogSystem.Debug(Resources.ResourceMessage.HoSoDieuTriDangTamKhoa);
-                                    MessageBox.Show(Resources.ResourceMessage.HoSoDieuTriDangTamKhoa);
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                Inventec.Common.Logging.LogSystem.Debug(Resources.ResourceMessage.KhongTimThayHoSoDieuTri);
-                                MessageBox.Show(Resources.ResourceMessage.KhongTimThayHoSoDieuTri);
+                                Inventec.Common.Logging.LogSystem.Debug(Resources.ResourceMessage.HoSoDieuTriDangTamKhoa);
+                                MessageBox.Show(Resources.ResourceMessage.HoSoDieuTriDangTamKhoa);
                                 return;
                             }
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug(Resources.ResourceMessage.KhongTimThayHoSoDieuTri);
+                            MessageBox.Show(Resources.ResourceMessage.KhongTimThayHoSoDieuTri);
+                            return;
+                        }
 
-                            this.serviceReqPrintRaw = GetServiceReqForPrint(data.ID);
+                        this.serviceReqPrintRaw = GetServiceReqForPrint(data.ID);
+
+                        if (HisConfigCFG.AutoDeleteEmrDocumentWhenEditReq == "1")
+                        {
 
                             if (data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
                             {
                                 WaitingManager.Show();
-                                List<object> sendObj = new List<object>() { this.serviceReqPrintRaw.ID };
+                                //List<object> sendObj = new List<object>() { this.serviceReqPrintRaw.ID };
+                                List<object> sendObj = new List<object>() { this.serviceReqPrintRaw.ID, (HIS.Desktop.Common.RefeshReference)RefreshClick };
+
                                 CallModule("HIS.Desktop.Plugins.UpdateExamServiceReq", sendObj);
                                 WaitingManager.Hide();
                             }
@@ -3912,9 +3914,9 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             }
                         }
                         /////
-
-                        
                     }
+                        
+                    
                 }
             }
             catch (Exception ex)
@@ -3922,7 +3924,17 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        public void RefreshSaveSuccess()
+        {
+            try
+            {
+                //code
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void repositoryItemBtnServiceReqPrint_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
@@ -4098,6 +4110,36 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         {
             try
             {
+                var data = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
+                if (HisConfigCFG.AutoDeleteEmrDocumentWhenEditReq == "1")
+                {
+                    EmrDocumentViewFilter emrDocumentFilter = new EmrDocumentViewFilter();
+                    emrDocumentFilter.TREATMENT_CODE__EXACT = data.TDL_TREATMENT_CODE;
+                    emrDocumentFilter.IS_DELETE = false;
+                    var documents = new BackendAdapter(new CommonParam()).Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, emrDocumentFilter, null);
+                    if (documents != null && documents.Count() > 0)
+                    {
+                        var checkServiceReqCode = "SERVICE_REQ_CODE:" + data.SERVICE_REQ_CODE;
+                        //var resultEmrDocumentLast = documents.Where(o => o.DOCUMENT_TYPE_ID != IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_RESULT && !string.IsNullOrEmpty(o.HIS_CODE) && o.HIS_CODE.Contains(checkServiceReqCode));
+                        var resultEmrDocumentLast = documents.Where(o =>
+    !string.IsNullOrEmpty(o.HIS_CODE)
+    && o.HIS_CODE.Contains(checkServiceReqCode));
+                        if (resultEmrDocumentLast != null && resultEmrDocumentLast.Count() > 0)
+                        {
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show("Y lệnh đã tồn tại văn bản ký, tiếp tục sẽ tự động Xóa văn bản ký hiện tại. Bạn có muốn tiếp tục?", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
+                                return;
+
+                            WaitingManager.Show();
+                            foreach (var item in resultEmrDocumentLast)
+                            {
+                                var result = new BackendAdapter(new CommonParam()).Post<bool>("api/EmrDocument/Delete", ApiConsumers.EmrConsumer, item.ID, null);
+                            }
+                            WaitingManager.Hide();
+                        }
+                    }
+                }
+
+
                 if (prescription != null)
                 {
                     btnFind_Click(null, null);
@@ -4277,7 +4319,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         {
             try
             {
-                var data = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
+              
                 if (string.IsNullOrWhiteSpace(txtServiceReqCode.Text) && string.IsNullOrWhiteSpace(txtTreatmentCode.Text) && !string.IsNullOrEmpty(HisConfigCFG.MaxTimeFilterOption))
                 {
                     if (dtIntructionTimeFrom.EditValue == null)
@@ -4294,33 +4336,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                    if (HisConfigCFG.AutoDeleteEmrDocumentWhenEditReq == "1")
-                    {
-                        EmrDocumentViewFilter emrDocumentFilter = new EmrDocumentViewFilter();
-                        emrDocumentFilter.TREATMENT_CODE__EXACT = data.TDL_TREATMENT_CODE;
-                        emrDocumentFilter.IS_DELETE = false;
-                        var documents = new BackendAdapter(new CommonParam()).Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, emrDocumentFilter, null);
-                        if (documents != null && documents.Count() > 0)
-                        {
-                            var checkServiceReqCode = "SERVICE_REQ_CODE:" + data.SERVICE_REQ_CODE;
-                            //var resultEmrDocumentLast = documents.Where(o => o.DOCUMENT_TYPE_ID != IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_RESULT && !string.IsNullOrEmpty(o.HIS_CODE) && o.HIS_CODE.Contains(checkServiceReqCode));
-                            var resultEmrDocumentLast = documents.Where(o =>
-        !string.IsNullOrEmpty(o.HIS_CODE)
-        && o.HIS_CODE.Contains(checkServiceReqCode));
-                            if (resultEmrDocumentLast != null && resultEmrDocumentLast.Count() > 0)
-                            {
-                                if (DevExpress.XtraEditors.XtraMessageBox.Show("Y lệnh đã tồn tại văn bản ký, tiếp tục sẽ tự động Xóa văn bản ký hiện tại. Bạn có muốn tiếp tục?", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
-                                    return;
-
-                                WaitingManager.Show();
-                                foreach (var item in resultEmrDocumentLast)
-                                {
-                                    var result = new BackendAdapter(new CommonParam()).Post<bool>("api/EmrDocument/Delete", ApiConsumers.EmrConsumer, item.ID, null);
-                                }
-                                WaitingManager.Hide();
-                            }
-                        }
-                    }
+                   
                 }
                     
                
@@ -4945,6 +4961,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         {
             try
             {
+
+               
                 WaitingManager.Show();
                 FillDataToGrid();
                 WaitingManager.Hide();
