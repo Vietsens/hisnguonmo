@@ -383,13 +383,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 var colCode = view.Columns.AddField("HEIN_PATIENT_TYPE_CODE");
                 colCode.Caption = "Mã";
                 colCode.VisibleIndex = 0;
-                colCode.Width = 120;
+                colCode.Width = 60;
 
 
                 var colDesc = view.Columns.AddField("DESCRIPTION");
                 colDesc.Caption = "Mô tả";
                 colDesc.VisibleIndex = 1;
-                colDesc.Width = 280;
+                colDesc.Width = 340;
 
                 var memoEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
                 memoEdit.WordWrap = true;  
@@ -2969,7 +2969,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {  
                     return;
                 }
-                MergeFieldsFromTransferSDO();
                 //if (hisTreatmentFinishSDO != null && (string.IsNullOrEmpty(hisTreatmentFinishSDO.ClinicalNote) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentDirection) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentMethod) && string.IsNullOrEmpty(hisTreatmentFinishSDO.TransportVehicle) || (string.IsNullOrEmpty(hisTreatmentFinishSDO.TransporterLoginnames) && string.IsNullOrEmpty(hisTreatmentFinishSDO.Transporter)) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TransferOutMediOrgCode) || !hisTreatmentFinishSDO.TranPatiReasonId.HasValue || !hisTreatmentFinishSDO.TranPatiFormId.HasValue))
                 //{
                 //    XtraMessageBox.Show("Thiếu thông tin chuyển viện", "Thông báo");
