@@ -299,7 +299,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     HisSereNmseFilter sereNmseFilter = new HisSereNmseFilter();
                     sereNmseFilter.SERVICE_REQ_ID = this.currentServiceReqPrint.ID;
                     var sereNmseList = new BackendAdapter(param).Get<List<HIS_SERE_NMSE>>("api/HisSereNmse/Get", ApiConsumers.MosConsumer, sereNmseFilter, param);
-
+                      
                     HisNoneMediServiceReqResultSDO hisNoneMediServiceReqResultSDO = new HisNoneMediServiceReqResultSDO(
                         new List<V_HIS_SERVICE_REQ> { serviceReq },
                         sereNmseList
