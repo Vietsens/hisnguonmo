@@ -4114,7 +4114,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 {
                     EmrDocumentViewFilter emrDocumentFilter = new EmrDocumentViewFilter();
                     emrDocumentFilter.TREATMENT_CODE__EXACT = data.TDL_TREATMENT_CODE;
-                    emrDocumentFilter.IS_DELETE = false;
+                    //emrDocumentFilter.IS_DELETE = false;
                     var documents = new BackendAdapter(new CommonParam()).Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, emrDocumentFilter, null);
                     if (documents != null && documents.Count() > 0)
                     {
@@ -4926,12 +4926,12 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             }
                         }
                         else if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PHCN)
-                        {
+                        {   
                             ProcessPrintResult();
                         }
                     }
                 }
-            }
+            }  
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
@@ -4960,8 +4960,35 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         {
             try
             {
+                var data = (ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
+                if (HisConfigCFG.AutoDeleteEmrDocumentWhenEditReq == "1")
+                {
+                    EmrDocumentViewFilter emrDocumentFilter = new EmrDocumentViewFilter();
+                    emrDocumentFilter.TREATMENT_CODE__EXACT = data.TDL_TREATMENT_CODE;
+                    //emrDocumentFilter.IS_DELETE = false;
+                    var documents = new BackendAdapter(new CommonParam()).Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, emrDocumentFilter, null);
+                    if (documents != null && documents.Count() > 0)
+                    {
+                        var checkServiceReqCode = "SERVICE_REQ_CODE:" + data.SERVICE_REQ_CODE;
+                        //var resultEmrDocumentLast = documents.Where(o => o.DOCUMENT_TYPE_ID != IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_RESULT && !string.IsNullOrEmpty(o.HIS_CODE) && o.HIS_CODE.Contains(checkServiceReqCode));
+                        var resultEmrDocumentLast = documents.Where(o =>
+    !string.IsNullOrEmpty(o.HIS_CODE)
+    && o.HIS_CODE.Contains(checkServiceReqCode));
+                        if (resultEmrDocumentLast != null && resultEmrDocumentLast.Count() > 0)
+                        {
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show("Y lệnh đã tồn tại văn bản ký, tiếp tục sẽ tự động Xóa văn bản ký hiện tại. Bạn có muốn tiếp tục?", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
+                                return;
 
-               
+                            WaitingManager.Show();
+                            foreach (var item in resultEmrDocumentLast)
+                            {
+                                var result = new BackendAdapter(new CommonParam()).Post<bool>("api/EmrDocument/Delete", ApiConsumers.EmrConsumer, item.ID, null);
+                            }
+                            WaitingManager.Hide();
+                        }
+                    }
+                }
+
                 WaitingManager.Show();
                 FillDataToGrid();
                 WaitingManager.Hide();
