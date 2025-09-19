@@ -508,12 +508,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     return;
                 }
 
-                if (treatUC != null && !string.IsNullOrEmpty(treatUC.HeinPatientTypeCode) && treatUC.HeinPatientTypeCode.Any(char.IsLetter))
-                {
-                    IsValidForSave = false;
-                    XtraMessageBox.Show("Mã đối tượng khám bệnh không được nhập chữ");
-                    return;
-                }
+                //if (treatUC != null && !string.IsNullOrEmpty(treatUC.HeinPatientTypeCode) && treatUC.HeinPatientTypeCode.Any(char.IsLetter))
+                //{
+                //    IsValidForSave = false;
+                //    XtraMessageBox.Show("Mã đối tượng khám bệnh không được nhập chữ");
+                //    return;
+                //}
 
                 if (isHasTreatmentFinishChecked && treatUC != null)
                 {
@@ -1045,7 +1045,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             this.PrescriptionSavePrintShowHasClickSave("", true, null);
                             break;
                         case SAVETYPE.SAVE_SHOW_PRINT_PREVIEW:
-                            this.PrescriptionSavePrintShowHasClickSave(MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, false);
+                            this.PrescriptionSavePrintShowHasClickSave(MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, false, null);
                             break;
                     }
 
