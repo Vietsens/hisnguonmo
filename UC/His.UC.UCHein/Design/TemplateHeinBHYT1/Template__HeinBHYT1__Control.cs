@@ -1391,6 +1391,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.txtInCode.Enabled = false;
                     firstCheck = false;
                     InitComboPatientCode();
+                    SetSize();
                     //}
                 }
             }
@@ -1422,6 +1423,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 if (this.rdoRightRoute.Checked && !chkHasDobCertificate.Checked)
                 {
                     InitComboPatientCode();
+                    SetSize();
                     firstCheck = false;
                     this.ChangeDefaultHeinRatio();
                     this.rdoWrongRoute.Checked = false;

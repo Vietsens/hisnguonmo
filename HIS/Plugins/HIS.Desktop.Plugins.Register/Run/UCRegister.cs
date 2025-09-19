@@ -3227,11 +3227,12 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        bool IsReset = false;
         private void btnNewContinue_Click(object sender, EventArgs e)
         {
             try
             {
+                IsReset = true;
                 this.IsReadCardTheViet = false;
                 this.currentHisExamServiceReqResultSDO = null;
                 this.resultHisPatientProfileSDO = null;
