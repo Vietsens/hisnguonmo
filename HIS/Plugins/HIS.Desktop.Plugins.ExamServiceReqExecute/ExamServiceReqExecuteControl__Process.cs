@@ -1848,11 +1848,20 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             if (treatment != null)
                             {
                                 var age = Inventec.Common.DateTime.Calculation.Age(treatment.TDL_PATIENT_DOB);
-                                if (age < 7 && (String.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.PatientRelativeName) || String.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.PatientRelativeType)))
+                                if (age < 7 && 
+                                    (!string.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.FatherName) || 
+                                    !string.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.MotherName) ||
+                                    (!String.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.PatientRelativeName) 
+                                    && !String.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.PatientRelativeType))))
+                                {
+
+                                }
+                                else
                                 {
                                     MessageBox.Show("Thông tin nghỉ hưởng BHXH thiếu thông tin bố mẹ. Vui lòng kiểm tra lại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                     return false;
                                 }
+                                
                             }
                         }
                         else if (cboThongTinBoSung == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_DUONG_THAI)
