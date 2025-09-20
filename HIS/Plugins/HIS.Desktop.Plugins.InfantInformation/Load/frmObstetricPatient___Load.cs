@@ -175,7 +175,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 cboHisBirthSertBook.Properties.View.OptionsView.RowAutoHeight = true;
                 cboHisBirthSertBook.Properties.View.OptionsView.ColumnAutoWidth = false;
                 cboHisBirthSertBook.Properties.PopupFormWidth = 300;
-
             }
             catch (Exception ex)
             {
