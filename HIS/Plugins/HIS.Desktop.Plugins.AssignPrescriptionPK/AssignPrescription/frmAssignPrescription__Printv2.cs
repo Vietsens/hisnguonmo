@@ -716,7 +716,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 //&& ((this.expMestPrints != null && this.expMestPrints.Count > 0) || (this.serviceReqPrints != null && this.serviceReqPrints.Count > 0))
                                 && !GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
                             {
-                                if (this.expMestPrints != null && this.expMestPrints.Count > 0)
+                                if (this.expMestPrints != null && this.expMestPrints.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
                                 {
                                     if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ExpMests != null && this.outPrescriptionResultSDOs.ExpMests.Count > 0)
                                     {
@@ -733,7 +733,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                             expMestMaterialPrintPlus = this.expMestMaterialPrints.Where(o => !this.outPrescriptionResultSDOs.ExpMests.Exists(k => k.ID == o.EXP_MEST_ID)).ToList();
                                         }
                                     }
-                                    else
+                                    else if(hisConfigCFGprintTypeCode != "Mps000234")
                                     {
                                         expMestPrintPlus.AddRange(expMestPrints);
                                         if (this.expMestMedicinePrints != null && this.expMestMedicinePrints.Count > 0)
@@ -747,21 +747,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                         }
                                     }
                                 }
-                                else if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ExpMests != null && this.outPrescriptionResultSDOs.ExpMests.Count > 0)
+                                else if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ExpMests != null && this.outPrescriptionResultSDOs.ExpMests.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
                                 {
                                     expMestPrintPlus.AddRange(this.outPrescriptionResultSDOs.ExpMests);
                                 }       
 
-                                if (this.outPrescriptionResultSDOs.Medicines != null && this.outPrescriptionResultSDOs.Medicines.Count > 0)
+                                if (this.outPrescriptionResultSDOs.Medicines != null && this.outPrescriptionResultSDOs.Medicines.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
                                 {
                                     expMestMedicinePrintPlus.AddRange(this.outPrescriptionResultSDOs.Medicines);
                                 }
-                                if (this.outPrescriptionResultSDOs.Materials != null && this.outPrescriptionResultSDOs.Materials.Count > 0)
+                                if (this.outPrescriptionResultSDOs.Materials != null && this.outPrescriptionResultSDOs.Materials.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
                                 {
                                     expMestMaterialPrintPlus.AddRange(this.outPrescriptionResultSDOs.Materials);
                                 }
 
-                                if (this.serviceReqPrints != null && this.serviceReqPrints.Count > 0)
+                                if (this.serviceReqPrints != null && this.serviceReqPrints.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
                                 {
                                     if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqs != null && this.outPrescriptionResultSDOs.ServiceReqs.Count > 0)
                                     {
@@ -773,31 +773,35 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                         serviceReqPrintPlus.AddRange(this.serviceReqPrints);
                                     }
                                 }
-                                else if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqs != null && this.outPrescriptionResultSDOs.ServiceReqs.Count > 0)
+                                else if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqs != null && this.outPrescriptionResultSDOs.ServiceReqs.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
                                 {
                                     serviceReqPrintPlus.AddRange(this.outPrescriptionResultSDOs.ServiceReqs);
                                 }
 
-                                if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqMaties != null && this.outPrescriptionResultSDOs.ServiceReqMaties.Count > 0 && (hisConfigCFGprintTypeCode == "Mps000234" && !GlobalStore.IsCabinet))
+                                if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqMaties != null && this.outPrescriptionResultSDOs.ServiceReqMaties.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
                                 {
                                     OutPatientPresResultSDO.ServiceReqMaties = (this.outPrescriptionResultSDOs.ServiceReqMaties);
                                 }
-                                if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqMeties != null && this.outPrescriptionResultSDOs.ServiceReqMeties.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234" || GlobalStore.IsCabinet))
+                                if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqMeties != null && this.outPrescriptionResultSDOs.ServiceReqMeties.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
                                 {
                                     OutPatientPresResultSDO.ServiceReqMeties = (this.outPrescriptionResultSDOs.ServiceReqMeties);
                                 }
 
-                                if (expMestPrintPlus != null && expMestPrintPlus.Count > 0)
+                                if (expMestPrintPlus != null && expMestPrintPlus.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234" || !GlobalStore.IsCabinet))
                                 {
                                     expMestPrintPlus = expMestPrintPlus.Where(o => o.EXP_MEST_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DTT).ToList();
                                 }
 
-                                OutPatientPresResultSDO.ExpMests = expMestPrintPlus;   
-                                OutPatientPresResultSDO.Medicines = expMestMedicinePrintPlus;
-                                OutPatientPresResultSDO.Materials = expMestMaterialPrintPlus;
-                                if (OutPatientPresResultSDO.Materials != null && OutPatientPresResultSDO.Materials.Count > 0)
-                                    lstMatePrintMps494.AddRange(OutPatientPresResultSDO.Materials);
-                                OutPatientPresResultSDO.ServiceReqs = serviceReqPrintPlus;
+                                if (hisConfigCFGprintTypeCode != "Mps000234")
+                                {
+                                    OutPatientPresResultSDO.ExpMests = expMestPrintPlus;
+                                    OutPatientPresResultSDO.Medicines = expMestMedicinePrintPlus;
+                                    OutPatientPresResultSDO.Materials = expMestMaterialPrintPlus;
+                                    if (OutPatientPresResultSDO.Materials != null && OutPatientPresResultSDO.Materials.Count > 0)
+                                        lstMatePrintMps494.AddRange(OutPatientPresResultSDO.Materials);
+                                    OutPatientPresResultSDO.ServiceReqs = serviceReqPrintPlus;
+                                }
+                            
                                 OutPatientPresResultSDOForPrints.Add(OutPatientPresResultSDO);
                             }
                             else
