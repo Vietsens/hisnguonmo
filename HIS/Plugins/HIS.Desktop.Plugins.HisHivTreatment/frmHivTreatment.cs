@@ -65,7 +65,8 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
         List<ComboADO> hivPatientStatusSelecteds;
         private List<ComboADO> hivTreatmentSelecteds = new List<ComboADO>();
         ComboADO comboAdo = new ComboADO();
-
+        private bool _isInternalChange = false;
+        private string _lastEditValue = null;
         int prescriptionArcDay = 0;
         bool isInit = false;
         int positionHandle = -1;
@@ -504,6 +505,7 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                     this.hivTreatmentSelecteds.AddRange(selected);
                 }
                 this.cboHivTreatment.Text = sb.ToString();
+                
             }
             catch (Exception ex)
             {
@@ -1861,7 +1863,16 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
+                    var gridCheckMark = cboHivTreatment.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboHivTreatment.Properties.View);
+                    }
+                  
+                    hivTreatmentSelecteds.Clear();
+               
                     cboHivTreatment.EditValue = null;
+                    cboHivTreatment.Text = string.Empty;
                 }
             }
             catch (Exception ex)
@@ -2267,18 +2278,37 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
             }
         }
 
+       
+
         private void cboHivTreatment_EditValueChanged(object sender, EventArgs e)
         {
             try
             {
+
+
+
+                var currentValue = cboHivTreatment.EditValue.ToString();
+
+
+                if (currentValue == _lastEditValue)
+                    return;
+
+                _lastEditValue = currentValue;
+
+
                 if (cboHivTreatment.EditValue != null)
                 {
                     cboHivTreatment.Properties.Buttons[1].Visible = true;
-                    if (cboHivTreatment.EditValue.ToString() == "1")
+                    bool hasValue1 = hivTreatmentSelecteds != null && hivTreatmentSelecteds.Any(x => x.Value == 1);
+                    // if (cboHivTreatment.EditValue?.ToString() == "1")
+                    //if (cboHivTreatment.EditValue.ToString().Contains("1"))
+                    if (hasValue1)
                     {
                         dtArvTreatmentBegin.Enabled = true;
                         dtArvTreatmentEnd.Enabled = true;
                         spnPrescriptionArcDay.Enabled = true;
+                        
+
                     }
                     else
                     {
@@ -2306,6 +2336,8 @@ namespace HIS.Desktop.Plugins.HisHivTreatment
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+
 
         private void dtTuberculosisTreatmentBegin_EditValueChanged(object sender, EventArgs e)
         {

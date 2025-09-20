@@ -76,5 +76,6 @@ namespace His.UC.UCHein.Data
         public long PatientId { get; set; }
         public long treatmentTypeId { get; set; }
         public long ActionType { get; set; }
+        public bool IsReset { get; set; }
     }
 }

@@ -2897,6 +2897,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 BackendDataWorker.Reset<V_HIS_MATERIAL>();
                 BackendDataWorker.Reset<V_HIS_MEDICINE>();
                 MessageManager.Show(this.ParentForm, param, success);
+                WaitingManager.Hide();
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
             }
             catch (Exception ex)
@@ -5996,7 +5997,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
         private void txtNhaCC_EditValueChanged(object sender, EventArgs e)
         {
-
+            TaskAll();
         }
 
         private void SpPricingMaxReuseCount_EditValueChanged(object sender, EventArgs e)

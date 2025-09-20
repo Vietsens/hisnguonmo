@@ -19,6 +19,7 @@ using DevExpress.Utils;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Grid;
 using His.UC.UCHein.Base;
 using His.UC.UCHein.Config;
 using His.UC.UCHein.Data;
@@ -63,6 +64,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         int positionHandleControl = -1;
         long PatientTypeId;
         string TreatmentTypeCode { get; set; }
+        bool IsReset;
         CultureInfo CultureInfo { get; set; }
         DataInitHeinBhyt entity;
         ResultDataADO ResultDataADO { get; set; }
@@ -126,10 +128,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             try
             {
                 InitializeComponent();
-                SetColorForHeinPatientType();
                 if (data != null)
                 {
                     this.entity = data;
+                    this.IsReset = data.IsReset;
                     this.isDefaultInit = true;
                     this.HeinPatientCode = data.HeinPatientCode;
                     DataStore.MediOrgs = (from m in data.MediOrgs select new MediOrgADO(m)).ToList();
@@ -189,10 +191,13 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 Inventec.Common.Logging.LogSystem.Debug("Template__HeinBHYT1_Load()");
                 this.SetCaptionByLanguageKeyNew();
                 Config.HisConfigCFG.LoadConfig();
+                SetColorForHeinPatientType();
                 ResetPatientCode();
                 InitComboPatientCode();
                 if (this.isDefaultInit)
                     this.InitData(this.entity);
+                if (this.IsReset)
+                    cboPatientCode.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -202,12 +207,12 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         private void InitComboPatientCode()
         {
             try
-            {                
+            {
                 var heinData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     .ToList();
                 List<HIS_HEIN_PATIENT_TYPE> heinList = new List<HIS_HEIN_PATIENT_TYPE>();
-                if((this.ActionType == 1 || isCallByRegistor) && !firstCheck && !isClickCboPatientTypeCode)
+                if ((this.ActionType == 1 || isCallByRegistor || IsReset) && !firstCheck && !isClickCboPatientTypeCode)
                 {
                     string rightRouteCode = null;
                     if (rdoRightRoute.Checked)
@@ -246,26 +251,30 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     {
                         cboPatientCode.EditValue = null;
                     }
-                }                
+                }
 
                 cboPatientCode.Properties.DataSource = heinData;
                 cboPatientCode.Properties.DisplayMember = "HEIN_PATIENT_TYPE_CODE";
                 cboPatientCode.Properties.ValueMember = "HEIN_PATIENT_TYPE_CODE";
-
                 cboPatientCode.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
                 cboPatientCode.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
                 cboPatientCode.ForceInitialize();
                 cboPatientCode.Properties.View.Columns.Clear();
                 cboPatientCode.Properties.ImmediatePopup = true;
-                // Ngăn auto-complete fill
+
                 cboPatientCode.Properties.AutoComplete = false;
+                cboPatientCode.Properties.NullText = null;
+                cboPatientCode.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+
 
                 // Cột mã
                 DevExpress.XtraGrid.Columns.GridColumn colCode = cboPatientCode.Properties.View.Columns.AddField("HEIN_PATIENT_TYPE_CODE");
                 colCode.Caption = "Mã";
                 colCode.Visible = true;
                 colCode.VisibleIndex = 0;
-                colCode.Width = 40;
+                colCode.Width = 50;
+                colCode.MinWidth = 50;
+
 
                 // Cột mô tả
                 DevExpress.XtraGrid.Columns.GridColumn colDesc = cboPatientCode.Properties.View.Columns.AddField("DESCRIPTION");
@@ -276,16 +285,41 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 colDesc.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.Word;
                 colDesc.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
                 colDesc.Width = 400;
+                //colDesc.MinWidth = 500;
 
                 cboPatientCode.Properties.View.OptionsView.RowAutoHeight = true;
+                //cboPatientCode.Properties.View.OptionsView.ColumnAutoWidth = true;
+                cboPatientCode.Properties.PopupFormMinSize = new Size(400, 200);
+
+                cboPatientCode.Properties.View.ActiveFilter.Clear();
+
                 //firstCheck = false;
+                cboPatientCode.EditValueChanged += cboPatientCode_EditValueChanged;
+                cboPatientCode.ButtonClick += cboPatientCode_ButtonClick;
+                cboPatientCode.TextChanged += cboPatientCode_TextChanged_1;
+                cboPatientCode.Properties.ImmediatePopup = true;
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        public void SetSize()
+        {
+            try
+            {
+                DevExpress.XtraGrid.Columns.GridColumn colCode = cboPatientCode.Properties.View.Columns.AddField("HEIN_PATIENT_TYPE_CODE");
+                colCode.Width = 20;
+                DevExpress.XtraGrid.Columns.GridColumn colDesc = cboPatientCode.Properties.View.Columns.AddField("DESCRIPTION");
+                colDesc.Width = 400;
+                cboPatientCode.Properties.PopupFormMinSize = new Size(400, 200);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void ResetPatientCode()
         {
             try
@@ -907,8 +941,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 this.TreatmentTypeId = TreatmentTypeId;
                 this.ShowPatientFromHeinCardNumber();
-                firstCheck = false;
                 InitComboPatientCode();
+                firstCheck = false;
             }
             catch (Exception ex)
             {
@@ -1410,7 +1444,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     valid = false;
                 }
                 valid = valid && ValidateHeinPatientTypeCode();
-                ClearHeinPatientCodeError();
             }
             catch (Exception ex)
             {
@@ -2103,7 +2136,16 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 //this.cboPatientCode.Properties.Buttons[1].Visible = true;
                 //IsInitFromCallPatientTypeAlter;
-                ClearHeinPatientCodeError();
+                //ClearHeinPatientCodeError();
+                if (cboPatientCode == null) return;
+                string filterText = cboPatientCode.Text;
+                if (string.IsNullOrWhiteSpace(filterText))
+                {
+                    cboPatientCode.Properties.View.ActiveFilter.Clear();
+                    return;
+                }
+                var displayMember = cboPatientCode.Properties.DisplayMember;
+                cboPatientCode.Properties.View.ActiveFilter.Clear();
             }
             catch (Exception ex)
             {
@@ -2129,10 +2171,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         {
             try
             {
-                if (e.CloseMode == PopupCloseMode.ButtonClick)
+                if (e.CloseMode == PopupCloseMode.Normal)
                 {
                     isClickCboPatientTypeCode = true;
-                    if (this.ActionType == 1 || isCallByRegistor)
+                    if (this.ActionType == 1 || isCallByRegistor || IsReset)
                     {
                         var heinData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.HEIN_PATIENT_TYPE_CODE == cboPatientCode.EditValue.ToString()).FirstOrDefault();
@@ -2231,7 +2273,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                                         cboHeinRightRoute.EditValue = null;
                                     }
                                     // Update TREATMENT_TYPE_ID
-                                    if (treatmentTypeIds.Count > 0)
+                                    if (treatmentTypeIds.Count > 0 && treatmentTypeIds[0] != "0")
                                     {
                                         long firstId;
                                         //if (treatmentTypeIds[0] == "")
@@ -2241,7 +2283,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                                             this.TreatmentTypeId1(firstId);
                                         }
                                     }
-                                    else
+                                    if (treatmentTypeIds[0] == "0")
                                         this.TreatmentTypeId1(1);
                                 }
                             }
@@ -2260,17 +2302,36 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         private void cboPatientCode_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
-            {               
+            {
                 if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
                 {
                     cboPatientCode.EditValue = null;
                 }
                 this.cboPatientCode.Properties.Buttons[1].Visible = false;
+                cboPatientCode.Properties.View.ActiveFilter.Clear();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        private void cboPatientCode_TextChanged_1(object sender, EventArgs e)
+        {
+            if (cboPatientCode == null) return;
+            string filterText = cboPatientCode.Text;
+            if (string.IsNullOrWhiteSpace(filterText))
+            {
+                cboPatientCode.Properties.View.ActiveFilter.Clear();
+                return;
+            }
+            cboPatientCode.Properties.View.ActiveFilter.Clear();
+            cboPatientCode.Properties.View.ActiveFilterCriteria =
+    DevExpress.Data.Filtering.CriteriaOperator.Parse(
+        string.Format("[{0}] LIKE '%{1}%' OR [{2}] LIKE '%{1}%'",
+            "HEIN_PATIENT_TYPE_CODE",
+            filterText,
+            "DESCRIPTION")
+    );
         }
     }
 

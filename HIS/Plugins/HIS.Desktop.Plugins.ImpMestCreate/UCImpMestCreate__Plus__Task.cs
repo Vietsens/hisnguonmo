@@ -668,7 +668,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 						{
 							foreach (var item in dicContractMety)
 							{
-								var medicineType = listSub.FirstOrDefault(o => o.ID == item.Value.MEDICINE_TYPE_ID);
+                           
+                            var medicineType = listSub.FirstOrDefault(o => o.ID == item.Value.MEDICINE_TYPE_ID);
 								if (medicineType == null)
 									continue;
 								MedicineTypeADO medicineTypeADO = new MedicineTypeADO(medicineType);
@@ -777,7 +778,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 						{
 							foreach (var item in dicContractMaty)
 							{
-								var materialType = listSub.FirstOrDefault(o => o.ID == item.Value.MATERIAL_TYPE_ID);
+                          
+                            var materialType = listSub.FirstOrDefault(o => o.ID == item.Value.MATERIAL_TYPE_ID);
 								if (materialType == null)
 									continue;
 								MaterialTypeADO materialTypeADO = new MaterialTypeADO(materialType);

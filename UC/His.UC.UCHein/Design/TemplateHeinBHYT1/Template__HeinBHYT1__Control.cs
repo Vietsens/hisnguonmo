@@ -1391,6 +1391,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.txtInCode.Enabled = false;
                     firstCheck = false;
                     InitComboPatientCode();
+                    SetSize();
                     //}
                 }
             }
@@ -1422,6 +1423,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 if (this.rdoRightRoute.Checked && !chkHasDobCertificate.Checked)
                 {
                     InitComboPatientCode();
+                    SetSize();
                     firstCheck = false;
                     this.ChangeDefaultHeinRatio();
                     this.rdoWrongRoute.Checked = false;
@@ -1622,7 +1624,6 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.dxValidationProvider1.SetValidationRule(this.dtTransferInTimeTo, null);
                     this.dxValidationProvider1.SetValidationRule(this.txtMaHinhThucChuyen, null);
                     this.dxValidationProvider1.SetValidationRule(this.txtMaLyDoChuyen, null);
-                    this.dxValidationProvider1.SetValidationRule(this.cboPatientCode, null);
                 }
             }
             catch (Exception ex)

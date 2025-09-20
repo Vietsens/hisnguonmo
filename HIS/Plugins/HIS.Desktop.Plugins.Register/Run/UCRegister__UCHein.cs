@@ -80,6 +80,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     Inventec.Common.Logging.LogSystem.Debug("t3.1.1: set default data to control hein");
                     His.UC.UCHein.Data.DataInitHeinBhyt dataHein = new His.UC.UCHein.Data.DataInitHeinBhyt();
+                    dataHein.IsReset = this.IsReset;
                     dataHein.DeleteTreatmentTypeId = DelegateTreatmentType;
                     dataHein.BhytWhiteLists = BackendDataWorker.Get<HIS_BHYT_WHITELIST>();
                     dataHein.BhytBlackLists = BackendDataWorker.Get<HIS_BHYT_BLACKLIST>();
