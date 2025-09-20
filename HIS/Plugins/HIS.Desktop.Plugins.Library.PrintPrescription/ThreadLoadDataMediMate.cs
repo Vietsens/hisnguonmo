@@ -158,6 +158,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             HisExpMestMedicineViewFilter expMestMedicineFilter = new HisExpMestMedicineViewFilter();
                             expMestMedicineFilter.TDL_TREATMENT_ID = treatment.ID;
                             lstExpMestMedicine = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MEDICINE>>("api/HisExpMestMedicine/GetView", ApiConsumers.MosConsumer, expMestMedicineFilter, null);
+                            Inventec.Common.Logging.LogUtil.TraceData("data lstExpMestMedicine: ", lstExpMestMedicine);
                         }
                         var expMestMedicineGroups = lstmedicine.GroupBy(o => new { o.TDL_MEDICINE_TYPE_ID, o.PRICE, o.IS_EXPEND, o.EXP_MEST_ID });
 
@@ -323,8 +324,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             var lstEMMedicine = lstExpMestMedicine.FirstOrDefault(p => p.TDL_MEDICINE_TYPE_ID == expMestMedicineGroup.FirstOrDefault().TDL_MEDICINE_TYPE_ID && p.PRICE == expMestMedicineGroup.FirstOrDefault().PRICE && p.IS_EXPEND == expMestMedicineGroup.FirstOrDefault().IS_EXPEND && p.EXP_MEST_ID == expMestMedicineGroup.FirstOrDefault().EXP_MEST_ID);
                             if (lstEMMedicine != null)
                             {
+                                mediExpmestADO.MEDICINE_LINE_ID = lstEMMedicine.MEDICINE_LINE_ID;        
                                 mediExpmestADO.PACKAGE_NUMBER = lstEMMedicine.PACKAGE_NUMBER;
-                                mediExpmestADO.EXPIRED_DATE = lstEMMedicine.EXPIRED_DATE;
+                                mediExpmestADO.EXPIRED_DATE = lstEMMedicine.EXPIRED_DATE;    
                                 mediExpmestADO.MEDI_STOCK_ID = lstEMMedicine.MEDI_STOCK_ID;
                                 mediExpmestADO.MEDI_STOCK_CODE = lstEMMedicine.MEDI_STOCK_CODE;
                                 mediExpmestADO.MEDI_STOCK_NAME = lstEMMedicine.MEDI_STOCK_NAME;

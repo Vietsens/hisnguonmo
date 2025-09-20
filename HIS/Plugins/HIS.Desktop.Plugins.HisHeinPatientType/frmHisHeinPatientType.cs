@@ -3,6 +3,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
@@ -14,6 +15,7 @@ using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
 using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using Inventec.UC.Paging;
 using MOS.EFMODEL.DataModels;
@@ -24,6 +26,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Resources;
 using System.Windows.Forms;
 
 
@@ -47,7 +50,7 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                 InitializeComponent();
                 this.moduleData = moduleData;
                 pagingGrid = new PagingGrid();
-
+                     
             }
             catch (Exception ex)
             {
@@ -70,7 +73,7 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
         {
             try
             {
-                FillDataToControl();
+                FillDataToControl();      
                 SetSpinEditDefaultNull(sprinNumOrder);
                 LoadRightRouteType(cboRightRouteTypeCode);
                 InitCheck(cboTreatmentType, SelectionGrid__Status);
@@ -79,11 +82,32 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
 
                 InitCombo(cboTreatmentType, lstTreatmentType, "TREATMENT_TYPE_NAME", "ID");
                 ValidateForm();
+                SetCaptionByLanguagekey();
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Warn(ex);        
             }
+        }
+
+        private void SetCaptionByLanguagekey() 
+        {
+            Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.HisHeinPatientType.Resources.Lang", typeof(HIS.Desktop.Plugins.HisHeinPatientType.frmHisHeinPatientType).Assembly);
+            this.bar1.Text = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+            this.bbtnAdd.Caption = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.bbtnAdd.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+            this.bbtnEdit.Caption = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.bbtnEdit.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+            this.bbtnReset.Caption = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.bbtnReset.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+            this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.bbtnSearch.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+            this.txtKeyWord.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.txtKeyWord.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+            this.btnAdd.Text = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.btnAdd.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+            this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.btnEdit.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+            this.btnReset.Text = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.btnReset.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+            this.btnSearch.Text = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+            this.chkTT.Text = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.chkTT.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+            this.chkDT.Text = Inventec.Common.Resource.Get.Value("frmHisHeinPatientType.chkDT.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+            
         }
         private void ValidateForm()
         {
@@ -222,7 +246,13 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                 txtRightRouteTypeCode.Text = null;
                 cboRightRouteTypeCode.EditValue = null;
                 sprinNumOrder.EditValue = null;
-                cboTreatmentType.EditValue = null;
+                GridCheckMarksSelection gridCheckMark = cboTreatmentType.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboTreatmentType.Properties.View);
+                }
+                cboTreatmentType.EditValue = "";    
+                cboTreatmentType.RefreshEditValue();
                 positionHandle = -1;
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError
                 (dxValidationProvider1, dxErrorProvider1);               
@@ -368,7 +398,7 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                     updateDTO.RIGHT_ROUTE_TYPE_CODE = "";
                 }
 
-                if (string.IsNullOrEmpty(sprinNumOrder.EditValue?.ToString()))
+                if (string.IsNullOrEmpty(sprinNumOrder.EditValue.ToString()))
                 {
                     updateDTO.NUM_ORDER = null;
                 }
@@ -446,6 +476,31 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                     if (!string.IsNullOrEmpty(data.RIGHT_ROUTE_TYPE_CODE))
                     {
                         cboRightRouteTypeCode.EditValue = data.RIGHT_ROUTE_TYPE_CODE;
+                    }
+
+                    if (!string.IsNullOrEmpty(data.TREATMENT_TYPE_IDS))
+                    {
+                        var ids = data.TREATMENT_TYPE_IDS
+                                     .Split(',')
+                                     .Select(x => x.Trim())
+                                     .Where(x => !string.IsNullOrEmpty(x))
+                                     .Select(long.Parse) // hoặc Guid.Parse nếu ID kiểu Guid
+                                     .ToList();
+
+                        GridCheckMarksSelection gridCheckMark = cboTreatmentType.Properties.Tag as GridCheckMarksSelection;
+                        if (gridCheckMark != null)
+                        {
+                            gridCheckMark.ClearSelection(cboTreatmentType.Properties.View);
+                            var dataSource = cboTreatmentType.Properties.DataSource as List<HIS_TREATMENT_TYPE>;
+
+                            foreach (var item in dataSource.Where(x => ids.Contains(x.ID)))
+                            {
+                                gridCheckMark.Selection.Add(item);
+                            }
+
+                            cboTreatmentType.EditValue = "";
+                            cboTreatmentType.RefreshEditValue();
+                        }
                     }
                 }
             }
@@ -568,7 +623,7 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                         }
                     }
                 }
-                gridControlHeinPatientType.RefreshDataSource();
+                ///gridControlHeinPatientType.RefreshDataSource();
             }
             catch (Exception ex)
             {
@@ -1030,7 +1085,7 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
         {
             spinEdit.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             spinEdit.Properties.NullText = string.Empty;
-            spinEdit.Properties.MinValue = 1;
+            spinEdit.Properties.MinValue = 0; // trick: đặt 0 để DevExpress không ép về 1
             spinEdit.EditValue = null;
             spinEdit.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
             spinEdit.Properties.Mask.EditMask = "n0"; // số nguyên
@@ -1039,19 +1094,35 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
 
         private void sprinNumOrder_Spin(object sender, DevExpress.XtraEditors.Controls.SpinEventArgs e)
         {
-            if (!e.IsSpinUp && sprinNumOrder.Value <= sprinNumOrder.Properties.MinValue)
+            var spin = sender as DevExpress.XtraEditors.SpinEdit;
+
+            if (spin.EditValue == null && e.IsSpinUp)
             {
+                // nếu đang null và spin lên → thành 1
+                spin.EditValue = 1;
+                e.Handled = true;
+            }
+            else if (!e.IsSpinUp && spin.Value <= 1)
+            {
+                // nếu spin xuống dưới 1 → về null
+                spin.EditValue = null;
                 e.Handled = true;
             }
         }
 
         private void sprinNumOrder_Validating(object sender, CancelEventArgs e)
         {
+            var spin = sender as DevExpress.XtraEditors.SpinEdit;
+            if (spin.EditValue != null && Convert.ToInt32(spin.EditValue) < 1)
+            {
+                e.Cancel = true;
+                spin.EditValue = null; // hoặc reset về null thay vì để 0
+            }
         }
 
         private void sprinNumOrder_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == '-' || e.KeyChar == '+' || e.KeyChar == '0')
+            if (e.KeyChar == '-' || e.KeyChar == '+')
             {
                 e.Handled = true;
             }

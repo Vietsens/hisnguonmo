@@ -75,7 +75,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
             this.currentModule = module;
         }
 
-        public PrintPrescriptionProcessor(List<MOS.SDO.OutPatientPresResultSDO> _OutPatientPresResultSDO, Inventec.Desktop.Common.Modules.Module module)
+         public PrintPrescriptionProcessor(List<MOS.SDO.OutPatientPresResultSDO> _OutPatientPresResultSDO, Inventec.Desktop.Common.Modules.Module module)
         {
             this.OutPatientPresResultSDO = _OutPatientPresResultSDO;
             this.currentModule = module;
@@ -305,7 +305,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     //this.TotalMediMatePrint = HisServiceReqListResultSDO != null && HisServiceReqListResultSDO.SereServs != null ? HisServiceReqListResultSDO.SereServs.Count : 0;
                 }
 
-                Inventec.Common.Logging.LogSystem.Info("Begin Print Prescription");
+                Inventec.Common.Logging.LogSystem.Info("Begin Print Prescription");   
                 this.printNow = PrintNow;
                 this.previewType = previewType;
                 richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.ROOT_PATH);
