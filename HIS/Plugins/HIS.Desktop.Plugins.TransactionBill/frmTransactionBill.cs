@@ -293,7 +293,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
 
                     cboAccountBook.EditValue = currentTransaction.ACCOUNT_BOOK_ID;
-                    cboAccountBook.Enabled = false;
+                    //cboAccountBook.Enabled = false;
                     txtReplaceReason.Text = currentTransaction.REPLACE_REASON;
 
                     txtBuyerName.Text = currentTransaction.BUYER_NAME;
