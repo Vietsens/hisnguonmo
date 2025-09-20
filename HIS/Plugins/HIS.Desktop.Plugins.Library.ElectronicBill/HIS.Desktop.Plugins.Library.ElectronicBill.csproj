@@ -246,6 +246,8 @@
     <Compile Include="ProviderBehavior\CYBERBILL\Model\ElectronicBill.cs" />
     <Compile Include="ProviderBehavior\CYBERBILL\Model\LoginDataCyberbill.cs" />
     <Compile Include="ProviderBehavior\CYBERBILL\Model\LoginResultCyberbill.cs" />
+    <Compile Include="ProviderBehavior\CYBERBILL\Model\ReplaceElectronicBill.cs" />
+    <Compile Include="ProviderBehavior\CYBERBILL\Model\SendAndSignElectronicBill.cs" />
     <Compile Include="ProviderBehavior\CYBERBILL\Model\SignElectronicBill.cs" />
     <Compile Include="ProviderBehavior\MInvoice\InvoiceADO.cs" />
     <Compile Include="ProviderBehavior\MInvoice\MInvoiceBehavior.cs" />
