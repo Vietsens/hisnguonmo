@@ -623,7 +623,7 @@ namespace HIS.Desktop.Plugins.HisHeinPatientType
                         }
                     }
                 }
-                gridControlHeinPatientType.RefreshDataSource();
+                ///gridControlHeinPatientType.RefreshDataSource();
             }
             catch (Exception ex)
             {
