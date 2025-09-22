@@ -20,6 +20,7 @@ using DevExpress.Utils.Menu;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
+using His.UC.UCHein;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -1630,6 +1631,10 @@ namespace HIS.Desktop.Plugins.Register.Run
                     if (String.IsNullOrEmpty(maTHX))
                     {
                         this.SetSourceValueTHX(workingCommuneADO);
+
+                        this.cboTHX.Focus();
+                        this.cboTHX.ShowPopup();
+                        this.cboTHX.Properties.View.FocusedRowHandle = 0;
                         return;
                     }
                     this.cboTHX.EditValue = null;
@@ -1734,7 +1739,9 @@ namespace HIS.Desktop.Plugins.Register.Run
                             this.txtProvinceCode.Text = null;
                             this.cboDistrict.EditValue = null;
                             this.txtDistrictCode.Text = null;
-
+                            this.cboTHX.Focus();
+                            this.cboTHX.ShowPopup();
+                            this.cboTHX.Properties.View.FocusedRowHandle = 0;
                         }
                     }
                     //Nếu không tìm thấy kết quả nào -> reset giá trị combo THX
@@ -1747,6 +1754,9 @@ namespace HIS.Desktop.Plugins.Register.Run
                         this.txtProvinceCode.Text = null;
                         this.cboDistrict.EditValue = null;
                         this.txtDistrictCode.Text = null;
+                        this.cboTHX.Focus();
+                        this.cboTHX.ShowPopup();
+                        this.cboTHX.Properties.View.FocusedRowHandle = 0;
                     }
                 }
             }
@@ -3217,11 +3227,12 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        bool IsReset = false;
         private void btnNewContinue_Click(object sender, EventArgs e)
         {
             try
             {
+                IsReset = true;
                 this.IsReadCardTheViet = false;
                 this.currentHisExamServiceReqResultSDO = null;
                 this.resultHisPatientProfileSDO = null;
@@ -4568,7 +4579,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        public long currentTreatmentType { get; set; }
         private void cboTreatmentType_EditValueChanged(object sender, EventArgs e)
         {
 
@@ -4579,6 +4590,13 @@ namespace HIS.Desktop.Plugins.Register.Run
                 panelLayoutHosReason.Visible = false;
                 layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 layoutControlReasonVV.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                if (mainHeinProcessor != null && ucHeinBHYT != null)
+                {
+                    var dt = cboTreatmentType.EditValue != null ? Int64.Parse(cboTreatmentType.EditValue.ToString()) : 0;
+                    if (currentTreatmentType == 0 || currentTreatmentType != dt)
+                        mainHeinProcessor.SetValueTreatmentType(ucHeinBHYT, dt);
+                    currentTreatmentType = dt;
+                }
 
                 if (cboTreatmentType.EditValue != null)
                 {

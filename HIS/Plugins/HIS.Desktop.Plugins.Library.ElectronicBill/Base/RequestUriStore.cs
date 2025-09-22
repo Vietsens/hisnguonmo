@@ -47,6 +47,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
         internal const string CyberbillTaiHoaDon = "api/services/hddtws/GuiHoaDon/TaiHoaDonPDF";
         internal const string CyberbillHuyHoaDon = "api/services/hddtws/GuiHoaDon/GuiHoadonHuyBo";
         internal const string CyberbillGuiHoadonThayThe = "api/services/hddtws/GuiHoadon/GuiHoadonThayThe";
+        internal const string CyberbillGuiVaKyHoaDonGoc = "api/services/hddtws/GuiHoaDon/GuiVaKyHoadonGocHSM";
         internal static string CombileUrl(params string[] data)
         {
             string result = "";

@@ -101,10 +101,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.cboDirectorUsername = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView17 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtDirectorLoginname = new DevExpress.XtraEditors.TextEdit();
@@ -350,14 +346,18 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.btnCancel = new DevExpress.XtraEditors.SimpleButton();
-            this.btnEdit = new DevExpress.XtraEditors.SimpleButton();
-            this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
+            this.btnSave = new DevExpress.XtraEditors.SimpleButton();
+            this.btnTepoSave = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem42 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.barManager2 = new DevExpress.XtraBars.BarManager();
@@ -611,8 +611,8 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.lcEditorInfo.Controls.Add(this.xtraTabControl1);
             this.lcEditorInfo.Controls.Add(this.layoutControl2);
             this.lcEditorInfo.Controls.Add(this.btnCancel);
-            this.lcEditorInfo.Controls.Add(this.btnEdit);
-            this.lcEditorInfo.Controls.Add(this.btnAdd);
+            this.lcEditorInfo.Controls.Add(this.btnSave);
+            this.lcEditorInfo.Controls.Add(this.btnTepoSave);
             this.lcEditorInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lcEditorInfo.Location = new System.Drawing.Point(0, 29);
             this.lcEditorInfo.Name = "lcEditorInfo";
@@ -731,10 +731,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1,
@@ -778,34 +774,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.barButtonItem3.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
             this.barButtonItem3.Name = "barButtonItem3";
             this.barButtonItem3.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem3_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1282, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 687);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1282, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 658);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1282, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 658);
             // 
             // cboDirectorUsername
             // 
@@ -4013,25 +3981,25 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.btnCancel.Text = "Làm lại (Ctrl R)";
             this.btnCancel.Click += new System.EventHandler(this.btnxoa_Click);
             // 
-            // btnEdit
+            // btnSave
             // 
-            this.btnEdit.Location = new System.Drawing.Point(978, 634);
-            this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(144, 22);
-            this.btnEdit.StyleController = this.lcEditorInfo;
-            this.btnEdit.TabIndex = 27;
-            this.btnEdit.Text = "Sửa (Ctrl S)";
-            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            this.btnSave.Location = new System.Drawing.Point(978, 634);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(144, 22);
+            this.btnSave.StyleController = this.lcEditorInfo;
+            this.btnSave.TabIndex = 27;
+            this.btnSave.Text = "Lưu (Ctrl S)";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // btnAdd
+            // btnTepoSave
             // 
-            this.btnAdd.Location = new System.Drawing.Point(821, 634);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(153, 22);
-            this.btnAdd.StyleController = this.lcEditorInfo;
-            this.btnAdd.TabIndex = 26;
-            this.btnAdd.Text = "Thêm (Ctrl N)";
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.btnTepoSave.Location = new System.Drawing.Point(821, 634);
+            this.btnTepoSave.Name = "btnTepoSave";
+            this.btnTepoSave.Size = new System.Drawing.Size(153, 22);
+            this.btnTepoSave.StyleController = this.lcEditorInfo;
+            this.btnTepoSave.TabIndex = 26;
+            this.btnTepoSave.Text = "Lưu tạm";
+            this.btnTepoSave.Click += new System.EventHandler(this.btnTepoSave_Click);
             // 
             // layoutControlGroup1
             // 
@@ -4051,7 +4019,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // layoutControlItem20
             // 
-            this.layoutControlItem20.Control = this.btnEdit;
+            this.layoutControlItem20.Control = this.btnSave;
             this.layoutControlItem20.Location = new System.Drawing.Point(976, 632);
             this.layoutControlItem20.Name = "layoutControlItem20";
             this.layoutControlItem20.Size = new System.Drawing.Size(148, 26);
@@ -4078,7 +4046,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // layoutControlItem28
             // 
-            this.layoutControlItem28.Control = this.btnAdd;
+            this.layoutControlItem28.Control = this.btnTepoSave;
             this.layoutControlItem28.CustomizationFormText = "layoutControlItem20";
             this.layoutControlItem28.Location = new System.Drawing.Point(734, 632);
             this.layoutControlItem28.Name = "layoutControlItem28";
@@ -4096,6 +4064,34 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem42.Size = new System.Drawing.Size(548, 632);
             this.layoutControlItem42.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem42.TextVisible = false;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1282, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 687);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1282, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 658);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1282, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 658);
             // 
             // dxValidationProviderEditorInfo
             // 
@@ -4429,7 +4425,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
         private DevExpress.XtraLayout.LayoutControl lcEditorInfo;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
         private DevExpress.XtraEditors.SimpleButton btnCancel;
-        private DevExpress.XtraEditors.SimpleButton btnEdit;
+        private DevExpress.XtraEditors.SimpleButton btnSave;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
         internal DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditorInfo;
@@ -4476,7 +4472,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
         private Inventec.UC.Paging.UcPaging ucPaging;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem25;
-        private DevExpress.XtraEditors.SimpleButton btnAdd;
+        private DevExpress.XtraEditors.SimpleButton btnTepoSave;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem28;
         private DevExpress.XtraBars.BarButtonItem barButtonItem3;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;

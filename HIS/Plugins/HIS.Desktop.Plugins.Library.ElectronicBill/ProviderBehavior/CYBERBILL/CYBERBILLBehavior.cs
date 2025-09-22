@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraGrid.Views.Layout;
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Data;
 using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL.Model;
@@ -23,6 +24,9 @@ using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE.Model
 using HIS.Desktop.Plugins.Library.ElectronicBill.Template;
 using Inventec.Common.EBillSoftDreams.Model;
 using Inventec.Common.Logging;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,6 +48,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
         ElectronicBillDataInput ElectronicBillDataInput { get; set; }
         private LoginDataCyberbill adoLogin { get; set; }
         private OutputElectronicBill OEBill { get; set; }
+        private OutputReplaceElectronicBill ORPEBill { get; set; }
+        private OutputSendAndSignElectronicBill OSASEBill { get; set; }
         private OutputConvertElectronicBill OCoEBill { get; set; }
         private OutputSignElectronicBill OSEBill { get; set; }
         private OutputCancelElectronicBill OCaEBill { get; set; }
@@ -86,8 +92,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     switch (electronicBillType)
                     {
                         case ElectronicBillType.ENUM.CREATE_INVOICE:
-                            GuiHoaDonGoc(ref result);
-                            KyHoaDon(ref result);
+                            if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
+                            {
+                                GuiHoaDonThayThe(ref result);
+                            }
+                            else if (configArr.Count() == 3 && configArr[2] == "1")
+                            {
+                                GuiVaKyHoaDonGoc(ref result);
+                            }
+                            else
+                            {
+                                GuiHoaDonGoc(ref result);
+                                KyHoaDon(ref result);
+                            }
                             break;
                         case ElectronicBillType.ENUM.GET_INVOICE_LINK:
                             ChuyenDoiHoaDon(ref result);
@@ -223,8 +240,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                         }
                         ddt.phantram_chietkhau = 0;
                         ddt.tongtien_chietkhau = 0;
-                        //ddt.phikhac_tyle = 0;
-                        //ddt.phikhac_sotien = 0;
+                        ddt.phikhac_tyle = 0;
+                        ddt.phikhac_sotien = 0;
                         ddt.tongtien_chuathue = item.AmountWithoutTax;
                         if (!item.TaxPercentage.HasValue)
                         {
@@ -268,8 +285,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                         ddt.dongia = item.ProdPrice;
                         ddt.phantram_chietkhau = 0;
                         ddt.tongtien_chietkhau = 0;
-                        //ddt.phikhac_tyle = 0;
-                        //ddt.phikhac_sotien = 0;
+                        ddt.phikhac_tyle = 0;
+                        ddt.phikhac_sotien = 0;
                         ddt.tongtien_chuathue = item.Amount;
                         ddt.mathue = "-1";
                         ddt.tongtien_cothue = item.Amount;
@@ -368,8 +385,148 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
             }
 
         }
+        #region Gửi và ký hóa đơn gốc HSM
+        private void GuiVaKyHoaDonGoc(ref ElectronicBillResult result)
+        {
+            try
+            {
+                string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(IEBill());
+                OSASEBill = Base.ApiConsumerV2.CreateRequest<OutputSendAndSignElectronicBill>(System.Net.WebRequestMethods.Http.Post, serviceUrl, Base.RequestUriStore.CyberbillGuiVaKyHoaDonGoc, login.result.access_token, sendJsonData);
+                result.InvoiceSys = ProviderType.CYBERBILL;
+                if (OSASEBill != null && OSASEBill.result != null)
+                {
+                    if (OSASEBill.result.maketqua == SUCCESS_CODE)
+                    {
+                        result.Success = true;
+                        result.InvoiceCode = OSASEBill.result.magiaodich;
+                        result.InvoiceLookupCode = OSASEBill.result.magiaodich;
+                        result.InvoiceLoginname = adoLogin.username;
+                        result.InvoiceTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
+                    }
+                    else
+                    {
+                        result.Success = false;
+                        ElectronicBillResultUtil.Set(ref result, false, OSASEBill.result != null ? OSASEBill.result.motaketqua : "Gửi và ký hóa đơn gốc HSM thất bại");
+                    }
+                }
+                else if (OSASEBill == null || (OSASEBill != null && OSASEBill.error != null))
+                {
+                    result.Success = false;
+                    ElectronicBillResultUtil.Set(ref result, false, OSASEBill != null && OSASEBill.error != null ? OSASEBill.error.details : "Gửi và ký hóa đơn gốc HSM thất bại");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         #endregion
+        #endregion
+        #region Thay thế hóa đơn
+        private InputReplaceElectronicBill IReplaceBill()
+        {
+            var inv = InvoiceInfo.InvoiceInfoProcessor.GetData(ElectronicBillDataInput);
+            InputReplaceElectronicBill hd = new InputReplaceElectronicBill();
+            hd.doanhnghiep_mst = ElectronicBillDataInput.Branch.TAX_CODE;
+            hd.loaihoadon_ma = ElectronicBillDataInput.TemplateCode;
+            hd.mauso = ElectronicBillDataInput.TemplateCode;
+            //hd.ma_tracuu = "";
+            hd.kyhieu = ElectronicBillDataInput.SymbolCode;
+            //hd.sophieu = "";
+            if (ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID != null)
+            {
+                CommonParam param = new CommonParam();
+                HisTransactionFilter filter = new HisTransactionFilter();
+                filter.ID = ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID;
+                var originalTransaction = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_TRANSACTION>>("api/HisTransaction/Get", ApiConsumers.MosConsumer, filter, param).ToList().FirstOrDefault();
+                hd.hoadon_goc = originalTransaction.TRANSACTION_CODE;
+            }
+            hd.ma_hoadon = ElectronicBillDataInput.Transaction.TRANSACTION_CODE;
+            hd.ngaylap = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            hd.dnmua_mst = inv.BuyerTaxCode;
+            hd.dnmua_ten = inv.BuyerOrganization;
+            hd.dnmua_cccd = !String.IsNullOrWhiteSpace(inv.BuyerIdentityNumber) ? inv.BuyerIdentityNumber : inv.BuyerCCCD;
+            //hd.dnmua_mqhns = ElectronicBillDataInput.Transaction.BUYER_TYPE == 2 ? inv.BuyerTaxCode : "";
+            hd.dnmua_tennguoimua = inv.BuyerName;
+            hd.dnmua_diachi = inv.BuyerAddress;
+            hd.dnmua_sdt = inv.BuyerPhone;
+            hd.dnmua_email = inv.BuyerEmail;
+            hd.thanhtoan_phuongthuc = 3;
+            hd.thanhtoan_phuongthuc_ten = "Tiền mặt/Chuyển khoản";
+            hd.thanhtoan_taikhoan = inv.BuyerAccountNumber;
+            hd.thanhtoan_nganhang = "";
+            hd.tiente_ma = "";
+            //hd.tygiangoaite = 0;
+            hd.thanhtoan_thoihan = "";
+            //hd.tongtien_chietkhau = 0;
+            //hd.tongtien_chietkhau_thuongmai = 0;
+            hd.ghichu = "";
+            hd.tongtien_chuavat = 0;
+            hd.tienthue = 0;
+            hd.tongtien_covat = 0;
+            hd.nguoilap = adoLogin.username;
+            hd.khachhang_ma = ElectronicBillDataInput.Transaction.TDL_PATIENT_CODE;
+            hd.matracuuhtkhac = ElectronicBillDataInput.Transaction.TRANSACTION_CODE;
+            hd.dschitiet = DSCT();
+            hd.dsthuesuat = new List<DanhSachThue>();
+            List<DanhSachThue> dsthuesuat = new List<DanhSachThue>();
+            if (hd.dschitiet != null && hd.dschitiet.Count > 0)
+            {
+                hd.tongtien_chuavat = hd.dschitiet.Sum(o => o.tongtien_chuathue ?? 0);
+                hd.tongtien_covat = hd.dschitiet.Sum(o => o.tongtien_cothue ?? 0);
+                var groupByMaThue = hd.dschitiet.GroupBy(o => o.mathue).ToList();
+                foreach (var item in groupByMaThue)
+                {
+                    DanhSachThue st = new DanhSachThue();
+                    st.mathue = item.First().mathue;
+                    st.tongtien_chiuthue = item.Sum(o => o.tongtien_chuathue ?? 0);
+                    st.tongtien_thue = item.Sum(o => o.tongtien_cothue ?? 0) - item.Sum(o => o.tongtien_chuathue ?? 0);
+                    dsthuesuat.Add(st);
+                }
+            }
+            hd.dsthuesuat = dsthuesuat;
+            hd.hopdong_so = "";
+            hd.hopdong_ngayky = "";
+            hd.file_hopdong = "";
+            return hd;
+        }
 
+        private void GuiHoaDonThayThe(ref ElectronicBillResult result)
+        {
+            try
+            {
+                string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(IReplaceBill());
+                Inventec.Common.Logging.LogSystem.Debug("INPUT ELECTRONICBILL: " + Inventec.Common.Logging.LogUtil.TraceData("Data", IReplaceBill()));
+                ORPEBill = Base.ApiConsumerV2.CreateRequest<OutputReplaceElectronicBill>(System.Net.WebRequestMethods.Http.Post, serviceUrl, Base.RequestUriStore.CyberbillGuiHoadonThayThe, login.result.access_token, sendJsonData);
+                result.InvoiceSys = ProviderType.CYBERBILL;
+                if (ORPEBill != null && ORPEBill.result != null)
+                {
+                    if (ORPEBill.result.maketqua == SUCCESS_CODE)
+                    {
+                        result.Success = true;
+                        result.InvoiceCode = ORPEBill.result.magiaodich;
+                        result.InvoiceLookupCode = ORPEBill.result.magiaodich;
+                        result.InvoiceLoginname = adoLogin.username;
+                        result.InvoiceTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
+                    }
+                    else
+                    {
+                        result.Success = false;
+                        ElectronicBillResultUtil.Set(ref result, false, ORPEBill.result != null ? ORPEBill.result.motaketqua : "Gửi hóa đơn thay thế thất bại");
+                    }
+                }
+                else if (ORPEBill == null || (ORPEBill != null && ORPEBill.error != null))
+                {
+                    result.Success = false;
+                    ElectronicBillResultUtil.Set(ref result, false, ORPEBill != null && ORPEBill.error != null ? ORPEBill.error.details : "Gửi hóa đơn thay thế thất bại");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        #endregion
         #region Chuyển đổi hóa đơn
         private InputConvertElectronicBill ICoEBill()
         {
@@ -406,7 +563,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     else
                     {
                         result.Success = false;
-                        ElectronicBillResultUtil.Set(ref result, false, OEBill.result != null ? OEBill.result.motaketqua : "Chuyển đổi hóa đơn thất bại");
+                        ElectronicBillResultUtil.Set(ref result, false, OCoEBill.result != null ? OCoEBill.result.motaketqua : "Chuyển đổi hóa đơn thất bại");
                     }
                 }
                 else if (OCoEBill == null || (OCoEBill != null && OCoEBill.error != null))

@@ -293,7 +293,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
 
                     cboAccountBook.EditValue = currentTransaction.ACCOUNT_BOOK_ID;
-                    cboAccountBook.Enabled = false;
+                    //cboAccountBook.Enabled = false;
                     txtReplaceReason.Text = currentTransaction.REPLACE_REASON;
 
                     txtBuyerName.Text = currentTransaction.BUYER_NAME;
@@ -4049,14 +4049,22 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
         private void cboBuyerOrganzation2_EditValueChanged(object sender, EventArgs e)
         {
-            if (cboBuyerOrganzation2.EditValue != null)
+            try
             {
-                var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganzation2.EditValue.ToString())).First();
-                txtBuyerAddress.Text = dt.ADDRESS;
-                if (dt.TAX_CODE != null)
+                if (cboBuyerOrganzation2.EditValue != null)
                 {
-                    txtBuyerTaxCode2.Text = dt.TAX_CODE;
+                    LogSystem.Debug("CBO: " + cboBuyerOrganzation2.EditValue.ToString());
+                    var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganzation2.EditValue.ToString())).First();
+                    txtBuyerAddress.Text = dt.ADDRESS;
+                    if (dt.TAX_CODE != null)
+                    {
+                        txtBuyerTaxCode2.Text = dt.TAX_CODE;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
             }
         }
 

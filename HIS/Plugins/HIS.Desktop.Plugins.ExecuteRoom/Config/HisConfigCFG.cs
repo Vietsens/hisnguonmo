@@ -50,6 +50,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private const string IS_ShowResultWhenReqComplete = "HIS.Desktop.Plugins.ContentSubclinical.ShowResultWhenReqComplete";
         private const string IS_HAS_CONNECTION_EMR = "MOS.HAS_CONNECTION_EMR";
         private const string KEY__IsCheckHeinCard = "HIS.Desktop.Plugins.ExamServiceReqExecute.IsCheckHeinCard";
+        private const string KEY__MustSignBeforeStart = "HIS.Desktop.Plugins.ExecuteRoom.MustSignBeforeStart";
         internal static bool IsCheckHeinCard;
         internal static bool IsHasConnectionEmr;
         internal static string IsShowResultWhenReqComplete;
@@ -75,6 +76,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         internal static string SignWarningOption;
         internal static string PatientTypeOption;
         internal static string AutoDeleteEmrDocumentWhenEditReq;
+        internal static string MustSignBeforeStart;
 
         internal static string IsSplitTotalReceivePrice
         {
@@ -111,6 +113,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 PatientTypeOption = GetValue(CONFIG_KEY__PATIENT_TYPE_OPTION);
                 AutoDeleteEmrDocumentWhenEditReq = GetValue(CONFIG_KEY__AutoDeleteEmrDocumentWhenEditReq);
                 isDisablePartExamByExecutor = GetValue(DISABLE_PART_EXAM_BY_EXECUTOR) == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CommonStringTrue;
+                MustSignBeforeStart = GetValue(KEY__MustSignBeforeStart);
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

@@ -41,14 +41,10 @@ using HIS.Desktop.Controls.Session;
 using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.ConfigSystem;
-
-
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
-
 using EMR.EFMODEL.DataModels;
 using EMR.Filter;
-
 using Inventec.Common.Logging;
 using Inventec.Common.Adapter;
 using Inventec.Core;
@@ -57,10 +53,8 @@ using Inventec.Desktop.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using Inventec.Common.SignLibrary;
-
 using iTextSharp.text.pdf;
 using iTextSharp.text;
-
 using HIS.Desktop.Plugins.PatientDocumentIssued.Resources;
 using HIS.Desktop.Plugins.PatientDocumentIssued.ADO;
 using HIS.Desktop.Plugins.PatientDocumentIssued.Form;
@@ -171,7 +165,15 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
 
                         ssRootSety.CONCRETE_ID__IN_SETY = rootSety.First().TREATMENT_CODE + "_" + rootSety.First().PATIENT_CODE;
                         ssRootSety.PARENT_ID__IN_SETY = rootSety.First().TREATMENT_CODE;
-                        ssRootSety.DOCUMENT_CODE = rootSety.First().TREATMENT_CODE + "-" + rootSety.First().PATIENT_CODE + "-" + rootSety.First().VIR_PATIENT_NAME + "-" + Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().DOB).Substring(Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().DOB).Length - 4) + "-" + rootSety.First().GENDER_NAME;
+                        ssRootSety.DOCUMENT_CODE =
+                            rootSety.First().TREATMENT_CODE + "-" +
+                            rootSety.First().PATIENT_CODE + "-" +
+                            rootSety.First().VIR_PATIENT_NAME + "-" +
+                            (rootSety.First().DOB.HasValue
+                                ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().DOB.Value)
+                                    .Substring(Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().DOB.Value).Length - 4)
+                                : "") + "-" +
+                            rootSety.First().GENDER_NAME;
                         ssRootSety.IS_PARENT = true;
                         //ssRootSety.DOCUMENT_NAME = rootSety.First().DOCUMENT_NAME;
                         //ssRootSety.DOCUMENT_TYPE_ID = rootSety.First().DOCUMENT_TYPE_ID;

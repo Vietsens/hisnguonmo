@@ -539,13 +539,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.cboObjectCode.Name = "cboObjectCode";
             this.cboObjectCode.Properties.AutoComplete = false;
             this.cboObjectCode.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboObjectCode.Properties.NullText = "";
             this.cboObjectCode.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboObjectCode.Properties.View = this.customGridLookUpEditWithFilterMultiColumn1View;
             this.cboObjectCode.Size = new System.Drawing.Size(197, 20);
             this.cboObjectCode.StyleController = this.layoutControlMain;
             this.cboObjectCode.TabIndex = 82;
+            this.cboObjectCode.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboObjectCode_ButtonClick);
             this.cboObjectCode.EditValueChanged += new System.EventHandler(this.cboObjectCode_EditValueChanged);
             // 
             // barManager1

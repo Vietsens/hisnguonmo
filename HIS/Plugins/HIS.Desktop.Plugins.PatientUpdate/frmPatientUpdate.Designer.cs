@@ -45,9 +45,10 @@ namespace HIS.Desktop.Plugins.PatientUpdate
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.chkUpdate = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -240,7 +241,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             this.layoutControlItem61 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciEmrUpdate = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
@@ -651,22 +652,22 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             // 
             // chkIsHiv
             // 
-            this.chkIsHiv.Location = new System.Drawing.Point(683, 2);
+            this.chkIsHiv.Location = new System.Drawing.Point(667, 2);
             this.chkIsHiv.MenuManager = this.barManager1;
             this.chkIsHiv.Name = "chkIsHiv";
             this.chkIsHiv.Properties.Caption = "";
-            this.chkIsHiv.Size = new System.Drawing.Size(45, 19);
+            this.chkIsHiv.Size = new System.Drawing.Size(61, 19);
             this.chkIsHiv.StyleController = this.layoutControl6;
             this.chkIsHiv.TabIndex = 59;
             // 
             // chkIsTuberculosis
             // 
-            this.chkIsTuberculosis.Location = new System.Drawing.Point(480, 2);
+            this.chkIsTuberculosis.Location = new System.Drawing.Point(468, 2);
             this.chkIsTuberculosis.MenuManager = this.barManager1;
             this.chkIsTuberculosis.Name = "chkIsTuberculosis";
             this.chkIsTuberculosis.Properties.Caption = "";
             this.chkIsTuberculosis.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkIsTuberculosis.Size = new System.Drawing.Size(26, 19);
+            this.chkIsTuberculosis.Size = new System.Drawing.Size(38, 19);
             this.chkIsTuberculosis.StyleController = this.layoutControl6;
             this.chkIsTuberculosis.TabIndex = 58;
             // 
@@ -865,10 +866,10 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             this.lciIsTuberculosis.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciIsTuberculosis.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciIsTuberculosis.Control = this.chkIsTuberculosis;
-            this.lciIsTuberculosis.Location = new System.Drawing.Point(383, 0);
+            this.lciIsTuberculosis.Location = new System.Drawing.Point(371, 0);
             this.lciIsTuberculosis.Name = "lciIsTuberculosis";
             this.lciIsTuberculosis.OptionsToolTip.ToolTip = "Bệnh nhân thuộc chương trình phòng chống Lao quốc gia";
-            this.lciIsTuberculosis.Size = new System.Drawing.Size(125, 24);
+            this.lciIsTuberculosis.Size = new System.Drawing.Size(137, 24);
             this.lciIsTuberculosis.Text = "Bệnh nhân lao:";
             this.lciIsTuberculosis.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciIsTuberculosis.TextSize = new System.Drawing.Size(90, 20);
@@ -877,12 +878,12 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.chkIsHiv;
-            this.layoutControlItem10.Location = new System.Drawing.Point(571, 0);
+            this.layoutControlItem10.Location = new System.Drawing.Point(540, 0);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(159, 24);
+            this.layoutControlItem10.Size = new System.Drawing.Size(190, 24);
             this.layoutControlItem10.Text = "Bệnh nhân HIV/AIDS:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem10.TextSize = new System.Drawing.Size(105, 20);
+            this.layoutControlItem10.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem10.TextToControlDistance = 5;
             // 
             // emptySpaceItem7
@@ -890,7 +891,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             this.emptySpaceItem7.AllowHotTrack = false;
             this.emptySpaceItem7.Location = new System.Drawing.Point(508, 0);
             this.emptySpaceItem7.Name = "emptySpaceItem7";
-            this.emptySpaceItem7.Size = new System.Drawing.Size(63, 24);
+            this.emptySpaceItem7.Size = new System.Drawing.Size(32, 24);
             this.emptySpaceItem7.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lcCAPD
@@ -912,7 +913,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             this.emptySpaceItem9.AllowHotTrack = false;
             this.emptySpaceItem9.Location = new System.Drawing.Point(343, 0);
             this.emptySpaceItem9.Name = "emptySpaceItem9";
-            this.emptySpaceItem9.Size = new System.Drawing.Size(40, 24);
+            this.emptySpaceItem9.Size = new System.Drawing.Size(28, 24);
             this.emptySpaceItem9.TextSize = new System.Drawing.Size(0, 0);
             // 
             // groupBox2

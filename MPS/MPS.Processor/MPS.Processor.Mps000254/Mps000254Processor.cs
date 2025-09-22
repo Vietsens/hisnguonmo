@@ -27,6 +27,7 @@ using MOS.EFMODEL.DataModels;
 using MPS.Processor.Mps000254.PDO;
 using FlexCel.Report;
 using MPS.ProcessorBase;
+using Inventec.Common.Logging;
 
 namespace MPS.Processor.Mps000254
 {
@@ -36,6 +37,8 @@ namespace MPS.Processor.Mps000254
         List<Mps000254ADO> listAdoPrint = new List<Mps000254ADO>();
         List<Mps000254ADO> listAdoPrintGroup = new List<Mps000254ADO>();
         List<Mps000254ADODetail> listAdoPrintDetail = new List<Mps000254ADODetail>();
+        List<Mps000254ADO> listMedicineType = new List<Mps000254ADO>();
+
         const int countMax = 1500;
         public Mps000254Processor(CommonParam param, PrintData printData)
             : base(param, printData)
@@ -68,7 +71,8 @@ namespace MPS.Processor.Mps000254
                 {
                     listAdoPrintDetail = listAdoPrintDetail.OrderBy(o => o.TDL_PATIENT_FIRST_NAME).ToList();
                 }
-
+                GetMedicineGroup();
+                //GetMedicineParent();
                 objectTag.AddObjectData(store, "Medicine1", listAdoPrint);
                 objectTag.AddObjectData(store, "Medicine2", listAdoPrint);
                 objectTag.AddObjectData(store, "Medicine3", listAdoPrint);
@@ -76,9 +80,15 @@ namespace MPS.Processor.Mps000254
                 objectTag.AddObjectData(store, "Medicine1Detail", listAdoPrintDetail);
                 objectTag.AddObjectData(store, "Medicine2Detail", listAdoPrintDetail);
                 objectTag.AddObjectData(store, "Medicine3Detail", listAdoPrintDetail);
+                LogSystem.Debug($"listMedicineType count: {listMedicineType.Count}");
+                objectTag.AddObjectData(store, "MedicineGroup", listMedicineType);
+
                 objectTag.AddRelationship(store, "Medicine1", "Medicine1Detail", "KEY_GROUP", "KEY_GROUP");
                 objectTag.AddRelationship(store, "Medicine2", "Medicine2Detail", "KEY_GROUP", "KEY_GROUP");
                 objectTag.AddRelationship(store, "Medicine3", "Medicine3Detail", "KEY_GROUP", "KEY_GROUP");
+                objectTag.AddRelationship(store, "MedicineGroup", "Medicine1", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
+                //objectTag.AddRelationship(store, "MedicineGroup", "Medicine1Detail", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
+
                 result = true;
             }
             catch (Exception ex)
@@ -87,7 +97,47 @@ namespace MPS.Processor.Mps000254
             }
             return result;
         }
+        private void GetMedicineGroup()
+        {
+            try
+            {
+                LogSystem.Debug($"listAdoPrintDetail count: {listAdoPrintDetail.Count}");
+                LogSystem.Debug($"listAdoPrint count: {listAdoPrint.Count}");
+                LogSystem.Debug($"listAdoPrintGroup count: {listAdoPrintGroup.Count}");
 
+
+                if (listAdoPrint != null && listAdoPrint.Count > 0)
+                {
+                    var group = listAdoPrint.GroupBy(o => new { o.MEDICINE_GROUP_ID, o.MEDICINE_GROUP_CODE, o.MEDICINE_GROUP_NAME });
+                    foreach (var item in group)
+                    {
+                        listMedicineType.Add(item.ToList().First());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void GetMedicineParent()
+        {
+            try
+            {
+                if (listAdoPrint != null && listAdoPrint.Count > 0)
+                {
+                    var group = listAdoPrint.GroupBy(o => new { o.MEDICINE_PARENT_ID });
+                    foreach (var item in group)
+                    {
+                        listMedicineType.Add(item.ToList().First());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         void ProcessSingleKey()
         {
             try

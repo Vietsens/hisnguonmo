@@ -524,6 +524,18 @@ namespace HIS.Desktop.Plugins.HisRoleUser.Run
             }
         }
 
+        private void btnPrintV2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                PrintProcess(PrintType.BIEN_BAN_KIEM_NHAP_TU_NCC);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void btnPrint_Click(object sender, EventArgs e)
         {
             try

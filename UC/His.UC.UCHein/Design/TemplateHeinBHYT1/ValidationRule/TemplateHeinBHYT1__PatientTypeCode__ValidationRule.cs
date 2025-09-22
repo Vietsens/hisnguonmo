@@ -16,7 +16,9 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1.ValidationRule
             try
             {
                 if (cboPatientCode == null) return valid;
-                if (cboPatientCode.Enabled  || cboPatientCode.EditValue == null)
+                if (cboPatientCode.Enabled  && cboPatientCode.EditValue == null)
+                    return valid;
+                if(cboPatientCode.EditValue.ToString() == "" || string.IsNullOrEmpty(cboPatientCode.Text))
                     return valid;
 
                 valid = true;

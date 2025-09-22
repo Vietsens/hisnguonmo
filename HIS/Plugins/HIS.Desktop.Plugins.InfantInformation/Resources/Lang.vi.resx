@@ -133,7 +133,7 @@
     <value>Làm lại (Ctrl R)</value>
   </data>
   <data name="frmInfantInformation.btnsave.Text" xml:space="preserve">
-    <value>Sửa (Ctrl S)</value>
+    <value>Lưu (Ctrl S)</value>
   </data>
   <data name="frmInfantInformation.cboInfantGendercode.Properties.NullText" xml:space="preserve">
     <value />

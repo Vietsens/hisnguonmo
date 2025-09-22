@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
@@ -87,7 +86,7 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
@@ -97,8 +96,8 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -164,7 +163,7 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             // 
             this.ucPaging1.Location = new System.Drawing.Point(2, 462);
             this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(858, 21);
+            this.ucPaging1.Size = new System.Drawing.Size(786, 21);
             this.ucPaging1.TabIndex = 8;
             // 
             // btnSearch
@@ -197,18 +196,18 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             this.layoutControl3.Controls.Add(this.txtEinvoiceTypeCode);
             this.layoutControl3.Controls.Add(this.txtDescription);
             this.layoutControl3.Controls.Add(this.txtValue);
-            this.layoutControl3.Location = new System.Drawing.Point(864, 2);
+            this.layoutControl3.Location = new System.Drawing.Point(792, 2);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(302, 481);
+            this.layoutControl3.Size = new System.Drawing.Size(374, 481);
             this.layoutControl3.TabIndex = 5;
             this.layoutControl3.Text = "layoutControl3";
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(205, 223);
+            this.btnReset.Location = new System.Drawing.Point(253, 239);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(95, 22);
+            this.btnReset.Size = new System.Drawing.Size(119, 22);
             this.btnReset.StyleController = this.layoutControl3;
             this.btnReset.TabIndex = 9;
             this.btnReset.Text = "Làm lại (Ctrl R)";
@@ -216,9 +215,9 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(102, 223);
+            this.btnEdit.Location = new System.Drawing.Point(126, 239);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(99, 22);
+            this.btnEdit.Size = new System.Drawing.Size(123, 22);
             this.btnEdit.StyleController = this.layoutControl3;
             this.btnEdit.TabIndex = 8;
             this.btnEdit.Text = "Sửa (Ctrl S)";
@@ -228,7 +227,7 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             // 
             this.txtEinvoiceTypeName.Location = new System.Drawing.Point(87, 26);
             this.txtEinvoiceTypeName.Name = "txtEinvoiceTypeName";
-            this.txtEinvoiceTypeName.Size = new System.Drawing.Size(213, 20);
+            this.txtEinvoiceTypeName.Size = new System.Drawing.Size(285, 20);
             this.txtEinvoiceTypeName.StyleController = this.layoutControl3;
             this.txtEinvoiceTypeName.TabIndex = 5;
             this.txtEinvoiceTypeName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtEinvoiceTypeName_KeyUp);
@@ -237,7 +236,7 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             // 
             this.txtEinvoiceTypeCode.Location = new System.Drawing.Point(87, 2);
             this.txtEinvoiceTypeCode.Name = "txtEinvoiceTypeCode";
-            this.txtEinvoiceTypeCode.Size = new System.Drawing.Size(213, 20);
+            this.txtEinvoiceTypeCode.Size = new System.Drawing.Size(285, 20);
             this.txtEinvoiceTypeCode.StyleController = this.layoutControl3;
             this.txtEinvoiceTypeCode.TabIndex = 4;
             this.txtEinvoiceTypeCode.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtEinvoiceTypeCode_KeyUp);
@@ -246,16 +245,16 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             // 
             this.txtDescription.Location = new System.Drawing.Point(87, 50);
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(213, 79);
+            this.txtDescription.Size = new System.Drawing.Size(285, 109);
             this.txtDescription.StyleController = this.layoutControl3;
             this.txtDescription.TabIndex = 6;
             this.txtDescription.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtDescription_KeyUp);
             // 
             // txtValue
             // 
-            this.txtValue.Location = new System.Drawing.Point(87, 133);
+            this.txtValue.Location = new System.Drawing.Point(87, 163);
             this.txtValue.Name = "txtValue";
-            this.txtValue.Size = new System.Drawing.Size(213, 86);
+            this.txtValue.Size = new System.Drawing.Size(285, 72);
             this.txtValue.StyleController = this.layoutControl3;
             this.txtValue.TabIndex = 7;
             this.txtValue.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtValue_KeyUp);
@@ -275,7 +274,7 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             this.emptySpaceItem3});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(302, 481);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(374, 481);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem4
@@ -285,7 +284,7 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             this.layoutControlItem4.Control = this.txtEinvoiceTypeCode;
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(302, 24);
+            this.layoutControlItem4.Size = new System.Drawing.Size(374, 24);
             this.layoutControlItem4.Text = "Mã hệ thống:";
             this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem4.TextSize = new System.Drawing.Size(80, 20);
@@ -298,7 +297,7 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             this.layoutControlItem5.Control = this.txtEinvoiceTypeName;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(302, 24);
+            this.layoutControlItem5.Size = new System.Drawing.Size(374, 24);
             this.layoutControlItem5.Text = "Tên hệ thống:";
             this.layoutControlItem5.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem5.TextSize = new System.Drawing.Size(80, 20);
@@ -311,7 +310,7 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             this.layoutControlItem6.Control = this.txtDescription;
             this.layoutControlItem6.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(302, 83);
+            this.layoutControlItem6.Size = new System.Drawing.Size(374, 113);
             this.layoutControlItem6.Text = "Mô tả:";
             this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem6.TextSize = new System.Drawing.Size(80, 20);
@@ -322,9 +321,9 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem7.Control = this.txtValue;
-            this.layoutControlItem7.Location = new System.Drawing.Point(0, 131);
+            this.layoutControlItem7.Location = new System.Drawing.Point(0, 161);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(302, 90);
+            this.layoutControlItem7.Size = new System.Drawing.Size(374, 76);
             this.layoutControlItem7.Text = "Thiết lập:";
             this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem7.TextSize = new System.Drawing.Size(80, 20);
@@ -333,35 +332,35 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnEdit;
-            this.layoutControlItem9.Location = new System.Drawing.Point(100, 221);
+            this.layoutControlItem9.Location = new System.Drawing.Point(124, 237);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(103, 26);
+            this.layoutControlItem9.Size = new System.Drawing.Size(127, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnReset;
-            this.layoutControlItem10.Location = new System.Drawing.Point(203, 221);
+            this.layoutControlItem10.Location = new System.Drawing.Point(251, 237);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(99, 26);
+            this.layoutControlItem10.Size = new System.Drawing.Size(123, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 247);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 263);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(302, 234);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(374, 218);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 221);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 237);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(100, 26);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(124, 26);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // gridControl1
@@ -369,7 +368,7 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             this.gridControl1.Location = new System.Drawing.Point(2, 28);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(858, 430);
+            this.gridControl1.Size = new System.Drawing.Size(786, 430);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -517,16 +516,16 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             this.layoutControlItem2.Control = this.gridControl1;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(862, 434);
+            this.layoutControlItem2.Size = new System.Drawing.Size(790, 434);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.layoutControl3;
-            this.layoutControlItem3.Location = new System.Drawing.Point(862, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(790, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(306, 485);
+            this.layoutControlItem3.Size = new System.Drawing.Size(378, 485);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -553,7 +552,7 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             this.layoutControlItem12.Control = this.ucPaging1;
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 460);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(862, 25);
+            this.layoutControlItem12.Size = new System.Drawing.Size(790, 25);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
@@ -562,7 +561,7 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(512, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(350, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(278, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlGroup1
@@ -589,10 +588,6 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnEdit,
@@ -651,8 +646,8 @@ namespace HIS.Desktop.Plugins.HisEinvoiceType.HisEinvoiceType
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1172, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1172, 0);
             // 
             // barDockControlBottom
             // 

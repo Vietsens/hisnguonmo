@@ -2017,14 +2017,18 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 if (sample != null && (sample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
                     || sample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI))
                 {
-                    MOS.Filter.HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
-                    treatmentFilter.TREATMENT_CODE__EXACT = sample.TREATMENT_CODE;
-                    var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param).FirstOrDefault();
-                    if (treatment != null && treatment.IS_PAUSE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    if (sample.TREATMENT_CODE != null)
                     {
-                        XtraMessageBox.Show("Hồ sơ đã kết thúc điều trị. Không cho phép thực hiện lấy mẫu.", "Thông báo");
-                        return;
+                        MOS.Filter.HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
+                        treatmentFilter.TREATMENT_CODE__EXACT = sample.TREATMENT_CODE;
+                        var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param).FirstOrDefault();
+                        if (treatment != null && treatment.IS_PAUSE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                        {
+                            XtraMessageBox.Show("Hồ sơ đã kết thúc điều trị. Không cho phép thực hiện lấy mẫu.", "Thông báo");
+                            return;
+                        }
                     }
+                    
                     if (LisConfigCFG.SHOW_FORM_SAMPLE_INFO == "1")
                     {
                         Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
@@ -4228,7 +4232,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     return;
                 bool hasConfirmUser = false;
                 bool resultConfirmUser = false;
-                ProcessPrint(ref hasConfirmUser, ref resultConfirmUser);
+                bool isHIV = sender == btnPrintHIV;
+                ProcessPrint(ref hasConfirmUser, ref resultConfirmUser, isHIV);
             }
             catch (Exception ex)
             {
@@ -4255,7 +4260,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
             return lst;
         }
-        private void ProcessPrint(ref bool hasConfirmUser, ref bool resultConfirmUser)
+        private void ProcessPrint(ref bool hasConfirmUser, ref bool resultConfirmUser,bool hiv)
         {
             try
             {
@@ -4265,13 +4270,23 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 this.PrintOption = PRINT_OPTION.IN;
                 if (print)
                 {
+                    if (hiv)
+                    {
+                        SetDataToPrint(true);
+
+                        if (lstResultVS != null && lstResultVS.Count > 0)
+                        {
+                            PrintProcess(PrintTypeKXN.IN_VI_SINH);
+                        }
+                        return;
+                    }
                     if (!HisConfigCFG.PRINT_TEST_RESULT)
                     {
                         SetDataToPrint(false);
-                        PrintProcess(PrintTypeKXN.IN_KET_QUA_XET_NGHIEM);
-                    }
+                            PrintProcess(PrintTypeKXN.IN_KET_QUA_XET_NGHIEM);
+                        }
                     else
-                    {
+                    {                   
                         SetDataToPrint(true);
                         if (lstResultPrint != null && lstResultPrint.Count > 0)
                         {

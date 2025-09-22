@@ -102,6 +102,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
         private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         private bool isInternalToggle = false;
+        private bool isTemporaryToggle = false;
         public frmInfantInformation()
         {
             InitializeComponent();
@@ -145,7 +146,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             {
                 HisConfigCFG.LoadConfig();
                 this.LoadTreatment();
-                SetIcon();                 
+                SetIcon();
                 LoadCombo();
 
                 SetDefaultDataToControl();
@@ -159,7 +160,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
 
                 loadInfoMother();
 
-                LoadInfoComplementFromTreatment(this.treatment);   
+                LoadInfoComplementFromTreatment(this.treatment);
 
                 //if (HisConfigCFG.IsConfigKeyExportOption == "1")
                 //{
@@ -212,7 +213,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 listCommune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_NO_DISTRICT != 1 && o.IS_ACTIVE == 1).ToList();
             }
             else
-            {   
+            {
                 listProvince = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_NO_DISTRICT == 1 && o.IS_ACTIVE == 1).ToList();
                 listCommune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_NO_DISTRICT == 1 && o.IS_ACTIVE == 1).ToList();
             }
@@ -222,7 +223,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
 
             LoadComboEthnic();
             GetDataHisBirthCertBook();
-            LoadComboHisBirthCertBook();   
+            LoadComboHisBirthCertBook();
 
             LoadComboBornType();
 
@@ -578,8 +579,8 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                btnEdit.Enabled = (action == GlobalVariables.ActionEdit);
-                btnAdd.Enabled = (action == GlobalVariables.ActionAdd);
+                //btnSave.Enabled = (action == GlobalVariables.ActionEdit);
+                //btnTepoSave.Enabled = (action == GlobalVariables.ActionAdd);
             }
             catch (Exception ex)
             {
@@ -860,7 +861,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 this.lcEditorInfo.Text = Inventec.Common.Resource.Get.Value("frmInfantInformation.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //this.chkInfantcheck.Properties.Caption = Inventec.Common.Resource.Get.Value("frmInfantInformation.chkInfantcheck.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnCancel.Text = Inventec.Common.Resource.Get.Value("frmInfantInformation.btndelete.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmInfantInformation.btnsave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmInfantInformation.btnsave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboInfantPosition.Properties.NullText = Inventec.Common.Resource.Get.Value("frmInfantInformation.cboInfantPosition.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboInfantTybe.Properties.NullText = Inventec.Common.Resource.Get.Value("frmInfantInformation.cboInfantTybe.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboInfantGendercode.Properties.NullText = Inventec.Common.Resource.Get.Value("frmInfantInformation.cboInfantGendercode.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -1095,10 +1096,12 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     EnableControlChanged(this.ActionType);
 
                     //Disable nút sửa nếu dữ liệu đã bị khóa
-                    btnEdit.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                    btnSave.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                    btnTepoSave.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
 
                     positionHandle = -1;
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
+
                 }
             }
             catch (Exception ex)
@@ -1269,10 +1272,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
             }
         }
 
-        private void btnEdit_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
+                isTemporaryToggle = false;
                 SaveProcess();
             }
             catch (Exception ex)
@@ -1296,9 +1300,9 @@ namespace HIS.Desktop.Plugins.InfantInformation
             {
                 this.isUpdatedPatient = true;
                 bool success = false;
-                //if (!btnEdit.Enabled)
+                //if (!btnSave.Enabled)
                 //    return;
-                if (lciDeathDate.Enabled)
+                if (lciDeathDate.Enabled && !isTemporaryToggle)
                 {
                     ValidationSingleControl(dtDeathDate, dxValidationProviderEditorInfo);
                 }
@@ -1306,7 +1310,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 {
                     dxValidationProviderEditorInfo.SetValidationRule(dtDeathDate, null);
                 }
-                if (this.lciBirthHospital.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                if (this.lciBirthHospital.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && !isTemporaryToggle)
                 {
                     ValidationSingleControl(cboBirthHospital, dxValidationProviderEditorInfo);
                 }
@@ -1316,13 +1320,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 }
                 positionHandle = -1;
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
-                if (!dxValidationProviderEditorInfo.Validate())
+                if (!isTemporaryToggle && !dxValidationProviderEditorInfo.Validate())
                     return;
 
-               
+
                 HisBabySDO updateDTO = new HisBabySDO();
 
                 UpdateDTOFromDataForm(ref updateDTO);
+                updateDTO.IsTemporary = this.isTemporaryToggle;
                 if (dxErrorProvider1.HasErrors) return;
                 WaitingManager.Show();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
@@ -1489,7 +1494,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                btnEdit_Click(null, null);
+                btnSave_Click(null, null);
             }
             catch (Exception ex)
             {
@@ -1611,13 +1616,36 @@ namespace HIS.Desktop.Plugins.InfantInformation
 
         private void barButtonItem3_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            btnAdd_Click(null, null);
+            btnTepoSave_Click(null, null);
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void btnTepoSave_Click(object sender, EventArgs e)
         {
             try
             {
+                isTemporaryToggle = true;
+                if (cboHisBirthSertBook.EditValue == null)
+                {
+                    cboHisBirthSertBook.Focus();
+                    ValidationcboHisBirthSertBook(cboHisBirthSertBook, dxValidationProviderEditorInfo);
+
+                    if (!dxValidationProviderEditorInfo.Validate(cboHisBirthSertBook))
+                        return;
+                }
+
+                if (!dxValidationProviderEditorInfo.Validate())
+                {
+                    Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Có trường bắt buộc nhưng chưa được nhập. Bạn có muốn lưu tạm không?",
+                    Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                        Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                    MessageBoxButtons.YesNo) == DialogResult.No)
+                    {
+                        dxValidationProviderEditorInfo.Validate();
+                        return;
+                    }
+                }
                 SaveProcess();
             }
             catch (Exception ex)
@@ -2062,12 +2090,12 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         if (data != null)
                         {
                             txtUserGCS.Text = data.LOGINNAME;
-                         
+
                         }
                     }
                     dteIssue.Focus();
                     dteIssue.ShowPopup();
-                    
+
                 }
                 else
                 {
@@ -2159,15 +2187,15 @@ namespace HIS.Desktop.Plugins.InfantInformation
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    //if (btnAdd.Enabled)
+                    //if (btnTepoSave.Enabled)
                     //{
-                    //    btnAdd.Focus();
-                    //    btnAdd.Select();
+                    //    btnTepoSave.Focus();
+                    //    btnTepoSave.Select();
                     //}
                     //else
                     //{
-                    //    btnEdit.Focus();
-                    //    btnEdit.Select();
+                    //    btnSave.Focus();
+                    //    btnSave.Select();
                     //}
                     txtProvinceCode.Focus();
                     txtProvinceCode.SelectAll();
@@ -2575,7 +2603,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                cboCommuneName.Properties.DataSource = listCommuneTemp;     
+                cboCommuneName.Properties.DataSource = listCommuneTemp;
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
                     if (this.cboCommuneName.EditValue != null
@@ -2640,7 +2668,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                                     this.cboProvinceName.EditValue = district.PROVINCE_CODE;
                                 }
                             }
-                           
+
                         }
                     }
                     FocusToAddress();
@@ -2979,7 +3007,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = listProvince.SingleOrDefault(o => o.PROVINCE_CODE == cboHTProvinceName.EditValue.ToString());
                         if (province != null)
                         {
-                            if(!toggleCheck.IsOn)
+                            if (!toggleCheck.IsOn)
                                 this.LoadComboHuyen_HT("", province.PROVINCE_CODE, false);
                             else
                             {
@@ -3339,12 +3367,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                GridLookUpEdit editor = sender as GridLookUpEdit;
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("BIRTH_CERT_BOOK_CODE", "", 10, 1, true));
-                columnInfos.Add(new ColumnInfo("BIRTH_CERT_BOOK_NAME", "", 100, 2, true));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("BIRTH_CERT_BOOK_NAME", "ID", columnInfos, false, 110);
-                ControlEditorLoader.Load(editor, lstBirthCertBook != null && lstBirthCertBook.Count > 0 ? lstBirthCertBook.Where(o => o.CURRENT_BIRTH_CERT_NUM < (o.FROM_NUM_ORDER + o.TOTAL - 1)).ToList() : null, controlEditorADO);
+                //GridLookUpEdit editor = sender as GridLookUpEdit;
+                //List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                //columnInfos.Add(new ColumnInfo("BIRTH_CERT_BOOK_CODE", "", 50, 1, true));
+                //columnInfos.Add(new ColumnInfo("BIRTH_CERT_BOOK_NAME", "", 250, 2, true));
+                //ControlEditorADO controlEditorADO = new ControlEditorADO("BIRTH_CERT_BOOK_NAME", "ID", columnInfos, false, 110);
+                //ControlEditorLoader.Load(editor, lstBirthCertBook != null && lstBirthCertBook.Count > 0 ? lstBirthCertBook.Where(o => o.CURRENT_BIRTH_CERT_NUM < (o.FROM_NUM_ORDER + o.TOTAL - 1)).ToList() : null, controlEditorADO);
+
             }
             catch (Exception ex)
             {
@@ -3417,7 +3446,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                                 txtProvinceCodeHospital.Text = hospital.First().SEARCH_CODE;
                             }
                         }
-                        
+
                         //txtProvinceCodeHospital.Text = listProvince.FirstOrDefault(o => o.PROVINCE_CODE == this.hisBranch.PROVINCE_CODE).SEARCH_CODE;
 
                         if (this.hisBranch.DISTRICT_CODE != null)
@@ -3632,13 +3661,13 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 {
                     if (this.cboProvinceNameHospital.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = listProvince.SingleOrDefault(o => o.PROVINCE_CODE == this.cboProvinceNameHospital.EditValue.ToString() );
+                        SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = listProvince.SingleOrDefault(o => o.PROVINCE_CODE == this.cboProvinceNameHospital.EditValue.ToString());
                         if (province != null)
                         {
                             this.LoadComboHuyen_BV("", province.PROVINCE_CODE, false);
                             this.txtProvinceCodeHospital.Text = province.SEARCH_CODE;
                             this.txtDistrictCodeHospital.Text = "";
-                           
+
                         }
                     }
                     this.txtDistrictCodeHospital.Focus();
@@ -3722,7 +3751,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             this.txtDistrictCodeHospital.Text = district.SEARCH_CODE;
                             this.cboCommuneNameHospital.EditValue = null;
                             this.txtCommuneCodeHospital.Text = "";
-                           
+
                         }
                     }
                     this.txtCommuneCodeHospital.Focus();
@@ -3868,7 +3897,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     this.cboProvinceNameHospital.Properties.DataSource = listProvince;
                     txtProvinceCodeHospital.Text = null;
                     cboDistrictNameHospital.EditValue = null;
-                    
+
                 }
             }
             catch (Exception ex)
@@ -4173,7 +4202,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 LogSystem.Warn(ex);
             }
         }
-        bool isNullCommune= false;
+        bool isNullCommune = false;
         private void txtHTCommuneCode_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -4416,7 +4445,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
 
         private void txtDistrictCodeHospital_KeyUp(object sender, KeyEventArgs e)
         {
-    
+
             try
             {
                 if (e.KeyCode == Keys.Enter)
@@ -4433,7 +4462,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
 
         private void txtCommuneCodeHospital_KeyUp(object sender, KeyEventArgs e)
         {
-         
+
             try
             {
                 if (e.KeyCode == Keys.Enter)
@@ -4616,15 +4645,15 @@ namespace HIS.Desktop.Plugins.InfantInformation
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (btnAdd.Enabled)
+                    if (btnTepoSave.Enabled)
                     {
-                        btnAdd.Focus();
-                        btnAdd.Select();
+                        btnTepoSave.Focus();
+                        btnTepoSave.Select();
                     }
                     else
                     {
-                        btnEdit.Focus();
-                        btnEdit.Select();
+                        btnSave.Focus();
+                        btnSave.Select();
                     }
                 }
             }
@@ -4693,7 +4722,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     this.controlStateWorker.SetData(this.currentControlStateRDO);
                 }
 
-                
+
                 //var visibility = toggleCheck.IsOn
                 //                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
                 //                : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
@@ -4798,9 +4827,9 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 txtProvinceCode.Text = null;
                 cboProvinceName.Text = null;
                 txtDistrictCode.Text = null;
-                cboDistrictName.Text = null;  
+                cboDistrictName.Text = null;
                 txtCommuneCode.Text = null;
-                cboCommuneName.Text = null;    
+                cboCommuneName.Text = null;
                 txtHTProvinceCode.Text = null;
                 cboHTProvinceName.Text = null;
                 txtHTDistrictCode.Text = null;
@@ -4818,5 +4847,5 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-    }   
+    }
 }

@@ -61,7 +61,8 @@ using HIS.Desktop.LocalStorage.ConfigSystem;
 using MPS.ProcessorBase.Core;
 using MPS;
 using Inventec.Common.SignLibrary.ADO;
-using HIS.Desktop.ApiConsumer; 
+using HIS.Desktop.ApiConsumer;
+using EMR.EFMODEL.DataModels;
 
 
 namespace HIS.Desktop.Plugins.ExecuteRoom
@@ -1222,6 +1223,32 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 currentHisServiceReq = (ServiceReqADO)gridViewServiceReq.GetFocusedRow();
                 //this.currentPatientTypeAlter = null;
                 needHandleOnClick = false;
+                if(currentHisServiceReq != null)
+                {
+                    V_HIS_SERVICE_REQ serviceReqDynamic = GetDynamicData(currentHisServiceReq);
+                    if (HisConfigCFG.MustSignBeforeStart == "1" && serviceReqDynamic.IS_MAIN_EXAM != 1)
+                    {
+                        var treatmentCode = currentHisServiceReq.TDL_TREATMENT_CODE;
+                        var serviceReqCode = currentHisServiceReq.SERVICE_REQ_CODE;
+                        EMR.Filter.EmrDocumentFilter filter = new EMR.Filter.EmrDocumentFilter();
+                        filter.TREATMENT_CODE__EXACT = currentHisServiceReq.TDL_TREATMENT_CODE;
+                        filter.DOCUMENT_TYPE_ID = IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_ASSIGN;
+                        filter.HIS_CODE = "SERVICE_REQ_CODE:" + currentHisServiceReq.SERVICE_REQ_CODE;
+                        var treatments = new BackendAdapter(new CommonParam()).Get<List<EMR_DOCUMENT>>("api/EmrDocument/Get", ApiConsumer.ApiConsumers.EmrConsumer, filter, null);
+                        bool hasSignedDocument = treatments.Any(doc => !string.IsNullOrEmpty(doc.SIGNERS));
+                        if (treatments.Count == 0 || !hasSignedDocument)
+                        {
+                            MessageBox.Show(
+                                "Vui lòng ký phiếu chỉ định trước khi xử lý dịch vụ",
+                                Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                                    Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                            return;
+                        }
+                    }
+                }
                 btnExecuteByDoubleClick(null, null);
 
                 Inventec.Common.Logging.LogSystem.Debug("gridViewServiceReq_RowCellClick. 7");
@@ -1238,6 +1265,29 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             {
                 if (currentHisServiceReq != null)
                 {
+                    V_HIS_SERVICE_REQ serviceReqDynamic = GetDynamicData(currentHisServiceReq);
+                    if (HisConfigCFG.MustSignBeforeStart == "1" && serviceReqDynamic.IS_MAIN_EXAM != 1)
+                    {
+                        var treatmentCode = currentHisServiceReq.TDL_TREATMENT_CODE;
+                        var serviceReqCode = currentHisServiceReq.SERVICE_REQ_CODE;
+                        EMR.Filter.EmrDocumentFilter filter = new EMR.Filter.EmrDocumentFilter();
+                        filter.TREATMENT_CODE__EXACT = currentHisServiceReq.TDL_TREATMENT_CODE;
+                        filter.DOCUMENT_TYPE_ID = IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__SERVICE_ASSIGN;
+                        filter.HIS_CODE = "SERVICE_REQ_CODE:" + currentHisServiceReq.SERVICE_REQ_CODE;
+                        var treatments = new BackendAdapter(new CommonParam()).Get<List<EMR_DOCUMENT>>("api/EmrDocument/Get", ApiConsumer.ApiConsumers.EmrConsumer, filter, null);
+                        bool hasSignedDocument = treatments.Any(doc => !string.IsNullOrEmpty(doc.SIGNERS));
+                        if (treatments.Count == 0 || !hasSignedDocument)
+                        {
+                            MessageBox.Show(
+                                "Vui lòng ký phiếu chỉ định trước khi xử lý dịch vụ",
+                                Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                                    Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                            return;
+                        }
+                    }
                     if (currentHisServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
                     {
                         CancelFinish(currentHisServiceReq);

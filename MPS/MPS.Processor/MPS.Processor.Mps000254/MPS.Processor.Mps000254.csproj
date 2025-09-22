@@ -33,6 +33,12 @@
     <Reference Include="FlexCel">
       <HintPath>..\..\..\..\LIB\FlexCellReport\FlexCel.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.ConfigApplication">
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.ListReports\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.LocalData">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -64,7 +70,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000254.PDO">
-      <HintPath>..\..\..\..\FE\YTE\DESKTOP\TEST\HIS\x64\ReferencedAssemblies\MPS.Processor.Mps000254.PDO.dll</HintPath>
+      <HintPath>..\MPS.Processor.Mps000254.PDO\bin\Debug\MPS.Processor.Mps000254.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -84,12 +90,6 @@
     <Compile Include="Mps000254ExtendSingleKey.cs" />
     <Compile Include="Mps000254Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\FE\YTE\DESKTOP\HIS\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
-      <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
-      <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
