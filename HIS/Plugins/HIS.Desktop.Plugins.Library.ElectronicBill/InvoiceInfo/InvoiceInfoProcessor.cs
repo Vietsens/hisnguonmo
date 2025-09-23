@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Config;
 using MOS.EFMODEL.DataModels;
 using System;
@@ -75,6 +76,20 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                     else if (dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__THE || dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE)
                     {
                         result.PaymentMethod = "THE";
+                    }
+                    //qtcode
+                    else
+                    {
+                        HIS_PAY_FORM payForm = new HIS_PAY_FORM();
+                        payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == dataInput.Transaction.PAY_FORM_ID);
+                        if(payForm != null && !string.IsNullOrEmpty(payForm.ELECTRONIC_PAY_FORM_NAME))
+                        {
+                            result.PaymentMethod = payForm.ELECTRONIC_PAY_FORM_NAME; 
+                        }
+                        else
+                        {
+                            result.PaymentMethod = "TM/CK";
+                        }
                     }
                 }
                 else if (dataInput.ListTransaction != null && dataInput.ListTransaction.Count > 0)

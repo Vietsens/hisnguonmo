@@ -36,7 +36,9 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Configuration;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Template;
-using System.Net; 
+using System.Net;
+using HIS.Desktop.LocalStorage.BackendData;
+
 namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
 {
     public class BKAVBehavior : IRun
@@ -408,24 +410,53 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
 
             int payFormId = 1;
 
+            //if (ElectronicBillDataInput.Transaction != null)
+            //{
+            //    if (ElectronicBillDataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK)
+            //    {
+            //        payFormId = 2;
+            //    }
+            //    else if (ElectronicBillDataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+            //    {
+            //        payFormId = 3;
+            //    }
+            //}
+            //else if (ElectronicBillDataInput.ListTransaction != null && ElectronicBillDataInput.ListTransaction.Count > 0)
+            //{
+            //    if (ElectronicBillDataInput.ListTransaction.First().PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK)
+            //    {
+            //        payFormId = 2;
+            //    }
+            //    else if (ElectronicBillDataInput.ListTransaction.First().PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+            //    {
+            //        payFormId = 3;
+            //    }
+            //}
+            //qtcode
             if (ElectronicBillDataInput.Transaction != null)
             {
-                if (ElectronicBillDataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK)
+                int electronicPayFormId; 
+                HIS_PAY_FORM payForm = new HIS_PAY_FORM();
+                payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == ElectronicBillDataInput.Transaction.PAY_FORM_ID);
+                if(payForm != null && !string.IsNullOrEmpty(payForm.ELECTRONIC_PAY_FORM_NAME) && int.TryParse(payForm.ELECTRONIC_PAY_FORM_NAME, out electronicPayFormId))
                 {
-                    payFormId = 2;
+                    payFormId = electronicPayFormId; 
                 }
-                else if (ElectronicBillDataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                else
                 {
-                    payFormId = 3;
+                    payFormId = 3; 
                 }
             }
-            else if (ElectronicBillDataInput.ListTransaction != null && ElectronicBillDataInput.ListTransaction.Count > 0)
+            else if(ElectronicBillDataInput.ListTransaction != null && ElectronicBillDataInput.ListTransaction.Count > 0)
             {
-                if (ElectronicBillDataInput.ListTransaction.First().PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK)
+                int electronicPayFormId;
+                HIS_PAY_FORM payForm = new HIS_PAY_FORM();
+                payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == ElectronicBillDataInput.ListTransaction.First().PAY_FORM_ID);
+                if (payForm != null && !string.IsNullOrEmpty(payForm.ELECTRONIC_PAY_FORM_NAME) && int.TryParse(payForm.ELECTRONIC_PAY_FORM_NAME, out electronicPayFormId))
                 {
-                    payFormId = 2;
+                    payFormId = electronicPayFormId;
                 }
-                else if (ElectronicBillDataInput.ListTransaction.First().PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                else
                 {
                     payFormId = 3;
                 }
