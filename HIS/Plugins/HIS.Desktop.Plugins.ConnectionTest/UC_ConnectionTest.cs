@@ -275,7 +275,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 StartTimer(currentModule.ModuleLink, "timer1");
                 RegisterTimer(currentModule.ModuleLink, "timer2", timer2.Interval, timer2_Tick);
                 StartTimer(currentModule.ModuleLink, "timer2");
-                timer3.Interval = 200; 
+                timer3.Interval = 200;
                 RegisterTimer(currentModule.ModuleLink, "timer3", timer3.Interval, timer3_Tick);
             }
             catch (Exception ex)
@@ -2021,14 +2021,18 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         MOS.Filter.HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
                         treatmentFilter.TREATMENT_CODE__EXACT = sample.TREATMENT_CODE;
-                        var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param).FirstOrDefault();
+                        HIS_TREATMENT treatment = new HIS_TREATMENT();
+                        if (sample.SERVICE_REQ_CODE != null)
+                        {
+                            treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param).FirstOrDefault();
+                        }
                         if (treatment != null && treatment.IS_PAUSE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                         {
                             XtraMessageBox.Show("Hồ sơ đã kết thúc điều trị. Không cho phép thực hiện lấy mẫu.", "Thông báo");
                             return;
                         }
                     }
-                    
+
                     if (LisConfigCFG.SHOW_FORM_SAMPLE_INFO == "1")
                     {
                         Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
@@ -2197,6 +2201,51 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             return result;
         }
 
+        //qtcode
+        //private void TraKetQuaE_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        positionHandle = -1;
+        //        if (!dxValidationProviderEditorInfo.Validate())
+        //            return;
+        //        bool success = false;
+        //        CommonParam param = new CommonParam();
+        //        LisSampleADO row = (LisSampleADO)gridViewSample.GetFocusedRow();
+        //        if (row != rowSample)
+        //        {
+        //            rowSample = row;
+        //            LoadLisResult(rowSample);
+        //            LoadDataToGridTestResult2();
+        //            SetDataToCommon(rowSample);
+
+        //        }
+        //        if (rowSample != null)
+        //        {
+        //            IsNotLoadData = false;
+        //            LIS_SAMPLE result = null;
+        //            if (!ReturnResult(ref param, ref result)) return;
+        //            if (result != null)
+        //            {
+        //                success = true;
+        //            }
+        //        }
+        //        WaitingManager.Hide();
+        //        #region Show message
+        //        MessageManager.Show(this.ParentForm, param, success);
+        //        #endregion
+
+        //        #region Process has exception
+        //        SessionManager.ProcessTokenLost(param);
+        //        #endregion
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //        WaitingManager.Hide();
+        //    }
+        //}
+        //qtcode
         private void TraKetQuaE_Click(object sender, EventArgs e)
         {
             try
@@ -2204,20 +2253,80 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 positionHandle = -1;
                 if (!dxValidationProviderEditorInfo.Validate())
                     return;
+
                 bool success = false;
                 CommonParam param = new CommonParam();
                 LisSampleADO row = (LisSampleADO)gridViewSample.GetFocusedRow();
+
                 if (row != rowSample)
                 {
                     rowSample = row;
-
                     LoadLisResult(rowSample);
                     LoadDataToGridTestResult2();
                     SetDataToCommon(rowSample);
-
                 }
+
                 if (rowSample != null)
                 {
+                    List<string> ListErrSampleTime = new List<string>();
+                    var serviceReq = GetServiceReq();
+                    if (serviceReq == null) return;
+                    List<TestLisResultADO> dataGrid = new List<TestLisResultADO>();
+                    var AllCheckNodes = treeListSereServTein.GetAllCheckedNodes();
+                    foreach (var item in AllCheckNodes)
+                    {
+                        var data = (TestLisResultADO)this.treeListSereServTein.GetDataRecordByNode(item);
+                        dataGrid.Add(data);
+                    }
+                    dataGrid = dataGrid.Where(o => o.IS_NO_EXECUTE != 1).ToList();
+                    var dataParent = dataGrid.Where(p => p.IS_PARENT == 1).ToList();
+                    foreach (var item in dataParent)
+                    {
+                        if (rowSample.SAMPLE_TIME != null)
+                        {
+                            var service = BackendDataWorker.Get<HIS_SERVICE>().FirstOrDefault(o => o.SERVICE_CODE == item.SERVICE_CODE);
+                            if (service != null)
+                            {
+                                if (!string.IsNullOrEmpty(service.MIN_PROC_TIME_EXCEPT_PATY_IDS) &&
+                                    service.MIN_PROC_TIME_EXCEPT_PATY_IDS.Split(',').Contains(item.PATIENT_TYPE_ID_BY_SERE_SERV.ToString()))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    TimeSpan time = DateKQ.DateTime - (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Convert.ToInt64(rowSample.SAMPLE_TIME.ToString().Substring(0, 12) + "00"));
+                                    double timeCheck = time.TotalMinutes;
+
+                                    if (timeCheck < service.MIN_PROCESS_TIME)
+                                    {
+                                        ListErrSampleTime.Add(string.Format("{0} ít hơn {1} phút", item.SERVICE_CODE, service.MIN_PROCESS_TIME));
+                                    }
+                                }
+
+                                if (!string.IsNullOrEmpty(service.MAX_PROC_TIME_EXCEPT_PATY_IDS) &&
+                                    service.MAX_PROC_TIME_EXCEPT_PATY_IDS.Split(',').Contains(item.PATIENT_TYPE_ID_BY_SERE_SERV.ToString()))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    TimeSpan time = DateKQ.DateTime - (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Convert.ToInt64(rowSample.SAMPLE_TIME.ToString().Substring(0, 12) + "00"));
+                                    double timeCheck = time.TotalMinutes;
+
+                                    if (timeCheck > service.MAX_PROCESS_TIME)
+                                    {
+                                        ListErrSampleTime.Add(string.Format("{0} nhiều hơn {1} phút", item.SERVICE_CODE, service.MAX_PROCESS_TIME));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (ListErrSampleTime.Count() > 0)
+                    {
+                        WaitingManager.Hide();
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Bệnh nhân có thời gian thực hiện xét nghiệm:\r\n" + string.Join("\r\n", ListErrSampleTime), "Thông báo");
+                        return;
+                    }
                     IsNotLoadData = false;
                     LIS_SAMPLE result = null;
                     if (!ReturnResult(ref param, ref result)) return;
@@ -2230,7 +2339,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 #region Show message
                 MessageManager.Show(this.ParentForm, param, success);
                 #endregion
-
                 #region Process has exception
                 SessionManager.ProcessTokenLost(param);
                 #endregion
@@ -3437,7 +3545,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        //qtcode
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -4260,7 +4368,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
             return lst;
         }
-        private void ProcessPrint(ref bool hasConfirmUser, ref bool resultConfirmUser,bool hiv)
+        private void ProcessPrint(ref bool hasConfirmUser, ref bool resultConfirmUser, bool hiv)
         {
             try
             {
@@ -4283,10 +4391,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (!HisConfigCFG.PRINT_TEST_RESULT)
                     {
                         SetDataToPrint(false);
-                            PrintProcess(PrintTypeKXN.IN_KET_QUA_XET_NGHIEM);
-                        }
+                        PrintProcess(PrintTypeKXN.IN_KET_QUA_XET_NGHIEM);
+                    }
                     else
-                    {                   
+                    {
                         SetDataToPrint(true);
                         if (lstResultPrint != null && lstResultPrint.Count > 0)
                         {
@@ -4888,7 +4996,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         if (decimal.TryParse(e.Value?.ToString(), out var newVal))
                         {
-                            data.VALUE = newVal;                            
+                            data.VALUE = newVal;
                         }
                         data.Item_Edit_Value = 1;
                         treeListSereServTein.CloseEditor();
@@ -4932,7 +5040,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         WaitingManager.Hide();
                         MessageManager.Show(this.ParentForm, param, success);
                     }
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -5986,7 +6094,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (lstSampleAll.Exists(o => string.IsNullOrEmpty(o.BARCODE) && o.ID != rowSample.ID))
                     {
                         FocusCellByRowHandle(gridViewSample, lstSampleAll.IndexOf(lstSampleAll.FirstOrDefault(o => string.IsNullOrEmpty(o.BARCODE) && o.ID != rowSample.ID)), gridColumnBarCode);
-                    }else
+                    }
+                    else
                     {
                         StartTimer(currentModule.ModuleLink, "timer3");
                     }
@@ -6464,7 +6573,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.AttackFile'");
                 if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.AttackFile' is not plugins");
                 List<object> listArgs = new List<object>();
-                listArgs.Add(new HIS.Desktop.ADO.EmrAttackFileADO() { TreatmentCode = row.TREATMENT_CODE, HisCode = string.Format("TREATMENT_CODE:{0} SERVICE_REQ_CODE:{1} BAR_CODE:{2}",row.TREATMENT_CODE,row.SERVICE_REQ_CODE, row.BARCODE)});
+                listArgs.Add(new HIS.Desktop.ADO.EmrAttackFileADO() { TreatmentCode = row.TREATMENT_CODE, HisCode = string.Format("TREATMENT_CODE:{0} SERVICE_REQ_CODE:{1} BAR_CODE:{2}", row.TREATMENT_CODE, row.SERVICE_REQ_CODE, row.BARCODE) });
                 listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
                 var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                 if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
@@ -9468,7 +9577,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
         private void txtTreatmentCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-           
+
         }
 
         private void chkKhongHienThiChuaLayMau_CheckedChanged(object sender, EventArgs e)
@@ -10167,9 +10276,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 var treeList = sender as DevExpress.XtraTreeList.TreeList;
                 if (treeList.FocusedNode != null)
                 {
-                    treeList.PostEditor(); 
-                    treeList.EndCurrentEdit(); 
-                    treeList.RefreshNode(treeList.FocusedNode); 
+                    treeList.PostEditor();
+                    treeList.EndCurrentEdit();
+                    treeList.RefreshNode(treeList.FocusedNode);
                     treeList.InvalidateNode(treeList.FocusedNode);
                 }
             }
@@ -10195,7 +10304,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-            }          
+            }
         }
     }
 }
