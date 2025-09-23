@@ -38,16 +38,16 @@ namespace HIS.Desktop.Plugins.HisTestIndexGroup.Validate
                 }
                 else
                 {
-                    if (Inventec.Common.String.CountVi.Count(txtTestIndexGroupCode.Text) > 6)
+                    if (Inventec.Common.String.CountVi.Count(txtTestIndexGroupCode.Text) > 7)
                     {
-                        this.ErrorText = "Độ dài mã vượt quá " + 6;
+                        this.ErrorText = "Độ dài mã vượt quá " + 7;
                         return valid;
                     }
                     else
                     {
-                        if (Inventec.Common.String.CountVi.Count(txtTestIndexGroupCode.Text) > 6)
+                        if (Inventec.Common.String.CountVi.Count(txtTestIndexGroupCode.Text) > 7)
                         {
-                            this.ErrorText = "Độ dài mã vượt quá " + 6;
+                            this.ErrorText = "Độ dài mã vượt quá " + 7;
                             return valid;
                         }
 
