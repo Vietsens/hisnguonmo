@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraEditors;
+using DevExpress.XtraLayout;
 using His.Bhyt.InsuranceExpertise;
 using His.Bhyt.InsuranceExpertise.LDO;
 using HIS.Desktop.Common;
@@ -24,6 +25,8 @@ using MOS.Filter;
 using MOS.LibraryHein.Bhyt;
 using MOS.SDO;
 using Newtonsoft.Json;
+using RAR.IdCard.Sdk.Reader;
+using RAR.IdCard.Sdk.Reader.HN212;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -60,11 +63,15 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         bool IsEmergency = false;
         int AutoCaptureFaceMinimumMs = 3000;
         bool IsCheckHein = false;
+        private bool adjustForTwoId = true;
         #endregion
 
         public frmWaiting2()
         {
             InitializeComponent();
+            //panel2.Resize += (s, e) => CenterPanel();
+            //layoutControl1.Dock = DockStyle.Fill;
+
         }
         System.Windows.Forms.Timer timerCheckVisible = new System.Windows.Forms.Timer();
         public frmWaiting2(Inventec.Desktop.Common.Modules.Module module)
@@ -76,7 +83,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 this.currentModule = module;
                 string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
                 this.Icon = Icon.ExtractAssociatedIcon(iconPath);
-
+                DisplayImageInPanel(); // Assuming this loads images into listImage
             }
             catch (Exception ex)
             {
@@ -84,7 +91,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             }
 
         }
-
+        
         private void frmWaiting2_Load(object sender, EventArgs e)
         {
             try
@@ -208,29 +215,43 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
 
         private void DisplayImageInPanel()
         {
-            if (listImage != null && listImage.Count > 0)
+            // Nếu không có ảnh
+            if (listImage == null || listImage.Count == 0)
             {
-                Image originalImage = listImage[0];
-                int panelWidth = panel1.Width;
-                int panelHeight = panel1.Height;
-
-                int cropWidth = Math.Min(panelWidth, originalImage.Width);
-                int cropHeight = Math.Min(panelHeight, originalImage.Height);
-
-                int cropX = Math.Max(originalImage.Width - cropWidth - 20, 0); // Adjust 20 for desired offset
-                int cropY = (originalImage.Height - cropHeight) / 2;
-
-                Bitmap croppedImage = new Bitmap(panelWidth, panelHeight);
-                using (Graphics g = Graphics.FromImage(croppedImage))
-                {
-                    g.DrawImage(originalImage, new Rectangle(0, 0, panelWidth, panelHeight),
-                                new Rectangle(cropX, cropY, cropWidth, cropHeight),
-                                GraphicsUnit.Pixel);
-                }
-
-                panel1.BackgroundImage = croppedImage;
-                panel1.BackgroundImageLayout = ImageLayout.Stretch;
+                panel1.BackgroundImage = null;
+                panel1.Visible = false;
+                panel2.Dock = DockStyle.Fill;
+                panel2.BringToFront();
+                panel2.Update();
+                panelControlInput.Dock = DockStyle.None;
+                layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                CenterPanel();
+                return;
             }
+
+            // Nếu có ảnh
+            panel1.Visible = true;
+            layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            Image originalImage = listImage[0];
+            int panelWidth = panel1.Width;
+            int panelHeight = panel1.Height;
+
+            int cropWidth = Math.Min(panelWidth, originalImage.Width);
+            int cropHeight = Math.Min(panelHeight, originalImage.Height);
+
+            int cropX = Math.Max(originalImage.Width - cropWidth - 20, 0);// Adjust 20 for desired offset
+            int cropY = (originalImage.Height - cropHeight) / 2;
+
+            Bitmap croppedImage = new Bitmap(panelWidth, panelHeight);
+            using (Graphics g = Graphics.FromImage(croppedImage))
+            {
+                g.DrawImage(originalImage, new Rectangle(0, 0, panelWidth, panelHeight),
+                            new Rectangle(cropX, cropY, cropWidth, cropHeight),
+                            GraphicsUnit.Pixel);
+            }
+
+            panel1.BackgroundImage = croppedImage;
+            panel1.BackgroundImageLayout = ImageLayout.Stretch;
         }
 
         private void ConfigureIdentityPrompt()
@@ -270,17 +291,17 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             {
                 List<HomeButton> listData = new List<HomeButton>();
                 string config = HisConfigs.Get<string>("HIS.Desktop.Plugins.RegisterExamKiosk.HomeButton");
-                if (!string.IsNullOrEmpty(config))         
+                if (!string.IsNullOrEmpty(config))
                 {
                     var rs = JsonConvert.DeserializeObject<List<HomeButton>>(config);
                     listData = rs;
-                    GenerateButtons(listData);
                 }
-
+                // Pass config to GenerateButtons
+                adjustForTwoId = IsAdjustForTwoIdDevice();
+                GenerateButtons(listData);
             }
             catch (Exception ex)
             {
-
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -902,7 +923,6 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void CardMessageFail()
         {
             try
@@ -945,7 +965,11 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             }
         }
 
-
+        private bool IsAdjustForTwoIdDevice()
+        {
+            var value = HisConfigs.Get<string>("HIS.Desktop.Plugins.RegisterExamKiosk.UI.AdjustForTwoIdDevice");
+            return value == "1";
+        }
 
         private HisPatientForKioskSDO GetPatientInfoByFilter(HisPatientAdvanceFilter filter)
         {
@@ -2377,59 +2401,91 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         {
             try
             {
-                int verticalSpacing = 20; // Space between rows
-                int horizontalSpacing = 30; // Space between buttons in a row
-                int buttonsPerRow = 2; // Max buttons per row
-                int maxWidthLimit = 250; // Set a maximum width limit for each button
-
-                for (int i = 0; i < buttonData.Count; i++)
+                int verticalSpacing = 20;
+                int horizontalSpacing = 20;
+                int buttonsPerRow = adjustForTwoId ? 2 : 2;
+                var fixedButtons = new List<SimpleButton>();
+                if (adjustForTwoId)
                 {
-                    // Calculate row and column positions
-                    int row = i / buttonsPerRow;
-                    int column = i % buttonsPerRow;
+                    btnScanCCCD.Visible = true;
+                    if (btnScanCCCD != null && !panelControlInput.Controls.Contains(btnScanCCCD))
+                        panelControlInput.Controls.Add(btnScanCCCD);
+                    if (!panelControlInput.Controls.Contains(btnConfirm))
+                        panelControlInput.Controls.Add(btnConfirm);
+                    fixedButtons.Add(btnScanCCCD);
+                    fixedButtons.Add(btnConfirm);
+                }
+                else
+                {
+                    btnScanCCCD.Visible = false;
+                    int requiredWidth = txtNumberInput.Right + 5 + btnConfirm.Width + 10;
+                    if (panelControlInput.Width < requiredWidth)
+                    {
+                        panelControlInput.Width = requiredWidth;
+                    }
+                    btnConfirm.Location = new Point(txtNumberInput.Right + 5, txtNumberInput.Top + (txtNumberInput.Height - btnConfirm.Height) / 2);
+                    if (!panelControlInput.Controls.Contains(btnConfirm))
+                        panelControlInput.Controls.Add(btnConfirm);
+                }
 
-                    // Create the button with text and style
+                var dynamicButtons = new List<SimpleButton>();
+                foreach (var b in buttonData)
+                {
                     SimpleButton btn = new SimpleButton
                     {
-                        Text = buttonData[i].ButtonName,
+                        Text = b.ButtonName,
                         BackColor = Color.White,
                         ForeColor = Color.DeepSkyBlue,
                         BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder,
                         AutoSize = false,
-                        ToolTip = buttonData[i].ButtonName,
+                        ToolTip = b.ButtonName,
                         Cursor = Cursors.Hand,
                         Font = new Font("Arial", 22, FontStyle.Regular),
-                        Tag = buttonData[i].ButtonLink
+                        Tag = b.ButtonLink
                     };
-
-                    // Calculate the width based on text size with a limit
-                    using (Graphics g = this.CreateGraphics())
-                    {
-                        string text = buttonData[i].ButtonName;
-                        SizeF textSize = g.MeasureString(text, btn.Font);
-
-                        // Trim text if it exceeds max width
-                        while (textSize.Width > maxWidthLimit)
-                        {
-                            text = text.Substring(0, text.Length - 1); // Remove one character at a time
-                            textSize = g.MeasureString(text + "...", btn.Font);
-                        }
-
-                        btn.Text = text + (textSize.Width > maxWidthLimit ? "..." : "");
-                        btn.Size = new Size(Math.Min((int)textSize.Width + 20, maxWidthLimit), 59);
-                    }
-
-                    // Set location based on row and column
-                    btn.Location = new Point(
-                        113 + column * (btn.Width + horizontalSpacing),
-                        426 + row * (btn.Height + verticalSpacing)
-                    );
-
-                    // Add click event
                     btn.Click += OpenWebViewForm;
+                    panelControlInput.Controls.Add(btn);
+                    dynamicButtons.Add(btn);
+                }
+                Size uniformSize = new Size(0, 60);
+                using (Graphics g = this.CreateGraphics())
+                {
+                    foreach (var btn in fixedButtons.Concat(dynamicButtons))
+                    {
+                        SizeF textSize = g.MeasureString(btn.Text, btn.Font);
+                        int width = (int)textSize.Width + 40;
+                        uniformSize.Width = Math.Max(uniformSize.Width, width);
+                    }
+                }
+                foreach (var btn in fixedButtons.Concat(dynamicButtons))
+                {
+                    btn.Size = uniformSize;
+                }
+                int totalFixedRowWidth = buttonsPerRow * uniformSize.Width + (buttonsPerRow - 1) * horizontalSpacing;
+                int startX = (panelControlInput.Width - totalFixedRowWidth) / 2;
+                int startY = txtNumberInput.Bottom + verticalSpacing;
 
-                    // Add the button to the panel
-                    this.panelControlInput.Controls.Add(btn);
+                for (int i = 0; i < fixedButtons.Count; i++)
+                {
+                    int row = i / buttonsPerRow;
+                    int col = i % buttonsPerRow;
+                    var btn = fixedButtons[i];
+                    btn.Location = new Point(
+                        startX + col * (uniformSize.Width + horizontalSpacing),
+                        startY + row * (uniformSize.Height + verticalSpacing)
+                    );
+                }
+
+                int dynamicStartY = startY + ((fixedButtons.Count + buttonsPerRow - 1) / buttonsPerRow) * (uniformSize.Height + verticalSpacing);
+                for (int i = 0; i < dynamicButtons.Count; i++)
+                {
+                    int row = i / buttonsPerRow;
+                    int col = i % buttonsPerRow;
+                    var btn = dynamicButtons[i];
+                    btn.Location = new Point(
+                        startX + col * (uniformSize.Width + horizontalSpacing),
+                        dynamicStartY + row * (uniformSize.Height + verticalSpacing)
+                    );
                 }
             }
             catch (Exception ex)
@@ -2437,11 +2493,6 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
-
-
-
-
         private void OpenWebViewForm(object sender, EventArgs e)
         {
             try
@@ -2460,7 +2511,66 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private async void btnScanCCCD_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                WaitingManager.Show();
+                using (var client = new HttpClient())
+                {
+                    var response = await client.GetAsync("http://localhost:7000/api/v1/verify");
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        WaitingManager.Hide();
+                        XtraMessageBox.Show("Không kết nối được thiết bị CCCD.", "Thông báo");
+                        return;
+                    }
+
+                    var responseData = await response.Content.ReadAsStringAsync();
+                    var root = JsonConvert.DeserializeObject<RootResponse>(responseData);
+                    if (root == null || !root.success || root.result?.data == null)
+                    {
+                        WaitingManager.Hide();
+                        XtraMessageBox.Show("CCCD không hợp lệ hoặc không xác thực được.", "Thông báo");
+                        return;
+                    }
+                    string cccdFromDevice = root.result.data.identifyNumber;
+                    txtNumberInput.Texts = cccdFromDevice;
+                    txtNumberInput.Focus();
+                    HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
+                    filter.CCCD_NUMBER__EXACT = cccdFromDevice;
+                    var patientInfo = GetPatientInfoByFilter(filter);
+
+                    if (patientInfo != null)
+                    {
+                        this.PatientData = new InformationObjectADO();
+                        this.PatientData.PatientForKiosk = patientInfo;
+                        OpenFormByPatientData();
+                    }
+                    else
+                    {
+                        HeinCardData heinCard = new HeinCardData
+                        {
+                            HeinCardNumber = cccdFromDevice,
+                            Dob = root.result.data.dateOfBirth,
+                            PatientName = root.result.data.name,
+                            Gender = root.result.data.sex,
+                            Address = root.result.data.nationality
+                        };
+                        this.PatientData = new InformationObjectADO();
+                        this.PatientData.PatientForKiosk = MapDataFromCard(heinCard);
+                        OpenFormByPatientData();
+                    }
+                }
+
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                XtraMessageBox.Show("Có lỗi xảy ra khi quẹt CCCD: " + ex.Message, "Thông báo");
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }       
     }
-
-
 }
