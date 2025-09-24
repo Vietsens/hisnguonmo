@@ -41,6 +41,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
         private HIS_SERVICE_REQ hisServiceReq_CurentExam;
         private HIS_DHST hisDhst;
         private HIS_SERVICE_REQ HisPrescriptionSDOPrintPlus;
+        private List<HIS_SERVICE_REQ> lsthisPrescriptionSDOPrintPlus;
+        private List<HIS_SERVICE_REQ> lstServiceReq;
+        private List<HIS_SERVICE_REQ_METY> lstHisServiceReqMety;
         private string mediStockName;
         private string expMestCode;
         private V_HIS_ROOM executeRoom;
@@ -100,6 +103,8 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     hisDhst = new HIS_DHST();
                     mediStockName = "";
                     HisPrescriptionSDOPrintPlus = new HIS_SERVICE_REQ();
+                    lsthisPrescriptionSDOPrintPlus = new List<HIS_SERVICE_REQ>();
+                    lstHisServiceReqMety = new List<HIS_SERVICE_REQ_METY>();
                     executeRoom = new V_HIS_ROOM();
                     reqRoom = new V_HIS_ROOM();
                     List<long> exeDepaIds = new List<long>();
@@ -116,6 +121,8 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         mediMateIn = new ThreadMedicineADO(currentOutPresSDO, hasMediMate);
                         mediMateOut = new ThreadMedicineADO(currentOutPresSDO, hasMediMate);
                         HisPrescriptionSDOPrintPlus = currentOutPresSDO.ServiceReqs.FirstOrDefault();
+                        lsthisPrescriptionSDOPrintPlus = currentOutPresSDO.ServiceReqs;
+                        lstHisServiceReqMety = currentOutPresSDO.ServiceReqMeties;
                         exeDepaIds = currentOutPresSDO.ServiceReqs.Select(s => s.EXECUTE_DEPARTMENT_ID).Distinct().ToList();
                         reqDepaIds = currentOutPresSDO.ServiceReqs.Select(s => s.REQUEST_DEPARTMENT_ID).Distinct().ToList();
                     }
@@ -391,15 +398,22 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(AppConfigKeys.CONFIG_KEY__HIS_DESKTOP__PrintSplitTemplateMps000234Option) == "1")
                     {
                         #region GN
+                        lstServiceReq = new List<HIS_SERVICE_REQ>();
                         foreach (var itemN in listGayNghien234)
                         {
                             ExpMestMedicineSDO ado = new ExpMestMedicineSDO();
                             Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestMedicineSDO>(ado, itemN);
                             listGayNghien.Add(ado);
                         }
+
+                        var listGayNghien234Ids = listGayNghien.Select(x => x.TDL_SERVICE_REQ_ID).ToList();
+                        lstServiceReq = lsthisPrescriptionSDOPrintPlus.Where(o => listGayNghien234Ids.Contains(o.ID)).ToList(); 
+
                         if (listGayNghien.Count > 0)
                             InGayNghien();
+
                         listGayNghien = new List<ExpMestMedicineSDO>();
+                        lstServiceReq = new List<HIS_SERVICE_REQ>();
                         foreach (var itemN in listOutStockGN234)
                         {
                             if (itemN.Type == 3)
@@ -409,6 +423,10 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 listGayNghien.Add(ado);
                             }
                         }
+
+                        var listOutStockGN234Ids = listGayNghien.Select(x => x.TDL_SERVICE_REQ_ID).ToList();
+                        lstServiceReq = lsthisPrescriptionSDOPrintPlus.Where(o => listOutStockGN234Ids.Contains(o.ID)).ToList();
+
                         if (listGayNghien.Count > 0)
                             InGayNghien();
                         #endregion
@@ -637,13 +655,17 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     MPS.Processor.Mps000181.PDO.Mps000181PDO mps000181PDO = new MPS.Processor.Mps000181.PDO.Mps000181PDO(
                         vHisPatientTypeAlter,
                         hisDhst,
-                        HisPrescriptionSDOPrintPlus,
+                        lsthisPrescriptionSDOPrintPlus,
                         listN,
                         HisServiceReq_Exam,
                         hisTreatment,
                         Mps000181ADO,
                         null,
-                        keyOrderListData);
+                        keyOrderListData,
+                        null, 
+                        null,
+                        null,
+                        lstHisServiceReqMety);
 
                     Print.PrintData(printTypeCode, fileName, mps000181PDO, printNow, treatmentCode, ref result, this.currentModule != null ? currentModule.RoomId : 0, previewType, listGayNghien.Count, this.SavedData, numCopy);
                     //PrintData(printTypeCode, fileName, mps000181PDO, printNow, numCopy, ref result);
