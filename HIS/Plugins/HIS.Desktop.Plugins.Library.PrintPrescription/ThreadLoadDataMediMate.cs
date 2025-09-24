@@ -639,6 +639,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 metyExpmestADO.Type = TuTuc;
                             }
 
+                            metyExpmestADO.TDL_SERVICE_REQ_ID = expMestMetyGroup.First().SERVICE_REQ_ID;
                             metyExpmestADO.NUM_ORDER = expMestMetyGroup.First().NUM_ORDER ?? 999999;
                             metyExpmestADO.AMOUNT = expMestMetyGroup.Sum(o => o.AMOUNT);
 
