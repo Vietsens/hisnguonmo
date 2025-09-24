@@ -39,6 +39,7 @@ using Inventec.Desktop.Common.LanguageManager;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.UC.SecondaryIcd;
 using MOS.UTILITY;
+using DevExpress.XtraExport;
 
 namespace HIS.UC.Icd
 {
@@ -49,6 +50,8 @@ namespace HIS.UC.Icd
         private int positionHandle = -1;
         private List<HIS_ICD> dataIcds;
 
+        public delegate void IcdMapCodeChangedHandler(string icdMapCode);
+        public event IcdMapCodeChangedHandler OnIcdMapCodeChanged;
         private DelegateRequiredCause requiredCause;
         private DelegateRefeshIcd refeshIcd;
         private DelegatNextFocus nextFocus;
@@ -59,6 +62,8 @@ namespace HIS.UC.Icd
         bool IsObligatoryTranferMediOrg = false;
         long autoCheckIcd;
         bool IsYhct = false;
+        long DepartmentId;
+        string IcdMapCode = "";
 
         HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager checkIcd;
         public UCIcd()
@@ -73,6 +78,7 @@ namespace HIS.UC.Icd
 
             this.SetCaptionByLanguageKey();
             this.InitAdo = data;
+            this.DepartmentId = data.DepamentId;
             if (data.Height > 0 && data.Width > 0)
             {
                 this.Size = new Size(data.Width, data.Height);
@@ -499,6 +505,7 @@ namespace HIS.UC.Icd
                     }
                 }
 
+                
             }
             catch (Exception ex)
             {
@@ -938,35 +945,83 @@ namespace HIS.UC.Icd
         {
             try
             {
-                Inventec.Common.Logging.LogSystem.Debug("cboIcds_EditValueChanged.1");
                 HIS_ICD icd = null;
-                if (this.cboIcds.EditValue != null)
-                {
-                    icd = this.dataIcds.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboIcds.EditValue.ToString()));
-                }
-                if (this.requiredCause == null)
-                    return;
+                bool AutoMapIcd10WithIcdYhct = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.HisIcd.AutoMapIcd10WithIcdYhct") == "1";
 
-                if (!this.InitAdo.IsUCCause && dataIcds != null && icd != null)
+                if (AutoMapIcd10WithIcdYhct)
                 {
-                    if (icd != null && icd.IS_REQUIRE_CAUSE == 1)
+                    var Department = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>().FirstOrDefault(o => o.ID == DepartmentId);
+
+                    if (Department != null && this.cboIcds.EditValue != null)
                     {
-                        this.requiredCause(true);
+                        icd = this.dataIcds.FirstOrDefault(o =>
+                            o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboIcds.EditValue.ToString()));
+
+                        if (Department.IS_TRADITIONAL == 1)
+                        {
+                            if (icd != null && icd.ICD_MAP_CODE != null)
+                            {
+                                IcdMapCode = icd.ICD_MAP_CODE;
+                                OnIcdMapCodeChanged.Invoke(IcdMapCode);
+                            }
+                        }
+                        else
+                        {
+                            if (icd != null && icd.ICD_MAP_CODE != null)
+                            {
+                                DialogResult result = XtraMessageBox.Show(
+                                    "Bạn có muốn cập nhật mã chẩn đoán chính theo mã ICD10 ánh xạ với mã ICD YHCT không?", 
+                                    "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                                if (result == DialogResult.Yes)
+                                {
+                                    IcdMapCode = icd.ICD_MAP_CODE;
+                                    OnIcdMapCodeChanged.Invoke(IcdMapCode);
+                                }
+                            }
+                        }
+
+                        HandleRequiredCause(icd);
                     }
-                    else
-                        this.requiredCause(false);
                 }
                 else
                 {
-                    this.requiredCause(false);
+                    if (this.cboIcds.EditValue != null)
+                    {
+                        icd = this.dataIcds.FirstOrDefault(o =>
+                            o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboIcds.EditValue.ToString()));
+                    }
+                    HandleRequiredCause(icd);
                 }
-
-                Inventec.Common.Logging.LogSystem.Debug("cboIcds_EditValueChanged.3");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void HandleRequiredCause(HIS_ICD icd)
+        {
+            Inventec.Common.Logging.LogSystem.Debug("cboIcds_EditValueChanged.1");
+
+            if (this.cboIcds.EditValue != null)
+            {
+                icd = this.dataIcds.FirstOrDefault(o =>
+                    o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboIcds.EditValue.ToString()));
+            }
+
+            if (this.requiredCause == null) return;
+
+            if (!this.InitAdo.IsUCCause && dataIcds != null && icd != null)
+            {
+                this.requiredCause(icd.IS_REQUIRE_CAUSE == 1);
+            }
+            else
+            {
+                this.requiredCause(false);
+            }
+
+            Inventec.Common.Logging.LogSystem.Debug("cboIcds_EditValueChanged.3");
         }
 
         private void DelegateIcd(string icdCodes, string icdNames)
