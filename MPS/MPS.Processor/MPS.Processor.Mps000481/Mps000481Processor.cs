@@ -35,7 +35,8 @@ namespace MPS.Processor.Mps000481
          List<TreatmentlADO> TreatmentlADOs;
          List<SereServTeinADO> SereServTeinADOs;
 
-         List<SereServADO> SereServADO_SieuAms = new List<SereServADO>();
+        List<SereServADO> SereServADO_GiaiPhauBenhLys = new List<SereServADO>();
+        List<SereServADO> SereServADO_SieuAms = new List<SereServADO>();
          List<SereServADO> SereServADO_DienTims = new List<SereServADO>();
          List<SereServADO> SereServADO_XQuangs = new List<SereServADO>();
          List<SereServADO> SereServADO_CTs = new List<SereServADO>();
@@ -95,6 +96,7 @@ namespace MPS.Processor.Mps000481
 
                 objectTag.AddObjectData(store, "listSieuAm", SereServADO_SieuAms);
                 objectTag.AddObjectData(store, "listDienTim", SereServADO_DienTims);
+                objectTag.AddObjectData(store, "listGiaiPhauBenhLy", SereServADO_GiaiPhauBenhLys);
                 objectTag.AddObjectData(store, "listXQuang", SereServADO_XQuangs);
                 objectTag.AddObjectData(store, "listCT", SereServADO_CTs);
                 objectTag.AddObjectData(store, "listMRI", SereServADO_MRIs);
@@ -219,6 +221,7 @@ namespace MPS.Processor.Mps000481
                         }
                     }
 
+                    this.SereServADO_GiaiPhauBenhLys = getSereServADO(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL, null, null, null);
                     this.SereServADO_SieuAms = getSereServADO(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA, null, null, null); //Siêu âm
                     this.SereServADO_DienTims = getSereServADO(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN, 1, null, null); //Điện tâm đồ (Điện tim)
                     this.SereServADO_XQuangs = getSereServADO(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA, null, 1, null); //XQuang
@@ -231,7 +234,7 @@ namespace MPS.Processor.Mps000481
 
 
                     this.SereServADO_HuyetHocs = getSereServADO(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN, null, null, 1); // Huyết học
-                    this.SereServTeinADO_HuyetHocs = getSereServTeinADOADO(1);
+                    this.SereServTeinADO_HuyetHocs = getSereServTeinADOADO(null);
                     this.SereServADO_SinhHoas = getSereServADO(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN, null, null, 3); // Sinh hóa
                     this.SereServTeinADO_SinhHoas = getSereServTeinADOADO(null);
                     this.SereServADO_UngThus = getSereServADO(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN, null, null, 8); // Dấu ấn ung thư
