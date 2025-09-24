@@ -70,6 +70,15 @@ namespace MPS.Processor.Mps000462
         {
             try
             {
+                if (rdo.V_HIS_ANTIBIOTIC_NEW_REG.Count > 0)
+                {
+                    var item = rdo.V_HIS_ANTIBIOTIC_NEW_REG.FirstOrDefault(o => o.START_DATE != null);
+                    if (item != null)
+                    {
+                        SetSingleKey(new KeyValue("START_DATE", item.START_DATE));
+                    }
+                }
+
                 AddObjectKeyIntoListkey<V_HIS_ANTIBIOTIC_REQUEST>(rdo.V_HIS_ANTIBIOTIC_REQUEST, false);
                 AddObjectKeyIntoListkey<HIS_DHST>(rdo.HIS_DHST, false);
                 if (rdo.HIS_ANTIBIOTIC_MICROBI == null)
