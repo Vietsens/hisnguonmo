@@ -36,6 +36,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panelControlInput = new DevExpress.XtraEditors.PanelControl();
+            this.btnScanCCCD = new DevExpress.XtraEditors.SimpleButton();
             this.txtNumberInput = new Inventec.CustomControls.PNTextEdit();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pbCamera = new System.Windows.Forms.PictureBox();
@@ -106,7 +107,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.panel2.Controls.Add(this.panelControlInput);
             this.panel2.Location = new System.Drawing.Point(2, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(865, 697);
+            this.panel2.Size = new System.Drawing.Size(869, 697);
             this.panel2.TabIndex = 5;
             this.panel2.Resize += new System.EventHandler(this.panelControl_Resize);
             // 
@@ -115,20 +116,45 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.panelControlInput.Appearance.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.panelControlInput.Appearance.Options.UseBackColor = true;
             this.panelControlInput.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.panelControlInput.Controls.Add(this.btnScanCCCD);
             this.panelControlInput.Controls.Add(this.txtNumberInput);
             this.panelControlInput.Controls.Add(this.groupBox1);
             this.panelControlInput.Controls.Add(this.btnConfirm);
             this.panelControlInput.Controls.Add(this.pbImage);
             this.panelControlInput.Controls.Add(this.label2);
             this.panelControlInput.Controls.Add(this.lblMessage);
-            this.panelControlInput.Location = new System.Drawing.Point(0, 2);
+            this.panelControlInput.Location = new System.Drawing.Point(0, 0);
             this.panelControlInput.Name = "panelControlInput";
-            this.panelControlInput.Size = new System.Drawing.Size(946, 697);
+            this.panelControlInput.Size = new System.Drawing.Size(963, 697);
             this.panelControlInput.TabIndex = 12;
+            // 
+            // btnScanCCCD
+            // 
+            this.btnScanCCCD.Appearance.BackColor = System.Drawing.Color.White;
+            this.btnScanCCCD.Appearance.BackColor2 = System.Drawing.Color.White;
+            this.btnScanCCCD.Appearance.BorderColor = System.Drawing.Color.White;
+            this.btnScanCCCD.Appearance.Font = new System.Drawing.Font("Tahoma", 22.25F);
+            this.btnScanCCCD.Appearance.ForeColor = System.Drawing.Color.DeepSkyBlue;
+            this.btnScanCCCD.Appearance.Options.UseBackColor = true;
+            this.btnScanCCCD.Appearance.Options.UseBorderColor = true;
+            this.btnScanCCCD.Appearance.Options.UseFont = true;
+            this.btnScanCCCD.Appearance.Options.UseForeColor = true;
+            this.btnScanCCCD.AppearanceHovered.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnScanCCCD.AppearanceHovered.Font = new System.Drawing.Font("Tahoma", 24.75F);
+            this.btnScanCCCD.AppearanceHovered.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.btnScanCCCD.AppearanceHovered.Options.UseBackColor = true;
+            this.btnScanCCCD.AppearanceHovered.Options.UseFont = true;
+            this.btnScanCCCD.AppearanceHovered.Options.UseForeColor = true;
+            this.btnScanCCCD.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.btnScanCCCD.Location = new System.Drawing.Point(180, 416);
+            this.btnScanCCCD.Name = "btnScanCCCD";
+            this.btnScanCCCD.Size = new System.Drawing.Size(240, 66);
+            this.btnScanCCCD.TabIndex = 11;
+            this.btnScanCCCD.Text = "Quét CCCD";
+            this.btnScanCCCD.Click += new System.EventHandler(this.btnScanCCCD_Click);
             // 
             // txtNumberInput
             // 
-            this.txtNumberInput.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.txtNumberInput.BackColor = System.Drawing.Color.White;
             this.txtNumberInput.BackgroundColor = System.Drawing.Color.White;
             this.txtNumberInput.BorderColor = System.Drawing.Color.White;
@@ -136,12 +162,12 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.txtNumberInput.BorderSize = 1;
             this.txtNumberInput.EditMaskPn = "";
             this.txtNumberInput.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.txtNumberInput.Location = new System.Drawing.Point(4, 332);
+            this.txtNumberInput.Location = new System.Drawing.Point(-2, 326);
             this.txtNumberInput.MaskTypes = DevExpress.XtraEditors.Mask.MaskType.None;
             this.txtNumberInput.MaxLengthTexts = 400;
             this.txtNumberInput.Name = "txtNumberInput";
             this.txtNumberInput.Padding = new System.Windows.Forms.Padding(15);
-            this.txtNumberInput.Size = new System.Drawing.Size(568, 66);
+            this.txtNumberInput.Size = new System.Drawing.Size(857, 66);
             this.txtNumberInput.TabIndex = 10;
             this.txtNumberInput.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.txtNumberInput.TextHintNull = "Nhập số";
@@ -176,7 +202,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(27, 544);
+            this.groupBox1.Location = new System.Drawing.Point(35, 544);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(820, 495);
             this.groupBox1.TabIndex = 9;
@@ -462,7 +488,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.btnConfirm.Appearance.BackColor = System.Drawing.Color.White;
             this.btnConfirm.Appearance.BackColor2 = System.Drawing.Color.White;
             this.btnConfirm.Appearance.BorderColor = System.Drawing.Color.White;
-            this.btnConfirm.Appearance.Font = new System.Drawing.Font("Arial", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConfirm.Appearance.Font = new System.Drawing.Font("Arial", 22.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnConfirm.Appearance.ForeColor = System.Drawing.Color.DeepSkyBlue;
             this.btnConfirm.Appearance.Options.UseBackColor = true;
             this.btnConfirm.Appearance.Options.UseBorderColor = true;
@@ -476,7 +502,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.btnConfirm.AppearanceHovered.Options.UseForeColor = true;
             this.btnConfirm.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.btnConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnConfirm.Location = new System.Drawing.Point(590, 332);
+            this.btnConfirm.Location = new System.Drawing.Point(453, 416);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(240, 66);
             this.btnConfirm.TabIndex = 9;
@@ -495,9 +521,11 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.Appearance.Font = new System.Drawing.Font("Arial", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Appearance.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(10, 278);
+            this.label2.Location = new System.Drawing.Point(6, 282);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(837, 38);
             this.label2.TabIndex = 2;
@@ -505,9 +533,11 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             // 
             // lblMessage
             // 
+            this.lblMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMessage.Appearance.Font = new System.Drawing.Font("Arial", 35.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMessage.Appearance.ForeColor = System.Drawing.Color.White;
-            this.lblMessage.Location = new System.Drawing.Point(4, 111);
+            this.lblMessage.Location = new System.Drawing.Point(6, 113);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(928, 55);
             this.lblMessage.TabIndex = 1;
@@ -515,9 +545,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             // 
             // panel1
             // 
-            this.panel1.Location = new System.Drawing.Point(869, 0);
+            this.panel1.Location = new System.Drawing.Point(873, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(501, 701);
+            this.panel1.Size = new System.Drawing.Size(497, 701);
             this.panel1.TabIndex = 4;
             // 
             // layoutControlGroup1
@@ -536,10 +566,10 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.panel1;
-            this.layoutControlItem1.Location = new System.Drawing.Point(869, 0);
+            this.layoutControlItem1.Location = new System.Drawing.Point(873, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem1.Size = new System.Drawing.Size(501, 701);
+            this.layoutControlItem1.Size = new System.Drawing.Size(497, 701);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -548,7 +578,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             this.layoutControlItem2.Control = this.panel2;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(869, 701);
+            this.layoutControlItem2.Size = new System.Drawing.Size(873, 701);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -627,5 +657,6 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private Inventec.CustomControls.PNTextEdit txtNumberInput;
+        private DevExpress.XtraEditors.SimpleButton btnScanCCCD;
     }
 }

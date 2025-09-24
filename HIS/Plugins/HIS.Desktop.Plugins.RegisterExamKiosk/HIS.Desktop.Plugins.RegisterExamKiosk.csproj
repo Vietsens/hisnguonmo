@@ -35,6 +35,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\AForge.Video.DirectShow.dll</HintPath>
+    </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\lib\Library packages\AutoMapper 4.0.4\AutoMapper.dll</HintPath>
     </Reference>
@@ -103,8 +107,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
+    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
@@ -203,7 +208,8 @@
     <Reference Include="Inventec.Desktop.Plugins.Plugin">
       <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Plugins.Plugin\Inventec.Desktop.Plugins.Plugin.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Token.ClientSystem">
+    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.Core">
@@ -212,8 +218,12 @@
     <Reference Include="Inventec.UC.ImageLib">
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.ImageLib\Inventec.UC.ImageLib.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.UC.Login">
+    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="LibUsbDotNetF">
+      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\LibUsbDotNetF.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -252,6 +262,24 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RAR.IdCard.Crypt">
+      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\RAR.IdCard.Crypt.dll</HintPath>
+    </Reference>
+    <Reference Include="RAR.IdCard.Models">
+      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\RAR.IdCard.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="RAR.IdCard.Sdk.Entities">
+      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\RAR.IdCard.Sdk.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="RAR.IdCard.Sdk.Models">
+      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\RAR.IdCard.Sdk.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="RAR.IdCard.Sdk.Reader">
+      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\RAR.IdCard.Sdk.Reader.dll</HintPath>
+    </Reference>
+    <Reference Include="RAR.IdCard.Sdk.Utils.TKCrypto">
+      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\RAR.IdCard.Sdk.Utils.TKCrypto.dll</HintPath>
+    </Reference>
     <Reference Include="SDA.EFMODEL">
       <HintPath>..\..\..\..\lib\SDA\SDA.EFMODEL.dll</HintPath>
     </Reference>
@@ -275,6 +303,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\CccdInfo.cs" />
     <Compile Include="ADO\CmktADO.cs" />
     <Compile Include="ADO\FaceRegADO.cs" />
     <Compile Include="ADO\FaceRegisterADO.cs" />
