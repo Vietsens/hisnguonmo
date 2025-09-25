@@ -220,6 +220,25 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 if (payForm != null)
                 {
                     txtPayForm.Text = payForm.PAY_FORM_CODE;
+
+                    if (payForm.IS_REQUIRED_BANK == 1)
+                    {
+                        
+
+
+                        Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule bankRule = new Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule();
+                        bankRule.editor = cboBank;
+                        bankRule.ErrorText = "Trường dữ liệu bắt buộc nhập";
+                        bankRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                        dxValidationProvider1.SetValidationRule(cboBank, bankRule);
+                        dxValidationProvider1.Validate();
+                    }
+                    else
+                    {
+                       
+                        dxValidationProvider1.SetValidationRule(cboBank, null);
+                    }
+
                 }
             }
             catch (Exception ex)

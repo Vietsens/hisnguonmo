@@ -138,13 +138,13 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
         //}
 
         private void ValidateForm()
-        {
+        {  
             try
             {
                 //ValidationSingleControl(txtName);
                 //ValidationSingleControl(txtCode);
                 ValidationControlMaxLength(txtName, 100);
-                ValidationControlMaxLength(txtCode, 2);
+                ValidationControlMaxLength(txtCode, 5);
                 //ValidationControlMaxLength(txtSTT, 19);
             }
             catch (Exception ex)
