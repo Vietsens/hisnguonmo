@@ -331,10 +331,13 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_TRADITIONAL == 1).ToList();
                 ado.LblIcdMain = "CĐ YHCT";
                 ado.ToolTipsIcdMain = "Chẩn đoán y học cổ truyền";
+                //qtcode
+                ado.DepamentId = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID;
                 this.ucIcdYhct = (UserControl)icdYhctProcessor.Run(ado);
 
                 if (this.ucIcdYhct != null)
                 {
+                    ((HIS.UC.Icd.UCIcd)ucIcdYhct).OnIcdMapCodeChanged += UcIcd_OnIcdMapCodeChanged;
                     this.layoutControlIcdYhct.Controls.Add(this.ucIcdYhct);
                     this.ucIcdYhct.Dock = DockStyle.Fill;
                 }
@@ -344,6 +347,19 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void UcIcd_OnIcdMapCodeChanged(string icdMapCode)
+        {
+            if (!string.IsNullOrEmpty(icdMapCode))
+            {
+                var icdCaus = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == icdMapCode);
+                if (icdCaus != null)
+                {
+                    this.icdYhctProcessor.SetRequired(this.ucIcdYhct, (icdCaus.IS_REQUIRE_CAUSE == 1));
+                }
+            }
+        }
+
         private void FocusTxtIcdExtraCode()
         {
             try
