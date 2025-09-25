@@ -98,7 +98,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
 
         private void LoadComboDirectorUser()
         {
-            
+
             try
             {
                 var data = BackendDataWorker.Get<V_HIS_EMPLOYEE>();
@@ -109,7 +109,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 ControlEditorADO controlEditorADO = new ControlEditorADO("TDL_USERNAME", "LOGINNAME", columnInfos, false, 200);
                 ControlEditorLoader.Load(cboDirectorUsername, data, controlEditorADO);
                 cboDirectorUsername.Properties.ImmediatePopup = true;
-                if(data.Exists(o=>o.LOGINNAME == hisBranch.DIRECTOR_LOGINNAME))
+                if (data.Exists(o => o.LOGINNAME == hisBranch.DIRECTOR_LOGINNAME))
                 {
                     cboDirectorUsername.EditValue = hisBranch.DIRECTOR_LOGINNAME;
                 }
@@ -311,7 +311,12 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 if (data != null)
                 {
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("data__________", data));
-                    babyid = data.ID;
+                    //if (!IsReissuedChecked)
+                    {
+                        babyid = data.ID;
+                    }
+
+                    //babyid = data.ID;
                     txtInfantName.Text = data.BABY_NAME;
                     //txtInfantGendercode.Text = data.GENDER_CODE;
                     cboInfantGendercode.EditValue = data.GENDER_ID;
@@ -320,6 +325,21 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     cboInfantPosition.EditValue = data.BORN_POSITION_ID;
                     lblHisBirthCertNum.Text = data.BIRTH_CERT_NUM.ToString();
                     cboHisBirthSertBook.EditValue = data.BIRTH_CERT_BOOK_ID;
+
+                    if (data.IS_REISSUED == 1)
+                    {
+                        cboHisBirthSertBook.Enabled = false;
+                        chkCapLai.Checked = true;
+                        chkCapLanDau.Checked = false;
+                    }
+                    else 
+                    {                         
+                        cboHisBirthSertBook.Enabled = true;
+                        chkCapLai.Checked = false;
+                        chkCapLanDau.Checked = true;
+                    }
+
+
 
                     if (data.BORN_TIME.HasValue)
                     {
@@ -720,7 +740,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                                 }
                             }
                         }
-                        
+
                     }
                     else
                     {
@@ -778,7 +798,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         {
                             this.cboHTProvinceName.EditValue = listResult[0].PROVINCE_CODE;
                             this.txtHTProvinceCode.Text = listResult[0].SEARCH_CODE;
-                            if(!toggleCheck.IsOn)
+                            if (!toggleCheck.IsOn)
                             {
                                 this.LoadComboHuyen_HT("", listResult[0].PROVINCE_CODE, false);
                                 if (isExpand)
@@ -801,7 +821,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
 
 
                         }
-                        
+
                     }
                     else
                     {
@@ -880,7 +900,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                                 }
                             }
                         }
-                        
+
                     }
                     else
                     {
@@ -905,7 +925,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             }
         }
         private void LoadComboHuyen(string searchCode, string provinceCode, bool isExpand)
-         {
+        {
             try
             {
                 List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT> listResult = new List<SDA.EFMODEL.DataModels.V_SDA_DISTRICT>();
@@ -1034,7 +1054,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             this.cboHTProvinceName.EditValue = listResult[0].PROVINCE_CODE;
                             this.txtHTProvinceCode.Text = listResult[0].PROVINCE_CODE;
                         }
-                       
+
                         this.LoadComboXa_HT("", listResult[0].DISTRICT_CODE, false);
 
                         if (isExpand)
@@ -1153,7 +1173,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 else if (toggleCheck.IsOn)
                     listResult = listCommune.Where(o => ((o.SEARCH_CODE ?? "").Contains(searchCode ?? "") || o.COMMUNE_CODE == searchCode)
                         && (String.IsNullOrEmpty(districtCode) || o.PROVINCE_CODE == districtCode) && o.IS_ACTIVE == 1).ToList();
-                      
+
                 List<CommuneADO> lstCommuneADO = new List<CommuneADO>();
                 foreach (var item in listResult)
                 {
@@ -1321,7 +1341,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             this.txtBirthPlace.SelectAll();
                         }
                     }
-                    else 
+                    else
                     {
                         if (isExpand)
                         {
@@ -1394,7 +1414,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         this.LoadComboXa("", patient.PROVINCE_CODE, false);
                         this.txtProvinceCode.Text = province.SEARCH_CODE;
                     }
-                        
+
                 }
                 if (!String.IsNullOrEmpty(patient.DISTRICT_CODE) && !toggleCheck.IsOn)
                 {
@@ -1408,7 +1428,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             this.cboProvinceName.EditValue = district.SEARCH_CODE;
                         }
                         this.LoadComboXa("", district.DISTRICT_CODE, false);
-                        
+
                         this.txtDistrictCode.Text = district.SEARCH_CODE;
                     }
                 }
@@ -1420,9 +1440,9 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         commune = listCommune.FirstOrDefault(o => o.COMMUNE_CODE == patient.COMMUNE_CODE.ToString()
                                 && (String.IsNullOrEmpty((patient.DISTRICT_CODE ?? "").ToString()) || o.DISTRICT_CODE == (patient.DISTRICT_CODE ?? "").ToString()));
                     }
-                    else if(toggleCheck.IsOn)
+                    else if (toggleCheck.IsOn)
                     {
-                        commune = listCommune.FirstOrDefault(o =>o.COMMUNE_CODE == patient.COMMUNE_CODE.ToString() &&
+                        commune = listCommune.FirstOrDefault(o => o.COMMUNE_CODE == patient.COMMUNE_CODE.ToString() &&
                                   (string.IsNullOrEmpty(patient.PROVINCE_CODE?.ToString()) || o.PROVINCE_CODE == patient.PROVINCE_CODE.ToString()));
                     }
 
@@ -1461,7 +1481,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     districtHT = listDistrict.FirstOrDefault(o => o.DISTRICT_CODE == patient.DISTRICT_CODE && o.PROVINCE_ID == provinceHT.ID);
                     if (districtHT != null)
                     {
-                        this.cboHTDistrictName.EditValue = districtHT.DISTRICT_CODE;    
+                        this.cboHTDistrictName.EditValue = districtHT.DISTRICT_CODE;
                         this.LoadComboXa_HT("", districtHT.DISTRICT_CODE, false);
                         this.txtHTDistrictCode.Text = districtHT.SEARCH_CODE;
                     }
@@ -1473,7 +1493,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     {
                         commune = listCommune.FirstOrDefault(o => o.COMMUNE_CODE == patient.COMMUNE_CODE && o.PROVINCE_ID == provinceHT.ID);
                     }
-                    else if (districtHT != null  && !toggleCheck.IsOn)
+                    else if (districtHT != null && !toggleCheck.IsOn)
                         commune = listCommune.FirstOrDefault(o => o.COMMUNE_CODE == patient.COMMUNE_CODE && o.DISTRICT_ID == districtHT.ID);
 
                     if (commune != null)

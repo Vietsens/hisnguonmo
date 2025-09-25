@@ -38,7 +38,6 @@ using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
 using Inventec.Common.RichEditor.Base;
 using Inventec.Core;
-
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using Inventec.UC.Paging;
@@ -103,6 +102,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
         private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         private bool isInternalToggle = false;
         private bool isTemporaryToggle = false;
+        private bool IsReissuedChecked = false;
         public frmInfantInformation()
         {
             InitializeComponent();
@@ -579,8 +579,8 @@ namespace HIS.Desktop.Plugins.InfantInformation
         {
             try
             {
-                //btnSave.Enabled = (action == GlobalVariables.ActionEdit);
-                //btnTepoSave.Enabled = (action == GlobalVariables.ActionAdd);
+                btnSave.Enabled = (action == GlobalVariables.ActionAdd);
+                btnTepoSave.Enabled = (action == GlobalVariables.ActionAdd);
             }
             catch (Exception ex)
             {
@@ -711,6 +711,9 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 cboCommuneNameHospital.Enabled = true;
                 lciBirthHospital.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 txtBirthPlace.Text = null;
+                chkCapLanDau.Checked = true;
+                chkCapLai.Checked = false;
+                cboHisBirthSertBook.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -975,6 +978,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         {
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
+                    }
+                    else if(e.Column.FieldName == "COL_CHK_CAP_LD")
+                    {
+                        e.Value = pData.IS_REISSUED == 1 ? false : true;
+                    }
+                    else if(e.Column.FieldName == "COL_CHK_CAP_LAI")
+                    {
+                        e.Value = pData.IS_REISSUED == 1 ? true : false;
                     }
                     //else if (e.Column.FieldName == "CMND_DATE_CMND" && cData.CMND_DATE.HasValue)
                     //{
@@ -1328,6 +1339,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
 
                 UpdateDTOFromDataForm(ref updateDTO);
                 updateDTO.IsTemporary = this.isTemporaryToggle;
+                updateDTO.IsReissued = IsReissuedChecked;
+                if (!string.IsNullOrEmpty(lblHisBirthCertNum.Text))
+                {
+                    updateDTO.BirthCertNum = long.Parse(lblHisBirthCertNum.Text);
+                }
+                
+                //if (chkCapLai.Checked) 
+                //if(chkCapLanDau.Checked) updateDTO.IsReissued = IsReissuedChecked;
                 if (dxErrorProvider1.HasErrors) return;
                 WaitingManager.Show();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
@@ -1375,6 +1394,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+
             }
         }
 
@@ -4841,6 +4861,58 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 this.cboCommuneNameHospital.Properties.DataSource = null;
                 LoadCombo();
                 this.cboProvinceNameHospital.Properties.DataSource = listProvince;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnCapLaiEdit_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var rowData = (MOS.EFMODEL.DataModels.V_HIS_BABY)gridviewFormList.GetFocusedRow();
+                if (rowData != null)
+                {
+                    currentData = rowData;
+                    loadInfoMother();
+                    FillDataToEditorControl(rowData);
+                    LoadInfoComplementFromTreatment(this.treatment);
+
+                    Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
+                }
+                chkCapLai.Checked = true;
+                chkCapLanDau.Checked = false;
+                cboHisBirthSertBook.Enabled = false;
+                this.ActionType = GlobalVariables.ActionAdd;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
+        private void chkCapLanDau_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkCapLanDau.Checked)
+                    IsReissuedChecked = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkCapLai_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkCapLai.Checked)
+                    IsReissuedChecked = true;
             }
             catch (Exception ex)
             {
