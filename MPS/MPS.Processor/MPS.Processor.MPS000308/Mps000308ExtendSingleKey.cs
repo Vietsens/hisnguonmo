@@ -69,5 +69,7 @@ namespace MPS.Processor.MPS000308
         internal const string TEST_HEPATITIS_B_STR = "TEST_HEPATITIS_B_STR";
         internal const string NEWBORN_CARE_AT_HOME_STR = "NEWBORN_CARE_AT_HOME_STR";
         internal const string NOTE = "BABY_NOTE";
+        internal const string IS_ISSUED_STR = "IS_ISSUED_STR";   
+        internal const string IS_REISSUED_STR = "IS_REISSUED_STR";
     }
 }

@@ -181,6 +181,11 @@ namespace MPS.Processor.MPS000308
 
                 if (rdo._CurrentBaby != null)
                 {
+                    var isReissued = rdo._CurrentBaby.IS_REISSUED;
+                    string issuedMark = ((isReissued ?? 0) == 0) ? "X" : ""; 
+                    string reissuedMark = ((isReissued ?? 0) == 1) ? "X" : "";
+                    SetSingleKey(new KeyValue(Mps000308ExtendSingleKey.IS_ISSUED_STR, issuedMark));
+                    SetSingleKey(new KeyValue(Mps000308ExtendSingleKey.IS_REISSUED_STR, reissuedMark));
                     AddObjectKeyIntoListkey<V_HIS_BABY>(rdo._CurrentBaby, false);
                     SetSingleKey(new KeyValue(Mps000308ExtendSingleKey.BABY_ETHNIC_CODE, rdo._CurrentBaby.ETHNIC_CODE ?? ""));
                     SetSingleKey(new KeyValue(Mps000308ExtendSingleKey.BABY_ETHNIC_NAME, rdo._CurrentBaby.ETHNIC_NAME ?? ""));
