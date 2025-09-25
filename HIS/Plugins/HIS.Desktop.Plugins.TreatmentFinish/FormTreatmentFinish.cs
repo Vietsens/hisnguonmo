@@ -294,11 +294,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 SetCaptionByLanguageKey();
                 Inventec.Common.Logging.LogSystem.Error("CreateThreadGetData 1");
                 CreateThreadGetData1();
-                InitUcIcdTotal();
                 HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.LoadConfig();
                 HIS.Desktop.Plugins.Library.RegisterConfig.BHXHLoginCFG.LoadConfig();
                 Inventec.Common.Logging.LogSystem.Error("TreatmentFinish 1");
                 LoadDataFromRam();
+                InitUcIcdTotal();
                 InitComboHisHospitalizeReason();
                 ValidatecboCareer();
                 Config.ConfigKey.GetConfigKey();
@@ -727,13 +727,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Tasks.Add(taskAcsUser);
                 Task.WaitAll(Tasks.ToArray());
 
-                this.hisTreatmentEndTypes = Base.GlobalStore.HisTreatmentEndTypes;
-                this.hisTreatmentResults = Base.GlobalStore.HisTreatmentResults;
-                this.hisRooms = BackendDataWorker.Get<V_HIS_ROOM>().ToList();
-                this.hisTreatmentEndTypeExts = Base.GlobalStore.TreatmentEndTypeExts;
-                this.hisDepartments = BackendDataWorker.Get<HIS_DEPARTMENT>().ToList();
                 this.hisBranchs = BackendDataWorker.Get<HIS_BRANCH>().ToList();
+                this.hisDepartments = BackendDataWorker.Get<HIS_DEPARTMENT>().ToList();
+                this.hisRooms = BackendDataWorker.Get<V_HIS_ROOM>().ToList();
                 this.hisTreatmentTypes = BackendDataWorker.Get<HIS_TREATMENT_TYPE>().ToList();
+                this.hisTreatmentResults = Base.GlobalStore.HisTreatmentResults;
+                this.hisTreatmentEndTypes = Base.GlobalStore.HisTreatmentEndTypes;
+                this.hisTreatmentEndTypeExts = Base.GlobalStore.TreatmentEndTypeExts;
             }
             catch (Exception ex)
             {
