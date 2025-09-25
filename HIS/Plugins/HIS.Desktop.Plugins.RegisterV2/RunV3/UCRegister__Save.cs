@@ -331,6 +331,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     }
                     CommonParam param = new CommonParam();
                     var patients = (new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));
+                    bool exists = patients.Any(p => p.PATIENT_CODE == ucPatientRaw1.txtPatientCode.Text);
+                    if (exists) return true;
                     if (patients != null && patients.Count > 0)
                     {
                         if ((ucPatientRaw1.patientTD3 != null && !string.IsNullOrEmpty(ucPatientRaw1.patientTD3.PATIENT_CODE) && !patients.Exists(o => o.PATIENT_CODE == ucPatientRaw1.patientTD3.PATIENT_CODE)) || ucPatientRaw1.patientTD3 == null || string.IsNullOrEmpty(ucPatientRaw1.patientTD3.PATIENT_CODE))
@@ -401,7 +403,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             {
                 long patientTypeId = GetPatientTypeId();
                 bool isUseUCHeinInfo = (patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT || patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__QN);
-                
+
                 validPatientRaw = ucPatientRaw1.ValidateRequiredField();
                 validRelative = ucRelativeInfo1.ValidateRequiredField();
                 validOtherServiceReq = ucOtherServiceReqInfo1.ValidateRequiredField();
@@ -410,7 +412,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 validAddress = ucAddressCombo1.ValidateRequiredField();
                 //qtcode
                 validHeinInfo = isUseUCHeinInfo ? ucHeinInfo1.ValidateRequiredField() : true;
-                validHeinPatientTypeCode = isUseUCHeinInfo ? ucHeinInfo1.ValidateHeinPatientTypeCode(patientTypeId) : true; 
+                validHeinPatientTypeCode = isUseUCHeinInfo ? ucHeinInfo1.ValidateHeinPatientTypeCode(patientTypeId) : true;
                 if (isUseUCHeinInfo)
                     validIsBlockBhyt = this.BlockingHeinLevelCode() && this.BlockingInvalidBhyt();
                 //Check ksk             
