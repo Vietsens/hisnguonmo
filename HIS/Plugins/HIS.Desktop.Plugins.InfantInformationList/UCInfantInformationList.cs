@@ -1009,14 +1009,15 @@ namespace HIS.Desktop.Plugins.InfantInformationList
             {
                 CommonParam param = new CommonParam();
                 bool rs = false;
-               // bool isError = false;
+                List<BabySyncSDO> listSyncData = new List<BabySyncSDO>();
+                // bool isError = false;
                 WaitingManager.Show();
                 var rowHandles = gridView1.GetSelectedRows();
+
 
                 if (rowHandles != null && rowHandles.Count() > 0)
                 {
                     List<ConnectionInfoADO> listConnectionInfo = GetConnectionInfo();
-                    List<BabySyncSDO> listSyncData = new List<BabySyncSDO>();
 
                     if (chkSignFileCertUtil.Checked && settingSignADO != null)
                     {
@@ -1030,6 +1031,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                                     var row = (V_HIS_BABY)gridView1.GetRow(i);
                                     if (row != null)
                                     {
+                                        if (!CanSyncBabyRecord(row)) continue;
                                         HIS_BRANCH branch = listBranchs.FirstOrDefault(o => o.ID == row.BRANCH_ID);
                                         var treatment = GetTreatment_ByID(row.TREATMENT_ID);
 
@@ -1113,6 +1115,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                                         var row = (V_HIS_BABY)gridView1.GetRow(i);
                                         if (row != null)
                                         {
+                                            if (!CanSyncBabyRecord(row)) continue;
                                             string messageError = null;
                                             BabySyncSDO sdo = new BabySyncSDO();
                                             sdo.BabyID = row.ID;
@@ -1149,6 +1152,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                             var row = (V_HIS_BABY)gridView1.GetRow(i);
                             if (row != null)
                             {
+                                if (!CanSyncBabyRecord(row)) continue;
                                 BabySyncSDO sdo = new BabySyncSDO();
                                 sdo.BabyID = row.ID;
                                 listSyncData.Add(sdo);
@@ -1156,8 +1160,10 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                         }
                     }
 
-                   
-                   
+
+
+                    if (listSyncData.Count > 0)
+                    {
                         rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>(
                             "api/HisBaby/Sync",
                             ApiConsumer.ApiConsumers.MosConsumer,
@@ -1170,13 +1176,18 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                         {
                             FillDataToGrid();
                         }
-                    
+                    }
+
                 }
 
                 WaitingManager.Hide();
 
                 #region Show message
-                MessageManager.Show(this.ParentForm, param, rs);
+                if (listSyncData.Count > 0)
+                {
+                    // Chỉ hiển thị thông báo khi thực sự có xử lý
+                    MessageManager.Show(this.ParentForm, param, rs);
+                }
                 #endregion
 
                 #region Process has exception
@@ -1188,7 +1199,54 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private bool CanSyncBabyRecord(V_HIS_BABY row)
+        {
+            if (row == null) return false;
+            if (row.SYNC_RESULT_TYPE == 2)
+            {
+                string birthCert = "";
+                if (row.BIRTH_CERT_NUM != null)
+                {
+                    string birthCertStr = row.BIRTH_CERT_NUM.ToString();
+                    if (birthCertStr.Length < 5)
+                        birthCert = string.Format("{0:00000}", row.BIRTH_CERT_NUM);
+                    else
+                        birthCert = birthCertStr;
+                }
+                HIS_BRANCH branch = null;
+                if (listBranchs != null)
+                {
+                    for (int b = 0; b < listBranchs.Count; b++)
+                    {
+                        if (listBranchs[b].ID == row.BRANCH_ID)
+                        {
+                            branch = listBranchs[b];
+                            break;
+                        }
+                    }
+                }
+                string orgCode = branch != null ? branch.HEIN_MEDI_ORG_CODE : "";
+                string yearSuffix = "";
+                if (row.ISSUED_DATE != null)
+                {
+                    string issuedDateStr = row.ISSUED_DATE.ToString();
+                    if (issuedDateStr.Length >= 4)
+                        yearSuffix = issuedDateStr.Substring(2, 2);
+                }
+                string birthCertCode = string.Format("{0}.GCS.{1}.{2}", birthCert, orgCode, yearSuffix);
+                string treatmentCode = "";
+                V_HIS_TREATMENT treatment = GetTreatment_ByID(row.TREATMENT_ID);
+                if (treatment != null)
+                    treatmentCode = treatment.TREATMENT_CODE;
+                string message = string.Format("Giấy chứng sinh {0} của hồ sơ {1} đã được gửi thành công trước đó. Bạn có muốn gửi lại không?", birthCertCode, treatmentCode);
+                DialogResult dlgResult = XtraMessageBox.Show(message, Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (dlgResult != DialogResult.Yes)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         private V_HIS_TREATMENT GetTreatment_ByID(long treatmentId)
         {
             V_HIS_TREATMENT result = null;
