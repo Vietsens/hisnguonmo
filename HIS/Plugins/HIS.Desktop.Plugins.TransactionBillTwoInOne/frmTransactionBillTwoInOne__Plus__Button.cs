@@ -267,6 +267,18 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         return;
                 }
 
+
+                if (billTwoBookSDO.RecieptTransaction != null)
+                {
+
+                    if (string.IsNullOrEmpty(cboBank.EditValue?.ToString()))
+                        billTwoBookSDO.RecieptTransaction.BANK_ID = null;
+                    else
+                        billTwoBookSDO.RecieptTransaction.BANK_ID = Convert.ToInt64(cboBank.EditValue);
+
+                }
+
+
                 billTwoBookSDO.TreatmentId = this.treatmentId.Value;
                 billTwoBookSDO.RequestRoomId = this.currentModuleBase.RoomId;
 
