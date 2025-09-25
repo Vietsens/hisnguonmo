@@ -42,6 +42,7 @@ namespace MPS.Processor.Mps000481.PDO
     public class SereServADO : V_HIS_SERE_SERV
     {
         public string CONCLUDE { get; set; }
+        public string DISPLAY_VALUE { get; set; }
         public long? NUM_ORDER { get; set; }
         public long? FUEX_TYPE_ID { get; set; }
         public long? DIIM_TYPE_ID { get; set; }

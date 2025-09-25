@@ -29,40 +29,41 @@ namespace MPS.Processor.Mps000481
 {
     public class Mps000481Processor : AbstractProcessor
     {
-         Mps000481PDO rdo;
-         List<SereServADO> SereServADOs;
-         List<kskGeneralADO> kskGeneralADOs;
-         List<TreatmentlADO> TreatmentlADOs;
-         List<SereServTeinADO> SereServTeinADOs;
+        Mps000481PDO rdo;
+        List<SereServADO> SereServADOs;
+        List<kskGeneralADO> kskGeneralADOs;
+        List<TreatmentlADO> TreatmentlADOs;
+        List<SereServTeinADO> SereServTeinADOs;
 
         List<SereServADO> SereServADO_GiaiPhauBenhLys = new List<SereServADO>();
         List<SereServADO> SereServADO_SieuAms = new List<SereServADO>();
-         List<SereServADO> SereServADO_DienTims = new List<SereServADO>();
-         List<SereServADO> SereServADO_XQuangs = new List<SereServADO>();
-         List<SereServADO> SereServADO_CTs = new List<SereServADO>();
-         List<SereServADO> SereServADO_MRIs = new List<SereServADO>();
-         List<SereServADO> SereServADO_PETs = new List<SereServADO>();
-         List<SereServADO> SereServADO_NoiSois = new List<SereServADO>();
-         List<SereServADO> SereServADO_MatDoXuongs = new List<SereServADO>();
-         List<SereServADO> SereServADO_ThamDoChucNangKhacs = new List<SereServADO>();
+        List<SereServADO> SereServADO_DienTims = new List<SereServADO>();
+        List<SereServADO> SereServADO_XQuangs = new List<SereServADO>();
+        List<SereServADO> SereServADO_CTs = new List<SereServADO>();
+        List<SereServADO> SereServADO_MRIs = new List<SereServADO>();
+        List<SereServADO> SereServADO_PETs = new List<SereServADO>();
+        List<SereServADO> SereServADO_NoiSois = new List<SereServADO>();
+        List<SereServADO> SereServADO_MatDoXuongs = new List<SereServADO>();
+        List<SereServADO> SereServADO_ThamDoChucNangKhacs = new List<SereServADO>();
 
-         List<SereServADO> SereServADO_HuyetHocs = new List<SereServADO>();
-         List<SereServADO> SereServADO_SinhHoas = new List<SereServADO>();
-         List<SereServADO> SereServADO_UngThus = new List<SereServADO>();
-         List<SereServADO> SereServADO_ViSinhs = new List<SereServADO>();
-         List<SereServADO> SereServADO_NuocTieus = new List<SereServADO>();
-         List<SereServADO> SereServADO_Phans = new List<SereServADO>();
-         List<SereServADO> SereServADO_CoTuCungs = new List<SereServADO>();
-         List<SereServADO> SereServADO_GiaiPhauBenhs = new List<SereServADO>();
+        List<SereServADO> SereServADO_HuyetHocs = new List<SereServADO>();
+        List<SereServADO> SereServADO_SinhHoas = new List<SereServADO>();
+        List<SereServADO> SereServADO_UngThus = new List<SereServADO>();
+        List<SereServADO> SereServADO_ViSinhs = new List<SereServADO>();
+        List<SereServADO> SereServADO_NuocTieus = new List<SereServADO>();
+        List<SereServADO> SereServADO_Phans = new List<SereServADO>();
+        List<SereServADO> SereServADO_CoTuCungs = new List<SereServADO>();
+        List<SereServADO> SereServADO_GiaiPhauBenhs = new List<SereServADO>();
 
-         List<SereServTeinADO> SereServTeinADO_HuyetHocs = new List<SereServTeinADO>();
-         List<SereServTeinADO> SereServTeinADO_SinhHoas = new List<SereServTeinADO>();
-         List<SereServTeinADO> SereServTeinADO_UngThus = new List<SereServTeinADO>();
-         List<SereServTeinADO> SereServTeinADO_ViSinhs = new List<SereServTeinADO>();
-         List<SereServTeinADO> SereServTeinADO_NuocTieus = new List<SereServTeinADO>();
-         List<SereServTeinADO> SereServTeinADO_Phans = new List<SereServTeinADO>();
-         List<SereServTeinADO> SereServTeinADO_CoTuCungs = new List<SereServTeinADO>();
-         List<SereServTeinADO> SereServTeinADO_GiaiPhauBenhs = new List<SereServTeinADO>();
+        List<SereServTeinADO> SereServTeinADO_HuyetHocs = new List<SereServTeinADO>();
+        List<SereServTeinADO> SereServTeinADO_SinhHoas = new List<SereServTeinADO>();
+        List<SereServTeinADO> SereServTeinADO_UngThus = new List<SereServTeinADO>();
+        List<SereServTeinADO> SereServTeinADO_ViSinhs = new List<SereServTeinADO>();
+        List<SereServTeinADO> SereServTeinADO_NuocTieus = new List<SereServTeinADO>();
+        List<SereServTeinADO> SereServTeinADO_Phans = new List<SereServTeinADO>();
+        List<SereServTeinADO> SereServTeinADO_CoTuCungs = new List<SereServTeinADO>();
+        List<SereServTeinADO> SereServTeinADO_GiaiPhauBenhs = new List<SereServTeinADO>();
+        List<SereServTeinADO> SereServTeinADO_GiaiPhauBenhLys = new List<SereServTeinADO>();
 
         public Mps000481Processor(CommonParam param, PrintData printData)
             : base(param, printData)
@@ -84,7 +85,7 @@ namespace MPS.Processor.Mps000481
                 ProcessPrintLogData();
                 //lấy số lần in
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
-                
+
                 SetSingleKey();
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
@@ -122,6 +123,7 @@ namespace MPS.Processor.Mps000481
                 objectTag.AddObjectData(store, "SereServ_Phan", SereServTeinADO_Phans);
                 objectTag.AddObjectData(store, "SereServ_CTC", SereServTeinADO_CoTuCungs);
                 objectTag.AddObjectData(store, "SereServ_GPB", SereServTeinADO_GiaiPhauBenhs);
+                objectTag.AddObjectData(store, "SereServ_GPBL", SereServTeinADO_GiaiPhauBenhLys);
 
                 objectTag.AddRelationship(store, "listHuyetHoc", "SereServ_HH", "ID", "SERE_SERV_ID");
                 objectTag.AddRelationship(store, "listSinhHoa", "SereServ_SH", "ID", "SERE_SERV_ID");
@@ -131,6 +133,7 @@ namespace MPS.Processor.Mps000481
                 objectTag.AddRelationship(store, "listPhan", "SereServ_Phan", "ID", "SERE_SERV_ID");
                 objectTag.AddRelationship(store, "listCoTuCung", "SereServ_CTC", "ID", "SERE_SERV_ID");
                 objectTag.AddRelationship(store, "listGiaiPhauBenh", "SereServ_GPB", "ID", "SERE_SERV_ID");
+                objectTag.AddRelationship(store, "listGiaiPhauBenhLy", "SereServ_GPBL", "ID", "SERE_SERV_ID");
 
                 objectTag.AddRelationship(store, "listTreatment", "listSieuAm", "ID", "TDL_TREATMENT_ID");
                 objectTag.AddRelationship(store, "listTreatment", "listDienTim", "ID", "TDL_TREATMENT_ID");
@@ -149,6 +152,7 @@ namespace MPS.Processor.Mps000481
                 objectTag.AddRelationship(store, "listTreatment", "listPhan", "ID", "TDL_TREATMENT_ID");
                 objectTag.AddRelationship(store, "listTreatment", "listCoTuCung", "ID", "TDL_TREATMENT_ID");
                 objectTag.AddRelationship(store, "listTreatment", "listGiaiPhauBenh", "ID", "TDL_TREATMENT_ID");
+                objectTag.AddRelationship(store, "listTreatment", "listGiaiPhauBenhLy", "ID", "TDL_TREATMENT_ID");
 
                 objectTag.AddRelationship(store, "listTreatment", "SereServ_HH", "ID", "TDL_TREATMENT_ID");
                 objectTag.AddRelationship(store, "listTreatment", "SereServ_SH", "ID", "TDL_TREATMENT_ID");
@@ -221,7 +225,17 @@ namespace MPS.Processor.Mps000481
                         }
                     }
 
-                    this.SereServADO_GiaiPhauBenhLys = getSereServADO(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL, null, null, null);
+                    this.SereServADO_GiaiPhauBenhLys = getSereServADO(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL, null, null, null); // Giải phẫu bệnh lý
+                    this.SereServTeinADO_GiaiPhauBenhLys = getSereServTeinADOADO(null);
+                    foreach (var ado in this.SereServADO_GiaiPhauBenhLys)
+                    {
+                        var tein = this.SereServTeinADO_GiaiPhauBenhLys
+                            .FirstOrDefault(t => t.SERE_SERV_ID == ado.ID);
+                        ado.DISPLAY_VALUE = !string.IsNullOrEmpty(tein?.VALUE)
+                            ? tein.VALUE
+                            : ado.CONCLUDE;
+                    }
+
                     this.SereServADO_SieuAms = getSereServADO(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA, null, null, null); //Siêu âm
                     this.SereServADO_DienTims = getSereServADO(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN, 1, null, null); //Điện tâm đồ (Điện tim)
                     this.SereServADO_XQuangs = getSereServADO(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA, null, 1, null); //XQuang
@@ -332,7 +346,7 @@ namespace MPS.Processor.Mps000481
                         {
                             lstSereServADO = lstSereServADO.Where(o => o.FUEX_TYPE_ID == FuexTypeId).ToList();
                         }
-                        else 
+                        else
                         {
                             lstSereServADO = lstSereServADO.Where(o => o.FUEX_TYPE_ID == null).ToList();
                         }
