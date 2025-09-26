@@ -41,6 +41,10 @@ namespace MPS.Processor.Mps000181.PDO
         public HIS_EXP_MEST HisExpMest { get; set; }
         public HIS_TRANS_REQ TransReq { get; set; }
         public List<HIS_CONFIG> ListHisConfigPaymentQrCode { get; set; }
+        public List<HIS_SERVICE_REQ> lstHisServiceReq { get; set; }
+        public List<HIS_SERVICE_REQ_METY> lstServiceReqMety { get; set; }
+
+        public List<ServiceReqSDO> serviceReqSDOs { get; set; }
 
         public Mps000181PDO(
           V_HIS_PATIENT_TYPE_ALTER vHisPatientTypeAlter,
@@ -168,6 +172,44 @@ namespace MPS.Processor.Mps000181.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        public Mps000181PDO(
+  V_HIS_PATIENT_TYPE_ALTER vHisPatientTypeAlter,
+  HIS_DHST hisDhst,
+  List<HIS_SERVICE_REQ> lstHisPrescription,
+  List<ExpMestMedicineSDO> expMestMedicines,
+  HIS_SERVICE_REQ HisServiceReq_Exam,
+  HIS_TREATMENT treatment,
+  Mps000181ADO mps000181ADO,
+  List<HIS_SERE_SERV> listSereServCls,
+  long? _KeyUseForm,
+  HIS_EXP_MEST _hisExpMest,
+  HIS_TRANS_REQ transReq,
+  List<HIS_CONFIG> listHisConfigPaymentQrCode,
+            List<HIS_SERVICE_REQ_METY> serviceReqMety)
+        {
+            try
+            {
+                this.expMestMedicines = expMestMedicines.ToList();
+                this.hisDhst = hisDhst;
+                //this.vHisPrescription5 = HisPrescription;
+                this.lstHisServiceReq = lstHisPrescription;
+                this.hisServiceReq_Exam = hisServiceReq_Exam;
+                this.PatyAlterBhyt = vHisPatientTypeAlter;
+                this.Mps000181ADO = mps000181ADO;
+                this.HisTreatment = treatment;
+                this.ListSereServCls = listSereServCls;
+                this.KeyUseForm = _KeyUseForm;
+                this.HisExpMest = _hisExpMest;
+                this.TransReq = transReq;
+                this.ListHisConfigPaymentQrCode = listHisConfigPaymentQrCode;
+                this.lstServiceReqMety = serviceReqMety;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 
     public class Mps000181ADO : V_HIS_PATIENT
@@ -192,6 +234,7 @@ namespace MPS.Processor.Mps000181.PDO
         public int Type { get; set; }//1: thuoc // 2: vat tu, 3: thuoc trong kho, 4: thuoc ngoai kho, 5: tu tuc
         public decimal? PRES_AMOUNT { get; set; }
         public decimal? USING_COUNT_NUMBER { get; set; }
-
     }
+
+    public class ServiceReqSDO : HIS_SERVICE_REQ { }
 }
