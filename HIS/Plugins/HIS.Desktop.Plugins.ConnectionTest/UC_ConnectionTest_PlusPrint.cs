@@ -58,7 +58,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
-                if (LisConfigCFG.PRINT_BARCODE_BY_BARTENDER == "1")
+                if (LisConfigCFG.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE != "1" && LisConfigCFG.PRINT_BARCODE_BY_BARTENDER == "1")
                 {
                     this.PrintBarcodeByBartender();
                 }
@@ -74,7 +74,6 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         internal enum PrintType
         {
             IN_BARCODE,
@@ -313,7 +312,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else
                     {
                         // Không mở form, kiểm tra ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE
-                        if (LisConfigCFG.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE == "1")
+                        if (LisConfigCFG.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE == "1" && !String.IsNullOrEmpty(LisConfigCFG.PRINT_BARCODE_BY_BARTENDER))
                         {
                             // Không tự động cập nhật, giữ nguyên SAMPLE_STT_ID
                             // Không làm gì thêm
