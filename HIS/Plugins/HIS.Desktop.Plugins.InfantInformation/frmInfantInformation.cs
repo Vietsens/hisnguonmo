@@ -4886,6 +4886,8 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 chkCapLanDau.Checked = false;
                 cboHisBirthSertBook.Enabled = false;
                 this.ActionType = GlobalVariables.ActionAdd;
+                btnSave.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                btnTepoSave.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
             }
             catch (Exception ex)
             {
