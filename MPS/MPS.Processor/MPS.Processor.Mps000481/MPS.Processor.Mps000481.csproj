@@ -67,10 +67,13 @@
       <HintPath>..\..\..\..\LIB\LIS\LIS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\MPS.Processor.Mps000481.PDO\bin\Debug\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000481.PDO">
+      <HintPath>..\MPS.Processor.Mps000481.PDO\bin\Debug\MPS.Processor.Mps000481.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -87,12 +90,6 @@
     <Compile Include="Mps000481ExtendSingleKey.cs" />
     <Compile Include="Mps000481Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MPS.Processor.Mps000481.PDO\MPS.Processor.Mps000481.PDO.csproj">
-      <Project>{b92efb72-a646-4618-8b8a-baea392f6857}</Project>
-      <Name>MPS.Processor.Mps000481.PDO</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

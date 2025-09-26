@@ -907,6 +907,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                     chkAUTO_BED_ASSIGN_OPTION.Checked = (data.AUTO_BED_ASSIGN_OPTION == 1 ? true : false);
                     spTheoryPatientCount.EditValue = data.THEORY_PATIENT_COUNT;
                     cboReqSurgTreatmentType.EditValue = data.REQ_SURG_TREATMENT_TYPE_ID;
+                    chkIsTraditional.Checked = (data.IS_TRADITIONAL == 1 ? true : false);
 
                     GridCheckMarksSelection gridCheckMark = cboTreatmentType.Properties.Tag as GridCheckMarksSelection;
                     if (gridCheckMark != null)
@@ -1374,6 +1375,14 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                 else
                 {
                     currentDTO.AUTO_BED_ASSIGN_OPTION = null;
+                }
+                if (chkIsTraditional.Checked)
+                {
+                    currentDTO.IS_TRADITIONAL = 1;
+                }
+                else
+                {
+                    currentDTO.IS_TRADITIONAL = null;
                 }
 
 

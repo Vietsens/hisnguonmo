@@ -30,6 +30,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
 {
     class ConfigKey
     {
+        private const string KEY__HIS_DESKTOP_PLUGINS_HISICD_AUTOMAPICD10WITHICDYHCT = "HIS.Desktop.Plugins.HisIcd.AutoMapIcd10WithIcdYhct";
         private const string KEY__HIS_DESKTOP_PLUGINS_TREATMENTFINISH_ENDDEAPRTMENTSUBSHEADOPTIOIN = "HIS.Desktop.Plugins.TreatmentFinish.EndDepartmentSubsHeadOption";
 
      
@@ -125,6 +126,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         internal static string IsCheckSubIcdExceedLimit;
 
         internal static string ENDDEAPRTMENTSUBSHEADOPTIOIN;
+        internal static bool IsAutoMapIcd10WithIcdYhct;
 
        
         internal static void GetConfigKey()
@@ -187,6 +189,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
                 SubclinicalResultOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__SUBCLINICAL_RESULT_OPTION);
                 ExportXml2076Option = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CONFIG_XML2076_EXPORT_OPTION);
                 IsAllowTreatmentFinishDepartmentIsActiveFee = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__IsAllowTreatmentFinishDepartmentIsActiveFee);
+                IsAutoMapIcd10WithIcdYhct = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__HIS_DESKTOP_PLUGINS_HISICD_AUTOMAPICD10WITHICDYHCT) == IS__TRUE;
                 TreatmentEndCFG.GetConfig();
                 CheckFinishTimeCFG.GetConfig();
             }

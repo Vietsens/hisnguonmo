@@ -74,6 +74,8 @@ namespace HIS.UC.UCHeniInfo
         DelegateCheckSS dlgCheckSS;
         Action dlgProcessChangePatientDob;
         Action<string> dlgSetTreatmentTypeId;
+        //qtcode
+        public bool isChooseCboPatientType = false;
         public ResultDataADO ResultDataADO { get; set; }
         UCHeinADO dataHein = new UCHeinADO();
         public string TreatmentTypeIdPicked { get; set; }
@@ -441,6 +443,7 @@ namespace HIS.UC.UCHeniInfo
                                                                 .ThenByDescending(o => o.ID)
                                                                 .FirstOrDefault(); ;
                     cboHeinPatientType.EditValue = minItem.HEIN_PATIENT_TYPE_CODE;
+                    //this._previousHeinPatientTypeCode = minItem.HEIN_PATIENT_TYPE_CODE;
                 }
                 else
                 {
@@ -448,9 +451,9 @@ namespace HIS.UC.UCHeniInfo
                 }
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "", 6, 1));
+                columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "", 40, 1));
                 columnInfos.Add(new ColumnInfo("DESCRIPTION", "", 800, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, false, 800);
+                ControlEditorADO controlEditorADO = new ControlEditorADO("HEIN_PATIENT_TYPE_CODE", "HEIN_PATIENT_TYPE_CODE", columnInfos, false, 840);
                 ControlEditorLoader.Load(cboHeinPatientType, heinPatientTypeData, controlEditorADO);
 
                 this.cboHeinPatientType.Properties.ImmediatePopup = true;
@@ -1634,7 +1637,8 @@ namespace HIS.UC.UCHeniInfo
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("cboHeinRightRoute_EditValueChanged() => cboHeinRightRoute.EditValue", cboHeinRightRoute.EditValue != null ? cboHeinRightRoute.EditValue.ToString() : "null"));
                 this.DisableBTNThongTinChuyenTuyen();
                 this.TuDongCheckCapCuuTheoGiaTriTuyen();
-                this.InitializeComboHeinPatientType(); 
+                if (!isChooseCboPatientType)
+                    this.InitializeComboHeinPatientType();
             }
             catch (Exception ex)
             {
@@ -2426,14 +2430,15 @@ namespace HIS.UC.UCHeniInfo
         {
             this.dlgSetTreatmentTypeId = _sendTreatmentTypeId;
         }
-        private string _previousHeinPatientTypeCode = null;
+        //private string _previousHeinPatientTypeCode = null;
         private void cboHeinPatientType_Closed(object sender, ClosedEventArgs e)
-        {
+        { 
+            isChooseCboPatientType = true; 
             string selectedHeinTypeCode = "";
             if (this.cboHeinPatientType.EditValue != null)
                 selectedHeinTypeCode = this.cboHeinPatientType.EditValue.ToString(); // ô mã đối tượng
-            if (selectedHeinTypeCode == _previousHeinPatientTypeCode) return;
-            _previousHeinPatientTypeCode = selectedHeinTypeCode;
+            //if (selectedHeinTypeCode == _previousHeinPatientTypeCode) return;
+            //_previousHeinPatientTypeCode = selectedHeinTypeCode;
             var selectedHeinType = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
                     .FirstOrDefault(o => o.HEIN_PATIENT_TYPE_CODE == selectedHeinTypeCode && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE); // lấy ra hein_patient_type trong db
             if (selectedHeinType == null) return;
@@ -2514,7 +2519,9 @@ namespace HIS.UC.UCHeniInfo
                     }
                 }
             }
+            isChooseCboPatientType = false;
         }
+
         public string patientTypeCodeOriginnal = "";
         private void cboHeinPatientType_EditValueChanged(object sender, EventArgs e)
         {
