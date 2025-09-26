@@ -1083,7 +1083,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     long? bankIdToSave = null;
                     if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID.HasValue)
                     {
-                        bankIdToSave = payForm.BANK_ID.Value;   // chỗ này an toàn vì đã HasValue
+                        bankIdToSave = payForm.BANK_ID.Value; 
                     }
                     else if (_selectedBank != null)
                     {
