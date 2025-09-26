@@ -64,18 +64,21 @@ namespace HIS.UC.Icd
         bool IsYhct = false;
         long DepartmentId;
         string IcdMapCode = "";
+        private bool _isLoading = true;
 
         HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager checkIcd;
         public UCIcd()
         {
             InitializeComponent();
             this.SetCaptionByLanguageKey();
+            _isLoading = false;
         }
 
         public UCIcd(IcdInitADO data)
         {
             InitializeComponent();
 
+            _isLoading = false;
             this.SetCaptionByLanguageKey();
             this.InitAdo = data;
             this.DepartmentId = data.DepamentId;
@@ -942,9 +945,11 @@ namespace HIS.UC.Icd
         }
 
         private void cboIcds_EditValueChanged(object sender, EventArgs e)
-            {
+        {
             try
             {
+                if (_isLoading) return;
+
                 HIS_ICD icd = null;
                 bool AutoMapIcd10WithIcdYhct = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.HisIcd.AutoMapIcd10WithIcdYhct") == "1";
 
