@@ -942,7 +942,7 @@ namespace HIS.UC.Icd
         }
 
         private void cboIcds_EditValueChanged(object sender, EventArgs e)
-        {
+            {
             try
             {
                 HIS_ICD icd = null;
@@ -970,7 +970,7 @@ namespace HIS.UC.Icd
                             if (icd != null && icd.ICD_MAP_CODE != null)
                             {
                                 DialogResult result = XtraMessageBox.Show(
-                                    "Bạn có muốn cập nhật mã chẩn đoán chính theo mã ICD10 ánh xạ với mã ICD YHCT không?", 
+                                    "Bạn có muốn cập nhật mã chẩn đoán chính theo mã ICD10 ánh xạ với mã ICD YHCT không?",
                                     "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                                 if (result == DialogResult.Yes)
@@ -1071,5 +1071,21 @@ namespace HIS.UC.Icd
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+       private void cboIcds_KeyDown(object sender, KeyEventArgs e)
+       {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    cboIcds_EditValueChanged(sender, EventArgs.Empty);
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+       }
     }
 }
