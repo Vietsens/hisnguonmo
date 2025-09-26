@@ -1291,6 +1291,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         //        Inventec.Common.Logging.LogSystem.Error(ex);
         //    }
         //}
+        private void UcIcd_OnIcdMapCodeChanged(string icdMapCode)
+        {
+            if (!string.IsNullOrEmpty(icdMapCode))
+            {
+                LoadIcdCombo(icdMapCode);
+            }
+        }
+
         private void InitUcIcdYHCT()
         {
             try
@@ -1307,10 +1315,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 //ado.LabelTextSize = 100;
                 ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL == 1).OrderBy(o => o.ICD_CODE).ToList();
                 ado.AutoCheckIcd = HisConfigCFG.AutoCheckIcd == GlobalVariables.CommonStringTrue;
+                ado.DepamentId = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.moduleData.RoomId).DEPARTMENT_ID;
                 this.ucIcdYHCT = (UserControl)this.icdProcessorYHCT.Run(ado);
 
                 if (this.ucIcdYHCT != null)
                 {
+                    ((HIS.UC.Icd.UCIcd)ucIcdYHCT).OnIcdMapCodeChanged += UcIcd_OnIcdMapCodeChanged;
                     this.panelControlIcdYHCT.Controls.Add(this.ucIcdYHCT);
                     this.ucIcdYHCT.Dock = DockStyle.Fill;
                 }
