@@ -15,12 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using DevExpress.Utils.Menu;
 using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
@@ -46,6 +40,13 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.TreatmentFinish
 {
@@ -1122,9 +1123,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             try
             {
+
+
                 icdYhctProcessor = new HIS.UC.Icd.IcdProcessor();
                 HIS.UC.Icd.ADO.IcdInitADO ado = new HIS.UC.Icd.ADO.IcdInitADO();
                 ado.DelegateNextFocus = NextForcusOutYhct;
+                ado.DelegateRefeshIcd = DelegateRefeshIcdYHCT;
                 ado.IsUCCause = false;
                 ado.Width = 440;
                 ado.Height = 24;
@@ -1175,6 +1179,58 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void DelegateRefeshIcdYHCT(MOS.EFMODEL.DataModels.HIS_ICD icd)
+        {
+            try
+            {
+                if (ConfigKey.IsAutoMapIcd10WithIcdYhct)
+                {
+                    var currentDepartment = this.hisDepartments.FirstOrDefault(d => d.ID == this.WorkPlaceSDO.DepartmentId);
+                    bool isYhctDepartment = currentDepartment != null && currentDepartment.IS_TRADITIONAL == 1;
+                    bool hasMapCode = !string.IsNullOrEmpty(icd.ICD_MAP_CODE);
+                    var mappedIcd = hasMapCode ? this.listIcd.FirstOrDefault(i => i.ICD_CODE == icd.ICD_MAP_CODE) : null;
+                    if (hasMapCode && mappedIcd != null)
+                    {
+                        if (isYhctDepartment)
+                        {
+                            FillIcdByYHCT(mappedIcd);
+                        }
+                        else
+                        {
+                            var dialogResult = DevExpress.XtraEditors.XtraMessageBox.Show(
+                                "Bạn có muốn cập nhật mã chẩn đoán chính theo mã icd10 ánh xạ với mã icd YHCT không?",
+                                "Cảnh báo",
+                                System.Windows.Forms.MessageBoxButtons.YesNo,
+                                System.Windows.Forms.MessageBoxIcon.Question);
+
+                            if (dialogResult == System.Windows.Forms.DialogResult.Yes)
+                            {
+                                FillIcdByYHCT(mappedIcd);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void FillIcdByYHCT(MOS.EFMODEL.DataModels.HIS_ICD mappedIcd)
+        {
+            if (this.icdProcessor != null && this.ucIcd != null)
+            {
+                var icdValue = this.icdProcessor.GetValue(this.ucIcd);
+                if (icdValue is UC.Icd.ADO.IcdInputADO icdInput)
+                {
+                    icdInput.ICD_CODE = mappedIcd.ICD_CODE;
+                    icdInput.ICD_NAME = mappedIcd.ICD_NAME;
+                    this.icdProcessor.SetValue(this.ucIcd, icdInput, UC.Icd.ADO.Template.Default);
+                }
+            }
+        }
+
 
         private void NextForcusOutYhct()
         {

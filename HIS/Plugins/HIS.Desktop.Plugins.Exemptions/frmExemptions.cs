@@ -286,6 +286,11 @@ namespace HIS.Desktop.Plugins.Exemptions
                 //    param.Messages.Add(ResourceMessage.KhongTimThayMaDieuTri);
                 //    return;
                 //}
+                if (string.IsNullOrWhiteSpace(txtFindTreatmentCode.Text) && !(this.treatmentId > 0))
+                {
+                  
+                    return;
+                }
                 this.isReloadTree = true;
                 HisTreatmentFilter filter = new HisTreatmentFilter();
                 if (!String.IsNullOrEmpty(txtFindTreatmentCode.Text))

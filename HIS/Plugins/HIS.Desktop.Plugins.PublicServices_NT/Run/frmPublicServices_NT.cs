@@ -101,7 +101,6 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                     layoutControlItem_txtKeyword.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     layoutControlItem_GridControlPatient.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    this.Width = 880;
                     MOS.Filter.HisTreatmentBedRoomLViewFilter filter = new HisTreatmentBedRoomLViewFilter();
                     filter.BED_ROOM_ID = _TreatmentBedRoom.BED_ROOM_ID;
                     filter.IS_IN_ROOM = true;
@@ -128,7 +127,6 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                     layoutControlItem_txtKeyword.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem_GridControlPatient.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    this.Width = 440;
                     layoutControlItem_btnNextPatient.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 SetIconFrm();
@@ -140,8 +138,9 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                 SetCaptionByLanguageKey();
                 InitControlState();
                 rdoAllDay.Checked = true;
-                dtFrom.EditValue = DateTime.Now;
-                dtTo.EditValue = DateTime.Now;
+                var today = DateTime.Today;
+                dtFrom.EditValue = today;                            
+                dtTo.EditValue = today.AddDays(1).AddSeconds(-1);
                 InitGridPatientType();
                 congKhaiDichVu_DaySize = HisConfigs.Get<int>(HisConfigCFG.CONFIG_KEY__CONG_KHAI_DICH_VU__DAY_SIZE);
                 congKhaiDichVu_DaySize = (congKhaiDichVu_DaySize == 0 ? 10 : congKhaiDichVu_DaySize);
@@ -326,13 +325,26 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
 
                 if (!rdoAllDay.Checked)
                 {
-                    if (dtFrom.EditValue != null && dtFrom.DateTime != DateTime.MinValue)
+                    if (dtFrom.EditValue is DateTime from && from != DateTime.MinValue)
                     {
-                        serviceReqFilter.USE_TIME_OR_INTRUCTION_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime((dtFrom.EditValue ?? "0").ToString()).ToString("yyyyMMdd") + "000000");
+                        serviceReqFilter.USE_TIME_OR_INTRUCTION_TIME_FROM =
+                            Inventec.Common.TypeConvert.Parse.ToInt64(from.ToString("yyyyMMddHHmmss")); 
                     }
-                    if (dtTo.EditValue != null && dtTo.DateTime != DateTime.MinValue)
+                    if (dtTo.EditValue is DateTime to && to != DateTime.MinValue)
                     {
-                        serviceReqFilter.USE_TIME_OR_INTRUCTION_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime((dtTo.EditValue ?? "0").ToString()).ToString("yyyyMMdd") + "235959");
+                        serviceReqFilter.USE_TIME_OR_INTRUCTION_TIME_TO =
+                            Inventec.Common.TypeConvert.Parse.ToInt64(to.ToString("yyyyMMddHHmmss"));   
+                    }
+
+                    // Bảo vệ: nếu người dùng chọn nhầm From > To thì tự hoán đổi
+                    if (serviceReqFilter.USE_TIME_OR_INTRUCTION_TIME_FROM.HasValue &&
+                        serviceReqFilter.USE_TIME_OR_INTRUCTION_TIME_TO.HasValue &&
+                        serviceReqFilter.USE_TIME_OR_INTRUCTION_TIME_FROM.Value >
+                        serviceReqFilter.USE_TIME_OR_INTRUCTION_TIME_TO.Value)
+                    {
+                        var tmp = serviceReqFilter.USE_TIME_OR_INTRUCTION_TIME_FROM.Value;
+                        serviceReqFilter.USE_TIME_OR_INTRUCTION_TIME_FROM = serviceReqFilter.USE_TIME_OR_INTRUCTION_TIME_TO;
+                        serviceReqFilter.USE_TIME_OR_INTRUCTION_TIME_TO = tmp;
                     }
                 }
 
@@ -696,6 +708,9 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
             {
                 if (rdoAllDay.Checked)
                 {
+                    var today = DateTime.Today;
+                    dtFrom.EditValue = today;                              
+                    dtTo.EditValue = today.AddDays(1).AddSeconds(-1);
                     dtFrom.Enabled = false;
                     dtTo.Enabled = false;
                 }

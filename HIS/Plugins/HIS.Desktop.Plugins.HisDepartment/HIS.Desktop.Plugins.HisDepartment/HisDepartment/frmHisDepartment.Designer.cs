@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisDepartment));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -124,13 +125,17 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
             this.cboSubsDirectorUserName = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnFocusDefault = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtSubsDirectorLoginName = new DevExpress.XtraEditors.TextEdit();
             this.chkWarningWhenIsNoSurg = new DevExpress.XtraEditors.CheckEdit();
@@ -199,13 +204,11 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController();
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
+            this.chkIsTraditional = new DevExpress.XtraEditors.CheckEdit();
+            this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl7)).BeginInit();
@@ -301,6 +304,8 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsTraditional.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl4
@@ -851,6 +856,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             // 
             // lcEditorInfo
             // 
+            this.lcEditorInfo.Controls.Add(this.chkIsTraditional);
             this.lcEditorInfo.Controls.Add(this.cboSubsDirectorUserName);
             this.lcEditorInfo.Controls.Add(this.txtSubsDirectorLoginName);
             this.lcEditorInfo.Controls.Add(this.chkWarningWhenIsNoSurg);
@@ -911,6 +917,10 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSearch,
@@ -975,6 +985,34 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.bbtnFocusDefault.Name = "bbtnFocusDefault";
             this.bbtnFocusDefault.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnFocusDefault_ItemClick);
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1184, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 597);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1184, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 568);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1184, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 568);
+            // 
             // gridView3
             // 
             this.gridView3.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
@@ -1032,7 +1070,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             // 
             // chkAUTO_BED_ASSIGN_OPTION
             // 
-            this.chkAUTO_BED_ASSIGN_OPTION.Location = new System.Drawing.Point(139, 446);
+            this.chkAUTO_BED_ASSIGN_OPTION.Location = new System.Drawing.Point(139, 470);
             this.chkAUTO_BED_ASSIGN_OPTION.MenuManager = this.barManager1;
             this.chkAUTO_BED_ASSIGN_OPTION.Name = "chkAUTO_BED_ASSIGN_OPTION";
             this.chkAUTO_BED_ASSIGN_OPTION.Properties.Caption = "";
@@ -1118,7 +1156,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             // 
             // chkAllowAssignPackagePrice
             // 
-            this.chkAllowAssignPackagePrice.Location = new System.Drawing.Point(137, 422);
+            this.chkAllowAssignPackagePrice.Location = new System.Drawing.Point(137, 446);
             this.chkAllowAssignPackagePrice.MenuManager = this.barManager1;
             this.chkAllowAssignPackagePrice.Name = "chkAllowAssignPackagePrice";
             this.chkAllowAssignPackagePrice.Properties.Caption = "";
@@ -1429,18 +1467,19 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.layoutControlItem9,
             this.layoutControlItem10,
             this.lciIsAutoReceivePatient,
-            this.layoutControlItem8,
             this.layoutControlItem6,
             this.lciIsClinical,
             this.layoutControlItem11,
             this.layoutControlItem12,
             this.layoutControlItem13,
             this.layoutControlItem14,
-            this.layoutControlItem15,
             this.layoutControlItem16,
             this.layoutControlItem19,
             this.layoutControlItem21,
-            this.layoutControlItem22});
+            this.layoutControlItem22,
+            this.layoutControlItem15,
+            this.layoutControlItem8,
+            this.layoutControlItem23});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "Root";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1701,7 +1740,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem8.Control = this.chkAllowAssignPackagePrice;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 420);
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 444);
             this.layoutControlItem8.Name = "layoutControlItem8";
             this.layoutControlItem8.OptionsToolTip.ToolTip = "Cho phép chỉ định giá gói";
             this.layoutControlItem8.Size = new System.Drawing.Size(160, 24);
@@ -1797,10 +1836,10 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.layoutControlItem15.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem15.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem15.Control = this.chkAUTO_BED_ASSIGN_OPTION;
-            this.layoutControlItem15.Location = new System.Drawing.Point(0, 444);
+            this.layoutControlItem15.Location = new System.Drawing.Point(0, 468);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.OptionsToolTip.ToolTip = resources.GetString("resource.ToolTip");
-            this.layoutControlItem15.Size = new System.Drawing.Size(160, 48);
+            this.layoutControlItem15.Size = new System.Drawing.Size(160, 24);
             this.layoutControlItem15.Text = "Tự động CĐ giường:";
             this.layoutControlItem15.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem15.TextSize = new System.Drawing.Size(132, 20);
@@ -1889,34 +1928,6 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1184, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 597);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1184, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 568);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1184, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 568);
-            // 
             // dxValidationProviderEditorInfo
             // 
             this.dxValidationProviderEditorInfo.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider_ValidationFailed);
@@ -1929,6 +1940,29 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             // 
             this.toolTipControllerGrid.AllowHtmlText = true;
             this.toolTipControllerGrid.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipControllerGrid_GetActiveObjectInfo);
+            // 
+            // chkIsTraditional
+            // 
+            this.chkIsTraditional.Location = new System.Drawing.Point(139, 422);
+            this.chkIsTraditional.MenuManager = this.barManager1;
+            this.chkIsTraditional.Name = "chkIsTraditional";
+            this.chkIsTraditional.Properties.Caption = "";
+            this.chkIsTraditional.Size = new System.Drawing.Size(19, 19);
+            this.chkIsTraditional.StyleController = this.lcEditorInfo;
+            this.chkIsTraditional.TabIndex = 28;
+            // 
+            // layoutControlItem23
+            // 
+            this.layoutControlItem23.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem23.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem23.Control = this.chkIsTraditional;
+            this.layoutControlItem23.Location = new System.Drawing.Point(0, 420);
+            this.layoutControlItem23.Name = "layoutControlItem23";
+            this.layoutControlItem23.Size = new System.Drawing.Size(160, 24);
+            this.layoutControlItem23.Text = "Là khoa YHCT:";
+            this.layoutControlItem23.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem23.TextSize = new System.Drawing.Size(132, 20);
+            this.layoutControlItem23.TextToControlDistance = 5;
             // 
             // frmHisDepartment
             // 
@@ -2045,6 +2079,8 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsTraditional.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2185,5 +2221,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem22;
         private DevExpress.XtraGrid.Columns.GridColumn grdColSubsDirector;
+        private DevExpress.XtraEditors.CheckEdit chkIsTraditional;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
     }
 }

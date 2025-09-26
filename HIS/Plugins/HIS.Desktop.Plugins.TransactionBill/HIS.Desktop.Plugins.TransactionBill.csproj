@@ -349,6 +349,7 @@
     <Compile Include="TransactionBill\TransactionBillBehavior.cs" />
     <Compile Include="TransactionBill\TransactionBillFactory.cs" />
     <Compile Include="Validtion\AccountBookValidationRule.cs" />
+    <Compile Include="Validtion\BankRequiredValidationRule.cs" />
     <Compile Include="Validtion\spinNumOrderRepayValidationRule.cs" />
     <Compile Include="Validtion\SpinNumOrderRule.cs" />
     <Compile Include="Validtion\SpinTranferAmountValidationRule.cs" />

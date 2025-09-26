@@ -441,10 +441,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 ado.hisTreatment = this.Histreatment;
                 ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL == 1).OrderBy(o => o.ICD_CODE).ToList();
                 ado.AutoCheckIcd = HisConfigCFG.AutoCheckIcd == GlobalVariables.CommonStringTrue;
+                ado.DepamentId = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID;
                 this.ucIcdYHCT = (UserControl)this.icdProcessorYHCT.Run(ado);
 
                 if (this.ucIcdYHCT != null)
                 {
+                    ((HIS.UC.Icd.UCIcd)ucIcdYHCT).OnIcdMapCodeChanged += UcIcd_OnIcdMapCodeChanged;
                     this.panelControlIcdYHCT.Controls.Add(this.ucIcdYHCT);
                     this.ucIcdYHCT.Dock = DockStyle.Fill;
                 }
@@ -454,6 +456,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void UcIcd_OnIcdMapCodeChanged(string icdMapCode)
+        {
+            if (!string.IsNullOrEmpty(icdMapCode))
+            {
+                var icdCaus = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == icdMapCode);
+
+                HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
+                icd.ICD_CODE = icdCaus.ICD_CODE;
+                icd.ICD_NAME = icdCaus.ICD_NAME;
+
+                if (ucIcd != null)
+                {
+                    icdProcessor.Reload(ucIcd, icd);
+                }
+                //if (icdCaus != null)
+                //{
+                //    this.icdCauseProcessor.SetRequired(this.ucIcdCause, true);
+                //}
+            }
+        }
+
         private void DelegateRequiredCause(bool isRequired)
         {
             try

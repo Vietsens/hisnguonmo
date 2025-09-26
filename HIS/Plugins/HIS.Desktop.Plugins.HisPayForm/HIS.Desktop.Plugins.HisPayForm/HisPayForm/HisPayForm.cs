@@ -434,7 +434,10 @@ namespace HIS.Desktop.Plugins.HisPayForm
                     {
                         e.Value = pData.PAY_FORM_NAME;
                     }
-                   
+                    else if(e.Column.FieldName == "COL_BANK")
+                    {
+                        e.Value = pData.IS_REQUIRED_BANK == 1 ? true : false;
+                    }
 
                     gridControlFormList.RefreshDataSource();
                 }
@@ -491,7 +494,8 @@ namespace HIS.Desktop.Plugins.HisPayForm
             {
                 if (data != null)
                 {
-
+                    if (data.IS_REQUIRED_BANK == 1) chkBank.Checked = true;
+                    else chkBank.Checked = false;
                     this.ActionType = GlobalVariables.ActionEdit;
 
                     positionHandle = -1;
@@ -1030,8 +1034,9 @@ namespace HIS.Desktop.Plugins.HisPayForm
                 WaitingManager.Show();
                 currrentData.PAY_FORM_NAME = txtName.Text;
                 currrentData.ELECTRONIC_PAY_FORM_NAME = txtPayFormName.Text;
-
-                     var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PAY_FORM>("api/HisPayForm/Update", ApiConsumers.MosConsumer, currrentData, param);
+                if (chkBank.Checked) currentData.IS_REQUIRED_BANK = 1;
+                else currentData.IS_REQUIRED_BANK = 0;
+                var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PAY_FORM>("api/HisPayForm/Update", ApiConsumers.MosConsumer, currrentData, param);
                     if (resultData != null)
                     {
                         success = true;
@@ -1065,6 +1070,7 @@ namespace HIS.Desktop.Plugins.HisPayForm
 			{
                 txtCode.Text = txtName.Text = txtPayFormName.Text = String.Empty;
                 btnSave.Enabled = false;
+                chkBank.Checked = false;
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(this.dxValidationProviderEditorInfo, this.dxErrorProvider);
             }
 			catch (Exception ex)

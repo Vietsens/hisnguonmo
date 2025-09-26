@@ -336,7 +336,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         List<HIS_EXP_MEST> ListExpMestResult { get; set; }
         private System.Windows.Forms.Timer timerReloadTreatmentFinishTime { get; set; }
         bool isCheckAssignServiceSimultaneityOption = false;
-
         internal IcdProcessor icdYhctProcessor;
         internal UserControl ucIcdYhct;
         internal SecondaryIcdProcessor subIcdYhctProcessor;
@@ -448,6 +447,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void UcIcd_OnIcdMapCodeChanged(string icdMapCode)
+        {
+            if (!string.IsNullOrEmpty(icdMapCode))
+            {
+                LoadIcdCombo(icdMapCode);
+            }
+        }
+
         private void InitUcIcdYhct()
         {
             try
@@ -463,10 +471,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 ado.AutoCheckIcd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<String>("HIS.Desktop.Plugins.AutoCheckIcd") == "1";
                 ado.LblIcdMain = "CĐ YHCT:";
                 ado.ToolTipsIcdMain = "Chẩn đoán y học cổ truyền";
+                ado.DepamentId = this.currentWorkPlace.DepartmentId;
                 ucIcdYhct = (UserControl)icdYhctProcessor.Run(ado);
 
                 if (ucIcdYhct != null)
                 {
+                    ((HIS.UC.Icd.UCIcd)ucIcdYhct).OnIcdMapCodeChanged += UcIcd_OnIcdMapCodeChanged;
                     this.pnIcdTranditional.Controls.Add(ucIcdYhct);
                     ucIcdYhct.Dock = DockStyle.Fill;
                 }

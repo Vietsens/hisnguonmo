@@ -62,8 +62,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\His.EventLog\His.EventLog.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.Icd">
-      <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
+    <Reference Include="HIS.UC.Icd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Icd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SecondaryIcd">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>

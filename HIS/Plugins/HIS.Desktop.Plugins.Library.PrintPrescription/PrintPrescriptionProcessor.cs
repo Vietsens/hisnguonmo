@@ -389,7 +389,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             new PrintMps000050(printCode, fileName, ref result, currentOutPresSDO, printNow, hasMediMate, currentModule, richEditorMain, this.previewType, SetTotalPrint, SetDataGroup, CancelChooseTemplate);
                             break;
                         case MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode:
-                            new PrintMps000118(printCode, fileName, ref result, currentOutPresSDO, printNow, hasMediMate, richEditorMain, currentModule, this.previewType, this.hasOutHospital, lstTransReq, lstConfig, SetTotalPrint, SetDataGroup, CancelChooseTemplate, this.CallFromPrescription);
+                            new PrintMps000118(printCode, fileName, ref result, currentOutPresSDO, printNow, hasMediMate, richEditorMain, currentModule, this.previewType, this.hasOutHospital, lstTransReq, lstConfig, SetTotalPrint, SetDataGroup, CancelChooseTemplate, this.CallFromPrescription);   
                             break;
                         case MPS.Processor.Mps000234.PDO.Mps000234PDO.PrintTypeCode:
                             new PrintMps000234(printCode, fileName, ref result, currentOutPresSDO, printNow, hasMediMate, richEditorMain, this.expMestPrimary, currentModule, this.previewType, SetTotalPrint, SetDataGroup, CancelChooseTemplate, this.CallFromPrescription, this.IsNotShowTaken);
