@@ -173,10 +173,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     return;
                 string FindTreatmentCode = txtSearch.Text;
                 txtSearch.Text = "";
+                ClearValidate();
                 btnSearch_Click(null, null);
                 txtSearch.Text = FindTreatmentCode;
                 txtSearch.Focus();
                 txtSearch.SelectAll();
+                dxValidationProvider1.SetValidationRule(cboBank, null);
+                dxValidationProvider1.RemoveControlError(cboBank);
             }
             catch (Exception ex)
             {
@@ -259,22 +262,40 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     if (!GetSdoReciept(param, ref billTwoBookSDO, ref recieptAccBook, listRecieptData))
                         return;
                 }
-
+                  
                 if (listInvoiceData != null && listInvoiceData.Count > 0 && !checkNotInvoice.Checked)
                 {
                     if (cboInvoiceAccountBook.EditValue == null || cboPayForm.EditValue == null) return;
                     if (!GetSdoInvoice(param, ref billTwoBookSDO, ref invoiceAccBook, listInvoiceData))
                         return;
                 }
+               
+                    if (billTwoBookSDO.RecieptTransaction == null)
+                    billTwoBookSDO.RecieptTransaction = new HIS_TRANSACTION();
 
+                if (payFormList != null && payFormList.Count > 0 && cboPayForm.EditValue != null)
+                {
+                    var payForm = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue.ToString());
+                    billTwoBookSDO.RecieptTransaction.PAY_FORM_ID = payForm?.ID ?? 0;
+                }
+   
 
                 if (billTwoBookSDO.RecieptTransaction != null)
                 {
 
-                    if (string.IsNullOrEmpty(cboBank.EditValue?.ToString()))
-                        billTwoBookSDO.RecieptTransaction.BANK_ID = null;
-                    else
+                    if (cboBank.EditValue != null && !string.IsNullOrEmpty(cboBank.EditValue.ToString()))
                         billTwoBookSDO.RecieptTransaction.BANK_ID = Convert.ToInt64(cboBank.EditValue);
+                    else
+                        billTwoBookSDO.RecieptTransaction.BANK_ID = null;
+
+                }
+                if (billTwoBookSDO.InvoiceTransaction != null)
+                {
+
+                    if (cboBank.EditValue != null && !string.IsNullOrEmpty(cboBank.EditValue.ToString()))
+                        billTwoBookSDO.InvoiceTransaction.BANK_ID = Convert.ToInt64(cboBank.EditValue);
+                    else
+                        billTwoBookSDO.InvoiceTransaction.BANK_ID = null;
 
                 }
 
@@ -298,7 +319,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     }
                 }
 
-                if ((long)cboPayForm.EditValue == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__KEYPAY)
+                if (Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__KEYPAY)
                 {
                     bool hasPaymentKEYPAY = false;
                     if (!this.CheckPayFormKEYPAY(billTwoBookSDO, ref param, ref hasPaymentKEYPAY))
@@ -341,7 +362,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 else
                 {
                     Inventec.Common.Logging.LogSystem.Info("không dùng keypay");
-                    if ((long)cboPayForm.EditValue == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && chkConnectPos.Checked && decimal.Parse(lblCanThu.Text) > 0)
+                    if (Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && chkConnectPos.Checked && decimal.Parse(lblCanThu.Text) > 0)
                     {                      
                         CommonParam checkParam = new CommonParam();
                         var check = new BackendAdapter(checkParam).Post<bool>("api/HisTransaction/CheckBillTwoBook", ApiConsumers.MosConsumer, billTwoBookSDO, checkParam);
@@ -353,7 +374,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         }
                         OpenAppPOS();
                         WcfRequest wc = new WcfRequest();
-                        if ((long)cboPayForm.EditValue == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && decimal.Parse(lblCanThu.Text) > 0)
+                        if (Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && decimal.Parse(lblCanThu.Text) > 0)
                         {
                             wc.AMOUNT = (long)decimal.Parse(lblCanThu.Text);
                         }
@@ -547,7 +568,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         var exits = rs.Where(s => s.PAY_FORM_ID == 8 && s.IS_ACTIVE == 0);
                         if(isLuuKy)
                         {
-                            if (isCreateQRContinue && (long)cboPayForm.EditValue == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                            if (isCreateQRContinue && cboPayForm.EditValue != null && Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
                             {
 
                                 this.listTranToQR = exits.ToList();
@@ -558,7 +579,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         else
                         {
 
-                            if (exits != null && (long)cboPayForm.EditValue == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                            if (exits != null && Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
                             {
                                 this.listTranToQR = exits.ToList();
                                 btnQR.Enabled = true;

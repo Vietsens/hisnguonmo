@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
@@ -24,6 +25,7 @@ using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -151,9 +153,45 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }  
+        }
+        private void checkValidateCboBank()
+        {
+
+            var payForm2 = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue?.ToString());
+            if (payForm2 != null)
+            {
+                txtPayForm.Text = payForm2.PAY_FORM_CODE;
+
+                if (payForm2.IS_REQUIRED_BANK == 1)
+                {
+                    layoutControlItem70.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule bankRule = new Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule();
+                    bankRule.editor = cboBank;
+                    bankRule.ErrorText = "Trường dữ liệu bắt buộc nhập";
+                    bankRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                    
+                    dxValidationProvider1.SetValidationRule(cboBank, bankRule);
+
+                    // Nếu chưa chọn ngân hàng thì validate sẽ báo lỗi
+                    if (cboBank.EditValue == null || string.IsNullOrEmpty(cboBank.EditValue.ToString()))
+                    {
+                        dxValidationProvider1.Validate();
+                    }
+                    else
+                    {
+                        dxValidationProvider1.SetValidationRule(cboBank, null);
+                        dxValidationProvider1.RemoveControlError(cboBank);
+                    }
+                }
+                else
+                {
+                    layoutControlItem70.AppearanceItemCaption.ForeColor = Color.Black;
+                    dxValidationProvider1.SetValidationRule(cboBank, null);
+                    dxValidationProvider1.RemoveControlError(cboBank);
+                }
             }
         }
-
         private void txtPayForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
@@ -196,11 +234,37 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     HIS_PAY_FORM payForm = null;
                     if (cboPayForm.EditValue != null)
                     {
-                        payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue) && o.IS_ACTIVE == 1);
-                        if (payForm != null)
+                        //payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue) && o.IS_ACTIVE == 1);
+                        //if (payForm != null)
+                        //{
+                        //    txtPayForm.Text = payForm.PAY_FORM_CODE;
+                        //}
+
+                        var payForm2 = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue?.ToString());
+                        if (payForm2 != null)
                         {
-                            txtPayForm.Text = payForm.PAY_FORM_CODE;
+                            txtPayForm.Text = payForm2.PAY_FORM_CODE;
+
+                            if (payForm2.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm2.BANK_ID != null)
+                            {
+                                cboBank.EditValue = payForm2.BANK_ID;
+                                cboBank.Enabled = false;
+                            }
+                            else
+                            {
+                                cboBank.EditValue = null;
+                                cboBank.Enabled = true;
+                            }
+
                         }
+                        else
+                        {
+                            cboBank.EditValue = null;
+                            cboBank.Enabled = true;
+                            
+                        }
+
+
                     }
                     CheckRecieptPayFormKEYPAY(payForm);
                 }
@@ -215,31 +279,43 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+
+
                 txtPayForm.Text = "";
-                var payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue) && o.IS_ACTIVE == 1);
+                //var payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue) && o.IS_ACTIVE == 1);
+                var payForm = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue?.ToString());
                 if (payForm != null)
                 {
                     txtPayForm.Text = payForm.PAY_FORM_CODE;
 
-                    if (payForm.IS_REQUIRED_BANK == 1)
+
+                    if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
                     {
-                        
-
-
-                        Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule bankRule = new Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule();
-                        bankRule.editor = cboBank;
-                        bankRule.ErrorText = "Trường dữ liệu bắt buộc nhập";
-                        bankRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                        dxValidationProvider1.SetValidationRule(cboBank, bankRule);
-                        dxValidationProvider1.Validate();
+                        cboBank.EditValue = payForm.BANK_ID;
+                        cboBank.Enabled = false;
                     }
                     else
                     {
-                       
-                        dxValidationProvider1.SetValidationRule(cboBank, null);
+                        cboBank.EditValue = null;
+                        cboBank.Enabled = true;
                     }
+                    if (payForm.IS_REQUIRED_BANK == 1)
+                    {
+                        layoutControlItem70.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    }
+                    else
+                    {
+                        layoutControlItem70.AppearanceItemCaption.ForeColor = Color.Black;
+                    }
+                }
+                else
+                {
+                    cboBank.EditValue = null;
+                    cboBank.Enabled = true;
 
                 }
+
+
             }
             catch (Exception ex)
             {
