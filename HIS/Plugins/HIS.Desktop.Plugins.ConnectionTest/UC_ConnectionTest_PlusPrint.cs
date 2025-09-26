@@ -1096,7 +1096,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1107,7 +1107,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1128,7 +1128,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1139,7 +1139,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1158,7 +1158,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSign.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1169,7 +1169,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSignProcess.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1212,7 +1212,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000456RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1228,7 +1228,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000456RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1242,7 +1242,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSign.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000456.PDO.PrintTypeCode.Mps000456, fileName, mps000456RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1253,7 +1253,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSignProcess.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000456.PDO.PrintTypeCode.Mps000456, fileName, mps000456RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1297,7 +1297,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1313,7 +1313,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1327,7 +1327,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSign.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1338,7 +1338,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSignProcess.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1382,7 +1382,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000458RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1398,7 +1398,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000458RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1412,7 +1412,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSign.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000458.PDO.PrintTypeCode.Mps000458, fileName, mps000458RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1423,7 +1423,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSignProcess.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000458.PDO.PrintTypeCode.Mps000458, fileName, mps000458RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1467,7 +1467,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000459RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1483,7 +1483,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000459RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1497,7 +1497,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSign.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000459.PDO.PrintTypeCode.Mps000459, fileName, mps000459RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1508,7 +1508,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSignProcess.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000459.PDO.PrintTypeCode.Mps000459, fileName, mps000459RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         //PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow, printerName);
@@ -1552,7 +1552,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000468RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1563,7 +1563,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000468RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1584,7 +1584,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000468RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1595,7 +1595,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000468RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1614,7 +1614,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSign.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000468RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1625,7 +1625,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSignProcess.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000468RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1668,7 +1668,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1679,7 +1679,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1701,7 +1701,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1712,7 +1712,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1731,7 +1731,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSign.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1742,7 +1742,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSignProcess.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1785,7 +1785,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1796,7 +1796,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1817,7 +1817,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1828,7 +1828,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1847,7 +1847,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSign.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1858,7 +1858,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     else if (chkSignProcess.Checked)
                     {
                         LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                         string errorMessage = "";
                         PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                         SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1957,7 +1957,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -1975,7 +1975,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -1987,7 +1987,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2094,7 +2094,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2105,7 +2105,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             else if (chkSignProcess.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2126,7 +2126,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2137,7 +2137,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             else if (chkSignProcess.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2156,7 +2156,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2167,7 +2167,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2210,7 +2210,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000456RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2226,7 +2226,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000456RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2240,7 +2240,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000456.PDO.PrintTypeCode.Mps000456, fileName, mps000456RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2251,7 +2251,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000456RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2295,7 +2295,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2311,7 +2311,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2325,7 +2325,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2336,7 +2336,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2380,7 +2380,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000458RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2396,7 +2396,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000458RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2410,7 +2410,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000458.PDO.PrintTypeCode.Mps000458, fileName, mps000458RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2421,7 +2421,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000458RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2465,7 +2465,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000459RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2481,7 +2481,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000459RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2495,7 +2495,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000459.PDO.PrintTypeCode.Mps000459, fileName, mps000459RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2506,7 +2506,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000459RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2549,7 +2549,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000468RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2560,7 +2560,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             else if (chkSignProcess.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000468RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2581,7 +2581,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000468RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2592,7 +2592,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             else if (chkSignProcess.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000468RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2611,7 +2611,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000468RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2622,7 +2622,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000468RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2665,7 +2665,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2676,7 +2676,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             else if (chkSignProcess.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2697,7 +2697,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2708,7 +2708,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             else if (chkSignProcess.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2727,7 +2727,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2738,7 +2738,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2781,7 +2781,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2792,7 +2792,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             else if (chkSignProcess.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2813,7 +2813,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2824,7 +2824,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             else if (chkSignProcess.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2843,7 +2843,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2854,7 +2854,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2956,7 +2956,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
@@ -2968,7 +2968,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2980,7 +2980,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
