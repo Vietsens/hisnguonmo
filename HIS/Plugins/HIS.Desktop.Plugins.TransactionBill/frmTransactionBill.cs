@@ -626,6 +626,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                 InitControlStateAutoClose();
                 EnableSave();
+                LoadComboBank();
             }
             catch (Exception ex)
             {
@@ -1061,6 +1062,29 @@ namespace HIS.Desktop.Plugins.TransactionBill
             }
         }
 
+        private void LoadComboBank()
+        {
+            try
+            {
+                cboBank.EditValue = null;
+                List<HIS_BANK> data = BackendDataWorker.Get<HIS_BANK>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("BANK_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("BANK_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("BANK_NAME", "ID", columnInfos, false, 350);
+
+                ControlEditorLoader.Load(cboBank, data, controlEditorADO);
+                cboBank.Properties.ImmediatePopup = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void LoadDataToComboAccountBook()
         {
             try
@@ -1309,6 +1333,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         payForm.PAY_FORM_CODE = item.PAY_FORM_CODE;
                         payForm.PAY_FORM_NAME = item.PAY_FORM_NAME;
                         payForm.BANK_ID = null;
+                        payForm.IS_REQUIRED_BANK = item.IS_REQUIRED_BANK;
                         this.payFormList.Add(payForm);
                     }
                 }
@@ -1328,6 +1353,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         payForm.PAY_FORM_CODE = payForm__QuetThe.PAY_FORM_CODE + item.BANK_CODE;
                         payForm.PAY_FORM_NAME = payForm__QuetThe.PAY_FORM_NAME + " " + item.BANK_NAME;
                         payForm.BANK_ID = item.ID;
+                        payForm.IS_REQUIRED_BANK = payForm__QuetThe.IS_REQUIRED_BANK;
                         this.payFormList.Add(payForm);
                     }
                 }
@@ -4083,5 +4109,87 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void cboPayForm_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cboBank.EditValue = null;
+                var payForm = this.payFormList
+                    .FirstOrDefault(o => o.PayFormId == (cboPayForm.EditValue?.ToString()));
+
+                bool required = (payForm?.IS_REQUIRED_BANK ?? 0) == 1;
+                long? presetBankId = (payForm != null
+                                      && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE
+                                      && payForm.BANK_ID.HasValue)
+                                     ? payForm.BANK_ID
+                                     : (long?)null;
+
+                layoutBank.AppearanceItemCaption.ForeColor = (required && !presetBankId.HasValue) ? Color.Maroon : Color.Black;
+
+                var bankRule = new HIS.Desktop.Plugins.TransactionBill.Validtion.BankRequiredValidationRule
+                {
+                    cboBank = cboBank,
+                    IsRequired = required,
+                    PresetBankId = presetBankId
+                };
+                dxValidationProvider1.SetValidationRule(cboBank, bankRule);
+                if (presetBankId.HasValue)
+                {
+                    cboBank.EditValue = presetBankId.Value;
+                    cboBank.Enabled = false;
+                    cboBank.ReadOnly = true;
+                }
+                else
+                {
+                    cboBank.Enabled = true;
+                    cboBank.ReadOnly = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ApplyBankByPayForm(PayFormADO payForm)
+        {
+            try
+            {
+                long? presetBankId = (payForm != null
+                                      && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE
+                                      && payForm.BANK_ID.HasValue)
+                                     ? payForm.BANK_ID
+                                     : (long?)null;
+
+                bool isRequired = (payForm?.IS_REQUIRED_BANK ?? 0) == 1;
+
+                if (presetBankId.HasValue)
+                {
+                    cboBank.EditValue = presetBankId;
+                    cboBank.ReadOnly = true;
+                }
+                else
+                {
+                    cboBank.ReadOnly = false;
+                    if (!isRequired) cboBank.EditValue = null;
+                }
+
+                layoutBank.AppearanceItemCaption.ForeColor =
+                    (isRequired && !presetBankId.HasValue) ? Color.Maroon : Color.Black;
+
+                var bankRule = new Validtion.BankRequiredValidationRule
+                {
+                    cboBank = cboBank,
+                    IsRequired = isRequired,
+                    PresetBankId = presetBankId
+                };
+                dxValidationProvider1.SetValidationRule(cboBank, bankRule);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
     }
 }
