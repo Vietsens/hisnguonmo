@@ -242,10 +242,12 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 ado.DataIcds = listIcd.Where(s => s.IS_TRADITIONAL == 1 && s.IS_ACTIVE == 1).ToList();
                 ado.AutoCheckIcd = autoCheckIcd == 1 ? true : false;
                 ado.hisTreatment = currentTreatment;
+                ado.DepamentId = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.module.RoomId).DEPARTMENT_ID;
                 ucIcdYHCT = (UserControl)icdProcessorYHCT.Run(ado);
 
                 if (ucIcdYHCT != null)
                 {
+                    ((HIS.UC.Icd.UCIcd)ucIcdYHCT).OnIcdMapCodeChanged += UcIcd_OnIcdMapCodeChanged;
                     this.panelControlCDYHCT.Controls.Add(ucIcdYHCT);
                     ucIcdYHCT.Dock = DockStyle.Fill;
                 }
@@ -255,6 +257,31 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void UcIcd_OnIcdMapCodeChanged(string icdMapCode)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(icdMapCode))
+                {
+                    var icdCaus = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == icdMapCode);
+
+                    HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
+                    icd.ICD_CODE = icdCaus.ICD_CODE;
+                    icd.ICD_NAME = icdCaus.ICD_NAME;
+
+                    if (ucIcd != null)
+                    {
+                        icdProcessor.Reload(ucIcd, icd);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void LoadSubIcd(string icdCodes, string icdNames)
         {
             try

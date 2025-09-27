@@ -284,7 +284,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
 
                 if (ucSecondaryIcd != null)
                 {
-                   
+                    
                     this.panelControlSubIcd.Controls.Add(ucSecondaryIcd);
                     ucSecondaryIcd.Dock = DockStyle.Fill;
                 }
@@ -736,29 +736,27 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
         }
         private void UcIcd_OnIcdMapCodeChanged(string icdMapCode)
         {
-            //if (!string.IsNullOrEmpty(icdMapCode))
-            //{
-            //    var icdCaus = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == icdMapCode);
-            //    if (icdCaus != null)
-            //    {
-            //        this.icdProcessor.SetRequired(this.ucIcdYhct, (icdCaus.IS_REQUIRE_CAUSE == 1));
-            //    }  
-            //}
-            if (!string.IsNullOrEmpty(icdMapCode))
+            try
             {
-                var icdCaus = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == icdMapCode);
-
-                HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
-                icd.ICD_CODE = icdCaus.ICD_CODE;
-                icd.ICD_NAME = icdCaus.ICD_NAME;
-
-                if (ucIcd != null)
+                if (!string.IsNullOrEmpty(icdMapCode))
                 {
-                    icdProcessor.Reload(ucIcd, icd);
-                }
-               
-            }
+                    var icdCaus = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == icdMapCode);
 
+                    HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
+                    icd.ICD_CODE = icdCaus.ICD_CODE;
+                    icd.ICD_NAME = icdCaus.ICD_NAME;
+
+                    if (ucIcd != null)
+                    {
+                        icdProcessor.Reload(ucIcd, icd);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            
         }
         private void DelegateNextFocusIcd()
         {
