@@ -246,7 +246,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        //private List<MetyMatyADO> listCompensationAdo
         private async Task LoadDataCompensationToGrid()
         {
             try
@@ -2023,9 +2023,15 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                         gridColumn_Compensation_IsCheck.Image = imageListIcon.Images[6];
                         isCheckAll = true;
                     }
+                    List<MetyMatyADO> listCompensationAdoFilter = new List<MetyMatyADO>();
+                    listCompensationAdoFilter = listCompensationAdo.Where(o => o.IN_STOCK_AMOUNT > 0).ToList(); 
                     gridControlCompensation.BeginUpdate();
-                    gridControlCompensation.DataSource = listCompensationAdo;
+                    gridControlCompensation.DataSource = listCompensationAdoFilter;
                     gridControlCompensation.EndUpdate();
+                }
+                else
+                {
+                    gridControlCompensation.DataSource = listCompensationAdo; 
                 }
             }
             catch (Exception ex)
