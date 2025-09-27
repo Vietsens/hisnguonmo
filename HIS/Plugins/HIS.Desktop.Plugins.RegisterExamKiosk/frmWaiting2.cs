@@ -2527,7 +2527,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 {
                     Inventec.Common.Logging.LogSystem.Info("btnScanCCCD_Click: Sending request to device API");
                     var response = await client.GetAsync("http://localhost:7000/api/v1/verify");
-                    Inventec.Common.Logging.LogSystem.Info($"btnScanCCCD_Click: Device API response status: {response.StatusCode}");
+                    Inventec.Common.Logging.LogSystem.Info(string.Format("btnScanCCCD_Click: Device API response status: {0}", response.StatusCode));
 
                     if (!response.IsSuccessStatusCode)
                     {
