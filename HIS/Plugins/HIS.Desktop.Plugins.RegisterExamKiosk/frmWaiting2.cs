@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraLayout;
+using EO.Internal;
 using His.Bhyt.InsuranceExpertise;
 using His.Bhyt.InsuranceExpertise.LDO;
 using HIS.Desktop.Common;
@@ -1242,7 +1243,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                                 filter.HEIN_CARD_NUMBER_OR_CCCD_NUMBER.CCCD_NUMBER__EXACT = filter.CCCD_NUMBER__EXACT;
                             }
                             this.PatientData.PatientForKiosk = GetPatientInfoByFilter(filter);
-                            if (this.PatientData.PatientForKiosk.ServiceReqs != null && this.PatientData.PatientForKiosk.ServiceReqs.Count > 0)
+                            if (this.PatientData.PatientForKiosk != null && this.PatientData.PatientForKiosk.ServiceReqs != null && this.PatientData.PatientForKiosk.ServiceReqs.Count > 0)
                             {
                                 if (rsIns.hoTen.ToLower() != this.PatientData.PatientForKiosk.ServiceReqs.First().TDL_PATIENT_NAME.ToLower())
                                     this.PatientData.PatientForKiosk.ServiceReqs = null;
@@ -1912,7 +1913,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
 
                     this.PatientData.PatientForKiosk = GetPatientInfoByFilter(newFilter);
 
-                    if (this.PatientData.PatientForKiosk.ServiceReqs != null && this.PatientData.PatientForKiosk.ServiceReqs.Count > 0)
+                    if (this.PatientData.PatientForKiosk != null && this.PatientData.PatientForKiosk.ServiceReqs != null && this.PatientData.PatientForKiosk.ServiceReqs.Count > 0)
                     {
                         if (rsIns.hoTen.ToLower() != this.PatientData.PatientForKiosk.ServiceReqs.First().TDL_PATIENT_NAME.ToLower())
                             this.PatientData.PatientForKiosk.ServiceReqs = null;
@@ -2551,6 +2552,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                         return;
                     }
 
+                    this.PatientData = new InformationObjectADO();
+
                     string cccdFromDevice = root.result.data.identifyNumber;
                     Inventec.Common.Logging.LogSystem.Info(string.Format("btnScanCCCD_Click: CCCD from device: {0}", cccdFromDevice));
 
@@ -2561,35 +2564,28 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     filter.CCCD_NUMBER__EXACT = cccdFromDevice;
                     Inventec.Common.Logging.LogSystem.Debug("btnScanCCCD_Click: HisPatientAdvanceFilter: " + JsonConvert.SerializeObject(filter));
 
-                    var patientInfo = GetPatientInfoByFilter(filter);
-                    Inventec.Common.Logging.LogSystem.Debug("btnScanCCCD_Click: GetPatientInfoByFilter result: " + JsonConvert.SerializeObject(patientInfo));
+                    var dateOfBirth = !String.IsNullOrEmpty(root.result.data.dateOfBirth) ? root.result.data.dateOfBirth.Replace("/", "") : "";
+                    var issueDate = !String.IsNullOrEmpty(root.result.data.issueDate) ? root.result.data.issueDate.Replace("/", "") : "";
 
-                    if (patientInfo != null)
+                    var data = SearchByCode(string.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}", root.result.data.identifyNumber
+                        , root.result.data.previousNumber,
+                        root.result.data.name,
+                        dateOfBirth, root.result.data.sex, root.result.data.address, issueDate));
+
+                    Inventec.Common.Logging.LogSystem.Info("btnScanCCCD_Click: Found patient in HIS, opening form");
+                    if (data is HeinCardData)
                     {
-                        Inventec.Common.Logging.LogSystem.Info("btnScanCCCD_Click: Found patient in HIS, opening form");
-                        this.PatientData = new InformationObjectADO();
-                        this.PatientData.PatientForKiosk = patientInfo;
-                        var heinCardData = ConvertFromPatientData(patientInfo);
-                        heinCardData.HeinCardNumber = cccdFromDevice;
-                        await CheckheinCardFromHeinInsuranceApi(heinCardData);
+                        HeinCardData heinCardDataForCheckGOV = (HeinCardData)data;
+                        filter.HEIN_CARD_NUMBER__EXACT = heinCardDataForCheckGOV.HeinCardNumber;
+                    }
+                    else if (data is CccdCardData)
+                    {
+                        CccdCardData cccdCard = (CccdCardData)data;
+                        filter.CCCD_NUMBER__EXACT = cccdCard.CardData;
                     }
 
-                    else
-                    {
-                        Inventec.Common.Logging.LogSystem.Info("btnScanCCCD_Click: Patient not found, creating temporary data from CCCD");
-                        HeinCardData heinCard = new HeinCardData
-                        {
-                            HeinCardNumber = cccdFromDevice,
-                            Dob = root.result.data.dateOfBirth,
-                            PatientName = root.result.data.name,
-                            Gender = root.result.data.sex,
-                            Address = root.result.data.nationality
-                        };
-                        Inventec.Common.Logging.LogSystem.Debug("btnScanCCCD_Click: Temporary HeinCardData: " + JsonConvert.SerializeObject(heinCard));
-                        this.PatientData = new InformationObjectADO();
-                        this.PatientData.PatientForKiosk = MapDataFromCard(heinCard);
-                        await CheckheinCardFromHeinInsuranceApi(heinCard);
-                    }
+                    WaitingManager.Show();
+                    this.CheckHanSDTheBHYTVaCccd(ConvertFromPatientData(data), filter);
                 }
 
                 Inventec.Common.Logging.LogSystem.Info("btnScanCCCD_Click: End scan CCCD");
