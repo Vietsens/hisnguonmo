@@ -46,7 +46,7 @@ namespace HIS.UC.Icd
     public partial class UCIcd : UserControl
     {
         //
-        private IcdInitADO InitAdo { get; set; }
+        private IcdInitADO InitAdo { get; set; }   
         private int positionHandle = -1;
         private List<HIS_ICD> dataIcds;
 
@@ -197,7 +197,9 @@ namespace HIS.UC.Icd
                     if (this.InitAdo.IcdInput == null) this.InitAdo.IcdInput = new IcdInputADO();
                     this.InitAdo.IcdInput.ICD_CODE = input.ICD_CODE;
                     this.InitAdo.IcdInput.ICD_NAME = input.ICD_NAME;
+                    _isLoading = true;
                     FillDataToCboIcd();
+                    _isLoading = false;   
                 }
                 else
                 {
@@ -399,8 +401,10 @@ namespace HIS.UC.Icd
             {
                 if (e.KeyCode == Keys.Enter)
                 {
+                    _isLoading = true;
                     LoadIcdCombo(txtIcdCode.Text.ToUpper());
-                    //cboIcds_EditValueChanged(sender, EventArgs.Empty);
+                    _isLoading = false;
+                    cboIcds_EditValueChanged(sender, EventArgs.Empty);
                 }
             }
             catch (Exception ex)
