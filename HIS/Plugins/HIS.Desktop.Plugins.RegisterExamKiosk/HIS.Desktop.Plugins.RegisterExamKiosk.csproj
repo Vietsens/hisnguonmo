@@ -225,6 +225,9 @@
     <Reference Include="LibUsbDotNetF">
       <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\LibUsbDotNetF.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="MOS.EFMODEL">
@@ -246,8 +249,9 @@
     <Reference Include="MPS">
       <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000025.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000025.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000025.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000025.PDO\bin\Debug\MPS.Processor.Mps000025.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000026.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000026.PDO.dll</HintPath>
@@ -298,6 +302,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="THE.Desktop.Utility">
+      <HintPath>..\..\..\..\svn\IMSys\FE\THE\DESKTOP\THE\THE.Desktop.Utility\bin\Debug\THE.Desktop.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="WcfCCCD">
       <HintPath>..\..\..\..\LIB\WCF\WcfCCCD\WcfCCCD.dll</HintPath>
     </Reference>
