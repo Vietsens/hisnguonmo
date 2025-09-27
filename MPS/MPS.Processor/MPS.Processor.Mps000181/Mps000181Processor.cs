@@ -245,8 +245,8 @@ namespace MPS.Processor.Mps000181
                     SetSingleKey((new KeyValue("APPOINTMENT_TIME", rdo.HisTreatment.APPOINTMENT_TIME)));
                     SetSingleKey((new KeyValue("APPOINTMENT_EXAM_ROOM_IDS", rdo.HisTreatment.APPOINTMENT_EXAM_ROOM_IDS)));
                 }
-
-                AddObjectKeyIntoListkey<HIS_SERVICE_REQ>(rdo.vHisPrescription5, false);
+                if(rdo.lstHisServiceReq != null && rdo.lstHisServiceReq.Count > 0)
+                    AddObjectKeyIntoListkey<HIS_SERVICE_REQ>(rdo.lstHisServiceReq.First(), false);
                 AddObjectKeyIntoListkey<V_HIS_PATIENT_TYPE_ALTER>(rdo.PatyAlterBhyt);
                 if (rdo.HisTreatment != null)
                 {
