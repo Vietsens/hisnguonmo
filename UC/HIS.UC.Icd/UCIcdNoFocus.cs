@@ -602,7 +602,7 @@ namespace HIS.UC.Icd
                 //ControlEditorADO controlEditorADO = new ControlEditorADO("ICD_NAME", "ID", columnInfos, false, 250);
                 //ControlEditorLoader.Load(cbo, dataIcds, controlEditorADO);
                 List<IcdADO> listADO = new List<IcdADO>();
-                foreach (var item in dataIcds)
+                foreach (var item in dataIcds??new List<HIS_ICD>())
                 {
                     IcdADO icd = new IcdADO();
                     icd.ID = item.ID;
