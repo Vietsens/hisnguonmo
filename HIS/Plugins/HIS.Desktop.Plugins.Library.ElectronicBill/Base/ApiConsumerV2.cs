@@ -136,7 +136,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                 HttpResponseMessage resp = null;
 
                 string fullrequestUri = requestUri;
-                int index = baseUri.IndexOf('/', baseUri.IndexOf("//") + 2);
+                int index = baseUri.IndexOf('/', baseUri.IndexOf("//") + 2); 
                 if (index > 0)
                 {
                     string extension = baseUri.Substring(index);
