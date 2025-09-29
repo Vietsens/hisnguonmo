@@ -225,7 +225,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 InitComboIcdGroupId();
                 InitComboAgeType();
                 InitComboGender();
-
+                InitComboICD_YHCT();
                 //TODO
             }
             catch (Exception ex)
@@ -284,6 +284,49 @@ namespace HIS.Desktop.Plugins.HisIcd
                 ControlEditorLoader.Load(cboGender, data, controlEditorADO);
                 cboGender.Properties.AllowNullInput = DefaultBoolean.True;
                 cboGender.Properties.ImmediatePopup = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        
+        private void InitComboICD_YHCT()
+        {
+            try
+            {
+                var data = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == 1 && o.IS_TRADITIONAL != 1).ToList();
+
+                var cbo = this.cboICD_YHCT;
+               
+                cboICD_YHCT.ProcessNewValue -= cboICD_YHCT_ProcessNewValue;
+                cboICD_YHCT.ProcessNewValue += cboICD_YHCT_ProcessNewValue;
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = nameof(HIS_ICD.ICD_NAME);
+                cbo.Properties.ValueMember = nameof(HIS_ICD.ICD_CODE);
+                cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cbo.Properties.ImmediatePopup = true;
+                cbo.Properties.View.OptionsView.RowAutoHeight = true;
+                cbo.ForceInitialize();
+                cbo.Properties.View.Columns.Clear();
+                cbo.Properties.PopupFormSize = new System.Drawing.Size(400, 250);
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cbo.Properties.View.Columns.AddField(nameof(HIS_ICD.ICD_CODE));
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 70;
+                aColumnCode.ColumnEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnName = cbo.Properties.View.Columns.AddField(nameof(HIS_ICD.ICD_NAME));
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 2;
+                aColumnName.Width = 300;
+                aColumnName.ColumnEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+                cbo.Properties.View.OptionsView.ColumnAutoWidth = true;
+
             }
             catch (Exception ex)
             {
@@ -734,6 +777,31 @@ namespace HIS.Desktop.Plugins.HisIcd
                     spnAgeTo.EditValue = data.AGE_TO;
                     cboAgeType.EditValue = data.AGE_TYPE_ID;
                     cboGender.EditValue = data.GENDER_ID;
+                    cboICD_YHCT.EditValue = data.ICD_MAP_CODE;
+                    if (chkYhct.Checked)
+                    {
+                        // Cho phép nhập ICD YHCT
+                        cboICD_YHCT.Properties.ReadOnly = false;
+                        cboICD_YHCT.Properties.AllowDropDownWhenReadOnly = DevExpress.Utils.DefaultBoolean.True;
+                        cboICD_YHCT.Properties.Appearance.BackColor = System.Drawing.SystemColors.Window;
+                        cboICD_YHCT.Properties.Appearance.ForeColor = System.Drawing.SystemColors.ControlText;
+
+                        txtICD_YHCT.Properties.ReadOnly = false;
+                        txtICD_YHCT.Properties.Appearance.BackColor = System.Drawing.SystemColors.Window;
+                        txtICD_YHCT.Properties.Appearance.ForeColor = System.Drawing.SystemColors.ControlText;
+                    }
+                    else
+                    {
+                        // Khóa nhập + nền xám giống mặc định 
+                        cboICD_YHCT.Properties.ReadOnly = true;
+                        cboICD_YHCT.Properties.AllowDropDownWhenReadOnly = DevExpress.Utils.DefaultBoolean.False;
+                        cboICD_YHCT.Properties.AppearanceReadOnly.BackColor = System.Drawing.SystemColors.Control;
+                        cboICD_YHCT.Properties.AppearanceReadOnly.ForeColor = System.Drawing.SystemColors.GrayText;
+
+                        txtICD_YHCT.Properties.ReadOnly = true;           
+                        txtICD_YHCT.Properties.AppearanceReadOnly.BackColor = System.Drawing.SystemColors.Control;
+                        txtICD_YHCT.Properties.AppearanceReadOnly.ForeColor = System.Drawing.SystemColors.GrayText;
+                    }
                     chkIsSword.Checked = (data.IS_SWORD == 1 ? true : false);
                     chkIsSubcode.Checked = (data.IS_SUBCODE == 1 ? true : false);
                     chkIsCovid.Checked = (data.IS_COVID == 1 ? true : false);
@@ -771,6 +839,32 @@ namespace HIS.Desktop.Plugins.HisIcd
                 spnAgeTo.EditValue = null;
                 cboAgeType.EditValue = null;
                 cboGender.EditValue = null;
+                cboICD_YHCT.EditValue = null;
+                if (chkYhct.Checked)
+                {
+                    // Cho phép nhập ICD YHCT
+                    cboICD_YHCT.Properties.ReadOnly = false;
+                    cboICD_YHCT.Properties.AllowDropDownWhenReadOnly = DevExpress.Utils.DefaultBoolean.True;
+                    cboICD_YHCT.Properties.Appearance.BackColor = System.Drawing.SystemColors.Window;
+                    cboICD_YHCT.Properties.Appearance.ForeColor = System.Drawing.SystemColors.ControlText;
+
+                    txtICD_YHCT.Properties.ReadOnly = false;
+                    txtICD_YHCT.Properties.Appearance.BackColor = System.Drawing.SystemColors.Window;
+                    txtICD_YHCT.Properties.Appearance.ForeColor = System.Drawing.SystemColors.ControlText;
+                }
+                else
+                {
+                    // Khóa nhập + nền xám giống mặc định (như hình bạn chụp)
+                    cboICD_YHCT.Properties.ReadOnly = true;
+                    cboICD_YHCT.Properties.AllowDropDownWhenReadOnly = DevExpress.Utils.DefaultBoolean.False;
+                    cboICD_YHCT.Properties.AppearanceReadOnly.BackColor = System.Drawing.SystemColors.Control;
+                    cboICD_YHCT.Properties.AppearanceReadOnly.ForeColor = System.Drawing.SystemColors.GrayText;
+
+                    txtICD_YHCT.Properties.ReadOnly = true;
+                    txtICD_YHCT.Properties.AppearanceReadOnly.BackColor = System.Drawing.SystemColors.Control;
+                    txtICD_YHCT.Properties.AppearanceReadOnly.ForeColor = System.Drawing.SystemColors.GrayText;
+                }
+                txtICD_YHCT.Text = null;
                 chkIsSword.Checked = false;
                 chkIsSubcode.Checked = false;
                 chkIsCovid.Checked = false;
@@ -1129,6 +1223,14 @@ namespace HIS.Desktop.Plugins.HisIcd
                 else
                 {
                     currentDTO.GENDER_ID = null;
+                }
+                if (cboICD_YHCT.EditValue != null)
+                {
+                    currentDTO.ICD_MAP_CODE = cboICD_YHCT.EditValue.ToString();
+                }
+                else
+                {
+                    currentDTO.ICD_MAP_CODE = null;
                 }
                 currentDTO.IS_SWORD = chkIsSword.Checked ? (short?)1 : null;
                 currentDTO.IS_SUBCODE = chkIsSubcode.Checked ? (short?)1 : null;
@@ -1935,6 +2037,138 @@ namespace HIS.Desktop.Plugins.HisIcd
             {
                 List<object> listArgs = new List<object>();
                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisIcdGroup", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
+            }
+        }
+
+        private void chkYhct_EditValueChanged(object sender, EventArgs e)
+        {
+            if (chkYhct.Checked)
+            {
+                // Cho phép nhập ICD YHCT
+                cboICD_YHCT.Properties.ReadOnly = false;
+                cboICD_YHCT.Properties.AllowDropDownWhenReadOnly = DevExpress.Utils.DefaultBoolean.True;
+                cboICD_YHCT.Properties.Appearance.BackColor = System.Drawing.SystemColors.Window;
+                cboICD_YHCT.Properties.Appearance.ForeColor = System.Drawing.SystemColors.ControlText;
+
+                txtICD_YHCT.Properties.ReadOnly = false;
+                txtICD_YHCT.Properties.Appearance.BackColor = System.Drawing.SystemColors.Window;
+                txtICD_YHCT.Properties.Appearance.ForeColor = System.Drawing.SystemColors.ControlText;
+            }
+            else
+            {
+                // Khóa nhập + nền xám giống mặc định (như hình bạn chụp)
+                cboICD_YHCT.Properties.ReadOnly = true;
+                cboICD_YHCT.Properties.AllowDropDownWhenReadOnly = DevExpress.Utils.DefaultBoolean.False;
+                cboICD_YHCT.Properties.AppearanceReadOnly.BackColor = System.Drawing.SystemColors.Control;
+                cboICD_YHCT.Properties.AppearanceReadOnly.ForeColor = System.Drawing.SystemColors.GrayText;
+
+                txtICD_YHCT.Properties.ReadOnly = true;
+                txtICD_YHCT.Properties.AppearanceReadOnly.BackColor = System.Drawing.SystemColors.Control;
+                txtICD_YHCT.Properties.AppearanceReadOnly.ForeColor = System.Drawing.SystemColors.GrayText;
+
+                cboICD_YHCT.EditValue = null;
+                cboICD_YHCT.Properties.NullText = "";
+                cboICD_YHCT.Text = "";
+                txtICD_YHCT.Text = "";
+            }
+        }
+        private void cboICD_YHCT_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cboICD_YHCT.Properties.Buttons[1].Visible = cboICD_YHCT.EditValue != null;
+                if (cboICD_YHCT.EditValue != null)
+                {
+                    txtICD_YHCT.Text = cboICD_YHCT.EditValue.ToString();
+                }
+                //else
+                //{
+                //    cboICD_YHCT.EditValue = null;
+                //    txtICD_YHCT.Text = string.Empty; // reset khi EditValue = null
+                //}
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboICD_YHCT_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    if (!cboICD_YHCT.Properties.Buttons[1].Visible)
+                        return;
+                    cboICD_YHCT.EditValue = null;          
+                    cboICD_YHCT.Properties.NullText = ""; 
+                    cboICD_YHCT.Text = "";                
+                    txtICD_YHCT.Text = "";                
+
+                    cboICD_YHCT.DoValidate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void cboICD_YHCT_ProcessNewValue(object sender, DevExpress.XtraEditors.Controls.ProcessNewValueEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(e.DisplayValue as string))
+            {
+                e.Handled = true; 
+            }
+        }
+        private void txtICD_YHCT_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    bool showCbo = true;
+                    string code = txtICD_YHCT.Text.Trim();
+                    if (!string.IsNullOrEmpty(code))
+                    {
+                        var listData = BackendDataWorker.Get<HIS_ICD>()
+                            .Where(o => o.IS_ACTIVE == 1 && o.IS_TRADITIONAL != 1 &&
+                                        (o.ICD_CODE.IndexOf(code, StringComparison.OrdinalIgnoreCase) >= 0 )).ToList();
+
+                        var result = listData != null
+                            ? (listData.Count > 1
+                                ? listData.Where(o => o.ICD_CODE.Equals(code.Trim(), StringComparison.OrdinalIgnoreCase)).ToList()
+                                : listData)
+                            : null;
+
+                        if (result != null && result.Count > 0)
+                        {
+                            showCbo = false;
+                            var item = result.First();
+
+                            txtICD_YHCT.Text = item.ICD_CODE;
+                            cboICD_YHCT.EditValue = item.ICD_CODE;
+
+                            SendKeys.Send("{TAB}");
+                        }
+                        else
+                        {
+                            cboICD_YHCT.EditValue = null;
+                        }
+                    }
+
+
+                    // Nếu không tìm được thì show popup cho user chọn
+                    if (showCbo)
+                    {                     
+                        cboICD_YHCT.Focus();
+                        cboICD_YHCT.ShowPopup();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

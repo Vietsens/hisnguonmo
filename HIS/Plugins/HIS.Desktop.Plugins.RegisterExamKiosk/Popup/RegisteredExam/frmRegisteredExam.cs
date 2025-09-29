@@ -554,7 +554,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisteredExam
             {
                 this.loopCount = HisConfigCFG.timeWaitingMilisecond / 50;
 
-                Inventec.Common.Logging.LogSystem.Info("ResetLoopCount");
+                //Inventec.Common.Logging.LogSystem.Info("ResetLoopCount");
             }
             catch (Exception ex)
             {

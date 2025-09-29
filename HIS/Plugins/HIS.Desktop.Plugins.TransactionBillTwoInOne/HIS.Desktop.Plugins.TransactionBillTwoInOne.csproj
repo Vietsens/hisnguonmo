@@ -206,6 +206,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\PayFormADO.cs" />
     <Compile Include="ADO\VHisBillFundADO.cs" />
     <Compile Include="ADO\VHisSereServADO.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />

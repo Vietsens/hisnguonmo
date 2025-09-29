@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.HisConfig;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,12 +32,15 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Config
 
         private const string CONFIG_KEY__HIS_DESKTOP__PLUGINS_AUTO_CHECK_HEIN_DATE_TO = "CONFIG_KEY__HIS_DESKTOP__PLUGINS_AUTO_CHECK_HEIN_DATE_TO";
         private const string CONFIG_KEY__HIS_DESKTOP__REGISTER__SOCIAL_INSURANCE_TYPE = "CONFIG_KEY__HIS_DESKTOP__REGISTER__SOCIAL_INSURANCE_TYPE";
+        internal const string CFG_HisTranReqQRCodeTreatmentPrint = "HIS.Desktop.Plugins.AssignService.HisTranReqQRCodeTreatmentPrint";
 
+        internal static bool HisTranReqQRCodeTreatmentPrint;
         public static void LoadConfig()
         {
             try
             {
                 SocialInsuranceType = ConfigApplicationWorker.Get<int>(CONFIG_KEY__HIS_DESKTOP__REGISTER__SOCIAL_INSURANCE_TYPE);
+                HisTranReqQRCodeTreatmentPrint = HisConfigs.Get<string>(CFG_HisTranReqQRCodeTreatmentPrint) == "1";
             }
             catch (Exception ex)
             {

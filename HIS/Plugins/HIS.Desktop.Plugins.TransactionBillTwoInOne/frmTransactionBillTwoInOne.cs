@@ -81,7 +81,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
         List<V_HIS_TRANSACTION> listTransaction = new List<V_HIS_TRANSACTION>();
         Dictionary<long, List<HIS_SERE_SERV_BILL>> dicSereServBill = new Dictionary<long, List<HIS_SERE_SERV_BILL>>();
-
+        List<PayFormADO> payFormList = new List<PayFormADO>();
         V_HIS_TRANSACTION resultRecieptBill = null;
         V_HIS_TRANSACTION resultInvoiceBill = null;
 
@@ -350,7 +350,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 }
 
                 GetList();
-
+                
                 WaitingManager.Hide();
                 this.isInit = false;
                 timerInitForm.Interval = 100;
@@ -785,63 +785,139 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
+
+        //private async Task LoadDataToComboPayForm()
+        //{
+        //    List<HIS_PAY_FORM> lData = null;
+        //    if (BackendDataWorker.IsExistsKey<HIS_PAY_FORM>())
+        //    {
+        //        lData = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_PAY_FORM>();
+        //    }
+        //    else
+        //    {
+        //        CommonParam paramCommon = new CommonParam();
+        //        dynamic filter = new System.Dynamic.ExpandoObject();
+        //        lData = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_PAY_FORM>>("api/HisPayForm/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+
+        //        if (lData != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_PAY_FORM), lData, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+        //    }
+        //    InitComboPayForm(cboPayForm, lData.Where(o => o.IS_ACTIVE == 1));
+        //    //            InitComboPayForm(cboInvoicePayForm, lData);
+        //    SetDefaultPayForm();
+           
+        //}
+
+        //huannh
+
         private async Task LoadDataToComboPayForm()
         {
-            List<HIS_PAY_FORM> lData = null;
-            if (BackendDataWorker.IsExistsKey<HIS_PAY_FORM>())
+            try
             {
-                lData = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_PAY_FORM>();
+                this.payFormList = new List<PayFormADO>();
+                List<HIS_PAY_FORM> lData = null;
+                if (HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.IsExistsKey<HIS_PAY_FORM>())
+                {
+                    lData = BackendDataWorker.Get<HIS_PAY_FORM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                }
+                else
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    dynamic filter = new System.Dynamic.ExpandoObject();
+                    lData = await new Inventec.Common.Adapter.BackendAdapter(paramCommon)
+                        .GetAsync<List<HIS_PAY_FORM>>("api/HisPayForm/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                    if (lData != null)
+                        BackendDataWorker.UpdateToRam(typeof(HIS_PAY_FORM), lData, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+
+
+                List<HIS_BANK> hisBankList = null;
+                if (BackendDataWorker.IsExistsKey<HIS_BANK>())
+                {
+                    hisBankList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BANK>();
+                }
+                else
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    dynamic filter = new System.Dynamic.ExpandoObject();
+                    hisBankList = await new Inventec.Common.Adapter.BackendAdapter(paramCommon)
+                        .GetAsync<List<HIS_BANK>>("api/HisBank/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                    if (hisBankList != null)
+                        BackendDataWorker.UpdateToRam(typeof(HIS_BANK), hisBankList, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+
+                if (hisBankList != null && hisBankList.Count > 0)
+                {
+                    hisBankList = hisBankList.Where(o => o.IS_CARD_PAYMENT_ACCEPTED == (short)1 && o.IS_ACTIVE == (short)1).ToList();
+                }
+
+
+
+
+
+                if (lData != null && lData.Count > 0)
+                {
+                    foreach (var item in lData)
+                    {
+                        payFormList.Add(new PayFormADO
+                        {
+                            ID = item.ID,
+                            PayFormId = item.ID.ToString(),
+                            PAY_FORM_CODE = item.PAY_FORM_CODE,
+                            PAY_FORM_NAME = item.PAY_FORM_NAME,
+                            BANK_ID = null,
+                            IS_ACTIVE = item.IS_ACTIVE,
+                            IS_REQUIRED_BANK = item.IS_REQUIRED_BANK
+                        });
+                    }
+                }
+
+
+                if (hisBankList != null && hisBankList.Count > 0
+                    && lData != null && lData.Count > 0
+                    && lData.Exists(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE))
+                {
+                    var payForm__QuetThe = payFormList.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE);
+                    payFormList.RemoveAll(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE);
+
+                    foreach (var bank in hisBankList)
+                    {
+                        payFormList.Add(new PayFormADO
+                        {
+                            PayFormId = String.Format("{0}{1}", IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE, bank.ID),
+                            ID = IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE,
+                            PAY_FORM_CODE = payForm__QuetThe.PAY_FORM_CODE + bank.BANK_CODE,
+                            PAY_FORM_NAME = payForm__QuetThe.PAY_FORM_NAME + " " + bank.BANK_NAME,
+                            BANK_ID = bank.ID,
+                            IS_ACTIVE = payForm__QuetThe.IS_ACTIVE,
+                            IS_REQUIRED_BANK = payForm__QuetThe.IS_REQUIRED_BANK
+
+                        });
+                    }
+                }
+
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>
+                {
+                    new ColumnInfo("PAY_FORM_CODE", "", 100, 1),
+                    new ColumnInfo("PAY_FORM_NAME", "", 250, 2)
+
+                };
+
+                ControlEditorADO controlEditorADO = new ControlEditorADO("PAY_FORM_NAME", "PayFormId", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboPayForm, payFormList, controlEditorADO);
+
+
+                if (payFormList.Count > 0)
+                {
+                    cboPayForm.EditValue = payFormList.First().PayFormId;
+                    //cboPayForm.EditValue = payFormList.First().ID;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                CommonParam paramCommon = new CommonParam();
-                dynamic filter = new System.Dynamic.ExpandoObject();
-                lData = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_PAY_FORM>>("api/HisPayForm/Get", ApiConsumers.MosConsumer, filter, paramCommon);
-
-                if (lData != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_PAY_FORM), lData, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            InitComboPayForm(cboPayForm, lData.Where(o => o.IS_ACTIVE == 1));
-            //            InitComboPayForm(cboInvoicePayForm, lData);
-            SetDefaultPayForm();
-            //try
-            //{               
-            //    //cboRecieptPayForm.Properties.DataSource = lData;
-            //    //cboRecieptPayForm.Properties.DisplayMember = "PAY_FORM_NAME";
-            //    //cboRecieptPayForm.Properties.ValueMember = "ID";
-            //    //cboRecieptPayForm.Properties.ForceInitialize();
-            //    //cboRecieptPayForm.Properties.Columns.Clear();
-            //    //cboRecieptPayForm.Properties.Columns.Add(new LookUpColumnInfo("PAY_FORM_CODE", "", 50));
-            //    //cboRecieptPayForm.Properties.Columns.Add(new LookUpColumnInfo("PAY_FORM_NAME", "", 150));
-            //    //cboRecieptPayForm.Properties.ShowHeader = false;
-            //    //cboRecieptPayForm.Properties.ImmediatePopup = true;
-            //    //cboRecieptPayForm.Properties.DropDownRows = 10;
-            //    //cboRecieptPayForm.Properties.PopupWidth = 200;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Inventec.Common.Logging.LogSystem.Error(ex);
-            //}
-
-            //try
-            //{                
-            //    //cboInvoicePayForm.Properties.DataSource = lData;
-            //    //cboInvoicePayForm.Properties.DisplayMember = "PAY_FORM_NAME";
-            //    //cboInvoicePayForm.Properties.ValueMember = "ID";
-            //    //cboInvoicePayForm.Properties.ForceInitialize();
-            //    //cboInvoicePayForm.Properties.Columns.Clear();
-            //    //cboInvoicePayForm.Properties.Columns.Add(new LookUpColumnInfo("PAY_FORM_CODE", "", 50));
-            //    //cboInvoicePayForm.Properties.Columns.Add(new LookUpColumnInfo("PAY_FORM_NAME", "", 150));
-            //    //cboInvoicePayForm.Properties.ShowHeader = false;
-            //    //cboInvoicePayForm.Properties.ImmediatePopup = true;
-            //    //cboInvoicePayForm.Properties.DropDownRows = 10;
-            //    //cboInvoicePayForm.Properties.PopupWidth = 200;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Inventec.Common.Logging.LogSystem.Error(ex);
-            //}
         }
-
         private async Task LoadAccountBookRepayToLocal()
         {
             try
@@ -1326,7 +1402,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 var data = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.PAY_FORM_CODE == code);
                 if (data != null)
                 {
-                    cboPayForm.EditValue = data.ID;
+                    //cboPayForm.EditValue = data.ID;
+
+
+
                 }
             }
             catch (Exception ex)
@@ -1637,7 +1716,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
-                dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
                 ValidControlRecieptAccountBook();
                 ValidControlInvoiceAccountBook();
                 ValidControlPayForm();
@@ -1648,6 +1726,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 ValidControlBuyerOrganization();
                 ValidControlBuyerTaxCode();
                 ValidControlDescription();
+                checkValidateCboBank();
 
 
 
@@ -1889,6 +1968,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.FillDataToTienHoaDon();
                 this.FillDataToTongChiPhi();
                 this.LoadConfigPrinter();
+                this.checkValidateCboBank();
                 WaitingManager.Hide();
                 if (this.treatment != null)
                 {
@@ -2149,6 +2229,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 dxValidationProvider1.RemoveControlError(txtBuyerAddress2);
                 dxValidationProvider1.RemoveControlError(txtBuyerTaxCode2);
                 dxValidationProvider1.RemoveControlError(txtBuyerOrganization2);
+                dxValidationProvider1.RemoveControlError(cboBank);
             }
             catch (Exception ex)
             {

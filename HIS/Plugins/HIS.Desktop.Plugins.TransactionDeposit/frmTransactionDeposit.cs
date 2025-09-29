@@ -19,22 +19,27 @@ using DevExpress.Utils.Menu;
 using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.Location;
+using HIS.Desktop.Plugins.TransactionDeposit.ADO;
 using HIS.Desktop.Plugins.TransactionDeposit.Base;
 using HIS.Desktop.Plugins.TransactionDeposit.Config;
 using HIS.Desktop.Plugins.TransactionDeposit.Validation;
 using HIS.Desktop.Plugins.TransactionDeposit.Validtion;
 using HIS.Desktop.Print;
 using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
 using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using Inventec.WCF.JsonConvert;
@@ -66,6 +71,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         long cashierRoomId;
         V_HIS_TRANSACTION resultTranDeposit = null;
         List<V_HIS_ACCOUNT_BOOK> ListAccountBook = new List<V_HIS_ACCOUNT_BOOK>();
+        List<PayFormADO> payFormList = new List<PayFormADO>();
 
         List<HIS_DEPOSIT_REASON> lstDepositReason = null;
 
@@ -132,7 +138,8 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 WaitingManager.Hide();
 
                 InitLinkLabel();
-
+                LoadComboBank();
+                //SetValidate();
                 timerInitForm.Interval = 100;
                 timerInitForm.Enabled = true;
                 timerInitForm.Start();
@@ -148,7 +155,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             }
         }
 
-       
+
 
         private void InitLinkLabel()
         {
@@ -315,7 +322,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             }
         }
 
-        
+
         private void LoadSearchByTreatmentCode()
         {
             try
@@ -324,7 +331,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 HisTreatmentFeeViewFilter filter = new HisTreatmentFeeViewFilter();
                 if (!String.IsNullOrEmpty(txtTreatmenCode.Text))
                 {
-                    
+
                     string code = txtTreatmenCode.Text.Trim();
                     if (code.Length < 12)
                     {
@@ -337,13 +344,13 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                             .Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT_FEE>>(ApiUri.HIS_TREATMENT_GETFEEVIEW, ApiConsumers.MosConsumer, filter, param);
                     if (listTreatment != null && listTreatment.Count > 0)
                     {
-                        
+
                         this.treatment = listTreatment.FirstOrDefault();
-                        
+
                         txtTotalAmount.Focus();
                         txtTotalAmount.SelectAll();
-                        
-                        
+
+
                     }
                     else
                     {
@@ -406,7 +413,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         private bool checkDK()
         {
             bool sucess = true;
-            
+
             try
             {
                 HisTreatmentFeeViewFilter filter = new HisTreatmentFeeViewFilter();
@@ -429,12 +436,12 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 }
                 else sucess = false;
             }
-            
-                
+
+
             catch (Exception)
             {
                 sucess = false;
-                
+
                 throw;
             }
             return sucess;
@@ -504,6 +511,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 this.timerInitForm.Stop();
 
                 this.LoadDataToComboPayForm();
+                this.SetValidate();
                 //this.SetDefaultAccountBook(true);
                 this.LoadAccountBookToLocal(true);
                 this.ResetDefaultValueControl();
@@ -572,7 +580,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Black;
                     lciTranferAmount.Enabled = false;
                 }
-                
+
                 else
                 {
                     dxValidationProvider1.RemoveControlError(spinTransferAmount);
@@ -849,27 +857,70 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         {
             try
             {
-                List<MOS.EFMODEL.DataModels.HIS_PAY_FORM> listPayForm = null;
-                if (BackendDataWorker.IsExistsKey<HIS_PAY_FORM>())
-                {
-                    listPayForm = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_PAY_FORM>();
-                }
-                else
-                {
-                    CommonParam paramCommon = new CommonParam();
-                    dynamic filter = new System.Dynamic.ExpandoObject();
-                    listPayForm = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_PAY_FORM>>("api/HisPayForm/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                // Lấy danh sách pay form
+                var listPayForm = await LoadOrFetchData<MOS.EFMODEL.DataModels.HIS_PAY_FORM>(
+                    "api/HisPayForm/Get", typeof(MOS.EFMODEL.DataModels.HIS_PAY_FORM));
 
-                    if (listPayForm != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_PAY_FORM), listPayForm, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
-                }
-                if(listPayForm != null && listPayForm.Count > 0 && (string.IsNullOrEmpty(HisConfigCFG.CashierRoomPaymentOption) || (HisConfigCFG.CashierRoomPaymentOption != null && !HisConfigCFG.OptionKey.IsDefined(typeof(HisConfigCFG.OptionKey), Int32.Parse(HisConfigCFG.CashierRoomPaymentOption)))))
+                // Filter payform (loại bỏ thẻ nếu config không cho phép)
+                if (listPayForm != null && listPayForm.Count > 0
+                    && (string.IsNullOrEmpty(HisConfigCFG.CashierRoomPaymentOption)
+                        || !HisConfigCFG.OptionKey.IsDefined(typeof(HisConfigCFG.OptionKey),
+                            Int32.Parse(HisConfigCFG.CashierRoomPaymentOption))))
                 {
                     listPayForm = listPayForm.Where(o => o.ID != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__THE).ToList();
                 }
 
-                cboPayForm.Properties.DataSource = listPayForm.Where(o => o.IS_ACTIVE == 1).ToList();
+                // Lấy danh sách ngân hàng
+                var hisBankList = await LoadOrFetchData<HIS_BANK>("api/HisBank/Get", typeof(HIS_BANK));
+                if (hisBankList != null && hisBankList.Count > 0)
+                {
+                    hisBankList = hisBankList
+                        .Where(o => o.IS_CARD_PAYMENT_ACCEPTED == (short)1 && o.IS_ACTIVE == (short)1)
+                        .ToList();
+                }
+
+                // Chuẩn bị payFormList
+                payFormList = new List<PayFormADO>();
+                if (listPayForm != null && listPayForm.Count > 0)
+                {
+                    payFormList.AddRange(listPayForm.Select(item => new PayFormADO
+                    {
+                        ID = item.ID,
+                        PayFormId = item.ID.ToString(),
+                        PAY_FORM_CODE = item.PAY_FORM_CODE,
+                        PAY_FORM_NAME = item.PAY_FORM_NAME,
+                        BANK_ID = null,
+                        IS_ACTIVE = item.IS_ACTIVE,
+                        IS_REQUIRED_BANK = item.IS_REQUIRED_BANK
+                    }));
+                }
+
+                // Nếu có quẹt thẻ + ngân hàng → nhân bản payform
+                if (hisBankList != null && hisBankList.Count > 0
+                    && payFormList.Exists(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE))
+                {
+                    var payFormQuetThe = payFormList.First(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE);
+                    payFormList.RemoveAll(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE);
+
+                    foreach (var bank in hisBankList)
+                    {
+                        payFormList.Add(new PayFormADO
+                        {
+                            ID = IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE,
+                            PayFormId = string.Format("{0}{1}", IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE, bank.ID),
+                            PAY_FORM_CODE = payFormQuetThe.PAY_FORM_CODE + bank.BANK_CODE,
+                            PAY_FORM_NAME = payFormQuetThe.PAY_FORM_NAME + " " + bank.BANK_NAME,
+                            BANK_ID = bank.ID,
+                            IS_ACTIVE = payFormQuetThe.IS_ACTIVE,
+                            IS_REQUIRED_BANK = payFormQuetThe.IS_REQUIRED_BANK
+                        });
+                    }
+                }
+
+                // Bind vào Combo
+                cboPayForm.Properties.DataSource = payFormList.Where(o => o.IS_ACTIVE == 1).ToList();
                 cboPayForm.Properties.DisplayMember = "PAY_FORM_NAME";
-                cboPayForm.Properties.ValueMember = "ID";
+                cboPayForm.Properties.ValueMember = "PayFormId"; // dùng PayFormId thay vì ID để hỗ trợ ngân hàng
                 cboPayForm.Properties.ForceInitialize();
                 cboPayForm.Properties.Columns.Clear();
                 cboPayForm.Properties.Columns.Add(new LookUpColumnInfo("PAY_FORM_CODE", "", 50));
@@ -879,12 +930,19 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 cboPayForm.Properties.DropDownRows = 10;
                 cboPayForm.Properties.PopupWidth = 200;
 
-                var payFormDefault = listPayForm != null ? listPayForm.OrderBy(o => o.PAY_FORM_CODE).FirstOrDefault() : null;
+                // Chọn mặc định
+                var payFormDefault = payFormList.OrderBy(o => o.PAY_FORM_CODE).FirstOrDefault();
                 if (payFormDefault != null)
                 {
-                    cboPayForm.EditValue = payFormDefault.ID;
-                    //txtPayFormCode.Text = payFormDefault.PAY_FORM_CODE;
-                    CheckPayFormTienMatChuyenKhoan(payFormDefault);
+                    cboPayForm.EditValue = payFormDefault.PayFormId;
+                    CheckPayFormTienMatChuyenKhoan(new HIS_PAY_FORM
+                    {
+                        ID = payFormDefault.ID,
+                        PAY_FORM_CODE = payFormDefault.PAY_FORM_CODE,
+                        PAY_FORM_NAME = payFormDefault.PAY_FORM_NAME,
+                        IS_ACTIVE = payFormDefault.IS_ACTIVE,
+                        IS_REQUIRED_BANK = payFormDefault.IS_REQUIRED_BANK
+                    });
                 }
             }
             catch (Exception ex)
@@ -892,6 +950,35 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        /// <summary>
+        /// Load dữ liệu từ RAM nếu có, nếu không thì gọi API
+        /// </summary>
+        private async Task<List<T>> LoadOrFetchData<T>(string apiUrl, Type typeKey) where T : class
+        {
+            if (BackendDataWorker.IsExistsKey<T>())
+            {
+                return BackendDataWorker.Get<T>();
+            }
+            else
+            {
+                var paramCommon = new CommonParam();
+                dynamic filter = new System.Dynamic.ExpandoObject();
+
+                var data = await new Inventec.Common.Adapter.BackendAdapter(paramCommon)
+                    .GetAsync<List<T>>(apiUrl, ApiConsumers.MosConsumer, filter, paramCommon);
+
+                if (data != null)
+                {
+                    BackendDataWorker.UpdateToRam(typeKey, data,
+                        long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+
+                return data;
+            }
+        }
+
+
 
         private void ResetDefaultValueControl()
         {
@@ -1118,6 +1205,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         {
             try
             {
+                HandelPayFormChanged();
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
                     HIS_PAY_FORM payForm = null;
@@ -1135,7 +1223,95 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void LoadComboBank()
+        {
+            try
+            {
+                cboBank.EditValue = null;
+                List<HIS_BANK> data = BackendDataWorker.Get<HIS_BANK>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("BANK_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("BANK_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("BANK_NAME", "ID", columnInfos, false, 350);
 
+                ControlEditorLoader.Load(cboBank, data, controlEditorADO);
+                cboBank.Properties.ImmediatePopup = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void HandelPayFormChanged()
+        {
+            try
+            {
+                // var payForm = payFormList.FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue));
+                var payForm = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue?.ToString());
+                if (payForm != null)
+                {
+                    if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
+                    {
+                        cboBank.EditValue = payForm.BANK_ID;
+                        cboBank.Enabled = false;
+                    }
+                    else
+                    {
+                        cboBank.EditValue = null;
+                        cboBank.Enabled = true;
+                    }
+                }
+                else
+                {
+                    cboBank.EditValue = null;
+                    cboBank.Enabled = true;
+
+                }
+                SetValidate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void SetValidate()
+        {
+            try
+            {
+
+                var payFormModel = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue?.ToString());
+
+                if (payFormModel != null)
+                {
+                    ValidationSingleControl(cboBank);
+                }
+                else
+                {
+                    dxValidationProvider1.SetValidationRule(cboBank, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void ValidationSingleControl(BaseEdit control)
+        {
+            try
+            {
+                ControlEditValidationRule validRule = new ControlEditValidationRule();
+                validRule.editor = control;
+                validRule.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProvider1.SetValidationRule(control, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void cboPayForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
@@ -1442,7 +1618,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         {
             try
             {
-                if (cboAccountBook.EditValue == null || cboPayForm.EditValue == null || txtTotalAmount.Value <= 0)
+                if (cboAccountBook.EditValue == null || cboPayForm.EditValue == null || txtTotalAmount.Value <= 0 || cboBank.EditValue == null)
                 {
                     param.Messages.Add(Base.ResourceMessageLang.ThieuTruongDuLieuBatBuoc);
                     return;
@@ -1450,9 +1626,9 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
                 CARD.WCF.DCO.WcfDepositDCO DepositDCO = new CARD.WCF.DCO.WcfDepositDCO();
                 // thanh toán qua thẻ 
-                var payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue));
-                if (payForm == null)
-                    return;
+                //var payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue));
+                //if (payForm == null)
+                //    return;
 
                 //HisDepositSDO data = new HisDepositSDO();
                 HisTransactionDepositSDO data = new HisTransactionDepositSDO();
@@ -1486,12 +1662,20 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 {
                     data.Transaction.NUM_ORDER = (long)(spinTongTuDen.Value);
                 }
-
+                var payFormer = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue?.ToString());
+                if (payFormer != null)
+                    data.Transaction.PAY_FORM_ID = payFormer.ID;
+                else
+                    data.Transaction.PAY_FORM_ID = 0;
+                if (cboBank.EditValue != null)
+                    data.Transaction.BANK_ID = Convert.ToInt64(cboBank.EditValue);
+                else
+                    data.Transaction.BANK_ID = null;
                 data.Transaction.AMOUNT = Inventec.Common.TypeConvert.Parse.ToDecimal(txtTotalAmount.Text);
-                if (payForm != null)
+                if (payFormer != null)
                 {
-                    data.Transaction.PAY_FORM_ID = payForm.ID;
-                    if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK && spinTransferAmount.EditValue != null)
+                    data.Transaction.PAY_FORM_ID = payFormer.ID;
+                    if (payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK && spinTransferAmount.EditValue != null)
                     {
 
                         if (spinTransferAmount.Value > data.Transaction.AMOUNT)
@@ -1504,7 +1688,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                             data.Transaction.TRANSFER_AMOUNT = Inventec.Common.TypeConvert.Parse.ToDecimal(spinTransferAmount.Text);
                         }
                     }
-                    else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT && spinTransferAmount.EditValue != null)
+                    else if (payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT && spinTransferAmount.EditValue != null)
                     {
 
                         if (spinTransferAmount.Value > data.Transaction.AMOUNT)
@@ -1532,17 +1716,17 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 data.Transaction.CASHIER_ROOM_ID = this.cashierRoomId;
 
                 long money = 0;
-                if (spinTransferAmount.EditValue != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+                if (spinTransferAmount.EditValue != null && payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
                 {
                     money = (long)spinTransferAmount.Value;
                 }
-                else if (txtTotalAmount.EditValue != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE)
+                else if (txtTotalAmount.EditValue != null && payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE)
                 {
                     money = (long)txtTotalAmount.Value;
                 }
                 Inventec.Common.Logging.LogSystem.Info(" money " + money);
                 // tạm ứng qua thẻ
-                if (payForm != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__THE)
+                if (payFormer != null && payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__THE)
                 {
                     //kiểm tra trước khi thanh toán nếu là giao dịch qua thẻ
                     var check = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>(UriStores.HIS_TRANSACTION_CHECK_DEPOSIT, ApiConsumers.MosConsumer, data, param);
@@ -1593,7 +1777,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                         data.Transaction.TIG_TRANSACTION_TIME = DepositDCO.TransactionTime;
                     }
                 }
-                else if ((payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+                else if ((payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
                     && chkConnectionPOS.Checked == true && money > 0)
                 {
                     var check = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>(UriStores.HIS_TRANSACTION_CHECK_DEPOSIT, ApiConsumers.MosConsumer, data, param);
@@ -1682,13 +1866,13 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
                     if (rs.PAY_FORM_ID == 8) btnQR.Enabled = true;
                     loadConfig();
-                    if (rs.PAY_FORM_ID == 8 && rs.IS_ACTIVE == 0) CreateQR(rs,false);
+                    if (rs.PAY_FORM_ID == 8 && rs.IS_ACTIVE == 0) CreateQR(rs, false);
 
                 }
                 else
                 {
                     // nếu gọi MOS thất bại thì gọi WCF hủy giao dịch
-                    if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__THE)
+                    if (payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__THE)
                     {
                         CARD.WCF.DCO.WcfVoidDCO WcfVoidDCO = new CARD.WCF.DCO.WcfVoidDCO();
                         WcfVoidDCO.Amount = data.Transaction.AMOUNT;
@@ -1724,7 +1908,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void CreateQR(V_HIS_TRANSACTION data,bool click)
+        private void CreateQR(V_HIS_TRANSACTION data, bool click)
         {
             try
             {
@@ -1734,7 +1918,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     {
                         if (!click)
                         {
-                            MessageBox.Show(this, "Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo",MessageBoxButtons.OK);
+                            MessageBox.Show(this, "Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo", MessageBoxButtons.OK);
                             return;
                         }
                         popupMenu1.ClearLinks();
@@ -1781,7 +1965,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                         popupMenu1.Manager = barManager1;
                         popupMenu1.ShowPopup(Control.MousePosition);
                     }
-                    
+
                     else
                     {
                         selectedConfig = listConfig[0];
@@ -1801,7 +1985,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     }
 
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -2024,7 +2208,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     else
                     {
                         result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
-                    }     
+                    }
                 }
                 else
                 {
@@ -2555,11 +2739,11 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             {
                 this.LoadAccountBookToLocal(true);
                 this.LoadDataToComboPayForm();
-
+                this.SetValidate();
                 this.ResetDefaultValueControl();
 
                 this.treatment = null;
-                this.depositReq = null;  
+                this.depositReq = null;
                 if (!String.IsNullOrEmpty(txtTreatmenCode.Text))
                 {
                     LoadSearchByTreatmentCode();
@@ -2574,7 +2758,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                         btnSavePrint.Enabled = false;
                         btnSave.Enabled = false;
                     }
-                    
+
                 }
                 else
                 {
@@ -2823,7 +3007,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         {
             try
             {
-                if(resultTranDeposit != null && resultTranDeposit.PAY_FORM_ID == 8 && resultTranDeposit.IS_ACTIVE == 0) CreateQR(resultTranDeposit, true);
+                if (resultTranDeposit != null && resultTranDeposit.PAY_FORM_ID == 8 && resultTranDeposit.IS_ACTIVE == 0) CreateQR(resultTranDeposit, true);
             }
             catch (Exception ex)
             {
@@ -2869,6 +3053,18 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboPayForm_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                HandelPayFormChanged();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

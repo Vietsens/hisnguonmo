@@ -38,8 +38,10 @@ namespace MPS.Processor.Mps000025.PDO
         public List<HIS_SERE_SERV_DEPOSIT> ListSereServDeposit { get; set; }
         public List<HIS_SERE_SERV_BILL> ListSereServBill { get; set; }
         public List<V_HIS_TRANSACTION> ListTransaction { get; set; }
+        public HIS_TRANS_REQ TransReq { get; set; }
         public HIS_TREATMENT treatment { get; set; }
         public List<HIS_CARD> ListCard { get; set; }
+        public List<HIS_CONFIG> ListConfigs { get; set; }
 
 
         public Mps000025PDO() { }
@@ -108,7 +110,38 @@ namespace MPS.Processor.Mps000025.PDO
             }
         }
 
-
+        public Mps000025PDO(
+             List<HIS_SERE_SERV_DEPOSIT> _listSereServDeposit,
+            List<HIS_SERE_SERV_BILL> _listSereServBill,
+            List<V_HIS_TRANSACTION> _listTransaction,
+           V_HIS_SERVICE_REQ ServiceReqPrint,
+           List<V_HIS_SERE_SERV> sereServs,
+           HIS_TRANS_REQ transReq,
+            List<HIS_CONFIG> ListConfigs,
+           V_HIS_PATIENT_TYPE_ALTER PatyAlter,
+            string patientTypeName,
+            HIS_TREATMENT _Treatment
+           )
+        {
+            try
+            {
+                this.ServiceReqPrint = ServiceReqPrint;
+                this.sereServs = sereServs;
+                this.PatyAlter = PatyAlter;
+                this.patientTypeName = patientTypeName;
+                this.ListSereServDeposit = _listSereServDeposit;
+                TransReq = transReq;
+                this.ListSereServBill = _listSereServBill;
+                this.ListTransaction = _listTransaction;
+                this.ListSereServDeposit = _listSereServDeposit;
+                this.ListConfigs = ListConfigs;
+                this.treatment = _Treatment;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         public Mps000025PDO(
              List<HIS_SERE_SERV_DEPOSIT> _listSereServDeposit,
             List<HIS_SERE_SERV_BILL> _listSereServBill,
@@ -236,7 +269,6 @@ namespace MPS.Processor.Mps000025.PDO
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
-
+        }        
     }
 }

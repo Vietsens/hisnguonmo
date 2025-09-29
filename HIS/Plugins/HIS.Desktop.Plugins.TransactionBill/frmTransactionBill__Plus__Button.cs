@@ -78,6 +78,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         bool isnotPrintMPS000111 = false;
         bool isEmr = false;
         byte[] byteData { get; set; }
+        private HIS_BANK _selectedBank = null;
         public HisTransactionBillResultSDO TransactionBillResultSDO { get; private set; }
 
         bool CreatAgain = false;
@@ -85,6 +86,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
         List<string> ErrorElectronicBill = new List<string>();
         string nameFile = "";
+
         private bool CheckHastInvoiceCancel()
         {
             bool result = false;
@@ -1078,13 +1080,22 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 }
                 if (this.hisBankList != null && this.hisBankList.Count > 0 && payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE)
                 {
-                    data.Transaction.PAY_FORM_ID = IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE;
-                    data.Transaction.BANK_ID = payForm.BANK_ID;
+                    long? bankIdToSave = null;
+                    if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID.HasValue)
+                    {
+                        bankIdToSave = payForm.BANK_ID.Value; 
+                    }
+                    else if (_selectedBank != null)
+                    {
+                        bankIdToSave = _selectedBank.ID;
+                    }
+                    data.Transaction.PAY_FORM_ID = payFormId;
+                    data.Transaction.BANK_ID = bankIdToSave;
                 }
                 else
                 {
                     data.Transaction.PAY_FORM_ID = payFormId;
-                    data.Transaction.BANK_ID = null;
+                    data.Transaction.BANK_ID = cboBank.EditValue != null ? Convert.ToInt64(cboBank.EditValue) : (long?)null;
                 }
                 if (repayPatientBankAccount != null)
                 {

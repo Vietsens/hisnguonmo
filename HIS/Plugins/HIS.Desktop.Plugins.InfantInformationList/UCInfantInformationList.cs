@@ -602,6 +602,28 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                                 Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay tao SYNC_TIME", ex);
                             }
                         }
+                        else if (e.Column.FieldName == "CAP_LAN_DAU_STR")
+                        {
+                            try
+                            {
+                                e.Value = (data.IS_REISSUED == 0 || data.IS_REISSUED == null);
+                            }
+                            catch (Exception ex )
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn(ex);
+                            }
+                        }
+                        else if (e.Column.FieldName == "CAP_LAI_STR")
+                        {
+                            try
+                            {
+                                e.Value = (data.IS_REISSUED == 1);
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn(ex);
+                            }
+                        }
                     }
                 }
 

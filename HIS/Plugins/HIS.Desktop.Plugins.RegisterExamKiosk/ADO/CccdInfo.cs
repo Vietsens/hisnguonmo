@@ -13,7 +13,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.ADO
         public string name { get; set; }
         public string sex { get; set; }
         public string dateOfBirth { get; set; }
-        public string nationality { get; set; }
+        public string address { get; set; }
+        public string issueDate { get; set; }
     }
 
     public class ResultWrapper

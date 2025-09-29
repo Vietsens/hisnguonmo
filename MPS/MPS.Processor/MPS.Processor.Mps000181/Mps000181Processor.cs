@@ -34,7 +34,8 @@ namespace MPS.Processor.Mps000181
         Mps000181PDO rdo;
         private List<ExpMestMedicineSDO> expMestMedicinesTYPE;
         private List<ExpMestMedicineSDO> expMestMedicines_Sort;
-
+        private List<ServiceReqSDO> serviceReqSdo;
+        private List<ExpMestMedicineSDO> expMestMedicineReq;
 
         public Mps000181Processor(CommonParam param, PrintData printData)
             : base(param, printData)
@@ -244,8 +245,8 @@ namespace MPS.Processor.Mps000181
                     SetSingleKey((new KeyValue("APPOINTMENT_TIME", rdo.HisTreatment.APPOINTMENT_TIME)));
                     SetSingleKey((new KeyValue("APPOINTMENT_EXAM_ROOM_IDS", rdo.HisTreatment.APPOINTMENT_EXAM_ROOM_IDS)));
                 }
-
-                AddObjectKeyIntoListkey<HIS_SERVICE_REQ>(rdo.vHisPrescription5, false);
+                if(rdo.lstHisServiceReq != null && rdo.lstHisServiceReq.Count > 0)
+                    AddObjectKeyIntoListkey<HIS_SERVICE_REQ>(rdo.lstHisServiceReq.First(), false);
                 AddObjectKeyIntoListkey<V_HIS_PATIENT_TYPE_ALTER>(rdo.PatyAlterBhyt);
                 if (rdo.HisTreatment != null)
                 {
@@ -450,6 +451,14 @@ namespace MPS.Processor.Mps000181
                 objectTag.AddObjectData(store, "MedicineExpmest", expMestMedicines_Sort);
                 objectTag.AddObjectData(store, "list2", expMestMedicines_Sort);
                 objectTag.AddObjectData(store, "list3", expMestMedicines_Sort);
+
+                objectTag.AddObjectData(store, "Phase", serviceReqSdo);
+                objectTag.AddObjectData(store, "Phase1", serviceReqSdo);
+                objectTag.AddObjectData(store, "Medicine", expMestMedicineReq);
+                objectTag.AddObjectData(store, "Medicine1", expMestMedicineReq);
+                objectTag.AddRelationship(store, "Phase1", "Medicine", "INTRUCTION_DATE", "TDL_INTRUCTION_DATE");
+                objectTag.AddRelationship(store, "Phase1", "Medicine1", "INTRUCTION_DATE", "TDL_INTRUCTION_DATE");
+
                 objectTag.AddRelationship(store, "type", "MedicineExpmest", "PATIENT_TYPE_NAME", "PATIENT_TYPE_NAME");
                 objectTag.AddRelationship(store, "type2", "list2", "PATIENT_TYPE_NAME", "PATIENT_TYPE_NAME");
                 objectTag.AddRelationship(store, "type3", "list3", "PATIENT_TYPE_NAME", "PATIENT_TYPE_NAME");
@@ -518,6 +527,82 @@ namespace MPS.Processor.Mps000181
                         ado.PATIENT_TYPE_NAME = rdo.expMestMedicines.First(o => o.PATIENT_TYPE_ID == 0).PATIENT_TYPE_NAME;
                         expMestMedicinesTYPE.Add(ado);
                     }
+                }
+
+                if (rdo.lstHisServiceReq != null && rdo.lstHisServiceReq.Count > 0)
+                {
+                    var group = rdo.lstHisServiceReq
+                        .GroupBy(req => req.INTRUCTION_DATE > 0 ? (long?)req.INTRUCTION_DATE : null)
+                        .OrderBy(g => g.Key)
+                        .ToList();
+
+                    serviceReqSdo = new List<ServiceReqSDO>();
+                    expMestMedicineReq = new List<ExpMestMedicineSDO>();
+                    foreach (var item in group)
+                    {
+                        bool isKey = false;
+                        foreach (var req in item)
+                        {
+                            var expMestMedicine = rdo.expMestMedicines
+                                                .Where(o => o.TDL_SERVICE_REQ_ID == req.ID) 
+                                                .ToList();
+                            foreach (var mediMest in expMestMedicine)
+                            {
+                                isKey = true;
+                                ExpMestMedicineSDO mediSDO = new ExpMestMedicineSDO();
+                                mediSDO.MEDICINE_TYPE_NAME = mediMest.MEDICINE_TYPE_NAME ?? "";
+                                mediSDO.AMOUNT = mediMest.AMOUNT > 0 ? mediMest.AMOUNT : 0;
+                                mediSDO.TUTORIAL = mediMest.TUTORIAL ?? "";
+                                mediSDO.TDL_SERVICE_REQ_ID = mediMest.TDL_SERVICE_REQ_ID ?? 0;
+                                mediSDO.TDL_INTRUCTION_DATE = item.Key.HasValue ? item.Key.Value : 0;
+                                expMestMedicineReq.Add(mediSDO);
+                            }
+                            var serviceReqMety = rdo.lstServiceReqMety.Where(o=>o.ID == req.ID).ToList();
+                            foreach (var serviceMety in serviceReqMety)
+                            {
+                                isKey = true;
+                                ExpMestMedicineSDO mediSDO = new ExpMestMedicineSDO();
+                                mediSDO.MEDICINE_TYPE_CODE = serviceMety.MEDICINE_TYPE_NAME != null ? serviceMety.MEDICINE_TYPE_NAME : "";
+                                mediSDO.AMOUNT = serviceMety.AMOUNT > 0 ? serviceMety.AMOUNT : 0;
+                                mediSDO.TUTORIAL = serviceMety.TUTORIAL != null ? serviceMety.TUTORIAL : "";
+                                mediSDO.TDL_INTRUCTION_DATE = item.Key.HasValue ? item.Key.Value : 0;
+                                expMestMedicineReq.Add(mediSDO);
+                            }
+                        }
+                        if (isKey)
+                        {
+                            ServiceReqSDO sdo = new ServiceReqSDO();
+                            sdo.USE_TIME = item.Min(o => o.USE_TIME.HasValue && o.USE_TIME.Value > 0 ? o.USE_TIME.Value : o.INTRUCTION_TIME);
+                            sdo.USE_TIME_TO = item.Max(o => o.USE_TIME_TO.Value);
+                            sdo.INTRUCTION_DATE = item.Key.HasValue ? item.Key.Value : 0;
+                            serviceReqSdo.Add(sdo);
+                        }
+
+
+                        //expMestMedicineReq = new List<ExpMestMedicineSDO>();
+                        //ExpMestMedicineSDO mediSDO = new ExpMestMedicineSDO();
+                        //var expMestMedicine = rdo.expMestMedicines.Where(o=>o.TDL_SERVICE_REQ_ID == item.ID).ToList();
+                        //foreach(var mediMest in expMestMedicine)
+                        //{            
+                        //    mediSDO.MEDICINE_TYPE_NAME = mediMest.MEDICINE_TYPE_NAME != null ? mediMest.MEDICINE_TYPE_NAME : "";
+                        //    mediSDO.AMOUNT = mediMest.AMOUNT > 0 ? mediMest.AMOUNT : 0;
+                        //    mediSDO.TUTORIAL = mediMest.TUTORIAL != null ? mediMest.TUTORIAL : "";
+                        //    mediSDO.TDL_SERVICE_REQ_ID = mediMest.TDL_SERVICE_REQ_ID ?? 0;
+                        //    expMestMedicineReq.Add(mediSDO);
+                        //}
+
+                        //var serviceReqMety = rdo.lstServiceReqMety.ToList();
+                        //foreach(var serviceMety in serviceReqMety)
+                        //{            
+                        //    mediSDO.MEDICINE_TYPE_CODE = serviceMety.MEDICINE_TYPE_NAME != null ? serviceMety.MEDICINE_TYPE_NAME : "";
+                        //    //mediSDO.CONCENTRA = serviceReqMety.CONCENTRA != null ? expMestMedicine.CONCENTRA : "";
+                        //    mediSDO.AMOUNT = serviceMety.AMOUNT > 0 ? serviceMety.AMOUNT : 0;
+                        //    mediSDO.TUTORIAL = serviceMety.TUTORIAL != null ? serviceMety.TUTORIAL : "";
+                        //    //mediSDO.SERVICE_UNIT_NAME = serviceMety.SERVICE_UNIT_NAME != null ? serviceMety.SERVICE_UNIT_NAME : "";
+                        //    expMestMedicineReq.Add(mediSDO);
+                        //}
+                    }
+
                 }
             }
             catch (Exception ex)

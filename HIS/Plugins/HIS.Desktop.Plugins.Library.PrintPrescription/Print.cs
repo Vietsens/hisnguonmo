@@ -49,7 +49,8 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrEmpty(treatmentCode) ? treatmentCode : printTypeCode), printTypeCode, roomId);
                 Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo ado = null;
-
+                if (PreviewType == null)
+                    PreviewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
                 if (PreviewType == MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow
                         || PreviewType == MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow
                         || PreviewType == MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow)

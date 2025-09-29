@@ -105,6 +105,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
         private MOS.SDO.WorkPlaceSDO WorkPlaceSDO;
         internal IcdProcessor icdYhctProcessor;
         internal UserControl ucIcdYhct;
+
         internal SecondaryIcdProcessor subIcdYhctProcessor;
         internal UserControl ucSecondaryIcdYhct;
         List<HIS_ICD> currentIcds;
@@ -278,11 +279,12 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 ado.Height = 24;
                 ado.TextLblIcd = "Chẩn đoán phụ";
                 ado.TextNullValue = "Nhấn F1 để chọn chẩn đoán phụ";
-                ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
+                ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;               
                 ucSecondaryIcd = (UserControl)subIcdProcessor.Run(ado);
 
                 if (ucSecondaryIcd != null)
                 {
+                    
                     this.panelControlSubIcd.Controls.Add(ucSecondaryIcd);
                     ucSecondaryIcd.Dock = DockStyle.Fill;
                 }
@@ -292,6 +294,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+       
 
         private void InitUcSecondaryIcdYhct()
         {
@@ -308,10 +311,12 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 ado.TootiplciIcdSubCode = "Chẩn đoán y học cổ truyền kèm theo";
                 ado.TextNullValue = "Nhấn F1 để chọn chẩn đoán phụ y học cổ truyền";
                 ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
+                
                 ucSecondaryIcdYhct = (UserControl)subIcdYhctProcessor.Run(ado);
 
                 if (ucSecondaryIcdYhct != null)
                 {
+                   
                     this.panelSubIcdYhct.Controls.Add(ucSecondaryIcdYhct);
                     ucSecondaryIcdYhct.Dock = DockStyle.Fill;
                 }
@@ -714,10 +719,12 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_TRADITIONAL == 1).ToList();
                 ado.LblIcdMain = "CĐ YHCT:";
                 ado.ToolTipsIcdMain = "Chẩn đoán y học cổ truyền";
+                
+                ado.DepamentId = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID;
                 this.ucIcdYhct = (UserControl)icdYhctProcessor.Run(ado);
-
                 if (this.ucIcdYhct != null)
                 {
+                    ((HIS.UC.Icd.UCIcd)ucIcdYhct).OnIcdMapCodeChanged += UcIcd_OnIcdMapCodeChanged;
                     this.panelControlIcdYhct.Controls.Add(this.ucIcdYhct);
                     this.ucIcdYhct.Dock = DockStyle.Fill;
                 }
@@ -727,7 +734,30 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void UcIcd_OnIcdMapCodeChanged(string icdMapCode)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(icdMapCode))
+                {
+                    var icdCaus = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == icdMapCode);
 
+                    HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
+                    icd.ICD_CODE = icdCaus.ICD_CODE;
+                    icd.ICD_NAME = icdCaus.ICD_NAME;
+
+                    if (ucIcd != null)
+                    {
+                        icdProcessor.Reload(ucIcd, icd);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            
+        }
         private void DelegateNextFocusIcd()
         {
             try

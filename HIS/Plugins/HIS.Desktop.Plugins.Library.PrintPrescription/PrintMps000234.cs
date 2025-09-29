@@ -651,6 +651,12 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
 
                     var acsUser = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.LOGINNAME == HisPrescriptionSDOPrintPlus.REQUEST_LOGINNAME);
                     Mps000181ADO.REQUEST_USER_MOBILE = acsUser != null ? acsUser.MOBILE : "";
+                    List<HIS_SERVICE_REQ_METY> lstServiceReqMety = new List<HIS_SERVICE_REQ_METY>();
+                    if (lstHisServiceReqMety != null)
+                    {
+                        var lstServiceReqIds = lstServiceReq.Select(o => o.ID).ToList();
+                        lstServiceReqMety = lstHisServiceReqMety.Where(o => lstServiceReqIds.Contains(o.SERVICE_REQ_ID)).ToList();
+                    }
 
                     MPS.Processor.Mps000181.PDO.Mps000181PDO mps000181PDO = new MPS.Processor.Mps000181.PDO.Mps000181PDO(
                         vHisPatientTypeAlter,
@@ -665,7 +671,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         null, 
                         null,
                         null,
-                        lstHisServiceReqMety);
+                        lstServiceReqMety);
 
                     Print.PrintData(printTypeCode, fileName, mps000181PDO, printNow, treatmentCode, ref result, this.currentModule != null ? currentModule.RoomId : 0, previewType, listGayNghien.Count, this.SavedData, numCopy);
                     //PrintData(printTypeCode, fileName, mps000181PDO, printNow, numCopy, ref result);
