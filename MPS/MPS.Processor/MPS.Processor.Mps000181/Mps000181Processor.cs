@@ -557,7 +557,7 @@ namespace MPS.Processor.Mps000181
                                 mediSDO.TDL_INTRUCTION_DATE = item.Key.HasValue ? item.Key.Value : 0;
                                 expMestMedicineReq.Add(mediSDO);
                             }
-                            var serviceReqMety = rdo.lstServiceReqMety.Where(o=>o.ID == req.ID).ToList();
+                            var serviceReqMety = rdo.lstServiceReqMety.Where(o=>o.SERVICE_REQ_ID == req.ID).ToList();
                             foreach (var serviceMety in serviceReqMety)
                             {
                                 isKey = true;
