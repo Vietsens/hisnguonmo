@@ -44,6 +44,7 @@ using static MPS.ProcessorBase.PrintConfig;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Config;
 using HIS.Desktop.ADO;
 using DevExpress.XtraBars;
+using DevExpress.XtraCharts;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
@@ -581,11 +582,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 else
                 {
                     this.lstMatePrintMps494 = new List<HIS_EXP_MEST_MATERIAL>();
-                    HIS.Desktop.Plugins.Library.PrintPrescription.PrintPrescriptionProcessor printPrescriptionProcessor; 
-
+                    HIS.Desktop.Plugins.Library.PrintPrescription.PrintPrescriptionProcessor printPrescriptionProcessor;
                     List<OutPatientPresResultSDO> OutPatientPresResultSDOForPrints = new List<OutPatientPresResultSDO>();
                     OutPatientPresResultSDO OutPatientPresResultSDO = new OutPatientPresResultSDO();
-
+           
                     List<HIS_EXP_MEST> expMestPrintPlus = new List<HIS_EXP_MEST>();
                     List<HIS_SERVICE_REQ> serviceReqPrintPlus = new List<HIS_SERVICE_REQ>();
                     List<HIS_EXP_MEST_MEDICINE> expMestMedicinePrintPlus = new List<HIS_EXP_MEST_MEDICINE>();
@@ -646,62 +646,99 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => InPatientPresResultSDOForPrints), InPatientPresResultSDOForPrints));
                         printPrescriptionProcessor = new Library.PrintPrescription.PrintPrescriptionProcessor(InPatientPresResultSDOForPrints, IsNotShow, this.currentModule, true);
                         printPrescriptionProcessor.SetOutHospital((currentMediStockNhaThuocSelecteds != null && currentMediStockNhaThuocSelecteds.Count > 0));
-                    }
+
+                        this.isPrintNow = isPrintNow;
+                        if (printTypeCode == "Mps000494")
+                        {
+                            Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.ROOT_PATH);
+                            richEditorMain.RunPrintTemplate("Mps000494", DelegateRunPrinter);
+                        }
+                        else if (isPrintNow)
+                            printPrescriptionProcessor.Print(previewType);
+                        else
+                            printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);
+                    }    
                     else
                     {
-                        var loadTask = Task.Run(() =>
+                        var loadTask = Task.Run(async () =>
                         {
-                            if (hisConfigCFGprintTypeCode == "Mps000234" && !GlobalStore.IsCabinet)
+                            if ((hisConfigCFGprintTypeCode == "Mps000234" || hisConfigCFGprintTypeCode == "Mps000118") && !GlobalStore.IsCabinet)
                             {
                                 CommonParam param = new CommonParam();
-                                HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
-                                serviceReqFilter.TREATMENT_ID = this.treatmentId;
-                                serviceReqFilter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK;
-                                var serviceReqPrintAlls = new BackendAdapter(param)
-                                      .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
 
-                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqParentId), serviceReqParentId));
-
-                                HisExpMestFilter expMestFilter = new HisExpMestFilter();
-                                expMestFilter.SERVICE_REQ_IDs = serviceReqPrintAlls.Select(o => o.ID).ToList();
-                                var expMestPrints = new BackendAdapter(param)
-                                     .Get<List<MOS.EFMODEL.DataModels.HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumers.MosConsumer, expMestFilter, param);
-
-
-                                HisExpMestMedicineFilter expMestMedicineFilter = new HisExpMestMedicineFilter();
-                                expMestMedicineFilter.EXP_MEST_IDs = expMestPrints.Select(o => o.ID).ToList();
-                                var expMestMedicinePrints = new BackendAdapter(param)
-                                    .Get<List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_MEDICINE>>("api/HisExpMestMedicine/Get", ApiConsumers.MosConsumer, expMestMedicineFilter, param);
-
-                                HisExpMestMaterialFilter expMestMaterialFilter = new HisExpMestMaterialFilter();
-                                expMestMaterialFilter.EXP_MEST_IDs = expMestPrints.Select(o => o.ID).ToList();
-                                var expMestMaterialPrints = new BackendAdapter(param)
-                                    .Get<List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/Get", ApiConsumers.MosConsumer, expMestMaterialFilter, param);
-                                
-                                HisServiceReqMetyFilter expMestMetyFilter = new HisServiceReqMetyFilter
+                                // 1. Gọi ServiceReq trước vì các API sau cần ID từ đây
+                                HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter
                                 {
-                                    SERVICE_REQ_IDs = serviceReqPrintAlls.Select(o => o.ID).ToList()
+                                    TREATMENT_ID = this.treatmentId,
+                                    SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK
                                 };
-                                var lstServiceReqMety = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ_METY>>(
-                                            RequestUriStore.HIS_SERVICE_REQ_METY__GET,
-                                            ApiConsumers.MosConsumer, expMestMetyFilter, ProcessLostToken, param);
 
-                                HisServiceReqMatyFilter expMestMatyFilter = new HisServiceReqMatyFilter
+                                var serviceReqPrintAlls = await new BackendAdapter(param)
+                                    .GetAsync<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>(
+                                        "api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
+
+                                if (serviceReqPrintAlls == null || !serviceReqPrintAlls.Any())
+                                    return;
+
+                                var serviceReqIds = serviceReqPrintAlls.Select(o => o.ID).ToList();
+
+                                // 2. Sau khi có serviceReq, tạo task song song cho các API phụ thuộc
+                                var expMestTask = Task.Run(() =>
                                 {
-                                    SERVICE_REQ_IDs = serviceReqPrintAlls.Select(o => o.ID).ToList()
-                                };
-                                var lstServiceReqMaty = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ_MATY>>(
-                                    RequestUriStore.HIS_SERVICE_REQ_MATY__GET,
-                                    ApiConsumers.MosConsumer, expMestMatyFilter, ProcessLostToken, param);
+                                    var expMestFilter = new HisExpMestFilter { SERVICE_REQ_IDs = serviceReqIds };
+                                    return new BackendAdapter(param)
+                                        .Get<List<MOS.EFMODEL.DataModels.HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumers.MosConsumer, expMestFilter, param);
+                                });
 
+                                var metyTask = Task.Run(() =>
+                                {
+                                    var filter = new HisServiceReqMetyFilter { SERVICE_REQ_IDs = serviceReqIds };
+                                    return new BackendAdapter(param).Get<List<HIS_SERVICE_REQ_METY>>(
+                                        RequestUriStore.HIS_SERVICE_REQ_METY__GET,
+                                        ApiConsumers.MosConsumer, filter, ProcessLostToken, param);
+                                });
+
+                                var matyTask = Task.Run(() =>
+                                {
+                                    var filter = new HisServiceReqMatyFilter { SERVICE_REQ_IDs = serviceReqIds };
+                                    return new BackendAdapter(param).Get<List<HIS_SERVICE_REQ_MATY>>(
+                                        RequestUriStore.HIS_SERVICE_REQ_MATY__GET,
+                                        ApiConsumers.MosConsumer, filter, ProcessLostToken, param);
+                                });
+
+                                // 3. Chờ expMest để lấy ID tiếp cho medicine + material
+                                var expMestPrints = await expMestTask;
+                                var expMestIds = expMestPrints.Select(o => o.ID).ToList();
+
+                                var medicineTask = Task.Run(() =>
+                                {
+                                    var filter = new HisExpMestMedicineFilter { EXP_MEST_IDs = expMestIds };
+                                    return new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_MEDICINE>>(
+                                        "api/HisExpMestMedicine/Get", ApiConsumers.MosConsumer, filter, param);
+                                });
+
+                                var materialTask = Task.Run(() =>
+                                {
+                                    var filter = new HisExpMestMaterialFilter { EXP_MEST_IDs = expMestIds };
+                                    return new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_MATERIAL>>(
+                                        "api/HisExpMestMaterial/Get", ApiConsumers.MosConsumer, filter, param);
+                                });
+
+                                // 4. Chờ tất cả task xong
+                                await Task.WhenAll(metyTask, matyTask, medicineTask, materialTask);
+
+                                // 5. Gán kết quả
                                 OutPatientPresResultSDO.ServiceReqs = serviceReqPrintAlls;
                                 OutPatientPresResultSDO.ExpMests = expMestPrints;
-                                OutPatientPresResultSDO.Medicines = expMestMedicinePrints;
-                                OutPatientPresResultSDO.Materials = expMestMaterialPrints;
-                                OutPatientPresResultSDO.ServiceReqMeties = lstServiceReqMety;
-                                OutPatientPresResultSDO.ServiceReqMaties = lstServiceReqMaty;
+                                OutPatientPresResultSDO.Medicines = medicineTask.Result;
+                                OutPatientPresResultSDO.Materials = materialTask.Result;
+                                OutPatientPresResultSDO.ServiceReqMeties = metyTask.Result;
+                                OutPatientPresResultSDO.ServiceReqMaties = matyTask.Result;
+
+                                OutPatientPresResultSDOForPrints.Add(OutPatientPresResultSDO);
                             }
                         });
+
 
                         loadTask.ContinueWith(t =>
                         {
@@ -712,11 +749,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => printTypeCode), printTypeCode)
                                 + "((this.expMestPrints != null && this.expMestPrints.Count > 0) || (this.serviceReqPrints != null && this.serviceReqPrints.Count > 0)) =" + ((this.expMestPrints != null && this.expMestPrints.Count > 0) || (this.serviceReqPrints != null && this.serviceReqPrints.Count > 0)));
 
-                            if ((String.IsNullOrEmpty(printTypeCode) || printTypeCode == "Mps000234")
+                            if ((String.IsNullOrEmpty(printTypeCode) && hisConfigCFGprintTypeCode != "Mps000234" && hisConfigCFGprintTypeCode != "Mps00118")
                                 //&& ((this.expMestPrints != null && this.expMestPrints.Count > 0) || (this.serviceReqPrints != null && this.serviceReqPrints.Count > 0))
                                 && !GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
                             {
-                                if (this.expMestPrints != null && this.expMestPrints.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
+                                if (this.expMestPrints != null && this.expMestPrints.Count > 0)
                                 {
                                     if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ExpMests != null && this.outPrescriptionResultSDOs.ExpMests.Count > 0)
                                     {
@@ -733,7 +770,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                             expMestMaterialPrintPlus = this.expMestMaterialPrints.Where(o => !this.outPrescriptionResultSDOs.ExpMests.Exists(k => k.ID == o.EXP_MEST_ID)).ToList();
                                         }
                                     }
-                                    else if(hisConfigCFGprintTypeCode != "Mps000234")
+                                    else
                                     {
                                         expMestPrintPlus.AddRange(expMestPrints);
                                         if (this.expMestMedicinePrints != null && this.expMestMedicinePrints.Count > 0)
@@ -747,21 +784,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                         }
                                     }
                                 }
-                                else if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ExpMests != null && this.outPrescriptionResultSDOs.ExpMests.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
+                                else if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ExpMests != null)
                                 {
                                     expMestPrintPlus.AddRange(this.outPrescriptionResultSDOs.ExpMests);
-                                }       
+                                }
 
-                                if (this.outPrescriptionResultSDOs.Medicines != null && this.outPrescriptionResultSDOs.Medicines.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
+                                if (this.outPrescriptionResultSDOs.Medicines != null && this.outPrescriptionResultSDOs.Medicines.Count > 0)
                                 {
                                     expMestMedicinePrintPlus.AddRange(this.outPrescriptionResultSDOs.Medicines);
                                 }
-                                if (this.outPrescriptionResultSDOs.Materials != null && this.outPrescriptionResultSDOs.Materials.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
+                                if (this.outPrescriptionResultSDOs.Materials != null && this.outPrescriptionResultSDOs.Materials.Count > 0)
                                 {
                                     expMestMaterialPrintPlus.AddRange(this.outPrescriptionResultSDOs.Materials);
                                 }
 
-                                if (this.serviceReqPrints != null && this.serviceReqPrints.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
+                                if (this.serviceReqPrints != null && this.serviceReqPrints.Count > 0)
                                 {
                                     if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqs != null && this.outPrescriptionResultSDOs.ServiceReqs.Count > 0)
                                     {
@@ -773,38 +810,35 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                         serviceReqPrintPlus.AddRange(this.serviceReqPrints);
                                     }
                                 }
-                                else if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqs != null && this.outPrescriptionResultSDOs.ServiceReqs.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
+                                else if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqs != null)
                                 {
                                     serviceReqPrintPlus.AddRange(this.outPrescriptionResultSDOs.ServiceReqs);
                                 }
 
-                                if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqMaties != null && this.outPrescriptionResultSDOs.ServiceReqMaties.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
+                                if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqMaties != null)
                                 {
                                     OutPatientPresResultSDO.ServiceReqMaties = (this.outPrescriptionResultSDOs.ServiceReqMaties);
                                 }
-                                if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqMeties != null && this.outPrescriptionResultSDOs.ServiceReqMeties.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234"))
+                                if (this.outPrescriptionResultSDOs != null && this.outPrescriptionResultSDOs.ServiceReqMeties != null)
                                 {
                                     OutPatientPresResultSDO.ServiceReqMeties = (this.outPrescriptionResultSDOs.ServiceReqMeties);
                                 }
 
-                                if (expMestPrintPlus != null && expMestPrintPlus.Count > 0 && (hisConfigCFGprintTypeCode != "Mps000234" || !GlobalStore.IsCabinet))
+                                if (expMestPrintPlus != null && expMestPrintPlus.Count > 0)
                                 {
                                     expMestPrintPlus = expMestPrintPlus.Where(o => o.EXP_MEST_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DTT).ToList();
                                 }
 
-                                if (hisConfigCFGprintTypeCode != "Mps000234")
-                                {
-                                    OutPatientPresResultSDO.ExpMests = expMestPrintPlus;
-                                    OutPatientPresResultSDO.Medicines = expMestMedicinePrintPlus;
-                                    OutPatientPresResultSDO.Materials = expMestMaterialPrintPlus;
-                                    if (OutPatientPresResultSDO.Materials != null && OutPatientPresResultSDO.Materials.Count > 0)
-                                        lstMatePrintMps494.AddRange(OutPatientPresResultSDO.Materials);
-                                    OutPatientPresResultSDO.ServiceReqs = serviceReqPrintPlus;
-                                }
-                            
+                                OutPatientPresResultSDO.ExpMests = expMestPrintPlus;
+                                OutPatientPresResultSDO.Medicines = expMestMedicinePrintPlus;
+                                OutPatientPresResultSDO.Materials = expMestMaterialPrintPlus;
+                                if (OutPatientPresResultSDO.Materials != null && OutPatientPresResultSDO.Materials.Count > 0)
+                                    lstMatePrintMps494.AddRange(OutPatientPresResultSDO.Materials);
+                                OutPatientPresResultSDO.ServiceReqs = serviceReqPrintPlus;
+
                                 OutPatientPresResultSDOForPrints.Add(OutPatientPresResultSDO);
                             }
-                            else
+                            else if (hisConfigCFGprintTypeCode != "Mps00234" && hisConfigCFGprintTypeCode != "Mps00118")
                             {
                                 if (outPrescriptionResultSDOs != null)
                                 {
@@ -841,7 +875,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                     }
                                     if (this.serviceReqMetys != null && this.serviceReqMetys.Count > 0)
                                     {
-                                        OutPatientPresResultSDO.ServiceReqMeties = serviceReqMetys;   
+                                        OutPatientPresResultSDO.ServiceReqMeties = serviceReqMetys;
                                     }
                                     if (this.serviceReqMatys != null && this.serviceReqMatys.Count > 0)
                                     {
@@ -853,23 +887,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             }
 
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => OutPatientPresResultSDOForPrints), OutPatientPresResultSDOForPrints));
-                            
-                        }, TaskScheduler.FromCurrentSynchronizationContext());
 
+                            printPrescriptionProcessor = new Library.PrintPrescription.PrintPrescriptionProcessor(OutPatientPresResultSDOForPrints, IsNotShow, this.currentModule, true);
+                            printPrescriptionProcessor.SetOutHospital((currentMediStockNhaThuocSelecteds != null && currentMediStockNhaThuocSelecteds.Count > 0));
+
+                            this.isPrintNow = isPrintNow;
+                            if (printTypeCode == "Mps000494")
+                            {
+                                Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.ROOT_PATH);
+                                richEditorMain.RunPrintTemplate("Mps000494", DelegateRunPrinter);
+                            }
+                            else if (isPrintNow)
+                                printPrescriptionProcessor.Print(previewType);
+                            else
+                                printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);
+                        }, TaskScheduler.FromCurrentSynchronizationContext());
                         
-                        printPrescriptionProcessor = new Library.PrintPrescription.PrintPrescriptionProcessor(OutPatientPresResultSDOForPrints, IsNotShow, this.currentModule, true);     
-                        printPrescriptionProcessor.SetOutHospital((currentMediStockNhaThuocSelecteds != null && currentMediStockNhaThuocSelecteds.Count > 0));
                     }
-                    this.isPrintNow = isPrintNow;
-                    if (printTypeCode == "Mps000494")
-                    {
-                        Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.ROOT_PATH);
-                        richEditorMain.RunPrintTemplate("Mps000494", DelegateRunPrinter);
-                    }
-                    else if (isPrintNow)
-                        printPrescriptionProcessor.Print(previewType);
-                    else
-                        printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);
                 }
                     
                 Inventec.Common.Logging.LogSystem.Debug("PrescriptionSavePrintShowHasClickSave.2");
@@ -879,6 +913,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+
         bool isPrintNow = false;
         List<HIS_EXP_MEST_MATERIAL> lstMatePrintMps494 = new List<HIS_EXP_MEST_MATERIAL>();
         private bool DelegateRunPrinter(string printCode, string fileName)
