@@ -135,7 +135,6 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             {
                 this.WindowState = FormWindowState.Maximized;
                 this.BringToFront();
-                this.TopMost = true;
                 this.Focus();
             }
             catch (Exception ex)
@@ -496,7 +495,7 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
                 hisExpMestFilter.ORDER_FIELD = "CREATE_TIME";
 
                 hisExpMestFilter.ORDER_DIRECTION = "ASC";
-
+                hisExpMestFilter.IS_NOT_TAKEN = false;
 
                 var result = new BackendAdapter(param).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumers.MosConsumer, hisExpMestFilter, param);
                 hisExpMest = result;
