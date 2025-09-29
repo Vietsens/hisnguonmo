@@ -53,6 +53,7 @@ namespace HIS.UC.Icd
         string _TextIcdName = "";
         bool IsObligatoryTranferMediOrg = false;
         long autoCheckIcd;
+        bool IsCheckEntIcdYHCT = false;
 
         public UCIcdNoFocus()
         {
@@ -442,7 +443,11 @@ namespace HIS.UC.Icd
                 if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
                 {
                     if (cboIcds.EditValue != null)
+                    {
+                        IsCheckEntIcdYHCT = true;
                         this.ChangecboChanDoanTD();
+                    }
+                        
                     else if (this.InitAdo.IsAcceptWordNotInData && this.IsObligatoryTranferMediOrg && !string.IsNullOrEmpty(this._TextIcdName))
                         this.ChangecboChanDoanTD_V2_GanICDNAME(this._TextIcdName);
                     else
@@ -481,10 +486,11 @@ namespace HIS.UC.Icd
                             this.nextFocus();
                     }
 
-                    if (this.refeshIcd != null)
+                    if (this.refeshIcd != null && IsCheckEntIcdYHCT)
                     {
                         Inventec.Common.Logging.LogSystem.Debug("this.refeshIcd.execute");
                         this.refeshIcd(icd);
+                        IsCheckEntIcdYHCT = false;
                     }
                 }
             }
@@ -528,7 +534,12 @@ namespace HIS.UC.Icd
                 {
                     cboIcds.ClosePopup();
                     if (cboIcds.EditValue != null)
+                    {
                         this.ChangecboChanDoanTD();
+                        IsCheckEntIcdYHCT = true;
+                    }
+                        
+
                 }
                 else
                     cboIcds.ShowPopup();

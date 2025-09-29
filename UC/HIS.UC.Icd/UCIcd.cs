@@ -240,7 +240,9 @@ namespace HIS.UC.Icd
                     this.InitAdo.IcdInput.ICD_NAME = ((IcdInputADO)inPut).ICD_NAME;
                     if (!string.IsNullOrEmpty(this.InitAdo.IcdInput.ICD_CODE))
                     {
+                        _isLoading = true;
                         FillDataToCboIcd();
+                        _isLoading = false;
                     }
                 }
                 else
@@ -1091,7 +1093,7 @@ namespace HIS.UC.Icd
                 {       
                     cboIcds_EditValueChanged(sender, EventArgs.Empty);
                     e.Handled = true;
-                }
+                }    
             }
             catch (Exception ex)
             {
