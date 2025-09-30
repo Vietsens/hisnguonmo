@@ -606,7 +606,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                         {
                             try
                             {
-                                e.Value = (data.IS_REISSUED == 0);
+                                e.Value = (data.IS_REISSUED == 0 || data.IS_REISSUED == null);
                             }
                             catch (Exception ex )
                             {

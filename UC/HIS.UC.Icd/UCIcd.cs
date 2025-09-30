@@ -46,7 +46,7 @@ namespace HIS.UC.Icd
     public partial class UCIcd : UserControl
     {
         //
-        private IcdInitADO InitAdo { get; set; }
+        private IcdInitADO InitAdo { get; set; }   
         private int positionHandle = -1;
         private List<HIS_ICD> dataIcds;
 
@@ -64,7 +64,7 @@ namespace HIS.UC.Icd
         bool IsYhct = false;
         long DepartmentId;
         string IcdMapCode = "";
-        private bool _isLoading = false;
+        private bool _isLoading = true;
 
         HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager checkIcd;
         public UCIcd()
@@ -78,6 +78,7 @@ namespace HIS.UC.Icd
             InitializeComponent();
 
             this.SetCaptionByLanguageKey();
+            cboIcds.EditValueChanged -= cboIcds_EditValueChanged;
             this.InitAdo = data;
             this.DepartmentId = data.DepamentId;
             if (data.Height > 0 && data.Width > 0)
@@ -162,6 +163,8 @@ namespace HIS.UC.Icd
             {
                 this.lciIcdText.OptionsToolTip.ToolTip = data.ToolTipsIcdMain;
             }
+            cboIcds.EditValueChanged += cboIcds_EditValueChanged;
+            _isLoading = false;
         }
 
         private void UCIcd_Load(object sender, EventArgs e)
@@ -194,7 +197,9 @@ namespace HIS.UC.Icd
                     if (this.InitAdo.IcdInput == null) this.InitAdo.IcdInput = new IcdInputADO();
                     this.InitAdo.IcdInput.ICD_CODE = input.ICD_CODE;
                     this.InitAdo.IcdInput.ICD_NAME = input.ICD_NAME;
+                    _isLoading = true;
                     FillDataToCboIcd();
+                    _isLoading = false;   
                 }
                 else
                 {
@@ -235,7 +240,9 @@ namespace HIS.UC.Icd
                     this.InitAdo.IcdInput.ICD_NAME = ((IcdInputADO)inPut).ICD_NAME;
                     if (!string.IsNullOrEmpty(this.InitAdo.IcdInput.ICD_CODE))
                     {
+                        _isLoading = true;
                         FillDataToCboIcd();
+                        _isLoading = false;
                     }
                 }
                 else
@@ -396,7 +403,10 @@ namespace HIS.UC.Icd
             {
                 if (e.KeyCode == Keys.Enter)
                 {
+                    _isLoading = true;
                     LoadIcdCombo(txtIcdCode.Text.ToUpper());
+                    _isLoading = false;
+                    cboIcds_EditValueChanged(sender, EventArgs.Empty);
                 }
             }
             catch (Exception ex)
@@ -944,9 +954,9 @@ namespace HIS.UC.Icd
 
         private void cboIcds_EditValueChanged(object sender, EventArgs e)
         {  
-            try
+            try     
             {
-                if (!_isLoading) return;
+                if (_isLoading) return;
 
                 HIS_ICD icd = null;
                 bool AutoMapIcd10WithIcdYhct = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.HisIcd.AutoMapIcd10WithIcdYhct") == "1";
@@ -1079,13 +1089,11 @@ namespace HIS.UC.Icd
        {
             try
             {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    _isLoading = true;
+                if (e.KeyCode == Keys.Enter && !_isLoading)
+                {       
                     cboIcds_EditValueChanged(sender, EventArgs.Empty);
-                    _isLoading = false;
                     e.Handled = true;
-                }
+                }    
             }
             catch (Exception ex)
             {

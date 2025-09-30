@@ -455,15 +455,21 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             }
         }
 
+
         private void UcIcd_OnIcdMapCodeChanged(string icdMapCode)
         {
             if (!string.IsNullOrEmpty(icdMapCode))
             {
                 var icdCaus = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == icdMapCode);
-                if (icdCaus != null)
+                HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
+                icd.ICD_CODE = icdCaus.ICD_CODE;
+                icd.ICD_NAME = icdCaus.ICD_NAME;
+
+                if (ucIcd != null)
                 {
-                    this.IcdCauseProcessor.SetRequired(this.ucIcdCause, (icdCaus.IS_REQUIRE_CAUSE == 1));
+                    icdProcessor.Reload(ucIcd, icd);
                 }
+
             }
         }
 

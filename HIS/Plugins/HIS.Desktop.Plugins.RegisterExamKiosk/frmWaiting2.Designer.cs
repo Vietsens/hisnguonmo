@@ -29,10 +29,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.timerLabel = new System.Windows.Forms.Timer(this.components);
-            this.timerWallPaper = new System.Windows.Forms.Timer(this.components);
-            this.timerCheckFocus = new System.Windows.Forms.Timer(this.components);
+            this.timerLabel = new System.Windows.Forms.Timer();
+            this.timerWallPaper = new System.Windows.Forms.Timer();
+            this.timerCheckFocus = new System.Windows.Forms.Timer();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panelControlInput = new DevExpress.XtraEditors.PanelControl();

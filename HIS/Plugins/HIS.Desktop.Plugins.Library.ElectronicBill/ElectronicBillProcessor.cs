@@ -25,6 +25,7 @@ using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV;
 using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL;
 using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT;
 using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE;
+using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice;
 using HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.CTO;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Template;
 using Inventec.Desktop.Common.Message;
@@ -201,6 +202,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                             break;
                         case ProviderType.MINVOICE:
                             iRun = new MInvoiceBehavior(this.ElectronicBillDataInput, serviceConfig, accountConfig);
+                            break;
+                        case ProviderType.VNINVOICE:
+                            iRun = new VNInvoiceBehavior(this.ElectronicBillDataInput, serviceConfig, accountConfig);
                             break;
                         default:
                             break;

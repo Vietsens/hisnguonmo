@@ -353,9 +353,12 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             if (!string.IsNullOrEmpty(icdMapCode))
             {
                 var icdCaus = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == icdMapCode);
-                if (icdCaus != null)
+                HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
+                icd.ICD_CODE = icdCaus.ICD_CODE;
+                icd.ICD_NAME = icdCaus.ICD_NAME;
+                if (ucIcd != null)
                 {
-                    this.icdYhctProcessor.SetRequired(this.ucIcdYhct, (icdCaus.IS_REQUIRE_CAUSE == 1));
+                    icdProcessor.Reload(ucIcd, icd);
                 }
             }
         }

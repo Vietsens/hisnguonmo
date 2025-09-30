@@ -27,9 +27,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
 {
     class VNInvoiceBehavior : IRun
     {
-        private const string SUCCESS_CODE = "01";
+        private const int SUCCESS_CODE = 0;
         private string serviceConfig { get; set; }
         private string accountConfig { get; set; }
+        private TemplateEnum.TYPE TempType { get; set; }
         ElectronicBillDataInput ElectronicBillDataInput { get; set; }
 
         public VNInvoiceBehavior(Base.ElectronicBillDataInput electronicBillDataInput, string serviceConfig, string accountConfig)
@@ -46,6 +47,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
             {
                 if (this.Check(electronicBillType, ref result))
                 {
+                    this.TempType = _templateType;
                     string[] configArr = serviceConfig.Split('|');
                     string serviceUrl = configArr[1];
                     string ma_dvcs = configArr[2];
@@ -59,7 +61,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                     //InputLoginVNInvoice inputLogin = new InputLoginVNInvoice();
                     inputLogin.username = accountConfigArr[0].Trim();
                     inputLogin.password = accountConfigArr[1].Trim();
-                    //inputLogin.taxCode =
+                    inputLogin.taxCode = ma_dvcs; // cần xem lại
                     //adoLogin.ma_dvcs = ma_dvcs;
                     //ApiDataResult loginResult = ProcessLogin(serviceUrl, adoLogin);
                     OutputLoginVNInvoice outputLogin = new OutputLoginVNInvoice();
@@ -75,20 +77,37 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                         case ElectronicBillType.ENUM.CREATE_INVOICE:
                             if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
                             {
-                                ThayTheHoaDon(ref result, serviceUrl, inputLogin, outputLogin, _templateType);
+                                if(ElectronicBillDataInput.InvoiceCode == "01")
+                                {
+                                    ThayTheHoaDonGTGT(ref result, serviceUrl, inputLogin, outputLogin, _templateType);
+                                }
+                                else if(ElectronicBillDataInput.InvoiceCode == "02")
+                                {
+                                    ThayTheHoaDonBH(ref result, serviceUrl, inputLogin, outputLogin, _templateType);
+                                }
                             }
                             else
                             {
-                                TaoHoaDonDienTu(ref result, serviceUrl, inputLogin, outputLogin, _templateType);
-                                if (result.InvoiceCode != null && configArr.Count() == 4 && configArr[3] == "1")
+                                if (ElectronicBillDataInput.InvoiceCode == "01")
                                 {
-                                    KyHoaDonDienTu(ref result, serviceUrl, inputLogin, outputLogin, _templateType);
+                                    TaoVaKyHoaDonDienTuGTGT(ref result, serviceUrl, inputLogin, outputLogin, _templateType); // hóa đơn giá trị gia tăng
+                                }
+                                else if (ElectronicBillDataInput.InvoiceCode == "02")
+                                {
+                                    TaoVaKyHoaDonDienTuBH(ref result, serviceUrl, inputLogin, outputLogin, _templateType); //hóa đơn bán hàng
                                 }
                             }
                             break;
 
                         case ElectronicBillType.ENUM.GET_INVOICE_LINK:
-                            TaiHoaDonChuyenDoi(ref result, serviceUrl, inputLogin, outputLogin, _templateType);
+                            if (ElectronicBillDataInput.InvoiceCode == "01")
+                            {
+                                TaiHoaDonChuyenDoiGTGT(ref result, serviceUrl, inputLogin, outputLogin, _templateType);
+                            }
+                            else if(ElectronicBillDataInput.InvoiceCode == "02")
+                            {
+                                TaiHoaDonChuyenDoiBH(ref result, serviceUrl, inputLogin, outputLogin, _templateType);
+                            }
                             break;
                         case ElectronicBillType.ENUM.CANCEL_INVOICE:
                             break;
@@ -111,86 +130,344 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
             return result;
         }
 
-        private void TaiHoaDonChuyenDoi(ref ElectronicBillResult result, string serviceUrl, object adoLogin, object loginResult, TemplateEnum.TYPE templateType)
-        {
-            throw new NotImplementedException();
-        }
 
-        private void KyHoaDonDienTu(ref ElectronicBillResult result, string serviceUrl, object adoLogin, object loginResult, TemplateEnum.TYPE templateType)
+        #region tạo và ký hóa đơn điện tử
+        private InputCreateAndSignInvoice IEBill()
         {
-            throw new NotImplementedException();
+            InputCreateAndSignInvoice data = new InputCreateAndSignInvoice();
+            try
+            {
+                data.TemplateNo = Convert.ToInt32(ElectronicBillDataInput.TemplateCode);
+                data.SerialNo = ElectronicBillDataInput.SymbolCode;
+                data.erpId = ElectronicBillDataInput.Transaction.TRANSACTION_CODE; // a nampp bảo thế 
+                data.creatorErp = inputLogin.username; // cần xem lại
+                data.transactionId = ElectronicBillDataInput.Transaction.ID.ToString();
+                data.invoiceDate = DateTime.Now.ToString("yyyy-MM-dd");
+                data.paymentMethod = ElectronicBillDataInput.PaymentMethod ?? "TM / CK";
+                data.currency = "VND";
+                data.exchangeRate = 1;
+                data.totalAmount = 0; //tổng tiền hàng chưa vat, sẽ được set lại ở dưới
+                data.totalVatAmount = 0; // tổng tiền thuế
+                data.totalPaymentAmount = 0;//tổng tiền thanh toán có VAT, sẽ được set lại ở dưới
+                data.buyerCode = ElectronicBillDataInput.Transaction.TDL_PATIENT_CODE;
+                data.buyerEmail = ElectronicBillDataInput.Transaction.BUYER_EMAIL;
+                data.buyerFullName = ElectronicBillDataInput.Transaction.BUYER_NAME;
+                data.buyerAddressLine = ElectronicBillDataInput.Transaction.BUYER_ADDRESS;
+                data.invoiceDetails = DSCT();
+                List<InvoiceTaxBreakdown> dsthuesuat = new List<InvoiceTaxBreakdown>(); // sẽ tự động tính nếu bật cấu hình(với tạo hóa đơn riêng lẻ, còn thằng tạo và ký này không thấy có)
+                data.invoiceTaxBreakdowns = dsthuesuat;
+                if (data.invoiceDetails != null && data.invoiceDetails.Count > 0)
+                {
+                    data.totalAmount = data.invoiceDetails.Sum(o => o.amount ?? 0);
+                    data.totalPaymentAmount = data.invoiceDetails.Sum(o => o.paymentAmount ?? 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+            return data;
         }
+        private void TaoVaKyHoaDonDienTuGTGT(ref ElectronicBillResult result, string serviceUrl, InputLoginVNInvoice inputLogin, OutputLoginVNInvoice outputLogin, TemplateEnum.TYPE templateType)
+        {
+            try
+            {
+                string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(IEBill());
+                var createAndSignInvoiceResult = Base.ApiConsumerV2.CreateRequest<OutputCreateAndSignInvoice>(System.Net.WebRequestMethods.Http.Post, serviceUrl, string.Format("api/01gtkt/create-batch-and-sign?TemplateNo={0}&serialNo={1}", IEBill().TemplateNo, IEBill().SerialNo), outputLogin.accessToken, null, sendJsonData);
+                result.InvoiceSys = ProviderType.VNINVOICE;
+                if (createAndSignInvoiceResult != null && createAndSignInvoiceResult.data != null)
+                {
+                    if (createAndSignInvoiceResult.code == SUCCESS_CODE)
+                    {
+                        result.Success = true;
+                        result.InvoiceCode = createAndSignInvoiceResult.data[0].transactionId;
+                        result.InvoiceLoginname = inputLogin.username;
+                        result.InvoiceTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
+                    }
+                    else
+                    {
+                        result.Success = false;
+                        ElectronicBillResultUtil.Set(ref result, false, createAndSignInvoiceResult.message != null ? createAndSignInvoiceResult.message : "Tạo và ký hóa đơn giá trị gia tăng thất bại");
+                    }
+                }
+                else if (createAndSignInvoiceResult == null || (createAndSignInvoiceResult != null && createAndSignInvoiceResult.errors != null))
+                {
+                    result.Success = false;
+                    ElectronicBillResultUtil.Set(ref result, false, createAndSignInvoiceResult != null && createAndSignInvoiceResult.errors != null ? createAndSignInvoiceResult.errors : "Tạo và ký hóa đơn giá trị gia tăng thất bại");
+                }
 
-        private void TaoHoaDonDienTu(ref ElectronicBillResult result, string serviceUrl, object adoLogin, object loginResult, TemplateEnum.TYPE templateType)
-        {
-            throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
+        private void TaoVaKyHoaDonDienTuBH(ref ElectronicBillResult result, string serviceUrl, InputLoginVNInvoice inputLogin, OutputLoginVNInvoice outputLogin, TemplateEnum.TYPE templateType)
+        {
+            try
+            {
+                string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(IEBill());
+                var createAndSignInvoiceResult = Base.ApiConsumerV2.CreateRequest<OutputCreateAndSignInvoice>(System.Net.WebRequestMethods.Http.Post, serviceUrl, string.Format("api/02gttt/create-batch-and-sign?TemplateNo={0}&serialNo={1}", IEBill().TemplateNo, IEBill().SerialNo), outputLogin.accessToken, null, sendJsonData);
+                result.InvoiceSys = ProviderType.VNINVOICE;
+                if (createAndSignInvoiceResult != null && createAndSignInvoiceResult.data != null)
+                {
+                    if (createAndSignInvoiceResult.code == SUCCESS_CODE)
+                    {
+                        result.Success = true;
+                        result.InvoiceCode = createAndSignInvoiceResult.data[0].transactionId;
+                        result.InvoiceLoginname = inputLogin.username;
+                        result.InvoiceTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
+                    }
+                    else
+                    {
+                        result.Success = false;
+                        ElectronicBillResultUtil.Set(ref result, false, createAndSignInvoiceResult.message != null ? createAndSignInvoiceResult.message : "Tạo và ký hóa đơn bán hàng thất bại");
+                    }
+                }
+                else if (createAndSignInvoiceResult == null || (createAndSignInvoiceResult != null && createAndSignInvoiceResult.errors != null))
+                {
+                    result.Success = false;
+                    ElectronicBillResultUtil.Set(ref result, false, createAndSignInvoiceResult != null && createAndSignInvoiceResult.errors != null ? createAndSignInvoiceResult.errors : "Tạo và ký hóa đơn bán hàng thất bại");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        #endregion
+        #region chuyển đổi hóa đơn
+        private void TaiHoaDonChuyenDoiGTGT(ref ElectronicBillResult result, string serviceUrl, InputLoginVNInvoice inputLogin, OutputLoginVNInvoice outputLogin, TemplateEnum.TYPE templateType)
+        {
+            try
+            {
+                if (ElectronicBillDataInput == null || string.IsNullOrEmpty(ElectronicBillDataInput.InvoiceCode))
+                    return;
+                //string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(ICoEBill());
+                string erpid = ElectronicBillDataInput.Transaction.TRANSACTION_CODE;
+                var convertInvoiceResult = Base.ApiConsumerV2.CreateRequest<OutputConvertInvoice>(System.Net.WebRequestMethods.Http.Post, serviceUrl, string.Format("api/01gtkt/official/{0}", erpid), outputLogin.accessToken, null);
+                result.InvoiceSys = ProviderType.VNINVOICE;
+                if (convertInvoiceResult != null && convertInvoiceResult.data != null && convertInvoiceResult.id != null)
+                {
+                    result.Success = true;
+                }
+                else
+                {
+                    result.Success = false;
+                    ElectronicBillResultUtil.Set(ref result, false, "Chuyển đổi hóa đơn thất bại");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void TaiHoaDonChuyenDoiBH(ref ElectronicBillResult result, string serviceUrl, InputLoginVNInvoice inputLogin, OutputLoginVNInvoice outputLogin, TemplateEnum.TYPE templateType)
+        {
+            try
+            {
+                if (ElectronicBillDataInput == null || string.IsNullOrEmpty(ElectronicBillDataInput.InvoiceCode))
+                    return;
+                string erpid = ElectronicBillDataInput.Transaction.TRANSACTION_CODE;
+                var convertInvoiceResult = Base.ApiConsumerV2.CreateRequest<OutputConvertInvoice>(System.Net.WebRequestMethods.Http.Post, serviceUrl, string.Format("api/02gttt/official/{0}", erpid), outputLogin.accessToken, null);
+                result.InvoiceSys = ProviderType.VNINVOICE;
+                if (convertInvoiceResult != null && convertInvoiceResult.data != null && convertInvoiceResult.id != null)
+                {
+                    result.Success = true;
+                }
+                else
+                {
+                    result.Success = false;
+                    ElectronicBillResultUtil.Set(ref result, false, "Chuyển đổi hóa đơn thất bại");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        #endregion
+        
         #region thay thế hóa đơn
         private InputReplaceInvoice ReplaceInvoice()
         {
             //var inv = InvoiceInfo.InvoiceInfoProcessor.GetData(ElectronicBillDataInput);
             InputReplaceInvoice replaceInvoice = new InputReplaceInvoice();
-            replaceInvoice.erpIdReference = ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.ToString();
-            replaceInvoice.templateNo = Convert.ToInt32(ElectronicBillDataInput.TemplateCode);
-            replaceInvoice.serialNo = ElectronicBillDataInput.SymbolCode;
-            replaceInvoice.invoiceNo = ElectronicBillDataInput.NumOrder.ToString(); // cần xem lại
-            replaceInvoice.erpId = ElectronicBillDataInput.Transaction.TRANSACTION_CODE; // a nampp bảo thế 
-            replaceInvoice.creatorErp = inputLogin.username; // cần xem lại
-            replaceInvoice.invoiceDate = DateTime.Now;
-            replaceInvoice.note = "";
-            replaceInvoice.paymentMethod = ElectronicBillDataInput.PaymentMethod ?? "TM / CK";
-            replaceInvoice.currency = "VND";
-            replaceInvoice.exchangeRate = 1; // cần xem lại
-            replaceInvoice.totalAmount = ElectronicBill;
-            replaceInvoice.totalVatAmount = ;
-            List<InvoiceTaxBreakdown> dsthuesuat = new List<InvoiceTaxBreakdown>();
-            if (replaceInvoice.dschitiet != null && hd.dschitiet.Count > 0)
+            try
             {
-                hd.tongtien_chuavat = hd.dschitiet.Sum(o => o.tongtien_chuathue ?? 0);
-                hd.tongtien_covat = hd.dschitiet.Sum(o => o.tongtien_cothue ?? 0);
-                var groupByMaThue = hd.dschitiet.GroupBy(o => o.mathue).ToList();
-                foreach (var item in groupByMaThue)
+                replaceInvoice.erpIdReference = ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.ToString();
+                replaceInvoice.templateNo = Convert.ToInt32(ElectronicBillDataInput.TemplateCode);
+                replaceInvoice.serialNo = ElectronicBillDataInput.SymbolCode;
+                replaceInvoice.invoiceNo = ElectronicBillDataInput.NumOrder.ToString(); // cần xem lại
+                replaceInvoice.erpId = ElectronicBillDataInput.Transaction.TRANSACTION_CODE; // a nampp bảo thế 
+                replaceInvoice.creatorErp = inputLogin.username; // cần xem lại
+                replaceInvoice.invoiceDate = DateTime.Now.ToString("yyyy-MM-dd");
+                replaceInvoice.note = "";
+                replaceInvoice.paymentMethod = ElectronicBillDataInput.PaymentMethod ?? "TM / CK";
+                replaceInvoice.currency = "VND";
+                replaceInvoice.exchangeRate = 1; // cần xem lại
+                replaceInvoice.totalAmount = 0; // sẽ set lại ở dsct, tổng tiền chưa thuế
+                replaceInvoice.totalVatAmount = 0;
+                replaceInvoice.totalPaymentAmount = 0; //sẽ set lại ở dsct, tổng tiền có thuế 
+                replaceInvoice.buyerCode = ElectronicBillDataInput.Transaction.TDL_PATIENT_CODE;
+                replaceInvoice.buyerEmail = ElectronicBillDataInput.Transaction.BUYER_EMAIL;
+                replaceInvoice.buyerFullName = ElectronicBillDataInput.Transaction.BUYER_NAME;
+                replaceInvoice.buyerAddressLine = ElectronicBillDataInput.Transaction.BUYER_ADDRESS;
+                replaceInvoice.invoiceDetails = DSCT();
+                List<InvoiceTaxBreakdown> dsthuesuat = new List<InvoiceTaxBreakdown>(); // sẽ tự động tính nếu bật cấu hình
+                if (replaceInvoice.invoiceDetails != null && replaceInvoice.invoiceDetails.Count > 0)
                 {
-                    DanhSachThue st = new DanhSachThue();
-                    st.mathue = item.First().mathue;
-                    st.tongtien_chiuthue = item.Sum(o => o.tongtien_chuathue ?? 0);
-                    st.tongtien_thue = item.Sum(o => o.tongtien_cothue ?? 0) - item.Sum(o => o.tongtien_chuathue ?? 0);
-                    dsthuesuat.Add(st);
+                    replaceInvoice.totalAmount = replaceInvoice.invoiceDetails.Sum(o => o.amount ?? 0);
+                    replaceInvoice.totalPaymentAmount = replaceInvoice.invoiceDetails.Sum(o => o.paymentAmount ?? 0);
                 }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
             }
             return replaceInvoice;
         }
-        private void ThayTheHoaDon(ref ElectronicBillResult result, string serviceUrl, InputLoginVNInvoice inputLogin, OutputLoginVNInvoice outputLogin, TemplateEnum.TYPE templateType)
+
+        private List<VNInvoiceDetail> DSCT()
+        {
+            List<VNInvoiceDetail> dschitiet = new List<VNInvoiceDetail>();
+            try
+            {
+                IRunTemplate iRunTemplate = TemplateFactory.MakeIRun(this.TempType, ElectronicBillDataInput);
+                var listProduct = iRunTemplate.Run();
+                if (listProduct == null)
+                {
+                    throw new Exception("Loi phan tich listProductBase");
+                }
+                if (this.TempType == TemplateEnum.TYPE.TemplateNhaThuoc)
+                {
+                    var lstProductBasePlus = (List<ProductBasePlus>)listProduct;
+                    int count = 1;
+                    foreach (var item in lstProductBasePlus)
+                    {
+                        VNInvoiceDetail ddt = new VNInvoiceDetail();
+                        ddt.index = count++;
+                        ddt.productType = 0;
+                        //ddt.khuyenmai = 0;
+                        ddt.productCode = item.ProdCode;
+                        ddt.productName = item.ProdName;
+                        ddt.unitName = item.ProdUnit;
+                        if (item.ProdQuantity.HasValue)
+                        {
+                            ddt.quantity = (double)Math.Round(item.ProdQuantity.Value, 0, MidpointRounding.AwayFromZero);
+                        }
+                        if (item.ProdPrice.HasValue)
+                        {
+                            ddt.unitPrice = Math.Round(item.ProdPrice.Value, 0, MidpointRounding.AwayFromZero);
+                        }
+                        ddt.discountPercentBeforeTax = 0;
+                        ddt.discountAmountBeforeTax = 0;
+                        //ddt.phikhac_tyle = 0;
+                        //ddt.phikhac_sotien = 0;
+                        ddt.paymentAmount = item.Amount; //thành tiền sau vat
+                        ddt.amount = item.AmountWithoutTax; // thành tiền chưa thuế
+                        ddt.vatPercent = 0; // giống cyber
+                        ddt.vatAmount = 0;
+                        dschitiet.Add(ddt);
+                    }
+                }
+                else
+                {
+                    int count = 1;
+                    var result = (List<ProductBase>)listProduct;
+                    foreach (var item in result)
+                    {
+                        VNInvoiceDetail ddt = new VNInvoiceDetail();
+                        ddt.index = count++;
+                        ddt.productType = 1;
+                        //ddt.khuyenmai = 0;
+                        ddt.productCode = item.ProdCode;
+                        ddt.productName = item.ProdName;
+                        ddt.unitName = item.ProdUnit;
+                        ddt.quantity = (double)item.ProdQuantity;
+                        ddt.unitPrice = item.ProdPrice;
+                        ddt.discountPercentBeforeTax = 0;
+                        ddt.discountAmountBeforeTax = 0;
+                        //ddt.phikhac_tyle = 0;
+                        //ddt.phikhac_sotien = 0;
+                        ddt.amount = item.Amount;
+                        //ddt.mathue = "-1";
+                        ddt.paymentAmount = item.Amount;
+                        ddt.vatPercent = 0;
+                        dschitiet.Add(ddt);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dschitiet = new List<VNInvoiceDetail>();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return dschitiet;
+        }
+
+        private void ThayTheHoaDonGTGT(ref ElectronicBillResult result, string serviceUrl, InputLoginVNInvoice inputLogin, OutputLoginVNInvoice outputLogin, TemplateEnum.TYPE templateType)
         {
             try
             {
                 string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(ReplaceInvoice());
-                var ReplaceInvoiceResult = Base.ApiConsumerV2.CreateRequest<ApiDataResult>(System.Net.WebRequestMethods.Http.Post, serviceUrl, "api/InvoiceApi78/ThayTheSaveSign", loginResult.token, adoLogin.ma_dvcs, sendJsonData);
-                result.InvoiceSys = ProviderType.MINVOICE;
+                var ReplaceInvoiceResult = Base.ApiConsumerV2.CreateRequest<OutputReplaceInvoice>(System.Net.WebRequestMethods.Http.Post, serviceUrl, "api/01gtkt/replace", outputLogin.accessToken, null, sendJsonData);
+                result.InvoiceSys = ProviderType.VNINVOICE;
                 if (ReplaceInvoiceResult != null && ReplaceInvoiceResult.data != null)
                 {
-                    if (ReplaceInvoiceResult.code == "00")
+                    if (ReplaceInvoiceResult.code == SUCCESS_CODE)
                     {
                         result.Success = true;
-                        result.InvoiceCode = ReplaceInvoiceResult.data.id;
-                        result.InvoiceLookupCode = ReplaceInvoiceResult.data.sbmat;
-                        result.InvoiceNumOrder = ReplaceInvoiceResult.data.shdon.ToString();
-                        result.InvoiceLoginname = adoLogin.username;
-                        result.InvoiceTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ReplaceInvoiceResult.data.tdlap);
-                        result.hoadon68_id = Guid.Parse(ReplaceInvoiceResult.data.hoadon68_id);
+                        result.InvoiceCode = ReplaceInvoiceResult.data[0].erpId;
+                        result.InvoiceNumOrder = ReplaceInvoiceResult.data[0].invoiceNo.ToString();
 
                     }
                     else
                     {
                         result.Success = false;
-                        string message = ReplaceInvoiceResult != null ? ReplaceInvoiceResult.error ?? ReplaceInvoiceResult.message : "Gửi hóa đơn gốc thất bại";
+                        string message = ReplaceInvoiceResult != null ? ReplaceInvoiceResult.errors ?? ReplaceInvoiceResult.message : "Thay thế hóa đơn GTGT thất bại";
                         ElectronicBillResultUtil.Set(ref result, false, message);
                     }
                 }
-                else if (ReplaceInvoiceResult == null || !String.IsNullOrWhiteSpace(ReplaceInvoiceResult.error) || !String.IsNullOrWhiteSpace(ReplaceInvoiceResult.message))
+                else if (ReplaceInvoiceResult == null || !String.IsNullOrWhiteSpace(ReplaceInvoiceResult.errors) || !String.IsNullOrWhiteSpace(ReplaceInvoiceResult.message))
                 {
                     result.Success = false;
-                    string message = ReplaceInvoiceResult != null ? ReplaceInvoiceResult.error ?? ReplaceInvoiceResult.message : "Gửi hóa đơn gốc thất bại";
+                    string message = ReplaceInvoiceResult != null ? ReplaceInvoiceResult.errors ?? ReplaceInvoiceResult.message : "Thay thế hóa đơn GTGT thất bại";
+                    ElectronicBillResultUtil.Set(ref result, false, message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void ThayTheHoaDonBH(ref ElectronicBillResult result, string serviceUrl, InputLoginVNInvoice inputLogin, OutputLoginVNInvoice outputLogin, TemplateEnum.TYPE templateType)
+        {
+            try
+            {
+                string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(ReplaceInvoice());
+                var ReplaceInvoiceResult = Base.ApiConsumerV2.CreateRequest<OutputReplaceInvoice>(System.Net.WebRequestMethods.Http.Post, serviceUrl, "api/02gttt/replace", outputLogin.accessToken, null, sendJsonData);
+                result.InvoiceSys = ProviderType.VNINVOICE;
+                if (ReplaceInvoiceResult != null && ReplaceInvoiceResult.data != null)
+                {
+                    if (ReplaceInvoiceResult.code == SUCCESS_CODE)
+                    {
+                        result.Success = true;
+                        result.InvoiceCode = ReplaceInvoiceResult.data[0].erpId;
+                        result.InvoiceNumOrder = ReplaceInvoiceResult.data[0].invoiceNo.ToString();
+                    }
+                    else
+                    {
+                        result.Success = false;
+                        string message = ReplaceInvoiceResult != null ? ReplaceInvoiceResult.errors ?? ReplaceInvoiceResult.message : "Thay thế hóa đơn bán hàng thất bại";
+                        ElectronicBillResultUtil.Set(ref result, false, message);
+                    }
+                }
+                else if (ReplaceInvoiceResult == null || !String.IsNullOrWhiteSpace(ReplaceInvoiceResult.errors) || !String.IsNullOrWhiteSpace(ReplaceInvoiceResult.message))
+                {
+                    result.Success = false;
+                    string message = ReplaceInvoiceResult != null ? ReplaceInvoiceResult.errors ?? ReplaceInvoiceResult.message : "Thay thế hóa đơn bán hàng thất bại";
                     ElectronicBillResultUtil.Set(ref result, false, message);
                 }
             }
@@ -234,13 +511,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
             return result;
         }
 
-        private OutputLoginVNInvoice ProcessLogin(string serviceUrl, InputLoginVNInvoice adoLogin)
+        private OutputLoginVNInvoice ProcessLogin(string serviceUrl, InputLoginVNInvoice inputLogin)
         {
             OutputLoginVNInvoice result = null;
             try
             {
                 string uri = "api/system/account/login";
-                string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(adoLogin);
+                string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(inputLogin);
                 result = Base.ApiConsumerV2.CreateRequest<OutputLoginVNInvoice>(System.Net.WebRequestMethods.Http.Post, serviceUrl, uri, null, null, sendJsonData);
             }
             catch (Exception ex)
