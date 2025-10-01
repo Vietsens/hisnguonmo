@@ -1285,7 +1285,14 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
                 if (payFormModel != null)
                 {
-                    ValidationSingleControl(cboBank);
+                    if (payFormModel.IS_REQUIRED_BANK == 1)
+                    {
+                        ValidationSingleControl(cboBank);
+                    }
+                    else
+                    {
+                        dxValidationProvider1.SetValidationRule(cboBank, null);
+                    }
                 }
                 else
                 {
@@ -1618,11 +1625,11 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         {
             try
             {
-                if (cboAccountBook.EditValue == null || cboPayForm.EditValue == null || txtTotalAmount.Value <= 0 || cboBank.EditValue == null)
+                if (cboAccountBook.EditValue == null || cboPayForm.EditValue == null || txtTotalAmount.Value <= 0)
                 {
                     param.Messages.Add(Base.ResourceMessageLang.ThieuTruongDuLieuBatBuoc);
                     return;
-                }
+                }               
 
                 CARD.WCF.DCO.WcfDepositDCO DepositDCO = new CARD.WCF.DCO.WcfDepositDCO();
                 // thanh toán qua thẻ 
@@ -1663,6 +1670,11 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     data.Transaction.NUM_ORDER = (long)(spinTongTuDen.Value);
                 }
                 var payFormer = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue?.ToString());
+                if (payFormer != null && payFormer.IS_REQUIRED_BANK == 1 && cboBank.EditValue == null)
+                {
+                    param.Messages.Add("Vui lòng chọn ngân hàng cho hình thức thanh toán này.");
+                    return;
+                }
                 if (payFormer != null)
                     data.Transaction.PAY_FORM_ID = payFormer.ID;
                 else
