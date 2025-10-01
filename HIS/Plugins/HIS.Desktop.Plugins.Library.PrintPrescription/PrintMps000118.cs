@@ -41,9 +41,6 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
         private HIS_SERVICE_REQ hisServiceReq_CurentExam;
         private HIS_DHST hisDhst;
         private HIS_SERVICE_REQ HisPrescriptionSDOPrintPlus;
-        private List<HIS_SERVICE_REQ> lsthisPrescriptionSDOPrintPlus;
-        private List<HIS_SERVICE_REQ> lstServiceReq;
-        private List<HIS_SERVICE_REQ_METY> lstHisServiceReqMety;
         private string mediStockName;
         private string expMestCode;
         private V_HIS_ROOM executeRoom;
@@ -79,7 +76,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
 
         Action<int, Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo> SavedData;
         Action<string> CancelPrint;
-           
+
         public PrintMps000118(string printTypeCode, string fileName, ref bool result,
             MOS.SDO.OutPatientPresResultSDO currentOutPresSDO,
             bool printNow, bool hasMediMate,
@@ -92,7 +89,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
             Action<string> cancelPrint,
             bool CallFromPrescription)
         {
-            try    
+            try
             {
                 this.currentModule = module;
                 this.printNow = printNow;
@@ -115,8 +112,6 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     hisDhst = new HIS_DHST();
                     mediStockName = "";
                     HisPrescriptionSDOPrintPlus = new HIS_SERVICE_REQ();
-                    lsthisPrescriptionSDOPrintPlus = new List<HIS_SERVICE_REQ>();
-                    lstHisServiceReqMety = new List<HIS_SERVICE_REQ_METY>();
                     executeRoom = new V_HIS_ROOM();
                     reqRoom = new V_HIS_ROOM();
 
@@ -131,8 +126,6 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         mediMateIn = new ThreadMedicineADO(currentOutPresSDO, hasMediMate, hasOutHospital);
                         mediMateOut = new ThreadMedicineADO(currentOutPresSDO, hasMediMate, hasOutHospital);
                         HisPrescriptionSDOPrintPlus = currentOutPresSDO.ServiceReqs.FirstOrDefault();
-                        lsthisPrescriptionSDOPrintPlus = currentOutPresSDO.ServiceReqs;
-                        lstHisServiceReqMety = currentOutPresSDO.ServiceReqMeties;
                     }
 
                     if (ExpMests == null || ExpMests.Count <= 0 || HisPrescriptionSDOPrintPlus == null)
@@ -360,7 +353,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             }
                             if (lstMedicineExpmestTypeKhongChua_GN_HT_ADO != null && lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Count > 0)
                             {
-                                
+
                                 listSPHoTro = lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Where(o => o.IS_FUNCTIONAL_FOOD == IS_TRUE || o.Type == 4).ToList();
                                 listTThuongNgoaiKho = lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Except(listSPHoTro).ToList();
                             }
@@ -489,8 +482,6 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         #region gay Nghien V2 3 lien
                         if (listGayNghien != null && listGayNghien.Count > 0)
                         {
-                            var listGayNghien234Ids = listGayNghien.Select(x => x.TDL_SERVICE_REQ_ID).ToList();
-                            lstServiceReq = lsthisPrescriptionSDOPrintPlus.Where(o => listGayNghien234Ids.Contains(o.ID)).ToList();
                             InGayNghien();
                         }
 
@@ -846,7 +837,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     //PrintData(printTypeCode, fileName, Mps000353RDO, printNow, 1, ref result);
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 this.CancelPrint(printTypeCode);
                 Inventec.Common.Logging.LogSystem.Error(ex);
@@ -887,16 +878,12 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
 
                     var acsUser = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.LOGINNAME == HisPrescriptionSDOPrintPlus.REQUEST_LOGINNAME);
                     Mps000181ADO.REQUEST_USER_MOBILE = acsUser != null ? acsUser.MOBILE : "";
-                    if (lstHisServiceReqMety != null)
-                    {
-                        var lstServiceReqIds = lstServiceReq.Select(o => o.ID).ToList();
-                        lstHisServiceReqMety = lstHisServiceReqMety.Where(o => lstServiceReqIds.Contains(o.SERVICE_REQ_ID)).ToList();
-                    }
+
                     MPS.Processor.Mps000181.PDO.Mps000181PDO mps000181PDO = new MPS.Processor.Mps000181.PDO.Mps000181PDO(
                         vHisPatientTypeAlter,
                         hisDhst,
-                        lstServiceReq,
-                        listN,     
+                        HisPrescriptionSDOPrintPlus,
+                        listN,
                         HisServiceReq_Exam,
                         hisTreatment,
                         Mps000181ADO,
@@ -904,8 +891,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         keyOrderListData,
                         this.HisExpMest,
                         this.transReq,
-                        this.lstConfigs,
-                        lstHisServiceReqMety);
+                        this.lstConfigs);
 
                     Print.PrintData(printTypeCode, fileName, mps000181PDO, printNow, treatmentCode, ref result, this.currentModule != null ? currentModule.RoomId : 0, previewType, listGayNghien.Count, this.SavedData, numCopy);
                     //PrintData(printTypeCode, fileName, mps000181PDO, printNow, numCopy, ref result);
@@ -1303,7 +1289,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
+        }   
         #endregion
     }
 }

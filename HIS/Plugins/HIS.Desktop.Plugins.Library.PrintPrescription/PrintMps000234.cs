@@ -82,7 +82,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
             )
         {
             try
-            {
+            {    
                 this.printNow = printNow;
                 this.currentModule = module;
                 this.richEditorMain = _richEditorMain;
@@ -104,7 +104,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     mediStockName = "";
                     HisPrescriptionSDOPrintPlus = new HIS_SERVICE_REQ();
                     lsthisPrescriptionSDOPrintPlus = new List<HIS_SERVICE_REQ>();
-                    lstHisServiceReqMety = new List<HIS_SERVICE_REQ_METY>();
+                    //lstHisServiceReqMety = new List<HIS_SERVICE_REQ_METY>();
                     executeRoom = new V_HIS_ROOM();
                     reqRoom = new V_HIS_ROOM();
                     List<long> exeDepaIds = new List<long>();
@@ -122,7 +122,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         mediMateOut = new ThreadMedicineADO(currentOutPresSDO, hasMediMate);
                         HisPrescriptionSDOPrintPlus = currentOutPresSDO.ServiceReqs.FirstOrDefault();
                         lsthisPrescriptionSDOPrintPlus = currentOutPresSDO.ServiceReqs;
-                        lstHisServiceReqMety = currentOutPresSDO.ServiceReqMeties;
+                        //lstHisServiceReqMety = currentOutPresSDO.ServiceReqMeties;
                         exeDepaIds = currentOutPresSDO.ServiceReqs.Select(s => s.EXECUTE_DEPARTMENT_ID).Distinct().ToList();
                         reqDepaIds = currentOutPresSDO.ServiceReqs.Select(s => s.REQUEST_DEPARTMENT_ID).Distinct().ToList();
                     }
@@ -398,25 +398,25 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(AppConfigKeys.CONFIG_KEY__HIS_DESKTOP__PrintSplitTemplateMps000234Option) == "1")
                     {
                         #region GN
-                        lstServiceReq = new List<HIS_SERVICE_REQ>();
-                        foreach (var itemN in listGayNghien234)
-                        {
-                            ExpMestMedicineSDO ado = new ExpMestMedicineSDO();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestMedicineSDO>(ado, itemN);
-                            listGayNghien.Add(ado);
-                        }
+                        //lstServiceReq = new List<HIS_SERVICE_REQ>();
+                        //foreach (var itemN in listGayNghien234)
+                        //{
+                        //    ExpMestMedicineSDO ado = new ExpMestMedicineSDO();
+                        //    Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestMedicineSDO>(ado, itemN);
+                        //    listGayNghien.Add(ado);
+                        //}
 
-                        var listGayNghien234Ids = listGayNghien.Select(x => x.TDL_SERVICE_REQ_ID).ToList();
-                        lstServiceReq = lsthisPrescriptionSDOPrintPlus.Where(o => listGayNghien234Ids.Contains(o.ID)).ToList(); 
+                        //var listGayNghien234Ids = listGayNghien.Select(x => x.TDL_SERVICE_REQ_ID).ToList();
+                        //lstServiceReq = lsthisPrescriptionSDOPrintPlus.Where(o => listGayNghien234Ids.Contains(o.ID)).ToList(); 
 
-                        if (listGayNghien.Count > 0)
-                            InGayNghien();
+                        //if (listGayNghien.Count > 0)
+                        //    InGayNghien();
 
                         listGayNghien = new List<ExpMestMedicineSDO>();
                         lstServiceReq = new List<HIS_SERVICE_REQ>();
                         foreach (var itemN in listOutStockGN234)
                         {
-                            if (itemN.Type == 3)
+                            //if (itemN.Type == 3)
                             {
                                 ExpMestMedicineSDO ado = new ExpMestMedicineSDO();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestMedicineSDO>(ado, itemN);
@@ -626,7 +626,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
 
         private void DelegatePrintGNHT(string printTypeCode, string fileName, ref bool result)
         {
-            try
+            try    
             {
                 if (listGayNghien != null && listGayNghien.Count > 0)
                 {
@@ -652,11 +652,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     var acsUser = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.LOGINNAME == HisPrescriptionSDOPrintPlus.REQUEST_LOGINNAME);
                     Mps000181ADO.REQUEST_USER_MOBILE = acsUser != null ? acsUser.MOBILE : "";
                     List<HIS_SERVICE_REQ_METY> lstServiceReqMety = new List<HIS_SERVICE_REQ_METY>();
-                    if (lstHisServiceReqMety != null)
-                    {
-                        var lstServiceReqIds = lstServiceReq.Select(o => o.ID).ToList();
-                        lstServiceReqMety = lstHisServiceReqMety.Where(o => lstServiceReqIds.Contains(o.SERVICE_REQ_ID)).ToList();
-                    }
+                    
 
                     MPS.Processor.Mps000181.PDO.Mps000181PDO mps000181PDO = new MPS.Processor.Mps000181.PDO.Mps000181PDO(
                         vHisPatientTypeAlter,
@@ -670,8 +666,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         keyOrderListData,
                         null, 
                         null,
-                        null,
-                        lstServiceReqMety);
+                        null);
 
                     Print.PrintData(printTypeCode, fileName, mps000181PDO, printNow, treatmentCode, ref result, this.currentModule != null ? currentModule.RoomId : 0, previewType, listGayNghien.Count, this.SavedData, numCopy);
                     //PrintData(printTypeCode, fileName, mps000181PDO, printNow, numCopy, ref result);

@@ -185,8 +185,7 @@ namespace MPS.Processor.Mps000181.PDO
   long? _KeyUseForm,
   HIS_EXP_MEST _hisExpMest,
   HIS_TRANS_REQ transReq,
-  List<HIS_CONFIG> listHisConfigPaymentQrCode,
-            List<HIS_SERVICE_REQ_METY> serviceReqMety)
+  List<HIS_CONFIG> listHisConfigPaymentQrCode)
         {
             try
             {
@@ -203,7 +202,7 @@ namespace MPS.Processor.Mps000181.PDO
                 this.HisExpMest = _hisExpMest;
                 this.TransReq = transReq;
                 this.ListHisConfigPaymentQrCode = listHisConfigPaymentQrCode;
-                this.lstServiceReqMety = serviceReqMety;
+                //this.lstServiceReqMety = serviceReqMety;
             }
             catch (Exception ex)
             {

@@ -353,6 +353,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         Dictionary<long, List<DocumentSignedUpdateIGSysResultDTO>> dSignedList = new Dictionary<long, List<DocumentSignedUpdateIGSysResultDTO>>();
         V_HIS_TREATMENT_FEE treatmentPrint;
         List<HIS_PATIENT_TYPE> listSourcePatientType = new List<HIS_PATIENT_TYPE>();
+        string PrintPrescription = "";
         #endregion
 
         #region Construct
@@ -3192,7 +3193,10 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         {
             try
             {
+                //ProcessSaveData
+                var hisConfigCFGprintTypeCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.SAVE_PRINT_MPS_DEFAULT);
                 //ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE.SAVE_PRINT_NOW);
+                this.PrintPrescription = hisConfigCFGprintTypeCode;
                 LogTheadInSessionInfo(() => ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE.SAVE_PRINT_NOW), !GlobalStore.IsCabinet ? "SaveAndPrintPrescription" : "SaveAndPrintMedicalStore");
                 CheckEnableBtnQR();
             }
