@@ -56,6 +56,11 @@ namespace HIS.UC.UCPatientRaw
         /// False: Không nhấn kiểm tra, để đảm bảo chức năng bên ngoài sử dụng được tìm kiếm CCCD
         /// </summary>
         public bool IsSearchCCCDByInfo = false;
+        Action<long, long?> _dlgTransferData;
+        public void TransferPatient(Action<long, long?> _dlgTransferData)
+        {
+            this._dlgTransferData = _dlgTransferData;
+        }
         public async void SearchPatientByCodeOrQrCode(string strValue, string keyTypeFind = null)
         {
             oldTypeFind = this.typeCodeFind;
@@ -773,7 +778,23 @@ namespace HIS.UC.UCPatientRaw
                     this.txtPatientName.SelectAll();
                 }
                 if (dataResult != null && dataResult.HisPatientSDO != null && !string.IsNullOrEmpty(dataResult.HisPatientSDO.PATIENT_CODE))
+                {
                     DisableControlOldPatientInformationOption();
+                    //qtcode
+                    CommonParam param = new CommonParam();
+                    //HisPatientProgramFilter filter = new HisPatientProgramFilter();
+                    //filter.PATIENT_ID = dataResult.HisPatientSDO.ID;
+                    HisTreatmentFilter filter = new HisTreatmentFilter();
+                    filter.ID = dataResult.HisPatientSDO.TreatmentId; 
+                    //var patientProgram = new BackendAdapter(param).Get<List<HIS_PATIENT_PROGRAM>>("api/HisPatientProgram/Get", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+
+                    var patientProgram = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                    if (this._dlgTransferData != null && patientProgram != null && patientProgram.PROGRAM_ID != null)
+                    {
+                        this._dlgTransferData.Invoke(dataResult.HisPatientSDO.ID, patientProgram.PROGRAM_ID);
+                    }
+                }
+
                 else
                     DisableControlOldPatientInformationOption(true);
             }
@@ -1021,7 +1042,7 @@ namespace HIS.UC.UCPatientRaw
                 {
                     hisPatientFilter.PATIENT_CODE__EXACT = string.Format("{0:0000000000}", Inventec.Common.TypeConvert.Parse.ToInt64(maBN));
                 }
-                hisPatientFilter.GENDER_ID = isMale;   
+                hisPatientFilter.GENDER_ID = isMale;
                 this.currentSearchedPatients = new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, hisPatientFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisPatientFilter), hisPatientFilter));
