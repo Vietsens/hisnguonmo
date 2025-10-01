@@ -118,7 +118,8 @@
     <Reference Include="HIS.UC.KskContract">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.KskContract\HIS.UC.KskContract.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.PlusInfo">
+    <Reference Include="HIS.UC.PlusInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\UC\HIS.UC.PlusInfo\bin\Debug\HIS.UC.PlusInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ServiceRoom">
