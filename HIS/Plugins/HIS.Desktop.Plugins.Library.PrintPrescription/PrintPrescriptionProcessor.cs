@@ -229,6 +229,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
         /// <param name="PrintTypeCode">Mã in (44,50,118)</param>
         /// <param name="PrintNow">true/false</param>
         public void Print(string PrintTypeCode, bool PrintNow)
+        
         {
             try     
             {
