@@ -401,11 +401,14 @@ namespace HIS.UC.Icd
                             cboIcds.SelectAll();
                         }
 
-                        if (this.refeshIcd != null)
+                        if (this.refeshIcd != null && IsCheckEntIcdYHCT)
                         {
                             Inventec.Common.Logging.LogSystem.Debug("this.refeshIcd.execute");
                             this.refeshIcd(listData.First());
+                            IsCheckEntIcdYHCT = false;
                         }
+                        else
+                            IsCheckEntIcdYHCT = true;
                     }
                 }
 
