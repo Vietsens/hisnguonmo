@@ -1197,7 +1197,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                 if (medicines != null && medicines.Count > 0)
                 {
                     List<long> medicineContract = medicines.Where(o => o.MEDICAL_CONTRACT_ID.HasValue).Select(p => p.MEDICAL_CONTRACT_ID.Value).Distinct().ToList();
-                    
+
                     if (medicineContract != null && medicineContract.Count > 0)
                     {
                         MedicalContractIds.AddRange(medicineContract);
@@ -1207,7 +1207,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                 if (materials != null && materials.Count > 0)
                 {
                     List<long> materialContract = materials.Where(o => o.MEDICAL_CONTRACT_ID.HasValue).Select(p => p.MEDICAL_CONTRACT_ID.Value).Distinct().ToList();
-                    
+
                     if (materialContract != null && materialContract.Count > 0)
                     {
                         MedicalContractIds.AddRange(materialContract);
@@ -1220,7 +1220,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                     MedicalContractFilter.IDs = MedicalContractIds;
                     MedicalContract = new BackendAdapter(new CommonParam()).Get<List<V_HIS_MEDICAL_CONTRACT>>("api/HisMedicalContract/GetView", ApiConsumers.MosConsumer, MedicalContractFilter, new CommonParam());
                 }
-                
+
                 List<MPS.Processor.Mps000085.PDO.MedicalContractADO> MedicalContractADO = new List<MPS.Processor.Mps000085.PDO.MedicalContractADO>();
 
                 if (MedicalContract != null && MedicalContract.Count > 0)
@@ -1355,7 +1355,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                 if (_Medicines != null && _Medicines.Count > 0)
                 {
                     List<long> medicineContract = _Medicines.Where(o => o.MEDICAL_CONTRACT_ID.HasValue).Select(p => p.MEDICAL_CONTRACT_ID.Value).Distinct().ToList();
-                    
+
                     if (medicineContract != null && medicineContract.Count > 0)
                     {
                         MedicalContractIds.AddRange(medicineContract);
@@ -1365,7 +1365,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                 if (_Materials != null && _Materials.Count > 0)
                 {
                     List<long> materialContract = _Materials.Where(o => o.MEDICAL_CONTRACT_ID.HasValue).Select(p => p.MEDICAL_CONTRACT_ID.Value).Distinct().ToList();
-                    
+
                     if (materialContract != null && materialContract.Count > 0)
                     {
                         MedicalContractIds.AddRange(materialContract);
@@ -1885,12 +1885,47 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
 
                 var impMestMedicinePrints = MapImpMestMedicineFromSDO(this.impMestMedicines);
 
-                var ImpMestMaterialPrints = MapImpMestMaterialFromSDO(this.impMestMaterials);
+                var impMestMaterialPrints = MapImpMestMaterialFromSDO(this.impMestMaterials);
+
+                var medicineTypeIds = impMestMedicinePrints
+                    .Select(o => o.MEDICINE_TYPE_ID)
+                    .Distinct()
+                    .ToList();
+
+                List<V_HIS_MEDICINE_TYPE> medicineTypes = new List<V_HIS_MEDICINE_TYPE>();
+
+
+                HisMedicineTypeViewFilter medicineTypeFilter = new HisMedicineTypeViewFilter
+                {
+                    IDs = medicineTypeIds
+                };
+                medicineTypes = new BackendAdapter(param)
+                    .Get<List<V_HIS_MEDICINE_TYPE>>("api/HisMedicineType/GetView", ApiConsumers.MosConsumer, medicineTypeFilter, param);
+
+
+                // ===== Lấy danh sách loại vật tư =====
+                var materialTypeIds = impMestMaterialPrints
+                    .Select(o => o.MATERIAL_TYPE_ID)
+                    .Distinct()
+                    .ToList();
+
+                List<V_HIS_MATERIAL_TYPE> materialTypes = new List<V_HIS_MATERIAL_TYPE>();
+
+                HisMaterialTypeViewFilter materialTypeFilter = new HisMaterialTypeViewFilter
+                {
+                    IDs = materialTypeIds
+                };
+                materialTypes = new BackendAdapter(param)
+                    .Get<List<V_HIS_MATERIAL_TYPE>>("api/HisMaterialType/GetView", ApiConsumers.MosConsumer, materialTypeFilter, param);
+
+
 
                 MPS.Processor.Mps000145.PDO.Mps000145PDO pdo = new MPS.Processor.Mps000145.PDO.Mps000145PDO(
                  this.impMest,
                  impMestMedicinePrints,
-                 ImpMestMaterialPrints
+                 impMestMaterialPrints,
+                 medicineTypes,
+                 materialTypes
                 );
                 string printerName = "";
                 if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))

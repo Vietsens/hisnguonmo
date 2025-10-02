@@ -102,7 +102,7 @@
     </Reference>
     <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -207,7 +207,7 @@
     </Reference>
     <Reference Include="MPS.Processor.Mps000085.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000085.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000085.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000092.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000092.PDO.dll</HintPath>
@@ -221,8 +221,9 @@
     <Reference Include="MPS.Processor.Mps000143.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000143.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000145.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000145.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000145.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000145.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000149.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000149.PDO.dll</HintPath>
@@ -345,7 +346,6 @@
     <EmbeddedResource Include="ImpMestViewDetail\frmImpMestViewDetail.resx">
       <DependentUpon>frmImpMestViewDetail.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
