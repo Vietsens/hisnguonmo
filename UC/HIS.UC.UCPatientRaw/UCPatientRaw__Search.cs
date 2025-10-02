@@ -782,14 +782,13 @@ namespace HIS.UC.UCPatientRaw
                     DisableControlOldPatientInformationOption();
                     //qtcode
                     CommonParam param = new CommonParam();
-                    //HisPatientProgramFilter filter = new HisPatientProgramFilter();
-                    //filter.PATIENT_ID = dataResult.HisPatientSDO.ID;
-                    HisTreatmentFilter filter = new HisTreatmentFilter();
-                    filter.ID = dataResult.HisPatientSDO.TreatmentId; 
-                    //var patientProgram = new BackendAdapter(param).Get<List<HIS_PATIENT_PROGRAM>>("api/HisPatientProgram/Get", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                    HisPatientProgramFilter filter = new HisPatientProgramFilter();
+                    filter.PATIENT_ID = dataResult.HisPatientSDO.ID;
 
-                    var patientProgram = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
-                    if (this._dlgTransferData != null && patientProgram != null && patientProgram.PROGRAM_ID != null)
+                    var patientProgram = new BackendAdapter(param).Get<List<HIS_PATIENT_PROGRAM>>("api/HisPatientProgram/Get", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+
+                    //var patientProgram = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                    if (this._dlgTransferData != null && patientProgram != null && patientProgram.PROGRAM_ID > 0)
                     {
                         this._dlgTransferData.Invoke(dataResult.HisPatientSDO.ID, patientProgram.PROGRAM_ID);
                     }
