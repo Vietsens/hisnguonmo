@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -112,8 +111,9 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -179,6 +179,7 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -555,9 +556,9 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             // 
             this.chkSeparatePatientNoiTruNgoaiTru.Location = new System.Drawing.Point(2, 410);
             this.chkSeparatePatientNoiTruNgoaiTru.Name = "chkSeparatePatientNoiTruNgoaiTru";
-            this.chkSeparatePatientNoiTruNgoaiTru.Properties.Caption = "Phân biệt BN nội trú và ngoại trú";
+            this.chkSeparatePatientNoiTruNgoaiTru.Properties.Caption = "";
             this.chkSeparatePatientNoiTruNgoaiTru.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkSeparatePatientNoiTruNgoaiTru.Size = new System.Drawing.Size(204, 19);
+            this.chkSeparatePatientNoiTruNgoaiTru.Size = new System.Drawing.Size(20, 19);
             this.chkSeparatePatientNoiTruNgoaiTru.StyleController = this.layoutControl3;
             this.chkSeparatePatientNoiTruNgoaiTru.TabIndex = 5;
             this.chkSeparatePatientNoiTruNgoaiTru.ToolTip = "Hiển thị thành 2 danh sách riêng biệt: bệnh nhân nội trú và ngoại trú";
@@ -565,11 +566,11 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             // 
             // tgExtendMonitor
             // 
-            this.tgExtendMonitor.Location = new System.Drawing.Point(210, 410);
+            this.tgExtendMonitor.Location = new System.Drawing.Point(174, 410);
             this.tgExtendMonitor.Name = "tgExtendMonitor";
             this.tgExtendMonitor.Properties.OffText = "Bật màn hình mở rộng";
             this.tgExtendMonitor.Properties.OnText = "Bật màn hình mở rộng";
-            this.tgExtendMonitor.Size = new System.Drawing.Size(268, 24);
+            this.tgExtendMonitor.Size = new System.Drawing.Size(304, 24);
             this.tgExtendMonitor.StyleController = this.layoutControl3;
             this.tgExtendMonitor.TabIndex = 4;
             this.tgExtendMonitor.Toggled += new System.EventHandler(this.tgExtendMonitor_Toggled);
@@ -597,7 +598,8 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             this.layoutControlItem20,
             this.layoutControlItem21,
             this.layoutControlItem24,
-            this.layoutControlItem25});
+            this.layoutControlItem25,
+            this.emptySpaceItem1});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "Root";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -607,10 +609,12 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.tgExtendMonitor;
-            this.layoutControlItem6.Location = new System.Drawing.Point(208, 408);
+            this.layoutControlItem6.Location = new System.Drawing.Point(172, 408);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(272, 36);
+            this.layoutControlItem6.Size = new System.Drawing.Size(308, 36);
+            this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem6.TextToControlDistance = 0;
             this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem5
@@ -618,7 +622,7 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             this.layoutControlItem5.Control = this.chkSeparatePatientNoiTruNgoaiTru;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 408);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(208, 36);
+            this.layoutControlItem5.Size = new System.Drawing.Size(24, 36);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             this.layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -995,6 +999,14 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             // 
             this.dxValidationProviderControl.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderControl_ValidationFailed);
             // 
+            // emptySpaceItem1
+            // 
+            this.emptySpaceItem1.AllowHotTrack = false;
+            this.emptySpaceItem1.Location = new System.Drawing.Point(24, 408);
+            this.emptySpaceItem1.Name = "emptySpaceItem1";
+            this.emptySpaceItem1.Size = new System.Drawing.Size(148, 36);
+            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // 
             // frmChooseRoomForWaitingScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1071,6 +1083,7 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1146,5 +1159,6 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem24;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem25;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit1;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
     }
 }

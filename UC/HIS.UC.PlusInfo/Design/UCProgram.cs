@@ -37,6 +37,7 @@ using MOS.EFMODEL.DataModels;
 using System.Resources;
 using HIS.Desktop.LocalStorage.HisConfig;
 using DevExpress.XtraGrid;
+using MOS.Filter;
 
 namespace HIS.UC.PlusInfo.Design
 {
@@ -48,11 +49,14 @@ namespace HIS.UC.PlusInfo.Design
         DelegateNextControl dlgFocusNextUserControl;
 
         List<V_HIS_PATIENT_PROGRAM> _HisPatientPrograms { get; set; }
-
+        //qtcode
+        List<HIS_PROGRAM> _HisPrograms = new List<HIS_PROGRAM>();
+        string treatmentTypeId { get; set; }
         #endregion
 
         #region Constructor - Load
-
+        long patientId { get; set; }
+        long programId { get; set; }
         public UCProgram()
         {
             try
@@ -103,29 +107,63 @@ namespace HIS.UC.PlusInfo.Design
         }
 
 
+        //qtcode
+        public void ReceiveTreatmentTypeId(string treatmentTypeId)
+        {
+            try
+            {
+                this.treatmentTypeId = treatmentTypeId;
+                SetValue(this.patientId, this.programId);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
 
+        }
 
+        public void ReceivePatient(long patientId, long? programId)
+        {
+            try
+            {
+                this.treatmentTypeId = treatmentTypeId;
+                if (programId > 0)
+                    SetValue(patientId, programId.Value);
+                else
+                    SetValue(patientId, 0);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
         public async Task DataDefault()
         {
             try
             {
                 this._HisPatientPrograms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_PATIENT_PROGRAM>(false, true, true, false);
-                if (_HisPatientPrograms == null || _HisPatientPrograms.Count <= 0)
-                    this._HisPatientPrograms = new List<V_HIS_PATIENT_PROGRAM>();
+                //if (_HisPatientPrograms == null || _HisPatientPrograms.Count <= 0)
+                //    this._HisPatientPrograms = new List<V_HIS_PATIENT_PROGRAM>();
 
-                var programIds = this._HisPatientPrograms != null ? this._HisPatientPrograms.OrderBy(o => o.PATIENT_PROGRAM_CODE).Select(o => o.PROGRAM_ID).ToList() : null;
-                var _HisPrograms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PROGRAM>();
+                //var programIds = this._HisPatientPrograms != null ? this._HisPatientPrograms.OrderBy(o => o.PATIENT_PROGRAM_CODE).Select(o => o.PROGRAM_ID).ToList() : null;
+                //var _HisPrograms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PROGRAM>();
 
-                //lấy ra danh sách chương trình đã được gán với hồ sơ.
-                List<HIS_PROGRAM> listProgram = new List<HIS_PROGRAM>();
-                if (programIds != null && programIds.Count > 0 && _HisPrograms != null && _HisPrograms.Count > 0)
-                {
-                    listProgram = _HisPrograms.Where(o => programIds.Contains(o.ID)).OrderBy(o => o.PROGRAM_CODE).ToList();
-                }
+                ////lấy ra danh sách chương trình đã được gán với hồ sơ.
+                //List<HIS_PROGRAM> listProgram = new List<HIS_PROGRAM>();
+                //if (programIds != null && programIds.Count > 0 && _HisPrograms != null && _HisPrograms.Count > 0)
+                //{
+                //    listProgram = _HisPrograms.Where(o => programIds.Contains(o.ID)).OrderBy(o => o.PROGRAM_CODE).ToList();
+                //}
 
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listProgram), listProgram));
+                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listProgram), listProgram));
 
-                _shareMethod.InitComboCommon(this.cboProgram, listProgram, "ID", "PROGRAM_NAME", "PROGRAM_CODE");
+                //_shareMethod.InitComboCommon(this.cboProgram, listProgram, "ID", "PROGRAM_NAME", "PROGRAM_CODE");
+                //qtcode
+                this._HisPrograms = BackendDataWorker.Get<HIS_PROGRAM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && (o.TREATMENT_TYPE_ID == null || o.TREATMENT_TYPE_ID == 1)).OrderBy(o => o.PROGRAM_CODE).ToList();
+                if (this._HisPrograms == null)
+                    this._HisPrograms = new List<HIS_PROGRAM>();
+                _shareMethod.InitComboCommon(this.cboProgram, this._HisPrograms, "ID", "PROGRAM_NAME", "PROGRAM_CODE");
             }
             catch (Exception ex)
             {
@@ -202,7 +240,9 @@ namespace HIS.UC.PlusInfo.Design
                 {
                     if (cboProgram.EditValue != null)
                     {
-                        var data = this._HisPatientPrograms.FirstOrDefault(o => o.PROGRAM_ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboProgram.EditValue.ToString()));
+                        //qtcode
+                        //var data = this._HisPatientPrograms.FirstOrDefault(o => o.PROGRAM_ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboProgram.EditValue.ToString()));
+                        var data = this.listProgram.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboProgram.EditValue.ToString()));
                         if (data != null)
                         {
                             txtProgramCode.Text = data.PROGRAM_CODE;
@@ -212,7 +252,7 @@ namespace HIS.UC.PlusInfo.Design
                 if (this.dlgFocusNextUserControl != null)
                     this.dlgFocusNextUserControl(this.TabIndex, null);
             }
-            catch (Exception ex)
+                catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn("Focus ra khoi UCProgram that bai: \n" + ex);
                 SendKeys.Send("{TAB}");
@@ -227,7 +267,8 @@ namespace HIS.UC.PlusInfo.Design
                 {
                     if (cboProgram.EditValue != null)
                     {
-                        var data = this._HisPatientPrograms.FirstOrDefault(o => o.PROGRAM_ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboProgram.EditValue.ToString()));
+                        //var data = this._HisPatientPrograms.FirstOrDefault(o => o.PROGRAM_ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboProgram.EditValue.ToString()));
+                        var data = this.listProgram.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboProgram.EditValue.ToString()));
                         if (data != null)
                         {
                             txtProgramCode.Text = data.PROGRAM_CODE;
@@ -246,22 +287,62 @@ namespace HIS.UC.PlusInfo.Design
         #endregion
 
         #region Data
-
+        List<HIS_PROGRAM> listProgram = new List<HIS_PROGRAM>();
         public void SetValue(long patientID, long programid)
         {
             try
             {
+                //this.txtProgramCode.Text = "";
+                //this.cboProgram.EditValue = null;
+                //if (patientID > 0)
+                //{
+
+                //    var patientPrograms = this._HisPatientPrograms.Where(p => p.PATIENT_ID == patientID).ToList();
+                //    _shareMethod.InitComboCommon(this.cboProgram, patientPrograms, "PROGRAM_ID", "PROGRAM_NAME", "PROGRAM_CODE");
+                //    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsAllowProgramPatientOld == "1" && patientPrograms.Any(p => p.PROGRAM_ID == programid) )
+                //    {
+                //        this.cboProgram.EditValue = programid;
+                //        var selectedProgram = patientPrograms.FirstOrDefault(p => p.PROGRAM_ID == programid);
+                //        if (selectedProgram != null)
+                //        {
+                //            this.txtProgramCode.Text = selectedProgram.PROGRAM_CODE;
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    DataDefault();
+                //}
+                //this.txtProgramCode.TabIndex = this.TabIndex;
+                this.patientId = patientID;
+                this.programId = programId;
                 this.txtProgramCode.Text = "";
                 this.cboProgram.EditValue = null;
+                
                 if (patientID > 0)
                 {
+                    CommonParam param = new CommonParam();
+                    HisPatientProgramFilter filter = new HisPatientProgramFilter();
+                    filter.PATIENT_ID = patientID;
+                    var patientPrograms = new BackendAdapter(param).Get<List<HIS_PATIENT_PROGRAM>>("api/HisPatientProgram/Get", ApiConsumers.MosConsumer, filter, param);
+                    var programIdsOld = patientPrograms != null ? patientPrograms.Select(o => o.PROGRAM_ID).Distinct().ToList() : new List<long>();
 
-                    var patientPrograms = this._HisPatientPrograms.Where(p => p.PATIENT_ID == patientID).ToList();
-                    _shareMethod.InitComboCommon(this.cboProgram, patientPrograms, "PROGRAM_ID", "PROGRAM_NAME", "PROGRAM_CODE");
-                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsAllowProgramPatientOld == "1" && patientPrograms.Any(p => p.PROGRAM_ID == programid) )
+                    var allPrograms = BackendDataWorker.Get<HIS_PROGRAM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                    if (!string.IsNullOrEmpty(treatmentTypeId) && Convert.ToInt32(treatmentTypeId) > 0)
+                    {
+                        allPrograms = allPrograms.Where(o => o.TREATMENT_TYPE_ID == null || o.TREATMENT_TYPE_ID == Convert.ToInt32(treatmentTypeId)).ToList();
+                    }
+
+                    var sortedPrograms = allPrograms.Where(o => programIdsOld.Contains(o.ID)).OrderBy(o => o.PROGRAM_CODE).ToList(); // gán = những chương trình cũ của bệnh nhân
+                    sortedPrograms.AddRange(allPrograms.Where(o => !programIdsOld.Contains(o.ID)).OrderBy(o => o.PROGRAM_CODE).ToList()); // gán thêm những chương trình khác
+
+                    this.listProgram = sortedPrograms;
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listProgram), listProgram));
+
+                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsAllowProgramPatientOld == "1" && this.listProgram.Any(p => p.ID == programid))
                     {
                         this.cboProgram.EditValue = programid;
-                        var selectedProgram = patientPrograms.FirstOrDefault(p => p.PROGRAM_ID == programid);
+                        var selectedProgram = this.listProgram.FirstOrDefault(p => p.ID == programid);
                         if (selectedProgram != null)
                         {
                             this.txtProgramCode.Text = selectedProgram.PROGRAM_CODE;
@@ -270,9 +351,15 @@ namespace HIS.UC.PlusInfo.Design
                 }
                 else
                 {
-                    DataDefault();
+                    var allPrograms = BackendDataWorker.Get<HIS_PROGRAM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).OrderBy(o => o.PROGRAM_CODE).ToList();
+                    if (!string.IsNullOrEmpty(treatmentTypeId) && Convert.ToInt32(treatmentTypeId) > 0)
+                    {
+                        allPrograms = allPrograms.Where(o => o.TREATMENT_TYPE_ID == null || o.TREATMENT_TYPE_ID == Convert.ToInt32(treatmentTypeId)).ToList();
+                    }
+                    this.listProgram = allPrograms;
                 }
-                //this.txtProgramCode.TabIndex = this.TabIndex;
+                _shareMethod.InitComboCommon(this.cboProgram, this.listProgram, "ID", "PROGRAM_NAME", "PROGRAM_CODE");
+                this._HisPrograms = this.listProgram;
             }
             catch (Exception ex)
             {
@@ -367,7 +454,8 @@ namespace HIS.UC.PlusInfo.Design
             {
                 if (loadDataAgain)
                 {
-                    this.cboProgram.Properties.DataSource = null;
+                    //qtcode
+                    //this.cboProgram.Properties.DataSource = null;
                     this.cboProgram.EditValue = null;
                     this.txtProgramCode.Text = "";
                 }

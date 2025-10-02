@@ -557,17 +557,17 @@ namespace MPS.Processor.Mps000181
                                 mediSDO.TDL_INTRUCTION_DATE = item.Key.HasValue ? item.Key.Value : 0;
                                 expMestMedicineReq.Add(mediSDO);
                             }
-                            var serviceReqMety = rdo.lstServiceReqMety.Where(o=>o.ID == req.ID).ToList();
-                            foreach (var serviceMety in serviceReqMety)
-                            {
-                                isKey = true;
-                                ExpMestMedicineSDO mediSDO = new ExpMestMedicineSDO();
-                                mediSDO.MEDICINE_TYPE_CODE = serviceMety.MEDICINE_TYPE_NAME != null ? serviceMety.MEDICINE_TYPE_NAME : "";
-                                mediSDO.AMOUNT = serviceMety.AMOUNT > 0 ? serviceMety.AMOUNT : 0;
-                                mediSDO.TUTORIAL = serviceMety.TUTORIAL != null ? serviceMety.TUTORIAL : "";
-                                mediSDO.TDL_INTRUCTION_DATE = item.Key.HasValue ? item.Key.Value : 0;
-                                expMestMedicineReq.Add(mediSDO);
-                            }
+                            //var serviceReqMety = rdo.lstServiceReqMety.Where(o=>o.SERVICE_REQ_ID == req.ID).ToList();
+                            //foreach (var serviceMety in serviceReqMety)
+                            //{
+                            //    isKey = true;
+                            //    ExpMestMedicineSDO mediSDO = new ExpMestMedicineSDO();
+                            //    mediSDO.MEDICINE_TYPE_CODE = serviceMety.MEDICINE_TYPE_NAME != null ? serviceMety.MEDICINE_TYPE_NAME : "";
+                            //    mediSDO.AMOUNT = serviceMety.AMOUNT > 0 ? serviceMety.AMOUNT : 0;
+                            //    mediSDO.TUTORIAL = serviceMety.TUTORIAL != null ? serviceMety.TUTORIAL : "";
+                            //    mediSDO.TDL_INTRUCTION_DATE = item.Key.HasValue ? item.Key.Value : 0;
+                            //    expMestMedicineReq.Add(mediSDO);
+                            //}
                         }
                         if (isKey)
                         {

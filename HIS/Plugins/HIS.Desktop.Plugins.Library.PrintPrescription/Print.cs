@@ -33,8 +33,8 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
             ref bool result, long? roomId, MPS.ProcessorBase.PrintConfig.PreviewType? PreviewType,
             int count, Action<int, Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo> savedData, int numOfCopy = 1)
         {
-            try
-            {
+            try    
+            {     
                 Inventec.Common.Logging.LogSystem.Info("Method PrintData: " + printTypeCode);
                 string printerName = "";
                 WaitingManager.Hide();

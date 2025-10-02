@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice.Model
 {
-    class ConvertInvoice
+    public class OutputConvertInvoice
     {
+        public string id { get; set; }
+        public string data { get; set; }
     }
 }

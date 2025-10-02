@@ -246,7 +246,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        //private List<MetyMatyADO> listCompensationAdo
         private async Task LoadDataCompensationToGrid()
         {
             try
@@ -986,7 +986,12 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                 lastRowHandle = -1;
                 if (!dxValidationProvider1.Validate())
                     return;
-                List<MetyMatyADO> checkDatas = this.listCompensationAdo != null ? listCompensationAdo.Where(o => o.IsCheck).ToList() : null;
+                //qtcode
+                List<MetyMatyADO> checkDatas = new List<MetyMatyADO>();
+                if (chkNotSelectMedi.Checked)
+                    checkDatas = this.listCompensationAdo != null ? listCompensationAdo.Where(o => o.IsCheck && o.AMOUT_EXP_MEDI_STOCK > 0).ToList() : null;
+                else
+                    checkDatas = this.listCompensationAdo != null ? listCompensationAdo.Where(o => o.IsCheck).ToList() : null;
                 if (checkDatas == null || checkDatas.Count <= 0)
                 {
                     XtraMessageBox.Show("Bạn chưa chọn thuốc/vật tư cần bù", "Thông báo", DevExpress.Utils.DefaultBoolean.True);
@@ -1438,7 +1443,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                     if (_ExpMestMatyReqs != null && _ExpMestMatyReqs.Count > 0)
                     {
                         WaitingManager.Show();
-                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_BcsExpMest != null && _BcsExpMest.TDL_TREATMENT_CODE != null  ? _BcsExpMest.TDL_TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_BcsExpMest != null && _BcsExpMest.TDL_TREATMENT_CODE != null ? _BcsExpMest.TDL_TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
                         MPS.Processor.Mps000215.PDO.Mps000215PDO mps000215PDO = new MPS.Processor.Mps000215.PDO.Mps000215PDO
                 (
                  _BcsExpMest,
@@ -1472,7 +1477,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                     if (_ExpMestMetyReq_Ts != null && _ExpMestMetyReq_Ts.Count > 0)
                     {
                         WaitingManager.Show();
-                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_BcsExpMest != null && _BcsExpMest.TDL_TREATMENT_CODE != null  ? _BcsExpMest.TDL_TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_BcsExpMest != null && _BcsExpMest.TDL_TREATMENT_CODE != null ? _BcsExpMest.TDL_TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
                         MPS.Processor.Mps000215.PDO.Mps000215PDO mps000215PDO = new MPS.Processor.Mps000215.PDO.Mps000215PDO
                 (
                  _BcsExpMest,
@@ -1505,7 +1510,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                     if (_ExpMestMetyReq_TCs != null && _ExpMestMetyReq_TCs.Count > 0)
                     {
                         WaitingManager.Show();
-                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_BcsExpMest != null && _BcsExpMest.TDL_TREATMENT_CODE != null  ? _BcsExpMest.TDL_TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_BcsExpMest != null && _BcsExpMest.TDL_TREATMENT_CODE != null ? _BcsExpMest.TDL_TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
                         MPS.Processor.Mps000215.PDO.Mps000215PDO mps000215PDO = new MPS.Processor.Mps000215.PDO.Mps000215PDO
                 (
                  _BcsExpMest,
@@ -1546,7 +1551,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
         {
             try
             {
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_BcsExpMest != null && _BcsExpMest.TDL_TREATMENT_CODE != null  ? _BcsExpMest.TDL_TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_BcsExpMest != null && _BcsExpMest.TDL_TREATMENT_CODE != null ? _BcsExpMest.TDL_TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
                 long keyPrintType = ConfigApplicationWorker.Get<long>(AppConfigKeys.CONFIG_KEY__HIS_DESKTOP__IN_GOP_GAY_NGHIEN_HUONG_THAN);
                 if (keyPrintType == 1)
                 {
@@ -2023,9 +2028,15 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                         gridColumn_Compensation_IsCheck.Image = imageListIcon.Images[6];
                         isCheckAll = true;
                     }
+                    List<MetyMatyADO> listCompensationAdoFilter = new List<MetyMatyADO>();
+                    listCompensationAdoFilter = listCompensationAdo.Where(o => o.AMOUT_EXP_MEDI_STOCK > 0).ToList();
                     gridControlCompensation.BeginUpdate();
-                    gridControlCompensation.DataSource = listCompensationAdo;
+                    gridControlCompensation.DataSource = listCompensationAdoFilter;
                     gridControlCompensation.EndUpdate();
+                }
+                else
+                {
+                    gridControlCompensation.DataSource = listCompensationAdo;
                 }
             }
             catch (Exception ex)

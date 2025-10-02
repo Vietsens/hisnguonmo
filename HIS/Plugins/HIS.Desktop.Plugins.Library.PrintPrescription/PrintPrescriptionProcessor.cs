@@ -229,8 +229,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
         /// <param name="PrintTypeCode">Mã in (44,50,118)</param>
         /// <param name="PrintNow">true/false</param>
         public void Print(string PrintTypeCode, bool PrintNow)
+        
         {
-            try
+            try     
             {
                 if (Config.IsmergePrint)
                 {
@@ -380,7 +381,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         }
                     }
 
-                    switch (printCode)
+                    switch (printCode)   
                     {
                         case MPS.Processor.Mps000044.PDO.Mps000044PDO.PrintTypeCode:
                             new PrintMps000044(printCode, fileName, ref result, currentOutPresSDO, printNow, hasMediMate, currentModule, richEditorMain, this.previewType, this.hasOutHospital, lstTransReq, lstConfig, SetTotalPrint, SetDataGroup, CancelChooseTemplate);

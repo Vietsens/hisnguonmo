@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
@@ -78,8 +77,8 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             this.gridControlWaitingCls = new DevExpress.XtraGrid.GridControl();
             this.gridViewWaitingCls = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumnSTT = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnLastName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemMemoEditName = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+            this.gridColumnLastName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnAge = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnAddress = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemMemoEditAddress = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
@@ -95,13 +94,13 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.timerForScrollListPatient = new System.Windows.Forms.Timer(this.components);
-            this.timerAutoLoadDataPatient = new System.Windows.Forms.Timer(this.components);
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.timerSetDataToGridControl = new System.Windows.Forms.Timer(this.components);
-            this.timerForHightLightCallPatientLayout = new System.Windows.Forms.Timer(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.timerChangeColorRow = new System.Windows.Forms.Timer(this.components);
+            this.timerForScrollListPatient = new System.Windows.Forms.Timer();
+            this.timerAutoLoadDataPatient = new System.Windows.Forms.Timer();
+            this.imageList1 = new System.Windows.Forms.ImageList();
+            this.timerSetDataToGridControl = new System.Windows.Forms.Timer();
+            this.timerForHightLightCallPatientLayout = new System.Windows.Forms.Timer();
+            this.timer1 = new System.Windows.Forms.Timer();
+            this.timerChangeColorRow = new System.Windows.Forms.Timer();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
@@ -208,7 +207,6 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             this.lblCoSttNhoHon.Name = "lblCoSttNhoHon";
             this.lblCoSttNhoHon.Size = new System.Drawing.Size(828, 60);
             this.lblCoSttNhoHon.TabIndex = 7;
-            this.lblCoSttNhoHon.Text = "label1";
             this.lblCoSttNhoHon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblMoiNguoiBenh
@@ -318,7 +316,6 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             this.lblSoThuTuBenhNhan.Padding = new System.Windows.Forms.Padding(10);
             this.lblSoThuTuBenhNhan.Size = new System.Drawing.Size(510, 116);
             this.lblSoThuTuBenhNhan.TabIndex = 6;
-            this.lblSoThuTuBenhNhan.Text = "label1";
             this.lblSoThuTuBenhNhan.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblSo
@@ -615,6 +612,18 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             this.gridColumnSTT.VisibleIndex = 0;
             this.gridColumnSTT.Width = 150;
             // 
+            // repositoryItemMemoEditName
+            // 
+            this.repositoryItemMemoEditName.Appearance.Options.UseTextOptions = true;
+            this.repositoryItemMemoEditName.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.Character;
+            this.repositoryItemMemoEditName.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.repositoryItemMemoEditName.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.repositoryItemMemoEditName.AppearanceReadOnly.Options.UseTextOptions = true;
+            this.repositoryItemMemoEditName.AppearanceReadOnly.TextOptions.Trimming = DevExpress.Utils.Trimming.Character;
+            this.repositoryItemMemoEditName.AppearanceReadOnly.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.repositoryItemMemoEditName.AppearanceReadOnly.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.repositoryItemMemoEditName.Name = "repositoryItemMemoEditName";
+            // 
             // gridColumnLastName
             // 
             this.gridColumnLastName.AppearanceCell.BackColor = System.Drawing.Color.Black;
@@ -646,18 +655,6 @@ namespace HIS.Desktop.Plugins.CallPatientExpMest
             this.gridColumnLastName.Visible = true;
             this.gridColumnLastName.VisibleIndex = 1;
             this.gridColumnLastName.Width = 380;
-            // 
-            // repositoryItemMemoEditName
-            // 
-            this.repositoryItemMemoEditName.Appearance.Options.UseTextOptions = true;
-            this.repositoryItemMemoEditName.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.Character;
-            this.repositoryItemMemoEditName.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
-            this.repositoryItemMemoEditName.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.repositoryItemMemoEditName.AppearanceReadOnly.Options.UseTextOptions = true;
-            this.repositoryItemMemoEditName.AppearanceReadOnly.TextOptions.Trimming = DevExpress.Utils.Trimming.Character;
-            this.repositoryItemMemoEditName.AppearanceReadOnly.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
-            this.repositoryItemMemoEditName.AppearanceReadOnly.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.repositoryItemMemoEditName.Name = "repositoryItemMemoEditName";
             // 
             // gridColumnAge
             // 
