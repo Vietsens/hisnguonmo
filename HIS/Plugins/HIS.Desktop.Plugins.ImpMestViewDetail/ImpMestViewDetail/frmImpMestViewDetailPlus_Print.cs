@@ -1404,6 +1404,26 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                     }
                 }
 
+                // DM loai thuoc
+                List<V_HIS_MEDICINE_TYPE> _MedicineTypes = new List<V_HIS_MEDICINE_TYPE>();
+                if (impMestMedicinePrints != null && impMestMedicinePrints.Count > 0)
+                {
+                    List<long> _MedicineTypeIds = impMestMedicinePrints.Select(p => p.MEDICINE_TYPE_ID).ToList();
+                    MOS.Filter.HisMedicineTypeViewFilter medicineFilter = new HisMedicineTypeViewFilter();
+                    medicineFilter.IDs = _MedicineTypeIds;
+                    _MedicineTypes = new BackendAdapter(new CommonParam()).Get<List<V_HIS_MEDICINE_TYPE>>("api/HisMedicineType/GetView", ApiConsumers.MosConsumer, medicineFilter, new CommonParam());
+                }
+
+                // DM loai vat tu
+                List<V_HIS_MATERIAL_TYPE> _MaterialTypes = new List<V_HIS_MATERIAL_TYPE>();
+                if (ImpMestMaterialPrints != null && ImpMestMaterialPrints.Count > 0)
+                {
+                    List<long> _MaterialTypeIds = ImpMestMaterialPrints.Select(p => p.MATERIAL_TYPE_ID).ToList();
+                    MOS.Filter.HisMaterialTypeViewFilter materialFilter = new HisMaterialTypeViewFilter();
+                    materialFilter.IDs = _MaterialTypeIds;
+                    _MaterialTypes = new BackendAdapter(new CommonParam()).Get<List<V_HIS_MATERIAL_TYPE>>("api/HisMaterialType/GetView", ApiConsumers.MosConsumer, materialFilter, new CommonParam());
+                }
+
                 string printerName = "";
                 if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
                 {
@@ -1419,7 +1439,9 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                  _Medicines,
                  _Materials,
                  BackendDataWorker.Get<HIS_IMP_SOURCE>(),
-                 MedicalContractADO
+                 MedicalContractADO,
+                 _MedicineTypes,
+                 _MaterialTypes
                 );
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
                 if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
