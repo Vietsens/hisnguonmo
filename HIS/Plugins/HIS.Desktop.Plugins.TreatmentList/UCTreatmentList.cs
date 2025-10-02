@@ -3345,6 +3345,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
                                             {
                                                 e.Value = dt.FirstOrDefault().CONCLUDE;
                                             }
+                                            else
+                                            {
+                                                e.Value = dt.FirstOrDefault().VALUE;
+                                            }
                                         }
                                     }
                                 }
