@@ -808,7 +808,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         public void ResetValueForAdd()
         {
             this.memHtu.Text = "";
-            this.txtHuongDan.Text = "";
+            //this.txtHuongDan.Text = "";
         }
         private void Add_TabMedicine()
         {
