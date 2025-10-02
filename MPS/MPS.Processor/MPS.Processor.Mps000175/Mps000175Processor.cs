@@ -158,6 +158,24 @@ namespace MPS.Processor.Mps000175
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
+                //huannh
+                var parentGroups = rdo.listAdo
+           .GroupBy(x => new { x.PARENT_ID, x.PARENT_CODE, x.PARENT_NAME })
+           .Where(g => g.Any())
+           .Select(g => new
+           {
+               PARENT_ID = g.Key.PARENT_ID,
+               PARENT_CODE = g.Key.PARENT_CODE,
+               PARENT_NAME = g.Key.PARENT_NAME,
+               Items = g.ToList()
+           })
+           .OrderBy(g => g.PARENT_ID)
+           .ToList();
+
+                objectTag.AddObjectData(store, "ParentMaterialGroups", parentGroups);
+                objectTag.AddRelationship(store, "ParentMaterialGroups", "Items", "PARENT_ID", "PARENT_ID");
+
+
                 objectTag.AddObjectData(store, "ExpMestAggregates", rdo.listAdo);
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
                 objectTag.SetUserFunction(store, "FuncMergeData12", new CalculateMergerData());
