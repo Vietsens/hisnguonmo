@@ -150,6 +150,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                             serviceConfig = string.Format("{0}|{1}", ProviderType.MINVOICE, minvoice != null ? minvoice.VALUE : "");
                             accountConfig = ConfigApplicationWorker.Get<string>(SdaConfigKey.ACCOUNT_CONFIG_KEY__MINVOICE);
                             break;
+                        case IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNINVOICE:
+                            var vninvoice = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNINVOICE);
+                            serviceConfig = string.Format("{0}|{1}", ProviderType.VNINVOICE, vninvoice != null ? vninvoice.VALUE : "");
+                            accountConfig = ConfigApplicationWorker.Get<string>(SdaConfigKey.ACCOUNT_CONFIG_KEY__VNINVOICE);
+                            break;
                         default:
                             break;
                     }
