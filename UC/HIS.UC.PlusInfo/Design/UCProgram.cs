@@ -315,7 +315,7 @@ namespace HIS.UC.PlusInfo.Design
                 //}
                 //this.txtProgramCode.TabIndex = this.TabIndex;
                 this.patientId = patientID;
-                this.programId = programId;
+                this.programId = programid;
                 this.txtProgramCode.Text = "";
                 this.cboProgram.EditValue = null;
                 
