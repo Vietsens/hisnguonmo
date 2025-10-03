@@ -33,7 +33,7 @@
             this.dropDownButton1 = new DevExpress.XtraEditors.DropDownButton();
             this.dateEdit1 = new DevExpress.XtraEditors.DateEdit();
             this.spinEdit1 = new DevExpress.XtraEditors.SpinEdit();
-            this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
+            this.txtPatientBHYTTo = new DevExpress.XtraEditors.LabelControl();
             this.txtPatientBHYTFrom = new DevExpress.XtraEditors.LabelControl();
             this.checkEdit2 = new DevExpress.XtraEditors.CheckEdit();
             this.checkEdit1 = new DevExpress.XtraEditors.CheckEdit();
@@ -45,10 +45,10 @@
             this.lookUpEdit2 = new DevExpress.XtraEditors.LookUpEdit();
             this.lookUpEdit1 = new DevExpress.XtraEditors.LookUpEdit();
             this.labelControl12 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl11 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl10 = new DevExpress.XtraEditors.LabelControl();
+            this.txt = new DevExpress.XtraEditors.LabelControl();
+            this.txtNDKKCBBD = new DevExpress.XtraEditors.LabelControl();
             this.txtPatientBHYT = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
+            this.txtPatientType = new DevExpress.XtraEditors.LabelControl();
             this.txtPatientAddr = new DevExpress.XtraEditors.LabelControl();
             this.txtPatientDob = new DevExpress.XtraEditors.LabelControl();
             this.txtPatientGender = new DevExpress.XtraEditors.LabelControl();
@@ -133,7 +133,7 @@
             this.layoutControl1.Controls.Add(this.dropDownButton1);
             this.layoutControl1.Controls.Add(this.dateEdit1);
             this.layoutControl1.Controls.Add(this.spinEdit1);
-            this.layoutControl1.Controls.Add(this.labelControl9);
+            this.layoutControl1.Controls.Add(this.txtPatientBHYTTo);
             this.layoutControl1.Controls.Add(this.txtPatientBHYTFrom);
             this.layoutControl1.Controls.Add(this.checkEdit2);
             this.layoutControl1.Controls.Add(this.checkEdit1);
@@ -145,10 +145,10 @@
             this.layoutControl1.Controls.Add(this.lookUpEdit2);
             this.layoutControl1.Controls.Add(this.lookUpEdit1);
             this.layoutControl1.Controls.Add(this.labelControl12);
-            this.layoutControl1.Controls.Add(this.labelControl11);
-            this.layoutControl1.Controls.Add(this.labelControl10);
+            this.layoutControl1.Controls.Add(this.txt);
+            this.layoutControl1.Controls.Add(this.txtNDKKCBBD);
             this.layoutControl1.Controls.Add(this.txtPatientBHYT);
-            this.layoutControl1.Controls.Add(this.labelControl6);
+            this.layoutControl1.Controls.Add(this.txtPatientType);
             this.layoutControl1.Controls.Add(this.txtPatientAddr);
             this.layoutControl1.Controls.Add(this.txtPatientDob);
             this.layoutControl1.Controls.Add(this.txtPatientGender);
@@ -200,13 +200,13 @@
             this.spinEdit1.StyleController = this.layoutControl1;
             this.spinEdit1.TabIndex = 31;
             // 
-            // labelControl9
+            // txtPatientBHYTTo
             // 
-            this.labelControl9.Location = new System.Drawing.Point(787, 52);
-            this.labelControl9.Name = "labelControl9";
-            this.labelControl9.Size = new System.Drawing.Size(151, 21);
-            this.labelControl9.StyleController = this.layoutControl1;
-            this.labelControl9.TabIndex = 30;
+            this.txtPatientBHYTTo.Location = new System.Drawing.Point(787, 52);
+            this.txtPatientBHYTTo.Name = "txtPatientBHYTTo";
+            this.txtPatientBHYTTo.Size = new System.Drawing.Size(151, 21);
+            this.txtPatientBHYTTo.StyleController = this.layoutControl1;
+            this.txtPatientBHYTTo.TabIndex = 30;
             // 
             // txtPatientBHYTFrom
             // 
@@ -307,21 +307,21 @@
             this.labelControl12.StyleController = this.layoutControl1;
             this.labelControl12.TabIndex = 16;
             // 
-            // labelControl11
+            // txt
             // 
-            this.labelControl11.Location = new System.Drawing.Point(567, 77);
-            this.labelControl11.Name = "labelControl11";
-            this.labelControl11.Size = new System.Drawing.Size(151, 21);
-            this.labelControl11.StyleController = this.layoutControl1;
-            this.labelControl11.TabIndex = 15;
+            this.txt.Location = new System.Drawing.Point(567, 77);
+            this.txt.Name = "txt";
+            this.txt.Size = new System.Drawing.Size(151, 21);
+            this.txt.StyleController = this.layoutControl1;
+            this.txt.TabIndex = 15;
             // 
-            // labelControl10
+            // txtNDKKCBBD
             // 
-            this.labelControl10.Location = new System.Drawing.Point(87, 77);
-            this.labelControl10.Name = "labelControl10";
-            this.labelControl10.Size = new System.Drawing.Size(411, 21);
-            this.labelControl10.StyleController = this.layoutControl1;
-            this.labelControl10.TabIndex = 14;
+            this.txtNDKKCBBD.Location = new System.Drawing.Point(87, 77);
+            this.txtNDKKCBBD.Name = "txtNDKKCBBD";
+            this.txtNDKKCBBD.Size = new System.Drawing.Size(411, 21);
+            this.txtNDKKCBBD.StyleController = this.layoutControl1;
+            this.txtNDKKCBBD.TabIndex = 14;
             // 
             // txtPatientBHYT
             // 
@@ -331,13 +331,13 @@
             this.txtPatientBHYT.StyleController = this.layoutControl1;
             this.txtPatientBHYT.TabIndex = 11;
             // 
-            // labelControl6
+            // txtPatientType
             // 
-            this.labelControl6.Location = new System.Drawing.Point(87, 52);
-            this.labelControl6.Name = "labelControl6";
-            this.labelControl6.Size = new System.Drawing.Size(161, 21);
-            this.labelControl6.StyleController = this.layoutControl1;
-            this.labelControl6.TabIndex = 10;
+            this.txtPatientType.Location = new System.Drawing.Point(87, 52);
+            this.txtPatientType.Name = "txtPatientType";
+            this.txtPatientType.Size = new System.Drawing.Size(161, 21);
+            this.txtPatientType.StyleController = this.layoutControl1;
+            this.txtPatientType.TabIndex = 10;
             // 
             // txtPatientAddr
             // 
@@ -524,7 +524,7 @@
             // 
             this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem7.Control = this.labelControl6;
+            this.layoutControlItem7.Control = this.txtPatientType;
             this.layoutControlItem7.Enabled = false;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 50);
             this.layoutControlItem7.MaxSize = new System.Drawing.Size(250, 25);
@@ -558,7 +558,7 @@
             // 
             this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem11.Control = this.labelControl10;
+            this.layoutControlItem11.Control = this.txtNDKKCBBD;
             this.layoutControlItem11.Location = new System.Drawing.Point(0, 75);
             this.layoutControlItem11.MaxSize = new System.Drawing.Size(500, 25);
             this.layoutControlItem11.MinSize = new System.Drawing.Size(500, 25);
@@ -574,7 +574,7 @@
             // 
             this.layoutControlItem12.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem12.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem12.Control = this.labelControl11;
+            this.layoutControlItem12.Control = this.txt;
             this.layoutControlItem12.Location = new System.Drawing.Point(500, 75);
             this.layoutControlItem12.MaxSize = new System.Drawing.Size(220, 25);
             this.layoutControlItem12.MinSize = new System.Drawing.Size(220, 25);
@@ -755,7 +755,7 @@
             // 
             this.layoutControlItem10.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem10.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem10.Control = this.labelControl9;
+            this.layoutControlItem10.Control = this.txtPatientBHYTTo;
             this.layoutControlItem10.Location = new System.Drawing.Point(720, 50);
             this.layoutControlItem10.MaxSize = new System.Drawing.Size(220, 25);
             this.layoutControlItem10.MinSize = new System.Drawing.Size(220, 25);
@@ -898,7 +898,7 @@
 
         private DevExpress.XtraLayout.LayoutControl layoutControl1;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
-        private DevExpress.XtraEditors.LabelControl labelControl6;
+        private DevExpress.XtraEditors.LabelControl txtPatientType;
         private DevExpress.XtraEditors.LabelControl txtPatientAddr;
         private DevExpress.XtraEditors.LabelControl txtPatientDob;
         private DevExpress.XtraEditors.LabelControl txtPatientGender;
@@ -907,8 +907,8 @@
         private DevExpress.XtraEditors.PanelControl panelControl1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraEditors.LabelControl labelControl12;
-        private DevExpress.XtraEditors.LabelControl labelControl11;
-        private DevExpress.XtraEditors.LabelControl labelControl10;
+        private DevExpress.XtraEditors.LabelControl txt;
+        private DevExpress.XtraEditors.LabelControl txtNDKKCBBD;
         private DevExpress.XtraEditors.LabelControl txtPatientBHYT;
         private DevExpress.XtraEditors.LookUpEdit lookUpEdit2;
         private DevExpress.XtraEditors.LookUpEdit lookUpEdit1;
@@ -941,7 +941,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
-        private DevExpress.XtraEditors.LabelControl labelControl9;
+        private DevExpress.XtraEditors.LabelControl txtPatientBHYTTo;
         private DevExpress.XtraEditors.LabelControl txtPatientBHYTFrom;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;

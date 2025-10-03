@@ -1,4 +1,7 @@
-﻿using HIS.Desktop.Utility;
+﻿using DevExpress.XtraWaitForm;
+using Inventec.Common.WebApiClient;
+using HIS.Desktop.Utility;
+using Inventec.Common.Integrate;
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
@@ -9,6 +12,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using HIS.Desktop.ApiConsumer;
+using Inventec.Core;
 
 namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
 {
@@ -25,12 +30,17 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
             this.currentModule = module;
         }
 
-        private void SetDefaultValueTransaction()
+        private void FillPatient()
         {
             try
             {
                 if (currentTransaction != null)
                 {
+                    CommonParam common = new CommonParam();
+                    MOS.Filter.HisPatientFilter filter = new MOS.Filter.HisPatientFilter();
+                    filter.PATIENT_CODE = currentTransaction.TDL_PATIENT_CODE;
+
+                    var patients = new BackendAdapter(common).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, common);
 
                 }
             }
