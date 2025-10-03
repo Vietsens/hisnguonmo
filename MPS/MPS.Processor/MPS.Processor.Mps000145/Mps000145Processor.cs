@@ -51,7 +51,6 @@ namespace MPS.Processor.Mps000145
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 ProcessSingleKey();
-
                 //ghi đè PrintLogData và UniqueCodeData
                 ProcessPrintLogData();
                 //lấy số lần in
@@ -68,6 +67,7 @@ namespace MPS.Processor.Mps000145
                 objectTag.AddObjectData(store, "MediMaties1", rdo._ListAdo);
                 objectTag.AddObjectData(store, "MediMaties2", rdo._ListAdo);
                 objectTag.AddObjectData(store, "MediMaties3", rdo._ListAdo);
+
                 if (rdo._ListAdo != null && rdo._ListAdo.Count > 0)
                 {
                     var groupByParent = rdo._ListAdo
