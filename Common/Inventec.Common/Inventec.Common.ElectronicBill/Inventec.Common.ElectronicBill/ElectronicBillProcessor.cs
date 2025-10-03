@@ -91,6 +91,9 @@ namespace Inventec.Common.ElectronicBill
                         break;
                     case CmdType.ReplaceInvoiceAction:
                         result = this.ReplaceInvoiceAction();
+                        break; 
+                    case CmdType.AdjustInvoiceAction:
+                        result = this.AdjustInvoiceAction();
                         break;
                     default:
                         break;
@@ -103,7 +106,105 @@ namespace Inventec.Common.ElectronicBill
             }
             return result;
         }
+        private ElectronicBillResult AdjustInvoiceAction()
+        {
+            Inventec.Common.Logging.LogSystem.Info("AdjustInvoiceAction");
+            ElectronicBillResult result = new ElectronicBillResult();
+            result.Success = false;
+            result.Messages = new List<string>();
+            bool vali = true;
+            try
+            {
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.account);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.acPass);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.serviceUrl);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.userName);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.passWord);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.fKey);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.pattern);
+                // AttachFile và convert là optional, không bắt buộc validate
+                if (!vali)
+                {
+                    result.Messages.Add(ResultCode.WRONG_DATA);
+                    return result;
+                }
+                string xmlInvData = "";
+                if (electronicBillInput.adjustInvoice != null)
+                {
+                    electronicBillInput.adjustInvoice.Amount = FormatReplaceStringPrice(electronicBillInput.adjustInvoice.Amount);
+                    electronicBillInput.adjustInvoice.Total = FormatReplaceStringPrice(electronicBillInput.adjustInvoice.Total);
+                    electronicBillInput.adjustInvoice.DiscountAmount = FormatReplaceStringPrice(electronicBillInput.adjustInvoice.DiscountAmount);
+                    electronicBillInput.adjustInvoice.VATAmount = FormatReplaceStringPrice(electronicBillInput.adjustInvoice.VATAmount);
+                    if (electronicBillInput.adjustInvoice.Products != null && electronicBillInput.adjustInvoice.Products.Count > 0)
+                    {
+                        foreach (var product in electronicBillInput.adjustInvoice.Products)
+                        {
+                            product.Amount = FormatReplaceStringPrice(product.Amount);
+                            product.ProdQuantity = FormatReplaceStringPrice(product.ProdQuantity);
+                            product.ProdPrice = FormatReplaceStringPrice(product.ProdPrice);
+                        }
+                    }
 
+                    xmlInvData = ConvertListInvoiceToStringXmlFormat(electronicBillInput.adjustInvoice, "AdjustInv");
+                    if (!String.IsNullOrWhiteSpace(electronicBillInput.DataXmlStringPlus))
+                    {
+                        xmlInvData = xmlInvData.Replace("</AdjustInv>", electronicBillInput.DataXmlStringPlus + "</AdjustInv>");
+                        Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("xmlInvData", xmlInvData));
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("xmlInvData", xmlInvData));
+                    }
+                }
+
+                BusinessserviceVNPT.AdjustInvoiceActionRequestBody body = new BusinessserviceVNPT.AdjustInvoiceActionRequestBody();
+                body.Account = electronicBillInput.account;
+                body.ACpass = electronicBillInput.acPass;
+                body.username = electronicBillInput.userName;
+                body.pass = electronicBillInput.passWord;
+                body.fkey = electronicBillInput.fKey;
+                body.pattern = electronicBillInput.pattern;
+                body.serial = electronicBillInput.serial;
+                body.convert = electronicBillInput.convert;
+                body.xmlInvData = xmlInvData;
+                body.AttachFile = electronicBillInput.attachFile ?? ""; 
+
+                BasicHttpBinding binding = new BasicHttpBinding();
+                binding.Security.Mode = BasicHttpSecurityMode.Transport;
+                BusinessserviceVNPT.AdjustInvoiceActionRequest request = new BusinessserviceVNPT.AdjustInvoiceActionRequest(body);
+                EndpointAddress epAdd = new EndpointAddress(electronicBillInput.serviceUrl + "/businessservice.asmx");
+
+                BusinessserviceVNPT.BusinessServiceSoap businessServiceSoap = new BusinessserviceVNPT.BusinessServiceSoapClient(binding, epAdd);
+                BusinessserviceVNPT.AdjustInvoiceActionResponse response = businessServiceSoap.AdjustInvoiceAction(request);
+
+                string strResponse = "";
+                if (response != null)
+                {
+                    strResponse = response.Body.AdjustInvoiceActionResult;
+                    if (strResponse.Contains("OK"))
+                    {
+                        result.Success = true;
+                        result.Data = strResponse;
+                    }
+                    else
+                    {
+                        string message = strResponse;
+                        if (mapError.dicMappingAdjust?.ContainsKey(strResponse) == true)
+                        {
+                            message += string.Format(" ({0})", mapError.dicMappingAdjust[strResponse]);
+                        }
+                        result.Messages.Add(message);
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result.Messages.Add(ex.Message);
+            }
+            return result;
+        }
         private ElectronicBillResult ReplaceInvoiceAction()
         {
             Inventec.Common.Logging.LogSystem.Info("ReplaceInvoiceAction");
