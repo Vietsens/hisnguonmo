@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -15,6 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraRichEdit;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Inventec.Common.Logging;
 using Newtonsoft.Json;
 using NGS.Templater;
@@ -79,120 +81,8 @@ namespace Inventec.Common.TemplaterExport
                     }
                 };
 
-                var factory = Configuration.Builder
-                        .Include(PathImage)
-                        .Include(UrlImage)
-                        .Include(Base64Image)
-                        .Include(ByteImage)
-                        .Include(Xml)
-                        .Include(SpeechNumberToString)
-                        .Include(SubString)
-                        .Include(NumberToString)
-                        .Include(IfElseNotEmpty)
-                        .Include((value, metadata, tag, position, templater) =>
-                        {
-                            if ("leaveIfEmpty" == metadata && value is IList)
-                            {
-                                var list = (IList)value;
-                                if (list.Count == 0)
-                                {
-                                    //when list is empty we want to leave the default message
-                                    templater.Replace(tag, "");
-                                }
-                                else
-                                {
-                                    //when list is not empty, we will remove the default message
-                                    templater.Resize(new[] { tag }, 0);
-                                }
-                                //indicates that only this tag was handled,
-                                //so Templater will either duplicate or remove other tags from this collection
-                                return Handled.ThisTag;
-                            }
-                            return Handled.Nothing;
-                        })
-                        .Include((value, metadata, pathTemper, position, templater) =>
-                        {
-                            var str = value as string;
-                            if (str != null && metadata.StartsWith("collapseIf("))
-                            {
-                                //Extract the matching expression
-                                var expression = metadata.Substring("collapseIf(".Length, metadata.Length - "collapseIf(".Length - 1);
-                                if (str == expression)
-                                {
-                                    //remove the context around the specific property
-                                    if (position == -1)
-                                    {
-                                        //when position is -1 it means non sharing tag is being used, in which case we can resize that region via "standard" API
-                                        templater.Resize(new[] { pathTemper }, 0);
-                                    }
-                                    else
-                                    {
-                                        //otherwise we need to use "advanced" resize API to specify which exact tag to replace
-                                        templater.Resize(new[] { new TagPosition(pathTemper, position) }, 0);
-                                    }
-                                    return Handled.NestedTags;
-                                }
-                            }
-                            return Handled.Nothing;
-                        }).Include((value, metadata, tag, position, templater) =>
-                        {
-                            if (value is IList && ("collapseNonEmpty" == metadata || "collapseEmpty" == metadata))
-                            {
-                                var list = (IList)value;
-                                //loop until all tags with the same name are processed
-                                do
-                                {
-                                    var md = templater.GetMetadata(tag, false);
-                                    var collapseOnEmpty = md.Contains("collapseEmpty");
-                                    var collapseNonEmpty = md.Contains("collapseNonEmpty");
-                                    if (list.Count == 0)
-                                    {
-                                        if (collapseOnEmpty)
-                                        {
-                                            //when position is -1 it means non sharing tag is being used, in which case we can resize that region via "standard" API
-                                            //otherwise we need to use "advanced" resize API to specify which exact tag to replace
-                                            if (position == -1)
-                                                templater.Resize(new[] { tag }, 0);
-                                            else
-                                                templater.Resize(new[] { new TagPosition(tag, position) }, 0);
-                                        }
-                                        else
-                                        {
-                                            //when position is -1 it means non sharing tag is being used, in which case we can just replace the first tag
-                                            //otherwise we can replace that exact tag via position API
-                                            //replacing the first tag is the same as calling replace(tag, 0, value)
-                                            if (position == -1)
-                                                templater.Replace(tag, "");
-                                            else
-                                                templater.Replace(tag, position, "");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (collapseNonEmpty)
-                                        {
-                                            if (position == -1)
-                                                templater.Resize(new[] { tag }, 0);
-                                            else
-                                                templater.Resize(new[] { new TagPosition(tag, position) }, 0);
-                                        }
-                                        else
-                                        {
-                                            if (position == -1)
-                                                templater.Replace(tag, "");
-                                            else
-                                                templater.Replace(tag, position, "");
-                                        }
-                                    }
-                                } while (templater.Tags.Contains(tag));
-                                //we want to stop further processing if list is empty
-                                //otherwise we want to continue resizing list and processing it's elements
-                                return list.Count == 0 ? Handled.NestedTags : Handled.Nothing;
-                            }
-                            return Handled.Nothing;
-                        })
+                var factory = Configuration.Builder.Include(Commonfuction)
                         .OnUnprocessed(handleUnprocessed)
-                        //.BuiltInLowLevelPlugins(false)
                         .Build();
                 this.templateDoc = factory.Open(this.templatePath);
                 result = true;
@@ -228,120 +118,8 @@ namespace Inventec.Common.TemplaterExport
                         }
                     };
 
-                    var factory = Configuration.Builder
-                        .Include(PathImage)
-                        .Include(UrlImage)
-                        .Include(ByteImage)
-                        .Include(Base64Image)
-                        .Include(Xml)
-                        .Include(SpeechNumberToString)
-                        .Include(SubString)
-                        .Include(NumberToString)
-                        .Include(IfElseNotEmpty)
-                        .Include((value, metadata, tag, position, templater) =>
-                        {
-                            if ("leaveIfEmpty" == metadata && value is IList)
-                            {
-                                var list = (IList)value;
-                                if (list.Count == 0)
-                                {
-                                    //when list is empty we want to leave the default message
-                                    templater.Replace(tag, "");
-                                }
-                                else
-                                {
-                                    //when list is not empty, we will remove the default message
-                                    templater.Resize(new[] { tag }, 0);
-                                }
-                                //indicates that only this tag was handled,
-                                //so Templater will either duplicate or remove other tags from this collection
-                                return Handled.ThisTag;
-                            }
-                            return Handled.Nothing;
-                        })
-                        .Include((value, metadata, pathTemper, position, templater) =>
-                        {
-                            var str = value as string;
-                            if (str != null && metadata.StartsWith("collapseIf("))
-                            {
-                                //Extract the matching expression
-                                var expression = metadata.Substring("collapseIf(".Length, metadata.Length - "collapseIf(".Length - 1);
-                                if (str == expression)
-                                {
-                                    //remove the context around the specific property
-                                    if (position == -1)
-                                    {
-                                        //when position is -1 it means non sharing tag is being used, in which case we can resize that region via "standard" API
-                                        templater.Resize(new[] { pathTemper }, 0);
-                                    }
-                                    else
-                                    {
-                                        //otherwise we need to use "advanced" resize API to specify which exact tag to replace
-                                        templater.Resize(new[] { new TagPosition(pathTemper, position) }, 0);
-                                    }
-                                    return Handled.NestedTags;
-                                }
-                            }
-                            return Handled.Nothing;
-                        }).Include((value, metadata, tag, position, templater) =>
-                        {
-                            if (value is IList && ("collapseNonEmpty" == metadata || "collapseEmpty" == metadata))
-                            {
-                                var list = (IList)value;
-                                //loop until all tags with the same name are processed
-                                do
-                                {
-                                    var md = templater.GetMetadata(tag, false);
-                                    var collapseOnEmpty = md.Contains("collapseEmpty");
-                                    var collapseNonEmpty = md.Contains("collapseNonEmpty");
-                                    if (list.Count == 0)
-                                    {
-                                        if (collapseOnEmpty)
-                                        {
-                                            //when position is -1 it means non sharing tag is being used, in which case we can resize that region via "standard" API
-                                            //otherwise we need to use "advanced" resize API to specify which exact tag to replace
-                                            if (position == -1)
-                                                templater.Resize(new[] { tag }, 0);
-                                            else
-                                                templater.Resize(new[] { new TagPosition(tag, position) }, 0);
-                                        }
-                                        else
-                                        {
-                                            //when position is -1 it means non sharing tag is being used, in which case we can just replace the first tag
-                                            //otherwise we can replace that exact tag via position API
-                                            //replacing the first tag is the same as calling replace(tag, 0, value)
-                                            if (position == -1)
-                                                templater.Replace(tag, "");
-                                            else
-                                                templater.Replace(tag, position, "");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (collapseNonEmpty)
-                                        {
-                                            if (position == -1)
-                                                templater.Resize(new[] { tag }, 0);
-                                            else
-                                                templater.Resize(new[] { new TagPosition(tag, position) }, 0);
-                                        }
-                                        else
-                                        {
-                                            if (position == -1)
-                                                templater.Replace(tag, "");
-                                            else
-                                                templater.Replace(tag, position, "");
-                                        }
-                                    }
-                                } while (templater.Tags.Contains(tag));
-                                //we want to stop further processing if list is empty
-                                //otherwise we want to continue resizing list and processing it's elements
-                                return list.Count == 0 ? Handled.NestedTags : Handled.Nothing;
-                            }
-                            return Handled.Nothing;
-                        })
+                    var factory = Configuration.Builder.Include(Commonfuction)
                         .OnUnprocessed(handleUnprocessed)
-                        //.BuiltInLowLevelPlugins(false)
                         .Build();
                     this.templateDoc = factory.Open(this.templatePath);
                 }
@@ -514,57 +292,123 @@ namespace Inventec.Common.TemplaterExport
             }
         }
 
+        private object Commonfuction(object arg1, string arg2)
+        {
+            object result = null;
+            try
+            {
+                if (arg1 != null && arg2 != null)
+                {
+                    if (arg2 == "FuncPathImage")
+                    {
+                        result = PathImage(arg1, arg2);
+                    }
+                    else if (arg2 == "FuncUrlImage")
+                    {
+                        result = UrlImage(arg1, arg2);
+                    }
+                    else if (arg2 == "FuncByteImage")
+                    {
+                        result = ByteImage(arg1, arg2);
+                    }
+                    else if (arg2 == "FuncBase64Image")
+                    {
+                        result = Base64Image(arg1, arg2);
+                    }
+                    else if (arg2 == "xml")
+                    {
+                        result = Xml(arg1, arg2);
+                    }
+                    else if (arg2.StartsWith("FuncSpeechNumberToString"))
+                    {
+                        result = SpeechNumberToString(arg1, arg2);
+                    }
+                    else if (arg2.StartsWith("FuncSubString-"))
+                    {
+                        result = SubString(arg1, arg2);
+                    }
+                    else if (arg2.StartsWith("FuncNumberToString"))
+                    {
+                        result = NumberToString(arg1, arg2);
+                    }
+                    else if (arg2.Contains("FuncIfElseNotEmpty("))
+                    {
+                        result = IfElseNotEmpty(arg1, arg2);
+                    }
+                    else if (arg2.StartsWith("FuncCalculateAge"))
+                    {
+                        result = CalculateAge(arg1, arg2);
+                    }
+                    else if (arg2.StartsWith("FuncTimeNumberToDateStringSeparateString"))
+                    {
+                        result = TimeNumberToDateStringSeparateString(arg1, arg2);
+                    }
+                    else if (arg2.StartsWith("FuncTimeNumberToDateString"))
+                    {
+                        result = TimeNumberToDateString(arg1, arg2);
+                    }
+                    else if (arg2.StartsWith("FuncTimeNumberToTimeString"))
+                    {
+                        result = TimeNumberToTimeString(arg1, arg2);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.LogSystem.Warn(ex);
+            }
+
+            return result;
+        }
+
         static object NumberToString(object argument, string metadata)
         {
             try
             {
-                if (metadata.Contains("FuncNumberToString") && argument != null)
+                string result = "";
+
+                string uiGSep = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberGroupSeparator;
+                string uiDSep = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => uiDSep), uiDSep)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => uiDSep), uiDSep));
+
+                string strvalue = argument.ToString().Replace(".", uiDSep).Replace(",", uiDSep);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => argument), argument)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => metadata), metadata)
+                + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => strvalue), strvalue));
+                var value = System.Convert.ToDecimal(strvalue);
+
+                var parameters = metadata.Split(new string['-'], StringSplitOptions.RemoveEmptyEntries);
+                int length = parameters.Length;
+
+                int numberDigit = 4;
+                int convert = 1;
+
+                switch (length)
                 {
-                    string result = "";
-
-                    string uiGSep = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberGroupSeparator;
-                    string uiDSep = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => uiDSep), uiDSep)
-                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => uiDSep), uiDSep));
-
-                    string strvalue = argument.ToString().Replace(".", uiDSep).Replace(",", uiDSep);
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => argument), argument)
-                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => metadata), metadata)
-                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => strvalue), strvalue));
-                    var value = System.Convert.ToDecimal(strvalue);
-
-                    var parameters = metadata.Split(new string['-'], StringSplitOptions.RemoveEmptyEntries);
-                    int length = parameters.Length;
-
-                    int numberDigit = 4;
-                    int convert = 1;
-
-                    switch (length)
-                    {
-                        case 1:
-                            numberDigit = 4;
-                            break;
-                        case 2:
-                            numberDigit = Convert.ToInt32(parameters[1]);
-                            break;
-                        case 3:
-                            numberDigit = Convert.ToInt32(parameters[1]);
-                            convert = Convert.ToInt32(parameters[2]);
-                            break;
-                        default:
-                            break;
-                    }
-
-                    result = Inventec.Common.Number.Convert.NumberToStringRoundMax4(value);
-                    if (convert == 1)
-                    {
-                        result = result.Replace(",", "_");
-                        result = result.Replace(".", ",");
-                        result = result.Replace("_", ".");
-                    }
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => value), value) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
-                    return result;
+                    case 1:
+                        numberDigit = 4;
+                        break;
+                    case 2:
+                        numberDigit = Convert.ToInt32(parameters[1]);
+                        break;
+                    case 3:
+                        numberDigit = Convert.ToInt32(parameters[1]);
+                        convert = Convert.ToInt32(parameters[2]);
+                        break;
+                    default:
+                        break;
                 }
+
+                result = Inventec.Common.Number.Convert.NumberToStringRoundMax4(value);
+                if (convert == 1)
+                {
+                    result = result.Replace(",", "_");
+                    result = result.Replace(".", ",");
+                    result = result.Replace("_", ".");
+                }
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => value), value) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
+                return result;
             }
             catch (Exception exx1)
             {
@@ -657,16 +501,14 @@ namespace Inventec.Common.TemplaterExport
         {
             try
             {
-                if (metadata.Contains("FuncSpeechNumberToString") && argument != null)
-                {
-                    var vString = argument.ToString();
+                var vString = argument.ToString();
 
-                    string uiGSep = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberGroupSeparator;
-                    string uiDSep = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-                    vString = vString.Replace(uiGSep, "");
-                    string temp = vString.Split(new System.String[] { uiDSep }, StringSplitOptions.None)[0];
-                    return Inventec.Common.String.Convert.CurrencyToVneseString(temp);
-                }
+                string uiGSep = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberGroupSeparator;
+                string uiDSep = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+                vString = vString.Replace(uiGSep, "");
+                string temp = vString.Split(new System.String[] { uiDSep }, StringSplitOptions.None)[0];
+                string values = Inventec.Common.String.Convert.CurrencyToVneseString(temp);
+                return values;
             }
             catch (Exception exx1)
             {
@@ -802,6 +644,173 @@ namespace Inventec.Common.TemplaterExport
             {
                 Logging.LogSystem.Warn(exx1);
             }
+        }
+
+        static object CalculateAge(object argument, string metadata)
+        {
+            string result = System.String.Empty;
+            try
+            {
+                long dob = 0;// Convert.ToInt64(argument);
+                if (!long.TryParse(argument.ToString(), out dob))
+                {
+                    return argument;
+                }
+
+                long TimeTo = 0;
+                string caption__Tuoi = "tuổi";
+                string caption__ThangTuoi = "tháng tuổi";
+                string caption__NgayTuoi = "ngày tuổi";
+                string caption__GioTuoi = "giờ tuổi";
+                var parameters = metadata.Split(new string[] { "FuncCalculateAge", ";", "(", ")", "," }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (parameters.Length > 0)
+                {
+                    caption__Tuoi = Convert.ToString(parameters[0]);
+                }
+                if (parameters.Length > 1)
+                {
+                    caption__ThangTuoi = Convert.ToString(parameters[1]);
+                }
+                if (parameters.Length > 2)
+                {
+                    caption__NgayTuoi = Convert.ToString(parameters[2]);
+                }
+                if (parameters.Length > 3)
+                {
+                    caption__GioTuoi = Convert.ToString(parameters[3]);
+                }
+                if (parameters.Length > 4)
+                {
+                    try
+                    {
+                        string timeToStr = parameters[4].ToString().Trim();
+                        if (timeToStr.Length >= 14)
+                        {
+                            long.TryParse(timeToStr.Substring(0, 14), out TimeTo);
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        TimeTo = 0;
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                }
+
+                if (dob > 0)
+                {
+                    System.DateTime dtNgSinh = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dob).Value;
+                    if (dtNgSinh == System.DateTime.MinValue) throw new ArgumentNullException("dtNgSinh");
+
+                    TimeSpan diff__hour = (System.DateTime.Now - dtNgSinh);
+                    TimeSpan diff__month = (System.DateTime.Now.Date - dtNgSinh.Date);
+
+                    int year = System.DateTime.Now.Year - dtNgSinh.Year;
+
+                    if (TimeTo > 0)
+                    {
+                        System.DateTime dtTimeTo = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(TimeTo).Value;
+                        if (dtTimeTo == System.DateTime.MinValue) throw new ArgumentNullException("dtTimeTo");
+
+                        diff__hour = (dtTimeTo - dtNgSinh);
+                        diff__month = (dtTimeTo.Date - dtNgSinh.Date);
+
+                        year = dtTimeTo.Year - dtNgSinh.Year;
+                    }
+
+                    //- Dưới 24h: tính chính xác đến giờ.
+                    double hour = diff__hour.TotalHours;
+
+                    if (hour < 24)
+                    {
+                        result = ((int)hour + " " + caption__GioTuoi);
+                    }
+                    else
+                    {
+                        long tongsogiay__hour = diff__hour.Ticks;
+                        System.DateTime newDate__hour = new System.DateTime(tongsogiay__hour);
+                        int month__hour = ((newDate__hour.Year - 1) * 12 + newDate__hour.Month - 1);
+                        if (parameters.Count() == 5 && month__hour == 0)
+                        {
+                            //Nếu Bn trên 24 giờ và dưới 1 tháng tuổi => hiển thị "xyz ngày tuổi"
+                            result = ((int)diff__month.TotalDays + " " + caption__NgayTuoi);
+                        }
+                        else
+                        {
+                            long tongsogiay = diff__month.Ticks;
+                            System.DateTime newDate = new System.DateTime(tongsogiay);
+                            int month = ((newDate.Year - 1) * 12 + newDate.Month - 1);
+                            if (month == 0)
+                            {
+                                //Nếu Bn trên 24 giờ và dưới 1 tháng tuổi => hiển thị "xyz ngày tuổi"
+                                result = ((int)diff__month.TotalDays + " " + caption__NgayTuoi);
+                            }
+                            else
+                            {
+                                //- Dưới 72 tháng tuổi: tính chính xác đến tháng như hiện tại
+                                if (month < 72)
+                                {
+                                    result = (month + " " + caption__ThangTuoi);
+                                }
+                                //- Trên 72 tháng tuổi: tính chính xác đến năm: tuổi= năm hiện tại - năm sinh
+                                else
+                                {
+                                    result = (year + " " + caption__Tuoi);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception exx1)
+            {
+                Logging.LogSystem.Warn(exx1);
+            }
+
+            return result;
+        }
+
+        private object TimeNumberToDateStringSeparateString(object arg1, string arg2)
+        {
+            object result = null;
+            try
+            {
+                result = Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(long.Parse(arg1.ToString()));
+            }
+            catch (Exception ex)
+            {
+                Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        private object TimeNumberToTimeString(object arg1, string arg2)
+        {
+            object result = null;
+            try
+            {
+                result = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(long.Parse(arg1.ToString()));
+            }
+            catch (Exception ex)
+            {
+                Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        private object TimeNumberToDateString(object arg1, string arg2)
+        {
+            object result = null;
+            try
+            {
+                result = Inventec.Common.DateTime.Convert.TimeNumberToDateString(long.Parse(arg1.ToString()));
+            }
+            catch (Exception ex)
+            {
+                Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
     }
 }
