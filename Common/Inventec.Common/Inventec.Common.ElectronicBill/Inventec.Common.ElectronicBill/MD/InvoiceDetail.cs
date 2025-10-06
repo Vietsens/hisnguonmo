@@ -84,5 +84,8 @@ namespace Inventec.Common.ElectronicBill.MD
 
         [XmlElement("CusBankNo")]
         public string CusBankNo { get; set; }
+        //qtcode
+        [XmlElement("Type")]
+        public int? Type { get; set; }
     }
 }

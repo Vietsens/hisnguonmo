@@ -135,6 +135,7 @@ namespace Inventec.Common.ElectronicBill
                     electronicBillInput.adjustInvoice.Total = FormatReplaceStringPrice(electronicBillInput.adjustInvoice.Total);
                     electronicBillInput.adjustInvoice.DiscountAmount = FormatReplaceStringPrice(electronicBillInput.adjustInvoice.DiscountAmount);
                     electronicBillInput.adjustInvoice.VATAmount = FormatReplaceStringPrice(electronicBillInput.adjustInvoice.VATAmount);
+                    electronicBillInput.adjustInvoice.Type = electronicBillInput.adjustInvoice.Type ?? 2; 
                     if (electronicBillInput.adjustInvoice.Products != null && electronicBillInput.adjustInvoice.Products.Count > 0)
                     {
                         foreach (var product in electronicBillInput.adjustInvoice.Products)
@@ -160,14 +161,14 @@ namespace Inventec.Common.ElectronicBill
                 BusinessserviceVNPT.AdjustInvoiceActionRequestBody body = new BusinessserviceVNPT.AdjustInvoiceActionRequestBody();
                 body.Account = electronicBillInput.account;
                 body.ACpass = electronicBillInput.acPass;
+                body.xmlInvData = xmlInvData;
                 body.username = electronicBillInput.userName;
                 body.pass = electronicBillInput.passWord;
                 body.fkey = electronicBillInput.fKey;
+                body.convert = electronicBillInput.convert;
+                body.AttachFile = electronicBillInput.attachFile ?? ""; 
                 body.pattern = electronicBillInput.pattern;
                 body.serial = electronicBillInput.serial;
-                body.convert = electronicBillInput.convert;
-                body.xmlInvData = xmlInvData;
-                body.AttachFile = electronicBillInput.attachFile ?? ""; 
 
                 BasicHttpBinding binding = new BasicHttpBinding();
                 binding.Security.Mode = BasicHttpSecurityMode.Transport;
@@ -191,7 +192,7 @@ namespace Inventec.Common.ElectronicBill
                         string message = strResponse;
                         if (mapError.dicMappingAdjust?.ContainsKey(strResponse) == true)
                         {
-                            message += string.Format(" ({0})", mapError.dicMappingAdjust[strResponse]);
+                            message += string.Format("({0})", mapError.dicMappingAdjust[strResponse]);
                         }
                         result.Messages.Add(message);
                     }
