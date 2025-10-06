@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using FlexCel.Report;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MPS.Processor.Mps000141.PDO;
@@ -33,6 +34,9 @@ namespace MPS.Processor.Mps000141
     {
         Mps000141PDO rdo;
         List<RecordingTransaction> recordTranList = new List<RecordingTransaction>();
+        List<Mps000141PDO.Mps000141ADO> listMediMateType = new List<Mps000141PDO.Mps000141ADO>();
+        List<Mps000141PDO.Mps000141ADO> ImpMestADOs;
+
         public Mps000141Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -51,9 +55,14 @@ namespace MPS.Processor.Mps000141
             {
                 Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
-
+                
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 ProcessSingleKey();
+                GetMediMateGroupGroup();
+                if (ImpMestADOs != null && ImpMestADOs.Count > 0)
+                {
+                    ImpMestADOs = ImpMestADOs.OrderBy(o => o.MEDI_MATE_TYPE_NAME).ToList();
+                }
                 singleTag.ProcessData(store, singleValueDictionary);
                 objectTag.AddObjectData(store, "RecordingTransaction1", this.recordTranList);
                 objectTag.AddObjectData(store, "RecordingTransaction2", this.recordTranList);
@@ -64,6 +73,9 @@ namespace MPS.Processor.Mps000141
                 objectTag.AddRelationship(store, "RecordingTransaction1", "mediMaties1", "IMP_MEST_MEDI_MATE_ID", "ID");
                 objectTag.AddRelationship(store, "RecordingTransaction2", "mediMaties2", "IMP_MEST_MEDI_MATE_ID", "ID");
                 objectTag.AddRelationship(store, "RecordingTransaction3", "mediMaties3", "IMP_MEST_MEDI_MATE_ID", "ID");
+                objectTag.AddObjectData(store, "MediMateGroup", listMediMateType);
+                objectTag.AddRelationship(store, "MediMateGroup", "mediMaties1", "GROUP_ID", "GROUP_ID");
+
                 result = true;
             }
             catch (Exception ex)
@@ -80,6 +92,7 @@ namespace MPS.Processor.Mps000141
             try
             {
                 this.recordTranList = new List<RecordingTransaction>();
+                ImpMestADOs = new List<Mps000141PDO.Mps000141ADO>();
                 decimal sumPrice = 0;
                 if (rdo._ImpMestMedicines != null && rdo._ImpMestMedicines.Count > 0)
                 {
@@ -95,7 +108,7 @@ namespace MPS.Processor.Mps000141
                         this.recordTranList.Add(parent);
                         foreach (var item in group)
                         {
-                            MPS.Processor.Mps000141.PDO.Mps000141PDO.Mps000141ADO Mps000141ADO = new MPS.Processor.Mps000141.PDO.Mps000141PDO.Mps000141ADO(item, this.rdo._Medicines, this.rdo._listImpSource);
+                            MPS.Processor.Mps000141.PDO.Mps000141PDO.Mps000141ADO Mps000141ADO = new MPS.Processor.Mps000141.PDO.Mps000141PDO.Mps000141ADO(item, this.rdo._Medicines, this.rdo._listImpSource, this.rdo._MedicineType);
 
                             if (rdo._ListMedicalContract != null && rdo._ListMedicalContract.Count > 0)
                             {
@@ -108,8 +121,9 @@ namespace MPS.Processor.Mps000141
                                     Mps000141ADO.VENTURE_AGREENING = MedicalContract.VENTURE_AGREENING;
                                 }
                             }
-
                             rdo._ListAdo.Add(Mps000141ADO);
+                            ImpMestADOs.Add(Mps000141ADO);
+
                             //rdo._ListAdo.Add(new MPS.Processor.Mps000141.PDO.Mps000141PDO.Mps000141ADO(item, this.rdo._Medicines, this.rdo._listImpSource));
                             if (!item.PRICE.HasValue)
                                 continue;
@@ -132,7 +146,7 @@ namespace MPS.Processor.Mps000141
                         this.recordTranList.Add(parent);
                         foreach (var item in group)
                         {
-                            MPS.Processor.Mps000141.PDO.Mps000141PDO.Mps000141ADO Mps000141ADO = new MPS.Processor.Mps000141.PDO.Mps000141PDO.Mps000141ADO(item, this.rdo._Materials, this.rdo._listImpSource);
+                            MPS.Processor.Mps000141.PDO.Mps000141PDO.Mps000141ADO Mps000141ADO = new MPS.Processor.Mps000141.PDO.Mps000141PDO.Mps000141ADO(item, this.rdo._Materials, this.rdo._listImpSource,this.rdo._MaterialType);
 
                             if (rdo._ListMedicalContract != null && rdo._ListMedicalContract.Count > 0)
                             {
@@ -147,7 +161,7 @@ namespace MPS.Processor.Mps000141
                             }
 
                             rdo._ListAdo.Add(Mps000141ADO);
-
+                            ImpMestADOs.Add(Mps000141ADO);
                             //rdo._ListAdo.Add(new MPS.Processor.Mps000141.PDO.Mps000141PDO.Mps000141ADO(item, this.rdo._Materials, this.rdo._listImpSource));
                             if (!item.PRICE.HasValue)
                                 continue;
@@ -156,7 +170,7 @@ namespace MPS.Processor.Mps000141
                     }
 
                 }
-
+                
                 if (rdo._ManuImpMest != null)
                 {
                     SetSingleKey(new KeyValue(Mps000141ExtendSingleKey.IMP_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo._ManuImpMest.IMP_TIME ?? 0)));
@@ -178,6 +192,24 @@ namespace MPS.Processor.Mps000141
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void GetMediMateGroupGroup()
+        {
+            try
+            {
+                if (ImpMestADOs != null && ImpMestADOs.Count > 0)
+                {
+                    var group = ImpMestADOs.GroupBy(o => new { o.GROUP_ID, o.GROUP_CODE, o.GROUP_NAME });
+                    foreach (var item in group)
+                    {
+                        listMediMateType.Add(item.ToList().First());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

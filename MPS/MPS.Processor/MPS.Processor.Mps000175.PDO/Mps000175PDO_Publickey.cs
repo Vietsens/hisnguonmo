@@ -48,6 +48,11 @@ namespace MPS.Processor.Mps000175.PDO
 
     public class Mps000175ADO
     {
+
+        public long? PARENT_ID { get; set; }
+        public string PARENT_CODE { get; set; }
+        public string PARENT_NAME { get; set; }
+
         public long TYPE_ID { get; set; }
         public long MEDI_MATE_TYPE_ID { get; set; }
 
@@ -161,6 +166,9 @@ namespace MPS.Processor.Mps000175.PDO
                     if (maty != null)
                     {
                         this.CONCENTRA = maty.CONCENTRA;
+                        this.PARENT_ID = maty.PARENT_ID;
+                        this.PARENT_CODE = maty.PARENT_CODE;
+                        this.PARENT_NAME = maty.PARENT_NAME;
                     }
                 }
             }
@@ -244,6 +252,9 @@ namespace MPS.Processor.Mps000175.PDO
                     if (maty != null)
                     {
                         this.CONCENTRA = maty.CONCENTRA;
+                        this.PARENT_ID = maty.PARENT_ID;
+                        this.PARENT_CODE = maty.PARENT_CODE;
+                        this.PARENT_NAME = maty.PARENT_NAME;
                     }
                 }
             }

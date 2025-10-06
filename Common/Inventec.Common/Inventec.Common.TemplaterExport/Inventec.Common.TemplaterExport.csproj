@@ -82,9 +82,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.TemplaterExport\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NGS.Templater, Version=4.3.0.24895, Culture=neutral, PublicKeyToken=b9c117a1d2974457, processorArchitecture=MSIL">
+    <Reference Include="NGS.Templater, Version=7.3.0.40731, Culture=neutral, PublicKeyToken=b9c117a1d2974457, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\NGS.Templater.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Library packages\NGS.Templater-NET\4.0\NGS.Templater.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -132,6 +132,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Inventec.Common.DateTime\Inventec.Common.DateTime.csproj">
+      <Project>{d3437a35-37ed-4697-a3fa-109939baaf47}</Project>
+      <Name>Inventec.Common.DateTime</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

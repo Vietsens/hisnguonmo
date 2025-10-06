@@ -3556,13 +3556,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     listTreatmentSync = this.GetTreatment();
                 }
 
-                if (this.configSync.isXML3176)
+                if (this.configSync.isXML3176 && !backgroundWorker1.IsBusy)
                 {
                     LogSystem.Info("Thread Auto Sync. isXML3176 ");
                     backgroundWorker1.RunWorkerAsync();
                 }
 
-                if (listTreatmentSync != null && listTreatmentSync.Count > 0)
+                if (listTreatmentSync != null && listTreatmentSync.Count > 0 && !backgroundWorker1.IsBusy)
                 {
                     LogSystem.Info("Thread Auto Sync. TreatmentCount: " + listTreatmentSync.Count);
                     backgroundWorker1.RunWorkerAsync();
@@ -4235,11 +4235,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     if (syncResult != null && syncResult12 != null)
                                     {
                                         string errorCode = syncResult.ErrorCode;
-                                        if (errorCode == "01" || errorCode == "02" || errorCode == "03")
+                                        if ((errorCode == "01" || errorCode == "02" || errorCode == "03") && !isAutoSync)
                                         {
                                             XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.Message), Resources.ResourceMessageLang.ThongBao);
-                                            autoSync.Stop();
-                                            isAutoSync = false;
                                             return;
                                         }
                                         else
@@ -4314,22 +4312,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("syncResult__" + Inventec.Common.Logging.LogUtil.GetMemberName(() => syncResult), syncResult));
                                     if (syncResult != null)
                                     {
-                                        if (!syncResult.Success)
+                                        if (!syncResult.Success && !isAutoSync)
                                         {
                                             XtraMessageBox.Show("Ký số thất bại: " + syncResult.Message, Resources.ResourceMessageLang.ThongBao);
-                                            if (isAutoSync)
-                                            {
-                                                autoSync.Stop();
-                                                isAutoSync = false;
-                                            }
                                             return;
                                         }
                                         string errorCode = syncResult.ErrorCode;
-                                        if (errorCode == "01" || errorCode == "02" || errorCode == "03")
+                                        if ((errorCode == "01" || errorCode == "02" || errorCode == "03") && !isAutoSync)
                                         {
                                             XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.Message), Resources.ResourceMessageLang.ThongBao);
-                                            autoSync.Stop();
-                                            isAutoSync = false;
                                             return;
                                         }
                                         else
@@ -4447,8 +4438,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             File.Delete(sourceFile);
                         }
-                        XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");
-                        return;
+                        if (!isAutoSync)
+                        {
+                            XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");
+                            return;
+                        }
                     }
                 }
                 else
@@ -4490,8 +4484,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             File.Delete(sourceFile);
                         }
-                        XtraMessageBox.Show("Ký số thất bại: " + syncResult.Message, Resources.ResourceMessageLang.ThongBao);
-                        return;
+                        if (!isAutoSync)
+                        {
+                            XtraMessageBox.Show("Ký số thất bại: " + syncResult.Message, Resources.ResourceMessageLang.ThongBao);
+                            return;
+                        }
                     }
                 }
                 if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))

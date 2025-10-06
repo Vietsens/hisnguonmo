@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using Inventec.Common.Logging;
 using MOS.EFMODEL.DataModels;
 using MOS.SDO;
 using MPS.ProcessorBase;
@@ -30,6 +31,9 @@ namespace MPS.Processor.Mps000141.PDO
     public partial class Mps000141PDO : RDOBase
     {
         public V_HIS_IMP_MEST _ManuImpMest = null;
+        public List<V_HIS_MEDICINE_TYPE> _MedicineType = null;
+        public List<V_HIS_MATERIAL_TYPE> _MaterialType = null;
+
         public List<HIS_MEDICINE> _Medicines = null;
         public List<HIS_MATERIAL> _Materials = null;
         public List<HIS_IMP_SOURCE> _listImpSource = null;
@@ -78,7 +82,16 @@ namespace MPS.Processor.Mps000141.PDO
             public string DOCUMENT_SUPPLIER_NAME { get; set; }
             public string VENTURE_AGREENING { get; set; }
 
-            public Mps000141ADO(V_HIS_IMP_MEST_MEDICINE medicine, List<HIS_MEDICINE> _medicines, List<HIS_IMP_SOURCE> _listImpSource)
+            public long? PARENT_ID { get; set; }
+            public string PARENT_CODE { get; set; }
+            public string PARENT_NAME { get; set; }
+            public long? MEDICINE_GROUP_ID { get; set; }
+            public string MEDICINE_GROUP_CODE { get; set; }
+            public string MEDICINE_GROUP_NAME { get; set; }
+            public long? GROUP_ID { get; set; }
+            public string GROUP_CODE { get; set; }
+            public string GROUP_NAME { get; set; }
+            public Mps000141ADO(V_HIS_IMP_MEST_MEDICINE medicine, List<HIS_MEDICINE> _medicines, List<HIS_IMP_SOURCE> _listImpSource, List<V_HIS_MEDICINE_TYPE> medicineType)
             {
                 try
                 {
@@ -115,6 +128,21 @@ namespace MPS.Processor.Mps000141.PDO
                         //this.VIR_PRICE = medicine.VIR_PRICE;
                         //this.MEDICINE_ID = medicine.MEDICINE_ID;
                         var medi = _medicines.FirstOrDefault((HIS_MEDICINE p) => p.ID == medicine.MEDICINE_ID);
+                        var mediType = medicineType.FirstOrDefault(o => o.ID == medi.MEDICINE_TYPE_ID);
+
+                        if (mediType != null)
+                        {
+                            this.PARENT_ID = mediType.PARENT_ID;
+                            this.PARENT_CODE = mediType.PARENT_CODE;
+                            this.PARENT_NAME = mediType.PARENT_NAME;
+                            this.MEDICINE_GROUP_ID = mediType.MEDICINE_GROUP_ID;
+                            this.MEDICINE_GROUP_CODE = mediType.MEDICINE_GROUP_CODE;
+                            this.MEDICINE_GROUP_NAME = mediType.MEDICINE_GROUP_NAME;
+
+                            this.GROUP_ID = mediType.MEDICINE_GROUP_ID;
+                            this.GROUP_CODE = mediType.MEDICINE_GROUP_CODE;
+                            this.GROUP_NAME = mediType.MEDICINE_GROUP_NAME;
+                        }
                         if (medi != null)
                         {
                             this.VIR_IMP_PRICE = medi.VIR_IMP_PRICE;
@@ -133,7 +161,7 @@ namespace MPS.Processor.Mps000141.PDO
                 }
             }
 
-            public Mps000141ADO(V_HIS_IMP_MEST_MATERIAL material, List<HIS_MATERIAL> _materials, List<HIS_IMP_SOURCE> _listImpSource)
+            public Mps000141ADO(V_HIS_IMP_MEST_MATERIAL material, List<HIS_MATERIAL> _materials, List<HIS_IMP_SOURCE> _listImpSource, List<V_HIS_MATERIAL_TYPE> materialType)
             {
                 try
                 {
@@ -168,6 +196,18 @@ namespace MPS.Processor.Mps000141.PDO
                         //this.VIR_PRICE = material.VIR_PRICE;
                         this.MATERIAL_ID = material.MATERIAL_ID;
                         var mate = _materials.FirstOrDefault((HIS_MATERIAL p) => p.ID == material.MATERIAL_ID);
+                        var mateType = materialType.FirstOrDefault(o => o.ID == mate.MATERIAL_TYPE_ID);
+
+                        if (mateType != null)
+                        {
+                            this.PARENT_ID = mateType.PARENT_ID;
+                            this.PARENT_CODE = mateType.PARENT_CODE;
+                            this.PARENT_NAME = mateType.PARENT_NAME;
+
+                            this.GROUP_ID = mateType.PARENT_ID;
+                            this.GROUP_CODE = mateType.PARENT_CODE;
+                            this.GROUP_NAME = mateType.PARENT_NAME;
+                        }
                         if (mate != null)
                         {
                             this.VIR_IMP_PRICE = mate.VIR_IMP_PRICE;

@@ -957,7 +957,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             // gridColumn63
             // 
             this.gridColumn63.Caption = "Mã nhóm sơ chế";
-            this.gridColumn63.FieldName = "PREPROCESSING_NAME_STR";
+            this.gridColumn63.FieldName = "PREPROCESSING_CODE";
             this.gridColumn63.Name = "gridColumn63";
             this.gridColumn63.OptionsColumn.AllowEdit = false;
             this.gridColumn63.Visible = true;
@@ -976,7 +976,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             // gridColumn64
             // 
             this.gridColumn64.Caption = "Mã nhóm phức chế";
-            this.gridColumn64.FieldName = "PROCESSING_NAME_STR";
+            this.gridColumn64.FieldName = "PROCESSING_CODE";
             this.gridColumn64.Name = "gridColumn64";
             this.gridColumn64.OptionsColumn.AllowEdit = false;
             this.gridColumn64.Visible = true;

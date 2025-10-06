@@ -836,9 +836,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 if (ListSereServ != null && ListSereServ.Count > 0)
                 {
                     ListSSExt = GetSereServExtToExcel(ListSereServ.Select(o => o.ID).ToList());
-                    if (ListSereServ.Where(o => o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN).ToList() != null && ListSereServ.Where(o => o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN).ToList().Count > 0)
+                    if (ListSereServ.Where(o => o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN || o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL).ToList() != null && ListSereServ.Where(o => o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN || o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL).ToList().Count > 0)
                     {
-                        ListSSTein = GetSereServTeinToExcel(lstData.Select(o => o.ID).ToList(), ListSereServ.Where(o => o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN).Select(o => o.ID).ToList());
+                        ListSSTein = GetSereServTeinToExcel(lstData.Select(o => o.ID).ToList(), ListSereServ.Where(o => o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN ||o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL).Select(o => o.ID).ToList());
                     }
                 }
                 foreach (var item in lstData)
@@ -876,6 +876,27 @@ namespace HIS.Desktop.Plugins.TreatmentList
                                     if (ListSSExt.Where(o => o.SERE_SERV_ID == itemSereServ.ID).ToList() != null && ListSSExt.Where(o => o.SERE_SERV_ID == itemSereServ.ID).ToList().Count > 0)
                                     {
                                         adoTemp.CONCLUDE = ListSSExt.Where(o => o.SERE_SERV_ID == itemSereServ.ID).FirstOrDefault().CONCLUDE;
+                                    }
+                                }
+                                if (string.IsNullOrEmpty(adoTemp.CONCLUDE) && ListSSTein != null && ListSSTein.Count > 0)
+                                {
+                                    var CheckListSSTein = ListSSTein.Where(o => o.SERE_SERV_ID == itemSereServ.ID && o.TDL_TREATMENT_ID == item.ID).ToList();
+                                    if (CheckListSSTein != null && CheckListSSTein.Count > 0)
+                                    {
+                                        if (CheckListSSTein.Count == 1)
+                                        {
+                                            adoTemp.VALUE = CheckListSSTein.FirstOrDefault().VALUE;
+                                        }
+                                        else
+                                        {
+                                            List<string> lst = new List<string>();
+                                            foreach (var itemSSTein in CheckListSSTein)
+                                            {
+                                                lst.Add(itemSSTein.TEST_INDEX_NAME + ": " + itemSSTein.VALUE);
+                                            }
+                                            adoTemp.VALUE = string.Join("; ", lst);
+                                        }
+
                                     }
                                 }
                                 ListTemp.Add(adoTemp);
@@ -1017,41 +1038,78 @@ namespace HIS.Desktop.Plugins.TreatmentList
 
             return rs;
         }
+
+        /// <summary>
+        /// Hàm này lấy dữ liệu mở rộng dịch vụ theo danh sách ID, chia nhỏ thành từng lô 100 phần tử để gọi API nhiều lần, tổng hợp kết quả và trả về. Nếu có lỗi thì trả về null.
+        /// </summary>
+        /// <param name="sereServId"></param>
+        /// <returns></returns>
         private List<HIS_SERE_SERV_EXT> GetSereServExtToExcel(List<long> sereServId)
         {
-            List<HIS_SERE_SERV_EXT> rs = null;
+            List<HIS_SERE_SERV_EXT> rs = new List<HIS_SERE_SERV_EXT>();
             try
             {
-                CommonParam param = new CommonParam();
-                HisSereServExtFilter filter = new HisSereServExtFilter();
-                filter.SERE_SERV_IDs = sereServId;
-                rs = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumers.MosConsumer, filter, param);
+                if (sereServId != null && sereServId.Count > 0)
+                {
+                    int skip = 0;
+                    while (skip < sereServId.Count)
+                    {
+                        var batchIds = sereServId.Skip(skip).Take(100).ToList();
+                        skip += 100;
+                        CommonParam param = new CommonParam();
+                        HisSereServExtFilter filter = new HisSereServExtFilter();
+                        filter.SERE_SERV_IDs = batchIds;
+                        var batchRs = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumers.MosConsumer, filter, param);
+                        if (batchRs != null && batchRs.Count > 0)
+                        {
+                            rs.AddRange(batchRs);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return null;
             }
-
             return rs;
         }
+
+        /// <summary>
+        /// Hàm này lấy dữ liệu mở rộng dịch vụ theo danh sách ID, chia nhỏ thành từng lô 100 phần tử để gọi API nhiều lần, tổng hợp kết quả và trả về. Nếu có lỗi thì trả về null.
+        /// </summary>
+        /// <param name="lstTreatmentId"></param>
+        /// <param name="lstSSid"></param>
+        /// <returns></returns>
         private List<V_HIS_SERE_SERV_TEIN> GetSereServTeinToExcel(List<long> lstTreatmentId, List<long> lstSSid)
         {
-            List<V_HIS_SERE_SERV_TEIN> rs = null;
+            List<V_HIS_SERE_SERV_TEIN> rs = new List<V_HIS_SERE_SERV_TEIN>();
             try
             {
-                CommonParam param = new CommonParam();
-                HisSereServTeinViewFilter filter = new HisSereServTeinViewFilter();
-                filter.SERE_SERV_IDs = lstSSid;
-                filter.TDL_TREATMENT_IDs = lstTreatmentId;
-                rs = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN>>("api/HisSereServTein/GetView", ApiConsumers.MosConsumer, filter, param);
+                if (lstSSid != null && lstSSid.Count > 0)
+                {
+                    int skip = 0;
+                    while (skip < lstSSid.Count)
+                    {
+                        var batchIds = lstSSid.Skip(skip).Take(100).ToList();
+                        skip += 100;
+                        CommonParam param = new CommonParam();
+                        HisSereServTeinViewFilter filter = new HisSereServTeinViewFilter();
+                        filter.SERE_SERV_IDs = batchIds;
+                        filter.TDL_TREATMENT_IDs = lstTreatmentId;
+                        var batchRs = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_TEIN>>("api/HisSereServTein/GetView", ApiConsumers.MosConsumer, filter, param);
+                        if (batchRs != null && batchRs.Count > 0)
+                        {
+                            rs.AddRange(batchRs);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return null;
             }
-
             return rs;
         }
     }

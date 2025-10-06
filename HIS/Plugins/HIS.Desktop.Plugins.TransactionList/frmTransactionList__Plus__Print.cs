@@ -52,6 +52,7 @@ using HIS.Desktop.Plugins.Library.ElectronicBill.Data;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Template;
 using System.Transactions;
 using HIS.Desktop.Plugins.TransactionList;
+using MPS.Processor;
 
 namespace HIS.Desktop.Plugins.TransactionList
 {
@@ -73,6 +74,10 @@ namespace HIS.Desktop.Plugins.TransactionList
                     var type = (PopupMenuProcessor.ItemType)e.Item.Tag;
                     switch (type)
                     {
+
+                        case PopupMenuProcessor.ItemType.DieuChinhHoaDon:
+                            this.DieuChinhHoaDon();
+                            break;
                         case PopupMenuProcessor.ItemType.PhieuThuThanhToan:
                             this.PrintPhieuThuThanhToan();
                             break;
@@ -760,7 +765,22 @@ namespace HIS.Desktop.Plugins.TransactionList
             }
             return result;
         }
+        private void DieuChinhHoaDon()
+        {
+            try
+            {
+                if (this.transactionPrint == null )
+                    return;
 
+                List<object> listArgs = new List<object>();
+                listArgs.Add(transactionPrint);
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.AdjustmentTransaction", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void BangKeThanhToan()
         {
             try

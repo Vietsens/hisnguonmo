@@ -1204,9 +1204,38 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 checkIsOxygen.Checked = (hIS_MEDICINE_TYPE.IS_OXYGEN == 1);
                 this.txtScientificName.Text = hIS_MEDICINE_TYPE.SCIENTIFIC_NAME;
                 this.txtPreprocessing.Text = hIS_MEDICINE_TYPE.PREPROCESSING_CODE;
-                this.txtPreprocessingName.Text = hIS_MEDICINE_TYPE.PREPROCESSING;
+                //this.txtPreprocessingName.Text = hIS_MEDICINE_TYPE.PREPROCESSING;
+                //HUANNH
+                InitProcessingMethod();
+                if (!string.IsNullOrEmpty(hIS_MEDICINE_TYPE.PREPROCESSING_CODE) && lstPreProcessing != null)
+                {
+                    var codes = hIS_MEDICINE_TYPE.PREPROCESSING_CODE.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    var names = lstPreProcessing
+                        .Where(x => codes.Contains(x.PROCESSING_METHOD_CODE))
+                        .Select(x => x.PROCESSING_METHOD_NAME)
+                        .ToList();
+                    this.txtPreprocessingName.Text = string.Join(";", names);
+                }
+                else
+                {
+                    this.txtPreprocessingName.Text = "";
+                }
+                
                 this.txtProcessing.Text = hIS_MEDICINE_TYPE.PROCESSING_CODE;
-                this.txtProcessingName.Text = hIS_MEDICINE_TYPE.PROCESSING;
+                if (!string.IsNullOrEmpty(hIS_MEDICINE_TYPE.PROCESSING_CODE) && lstProcessing != null)
+                {
+                    var codes = hIS_MEDICINE_TYPE.PROCESSING_CODE.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    var names = lstProcessing
+                        .Where(x => codes.Contains(x.PROCESSING_METHOD_CODE))
+                        .Select(x => x.PROCESSING_METHOD_NAME)
+                        .ToList();
+                    this.txtProcessingName.Text = string.Join(";", names);
+                }
+                else
+                {
+                    this.txtProcessingName.Text = "";
+                }
+                this.txtPreprocessing.Text = hIS_MEDICINE_TYPE.PREPROCESSING_CODE;
                 this.txtUsedPart.Text = hIS_MEDICINE_TYPE.USED_PART;
                 //this.cboDosageForm.EditValue = hIS_MEDICINE_TYPE.DOSAGE_FORM;
                 this.cboHowToUse.EditValue = hIS_MEDICINE_TYPE.HTU_ID;

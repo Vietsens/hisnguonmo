@@ -43,7 +43,6 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
         const string frmWaitingScreen = "frmWaitingScreen";
         const string frmWaitingScreenQy = "frmWaitingScreen_QY";
         const string except = " _";
-        internal static List<ServiceReqCallADO> StackServiceReqCall = new List<ServiceReqCallADO>();
 
         internal static void TurnOffExtendMonitor(frmWaitingScreen control)
         {
