@@ -560,24 +560,26 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
         }
 
+        // Pseudocode plan:
+        // 1. In btnOpenFileInComputer_Click, when a PDF file is selected, load its path into AttackADO.FullName.
+        // 2. Do not convert PDF to image, just store the PDF path and Base64 data.
+        // 3. Do not set AttackADO.image for PDF files.
+        // 4. For non-PDF files, load as before.
+
         private void btnOpenFileInComputer_Click(object sender, EventArgs e)
         {
             try
             {
-                OpenFileDialog openFile = new OpenFileDialog();
-                //openFile.Filter = "Ảnh jpg|*.jpg|Ảnh Png|*.png|Ảnh jpeg|*.jpeg|Ảnh bmp|*.bmp|Ảnh gif|*.gif";
-                //openFile.DefaultExt = ".jpg";
-
-                openFile.Multiselect = true;
-                openFile.Filter = "Ảnh(*.jpg, *.Png, *.jpeg, *.bmp,*.gif,*.pdf)|*.jpg;*.png;*.jpeg;*.bmp;*.gif;*.pdf";
-                openFile.DefaultExt = ".jpg;.png;.jpeg;.bmp;.gif;.pdf";
+                OpenFileDialog openFile = new OpenFileDialog
+                {
+                    Multiselect = true,
+                    Filter = "Ảnh(*.jpg, *.Png, *.jpeg, *.bmp,*.gif,*.pdf)|*.jpg;*.png;*.jpeg;*.bmp;*.gif;*.pdf",
+                    DefaultExt = ".jpg;.png;.jpeg;.bmp;.gif;.pdf"
+                };
 
                 if (openFile.ShowDialog() == DialogResult.OK)
                 {
-                    // pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(openFile.FileName);
                     this.fullfileNameAttack = openFile.FileNames;
-                    // pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-                    // Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => pteAnhChupFileDinhKem.Image.Tag), pteAnhChupFileDinhKem.Image.Tag));
 
                     if (this.fullfileNameAttack != null)
                     {
@@ -591,42 +593,17 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             string extension = System.IO.Path.GetExtension(item);
                             if ((extension ?? "").ToLower() == ".pdf")
                             {
-                                //từ đường dẫn file pdf là item đọc nội dung file và convert sang file ảnh
-                                string joinPdfPathFile = "";
-                                iTextSharp.text.pdf.PdfReader readerWorking = new iTextSharp.text.pdf.PdfReader(item);
-                                float pageHeight = readerWorking.GetPageSize(1).Height;
-                                Inventec.Common.SignLibrary.PdfDocumentProcess.SplitOnePageToImageAndJoinToNewOnePdf(item, pageHeight, ref joinPdfPathFile);
-                                LogSystem.Debug("joinPdfPathFile:" + joinPdfPathFile);
-                                this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(joinPdfPathFile);
-                                this.fileNameAttack.FullName = joinPdfPathFile;
+                                // Load PDF file path and base64, do not convert to image
+                                this.fileNameAttack.FullName = item;
+                                this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(item);
+                                this.fileNameAttack.image = null;
                             }
                             else
                             {
                                 this.fileNameAttack.FullName = item;
                                 this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(item);
-                            }
-
-
-                            if ((extension ?? "").ToLower() != ".pdf")
-                            {
-                                //int largestEdgeLength = 10;
-                                // DevExpress.XtraPdfViewer.PdfViewer pdf = new DevExpress.XtraPdfViewer.PdfViewer();
-                                //pdf.LoadDocument(item);
-                                //for (int i = 1; i <= pdf.PageCount; i++)
-                                //{
-                                //FileStream st = new FileStream(item, FileMode.Open);
-
-                                //    // Export all pages to bitmaps
-                                //  Bitmap image = pdf.CreateBitmap(i, largestEdgeLength);
-                                //    // Save the resulting images
-                                //   this.fileNameAttack.image = System.Drawing.Image.FromStream(st);
-                                //}
                                 this.fileNameAttack.image = System.Drawing.Image.FromFile(item);
                             }
-                            //else
-                            //{
-                            //    
-                            //}
                             this.ListfileNameAttack.Add(fileNameAttack);
                         }
                     }
@@ -637,7 +614,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => fullfileNameAttack), fullfileNameAttack));
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListfileNameAttack), ListfileNameAttack));
-
             }
             catch (Exception ex)
             {
@@ -920,26 +896,23 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     if ((System.IO.Path.GetExtension(currentFileAttack.FullName) ?? "").ToLower() == ".pdf")
                     {
-                        // DevExpress.XtraPdfViewer.PdfViewer pdf = new DevExpress.XtraPdfViewer.PdfViewer();
-
-                        //pdf.LoadDocument(data.FullName);
                         this.imageview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         this.pdfview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
                         pdfViewer1.LoadDocument(currentFileAttack.FullName);
+
                         btnRotateLeft.Enabled = false;
                         btnRotateRight.Enabled = false;
-
                     }
                     else
                     {
                         this.imageview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                         this.pdfview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         pteAnhChupFileDinhKem.Image = currentFileAttack.image;
+                        pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
                         btnRotateLeft.Enabled = true;
                         btnRotateRight.Enabled = true;
                     }
-                    pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => pteAnhChupFileDinhKem.Image.Tag), pteAnhChupFileDinhKem.Image.Tag));
                 }
             }
             catch (Exception ex)
@@ -1067,7 +1040,23 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 //SetDeviceProperty(ref device, 3096,1);
                 WIA.Item items = device.Items[1];
                 //items.Properties["6146"].set_Value(2);
-                AdjustScannerSettings(items, 150, 0, 0, 1250, 1700, 0, 0, 1);
+                const int NEW_WIDTH = 2500;
+                const int NEW_HEIGHT = 3400;
+                const int DEFAULT_WIDTH = 1250;
+                const int DEFAULT_HEIGHT = 1700;
+
+                try
+                {
+                    AdjustScannerSettings(items, 150, 0, 0, NEW_WIDTH, NEW_HEIGHT, 0, 0, 1);
+                    Inventec.Common.Logging.LogSystem.Info(string.Format("Đã set khung scan mới: {0}x{1}", NEW_WIDTH, NEW_HEIGHT));
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khung scan mới không hợp lệ, dùng lại khung cũ. " + ex.Message);
+                    AdjustScannerSettings(items, 150, 0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, 0, 0, 1);
+                }
+
+
 
                 ICommonDialog dlg = new WIA.CommonDialog();
                 while (true)
@@ -1109,7 +1098,21 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
 
                 var scannerItem = device.Items[1];
-                AdjustScannerSettings(scannerItem, 150, 0, 0, 1250, 1700, 0, 0, 1);
+                const int NEW_WIDTH = 2500;
+                const int NEW_HEIGHT = 3400;
+                const int DEFAULT_WIDTH = 1250;
+                const int DEFAULT_HEIGHT = 1700;
+                try
+                {
+                    AdjustScannerSettings(scannerItem, 150, 0, 0, NEW_WIDTH, NEW_HEIGHT, 0, 0, 1);
+                    Inventec.Common.Logging.LogSystem.Info(string.Format("Đã set khung scan mới: {0}x{1}", NEW_WIDTH, NEW_HEIGHT));
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khung scan mới không hợp lệ, dùng lại khung cũ. " + ex.Message);
+                    AdjustScannerSettings(scannerItem, 150, 0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, 0, 0, 1);
+                }
+
                 ICommonDialog dlg = new WIA.CommonDialog();
 
                 try
