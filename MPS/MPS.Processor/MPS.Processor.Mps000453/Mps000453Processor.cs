@@ -47,6 +47,7 @@ namespace MPS.Processor.Mps000453
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 //objectTag.AddObjectData(store, "ServiceReq", new List<V_HIS_SERVICE_REQ>() { rdo.HisServiceReq });
                 objectTag.AddObjectData(store, "KskUnderEighteen", new List<HIS_KSK_UNDER_EIGHTEEN>() { rdo.HisKskUnderEighteen });
+                objectTag.AddObjectData(store, "Treatment", new List<V_HIS_TREATMENT_4>() { rdo.treatment });
                 objectTag.AddObjectData(store, "Dhst", new List<HIS_DHST>() { rdo.HisDhst });
                 objectTag.AddRelationship(store, "KskUnderEighteen", "Dhst", "DHST_ID", "ID");
                 SetSingleKey();

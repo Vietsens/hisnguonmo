@@ -33,12 +33,14 @@ namespace MPS.Processor.Mps000452.PDO
         public List<HIS_HEALTH_EXAM_RANK> examRank { get; set; }
         public List<HIS_DISEASE_TYPE> DiseaseType { get; set; }
         public List<HIS_PERIOD_DRIVER_DITY> PeriodDriverDity { get; set; }
+        public V_HIS_TREATMENT_4 treatment { get; set; }
 
         public Mps000452PDO(
             HIS_KSK_OVER_EIGHTEEN HisKskOverEighteen,
            V_HIS_SERVICE_REQ HisServiceReq,
            HIS_DHST HisDhst
-            , List<HIS_HEALTH_EXAM_RANK> examRank
+            , List<HIS_HEALTH_EXAM_RANK> examRank,
+           V_HIS_TREATMENT_4 treatment
             )
         {
             try
@@ -47,6 +49,7 @@ namespace MPS.Processor.Mps000452.PDO
                 this.HisServiceReq = HisServiceReq;
                 this.HisDhst = HisDhst;
                 this.examRank = examRank;
+                this.treatment = treatment;
             }
             catch (Exception ex)
             {
@@ -59,7 +62,8 @@ namespace MPS.Processor.Mps000452.PDO
           HIS_DHST HisDhst
            , List<HIS_HEALTH_EXAM_RANK> examRank,
           List<HIS_DISEASE_TYPE> DiseaseType,
-          List<HIS_PERIOD_DRIVER_DITY> PeriodDriverDity
+          List<HIS_PERIOD_DRIVER_DITY> PeriodDriverDity,
+           V_HIS_TREATMENT_4 treatment
            )
         {
             try
@@ -70,6 +74,7 @@ namespace MPS.Processor.Mps000452.PDO
                 this.examRank = examRank;
                 this.DiseaseType = DiseaseType;
                 this.PeriodDriverDity = PeriodDriverDity;
+                this.treatment = treatment;
             }
             catch (Exception ex)
             {
