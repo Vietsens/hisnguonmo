@@ -105,6 +105,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         private const string KEY_PathologicalProcessOption = "HIS.Desktop.Plugins.TreatmentFinish.PathologicalProcessOption";
         internal static bool IsRequiredPathologicalProcessTransferPatientBHYT;
         internal static int PathologicalProcessOption;
+        private const string KEY_AllowBhxhLeaveOver30days = "His.LeaveDay.AllowBhxhLeaveOver30days";
+        internal static string AllowBhxhLeaveOver30days;
         internal static void LoadConfig()
         {
             try
@@ -138,6 +140,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 AutoCheckIcd = GetValue(CONFIG_KEY__ICD_GENERA_KEY);
                 IsRequiredPathologicalProcessTransferPatientBHYT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsRequiredPathologicalProcessTransferPatientBHYT) == GlobalVariables.CommonStringTrue;
                 PathologicalProcessOption = int.Parse(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_PathologicalProcessOption) ?? "0");
+                AllowBhxhLeaveOver30days = GetValue(KEY_AllowBhxhLeaveOver30days);
             }
             catch (Exception ex)
             {
