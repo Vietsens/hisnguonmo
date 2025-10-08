@@ -151,7 +151,7 @@ namespace MPS.Processor.Mps000340
                             sereServADO.QrCT540 = ct540;
                         }
                     }
-                    var SereServSereServIdQr =  SereServSereServIdQrQR(rdo.SereServs.First());
+                    var SereServSereServIdQr = SereServSereServIdQrQR(rdo.SereServs.First());
                     foreach (var sereServADO in rdo.SereServs)
                     {
                         sereServADO.SereServIdQr = SereServSereServIdQr;
@@ -272,7 +272,7 @@ namespace MPS.Processor.Mps000340
             byte[] result = null;
             try
             {
-              
+
                 List<string> qrInfos = new List<string>();
                 qrInfos.Add(sereServADO.ID.ToString());
                 string totalQrInfo = string.Join("\t", qrInfos);
@@ -281,7 +281,7 @@ namespace MPS.Processor.Mps000340
                 BitmapByteQRCode qrICode = new BitmapByteQRCode(qrInfoData);
                 byte[] qrICodeImage = qrICode.GetGraphic(20);
                 result = qrICodeImage;
-                
+
             }
             catch (Exception ex)
             {
@@ -650,6 +650,8 @@ namespace MPS.Processor.Mps000340
                     string estimateTimeOrder = string.Join(" --> ", order);
 
                     SetSingleKey(new KeyValue(Mps000340ExtendSingleKey.ESTIMATE_TIME_ORDER, estimateTimeOrder));
+                    long minIntructionTime = rdo.ListServiceReqPrint.Min(o => o.INTRUCTION_TIME);
+                    SetSingleKey(new KeyValue("MIN_INTRUCTION_TIME", minIntructionTime));
                 }
 
                 SetSingleKey(new KeyValue(Mps000340ExtendSingleKey.LOGIN_USER_NAME, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName()));

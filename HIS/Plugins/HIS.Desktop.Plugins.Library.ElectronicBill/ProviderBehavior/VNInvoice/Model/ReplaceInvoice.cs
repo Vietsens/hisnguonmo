@@ -14,7 +14,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice.
         public string invoiceNo { get; set; }         // Số hóa đơn cần thay thế
         public string erpId { get; set; }             // id hóa đơn bên ERP
         public string creatorErp { get; set; }        // Người tạo hóa đơn trên ERP
-        public DateTime invoiceDate { get; set; }     // Ngày hóa đơn (yyyy-MM-dd)
+        public string invoiceDate { get; set; }     // Ngày hóa đơn (yyyy-MM-dd)
         public string note { get; set; }              // Ghi chú của toàn hóa đơn
         public string paymentMethod { get; set; }     // Phương thức thanh toán (TM/CK; Tiền mặt; Chuyển khoản…)
         public string currency { get; set; }          // Tiền tệ (VD: VND)
@@ -37,25 +37,25 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice.
         public string buyerFaxNumber { get; set; }      // Số Fax khách hàng
         public string buyerBankAccount { get; set; }    // Số tài khoản ngân hàng
         public string buyerBankName { get; set; }       // Chi nhánh ngân hàng của khách hàng
-        public List<InvoiceDetail> invoiceDetails { get; set; }
+        public List<VNInvoiceDetail> invoiceDetails { get; set; }
         public List<InvoiceDetailExtra> invoiceDetailExtras { get; set; }
         public List<InvoiceHeaderExtra> invoiceHeaderExtras { get; set; }
         public List<InvoiceTaxBreakdown> invoiceTaxBreakdowns { get; set; }
         public InvoicePrintNote invoicePrintNote { get; set; }
     }
-    public class InvoiceDetail
+    public class VNInvoiceDetail
     {
         public int index { get; set; }                        // Số thứ tự chi tiết trong hóa đơn
         public decimal discountAmountBeforeTax { get; set; }  // Tiền chiết khấu cho dòng chi tiết (trước thuế)
         public double discountPercentBeforeTax { get; set; }  // Phần trăm chiết khấu cho dòng chi tiết (trước thuế)
-        public decimal paymentAmount { get; set; }            // Thành tiền sau VAT của dòng chi tiết
+        public decimal? paymentAmount { get; set; }            // Thành tiền sau VAT của dòng chi tiết
         public string productCode { get; set; }                  // Mã sản phẩm
         public int productType { get; set; }
         public string productName { get; set; }                  // Tên sản phẩm
         public string unitName { get; set; }                     // Đơn vị tính
-        public decimal unitPrice { get; set; }                   // Đơn giá
+        public decimal? unitPrice { get; set; }                   // Đơn giá
         public double quantity { get; set; }                     // Số lượng
-        public decimal amount { get; set; }                      // Thành tiền chưa VAT
+        public decimal? amount { get; set; }                      // Thành tiền chưa VAT
         public int vatPercent { get; set; }                      // Phần trăm thuế
         public decimal vatAmount { get; set; }
         public string note { get; set; }
@@ -73,7 +73,6 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice.
     public class InvoiceTaxBreakdown
     {
         public decimal vatAmount { get; set; }
-        public decimal amount { get; set; }
         public int vatPercent { get; set; }
     }
     public class InvoicePrintNote
@@ -83,6 +82,15 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice.
     }
     public class OutputReplaceInvoice
     {
+        public List<OutPutDataReplace> data { get; set; }
+        public bool succeeded { get; set; }       
+        public int code { get; set; }       
+        public string message { get; set; }
+        public string errors { get; set; }
+    }
+    public class OutPutDataReplace
+    {
+
         public string id { get; set; }             // id hóa đơn bên VNIs
         public string erpId { get; set; }          // id hóa đơn bên ERP
         public string transactionId { get; set; }  // Mã giao dịch
@@ -91,9 +99,6 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice.
         public string invoiceNo { get; set; }      // Số hóa đơn
         public int invoiceStatus { get; set; }     // Trạng thái hóa đơn
         public int signStatus { get; set; }        // Trạng thái ký
-        public bool succeeded { get; set; }       
-        public int code { get; set; }       
-        public string message { get; set; }
     }
 
 }

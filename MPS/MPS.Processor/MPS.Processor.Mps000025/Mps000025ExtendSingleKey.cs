@@ -17,6 +17,7 @@
  */
 
 using MPS.ProcessorBase;
+using System.Diagnostics.Contracts;
 namespace MPS.Processor.Mps000025
 {
     class Mps000025ExtendSingleKey : CommonKey
@@ -71,6 +72,7 @@ namespace MPS.Processor.Mps000025
         internal const string CARD_CODE = "CARD_CODE";
         internal const string BANK_CARD_CODE = "BANK_CARD_CODE";
         internal const string DEPOSIT_QR_CODE_PVCB = "DEPOSIT_QR_CODE_PVCB";
+        internal const string DEPOSIT_QR_CODE_BIDV = "DEPOSIT_QR_CODE_BIDV";
 
     }
 }

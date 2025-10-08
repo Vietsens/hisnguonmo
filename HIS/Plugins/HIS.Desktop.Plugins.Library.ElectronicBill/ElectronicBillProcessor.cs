@@ -25,6 +25,7 @@ using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV;
 using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL;
 using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT;
 using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE;
+using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice;
 using HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.CTO;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Template;
 using Inventec.Desktop.Common.Message;
@@ -149,6 +150,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                             serviceConfig = string.Format("{0}|{1}", ProviderType.MINVOICE, minvoice != null ? minvoice.VALUE : "");
                             accountConfig = ConfigApplicationWorker.Get<string>(SdaConfigKey.ACCOUNT_CONFIG_KEY__MINVOICE);
                             break;
+                        case IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNINVOICE:
+                            var vninvoice = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNINVOICE);
+                            serviceConfig = string.Format("{0}|{1}", ProviderType.VNINVOICE, vninvoice != null ? vninvoice.VALUE : "");
+                            accountConfig = ConfigApplicationWorker.Get<string>(SdaConfigKey.ACCOUNT_CONFIG_KEY__VNINVOICE);
+                            break;
                         default:
                             break;
                     }
@@ -201,6 +207,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                             break;
                         case ProviderType.MINVOICE:
                             iRun = new MInvoiceBehavior(this.ElectronicBillDataInput, serviceConfig, accountConfig);
+                            break;
+                        case ProviderType.VNINVOICE:
+                            iRun = new VNInvoiceBehavior(this.ElectronicBillDataInput, serviceConfig, accountConfig);
                             break;
                         default:
                             break;

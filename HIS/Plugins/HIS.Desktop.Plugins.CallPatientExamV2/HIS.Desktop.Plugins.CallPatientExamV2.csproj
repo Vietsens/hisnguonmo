@@ -149,7 +149,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ADO\ServiceReqCallADO.cs" />
     <Compile Include="CallPatientProsessor.cs" />
     <Compile Include="CallPatient\CallPatientBehavior.cs" />
     <Compile Include="CallPatient\CallPatientFactory.cs" />

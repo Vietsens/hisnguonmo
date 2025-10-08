@@ -787,7 +787,7 @@ namespace MPS.Processor.Mps000096
                                 parent = rdo.ListTestService != null ? rdo.ListTestService.FirstOrDefault(o => o.ID == service.PARENT_ID.Value) : null;
                                 if (parent != null)
                                 {
-                                    hisSereServTeinSDO.SERVICE_CODE = parent.SERVICE_CODE;
+                                    //hisSereServTeinSDO.SERVICE_CODE = parent.SERVICE_CODE;
                                     hisSereServTeinSDO.SERVICE_PARENT_ORDER = parent.NUM_ORDER ?? -1;
                                 }
                             }
@@ -1001,7 +1001,7 @@ namespace MPS.Processor.Mps000096
                     ? this.ListTestParent.OrderByDescending(o => o.SERVICE_PARENT_ORDER).ThenByDescending(o => o.SERVICE_ORDER).ThenBy(o => o.SERVICE_NUM_ORDER).ThenBy(p => p.SERVICE_NAME).ToList()
                     : this.ListTestParent;
                 Inventec.Common.Logging.LogSystem.Debug("ListTestParent count: " + ListTestParent.Count + ", Data: " + Inventec.Common.Logging.LogUtil.TraceData("", ListTestParent));
-                    this.ListTestParentService = this.ListTestChild.GroupBy(o => o.SERVICE_CODE).Select(s => s.First()).ToList();
+                    this.ListTestParentService = this.ListTestParent.GroupBy(o => o.SERVICE_CODE).Select(s => s.First()).ToList();
                 
                 Inventec.Common.Logging.LogSystem.Debug("ListTestParentService count: " + ListTestParentService.Count + ", Data: " + Inventec.Common.Logging.LogUtil.TraceData("", ListTestParentService));
 

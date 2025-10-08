@@ -5997,7 +5997,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
         private void txtNhaCC_EditValueChanged(object sender, EventArgs e)
         {
-            TaskAll();
+            //TaskAll();
         }
 
         private void SpPricingMaxReuseCount_EditValueChanged(object sender, EventArgs e)

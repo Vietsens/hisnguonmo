@@ -461,7 +461,20 @@ namespace HIS.UC.PlusInfo
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        public void ReceiveTreatmentTypeIdFromUcOther(string treatmentTypeId)
+        {
+            if (ucProgram1 != null)
+            {
+                ucProgram1.ReceiveTreatmentTypeId(treatmentTypeId);
+            }
+        }
+        public void ReceivePatientFromUcPatientRaw(long patientId, long? programId)
+        {
+            if(ucProgram1 != null)
+            {
+                ucProgram1.ReceivePatient(patientId, programId); 
+            }
+        }
         private void GetTempControl(SDA_MODULE_FIELD moduleField)
         {
             try

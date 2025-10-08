@@ -79,6 +79,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         long typeIdDeposit = 0;
         long typeIdRepay = 0;
         bool hasEditPermission = false;
+        bool canEditBill = false;
         List<V_HIS_TRANSACTION> _transactionList { get; set; }
         //private List<HIS_PERMISSION> _hisPermissionList;
         BarManager baManager = null;
@@ -1770,6 +1771,9 @@ namespace HIS.Desktop.Plugins.TransactionList
                         this.popupMenuProcessor = new PopupMenuProcessor(this.transactionPrint, this.baManager, MouseRightItemClick, currentModule);
                         this.popupMenuProcessor.InitMenu();
                     }
+                   
+
+                    
                 }
             }
             catch (Exception ex)

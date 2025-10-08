@@ -245,8 +245,8 @@ namespace MPS.Processor.Mps000181
                     SetSingleKey((new KeyValue("APPOINTMENT_TIME", rdo.HisTreatment.APPOINTMENT_TIME)));
                     SetSingleKey((new KeyValue("APPOINTMENT_EXAM_ROOM_IDS", rdo.HisTreatment.APPOINTMENT_EXAM_ROOM_IDS)));
                 }
-
-                AddObjectKeyIntoListkey<HIS_SERVICE_REQ>(rdo.vHisPrescription5, false);
+                if(rdo.lstHisServiceReq != null && rdo.lstHisServiceReq.Count > 0)
+                    AddObjectKeyIntoListkey<HIS_SERVICE_REQ>(rdo.lstHisServiceReq.First(), false);
                 AddObjectKeyIntoListkey<V_HIS_PATIENT_TYPE_ALTER>(rdo.PatyAlterBhyt);
                 if (rdo.HisTreatment != null)
                 {
@@ -557,17 +557,17 @@ namespace MPS.Processor.Mps000181
                                 mediSDO.TDL_INTRUCTION_DATE = item.Key.HasValue ? item.Key.Value : 0;
                                 expMestMedicineReq.Add(mediSDO);
                             }
-                            var serviceReqMety = rdo.lstServiceReqMety.Where(o=>o.ID == req.ID).ToList();
-                            foreach (var serviceMety in serviceReqMety)
-                            {
-                                isKey = true;
-                                ExpMestMedicineSDO mediSDO = new ExpMestMedicineSDO();
-                                mediSDO.MEDICINE_TYPE_CODE = serviceMety.MEDICINE_TYPE_NAME != null ? serviceMety.MEDICINE_TYPE_NAME : "";
-                                mediSDO.AMOUNT = serviceMety.AMOUNT > 0 ? serviceMety.AMOUNT : 0;
-                                mediSDO.TUTORIAL = serviceMety.TUTORIAL != null ? serviceMety.TUTORIAL : "";
-                                mediSDO.TDL_INTRUCTION_DATE = item.Key.HasValue ? item.Key.Value : 0;
-                                expMestMedicineReq.Add(mediSDO);
-                            }
+                            //var serviceReqMety = rdo.lstServiceReqMety.Where(o=>o.SERVICE_REQ_ID == req.ID).ToList();
+                            //foreach (var serviceMety in serviceReqMety)
+                            //{
+                            //    isKey = true;
+                            //    ExpMestMedicineSDO mediSDO = new ExpMestMedicineSDO();
+                            //    mediSDO.MEDICINE_TYPE_CODE = serviceMety.MEDICINE_TYPE_NAME != null ? serviceMety.MEDICINE_TYPE_NAME : "";
+                            //    mediSDO.AMOUNT = serviceMety.AMOUNT > 0 ? serviceMety.AMOUNT : 0;
+                            //    mediSDO.TUTORIAL = serviceMety.TUTORIAL != null ? serviceMety.TUTORIAL : "";
+                            //    mediSDO.TDL_INTRUCTION_DATE = item.Key.HasValue ? item.Key.Value : 0;
+                            //    expMestMedicineReq.Add(mediSDO);
+                            //}
                         }
                         if (isKey)
                         {

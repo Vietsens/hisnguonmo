@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraLayout;
+using EO.Internal;
 using His.Bhyt.InsuranceExpertise;
 using His.Bhyt.InsuranceExpertise.LDO;
 using HIS.Desktop.Common;
@@ -91,7 +92,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             }
 
         }
-        
+
         private void frmWaiting2_Load(object sender, EventArgs e)
         {
             try
@@ -1085,10 +1086,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     HisPatientAdvanceFilter filter_ = new HisPatientAdvanceFilter();
                     filter_.SERVICE_CODE__EXACT = obj.ToString();
                     var patientForKioskSDO = GetPatientInfoByFilter(filter_);
-                    if (patientForKioskSDO != null)
-                    {
-                        this.PatientData.PatientForKiosk = patientForKioskSDO;
-                    }
+                    this.PatientData.PatientForKiosk = patientForKioskSDO;
 
                 }, serviceCode);
                 taskAll.Add(tsPatient);
@@ -1245,6 +1243,11 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                                 filter.HEIN_CARD_NUMBER_OR_CCCD_NUMBER.CCCD_NUMBER__EXACT = filter.CCCD_NUMBER__EXACT;
                             }
                             this.PatientData.PatientForKiosk = GetPatientInfoByFilter(filter);
+                            if (this.PatientData.PatientForKiosk != null && this.PatientData.PatientForKiosk.ServiceReqs != null && this.PatientData.PatientForKiosk.ServiceReqs.Count > 0)
+                            {
+                                if (rsIns.hoTen.ToLower() != this.PatientData.PatientForKiosk.ServiceReqs.First().TDL_PATIENT_NAME.ToLower())
+                                    this.PatientData.PatientForKiosk.ServiceReqs = null;
+                            }
                         }
 
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => PatientData), PatientData));
@@ -1910,6 +1913,11 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
 
                     this.PatientData.PatientForKiosk = GetPatientInfoByFilter(newFilter);
 
+                    if (this.PatientData.PatientForKiosk != null && this.PatientData.PatientForKiosk.ServiceReqs != null && this.PatientData.PatientForKiosk.ServiceReqs.Count > 0)
+                    {
+                        if (rsIns.hoTen.ToLower() != this.PatientData.PatientForKiosk.ServiceReqs.First().TDL_PATIENT_NAME.ToLower())
+                            this.PatientData.PatientForKiosk.ServiceReqs = null;
+                    }
                     if (!this.isCallPrintForm && this.PatientData.PatientForKiosk != null && CheckInforPatient(this.PatientData.PatientForKiosk, this.PatientData.HeinInfo))
                     {
                         return;
@@ -2021,7 +2029,6 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     }
 
                     this.PatientData.PatientForKiosk = GetPatientInfoByFilter(filter);
-
                     if (!this.isCallPrintForm && this.PatientData.PatientForKiosk != null && CheckInforPatient(this.PatientData.PatientForKiosk, this.PatientData.HeinInfo))
                     {
                         return;
@@ -2515,62 +2522,81 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Info("btnScanCCCD_Click: Start scan CCCD");
                 WaitingManager.Show();
                 using (var client = new HttpClient())
                 {
+                    Inventec.Common.Logging.LogSystem.Info("btnScanCCCD_Click: Sending request to device API");
                     var response = await client.GetAsync("http://localhost:7000/api/v1/verify");
+                    Inventec.Common.Logging.LogSystem.Info(string.Format("btnScanCCCD_Click: Device API response status: {0}", response.StatusCode));
+
                     if (!response.IsSuccessStatusCode)
                     {
+                        Inventec.Common.Logging.LogSystem.Warn("btnScanCCCD_Click: Device not connected or error response");
                         WaitingManager.Hide();
                         XtraMessageBox.Show("Không kết nối được thiết bị CCCD.", "Thông báo");
                         return;
                     }
 
                     var responseData = await response.Content.ReadAsStringAsync();
+                    Inventec.Common.Logging.LogSystem.Debug("btnScanCCCD_Click: Raw response data: " + responseData);
+
                     var root = JsonConvert.DeserializeObject<RootResponse>(responseData);
+                    Inventec.Common.Logging.LogSystem.Debug("btnScanCCCD_Click: Deserialized RootResponse: " + JsonConvert.SerializeObject(root));
+
                     if (root == null || !root.success || root.result?.data == null)
                     {
+                        Inventec.Common.Logging.LogSystem.Warn("btnScanCCCD_Click: Invalid CCCD data or verification failed");
                         WaitingManager.Hide();
                         XtraMessageBox.Show("CCCD không hợp lệ hoặc không xác thực được.", "Thông báo");
                         return;
                     }
+
+                    this.PatientData = new InformationObjectADO();
+
                     string cccdFromDevice = root.result.data.identifyNumber;
+                    Inventec.Common.Logging.LogSystem.Info(string.Format("btnScanCCCD_Click: CCCD from device: {0}", cccdFromDevice));
+
                     txtNumberInput.Texts = cccdFromDevice;
                     txtNumberInput.Focus();
+
                     HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
                     filter.CCCD_NUMBER__EXACT = cccdFromDevice;
-                    var patientInfo = GetPatientInfoByFilter(filter);
+                    Inventec.Common.Logging.LogSystem.Debug("btnScanCCCD_Click: HisPatientAdvanceFilter: " + JsonConvert.SerializeObject(filter));
 
-                    if (patientInfo != null)
+                    var dateOfBirth = !String.IsNullOrEmpty(root.result.data.dateOfBirth) ? root.result.data.dateOfBirth.Replace("/", "") : "";
+                    var issueDate = !String.IsNullOrEmpty(root.result.data.issueDate) ? root.result.data.issueDate.Replace("/", "") : "";
+
+                    var data = SearchByCode(string.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}", root.result.data.identifyNumber
+                        , root.result.data.previousNumber,
+                        root.result.data.name,
+                        dateOfBirth, root.result.data.sex, root.result.data.address, issueDate));
+
+                    Inventec.Common.Logging.LogSystem.Info("btnScanCCCD_Click: Found patient in HIS, opening form");
+                    if (data is HeinCardData)
                     {
-                        this.PatientData = new InformationObjectADO();
-                        this.PatientData.PatientForKiosk = patientInfo;
-                        OpenFormByPatientData();
+                        HeinCardData heinCardDataForCheckGOV = (HeinCardData)data;
+                        filter.HEIN_CARD_NUMBER__EXACT = heinCardDataForCheckGOV.HeinCardNumber;
                     }
-                    else
+                    else if (data is CccdCardData)
                     {
-                        HeinCardData heinCard = new HeinCardData
-                        {
-                            HeinCardNumber = cccdFromDevice,
-                            Dob = root.result.data.dateOfBirth,
-                            PatientName = root.result.data.name,
-                            Gender = root.result.data.sex,
-                            Address = root.result.data.nationality
-                        };
-                        this.PatientData = new InformationObjectADO();
-                        this.PatientData.PatientForKiosk = MapDataFromCard(heinCard);
-                        OpenFormByPatientData();
+                        CccdCardData cccdCard = (CccdCardData)data;
+                        filter.CCCD_NUMBER__EXACT = cccdCard.CardData;
                     }
+
+                    WaitingManager.Show();
+                    this.CheckHanSDTheBHYTVaCccd(ConvertFromPatientData(data), filter);
                 }
 
+                Inventec.Common.Logging.LogSystem.Info("btnScanCCCD_Click: End scan CCCD");
                 WaitingManager.Hide();
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 XtraMessageBox.Show("Có lỗi xảy ra khi quẹt CCCD: " + ex.Message, "Thông báo");
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error("btnScanCCCD_Click: Exception", ex);
             }
-        }       
+        }
     }
 }

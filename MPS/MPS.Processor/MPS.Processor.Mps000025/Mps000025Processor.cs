@@ -17,6 +17,7 @@
  */
 using DevExpress.XtraEditors;
 using FlexCel.Report;
+using HIS.Desktop.Common.BankQrCode;
 using Inventec.Common.Logging;
 using Inventec.Common.QRCoder;
 using Inventec.Core;
@@ -184,38 +185,14 @@ namespace MPS.Processor.Mps000025
         {
             try
             {
-                if (rdo.ListCard != null && rdo.ListCard.Count > 0)
+                if (rdo.TransReq != null && rdo.ListConfigs != null && rdo.ListConfigs.Count > 0)
                 {
-                    string bankCardCode = "";
-                    rdo.ListCard = rdo.ListCard.OrderByDescending(o => o.ID).ToList();
-                    foreach (var item in rdo.ListCard)
+                    var data = QrCodeProcessor.CreateQrImage(rdo.TransReq, rdo.ListConfigs);
+                    if (data != null && data.Count > 0)
                     {
-                        if (item.BANK_CARD_CODE != null && item.BANK_CARD_CODE.Substring(0, 6).Equals(CARD_PVCBANK.FIRST_BANK_CARD_CODE))
+                        foreach (var item in data)
                         {
-                            bankCardCode = item.BANK_CARD_CODE;
-                            break;
-                        }
-                    }
-                    if (!String.IsNullOrEmpty(bankCardCode))
-                    {
-                        Inventec.Common.BankQrCode.ADO.ConsumerAccountInfo consumerInfo = new Inventec.Common.BankQrCode.ADO.ConsumerAccountInfo();
-                        consumerInfo.pointOTMethod = CARD_PVCBANK.POINT_OT_METHOD;
-                        consumerInfo.bnbID = CARD_PVCBANK.FIRST_BANK_CARD_CODE;
-                        consumerInfo.ConsumerID = bankCardCode;
-                        consumerInfo.transferType = CARD_PVCBANK.TRANSFER_TYPE;
-                        consumerInfo.ccy = CARD_PVCBANK.CCY;
-                        consumerInfo.countryCode = CARD_PVCBANK.COUNTRY_CODE;
-                        Inventec.Common.BankQrCode.ADO.BankQrCodeInputADO input = new Inventec.Common.BankQrCode.ADO.BankQrCodeInputADO();
-                        input.ConsumerInfo = consumerInfo;
-                        Inventec.Common.BankQrCode.BankQrCodeProcessor qrCodeProcessor = new Inventec.Common.BankQrCode.BankQrCodeProcessor(input);
-                        Inventec.Common.BankQrCode.ADO.ResultQrCode result = qrCodeProcessor.GetConsumerQrCode(Inventec.Common.BankQrCode.ProvinceType.PVCB);
-                        if (result != null && result.Data != null)
-                        {
-                            QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();
-                            QRCodeData data2 = qRCodeGenerator.CreateQrCode(result.Data, QRCodeGenerator.ECCLevel.Q);
-                            BitmapByteQRCode bitmapByteQRCode = new BitmapByteQRCode(data2);
-                            byte[] graphic = bitmapByteQRCode.GetGraphic(20);
-                            SetSingleKey(new KeyValue(Mps000025ExtendSingleKey.DEPOSIT_QR_CODE_PVCB, graphic));
+                            SetSingleKey(new KeyValue(item.Key, item.Value));
                         }
                     }
                 }

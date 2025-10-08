@@ -1137,6 +1137,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 ado.AutoCheckIcd = AutoCheckIcd == "1";
                 ado.LblIcdMain = GetStringFromKey("IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_YHCT");
                 ado.ToolTipsIcdMain = GetStringFromKey("IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_YHCT__TOOL_TIP");
+                ado.DepamentId = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.module.RoomId).DEPARTMENT_ID;
                 ucIcdYhct = (UserControl)icdYhctProcessor.Run(ado);
 
                 if (ucIcdYhct != null)
@@ -1150,6 +1151,23 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        //private void UcIcd_OnIcdMapCodeChanged(string icdMapCode)
+        //{
+        //    if (!string.IsNullOrEmpty(icdMapCode))
+        //    {
+        //        var icdCaus = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == icdMapCode);
+
+        //        HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
+        //        icd.ICD_CODE = icdCaus.ICD_CODE;
+        //        icd.ICD_NAME = icdCaus.ICD_NAME;
+
+        //        if (ucIcd != null)
+        //        {
+        //            icdProcessor.Reload(ucIcd, icd);
+        //        }
+        //    }
+        //}
 
         private void InitUcSecondaryIcdYhct()
         {

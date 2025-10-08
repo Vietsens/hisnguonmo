@@ -6732,7 +6732,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         }
 
         private void LoadIcdCombo(string searchCode)
-        {
+                {
             try
             {
                 //GetUcIcdYHCT();

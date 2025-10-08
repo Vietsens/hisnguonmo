@@ -1042,7 +1042,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             }
                             break;
                         case SAVETYPE.SAVE_PRINT_NOW:
-                            this.PrescriptionSavePrintShowHasClickSave("", true, null);
+                            this.PrescriptionSavePrintShowHasClickSave(this.PrintPrescription, true, null);
                             break;
                         case SAVETYPE.SAVE_SHOW_PRINT_PREVIEW:
                             this.PrescriptionSavePrintShowHasClickSave(MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, false, null);

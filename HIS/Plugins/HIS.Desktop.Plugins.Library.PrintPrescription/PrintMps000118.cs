@@ -353,7 +353,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             }
                             if (lstMedicineExpmestTypeKhongChua_GN_HT_ADO != null && lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Count > 0)
                             {
-                                
+
                                 listSPHoTro = lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Where(o => o.IS_FUNCTIONAL_FOOD == IS_TRUE || o.Type == 4).ToList();
                                 listTThuongNgoaiKho = lstMedicineExpmestTypeKhongChua_GN_HT_ADO.Except(listSPHoTro).ToList();
                             }
@@ -1289,7 +1289,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
+        }   
         #endregion
     }
 }

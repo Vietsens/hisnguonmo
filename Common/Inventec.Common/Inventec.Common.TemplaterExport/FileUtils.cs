@@ -112,7 +112,7 @@ namespace Inventec.Common.TemplaterExport
             try
             {
                 string extension = !System.String.IsNullOrEmpty(_extension) ? _extension : Path.GetExtension(fileName);
-                string pathDic = Path.Combine(Path.Combine(Path.Combine(ApplicationLocationStore.ApplicationPathLocal, "temp"), DateTime.Now.ToString("ddMMyyyy")), "Templates");
+                string pathDic = Path.Combine(Path.Combine(Path.Combine(ApplicationLocationStore.ApplicationPathLocal, "temp"), System.DateTime.Now.ToString("ddMMyyyy")), "Templates");
                 if (!Directory.Exists(pathDic))
                 {
                     Directory.CreateDirectory(pathDic);
@@ -146,7 +146,7 @@ namespace Inventec.Common.TemplaterExport
                         extension = ".xlsx";
                         break;
                 }
-                string pathDic = Path.Combine(Path.Combine(Path.Combine(ApplicationLocationStore.ApplicationPathLocal, "temp"), DateTime.Now.ToString("ddMMyyyy")), "Templates");
+                string pathDic = Path.Combine(Path.Combine(Path.Combine(ApplicationLocationStore.ApplicationPathLocal, "temp"), System.DateTime.Now.ToString("ddMMyyyy")), "Templates");
                 if (!Directory.Exists(pathDic))
                 {
                     Directory.CreateDirectory(pathDic);
@@ -182,7 +182,7 @@ namespace Inventec.Common.TemplaterExport
         {
             try
             {
-                string pathDic = Path.Combine(Path.Combine(Path.Combine(ApplicationLocationStore.ApplicationPathLocal, "temp"), DateTime.Now.ToString("ddMMyyyy")), "Templates");
+                string pathDic = Path.Combine(Path.Combine(Path.Combine(ApplicationLocationStore.ApplicationPathLocal, "temp"), System.DateTime.Now.ToString("ddMMyyyy")), "Templates");
                 if (!Directory.Exists(pathDic))
                 {
                     Directory.CreateDirectory(pathDic);
