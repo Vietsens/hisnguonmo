@@ -1306,6 +1306,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.icdProcessorYHCT = new HIS.UC.Icd.IcdProcessor();
                 HIS.UC.Icd.ADO.IcdInitADO ado = new HIS.UC.Icd.ADO.IcdInitADO();
                 ado.DelegateNextFocus = NextForcusSubIcd;
+                ado.IsUCCause = false;
                 //ado.DelegateRequiredCause = DelegateRequiredCause;
                 ado.LblIcdMain = "CĐ YHCT:";
                 ado.ToolTipsIcdMain = "Chẩn đoán y học cổ truyền";

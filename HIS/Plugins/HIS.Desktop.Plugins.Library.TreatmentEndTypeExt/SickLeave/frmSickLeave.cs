@@ -271,10 +271,15 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 {
                     if (this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && type == FormEnum.TYPE.NGHI_OM)
                     {
-                        if (spinSickLeaveDay.EditValue != null && spinSickLeaveDay.Value > 30)
+                        var allowLeaveOver30days = HisConfigs.Get<string>("His.LeaveDay.AllowBhxhLeaveOver30days");
+
+                        if(allowLeaveOver30days != "1")
                         {
-                            DevExpress.XtraEditors.XtraMessageBox.Show("Số ngày nghỉ không được vượt quá 30 ngày", "Thông báo");
-                            return;
+                            if (spinSickLeaveDay.EditValue != null && spinSickLeaveDay.Value > 30)
+                            {
+                                DevExpress.XtraEditors.XtraMessageBox.Show("Số ngày nghỉ không được vượt quá 30 ngày", "Thông báo");
+                                return;
+                            }
                         }
 
                         CommonParam param = new CommonParam();

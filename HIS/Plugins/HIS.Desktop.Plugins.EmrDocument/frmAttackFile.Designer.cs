@@ -61,9 +61,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
             this.btnOpenFileInComputer = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.btnRotateRight = new DevExpress.XtraEditors.SimpleButton();
-            this.btnRotateLeft = new DevExpress.XtraEditors.SimpleButton();
-            this.chkPrintDupicate = new DevExpress.XtraEditors.CheckEdit();
+            this.pteAnhChupFileDinhKem2 = new DevExpress.XtraEditors.PictureEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnAttackFile = new DevExpress.XtraBars.BarButtonItem();
@@ -71,6 +69,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.btnRotateRight = new DevExpress.XtraEditors.SimpleButton();
+            this.btnRotateLeft = new DevExpress.XtraEditors.SimpleButton();
+            this.chkPrintDupicate = new DevExpress.XtraEditors.CheckEdit();
             this.btnScan = new DevExpress.XtraEditors.SimpleButton();
             this.pdfViewer1 = new DevExpress.XtraPdfViewer.PdfViewer();
             this.CboDocumentGroup = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -108,12 +109,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.emptySpaceItem6 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem7 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.pteAnhChupFileDinhKem2 = new DevExpress.XtraEditors.PictureEdit();
             this.imageview2 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkPrintDupicate.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pteAnhChupFileDinhKem2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPrintDupicate.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CboDocumentGroup.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -144,7 +145,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pteAnhChupFileDinhKem2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageview2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -187,44 +187,15 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.layoutControl1.TabIndex = 44;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // btnRotateRight
+            // pteAnhChupFileDinhKem2
             // 
-            this.btnRotateRight.Enabled = false;
-            this.btnRotateRight.Image = ((System.Drawing.Image)(resources.GetObject("btnRotateRight.Image")));
-            this.btnRotateRight.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnRotateRight.Location = new System.Drawing.Point(501, 484);
-            this.btnRotateRight.Margin = new System.Windows.Forms.Padding(2);
-            this.btnRotateRight.Name = "btnRotateRight";
-            this.btnRotateRight.Size = new System.Drawing.Size(86, 56);
-            this.btnRotateRight.StyleController = this.layoutControl1;
-            this.btnRotateRight.TabIndex = 12;
-            this.btnRotateRight.Click += new System.EventHandler(this.btnRotateRight_Click);
-            // 
-            // btnRotateLeft
-            // 
-            this.btnRotateLeft.Enabled = false;
-            this.btnRotateLeft.Image = ((System.Drawing.Image)(resources.GetObject("btnRotateLeft.Image")));
-            this.btnRotateLeft.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnRotateLeft.Location = new System.Drawing.Point(401, 484);
-            this.btnRotateLeft.Margin = new System.Windows.Forms.Padding(2);
-            this.btnRotateLeft.Name = "btnRotateLeft";
-            this.btnRotateLeft.Size = new System.Drawing.Size(86, 56);
-            this.btnRotateLeft.StyleController = this.layoutControl1;
-            this.btnRotateLeft.TabIndex = 11;
-            this.btnRotateLeft.Click += new System.EventHandler(this.btnRotateLeft_Click);
-            // 
-            // chkPrintDupicate
-            // 
-            this.chkPrintDupicate.Location = new System.Drawing.Point(35, 484);
-            this.chkPrintDupicate.MenuManager = this.barManager1;
-            this.chkPrintDupicate.Name = "chkPrintDupicate";
-            this.chkPrintDupicate.Properties.Appearance.Options.UseTextOptions = true;
-            this.chkPrintDupicate.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
-            this.chkPrintDupicate.Properties.Caption = "2 mặt";
-            this.chkPrintDupicate.Size = new System.Drawing.Size(49, 19);
-            this.chkPrintDupicate.StyleController = this.layoutControl1;
-            this.chkPrintDupicate.TabIndex = 10;
-            this.chkPrintDupicate.CheckedChanged += new System.EventHandler(this.chkPrintDupicate_CheckedChanged);
+            this.pteAnhChupFileDinhKem2.Location = new System.Drawing.Point(12, 208);
+            this.pteAnhChupFileDinhKem2.MenuManager = this.barManager1;
+            this.pteAnhChupFileDinhKem2.Name = "pteAnhChupFileDinhKem2";
+            this.pteAnhChupFileDinhKem2.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.pteAnhChupFileDinhKem2.Size = new System.Drawing.Size(185, 272);
+            this.pteAnhChupFileDinhKem2.StyleController = this.layoutControl1;
+            this.pteAnhChupFileDinhKem2.TabIndex = 13;
             // 
             // barManager1
             // 
@@ -286,6 +257,45 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.barDockControlRight.Location = new System.Drawing.Point(609, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 578);
             // 
+            // btnRotateRight
+            // 
+            this.btnRotateRight.Enabled = false;
+            this.btnRotateRight.Image = ((System.Drawing.Image)(resources.GetObject("btnRotateRight.Image")));
+            this.btnRotateRight.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnRotateRight.Location = new System.Drawing.Point(501, 484);
+            this.btnRotateRight.Margin = new System.Windows.Forms.Padding(2);
+            this.btnRotateRight.Name = "btnRotateRight";
+            this.btnRotateRight.Size = new System.Drawing.Size(86, 56);
+            this.btnRotateRight.StyleController = this.layoutControl1;
+            this.btnRotateRight.TabIndex = 12;
+            this.btnRotateRight.Click += new System.EventHandler(this.btnRotateRight_Click);
+            // 
+            // btnRotateLeft
+            // 
+            this.btnRotateLeft.Enabled = false;
+            this.btnRotateLeft.Image = ((System.Drawing.Image)(resources.GetObject("btnRotateLeft.Image")));
+            this.btnRotateLeft.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnRotateLeft.Location = new System.Drawing.Point(401, 484);
+            this.btnRotateLeft.Margin = new System.Windows.Forms.Padding(2);
+            this.btnRotateLeft.Name = "btnRotateLeft";
+            this.btnRotateLeft.Size = new System.Drawing.Size(86, 56);
+            this.btnRotateLeft.StyleController = this.layoutControl1;
+            this.btnRotateLeft.TabIndex = 11;
+            this.btnRotateLeft.Click += new System.EventHandler(this.btnRotateLeft_Click);
+            // 
+            // chkPrintDupicate
+            // 
+            this.chkPrintDupicate.Location = new System.Drawing.Point(35, 484);
+            this.chkPrintDupicate.MenuManager = this.barManager1;
+            this.chkPrintDupicate.Name = "chkPrintDupicate";
+            this.chkPrintDupicate.Properties.Appearance.Options.UseTextOptions = true;
+            this.chkPrintDupicate.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.chkPrintDupicate.Properties.Caption = "2 mặt";
+            this.chkPrintDupicate.Size = new System.Drawing.Size(49, 19);
+            this.chkPrintDupicate.StyleController = this.layoutControl1;
+            this.chkPrintDupicate.TabIndex = 10;
+            this.chkPrintDupicate.CheckedChanged += new System.EventHandler(this.chkPrintDupicate_CheckedChanged);
+            // 
             // btnScan
             // 
             this.btnScan.Image = global::HIS.Desktop.Plugins.EmrDocument.Properties.Resources.iconscanner;
@@ -301,12 +311,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
             // pdfViewer1
             // 
             this.pdfViewer1.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.pdfViewer1.Location = new System.Drawing.Point(391, 208);
+            this.pdfViewer1.Location = new System.Drawing.Point(401, 208);
             this.pdfViewer1.Name = "pdfViewer1";
             this.pdfViewer1.NavigationPaneInitialVisibility = DevExpress.XtraPdfViewer.PdfNavigationPaneVisibility.Hidden;
             this.pdfViewer1.ReadOnly = true;
             this.pdfViewer1.ShowPrintStatusDialog = false;
-            this.pdfViewer1.Size = new System.Drawing.Size(206, 272);
+            this.pdfViewer1.Size = new System.Drawing.Size(196, 272);
             this.pdfViewer1.TabIndex = 0;
             this.pdfViewer1.TabStop = false;
             this.pdfViewer1.Visible = false;
@@ -456,7 +466,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.pteAnhChupFileDinhKem.Properties.NullText = "File ảnh đính kèm";
             this.pteAnhChupFileDinhKem.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             this.pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-            this.pteAnhChupFileDinhKem.Size = new System.Drawing.Size(186, 272);
+            this.pteAnhChupFileDinhKem.Size = new System.Drawing.Size(196, 272);
             this.pteAnhChupFileDinhKem.StyleController = this.layoutControl1;
             this.pteAnhChupFileDinhKem.TabIndex = 3;
             this.pteAnhChupFileDinhKem.ImageChanged += new System.EventHandler(this.pteAnhChupFileDinhKem_ImageChanged);
@@ -560,7 +570,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.imageview.Control = this.pteAnhChupFileDinhKem;
             this.imageview.Location = new System.Drawing.Point(189, 196);
             this.imageview.Name = "imageview";
-            this.imageview.Size = new System.Drawing.Size(190, 276);
+            this.imageview.Size = new System.Drawing.Size(200, 276);
             this.imageview.TextSize = new System.Drawing.Size(0, 0);
             this.imageview.TextVisible = false;
             // 
@@ -632,9 +642,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
             // pdfview
             // 
             this.pdfview.Control = this.pdfViewer1;
-            this.pdfview.Location = new System.Drawing.Point(379, 196);
+            this.pdfview.Location = new System.Drawing.Point(389, 196);
             this.pdfview.Name = "pdfview";
-            this.pdfview.Size = new System.Drawing.Size(210, 276);
+            this.pdfview.Size = new System.Drawing.Size(200, 276);
             this.pdfview.TextSize = new System.Drawing.Size(0, 0);
             this.pdfview.TextVisible = false;
             // 
@@ -707,16 +717,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
-            // pteAnhChupFileDinhKem2
-            // 
-            this.pteAnhChupFileDinhKem2.Location = new System.Drawing.Point(12, 208);
-            this.pteAnhChupFileDinhKem2.MenuManager = this.barManager1;
-            this.pteAnhChupFileDinhKem2.Name = "pteAnhChupFileDinhKem2";
-            this.pteAnhChupFileDinhKem2.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pteAnhChupFileDinhKem2.Size = new System.Drawing.Size(185, 272);
-            this.pteAnhChupFileDinhKem2.StyleController = this.layoutControl1;
-            this.pteAnhChupFileDinhKem2.TabIndex = 13;
-            // 
             // imageview2
             // 
             this.imageview2.Control = this.pteAnhChupFileDinhKem2;
@@ -743,8 +743,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.Load += new System.EventHandler(this.frmAttackFile_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkPrintDupicate.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pteAnhChupFileDinhKem2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPrintDupicate.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CboDocumentGroup.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
@@ -775,7 +776,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pteAnhChupFileDinhKem2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageview2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -29,21 +29,33 @@ namespace MPS.Processor.Mps000145.PDO
     public partial class Mps000145PDO : RDOBase
     {
         public Mps000145PDO() { }
-        public Mps000145PDO(V_HIS_IMP_MEST chmsImpMest, List<V_HIS_IMP_MEST_MEDICINE> impMestMedicines)
+        public Mps000145PDO(V_HIS_IMP_MEST chmsImpMest,
+            List<V_HIS_IMP_MEST_MEDICINE> impMestMedicines,
+            List<V_HIS_MATERIAL_TYPE> materialTypes,
+            List<V_HIS_MEDICINE_TYPE> medicineTypes )
         {
             this._ChmsImpMest = chmsImpMest;
             this._ImpMestMedicines = impMestMedicines;
+            this._MaterialTypes = materialTypes;
+            this._MedicineTypes = medicineTypes;
             this._ListAdo = new List<Mps000145ADO>();
-        }
+              
 
+
+        }
+           
         public Mps000145PDO(
             V_HIS_IMP_MEST chmsImpMest,
             List<V_HIS_IMP_MEST_MEDICINE> impMestMedicines,
-            List<V_HIS_IMP_MEST_MATERIAL> impMestMaterials)
+            List<V_HIS_IMP_MEST_MATERIAL> impMestMaterials,
+              List<V_HIS_MEDICINE_TYPE> medicineTypes,
+             List<V_HIS_MATERIAL_TYPE> materialTypes)
         {
             this._ChmsImpMest = chmsImpMest;
             this._ImpMestMedicines = impMestMedicines;
             this._ImpMestMaterials = impMestMaterials;
+            this._MedicineTypes = medicineTypes;
+            this._MaterialTypes = materialTypes;
             this._ListAdo = new List<Mps000145ADO>();
         }
     }

@@ -65,6 +65,7 @@
     <Compile Include="ElectronicBillProcessor.cs" />
     <Compile Include="IRun.cs" />
     <Compile Include="MappingError.cs" />
+    <Compile Include="MD\AdjustInv.cs" />
     <Compile Include="MD\Customer.cs" />
     <Compile Include="MD\Extras.cs" />
     <Compile Include="MD\InvByCusFkey.cs" />

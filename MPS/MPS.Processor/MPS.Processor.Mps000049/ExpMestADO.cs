@@ -35,6 +35,9 @@ namespace MPS.Processor.Mps000049
         public string TDL_PATIENT_LAST_NAME { get; set; }
         public string TDL_PATIENT_NAME { get; set; }
         public string CREATE_TIME_AGGR_STR { get; set; }
+        public long? OTHER_PAY_SOURCE_ID { get; set; }
+        public string OTHER_PAY_SOURCE_CODE { get; set; }
+        public string OTHER_PAY_SOURCE_NAME { get; set; }
         public ExpMestADO(
             V_HIS_EXP_MEST _aggrExpMest,
             List<V_HIS_EXP_MEST_MEDICINE> _expMestMedicines,
@@ -55,12 +58,25 @@ namespace MPS.Processor.Mps000049
                 this.TDL_PATIENT_LAST_NAME = ExpMest.TDL_PATIENT_LAST_NAME;
                 this.TDL_PATIENT_NAME = ExpMest.TDL_PATIENT_NAME;
                 this.CREATE_TIME_AGGR_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(ExpMest.CREATE_TIME ?? 0);
+                if (_expMestMedicines != null && _expMestMedicines.Count > 0 && _medicinetype != null)
+                {
+                    var medicineTypeId = _expMestMedicines.First().MEDICINE_TYPE_ID;
+                    var medicineType = _medicinetype.FirstOrDefault(x => x.ID == medicineTypeId);
+                    if (medicineType != null)
+                    {
+                        this.OTHER_PAY_SOURCE_ID = medicineType.OTHER_PAY_SOURCE_ID;
+                        this.OTHER_PAY_SOURCE_CODE = medicineType.OTHER_PAY_SOURCE_CODE;
+                        this.OTHER_PAY_SOURCE_NAME = medicineType.OTHER_PAY_SOURCE_NAME;
+                    }
+                }
+
             }
         }
 
         public ExpMestADO(
             V_HIS_EXP_MEST _aggrExpMest,
             List<V_HIS_EXP_MEST_MATERIAL> _expMestMaterials,
+            List<V_HIS_MATERIAL_TYPE> materialTypes,
             long _expMesttSttId__Approval,
             long _expMesttSttId__Export,
             long PatientTypeId__BHYT,
@@ -77,6 +93,17 @@ namespace MPS.Processor.Mps000049
                 this.TDL_PATIENT_LAST_NAME = ExpMest.TDL_PATIENT_LAST_NAME;
                 this.TDL_PATIENT_NAME = ExpMest.TDL_PATIENT_NAME;
                 this.CREATE_TIME_AGGR_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(ExpMest.CREATE_TIME ?? 0);
+                if (_expMestMaterials != null && _expMestMaterials.Count > 0 && materialTypes != null)
+                {
+                    var materialTypeId = _expMestMaterials.First().MATERIAL_TYPE_ID;
+                    var materialType = materialTypes.FirstOrDefault(x => x.ID == materialTypeId);
+                    if (materialType != null)
+                    {
+                        this.OTHER_PAY_SOURCE_ID = materialType.OTHER_PAY_SOURCE_ID;
+                        this.OTHER_PAY_SOURCE_CODE = materialType.OTHER_PAY_SOURCE_CODE;
+                        this.OTHER_PAY_SOURCE_NAME = materialType.OTHER_PAY_SOURCE_NAME;
+                    }
+                }
             }
         }
     }

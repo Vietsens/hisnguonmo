@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraGrid;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Core;
@@ -23,6 +24,8 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
         Timer timerCallPatient = new Timer();
         bool IsFirstLoadNotCall = true;
         bool IsStartTimerCall = false;
+        System.Threading.Thread threadCall;
+        List<HIS_SERVICE_REQ> ListCall = new List<HIS_SERVICE_REQ>();
         public frmWaitingScreen(ServiceReqGateADO ado)
         {
             InitializeComponent();
@@ -40,20 +43,17 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
 
             timerCallPatient.Interval = 500;
             timerCallPatient.Tick += TimerCall_Tick;
+            timerCallPatient.Enabled = true;
+            timerCallPatient.Start();
+
         }
+
 
         private void TimerCall_Tick(object sender, EventArgs e)
         {
             try
             {
                 timerCallPatient.Stop();
-
-                if (ChooseRoomForWaitingScreenProcess.StackServiceReqCall == null ||
-                    !ChooseRoomForWaitingScreenProcess.StackServiceReqCall.Any(x => x.IsCalling))
-                {
-                    timerCallPatient.Start();
-                    return;
-                }
                 CreateThreadCallPatient();
             }
             catch (Exception ex)
@@ -65,15 +65,15 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
         }
         private void CreateThreadCallPatient()
         {
-            System.Threading.Thread thread = new System.Threading.Thread(() => CallPatientTimer());
+            threadCall = new System.Threading.Thread(() => CallPatientTimer());
             try
             {
-                thread.Start();
+                threadCall.Start();
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-                thread.Abort();
+                threadCall.Abort();
                 timerCallPatient.Start();
             }
         }
@@ -82,24 +82,13 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
         {
             try
             {
+                IsFirstLoadNotCall = false;
 
-                if (!HasNumberCallUc())
-                    IsFirstLoadNotCall = false;
-                var itemsToRemove = new List<ServiceReqCallADO>();
-
-                foreach (var item in ChooseRoomForWaitingScreenProcess.StackServiceReqCall)
+                var itemsToRemove = new List<HIS_SERVICE_REQ>();
+                foreach (var item in ListCall)
                 {
-                    if (!IsFirstLoadNotCall)
-                    {
-                        CallPatient(item.ServiceReq);
-                        item.IsCalling = false;
-                    }
+                    CallPatient(item);
                     itemsToRemove.Add(item);
-                }
-
-                if (IsFirstLoadNotCall)
-                {
-                    IsFirstLoadNotCall = false;
                 }
 
                 if (this.InvokeRequired)
@@ -108,7 +97,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                     {
                         foreach (var item in itemsToRemove)
                         {
-                            ChooseRoomForWaitingScreenProcess.StackServiceReqCall.Remove(item);
+                            ListCall.Remove(item);
                         }
 
                         timerCallPatient.Start();
@@ -118,7 +107,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                 {
                     foreach (var item in itemsToRemove)
                     {
-                        ChooseRoomForWaitingScreenProcess.StackServiceReqCall.Remove(item);
+                        ListCall.Remove(item);
                     }
 
                     timerCallPatient.Start();
@@ -141,6 +130,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
 
                 Inventec.Speech.SpeechPlayer.TypeSpeechCFG = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("Inventec.Speech.TypeSpeechCFG");
                 List<string> KEY_SINGLE = new List<string>() { "ROOM_NAME", "PATIENT_NAME", "YOB", "NUM_ORDER", "YOB_STR", "NUM_ORDER_STR" };
+
                 var strCallsplit = ServiceReqGateADO.configNotify.Split(new string[] { "<#", ";>" }, System.StringSplitOptions.RemoveEmptyEntries);
                 if (strCallsplit.ToList().Count > 0)
                 {
@@ -160,7 +150,8 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                             switch (word)
                             {
                                 case "ROOM_NAME":
-                                    string room = ServiceReqGateADO.roomGateSDOs.FirstOrDefault(o => o.ID == serviceReq.EXECUTE_ROOM_ID).ROOM_NAME;
+                                    var Rooms = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                                    string room = Rooms.FirstOrDefault(o => o.ROOM_ID == serviceReq.EXECUTE_ROOM_ID).EXECUTE_ROOM_NAME;
                                     Inventec.Speech.SpeechPlayer.SpeakSingle(room);
                                     break;
                                 case "PATIENT_NAME":
@@ -300,13 +291,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                             var ucRoom = ctrl as UcRoom;
                             if (ucRoom.Tag != null && ucRoom.Tag.ToString() == room.Key.ToString())
                             {
-                                await ucRoom.ReloadData(room.Value);
-                                if (!IsStartTimerCall)
-                                {
-                                    IsStartTimerCall = true;
-                                    timerCallPatient.Enabled = true;
-                                    timerCallPatient.Start();
-                                }
+                                ucRoom.ReloadData(room.Value);
                             }
                         }
                     }
@@ -318,31 +303,6 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
-        }
-        private bool HasNumberCallUc()
-        {
-            bool result = false;
-            try
-            {
-                foreach (Control ctrl in layoutControl1.Controls)
-                {
-                    if (ctrl is UcRoom)
-                    {
-                        var ucRoom = ctrl as UcRoom;
-                        var has = ucRoom.IsCalling();
-                        if (has)
-                        {
-                            result = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            return result;
         }
 
         private void ProcessShowUcRoom()
@@ -356,7 +316,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
 
                 for (int i = 0; i < ucCount; i++)
                 {
-                    UcRoom uc = new UcRoom(ServiceReqGateADO, sortedRoomGateSDOs[i]);
+                    UcRoom uc = new UcRoom(ServiceReqGateADO, sortedRoomGateSDOs[i], ProcessDelegateCall);
                     uc.Tag = sortedRoomGateSDOs[i].ROOM_ID;
                     uc.Width = ucWidth;
                     uc.Height = layoutControl1.Height;
@@ -371,9 +331,31 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
             }
         }
 
+        private void ProcessDelegateCall(HIS_SERVICE_REQ PatientCall)
+        {
+            try
+            {
+                ListCall.RemoveAll(x => x.EXECUTE_ROOM_ID == PatientCall.EXECUTE_ROOM_ID);
+                ListCall.Add(PatientCall);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
         private void frmWaitingScreen_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //ChooseRoomForWaitingScreenProcess.StackServiceReqCall.Clear();
+            try
+            {
+                threadCall.Abort();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
     }
 }

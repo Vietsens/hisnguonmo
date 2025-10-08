@@ -989,7 +989,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                 //qtcode
                 List<MetyMatyADO> checkDatas = new List<MetyMatyADO>();
                 if (chkNotSelectMedi.Checked)
-                    checkDatas = this.listCompensationAdo != null ? listCompensationAdo.Where(o => o.IsCheck && o.IN_STOCK_AMOUNT > 0).ToList() : null;
+                    checkDatas = this.listCompensationAdo != null ? listCompensationAdo.Where(o => o.IsCheck && o.AMOUT_EXP_MEDI_STOCK > 0).ToList() : null;
                 else
                     checkDatas = this.listCompensationAdo != null ? listCompensationAdo.Where(o => o.IsCheck).ToList() : null;
                 if (checkDatas == null || checkDatas.Count <= 0)
@@ -2029,7 +2029,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                         isCheckAll = true;
                     }
                     List<MetyMatyADO> listCompensationAdoFilter = new List<MetyMatyADO>();
-                    listCompensationAdoFilter = listCompensationAdo.Where(o => o.IN_STOCK_AMOUNT > 0).ToList();
+                    listCompensationAdoFilter = listCompensationAdo.Where(o => o.AMOUT_EXP_MEDI_STOCK > 0).ToList();
                     gridControlCompensation.BeginUpdate();
                     gridControlCompensation.DataSource = listCompensationAdoFilter;
                     gridControlCompensation.EndUpdate();

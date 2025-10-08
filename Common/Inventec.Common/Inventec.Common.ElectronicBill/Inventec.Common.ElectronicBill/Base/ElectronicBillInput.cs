@@ -33,6 +33,8 @@ namespace Inventec.Common.ElectronicBill.Base
         public List<Invoice> invoices { get; set; }
         public List<Invoice_BM> invoicesBm { get; set; }
         public ReplaceInvoice replaceInvoice { get; set; }
+        public AdjustInvoice adjustInvoice { get; set; }
+
         public string pattern { get; set; }
         public string serial { get; set; }
         public string userName { get; set; }
@@ -41,5 +43,6 @@ namespace Inventec.Common.ElectronicBill.Base
         public string fKey { get; set; }
         public string DataXmlStringPlus { get; set; }
         public List<HDon> invoiceTT78s { get; set; }
+        public string attachFile { get; set; }
     }
 }

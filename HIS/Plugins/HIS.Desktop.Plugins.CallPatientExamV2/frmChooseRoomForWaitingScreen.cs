@@ -106,9 +106,8 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        private void InitControlState()
-        {
+        private void GetDataState()
+        { 
             try
             {
                 this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
@@ -130,7 +129,18 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void InitControlState()
+        {
+            try
+            {
 
+                GetDataState();
                 if (currentAdo != null)
                 {
                     spnTimeReload.EditValue = currentAdo.timeReload;
@@ -320,6 +330,7 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                     }
 
                     SavePin(displayScreen.ToList());
+                    GetDataState();
                     frmWaitingScreen frm = new frmWaitingScreen(currentAdo);
                     ShowFormInExtendMonitor(frm);
                     this.Close();
