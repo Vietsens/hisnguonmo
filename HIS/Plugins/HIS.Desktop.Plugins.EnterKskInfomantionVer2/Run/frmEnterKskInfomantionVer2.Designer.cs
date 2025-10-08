@@ -166,13 +166,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl8 = new DevExpress.XtraLayout.LayoutControl();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
-            this.bar1 = new DevExpress.XtraBars.Bar();
-            this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControl4 = new DevExpress.XtraBars.BarDockControl();
             this.labelControl60 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl59 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl58 = new DevExpress.XtraEditors.LabelControl();
@@ -180,6 +173,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.labelControl54 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl50 = new DevExpress.XtraEditors.LabelControl();
             this.cboConcluderLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.bar1 = new DevExpress.XtraBars.Bar();
+            this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControl4 = new DevExpress.XtraBars.BarDockControl();
             this.gridView12 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboExamSubclinicalLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView11 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -275,6 +275,24 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtResultSubclinical = new DevExpress.XtraEditors.ButtonEdit();
             this.cboExamRespiratoryLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView59 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamDigestionLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView60 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamKidneyUrologyLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView61 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamOendLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView62 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamMuscleBoneLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView63 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamNeurologicalLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView64 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamMentalLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView65 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamSurgeryLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView66 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamObstetricLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView67 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamDermatologyLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView68 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup7 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -331,7 +349,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem435 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem437 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem438 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem439 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem440 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem441 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem61 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -363,6 +380,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem583 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem584 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem585 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem439 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem586 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl6 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControlGroup5 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -434,6 +452,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem38 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
+            this.labelControl69 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl68 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl64 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl67 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl66 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl65 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl63 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl62 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl61 = new DevExpress.XtraEditors.LabelControl();
             this.cboExamStomatologyLoginName2 = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView32 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboExamEntLoginName2 = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -556,6 +583,30 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestBloodCreatinin2 = new DevExpress.XtraEditors.ButtonEdit();
             this.txtTestBloodAsat2 = new DevExpress.XtraEditors.ButtonEdit();
             this.txtTestBloodAlat2 = new DevExpress.XtraEditors.ButtonEdit();
+            this.cboExamRespiratoryLoginName2 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView69 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamDigestionLoginName2 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView70 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamKidneyUrologyLoginName2 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView71 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamOendLoginName2 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView72 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamMuscleBoneLoginName2 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView73 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamNeurologicalLoginName2 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView74 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamMentalLoginName2 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView75 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamSurgeryLoginName2 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView76 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamObstetricLoginName2 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView77 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamDermatologyLoginName2 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView78 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboTestBloodLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView79 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboTestUrineLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView80 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlItem140 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup6 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem111 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -572,25 +623,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem122 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem50 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem124 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem125 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem126 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem127 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem128 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem129 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem130 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem131 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem132 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem133 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem134 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem135 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem137 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem138 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem139 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem136 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem141 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem142 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem143 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem11 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem145 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem146 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem148 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -606,12 +641,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem160 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem161 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem162 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem163 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem164 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem167 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem169 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem168 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem171 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem13 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem172 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem173 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -620,13 +650,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem176 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem177 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem178 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem14 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem179 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem180 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem181 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem182 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem183 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem16 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem17 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem428 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -637,26 +665,65 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem184 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem185 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem186 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem429 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem106 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem107 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem108 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem442 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem443 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem444 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem157 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem150 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem158 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem159 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem165 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem166 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem459 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem460 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem461 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem9 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.emptySpaceItem10 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem434 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem12 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem137 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem129 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem131 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem133 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem138 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem130 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem132 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem134 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem443 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem107 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem108 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem142 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem143 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem135 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem136 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem429 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem139 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem141 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem587 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem125 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem588 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem589 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem591 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem592 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem593 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem163 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem164 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem590 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem169 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem168 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem171 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem594 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem595 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem158 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem596 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem597 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem598 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem599 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem600 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem601 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem602 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem603 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem604 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem606 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem607 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem461 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem605 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl7 = new DevExpress.XtraLayout.LayoutControl();
             this.cboExamSubclinicalLoginName3 = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -1555,24 +1622,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.gridView48 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridView49 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
-            this.cboExamDigestionLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView60 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.cboExamKidneyUrologyLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView61 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.cboExamOendLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView62 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.cboExamMuscleBoneLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView63 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.cboExamNeurologicalLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView64 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.cboExamMentalLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView65 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.cboExamSurgeryLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView66 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.cboExamObstetricLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView67 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.cboExamDermatologyLoginName = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView68 = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
@@ -1582,8 +1631,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl8)).BeginInit();
             this.layoutControl8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboConcluderLoginName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamSubclinicalLoginName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView11)).BeginInit();
@@ -1664,6 +1713,24 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.txtResultSubclinical.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamRespiratoryLoginName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView59)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamDigestionLoginName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView60)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamKidneyUrologyLoginName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView61)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamOendLoginName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView62)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMuscleBoneLoginName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView63)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamNeurologicalLoginName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView64)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMentalLoginName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView65)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamSurgeryLoginName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView66)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamObstetricLoginName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView67)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamDermatologyLoginName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView68)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
@@ -1720,7 +1787,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem435)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem437)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem438)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem439)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem440)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem441)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem61)).BeginInit();
@@ -1752,6 +1818,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem583)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem584)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem585)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem439)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem586)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).BeginInit();
@@ -1918,6 +1985,30 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.txtTestBloodCreatinin2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTestBloodAsat2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTestBloodAlat2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamRespiratoryLoginName2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView69)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamDigestionLoginName2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView70)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamKidneyUrologyLoginName2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView71)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamOendLoginName2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView72)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMuscleBoneLoginName2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView73)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamNeurologicalLoginName2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView74)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMentalLoginName2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView75)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamSurgeryLoginName2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView76)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamObstetricLoginName2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView77)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamDermatologyLoginName2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView78)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTestBloodLoginName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView79)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTestUrineLoginName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView80)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem140)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem111)).BeginInit();
@@ -1934,25 +2025,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem122)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem124)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem125)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem126)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem127)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem128)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem129)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem130)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem131)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem132)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem133)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem134)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem135)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem137)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem138)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem139)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem136)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem141)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem142)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem143)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem145)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem146)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem148)).BeginInit();
@@ -1968,12 +2043,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem160)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem161)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem162)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem163)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem164)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem167)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem169)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem168)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem171)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem172)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem173)).BeginInit();
@@ -1982,13 +2052,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem176)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem177)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem178)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem179)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem180)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem181)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem182)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem183)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem428)).BeginInit();
@@ -1999,26 +2067,65 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem184)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem185)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem186)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem429)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem106)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem107)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem108)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem442)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem443)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem444)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem157)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem150)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem158)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem159)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem165)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem166)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem459)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem460)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem461)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem434)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem12)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem137)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem129)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem131)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem133)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem138)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem130)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem132)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem134)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem443)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem107)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem108)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem142)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem143)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem135)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem136)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem429)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem139)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem141)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem587)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem125)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem588)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem589)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem591)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem592)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem593)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem163)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem164)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem590)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem169)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem168)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem171)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem594)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem595)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem158)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem596)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem597)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem598)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem599)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem600)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem601)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem602)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem603)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem604)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem606)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem607)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem461)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem605)).BeginInit();
             this.xtraTabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl7)).BeginInit();
             this.layoutControl7.SuspendLayout();
@@ -2824,24 +2931,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.gridView47)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView48)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView49)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamDigestionLoginName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView60)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamKidneyUrologyLoginName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView61)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamOendLoginName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView62)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamMuscleBoneLoginName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView63)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamNeurologicalLoginName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView64)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamMentalLoginName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView65)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamSurgeryLoginName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView66)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamObstetricLoginName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView67)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamDermatologyLoginName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView68)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -3033,70 +3122,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControl8.TabIndex = 8;
             this.layoutControl8.Text = "layoutControl8";
             // 
-            // barManager1
-            // 
-            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
-            this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControl1);
-            this.barManager1.DockControls.Add(this.barDockControl2);
-            this.barManager1.DockControls.Add(this.barDockControl3);
-            this.barManager1.DockControls.Add(this.barDockControl4);
-            this.barManager1.Form = this;
-            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.bbtnSave});
-            this.barManager1.MaxItemId = 1;
-            // 
-            // bar1
-            // 
-            this.bar1.BarName = "Tools";
-            this.bar1.DockCol = 0;
-            this.bar1.DockRow = 0;
-            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnSave)});
-            this.bar1.Text = "Tools";
-            this.bar1.Visible = false;
-            // 
-            // bbtnSave
-            // 
-            this.bbtnSave.Caption = "barButtonItem1";
-            this.bbtnSave.Id = 0;
-            this.bbtnSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
-            this.bbtnSave.Name = "bbtnSave";
-            this.bbtnSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnSave_ItemClick);
-            // 
-            // barDockControl1
-            // 
-            this.barDockControl1.CausesValidation = false;
-            this.barDockControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControl1.Location = new System.Drawing.Point(0, 0);
-            this.barDockControl1.Margin = new System.Windows.Forms.Padding(4);
-            this.barDockControl1.Size = new System.Drawing.Size(1716, 38);
-            // 
-            // barDockControl2
-            // 
-            this.barDockControl2.CausesValidation = false;
-            this.barDockControl2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControl2.Location = new System.Drawing.Point(0, 966);
-            this.barDockControl2.Margin = new System.Windows.Forms.Padding(4);
-            this.barDockControl2.Size = new System.Drawing.Size(1716, 0);
-            // 
-            // barDockControl3
-            // 
-            this.barDockControl3.CausesValidation = false;
-            this.barDockControl3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControl3.Location = new System.Drawing.Point(0, 38);
-            this.barDockControl3.Margin = new System.Windows.Forms.Padding(4);
-            this.barDockControl3.Size = new System.Drawing.Size(0, 928);
-            // 
-            // barDockControl4
-            // 
-            this.barDockControl4.CausesValidation = false;
-            this.barDockControl4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControl4.Location = new System.Drawing.Point(1716, 38);
-            this.barDockControl4.Margin = new System.Windows.Forms.Padding(4);
-            this.barDockControl4.Size = new System.Drawing.Size(0, 928);
-            // 
             // labelControl60
             // 
             this.labelControl60.Location = new System.Drawing.Point(3, 745);
@@ -3167,6 +3192,70 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboConcluderLoginName.StyleController = this.layoutControl8;
             this.cboConcluderLoginName.TabIndex = 81;
             this.cboConcluderLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // barManager1
+            // 
+            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
+            this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControl1);
+            this.barManager1.DockControls.Add(this.barDockControl2);
+            this.barManager1.DockControls.Add(this.barDockControl3);
+            this.barManager1.DockControls.Add(this.barDockControl4);
+            this.barManager1.Form = this;
+            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+            this.bbtnSave});
+            this.barManager1.MaxItemId = 1;
+            // 
+            // bar1
+            // 
+            this.bar1.BarName = "Tools";
+            this.bar1.DockCol = 0;
+            this.bar1.DockRow = 0;
+            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
+            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnSave)});
+            this.bar1.Text = "Tools";
+            this.bar1.Visible = false;
+            // 
+            // bbtnSave
+            // 
+            this.bbtnSave.Caption = "barButtonItem1";
+            this.bbtnSave.Id = 0;
+            this.bbtnSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
+            this.bbtnSave.Name = "bbtnSave";
+            this.bbtnSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnSave_ItemClick);
+            // 
+            // barDockControl1
+            // 
+            this.barDockControl1.CausesValidation = false;
+            this.barDockControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControl1.Location = new System.Drawing.Point(0, 0);
+            this.barDockControl1.Margin = new System.Windows.Forms.Padding(4);
+            this.barDockControl1.Size = new System.Drawing.Size(1716, 38);
+            // 
+            // barDockControl2
+            // 
+            this.barDockControl2.CausesValidation = false;
+            this.barDockControl2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControl2.Location = new System.Drawing.Point(0, 966);
+            this.barDockControl2.Margin = new System.Windows.Forms.Padding(4);
+            this.barDockControl2.Size = new System.Drawing.Size(1716, 0);
+            // 
+            // barDockControl3
+            // 
+            this.barDockControl3.CausesValidation = false;
+            this.barDockControl3.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControl3.Location = new System.Drawing.Point(0, 38);
+            this.barDockControl3.Margin = new System.Windows.Forms.Padding(4);
+            this.barDockControl3.Size = new System.Drawing.Size(0, 928);
+            // 
+            // barDockControl4
+            // 
+            this.barDockControl4.CausesValidation = false;
+            this.barDockControl4.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControl4.Location = new System.Drawing.Point(1716, 38);
+            this.barDockControl4.Margin = new System.Windows.Forms.Padding(4);
+            this.barDockControl4.Size = new System.Drawing.Size(0, 928);
             // 
             // gridView12
             // 
@@ -4189,7 +4278,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamRespiratoryLoginName.MenuManager = this.barManager1;
             this.cboExamRespiratoryLoginName.Name = "cboExamRespiratoryLoginName";
             this.cboExamRespiratoryLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExamRespiratoryLoginName.Properties.NullText = "";
             this.cboExamRespiratoryLoginName.Properties.PopupSizeable = false;
             this.cboExamRespiratoryLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -4197,6 +4287,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamRespiratoryLoginName.Size = new System.Drawing.Size(159, 22);
             this.cboExamRespiratoryLoginName.StyleController = this.layoutControl8;
             this.cboExamRespiratoryLoginName.TabIndex = 88;
+            this.cboExamRespiratoryLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
             // 
             // gridView59
             // 
@@ -4204,6 +4295,221 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.gridView59.Name = "gridView59";
             this.gridView59.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView59.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamDigestionLoginName
+            // 
+            this.cboExamDigestionLoginName.Location = new System.Drawing.Point(1088, 237);
+            this.cboExamDigestionLoginName.MenuManager = this.barManager1;
+            this.cboExamDigestionLoginName.Name = "cboExamDigestionLoginName";
+            this.cboExamDigestionLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamDigestionLoginName.Properties.NullText = "";
+            this.cboExamDigestionLoginName.Properties.PopupSizeable = false;
+            this.cboExamDigestionLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamDigestionLoginName.Properties.View = this.gridView60;
+            this.cboExamDigestionLoginName.Size = new System.Drawing.Size(159, 22);
+            this.cboExamDigestionLoginName.StyleController = this.layoutControl8;
+            this.cboExamDigestionLoginName.TabIndex = 89;
+            this.cboExamDigestionLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView60
+            // 
+            this.gridView60.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView60.Name = "gridView60";
+            this.gridView60.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView60.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamKidneyUrologyLoginName
+            // 
+            this.cboExamKidneyUrologyLoginName.Location = new System.Drawing.Point(1088, 265);
+            this.cboExamKidneyUrologyLoginName.MenuManager = this.barManager1;
+            this.cboExamKidneyUrologyLoginName.Name = "cboExamKidneyUrologyLoginName";
+            this.cboExamKidneyUrologyLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamKidneyUrologyLoginName.Properties.NullText = "";
+            this.cboExamKidneyUrologyLoginName.Properties.PopupSizeable = false;
+            this.cboExamKidneyUrologyLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamKidneyUrologyLoginName.Properties.View = this.gridView61;
+            this.cboExamKidneyUrologyLoginName.Size = new System.Drawing.Size(159, 22);
+            this.cboExamKidneyUrologyLoginName.StyleController = this.layoutControl8;
+            this.cboExamKidneyUrologyLoginName.TabIndex = 90;
+            this.cboExamKidneyUrologyLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView61
+            // 
+            this.gridView61.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView61.Name = "gridView61";
+            this.gridView61.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView61.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamOendLoginName
+            // 
+            this.cboExamOendLoginName.Location = new System.Drawing.Point(1088, 293);
+            this.cboExamOendLoginName.MenuManager = this.barManager1;
+            this.cboExamOendLoginName.Name = "cboExamOendLoginName";
+            this.cboExamOendLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamOendLoginName.Properties.NullText = "";
+            this.cboExamOendLoginName.Properties.PopupSizeable = false;
+            this.cboExamOendLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamOendLoginName.Properties.View = this.gridView62;
+            this.cboExamOendLoginName.Size = new System.Drawing.Size(159, 22);
+            this.cboExamOendLoginName.StyleController = this.layoutControl8;
+            this.cboExamOendLoginName.TabIndex = 91;
+            this.cboExamOendLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView62
+            // 
+            this.gridView62.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView62.Name = "gridView62";
+            this.gridView62.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView62.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamMuscleBoneLoginName
+            // 
+            this.cboExamMuscleBoneLoginName.Location = new System.Drawing.Point(1088, 321);
+            this.cboExamMuscleBoneLoginName.MenuManager = this.barManager1;
+            this.cboExamMuscleBoneLoginName.Name = "cboExamMuscleBoneLoginName";
+            this.cboExamMuscleBoneLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamMuscleBoneLoginName.Properties.NullText = "";
+            this.cboExamMuscleBoneLoginName.Properties.PopupSizeable = false;
+            this.cboExamMuscleBoneLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamMuscleBoneLoginName.Properties.View = this.gridView63;
+            this.cboExamMuscleBoneLoginName.Size = new System.Drawing.Size(159, 22);
+            this.cboExamMuscleBoneLoginName.StyleController = this.layoutControl8;
+            this.cboExamMuscleBoneLoginName.TabIndex = 92;
+            this.cboExamMuscleBoneLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView63
+            // 
+            this.gridView63.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView63.Name = "gridView63";
+            this.gridView63.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView63.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamNeurologicalLoginName
+            // 
+            this.cboExamNeurologicalLoginName.Location = new System.Drawing.Point(1088, 349);
+            this.cboExamNeurologicalLoginName.MenuManager = this.barManager1;
+            this.cboExamNeurologicalLoginName.Name = "cboExamNeurologicalLoginName";
+            this.cboExamNeurologicalLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamNeurologicalLoginName.Properties.NullText = "";
+            this.cboExamNeurologicalLoginName.Properties.PopupSizeable = false;
+            this.cboExamNeurologicalLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamNeurologicalLoginName.Properties.View = this.gridView64;
+            this.cboExamNeurologicalLoginName.Size = new System.Drawing.Size(159, 22);
+            this.cboExamNeurologicalLoginName.StyleController = this.layoutControl8;
+            this.cboExamNeurologicalLoginName.TabIndex = 93;
+            this.cboExamNeurologicalLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView64
+            // 
+            this.gridView64.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView64.Name = "gridView64";
+            this.gridView64.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView64.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamMentalLoginName
+            // 
+            this.cboExamMentalLoginName.Location = new System.Drawing.Point(1088, 377);
+            this.cboExamMentalLoginName.MenuManager = this.barManager1;
+            this.cboExamMentalLoginName.Name = "cboExamMentalLoginName";
+            this.cboExamMentalLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamMentalLoginName.Properties.NullText = "";
+            this.cboExamMentalLoginName.Properties.PopupSizeable = false;
+            this.cboExamMentalLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamMentalLoginName.Properties.View = this.gridView65;
+            this.cboExamMentalLoginName.Size = new System.Drawing.Size(159, 22);
+            this.cboExamMentalLoginName.StyleController = this.layoutControl8;
+            this.cboExamMentalLoginName.TabIndex = 94;
+            this.cboExamMentalLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView65
+            // 
+            this.gridView65.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView65.Name = "gridView65";
+            this.gridView65.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView65.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamSurgeryLoginName
+            // 
+            this.cboExamSurgeryLoginName.Location = new System.Drawing.Point(1088, 427);
+            this.cboExamSurgeryLoginName.MenuManager = this.barManager1;
+            this.cboExamSurgeryLoginName.Name = "cboExamSurgeryLoginName";
+            this.cboExamSurgeryLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamSurgeryLoginName.Properties.NullText = "";
+            this.cboExamSurgeryLoginName.Properties.PopupSizeable = false;
+            this.cboExamSurgeryLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamSurgeryLoginName.Properties.View = this.gridView66;
+            this.cboExamSurgeryLoginName.Size = new System.Drawing.Size(159, 22);
+            this.cboExamSurgeryLoginName.StyleController = this.layoutControl8;
+            this.cboExamSurgeryLoginName.TabIndex = 95;
+            this.cboExamSurgeryLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView66
+            // 
+            this.gridView66.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView66.Name = "gridView66";
+            this.gridView66.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView66.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamObstetricLoginName
+            // 
+            this.cboExamObstetricLoginName.Location = new System.Drawing.Point(1088, 477);
+            this.cboExamObstetricLoginName.MenuManager = this.barManager1;
+            this.cboExamObstetricLoginName.Name = "cboExamObstetricLoginName";
+            this.cboExamObstetricLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamObstetricLoginName.Properties.NullText = "";
+            this.cboExamObstetricLoginName.Properties.PopupSizeable = false;
+            this.cboExamObstetricLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamObstetricLoginName.Properties.View = this.gridView67;
+            this.cboExamObstetricLoginName.Size = new System.Drawing.Size(159, 22);
+            this.cboExamObstetricLoginName.StyleController = this.layoutControl8;
+            this.cboExamObstetricLoginName.TabIndex = 96;
+            // 
+            // gridView67
+            // 
+            this.gridView67.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView67.Name = "gridView67";
+            this.gridView67.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView67.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamDermatologyLoginName
+            // 
+            this.cboExamDermatologyLoginName.Location = new System.Drawing.Point(1088, 767);
+            this.cboExamDermatologyLoginName.MenuManager = this.barManager1;
+            this.cboExamDermatologyLoginName.Name = "cboExamDermatologyLoginName";
+            this.cboExamDermatologyLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamDermatologyLoginName.Properties.NullText = "";
+            this.cboExamDermatologyLoginName.Properties.PopupSizeable = false;
+            this.cboExamDermatologyLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamDermatologyLoginName.Properties.View = this.gridView68;
+            this.cboExamDermatologyLoginName.Size = new System.Drawing.Size(159, 22);
+            this.cboExamDermatologyLoginName.StyleController = this.layoutControl8;
+            this.cboExamDermatologyLoginName.TabIndex = 97;
+            this.cboExamDermatologyLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView68
+            // 
+            this.gridView68.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView68.Name = "gridView68";
+            this.gridView68.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView68.OptionsView.ShowGroupPanel = false;
             // 
             // layoutControlGroup7
             // 
@@ -4979,19 +5285,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem438.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem438.TextToControlDistance = 5;
             // 
-            // layoutControlItem439
-            // 
-            this.layoutControlItem439.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem439.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem439.Control = this.cboExamStomatologyLoginName;
-            this.layoutControlItem439.Location = new System.Drawing.Point(1000, 714);
-            this.layoutControlItem439.Name = "layoutControlItem439";
-            this.layoutControlItem439.Size = new System.Drawing.Size(250, 28);
-            this.layoutControlItem439.Text = "Người khám:";
-            this.layoutControlItem439.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem439.TextSize = new System.Drawing.Size(80, 20);
-            this.layoutControlItem439.TextToControlDistance = 5;
-            // 
             // layoutControlItem440
             // 
             this.layoutControlItem440.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -5379,6 +5672,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem585.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem585.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem585.TextToControlDistance = 5;
+            // 
+            // layoutControlItem439
+            // 
+            this.layoutControlItem439.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem439.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem439.Control = this.cboExamStomatologyLoginName;
+            this.layoutControlItem439.Location = new System.Drawing.Point(1000, 714);
+            this.layoutControlItem439.Name = "layoutControlItem439";
+            this.layoutControlItem439.Size = new System.Drawing.Size(250, 28);
+            this.layoutControlItem439.Text = "Người khám:";
+            this.layoutControlItem439.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem439.TextSize = new System.Drawing.Size(80, 20);
+            this.layoutControlItem439.TextToControlDistance = 5;
             // 
             // layoutControlItem586
             // 
@@ -6260,6 +6566,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // layoutControl5
             // 
+            this.layoutControl5.Controls.Add(this.labelControl69);
+            this.layoutControl5.Controls.Add(this.labelControl68);
+            this.layoutControl5.Controls.Add(this.labelControl64);
+            this.layoutControl5.Controls.Add(this.labelControl67);
+            this.layoutControl5.Controls.Add(this.labelControl66);
+            this.layoutControl5.Controls.Add(this.labelControl65);
+            this.layoutControl5.Controls.Add(this.labelControl63);
+            this.layoutControl5.Controls.Add(this.labelControl62);
+            this.layoutControl5.Controls.Add(this.labelControl61);
             this.layoutControl5.Controls.Add(this.cboExamStomatologyLoginName2);
             this.layoutControl5.Controls.Add(this.cboExamEntLoginName2);
             this.layoutControl5.Controls.Add(this.cboExamEyeLoginName2);
@@ -6352,6 +6667,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControl5.Controls.Add(this.txtTestBloodCreatinin2);
             this.layoutControl5.Controls.Add(this.txtTestBloodAsat2);
             this.layoutControl5.Controls.Add(this.txtTestBloodAlat2);
+            this.layoutControl5.Controls.Add(this.cboExamRespiratoryLoginName2);
+            this.layoutControl5.Controls.Add(this.cboExamDigestionLoginName2);
+            this.layoutControl5.Controls.Add(this.cboExamKidneyUrologyLoginName2);
+            this.layoutControl5.Controls.Add(this.cboExamOendLoginName2);
+            this.layoutControl5.Controls.Add(this.cboExamMuscleBoneLoginName2);
+            this.layoutControl5.Controls.Add(this.cboExamNeurologicalLoginName2);
+            this.layoutControl5.Controls.Add(this.cboExamMentalLoginName2);
+            this.layoutControl5.Controls.Add(this.cboExamSurgeryLoginName2);
+            this.layoutControl5.Controls.Add(this.cboExamObstetricLoginName2);
+            this.layoutControl5.Controls.Add(this.cboExamDermatologyLoginName2);
+            this.layoutControl5.Controls.Add(this.cboTestBloodLoginName);
+            this.layoutControl5.Controls.Add(this.cboTestUrineLoginName);
             this.layoutControl5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl5.HiddenItems.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem140});
@@ -6363,9 +6690,90 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControl5.TabIndex = 0;
             this.layoutControl5.Text = "layoutControl5";
             // 
+            // labelControl69
+            // 
+            this.labelControl69.Location = new System.Drawing.Point(409, 935);
+            this.labelControl69.Name = "labelControl69";
+            this.labelControl69.Size = new System.Drawing.Size(1291, 16);
+            this.labelControl69.StyleController = this.layoutControl5;
+            this.labelControl69.TabIndex = 115;
+            this.labelControl69.Text = "3. Chẩn đoán hình ảnh:";
+            // 
+            // labelControl68
+            // 
+            this.labelControl68.Location = new System.Drawing.Point(409, 882);
+            this.labelControl68.Name = "labelControl68";
+            this.labelControl68.Size = new System.Drawing.Size(1291, 16);
+            this.labelControl68.StyleController = this.layoutControl5;
+            this.labelControl68.TabIndex = 114;
+            this.labelControl68.Text = "2. Xét nghiệm nước tiểu:";
+            // 
+            // labelControl64
+            // 
+            this.labelControl64.Location = new System.Drawing.Point(409, 770);
+            this.labelControl64.Name = "labelControl64";
+            this.labelControl64.Size = new System.Drawing.Size(975, 16);
+            this.labelControl64.StyleController = this.layoutControl5;
+            this.labelControl64.TabIndex = 113;
+            this.labelControl64.Text = "1. Xét nghiệm máu:";
+            // 
+            // labelControl67
+            // 
+            this.labelControl67.Location = new System.Drawing.Point(409, 698);
+            this.labelControl67.Name = "labelControl67";
+            this.labelControl67.Size = new System.Drawing.Size(1291, 16);
+            this.labelControl67.StyleController = this.layoutControl5;
+            this.labelControl67.TabIndex = 112;
+            this.labelControl67.Text = "7. Da liễu:";
+            // 
+            // labelControl66
+            // 
+            this.labelControl66.Location = new System.Drawing.Point(409, 617);
+            this.labelControl66.Name = "labelControl66";
+            this.labelControl66.Size = new System.Drawing.Size(1291, 16);
+            this.labelControl66.StyleController = this.layoutControl5;
+            this.labelControl66.TabIndex = 111;
+            this.labelControl66.Text = "6. RHM:";
+            // 
+            // labelControl65
+            // 
+            this.labelControl65.Location = new System.Drawing.Point(409, 536);
+            this.labelControl65.Name = "labelControl65";
+            this.labelControl65.Size = new System.Drawing.Size(1291, 16);
+            this.labelControl65.StyleController = this.layoutControl5;
+            this.labelControl65.TabIndex = 110;
+            this.labelControl65.Text = "5. TMH:";
+            // 
+            // labelControl63
+            // 
+            this.labelControl63.Location = new System.Drawing.Point(409, 455);
+            this.labelControl63.Name = "labelControl63";
+            this.labelControl63.Size = new System.Drawing.Size(1291, 16);
+            this.labelControl63.StyleController = this.layoutControl5;
+            this.labelControl63.TabIndex = 108;
+            this.labelControl63.Text = "4. Mắt";
+            // 
+            // labelControl62
+            // 
+            this.labelControl62.Location = new System.Drawing.Point(409, 405);
+            this.labelControl62.Name = "labelControl62";
+            this.labelControl62.Size = new System.Drawing.Size(1291, 16);
+            this.labelControl62.StyleController = this.layoutControl5;
+            this.labelControl62.TabIndex = 107;
+            this.labelControl62.Text = "3. Sản phụ khoa:";
+            // 
+            // labelControl61
+            // 
+            this.labelControl61.Location = new System.Drawing.Point(409, 355);
+            this.labelControl61.Name = "labelControl61";
+            this.labelControl61.Size = new System.Drawing.Size(1291, 16);
+            this.labelControl61.StyleController = this.layoutControl5;
+            this.labelControl61.TabIndex = 106;
+            this.labelControl61.Text = "2. Ngoại khoa:";
+            // 
             // cboExamStomatologyLoginName2
             // 
-            this.cboExamStomatologyLoginName2.Location = new System.Drawing.Point(1524, 392);
+            this.cboExamStomatologyLoginName2.Location = new System.Drawing.Point(1485, 670);
             this.cboExamStomatologyLoginName2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamStomatologyLoginName2.MenuManager = this.barManager1;
             this.cboExamStomatologyLoginName2.Name = "cboExamStomatologyLoginName2";
@@ -6375,7 +6783,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExamStomatologyLoginName2.Properties.NullText = "";
             this.cboExamStomatologyLoginName2.Properties.View = this.gridView32;
-            this.cboExamStomatologyLoginName2.Size = new System.Drawing.Size(176, 22);
+            this.cboExamStomatologyLoginName2.Size = new System.Drawing.Size(215, 22);
             this.cboExamStomatologyLoginName2.StyleController = this.layoutControl5;
             this.cboExamStomatologyLoginName2.TabIndex = 105;
             this.cboExamStomatologyLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
@@ -6389,7 +6797,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamEntLoginName2
             // 
-            this.cboExamEntLoginName2.Location = new System.Drawing.Point(1522, 333);
+            this.cboExamEntLoginName2.Location = new System.Drawing.Point(1485, 589);
             this.cboExamEntLoginName2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamEntLoginName2.MenuManager = this.barManager1;
             this.cboExamEntLoginName2.Name = "cboExamEntLoginName2";
@@ -6399,7 +6807,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExamEntLoginName2.Properties.NullText = "";
             this.cboExamEntLoginName2.Properties.View = this.gridView31;
-            this.cboExamEntLoginName2.Size = new System.Drawing.Size(178, 22);
+            this.cboExamEntLoginName2.Size = new System.Drawing.Size(215, 22);
             this.cboExamEntLoginName2.StyleController = this.layoutControl5;
             this.cboExamEntLoginName2.TabIndex = 104;
             this.cboExamEntLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
@@ -6413,7 +6821,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamEyeLoginName2
             // 
-            this.cboExamEyeLoginName2.Location = new System.Drawing.Point(1516, 274);
+            this.cboExamEyeLoginName2.Location = new System.Drawing.Point(1485, 508);
             this.cboExamEyeLoginName2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamEyeLoginName2.MenuManager = this.barManager1;
             this.cboExamEyeLoginName2.Name = "cboExamEyeLoginName2";
@@ -6423,7 +6831,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExamEyeLoginName2.Properties.NullText = "";
             this.cboExamEyeLoginName2.Properties.View = this.gridView30;
-            this.cboExamEyeLoginName2.Size = new System.Drawing.Size(184, 22);
+            this.cboExamEyeLoginName2.Size = new System.Drawing.Size(215, 22);
             this.cboExamEyeLoginName2.StyleController = this.layoutControl5;
             this.cboExamEyeLoginName2.TabIndex = 103;
             this.cboExamEyeLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
@@ -6437,7 +6845,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboDiimLoginName2
             // 
-            this.cboDiimLoginName2.Location = new System.Drawing.Point(1522, 563);
+            this.cboDiimLoginName2.Location = new System.Drawing.Point(1485, 957);
             this.cboDiimLoginName2.Margin = new System.Windows.Forms.Padding(4);
             this.cboDiimLoginName2.MenuManager = this.barManager1;
             this.cboDiimLoginName2.Name = "cboDiimLoginName2";
@@ -6447,7 +6855,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboDiimLoginName2.Properties.NullText = "";
             this.cboDiimLoginName2.Properties.View = this.gridView15;
-            this.cboDiimLoginName2.Size = new System.Drawing.Size(178, 22);
+            this.cboDiimLoginName2.Size = new System.Drawing.Size(215, 22);
             this.cboDiimLoginName2.StyleController = this.layoutControl5;
             this.cboDiimLoginName2.TabIndex = 102;
             this.cboDiimLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
@@ -6461,7 +6869,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamCirculationLoginName2
             // 
-            this.cboExamCirculationLoginName2.Location = new System.Drawing.Point(1522, 187);
+            this.cboExamCirculationLoginName2.Location = new System.Drawing.Point(1484, 131);
             this.cboExamCirculationLoginName2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamCirculationLoginName2.MenuManager = this.barManager1;
             this.cboExamCirculationLoginName2.Name = "cboExamCirculationLoginName2";
@@ -6471,7 +6879,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExamCirculationLoginName2.Properties.NullText = "";
             this.cboExamCirculationLoginName2.Properties.View = this.gridView14;
-            this.cboExamCirculationLoginName2.Size = new System.Drawing.Size(178, 22);
+            this.cboExamCirculationLoginName2.Size = new System.Drawing.Size(216, 22);
             this.cboExamCirculationLoginName2.StyleController = this.layoutControl5;
             this.cboExamCirculationLoginName2.TabIndex = 101;
             this.cboExamCirculationLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
@@ -6485,7 +6893,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExecuteLoginName2
             // 
-            this.cboExecuteLoginName2.Location = new System.Drawing.Point(1522, 56);
+            this.cboExecuteLoginName2.Location = new System.Drawing.Point(1498, 56);
             this.cboExecuteLoginName2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExecuteLoginName2.MenuManager = this.barManager1;
             this.cboExecuteLoginName2.Name = "cboExecuteLoginName2";
@@ -6495,7 +6903,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExecuteLoginName2.Properties.NullText = "";
             this.cboExecuteLoginName2.Properties.View = this.gridView13;
-            this.cboExecuteLoginName2.Size = new System.Drawing.Size(178, 22);
+            this.cboExecuteLoginName2.Size = new System.Drawing.Size(202, 22);
             this.cboExecuteLoginName2.StyleController = this.layoutControl5;
             this.cboExecuteLoginName2.TabIndex = 100;
             this.cboExecuteLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
@@ -6509,7 +6917,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamOend2
             // 
-            this.cboExamOend2.Location = new System.Drawing.Point(1205, 187);
+            this.cboExamOend2.Location = new System.Drawing.Point(1137, 243);
             this.cboExamOend2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamOend2.MenuManager = this.barManager1;
             this.cboExamOend2.Name = "cboExamOend2";
@@ -6518,7 +6926,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamOend2.Properties.NullText = "";
             this.cboExamOend2.Properties.View = this.gridView5;
-            this.cboExamOend2.Size = new System.Drawing.Size(114, 22);
+            this.cboExamOend2.Size = new System.Drawing.Size(246, 22);
             this.cboExamOend2.StyleController = this.layoutControl5;
             this.cboExamOend2.TabIndex = 99;
             // 
@@ -6531,69 +6939,69 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtExamOend2
             // 
-            this.txtExamOend2.Location = new System.Drawing.Point(957, 187);
+            this.txtExamOend2.Location = new System.Drawing.Point(504, 243);
             this.txtExamOend2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamOend2.MenuManager = this.barManager1;
             this.txtExamOend2.Name = "txtExamOend2";
-            this.txtExamOend2.Size = new System.Drawing.Size(242, 22);
+            this.txtExamOend2.Size = new System.Drawing.Size(502, 22);
             this.txtExamOend2.StyleController = this.layoutControl5;
             this.txtExamOend2.TabIndex = 98;
             // 
             // txtHealthExamRankDescription2
             // 
-            this.txtHealthExamRankDescription2.Location = new System.Drawing.Point(723, 613);
+            this.txtHealthExamRankDescription2.Location = new System.Drawing.Point(808, 1007);
             this.txtHealthExamRankDescription2.Margin = new System.Windows.Forms.Padding(4);
             this.txtHealthExamRankDescription2.MenuManager = this.barManager1;
             this.txtHealthExamRankDescription2.Name = "txtHealthExamRankDescription2";
-            this.txtHealthExamRankDescription2.Size = new System.Drawing.Size(289, 22);
+            this.txtHealthExamRankDescription2.Size = new System.Drawing.Size(199, 22);
             this.txtHealthExamRankDescription2.StyleController = this.layoutControl5;
             this.txtHealthExamRankDescription2.TabIndex = 97;
             // 
             // txtMaternityHistory
             // 
-            this.txtMaternityHistory.Location = new System.Drawing.Point(3, 656);
+            this.txtMaternityHistory.Location = new System.Drawing.Point(3, 955);
             this.txtMaternityHistory.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaternityHistory.MenuManager = this.barManager1;
             this.txtMaternityHistory.Name = "txtMaternityHistory";
-            this.txtMaternityHistory.Size = new System.Drawing.Size(419, 91);
+            this.txtMaternityHistory.Size = new System.Drawing.Size(400, 84);
             this.txtMaternityHistory.StyleController = this.layoutControl5;
             this.txtMaternityHistory.TabIndex = 96;
             // 
             // txtMedicineUsing
             // 
-            this.txtMedicineUsing.Location = new System.Drawing.Point(3, 547);
+            this.txtMedicineUsing.Location = new System.Drawing.Point(3, 821);
             this.txtMedicineUsing.Margin = new System.Windows.Forms.Padding(4);
             this.txtMedicineUsing.MenuManager = this.barManager1;
             this.txtMedicineUsing.Name = "txtMedicineUsing";
-            this.txtMedicineUsing.Size = new System.Drawing.Size(419, 78);
+            this.txtMedicineUsing.Size = new System.Drawing.Size(400, 103);
             this.txtMedicineUsing.StyleController = this.layoutControl5;
             this.txtMedicineUsing.TabIndex = 95;
             // 
             // labelControl4
             // 
             this.labelControl4.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl4.Location = new System.Drawing.Point(258, 496);
+            this.labelControl4.Location = new System.Drawing.Point(258, 770);
             this.labelControl4.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl4.Name = "labelControl4";
-            this.labelControl4.Size = new System.Drawing.Size(164, 20);
+            this.labelControl4.Size = new System.Drawing.Size(145, 20);
             this.labelControl4.StyleController = this.layoutControl5;
             this.labelControl4.TabIndex = 94;
             this.labelControl4.Text = " ";
             // 
             // txtPathologicalHistory2
             // 
-            this.txtPathologicalHistory2.Location = new System.Drawing.Point(3, 417);
+            this.txtPathologicalHistory2.Location = new System.Drawing.Point(3, 664);
             this.txtPathologicalHistory2.Margin = new System.Windows.Forms.Padding(4);
             this.txtPathologicalHistory2.MenuManager = this.barManager1;
             this.txtPathologicalHistory2.Name = "txtPathologicalHistory2";
-            this.txtPathologicalHistory2.Size = new System.Drawing.Size(419, 73);
+            this.txtPathologicalHistory2.Size = new System.Drawing.Size(400, 100);
             this.txtPathologicalHistory2.StyleController = this.layoutControl5;
             this.txtPathologicalHistory2.TabIndex = 93;
             // 
             // gridControl3
             // 
             this.gridControl3.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
-            this.gridControl3.Location = new System.Drawing.Point(3, 186);
+            this.gridControl3.Location = new System.Drawing.Point(3, 212);
             this.gridControl3.MainView = this.gridView4;
             this.gridControl3.Margin = new System.Windows.Forms.Padding(4);
             this.gridControl3.MenuManager = this.barManager1;
@@ -6601,7 +7009,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.gridControl3.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemCheckEdit6,
             this.repositoryItemCheckEdit7});
-            this.gridControl3.Size = new System.Drawing.Size(419, 200);
+            this.gridControl3.Size = new System.Drawing.Size(400, 421);
             this.gridControl3.TabIndex = 92;
             this.gridControl3.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView4});
@@ -6690,7 +7098,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtPathologicalHistoryFamily.Margin = new System.Windows.Forms.Padding(4);
             this.txtPathologicalHistoryFamily.MenuManager = this.barManager1;
             this.txtPathologicalHistoryFamily.Name = "txtPathologicalHistoryFamily";
-            this.txtPathologicalHistoryFamily.Size = new System.Drawing.Size(419, 101);
+            this.txtPathologicalHistoryFamily.Size = new System.Drawing.Size(400, 127);
             this.txtPathologicalHistoryFamily.StyleController = this.layoutControl5;
             this.txtPathologicalHistoryFamily.TabIndex = 91;
             // 
@@ -6700,32 +7108,32 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.labelControl3.Location = new System.Drawing.Point(208, 3);
             this.labelControl3.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(214, 20);
+            this.labelControl3.Size = new System.Drawing.Size(195, 20);
             this.labelControl3.StyleController = this.layoutControl5;
             this.labelControl3.TabIndex = 90;
             this.labelControl3.Text = " ";
             // 
             // label9
             // 
-            this.label9.Location = new System.Drawing.Point(543, 442);
+            this.label9.Location = new System.Drawing.Point(524, 792);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(103, 25);
+            this.label9.Size = new System.Drawing.Size(27, 25);
             this.label9.TabIndex = 89;
             // 
             // txtDiseases2
             // 
-            this.txtDiseases2.Location = new System.Drawing.Point(1203, 613);
+            this.txtDiseases2.Location = new System.Drawing.Point(1138, 1007);
             this.txtDiseases2.Margin = new System.Windows.Forms.Padding(4);
             this.txtDiseases2.Name = "txtDiseases2";
-            this.txtDiseases2.Size = new System.Drawing.Size(497, 22);
+            this.txtDiseases2.Size = new System.Drawing.Size(562, 22);
             this.txtDiseases2.StyleController = this.layoutControl5;
             this.txtDiseases2.TabIndex = 88;
             this.txtDiseases2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtDiseases2_PreviewKeyDown);
             // 
             // cboHealthExamRank2
             // 
-            this.cboHealthExamRank2.Location = new System.Drawing.Point(523, 613);
+            this.cboHealthExamRank2.Location = new System.Drawing.Point(504, 1007);
             this.cboHealthExamRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboHealthExamRank2.Name = "cboHealthExamRank2";
             this.cboHealthExamRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -6733,7 +7141,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboHealthExamRank2.Properties.NullText = "";
             this.cboHealthExamRank2.Properties.View = this.gridLookUpEdit32View;
-            this.cboHealthExamRank2.Size = new System.Drawing.Size(194, 22);
+            this.cboHealthExamRank2.Size = new System.Drawing.Size(203, 22);
             this.cboHealthExamRank2.StyleController = this.layoutControl5;
             this.cboHealthExamRank2.TabIndex = 87;
             this.cboHealthExamRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboHealthExamRank2_Closed);
@@ -6748,41 +7156,41 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // labelControl23
             // 
-            this.labelControl23.Location = new System.Drawing.Point(576, 591);
+            this.labelControl23.Location = new System.Drawing.Point(557, 985);
             this.labelControl23.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl23.Name = "labelControl23";
-            this.labelControl23.Size = new System.Drawing.Size(1124, 16);
+            this.labelControl23.Size = new System.Drawing.Size(1143, 16);
             this.labelControl23.StyleController = this.layoutControl5;
             this.labelControl23.TabIndex = 86;
             // 
             // label29
             // 
-            this.label29.Location = new System.Drawing.Point(576, 532);
+            this.label29.Location = new System.Drawing.Point(409, 904);
             this.label29.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(147, 25);
+            this.label29.Size = new System.Drawing.Size(142, 25);
             this.label29.TabIndex = 81;
             // 
             // label28
             // 
-            this.label28.Location = new System.Drawing.Point(576, 473);
+            this.label28.Location = new System.Drawing.Point(557, 823);
             this.label28.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(70, 25);
+            this.label28.Size = new System.Drawing.Size(0, 25);
             this.label28.TabIndex = 74;
             // 
             // labelControl22
             // 
-            this.labelControl22.Location = new System.Drawing.Point(576, 420);
+            this.labelControl22.Location = new System.Drawing.Point(557, 748);
             this.labelControl22.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl22.Name = "labelControl22";
-            this.labelControl22.Size = new System.Drawing.Size(1124, 16);
+            this.labelControl22.Size = new System.Drawing.Size(1143, 16);
             this.labelControl22.StyleController = this.layoutControl5;
             this.labelControl22.TabIndex = 68;
             // 
             // cboExamDernatologyRank2
             // 
-            this.cboExamDernatologyRank2.Location = new System.Drawing.Point(992, 391);
+            this.cboExamDernatologyRank2.Location = new System.Drawing.Point(1137, 720);
             this.cboExamDernatologyRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamDernatologyRank2.Name = "cboExamDernatologyRank2";
             this.cboExamDernatologyRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -6790,7 +7198,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamDernatologyRank2.Properties.NullText = "";
             this.cboExamDernatologyRank2.Properties.View = this.gridLookUpEdit31View;
-            this.cboExamDernatologyRank2.Size = new System.Drawing.Size(70, 22);
+            this.cboExamDernatologyRank2.Size = new System.Drawing.Size(246, 22);
             this.cboExamDernatologyRank2.StyleController = this.layoutControl5;
             this.cboExamDernatologyRank2.TabIndex = 67;
             this.cboExamDernatologyRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamDernatologyRank2_Closed);
@@ -6804,17 +7212,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtExamDernatology2
             // 
-            this.txtExamDernatology2.Location = new System.Drawing.Point(503, 392);
+            this.txtExamDernatology2.Location = new System.Drawing.Point(504, 720);
             this.txtExamDernatology2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamDernatology2.Name = "txtExamDernatology2";
-            this.txtExamDernatology2.Size = new System.Drawing.Size(486, 22);
+            this.txtExamDernatology2.Size = new System.Drawing.Size(502, 22);
             this.txtExamDernatology2.StyleController = this.layoutControl5;
             this.txtExamDernatology2.TabIndex = 66;
             this.txtExamDernatology2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamDernatology2_PreviewKeyDown);
             // 
             // cboExamStomatologyRank2
             // 
-            this.cboExamStomatologyRank2.Location = new System.Drawing.Point(1548, 360);
+            this.cboExamStomatologyRank2.Location = new System.Drawing.Point(1137, 670);
             this.cboExamStomatologyRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamStomatologyRank2.Name = "cboExamStomatologyRank2";
             this.cboExamStomatologyRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -6822,7 +7230,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamStomatologyRank2.Properties.NullText = "";
             this.cboExamStomatologyRank2.Properties.View = this.gridLookUpEdit30View;
-            this.cboExamStomatologyRank2.Size = new System.Drawing.Size(153, 22);
+            this.cboExamStomatologyRank2.Size = new System.Drawing.Size(247, 22);
             this.cboExamStomatologyRank2.StyleController = this.layoutControl5;
             this.cboExamStomatologyRank2.TabIndex = 65;
             this.cboExamStomatologyRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamStomatologyRank2_Closed);
@@ -6836,45 +7244,45 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtExamStomatologyDisease2
             // 
-            this.txtExamStomatologyDisease2.Location = new System.Drawing.Point(1140, 361);
+            this.txtExamStomatologyDisease2.Location = new System.Drawing.Point(504, 670);
             this.txtExamStomatologyDisease2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamStomatologyDisease2.Name = "txtExamStomatologyDisease2";
-            this.txtExamStomatologyDisease2.Size = new System.Drawing.Size(405, 22);
+            this.txtExamStomatologyDisease2.Size = new System.Drawing.Size(502, 22);
             this.txtExamStomatologyDisease2.StyleController = this.layoutControl5;
             this.txtExamStomatologyDisease2.TabIndex = 64;
             this.txtExamStomatologyDisease2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamStomatologyDisease2_PreviewKeyDown);
             // 
             // txtExamStomatologyLower2
             // 
-            this.txtExamStomatologyLower2.Location = new System.Drawing.Point(940, 361);
+            this.txtExamStomatologyLower2.Location = new System.Drawing.Point(1138, 639);
             this.txtExamStomatologyLower2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamStomatologyLower2.Name = "txtExamStomatologyLower2";
-            this.txtExamStomatologyLower2.Size = new System.Drawing.Size(119, 22);
+            this.txtExamStomatologyLower2.Size = new System.Drawing.Size(562, 22);
             this.txtExamStomatologyLower2.StyleController = this.layoutControl5;
             this.txtExamStomatologyLower2.TabIndex = 63;
             this.txtExamStomatologyLower2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamStomatologyLower2_PreviewKeyDown);
             // 
             // txtExamStomatologyUpper2
             // 
-            this.txtExamStomatologyUpper2.Location = new System.Drawing.Point(727, 361);
+            this.txtExamStomatologyUpper2.Location = new System.Drawing.Point(612, 639);
             this.txtExamStomatologyUpper2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamStomatologyUpper2.Name = "txtExamStomatologyUpper2";
-            this.txtExamStomatologyUpper2.Size = new System.Drawing.Size(132, 22);
+            this.txtExamStomatologyUpper2.Size = new System.Drawing.Size(395, 22);
             this.txtExamStomatologyUpper2.StyleController = this.layoutControl5;
             this.txtExamStomatologyUpper2.TabIndex = 62;
             this.txtExamStomatologyUpper2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamStomatologyUpper2_PreviewKeyDown);
             // 
             // label26
             // 
-            this.label26.Location = new System.Drawing.Point(576, 361);
+            this.label26.Location = new System.Drawing.Point(504, 639);
             this.label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(70, 25);
+            this.label26.Size = new System.Drawing.Size(27, 25);
             this.label26.TabIndex = 61;
             // 
             // cboExamEntDiseaseRank2
             // 
-            this.cboExamEntDiseaseRank2.Location = new System.Drawing.Point(1141, 333);
+            this.cboExamEntDiseaseRank2.Location = new System.Drawing.Point(1137, 589);
             this.cboExamEntDiseaseRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamEntDiseaseRank2.Name = "cboExamEntDiseaseRank2";
             this.cboExamEntDiseaseRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -6882,7 +7290,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamEntDiseaseRank2.Properties.NullText = "";
             this.cboExamEntDiseaseRank2.Properties.View = this.gridLookUpEdit29View;
-            this.cboExamEntDiseaseRank2.Size = new System.Drawing.Size(300, 22);
+            this.cboExamEntDiseaseRank2.Size = new System.Drawing.Size(247, 22);
             this.cboExamEntDiseaseRank2.StyleController = this.layoutControl5;
             this.cboExamEntDiseaseRank2.TabIndex = 60;
             this.cboExamEntDiseaseRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamEntDiseaseRank2_Closed);
@@ -6896,83 +7304,83 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtExamEntDisease2
             // 
-            this.txtExamEntDisease2.Location = new System.Drawing.Point(503, 333);
+            this.txtExamEntDisease2.Location = new System.Drawing.Point(504, 589);
             this.txtExamEntDisease2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamEntDisease2.Name = "txtExamEntDisease2";
-            this.txtExamEntDisease2.Size = new System.Drawing.Size(557, 22);
+            this.txtExamEntDisease2.Size = new System.Drawing.Size(502, 22);
             this.txtExamEntDisease2.StyleController = this.layoutControl5;
             this.txtExamEntDisease2.TabIndex = 59;
             this.txtExamEntDisease2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEntDisease2_PreviewKeyDown);
             // 
             // txtExamEyeDisease2
             // 
-            this.txtExamEyeDisease2.Location = new System.Drawing.Point(503, 274);
+            this.txtExamEyeDisease2.Location = new System.Drawing.Point(504, 508);
             this.txtExamEyeDisease2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamEyeDisease2.Name = "txtExamEyeDisease2";
-            this.txtExamEyeDisease2.Size = new System.Drawing.Size(557, 22);
+            this.txtExamEyeDisease2.Size = new System.Drawing.Size(502, 22);
             this.txtExamEyeDisease2.StyleController = this.layoutControl5;
             this.txtExamEyeDisease2.TabIndex = 58;
             this.txtExamEyeDisease2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEyeDisease2_PreviewKeyDown);
             // 
             // label25
             // 
-            this.label25.Location = new System.Drawing.Point(1140, 302);
+            this.label25.Location = new System.Drawing.Point(1138, 558);
             this.label25.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(127, 25);
+            this.label25.Size = new System.Drawing.Size(27, 25);
             this.label25.TabIndex = 57;
             // 
             // txtExamEntRightWhisper2
             // 
-            this.txtExamEntRightWhisper2.Location = new System.Drawing.Point(1528, 302);
+            this.txtExamEntRightWhisper2.Location = new System.Drawing.Point(1485, 558);
             this.txtExamEntRightWhisper2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamEntRightWhisper2.Name = "txtExamEntRightWhisper2";
-            this.txtExamEntRightWhisper2.Size = new System.Drawing.Size(172, 22);
+            this.txtExamEntRightWhisper2.Size = new System.Drawing.Size(215, 22);
             this.txtExamEntRightWhisper2.StyleController = this.layoutControl5;
             this.txtExamEntRightWhisper2.TabIndex = 56;
             this.txtExamEntRightWhisper2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEntRightWhisper2_PreviewKeyDown);
             // 
             // txtExamEntRightNomal2
             // 
-            this.txtExamEntRightNomal2.Location = new System.Drawing.Point(1348, 302);
+            this.txtExamEntRightNomal2.Location = new System.Drawing.Point(1246, 558);
             this.txtExamEntRightNomal2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamEntRightNomal2.Name = "txtExamEntRightNomal2";
-            this.txtExamEntRightNomal2.Size = new System.Drawing.Size(119, 22);
+            this.txtExamEntRightNomal2.Size = new System.Drawing.Size(138, 22);
             this.txtExamEntRightNomal2.StyleController = this.layoutControl5;
             this.txtExamEntRightNomal2.TabIndex = 55;
             this.txtExamEntRightNomal2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEntRightNomal2_PreviewKeyDown);
             // 
             // txtExamEntLeftWhisper2
             // 
-            this.txtExamEntLeftWhisper2.Location = new System.Drawing.Point(940, 302);
+            this.txtExamEntLeftWhisper2.Location = new System.Drawing.Point(798, 558);
             this.txtExamEntLeftWhisper2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamEntLeftWhisper2.Name = "txtExamEntLeftWhisper2";
-            this.txtExamEntLeftWhisper2.Size = new System.Drawing.Size(119, 22);
+            this.txtExamEntLeftWhisper2.Size = new System.Drawing.Size(209, 22);
             this.txtExamEntLeftWhisper2.StyleController = this.layoutControl5;
             this.txtExamEntLeftWhisper2.TabIndex = 54;
             this.txtExamEntLeftWhisper2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEntLeftWhisper2_PreviewKeyDown);
             // 
             // txtExamEntLeftNormal2
             // 
-            this.txtExamEntLeftNormal2.Location = new System.Drawing.Point(727, 302);
+            this.txtExamEntLeftNormal2.Location = new System.Drawing.Point(612, 558);
             this.txtExamEntLeftNormal2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamEntLeftNormal2.Name = "txtExamEntLeftNormal2";
-            this.txtExamEntLeftNormal2.Size = new System.Drawing.Size(132, 22);
+            this.txtExamEntLeftNormal2.Size = new System.Drawing.Size(105, 22);
             this.txtExamEntLeftNormal2.StyleController = this.layoutControl5;
             this.txtExamEntLeftNormal2.TabIndex = 53;
             this.txtExamEntLeftNormal2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEntLeftNormal2_PreviewKeyDown);
             // 
             // label24
             // 
-            this.label24.Location = new System.Drawing.Point(576, 302);
+            this.label24.Location = new System.Drawing.Point(504, 558);
             this.label24.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(70, 25);
+            this.label24.Size = new System.Drawing.Size(27, 25);
             this.label24.TabIndex = 52;
             // 
             // cboExamEyeRank2
             // 
-            this.cboExamEyeRank2.Location = new System.Drawing.Point(1141, 274);
+            this.cboExamEyeRank2.Location = new System.Drawing.Point(1137, 508);
             this.cboExamEyeRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamEyeRank2.Name = "cboExamEyeRank2";
             this.cboExamEyeRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -6980,7 +7388,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamEyeRank2.Properties.NullText = "";
             this.cboExamEyeRank2.Properties.View = this.gridLookUpEdit28View;
-            this.cboExamEyeRank2.Size = new System.Drawing.Size(274, 22);
+            this.cboExamEyeRank2.Size = new System.Drawing.Size(247, 22);
             this.cboExamEyeRank2.StyleController = this.layoutControl5;
             this.cboExamEyeRank2.TabIndex = 51;
             this.cboExamEyeRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamEyeRank2_Closed);
@@ -6994,63 +7402,63 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtExamEyeSightGlassLeft2
             // 
-            this.txtExamEyeSightGlassLeft2.Location = new System.Drawing.Point(1528, 243);
+            this.txtExamEyeSightGlassLeft2.Location = new System.Drawing.Point(1485, 477);
             this.txtExamEyeSightGlassLeft2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamEyeSightGlassLeft2.Name = "txtExamEyeSightGlassLeft2";
-            this.txtExamEyeSightGlassLeft2.Size = new System.Drawing.Size(172, 22);
+            this.txtExamEyeSightGlassLeft2.Size = new System.Drawing.Size(215, 22);
             this.txtExamEyeSightGlassLeft2.StyleController = this.layoutControl5;
             this.txtExamEyeSightGlassLeft2.TabIndex = 50;
             this.txtExamEyeSightGlassLeft2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEyeSightGlassLeft2_PreviewKeyDown);
             // 
             // txtExamEyeSightGlassRight2
             // 
-            this.txtExamEyeSightGlassRight2.Location = new System.Drawing.Point(1348, 243);
+            this.txtExamEyeSightGlassRight2.Location = new System.Drawing.Point(1246, 477);
             this.txtExamEyeSightGlassRight2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamEyeSightGlassRight2.Name = "txtExamEyeSightGlassRight2";
-            this.txtExamEyeSightGlassRight2.Size = new System.Drawing.Size(119, 22);
+            this.txtExamEyeSightGlassRight2.Size = new System.Drawing.Size(138, 22);
             this.txtExamEyeSightGlassRight2.StyleController = this.layoutControl5;
             this.txtExamEyeSightGlassRight2.TabIndex = 49;
             this.txtExamEyeSightGlassRight2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEyeSightGlassRight2_PreviewKeyDown);
             // 
             // label23
             // 
-            this.label23.Location = new System.Drawing.Point(1140, 243);
+            this.label23.Location = new System.Drawing.Point(1138, 477);
             this.label23.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(127, 25);
+            this.label23.Size = new System.Drawing.Size(27, 25);
             this.label23.TabIndex = 48;
             // 
             // label22
             // 
-            this.label22.Location = new System.Drawing.Point(576, 243);
+            this.label22.Location = new System.Drawing.Point(504, 477);
             this.label22.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(70, 25);
+            this.label22.Size = new System.Drawing.Size(27, 25);
             this.label22.TabIndex = 47;
             // 
             // txtExamEyeSightLeft2
             // 
-            this.txtExamEyeSightLeft2.Location = new System.Drawing.Point(940, 243);
+            this.txtExamEyeSightLeft2.Location = new System.Drawing.Point(798, 477);
             this.txtExamEyeSightLeft2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamEyeSightLeft2.Name = "txtExamEyeSightLeft2";
-            this.txtExamEyeSightLeft2.Size = new System.Drawing.Size(119, 22);
+            this.txtExamEyeSightLeft2.Size = new System.Drawing.Size(209, 22);
             this.txtExamEyeSightLeft2.StyleController = this.layoutControl5;
             this.txtExamEyeSightLeft2.TabIndex = 45;
             this.txtExamEyeSightLeft2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEyeSightLeft2_PreviewKeyDown);
             // 
             // txtExamEyeSightRight2
             // 
-            this.txtExamEyeSightRight2.Location = new System.Drawing.Point(727, 243);
+            this.txtExamEyeSightRight2.Location = new System.Drawing.Point(612, 477);
             this.txtExamEyeSightRight2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamEyeSightRight2.Name = "txtExamEyeSightRight2";
-            this.txtExamEyeSightRight2.Size = new System.Drawing.Size(132, 22);
+            this.txtExamEyeSightRight2.Size = new System.Drawing.Size(105, 22);
             this.txtExamEyeSightRight2.StyleController = this.layoutControl5;
             this.txtExamEyeSightRight2.TabIndex = 44;
             this.txtExamEyeSightRight2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEyeSightRight2_PreviewKeyDown);
             // 
             // cboExamObstetricRank2
             // 
-            this.cboExamObstetricRank2.Location = new System.Drawing.Point(1202, 214);
+            this.cboExamObstetricRank2.Location = new System.Drawing.Point(1137, 427);
             this.cboExamObstetricRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamObstetricRank2.Name = "cboExamObstetricRank2";
             this.cboExamObstetricRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -7058,7 +7466,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamObstetricRank2.Properties.NullText = "";
             this.cboExamObstetricRank2.Properties.View = this.gridLookUpEdit27View;
-            this.cboExamObstetricRank2.Size = new System.Drawing.Size(118, 22);
+            this.cboExamObstetricRank2.Size = new System.Drawing.Size(246, 22);
             this.cboExamObstetricRank2.StyleController = this.layoutControl5;
             this.cboExamObstetricRank2.TabIndex = 42;
             this.cboExamObstetricRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamObstetricRank2_Closed);
@@ -7072,17 +7480,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtExamObstetric2
             // 
-            this.txtExamObstetric2.Location = new System.Drawing.Point(957, 215);
+            this.txtExamObstetric2.Location = new System.Drawing.Point(504, 427);
             this.txtExamObstetric2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamObstetric2.Name = "txtExamObstetric2";
-            this.txtExamObstetric2.Size = new System.Drawing.Size(242, 22);
+            this.txtExamObstetric2.Size = new System.Drawing.Size(502, 22);
             this.txtExamObstetric2.StyleController = this.layoutControl5;
             this.txtExamObstetric2.TabIndex = 41;
             this.txtExamObstetric2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamObstetric2_PreviewKeyDown);
             // 
             // cboExamSurgeryRank2
             // 
-            this.cboExamSurgeryRank2.Location = new System.Drawing.Point(726, 214);
+            this.cboExamSurgeryRank2.Location = new System.Drawing.Point(1137, 377);
             this.cboExamSurgeryRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamSurgeryRank2.Name = "cboExamSurgeryRank2";
             this.cboExamSurgeryRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -7090,7 +7498,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamSurgeryRank2.Properties.NullText = "";
             this.cboExamSurgeryRank2.Properties.View = this.gridLookUpEdit26View;
-            this.cboExamSurgeryRank2.Size = new System.Drawing.Size(111, 22);
+            this.cboExamSurgeryRank2.Size = new System.Drawing.Size(246, 22);
             this.cboExamSurgeryRank2.StyleController = this.layoutControl5;
             this.cboExamSurgeryRank2.TabIndex = 40;
             this.cboExamSurgeryRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamSurgeryRank2_Closed);
@@ -7123,7 +7531,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamMentalRank2
             // 
-            this.cboExamMentalRank2.Location = new System.Drawing.Point(726, 186);
+            this.cboExamMentalRank2.Location = new System.Drawing.Point(1137, 327);
             this.cboExamMentalRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamMentalRank2.Name = "cboExamMentalRank2";
             this.cboExamMentalRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -7131,7 +7539,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamMentalRank2.Properties.NullText = "";
             this.cboExamMentalRank2.Properties.View = this.gridLookUpEdit24View;
-            this.cboExamMentalRank2.Size = new System.Drawing.Size(111, 22);
+            this.cboExamMentalRank2.Size = new System.Drawing.Size(246, 22);
             this.cboExamMentalRank2.StyleController = this.layoutControl5;
             this.cboExamMentalRank2.TabIndex = 38;
             this.cboExamMentalRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamMentalRank2_Closed);
@@ -7146,47 +7554,47 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // txtExamSurgery2
             // 
             this.txtExamSurgery2.EditValue = "";
-            this.txtExamSurgery2.Location = new System.Drawing.Point(523, 215);
+            this.txtExamSurgery2.Location = new System.Drawing.Point(504, 377);
             this.txtExamSurgery2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamSurgery2.Name = "txtExamSurgery2";
-            this.txtExamSurgery2.Size = new System.Drawing.Size(200, 22);
+            this.txtExamSurgery2.Size = new System.Drawing.Size(502, 22);
             this.txtExamSurgery2.StyleController = this.layoutControl5;
             this.txtExamSurgery2.TabIndex = 37;
             this.txtExamSurgery2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamSurgery2_PreviewKeyDown);
             // 
             // txtExamMuscleBone2
             // 
-            this.txtExamMuscleBone2.Location = new System.Drawing.Point(957, 159);
+            this.txtExamMuscleBone2.Location = new System.Drawing.Point(504, 271);
             this.txtExamMuscleBone2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamMuscleBone2.Name = "txtExamMuscleBone2";
-            this.txtExamMuscleBone2.Size = new System.Drawing.Size(242, 22);
+            this.txtExamMuscleBone2.Size = new System.Drawing.Size(502, 22);
             this.txtExamMuscleBone2.StyleController = this.layoutControl5;
             this.txtExamMuscleBone2.TabIndex = 36;
             this.txtExamMuscleBone2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamMuscleBone2_PreviewKeyDown);
             // 
             // txtExamRespiratory2
             // 
-            this.txtExamRespiratory2.Location = new System.Drawing.Point(958, 131);
+            this.txtExamRespiratory2.Location = new System.Drawing.Point(504, 159);
             this.txtExamRespiratory2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamRespiratory2.Name = "txtExamRespiratory2";
-            this.txtExamRespiratory2.Size = new System.Drawing.Size(242, 22);
+            this.txtExamRespiratory2.Size = new System.Drawing.Size(502, 22);
             this.txtExamRespiratory2.StyleController = this.layoutControl5;
             this.txtExamRespiratory2.TabIndex = 35;
             this.txtExamRespiratory2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamRespiratory2_PreviewKeyDown);
             // 
             // txtExamMental2
             // 
-            this.txtExamMental2.Location = new System.Drawing.Point(523, 187);
+            this.txtExamMental2.Location = new System.Drawing.Point(504, 327);
             this.txtExamMental2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamMental2.Name = "txtExamMental2";
-            this.txtExamMental2.Size = new System.Drawing.Size(200, 22);
+            this.txtExamMental2.Size = new System.Drawing.Size(502, 22);
             this.txtExamMental2.StyleController = this.layoutControl5;
             this.txtExamMental2.TabIndex = 33;
             this.txtExamMental2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamMental2_PreviewKeyDown);
             // 
             // cboExamNeurologicalRank2
             // 
-            this.cboExamNeurologicalRank2.Location = new System.Drawing.Point(1592, 159);
+            this.cboExamNeurologicalRank2.Location = new System.Drawing.Point(1137, 299);
             this.cboExamNeurologicalRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamNeurologicalRank2.Name = "cboExamNeurologicalRank2";
             this.cboExamNeurologicalRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -7194,7 +7602,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamNeurologicalRank2.Properties.NullText = "";
             this.cboExamNeurologicalRank2.Properties.View = this.gridLookUpEdit23View;
-            this.cboExamNeurologicalRank2.Size = new System.Drawing.Size(108, 22);
+            this.cboExamNeurologicalRank2.Size = new System.Drawing.Size(246, 22);
             this.cboExamNeurologicalRank2.StyleController = this.layoutControl5;
             this.cboExamNeurologicalRank2.TabIndex = 32;
             this.cboExamNeurologicalRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamNeurologicalRank2_Closed);
@@ -7208,7 +7616,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDigestionRank2
             // 
-            this.cboExamDigestionRank2.Location = new System.Drawing.Point(1590, 130);
+            this.cboExamDigestionRank2.Location = new System.Drawing.Point(1137, 187);
             this.cboExamDigestionRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamDigestionRank2.Name = "cboExamDigestionRank2";
             this.cboExamDigestionRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -7216,7 +7624,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamDigestionRank2.Properties.NullText = "";
             this.cboExamDigestionRank2.Properties.View = this.gridLookUpEdit22View;
-            this.cboExamDigestionRank2.Size = new System.Drawing.Size(111, 22);
+            this.cboExamDigestionRank2.Size = new System.Drawing.Size(246, 22);
             this.cboExamDigestionRank2.StyleController = this.layoutControl5;
             this.cboExamDigestionRank2.TabIndex = 31;
             this.cboExamDigestionRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamDigestionRank2_Closed);
@@ -7230,27 +7638,27 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtExamNeurological2
             // 
-            this.txtExamNeurological2.Location = new System.Drawing.Point(1420, 159);
+            this.txtExamNeurological2.Location = new System.Drawing.Point(504, 299);
             this.txtExamNeurological2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamNeurological2.Name = "txtExamNeurological2";
-            this.txtExamNeurological2.Size = new System.Drawing.Size(166, 22);
+            this.txtExamNeurological2.Size = new System.Drawing.Size(502, 22);
             this.txtExamNeurological2.StyleController = this.layoutControl5;
             this.txtExamNeurological2.TabIndex = 30;
             this.txtExamNeurological2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamNeurological2_PreviewKeyDown);
             // 
             // txtExamDigestion2
             // 
-            this.txtExamDigestion2.Location = new System.Drawing.Point(1421, 131);
+            this.txtExamDigestion2.Location = new System.Drawing.Point(504, 187);
             this.txtExamDigestion2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamDigestion2.Name = "txtExamDigestion2";
-            this.txtExamDigestion2.Size = new System.Drawing.Size(166, 22);
+            this.txtExamDigestion2.Size = new System.Drawing.Size(502, 22);
             this.txtExamDigestion2.StyleController = this.layoutControl5;
             this.txtExamDigestion2.TabIndex = 29;
             this.txtExamDigestion2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamDigestion2_PreviewKeyDown);
             // 
             // cboExamMuscleBoneRank2
             // 
-            this.cboExamMuscleBoneRank2.Location = new System.Drawing.Point(1202, 158);
+            this.cboExamMuscleBoneRank2.Location = new System.Drawing.Point(1137, 271);
             this.cboExamMuscleBoneRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamMuscleBoneRank2.Name = "cboExamMuscleBoneRank2";
             this.cboExamMuscleBoneRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -7258,7 +7666,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamMuscleBoneRank2.Properties.NullText = "";
             this.cboExamMuscleBoneRank2.Properties.View = this.gridLookUpEdit21View;
-            this.cboExamMuscleBoneRank2.Size = new System.Drawing.Size(118, 22);
+            this.cboExamMuscleBoneRank2.Size = new System.Drawing.Size(246, 22);
             this.cboExamMuscleBoneRank2.StyleController = this.layoutControl5;
             this.cboExamMuscleBoneRank2.TabIndex = 28;
             this.cboExamMuscleBoneRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamMuscleBoneRank2_Closed);
@@ -7272,7 +7680,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamRespiratoryRank2
             // 
-            this.cboExamRespiratoryRank2.Location = new System.Drawing.Point(1203, 130);
+            this.cboExamRespiratoryRank2.Location = new System.Drawing.Point(1137, 159);
             this.cboExamRespiratoryRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamRespiratoryRank2.Name = "cboExamRespiratoryRank2";
             this.cboExamRespiratoryRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -7280,7 +7688,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamRespiratoryRank2.Properties.NullText = "";
             this.cboExamRespiratoryRank2.Properties.View = this.gridLookUpEdit20View;
-            this.cboExamRespiratoryRank2.Size = new System.Drawing.Size(118, 22);
+            this.cboExamRespiratoryRank2.Size = new System.Drawing.Size(246, 22);
             this.cboExamRespiratoryRank2.StyleController = this.layoutControl5;
             this.cboExamRespiratoryRank2.TabIndex = 27;
             this.cboExamRespiratoryRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamRespiratoryRank2_Closed);
@@ -7294,7 +7702,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamKidneyUrologyRank2
             // 
-            this.cboExamKidneyUrologyRank2.Location = new System.Drawing.Point(726, 158);
+            this.cboExamKidneyUrologyRank2.Location = new System.Drawing.Point(1137, 215);
             this.cboExamKidneyUrologyRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamKidneyUrologyRank2.Name = "cboExamKidneyUrologyRank2";
             this.cboExamKidneyUrologyRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -7302,7 +7710,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamKidneyUrologyRank2.Properties.NullText = "";
             this.cboExamKidneyUrologyRank2.Properties.View = this.gridLookUpEdit19View;
-            this.cboExamKidneyUrologyRank2.Size = new System.Drawing.Size(111, 22);
+            this.cboExamKidneyUrologyRank2.Size = new System.Drawing.Size(246, 22);
             this.cboExamKidneyUrologyRank2.StyleController = this.layoutControl5;
             this.cboExamKidneyUrologyRank2.TabIndex = 26;
             this.cboExamKidneyUrologyRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamKidneyUrologyRank2_Closed);
@@ -7316,17 +7724,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtExamKidneyUrology2
             // 
-            this.txtExamKidneyUrology2.Location = new System.Drawing.Point(523, 159);
+            this.txtExamKidneyUrology2.Location = new System.Drawing.Point(504, 215);
             this.txtExamKidneyUrology2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamKidneyUrology2.Name = "txtExamKidneyUrology2";
-            this.txtExamKidneyUrology2.Size = new System.Drawing.Size(200, 22);
+            this.txtExamKidneyUrology2.Size = new System.Drawing.Size(502, 22);
             this.txtExamKidneyUrology2.StyleController = this.layoutControl5;
             this.txtExamKidneyUrology2.TabIndex = 25;
             this.txtExamKidneyUrology2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamKidneyUrology2_PreviewKeyDown);
             // 
             // cboExamCirculationRank2
             // 
-            this.cboExamCirculationRank2.Location = new System.Drawing.Point(692, 130);
+            this.cboExamCirculationRank2.Location = new System.Drawing.Point(1137, 131);
             this.cboExamCirculationRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboExamCirculationRank2.Name = "cboExamCirculationRank2";
             this.cboExamCirculationRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -7334,7 +7742,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamCirculationRank2.Properties.NullText = "";
             this.cboExamCirculationRank2.Properties.View = this.gridLookUpEdit18View;
-            this.cboExamCirculationRank2.Size = new System.Drawing.Size(146, 22);
+            this.cboExamCirculationRank2.Size = new System.Drawing.Size(246, 22);
             this.cboExamCirculationRank2.StyleController = this.layoutControl5;
             this.cboExamCirculationRank2.TabIndex = 24;
             this.cboExamCirculationRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamCirculationRank2_Closed);
@@ -7348,35 +7756,35 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtExamCirculation2
             // 
-            this.txtExamCirculation2.Location = new System.Drawing.Point(523, 131);
+            this.txtExamCirculation2.Location = new System.Drawing.Point(504, 131);
             this.txtExamCirculation2.Margin = new System.Windows.Forms.Padding(4);
             this.txtExamCirculation2.Name = "txtExamCirculation2";
-            this.txtExamCirculation2.Size = new System.Drawing.Size(166, 22);
+            this.txtExamCirculation2.Size = new System.Drawing.Size(502, 22);
             this.txtExamCirculation2.StyleController = this.layoutControl5;
             this.txtExamCirculation2.TabIndex = 23;
             this.txtExamCirculation2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamCirculation2_PreviewKeyDown);
             // 
             // labelControl21
             // 
-            this.labelControl21.Location = new System.Drawing.Point(576, 109);
+            this.labelControl21.Location = new System.Drawing.Point(557, 109);
             this.labelControl21.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl21.Name = "labelControl21";
-            this.labelControl21.Size = new System.Drawing.Size(1124, 16);
+            this.labelControl21.Size = new System.Drawing.Size(1143, 16);
             this.labelControl21.StyleController = this.layoutControl5;
             this.labelControl21.TabIndex = 22;
             // 
             // labelControl20
             // 
-            this.labelControl20.Location = new System.Drawing.Point(576, 87);
+            this.labelControl20.Location = new System.Drawing.Point(557, 87);
             this.labelControl20.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl20.Name = "labelControl20";
-            this.labelControl20.Size = new System.Drawing.Size(1124, 16);
+            this.labelControl20.Size = new System.Drawing.Size(1143, 16);
             this.labelControl20.StyleController = this.layoutControl5;
             this.labelControl20.TabIndex = 21;
             // 
             // cboDhstRank2
             // 
-            this.cboDhstRank2.Location = new System.Drawing.Point(1212, 56);
+            this.cboDhstRank2.Location = new System.Drawing.Point(1138, 56);
             this.cboDhstRank2.Margin = new System.Windows.Forms.Padding(4);
             this.cboDhstRank2.Name = "cboDhstRank2";
             this.cboDhstRank2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -7384,7 +7792,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboDhstRank2.Properties.NullText = "";
             this.cboDhstRank2.Properties.View = this.gridLookUpEdit16View;
-            this.cboDhstRank2.Size = new System.Drawing.Size(229, 22);
+            this.cboDhstRank2.Size = new System.Drawing.Size(269, 22);
             this.cboDhstRank2.StyleController = this.layoutControl5;
             this.cboDhstRank2.TabIndex = 20;
             this.cboDhstRank2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboDhstRank2_Closed);
@@ -7398,29 +7806,29 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtVirBmi2
             // 
-            this.txtVirBmi2.Location = new System.Drawing.Point(1212, 25);
+            this.txtVirBmi2.Location = new System.Drawing.Point(852, 25);
             this.txtVirBmi2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.txtVirBmi2.Name = "txtVirBmi2";
-            this.txtVirBmi2.Size = new System.Drawing.Size(448, 25);
+            this.txtVirBmi2.Size = new System.Drawing.Size(27, 25);
             this.txtVirBmi2.TabIndex = 19;
             this.txtVirBmi2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label20
             // 
-            this.label20.Location = new System.Drawing.Point(1030, 56);
+            this.label20.Location = new System.Drawing.Point(783, 56);
             this.label20.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(81, 25);
+            this.label20.Size = new System.Drawing.Size(224, 25);
             this.label20.TabIndex = 18;
             this.label20.Text = "mmHG";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label19
             // 
-            this.label19.Location = new System.Drawing.Point(942, 25);
+            this.label19.Location = new System.Drawing.Point(726, 25);
             this.label19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(169, 25);
+            this.label19.Size = new System.Drawing.Size(25, 25);
             this.label19.TabIndex = 17;
             this.label19.Text = "kg";
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -7432,14 +7840,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnBloodPressureMin2.Location = new System.Drawing.Point(942, 56);
+            this.spnBloodPressureMin2.Location = new System.Drawing.Point(726, 56);
             this.spnBloodPressureMin2.Margin = new System.Windows.Forms.Padding(4);
             this.spnBloodPressureMin2.Name = "spnBloodPressureMin2";
             this.spnBloodPressureMin2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spnBloodPressureMin2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnBloodPressureMin2.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnBloodPressureMin2.Size = new System.Drawing.Size(82, 22);
+            this.spnBloodPressureMin2.Size = new System.Drawing.Size(51, 22);
             this.spnBloodPressureMin2.StyleController = this.layoutControl5;
             this.spnBloodPressureMin2.TabIndex = 16;
             this.spnBloodPressureMin2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnBloodPressureMin2_PreviewKeyDown);
@@ -7451,14 +7859,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnBloodPressureMax2.Location = new System.Drawing.Point(818, 56);
+            this.spnBloodPressureMax2.Location = new System.Drawing.Point(668, 56);
             this.spnBloodPressureMax2.Margin = new System.Windows.Forms.Padding(4);
             this.spnBloodPressureMax2.Name = "spnBloodPressureMax2";
             this.spnBloodPressureMax2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spnBloodPressureMax2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnBloodPressureMax2.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnBloodPressureMax2.Size = new System.Drawing.Size(118, 22);
+            this.spnBloodPressureMax2.Size = new System.Drawing.Size(52, 22);
             this.spnBloodPressureMax2.StyleController = this.layoutControl5;
             this.spnBloodPressureMax2.TabIndex = 15;
             this.spnBloodPressureMax2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnBloodPressureMax2_PreviewKeyDown);
@@ -7470,14 +7878,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnWeight2.Location = new System.Drawing.Point(818, 25);
+            this.spnWeight2.Location = new System.Drawing.Point(668, 25);
             this.spnWeight2.Margin = new System.Windows.Forms.Padding(4);
             this.spnWeight2.Name = "spnWeight2";
             this.spnWeight2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spnWeight2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnWeight2.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnWeight2.Size = new System.Drawing.Size(118, 22);
+            this.spnWeight2.Size = new System.Drawing.Size(52, 22);
             this.spnWeight2.StyleController = this.layoutControl5;
             this.spnWeight2.TabIndex = 14;
             this.spnWeight2.EditValueChanged += new System.EventHandler(this.spnWeight2_EditValueChanged);
@@ -7485,10 +7893,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // label18
             // 
-            this.label18.Location = new System.Drawing.Point(652, 56);
+            this.label18.Location = new System.Drawing.Point(562, 56);
             this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(85, 25);
+            this.label18.Size = new System.Drawing.Size(25, 25);
             this.label18.TabIndex = 13;
             this.label18.Text = "lần/phút";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -7500,24 +7908,24 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnPulse2.Location = new System.Drawing.Point(523, 56);
+            this.spnPulse2.Location = new System.Drawing.Point(504, 56);
             this.spnPulse2.Margin = new System.Windows.Forms.Padding(4);
             this.spnPulse2.Name = "spnPulse2";
             this.spnPulse2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spnPulse2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnPulse2.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnPulse2.Size = new System.Drawing.Size(123, 22);
+            this.spnPulse2.Size = new System.Drawing.Size(52, 22);
             this.spnPulse2.StyleController = this.layoutControl5;
             this.spnPulse2.TabIndex = 12;
             this.spnPulse2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnPulse2_PreviewKeyDown);
             // 
             // label17
             // 
-            this.label17.Location = new System.Drawing.Point(652, 25);
+            this.label17.Location = new System.Drawing.Point(562, 25);
             this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(85, 25);
+            this.label17.Size = new System.Drawing.Size(25, 25);
             this.label17.TabIndex = 11;
             this.label17.Text = "cm";
             this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -7529,14 +7937,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnHeight2.Location = new System.Drawing.Point(523, 25);
+            this.spnHeight2.Location = new System.Drawing.Point(504, 25);
             this.spnHeight2.Margin = new System.Windows.Forms.Padding(4);
             this.spnHeight2.Name = "spnHeight2";
             this.spnHeight2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spnHeight2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnHeight2.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnHeight2.Size = new System.Drawing.Size(123, 22);
+            this.spnHeight2.Size = new System.Drawing.Size(52, 22);
             this.spnHeight2.StyleController = this.layoutControl5;
             this.spnHeight2.TabIndex = 10;
             this.spnHeight2.EditValueChanged += new System.EventHandler(this.spnHeight2_EditValueChanged);
@@ -7544,16 +7952,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // labelControl19
             // 
-            this.labelControl19.Location = new System.Drawing.Point(576, 3);
+            this.labelControl19.Location = new System.Drawing.Point(557, 3);
             this.labelControl19.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl19.Name = "labelControl19";
-            this.labelControl19.Size = new System.Drawing.Size(1124, 16);
+            this.labelControl19.Size = new System.Drawing.Size(1143, 16);
             this.labelControl19.StyleController = this.layoutControl5;
             this.labelControl19.TabIndex = 9;
             // 
             // txtTestBloodBc2
             // 
-            this.txtTestBloodBc2.Location = new System.Drawing.Point(971, 442);
+            this.txtTestBloodBc2.Location = new System.Drawing.Point(858, 792);
             this.txtTestBloodBc2.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestBloodBc2.Name = "txtTestBloodBc2";
             this.txtTestBloodBc2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -7566,12 +7974,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtTestBloodHc2
             // 
-            this.txtTestBloodHc2.Location = new System.Drawing.Point(727, 442);
+            this.txtTestBloodHc2.Location = new System.Drawing.Point(642, 792);
             this.txtTestBloodHc2.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestBloodHc2.Name = "txtTestBloodHc2";
             this.txtTestBloodHc2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Chọn kết quả cận lâm sàng", null, null, true)});
-            this.txtTestBloodHc2.Size = new System.Drawing.Size(163, 22);
+            this.txtTestBloodHc2.Size = new System.Drawing.Size(135, 22);
             this.txtTestBloodHc2.StyleController = this.layoutControl5;
             this.txtTestBloodHc2.TabIndex = 70;
             this.txtTestBloodHc2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTestBloodHc2_ButtonClick);
@@ -7579,12 +7987,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtTestBloodGluco2
             // 
-            this.txtTestBloodGluco2.Location = new System.Drawing.Point(727, 473);
+            this.txtTestBloodGluco2.Location = new System.Drawing.Point(642, 823);
             this.txtTestBloodGluco2.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestBloodGluco2.Name = "txtTestBloodGluco2";
             this.txtTestBloodGluco2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Chọn kết quả cận lâm sàng", null, null, true)});
-            this.txtTestBloodGluco2.Size = new System.Drawing.Size(163, 22);
+            this.txtTestBloodGluco2.Size = new System.Drawing.Size(135, 22);
             this.txtTestBloodGluco2.StyleController = this.layoutControl5;
             this.txtTestBloodGluco2.TabIndex = 75;
             this.txtTestBloodGluco2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTestBloodGluco2_ButtonClick);
@@ -7592,12 +8000,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtTestBloodUre2
             // 
-            this.txtTestBloodUre2.Location = new System.Drawing.Point(971, 473);
+            this.txtTestBloodUre2.Location = new System.Drawing.Point(858, 823);
             this.txtTestBloodUre2.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestBloodUre2.Name = "txtTestBloodUre2";
             this.txtTestBloodUre2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Chọn kết quả cận lâm sàng", null, null, true)});
-            this.txtTestBloodUre2.Size = new System.Drawing.Size(125, 22);
+            this.txtTestBloodUre2.Size = new System.Drawing.Size(149, 22);
             this.txtTestBloodUre2.StyleController = this.layoutControl5;
             this.txtTestBloodUre2.TabIndex = 76;
             this.txtTestBloodUre2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTestBloodUre2_ButtonClick);
@@ -7605,12 +8013,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtTestBloodOther2
             // 
-            this.txtTestBloodOther2.Location = new System.Drawing.Point(523, 504);
+            this.txtTestBloodOther2.Location = new System.Drawing.Point(504, 854);
             this.txtTestBloodOther2.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestBloodOther2.Name = "txtTestBloodOther2";
             this.txtTestBloodOther2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Chọn kết quả cận lâm sàng", null, null, true)});
-            this.txtTestBloodOther2.Size = new System.Drawing.Size(490, 22);
+            this.txtTestBloodOther2.Size = new System.Drawing.Size(879, 22);
             this.txtTestBloodOther2.StyleController = this.layoutControl5;
             this.txtTestBloodOther2.TabIndex = 80;
             this.txtTestBloodOther2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTestBloodOther2_ButtonClick);
@@ -7618,12 +8026,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtTestUrineGluco2
             // 
-            this.txtTestUrineGluco2.Location = new System.Drawing.Point(804, 532);
+            this.txtTestUrineGluco2.Location = new System.Drawing.Point(642, 904);
             this.txtTestUrineGluco2.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestUrineGluco2.Name = "txtTestUrineGluco2";
             this.txtTestUrineGluco2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Chọn kết quả cận lâm sàng", null, null, true)});
-            this.txtTestUrineGluco2.Size = new System.Drawing.Size(209, 22);
+            this.txtTestUrineGluco2.Size = new System.Drawing.Size(135, 22);
             this.txtTestUrineGluco2.StyleController = this.layoutControl5;
             this.txtTestUrineGluco2.TabIndex = 82;
             this.txtTestUrineGluco2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTestUrineGluco2_ButtonClick);
@@ -7631,12 +8039,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtResultDiim2
             // 
-            this.txtResultDiim2.Location = new System.Drawing.Point(523, 563);
+            this.txtResultDiim2.Location = new System.Drawing.Point(504, 957);
             this.txtResultDiim2.Margin = new System.Windows.Forms.Padding(4);
             this.txtResultDiim2.Name = "txtResultDiim2";
             this.txtResultDiim2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Chọn kết quả cận lâm sàng", null, null, true)});
-            this.txtResultDiim2.Size = new System.Drawing.Size(490, 22);
+            this.txtResultDiim2.Size = new System.Drawing.Size(880, 22);
             this.txtResultDiim2.StyleController = this.layoutControl5;
             this.txtResultDiim2.TabIndex = 85;
             this.txtResultDiim2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtResultDiim2_ButtonClick);
@@ -7644,12 +8052,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtTestUrineProtein2
             // 
-            this.txtTestUrineProtein2.Location = new System.Drawing.Point(1204, 532);
+            this.txtTestUrineProtein2.Location = new System.Drawing.Point(858, 904);
             this.txtTestUrineProtein2.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestUrineProtein2.Name = "txtTestUrineProtein2";
             this.txtTestUrineProtein2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Chọn kết quả cận lâm sàng", null, null, true)});
-            this.txtTestUrineProtein2.Size = new System.Drawing.Size(295, 22);
+            this.txtTestUrineProtein2.Size = new System.Drawing.Size(149, 22);
             this.txtTestUrineProtein2.StyleController = this.layoutControl5;
             this.txtTestUrineProtein2.TabIndex = 83;
             this.txtTestUrineProtein2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTestUrineProtein2_ButtonClick);
@@ -7657,12 +8065,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtTestUrineOther2
             // 
-            this.txtTestUrineOther2.Location = new System.Drawing.Point(1600, 532);
+            this.txtTestUrineOther2.Location = new System.Drawing.Point(1108, 904);
             this.txtTestUrineOther2.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestUrineOther2.Name = "txtTestUrineOther2";
             this.txtTestUrineOther2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Chọn kết quả cận lâm sàng", null, null, true)});
-            this.txtTestUrineOther2.Size = new System.Drawing.Size(100, 22);
+            this.txtTestUrineOther2.Size = new System.Drawing.Size(276, 22);
             this.txtTestUrineOther2.StyleController = this.layoutControl5;
             this.txtTestUrineOther2.TabIndex = 84;
             this.txtTestUrineOther2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTestUrineOther2_ButtonClick);
@@ -7670,12 +8078,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtTestBloodTc2
             // 
-            this.txtTestBloodTc2.Location = new System.Drawing.Point(1241, 442);
+            this.txtTestBloodTc2.Location = new System.Drawing.Point(1138, 792);
             this.txtTestBloodTc2.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestBloodTc2.Name = "txtTestBloodTc2";
             this.txtTestBloodTc2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "Chọn kết quả cận lâm sàng", null, null, true)});
-            this.txtTestBloodTc2.Size = new System.Drawing.Size(143, 22);
+            this.txtTestBloodTc2.Size = new System.Drawing.Size(246, 22);
             this.txtTestBloodTc2.StyleController = this.layoutControl5;
             this.txtTestBloodTc2.TabIndex = 73;
             this.txtTestBloodTc2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTestBloodTc2_ButtonClick);
@@ -7683,12 +8091,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtTestBloodCreatinin2
             // 
-            this.txtTestBloodCreatinin2.Location = new System.Drawing.Point(1217, 473);
+            this.txtTestBloodCreatinin2.Location = new System.Drawing.Point(1138, 823);
             this.txtTestBloodCreatinin2.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestBloodCreatinin2.Name = "txtTestBloodCreatinin2";
             this.txtTestBloodCreatinin2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "Chọn kết quả cận lâm sàng", null, null, true)});
-            this.txtTestBloodCreatinin2.Size = new System.Drawing.Size(107, 22);
+            this.txtTestBloodCreatinin2.Size = new System.Drawing.Size(126, 22);
             this.txtTestBloodCreatinin2.StyleController = this.layoutControl5;
             this.txtTestBloodCreatinin2.TabIndex = 77;
             this.txtTestBloodCreatinin2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTestBloodCreatinin2_ButtonClick);
@@ -7696,12 +8104,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtTestBloodAsat2
             // 
-            this.txtTestBloodAsat2.Location = new System.Drawing.Point(1405, 473);
+            this.txtTestBloodAsat2.Location = new System.Drawing.Point(1355, 823);
             this.txtTestBloodAsat2.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestBloodAsat2.Name = "txtTestBloodAsat2";
             this.txtTestBloodAsat2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "Chọn kết quả cận lâm sàng", null, null, true)});
-            this.txtTestBloodAsat2.Size = new System.Drawing.Size(94, 22);
+            this.txtTestBloodAsat2.Size = new System.Drawing.Size(124, 22);
             this.txtTestBloodAsat2.StyleController = this.layoutControl5;
             this.txtTestBloodAsat2.TabIndex = 78;
             this.txtTestBloodAsat2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTestBloodAsat2_ButtonClick);
@@ -7709,16 +8117,304 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtTestBloodAlat2
             // 
-            this.txtTestBloodAlat2.Location = new System.Drawing.Point(1600, 473);
+            this.txtTestBloodAlat2.Location = new System.Drawing.Point(1580, 823);
             this.txtTestBloodAlat2.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestBloodAlat2.Name = "txtTestBloodAlat2";
             this.txtTestBloodAlat2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "Chọn kết quả cận lâm sàng", null, null, true)});
-            this.txtTestBloodAlat2.Size = new System.Drawing.Size(100, 22);
+            this.txtTestBloodAlat2.Size = new System.Drawing.Size(120, 22);
             this.txtTestBloodAlat2.StyleController = this.layoutControl5;
             this.txtTestBloodAlat2.TabIndex = 79;
             this.txtTestBloodAlat2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTestBloodAlat2_ButtonClick);
             this.txtTestBloodAlat2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtTestBloodAlat2_PreviewKeyDown);
+            // 
+            // cboExamRespiratoryLoginName2
+            // 
+            this.cboExamRespiratoryLoginName2.Location = new System.Drawing.Point(1484, 159);
+            this.cboExamRespiratoryLoginName2.MenuManager = this.barManager1;
+            this.cboExamRespiratoryLoginName2.Name = "cboExamRespiratoryLoginName2";
+            this.cboExamRespiratoryLoginName2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamRespiratoryLoginName2.Properties.NullText = "";
+            this.cboExamRespiratoryLoginName2.Properties.PopupSizeable = false;
+            this.cboExamRespiratoryLoginName2.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamRespiratoryLoginName2.Properties.View = this.gridView69;
+            this.cboExamRespiratoryLoginName2.Size = new System.Drawing.Size(216, 22);
+            this.cboExamRespiratoryLoginName2.StyleController = this.layoutControl5;
+            this.cboExamRespiratoryLoginName2.TabIndex = 116;
+            this.cboExamRespiratoryLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView69
+            // 
+            this.gridView69.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView69.Name = "gridView69";
+            this.gridView69.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView69.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamDigestionLoginName2
+            // 
+            this.cboExamDigestionLoginName2.Location = new System.Drawing.Point(1484, 187);
+            this.cboExamDigestionLoginName2.MenuManager = this.barManager1;
+            this.cboExamDigestionLoginName2.Name = "cboExamDigestionLoginName2";
+            this.cboExamDigestionLoginName2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamDigestionLoginName2.Properties.NullText = "";
+            this.cboExamDigestionLoginName2.Properties.PopupSizeable = false;
+            this.cboExamDigestionLoginName2.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamDigestionLoginName2.Properties.View = this.gridView70;
+            this.cboExamDigestionLoginName2.Size = new System.Drawing.Size(216, 22);
+            this.cboExamDigestionLoginName2.StyleController = this.layoutControl5;
+            this.cboExamDigestionLoginName2.TabIndex = 117;
+            this.cboExamDigestionLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView70
+            // 
+            this.gridView70.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView70.Name = "gridView70";
+            this.gridView70.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView70.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamKidneyUrologyLoginName2
+            // 
+            this.cboExamKidneyUrologyLoginName2.Location = new System.Drawing.Point(1484, 215);
+            this.cboExamKidneyUrologyLoginName2.MenuManager = this.barManager1;
+            this.cboExamKidneyUrologyLoginName2.Name = "cboExamKidneyUrologyLoginName2";
+            this.cboExamKidneyUrologyLoginName2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamKidneyUrologyLoginName2.Properties.NullText = "";
+            this.cboExamKidneyUrologyLoginName2.Properties.PopupSizeable = false;
+            this.cboExamKidneyUrologyLoginName2.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamKidneyUrologyLoginName2.Properties.View = this.gridView71;
+            this.cboExamKidneyUrologyLoginName2.Size = new System.Drawing.Size(216, 22);
+            this.cboExamKidneyUrologyLoginName2.StyleController = this.layoutControl5;
+            this.cboExamKidneyUrologyLoginName2.TabIndex = 118;
+            this.cboExamKidneyUrologyLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView71
+            // 
+            this.gridView71.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView71.Name = "gridView71";
+            this.gridView71.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView71.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamOendLoginName2
+            // 
+            this.cboExamOendLoginName2.Location = new System.Drawing.Point(1484, 243);
+            this.cboExamOendLoginName2.MenuManager = this.barManager1;
+            this.cboExamOendLoginName2.Name = "cboExamOendLoginName2";
+            this.cboExamOendLoginName2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamOendLoginName2.Properties.NullText = "";
+            this.cboExamOendLoginName2.Properties.PopupSizeable = false;
+            this.cboExamOendLoginName2.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamOendLoginName2.Properties.View = this.gridView72;
+            this.cboExamOendLoginName2.Size = new System.Drawing.Size(216, 22);
+            this.cboExamOendLoginName2.StyleController = this.layoutControl5;
+            this.cboExamOendLoginName2.TabIndex = 119;
+            this.cboExamOendLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView72
+            // 
+            this.gridView72.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView72.Name = "gridView72";
+            this.gridView72.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView72.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamMuscleBoneLoginName2
+            // 
+            this.cboExamMuscleBoneLoginName2.Location = new System.Drawing.Point(1484, 271);
+            this.cboExamMuscleBoneLoginName2.MenuManager = this.barManager1;
+            this.cboExamMuscleBoneLoginName2.Name = "cboExamMuscleBoneLoginName2";
+            this.cboExamMuscleBoneLoginName2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamMuscleBoneLoginName2.Properties.NullText = "";
+            this.cboExamMuscleBoneLoginName2.Properties.PopupSizeable = false;
+            this.cboExamMuscleBoneLoginName2.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamMuscleBoneLoginName2.Properties.View = this.gridView73;
+            this.cboExamMuscleBoneLoginName2.Size = new System.Drawing.Size(216, 22);
+            this.cboExamMuscleBoneLoginName2.StyleController = this.layoutControl5;
+            this.cboExamMuscleBoneLoginName2.TabIndex = 120;
+            this.cboExamMuscleBoneLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView73
+            // 
+            this.gridView73.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView73.Name = "gridView73";
+            this.gridView73.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView73.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamNeurologicalLoginName2
+            // 
+            this.cboExamNeurologicalLoginName2.Location = new System.Drawing.Point(1484, 299);
+            this.cboExamNeurologicalLoginName2.MenuManager = this.barManager1;
+            this.cboExamNeurologicalLoginName2.Name = "cboExamNeurologicalLoginName2";
+            this.cboExamNeurologicalLoginName2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamNeurologicalLoginName2.Properties.NullText = "";
+            this.cboExamNeurologicalLoginName2.Properties.PopupSizeable = false;
+            this.cboExamNeurologicalLoginName2.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamNeurologicalLoginName2.Properties.View = this.gridView74;
+            this.cboExamNeurologicalLoginName2.Size = new System.Drawing.Size(216, 22);
+            this.cboExamNeurologicalLoginName2.StyleController = this.layoutControl5;
+            this.cboExamNeurologicalLoginName2.TabIndex = 121;
+            this.cboExamNeurologicalLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView74
+            // 
+            this.gridView74.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView74.Name = "gridView74";
+            this.gridView74.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView74.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamMentalLoginName2
+            // 
+            this.cboExamMentalLoginName2.Location = new System.Drawing.Point(1484, 327);
+            this.cboExamMentalLoginName2.MenuManager = this.barManager1;
+            this.cboExamMentalLoginName2.Name = "cboExamMentalLoginName2";
+            this.cboExamMentalLoginName2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamMentalLoginName2.Properties.NullText = "";
+            this.cboExamMentalLoginName2.Properties.PopupSizeable = false;
+            this.cboExamMentalLoginName2.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamMentalLoginName2.Properties.View = this.gridView75;
+            this.cboExamMentalLoginName2.Size = new System.Drawing.Size(216, 22);
+            this.cboExamMentalLoginName2.StyleController = this.layoutControl5;
+            this.cboExamMentalLoginName2.TabIndex = 122;
+            this.cboExamMentalLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView75
+            // 
+            this.gridView75.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView75.Name = "gridView75";
+            this.gridView75.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView75.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamSurgeryLoginName2
+            // 
+            this.cboExamSurgeryLoginName2.Location = new System.Drawing.Point(1484, 377);
+            this.cboExamSurgeryLoginName2.MenuManager = this.barManager1;
+            this.cboExamSurgeryLoginName2.Name = "cboExamSurgeryLoginName2";
+            this.cboExamSurgeryLoginName2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamSurgeryLoginName2.Properties.NullText = "";
+            this.cboExamSurgeryLoginName2.Properties.PopupSizeable = false;
+            this.cboExamSurgeryLoginName2.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamSurgeryLoginName2.Properties.View = this.gridView76;
+            this.cboExamSurgeryLoginName2.Size = new System.Drawing.Size(216, 22);
+            this.cboExamSurgeryLoginName2.StyleController = this.layoutControl5;
+            this.cboExamSurgeryLoginName2.TabIndex = 123;
+            this.cboExamSurgeryLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView76
+            // 
+            this.gridView76.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView76.Name = "gridView76";
+            this.gridView76.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView76.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamObstetricLoginName2
+            // 
+            this.cboExamObstetricLoginName2.Location = new System.Drawing.Point(1484, 427);
+            this.cboExamObstetricLoginName2.MenuManager = this.barManager1;
+            this.cboExamObstetricLoginName2.Name = "cboExamObstetricLoginName2";
+            this.cboExamObstetricLoginName2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamObstetricLoginName2.Properties.NullText = "";
+            this.cboExamObstetricLoginName2.Properties.PopupSizeable = false;
+            this.cboExamObstetricLoginName2.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamObstetricLoginName2.Properties.View = this.gridView77;
+            this.cboExamObstetricLoginName2.Size = new System.Drawing.Size(216, 22);
+            this.cboExamObstetricLoginName2.StyleController = this.layoutControl5;
+            this.cboExamObstetricLoginName2.TabIndex = 124;
+            this.cboExamObstetricLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView77
+            // 
+            this.gridView77.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView77.Name = "gridView77";
+            this.gridView77.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView77.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExamDermatologyLoginName2
+            // 
+            this.cboExamDermatologyLoginName2.Location = new System.Drawing.Point(1484, 720);
+            this.cboExamDermatologyLoginName2.MenuManager = this.barManager1;
+            this.cboExamDermatologyLoginName2.Name = "cboExamDermatologyLoginName2";
+            this.cboExamDermatologyLoginName2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamDermatologyLoginName2.Properties.NullText = "";
+            this.cboExamDermatologyLoginName2.Properties.PopupSizeable = false;
+            this.cboExamDermatologyLoginName2.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExamDermatologyLoginName2.Properties.View = this.gridView78;
+            this.cboExamDermatologyLoginName2.Size = new System.Drawing.Size(216, 22);
+            this.cboExamDermatologyLoginName2.StyleController = this.layoutControl5;
+            this.cboExamDermatologyLoginName2.TabIndex = 125;
+            this.cboExamDermatologyLoginName2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView78
+            // 
+            this.gridView78.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView78.Name = "gridView78";
+            this.gridView78.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView78.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboTestBloodLoginName
+            // 
+            this.cboTestBloodLoginName.Location = new System.Drawing.Point(1484, 854);
+            this.cboTestBloodLoginName.MenuManager = this.barManager1;
+            this.cboTestBloodLoginName.Name = "cboTestBloodLoginName";
+            this.cboTestBloodLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboTestBloodLoginName.Properties.NullText = "";
+            this.cboTestBloodLoginName.Properties.PopupSizeable = false;
+            this.cboTestBloodLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboTestBloodLoginName.Properties.View = this.gridView79;
+            this.cboTestBloodLoginName.Size = new System.Drawing.Size(216, 22);
+            this.cboTestBloodLoginName.StyleController = this.layoutControl5;
+            this.cboTestBloodLoginName.TabIndex = 126;
+            this.cboTestBloodLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView79
+            // 
+            this.gridView79.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView79.Name = "gridView79";
+            this.gridView79.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView79.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboTestUrineLoginName
+            // 
+            this.cboTestUrineLoginName.Location = new System.Drawing.Point(1485, 904);
+            this.cboTestUrineLoginName.MenuManager = this.barManager1;
+            this.cboTestUrineLoginName.Name = "cboTestUrineLoginName";
+            this.cboTestUrineLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboTestUrineLoginName.Properties.NullText = "";
+            this.cboTestUrineLoginName.Properties.PopupSizeable = false;
+            this.cboTestUrineLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboTestUrineLoginName.Properties.View = this.gridView80;
+            this.cboTestUrineLoginName.Size = new System.Drawing.Size(215, 22);
+            this.cboTestUrineLoginName.StyleController = this.layoutControl5;
+            this.cboTestUrineLoginName.TabIndex = 127;
+            this.cboTestUrineLoginName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            // 
+            // gridView80
+            // 
+            this.gridView80.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView80.Name = "gridView80";
+            this.gridView80.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView80.OptionsView.ShowGroupPanel = false;
             // 
             // layoutControlItem140
             // 
@@ -7747,25 +8443,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem122,
             this.layoutControlItem50,
             this.layoutControlItem124,
-            this.layoutControlItem125,
             this.layoutControlItem126,
             this.layoutControlItem127,
             this.layoutControlItem128,
-            this.layoutControlItem129,
-            this.layoutControlItem130,
-            this.layoutControlItem131,
-            this.layoutControlItem132,
-            this.layoutControlItem133,
-            this.layoutControlItem134,
-            this.layoutControlItem135,
-            this.layoutControlItem137,
-            this.layoutControlItem138,
-            this.layoutControlItem139,
-            this.layoutControlItem136,
-            this.layoutControlItem141,
-            this.layoutControlItem142,
-            this.layoutControlItem143,
-            this.emptySpaceItem11,
             this.layoutControlItem145,
             this.layoutControlItem146,
             this.layoutControlItem148,
@@ -7781,12 +8461,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem160,
             this.layoutControlItem161,
             this.layoutControlItem162,
-            this.layoutControlItem163,
-            this.layoutControlItem164,
             this.layoutControlItem167,
-            this.layoutControlItem169,
-            this.layoutControlItem168,
-            this.layoutControlItem171,
             this.emptySpaceItem13,
             this.layoutControlItem172,
             this.layoutControlItem173,
@@ -7795,13 +8470,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem176,
             this.layoutControlItem177,
             this.layoutControlItem178,
-            this.emptySpaceItem14,
             this.layoutControlItem179,
             this.layoutControlItem180,
             this.layoutControlItem181,
             this.layoutControlItem182,
             this.layoutControlItem183,
-            this.emptySpaceItem16,
             this.emptySpaceItem17,
             this.layoutControlItem27,
             this.layoutControlItem428,
@@ -7812,37 +8485,76 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem184,
             this.layoutControlItem185,
             this.layoutControlItem186,
-            this.layoutControlItem429,
             this.layoutControlItem106,
-            this.layoutControlItem107,
-            this.layoutControlItem108,
             this.layoutControlItem442,
-            this.layoutControlItem443,
             this.layoutControlItem444,
             this.layoutControlItem157,
             this.layoutControlItem150,
-            this.layoutControlItem158,
             this.layoutControlItem159,
             this.layoutControlItem165,
             this.layoutControlItem166,
             this.layoutControlItem459,
             this.layoutControlItem460,
-            this.layoutControlItem461,
-            this.emptySpaceItem9,
-            this.emptySpaceItem10,
             this.layoutControlItem434,
-            this.emptySpaceItem12});
+            this.emptySpaceItem12,
+            this.layoutControlItem137,
+            this.layoutControlItem129,
+            this.layoutControlItem131,
+            this.layoutControlItem133,
+            this.layoutControlItem138,
+            this.layoutControlItem130,
+            this.layoutControlItem132,
+            this.layoutControlItem134,
+            this.layoutControlItem443,
+            this.layoutControlItem107,
+            this.layoutControlItem108,
+            this.layoutControlItem142,
+            this.layoutControlItem143,
+            this.layoutControlItem135,
+            this.layoutControlItem136,
+            this.layoutControlItem429,
+            this.layoutControlItem139,
+            this.layoutControlItem141,
+            this.layoutControlItem587,
+            this.layoutControlItem125,
+            this.layoutControlItem588,
+            this.layoutControlItem589,
+            this.layoutControlItem591,
+            this.layoutControlItem592,
+            this.layoutControlItem593,
+            this.layoutControlItem163,
+            this.layoutControlItem164,
+            this.layoutControlItem590,
+            this.layoutControlItem169,
+            this.layoutControlItem168,
+            this.layoutControlItem171,
+            this.layoutControlItem594,
+            this.layoutControlItem595,
+            this.layoutControlItem158,
+            this.layoutControlItem596,
+            this.layoutControlItem597,
+            this.layoutControlItem598,
+            this.layoutControlItem599,
+            this.layoutControlItem600,
+            this.layoutControlItem601,
+            this.layoutControlItem602,
+            this.layoutControlItem603,
+            this.layoutControlItem604,
+            this.layoutControlItem606,
+            this.layoutControlItem607,
+            this.layoutControlItem461,
+            this.layoutControlItem605});
             this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup6.Name = "Root";
-            this.layoutControlGroup6.Size = new System.Drawing.Size(1703, 750);
+            this.layoutControlGroup6.Size = new System.Drawing.Size(1703, 1042);
             this.layoutControlGroup6.TextVisible = false;
             // 
             // layoutControlItem111
             // 
             this.layoutControlItem111.Control = this.labelControl19;
-            this.layoutControlItem111.Location = new System.Drawing.Point(425, 0);
+            this.layoutControlItem111.Location = new System.Drawing.Point(406, 0);
             this.layoutControlItem111.Name = "layoutControlItem111";
-            this.layoutControlItem111.Size = new System.Drawing.Size(1278, 22);
+            this.layoutControlItem111.Size = new System.Drawing.Size(1297, 22);
             this.layoutControlItem111.Text = "II. KHÁM THỂ LỰC";
             this.layoutControlItem111.TextSize = new System.Drawing.Size(145, 16);
             // 
@@ -7851,9 +8563,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem112.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem112.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem112.Control = this.spnHeight2;
-            this.layoutControlItem112.Location = new System.Drawing.Point(425, 22);
+            this.layoutControlItem112.Location = new System.Drawing.Point(406, 22);
             this.layoutControlItem112.Name = "layoutControlItem112";
-            this.layoutControlItem112.Size = new System.Drawing.Size(224, 31);
+            this.layoutControlItem112.Size = new System.Drawing.Size(153, 31);
             this.layoutControlItem112.Text = "Chiều cao:";
             this.layoutControlItem112.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem112.TextSize = new System.Drawing.Size(90, 20);
@@ -7862,9 +8574,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem113
             // 
             this.layoutControlItem113.Control = this.label17;
-            this.layoutControlItem113.Location = new System.Drawing.Point(649, 22);
+            this.layoutControlItem113.Location = new System.Drawing.Point(559, 22);
             this.layoutControlItem113.Name = "layoutControlItem113";
-            this.layoutControlItem113.Size = new System.Drawing.Size(91, 31);
+            this.layoutControlItem113.Size = new System.Drawing.Size(31, 31);
             this.layoutControlItem113.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem113.TextVisible = false;
             // 
@@ -7873,9 +8585,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem114.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem114.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem114.Control = this.spnPulse2;
-            this.layoutControlItem114.Location = new System.Drawing.Point(425, 53);
+            this.layoutControlItem114.Location = new System.Drawing.Point(406, 53);
             this.layoutControlItem114.Name = "layoutControlItem114";
-            this.layoutControlItem114.Size = new System.Drawing.Size(224, 31);
+            this.layoutControlItem114.Size = new System.Drawing.Size(153, 31);
             this.layoutControlItem114.Text = "Mạch:";
             this.layoutControlItem114.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem114.TextSize = new System.Drawing.Size(90, 20);
@@ -7884,9 +8596,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem115
             // 
             this.layoutControlItem115.Control = this.label18;
-            this.layoutControlItem115.Location = new System.Drawing.Point(649, 53);
+            this.layoutControlItem115.Location = new System.Drawing.Point(559, 53);
             this.layoutControlItem115.Name = "layoutControlItem115";
-            this.layoutControlItem115.Size = new System.Drawing.Size(91, 31);
+            this.layoutControlItem115.Size = new System.Drawing.Size(31, 31);
             this.layoutControlItem115.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem115.TextVisible = false;
             // 
@@ -7895,9 +8607,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem116.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem116.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem116.Control = this.spnWeight2;
-            this.layoutControlItem116.Location = new System.Drawing.Point(740, 22);
+            this.layoutControlItem116.Location = new System.Drawing.Point(590, 22);
             this.layoutControlItem116.Name = "layoutControlItem116";
-            this.layoutControlItem116.Size = new System.Drawing.Size(199, 31);
+            this.layoutControlItem116.Size = new System.Drawing.Size(133, 31);
             this.layoutControlItem116.Text = "Cân nặng:";
             this.layoutControlItem116.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem116.TextSize = new System.Drawing.Size(70, 20);
@@ -7908,9 +8620,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem117.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem117.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem117.Control = this.spnBloodPressureMax2;
-            this.layoutControlItem117.Location = new System.Drawing.Point(740, 53);
+            this.layoutControlItem117.Location = new System.Drawing.Point(590, 53);
             this.layoutControlItem117.Name = "layoutControlItem117";
-            this.layoutControlItem117.Size = new System.Drawing.Size(199, 31);
+            this.layoutControlItem117.Size = new System.Drawing.Size(133, 31);
             this.layoutControlItem117.Text = "Huyết áp:";
             this.layoutControlItem117.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem117.TextSize = new System.Drawing.Size(70, 20);
@@ -7919,27 +8631,27 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem118
             // 
             this.layoutControlItem118.Control = this.spnBloodPressureMin2;
-            this.layoutControlItem118.Location = new System.Drawing.Point(939, 53);
+            this.layoutControlItem118.Location = new System.Drawing.Point(723, 53);
             this.layoutControlItem118.Name = "layoutControlItem118";
-            this.layoutControlItem118.Size = new System.Drawing.Size(88, 31);
+            this.layoutControlItem118.Size = new System.Drawing.Size(57, 31);
             this.layoutControlItem118.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem118.TextVisible = false;
             // 
             // layoutControlItem119
             // 
             this.layoutControlItem119.Control = this.label19;
-            this.layoutControlItem119.Location = new System.Drawing.Point(939, 22);
+            this.layoutControlItem119.Location = new System.Drawing.Point(723, 22);
             this.layoutControlItem119.Name = "layoutControlItem119";
-            this.layoutControlItem119.Size = new System.Drawing.Size(175, 31);
+            this.layoutControlItem119.Size = new System.Drawing.Size(31, 31);
             this.layoutControlItem119.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem119.TextVisible = false;
             // 
             // layoutControlItem120
             // 
             this.layoutControlItem120.Control = this.label20;
-            this.layoutControlItem120.Location = new System.Drawing.Point(1027, 53);
+            this.layoutControlItem120.Location = new System.Drawing.Point(780, 53);
             this.layoutControlItem120.Name = "layoutControlItem120";
-            this.layoutControlItem120.Size = new System.Drawing.Size(87, 31);
+            this.layoutControlItem120.Size = new System.Drawing.Size(230, 31);
             this.layoutControlItem120.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem120.TextVisible = false;
             // 
@@ -7948,9 +8660,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem121.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem121.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem121.Control = this.txtVirBmi2;
-            this.layoutControlItem121.Location = new System.Drawing.Point(1114, 22);
+            this.layoutControlItem121.Location = new System.Drawing.Point(754, 22);
             this.layoutControlItem121.Name = "layoutControlItem121";
-            this.layoutControlItem121.Size = new System.Drawing.Size(549, 31);
+            this.layoutControlItem121.Size = new System.Drawing.Size(128, 31);
             this.layoutControlItem121.Text = "BMI:";
             this.layoutControlItem121.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem121.TextSize = new System.Drawing.Size(90, 20);
@@ -7961,64 +8673,54 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem122.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem122.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem122.Control = this.cboDhstRank2;
-            this.layoutControlItem122.Location = new System.Drawing.Point(1114, 53);
+            this.layoutControlItem122.Location = new System.Drawing.Point(1010, 53);
             this.layoutControlItem122.Name = "layoutControlItem122";
-            this.layoutControlItem122.Size = new System.Drawing.Size(330, 31);
+            this.layoutControlItem122.Size = new System.Drawing.Size(400, 31);
             this.layoutControlItem122.Text = "Phân loại:";
             this.layoutControlItem122.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem122.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem122.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem122.TextToControlDistance = 5;
             // 
             // layoutControlItem50
             // 
             this.layoutControlItem50.Control = this.labelControl20;
-            this.layoutControlItem50.Location = new System.Drawing.Point(425, 84);
+            this.layoutControlItem50.Location = new System.Drawing.Point(406, 84);
             this.layoutControlItem50.Name = "layoutControlItem50";
-            this.layoutControlItem50.Size = new System.Drawing.Size(1278, 22);
+            this.layoutControlItem50.Size = new System.Drawing.Size(1297, 22);
             this.layoutControlItem50.Text = "III. KHÁM LÂM SÀNG";
             this.layoutControlItem50.TextSize = new System.Drawing.Size(145, 16);
             // 
             // layoutControlItem124
             // 
             this.layoutControlItem124.Control = this.labelControl21;
-            this.layoutControlItem124.Location = new System.Drawing.Point(425, 106);
+            this.layoutControlItem124.Location = new System.Drawing.Point(406, 106);
             this.layoutControlItem124.Name = "layoutControlItem124";
-            this.layoutControlItem124.Size = new System.Drawing.Size(1278, 22);
+            this.layoutControlItem124.Size = new System.Drawing.Size(1297, 22);
             this.layoutControlItem124.Text = "1. Nội khoa:";
             this.layoutControlItem124.TextSize = new System.Drawing.Size(145, 16);
             // 
-            // layoutControlItem125
-            // 
-            this.layoutControlItem125.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem125.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem125.Control = this.txtExamCirculation2;
-            this.layoutControlItem125.Location = new System.Drawing.Point(425, 128);
-            this.layoutControlItem125.Name = "layoutControlItem125";
-            this.layoutControlItem125.Size = new System.Drawing.Size(267, 28);
-            this.layoutControlItem125.Text = "a. Tuần hoàn:";
-            this.layoutControlItem125.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem125.TextSize = new System.Drawing.Size(90, 20);
-            this.layoutControlItem125.TextToControlDistance = 5;
-            // 
             // layoutControlItem126
             // 
+            this.layoutControlItem126.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem126.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem126.Control = this.cboExamCirculationRank2;
-            this.layoutControlItem126.Location = new System.Drawing.Point(692, 128);
+            this.layoutControlItem126.Location = new System.Drawing.Point(1009, 128);
             this.layoutControlItem126.Name = "layoutControlItem126";
-            this.layoutControlItem126.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem126.Size = new System.Drawing.Size(148, 28);
-            this.layoutControlItem126.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem126.TextVisible = false;
+            this.layoutControlItem126.Size = new System.Drawing.Size(377, 28);
+            this.layoutControlItem126.Text = "Phân loại:";
+            this.layoutControlItem126.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem126.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem126.TextToControlDistance = 5;
             // 
             // layoutControlItem127
             // 
             this.layoutControlItem127.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem127.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem127.Control = this.txtExamKidneyUrology2;
-            this.layoutControlItem127.Location = new System.Drawing.Point(425, 156);
+            this.layoutControlItem127.Location = new System.Drawing.Point(406, 212);
             this.layoutControlItem127.Name = "layoutControlItem127";
             this.layoutControlItem127.OptionsToolTip.ToolTip = "Thận - Tiết niệu";
-            this.layoutControlItem127.Size = new System.Drawing.Size(301, 28);
+            this.layoutControlItem127.Size = new System.Drawing.Size(603, 28);
             this.layoutControlItem127.Text = "d. Thận - TN";
             this.layoutControlItem127.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem127.TextSize = new System.Drawing.Size(90, 20);
@@ -8026,190 +8728,26 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // layoutControlItem128
             // 
+            this.layoutControlItem128.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem128.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem128.Control = this.cboExamKidneyUrologyRank2;
-            this.layoutControlItem128.Location = new System.Drawing.Point(726, 156);
+            this.layoutControlItem128.Location = new System.Drawing.Point(1009, 212);
             this.layoutControlItem128.Name = "layoutControlItem128";
-            this.layoutControlItem128.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem128.Size = new System.Drawing.Size(113, 28);
-            this.layoutControlItem128.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem128.TextVisible = false;
-            // 
-            // layoutControlItem129
-            // 
-            this.layoutControlItem129.Control = this.cboExamRespiratoryRank2;
-            this.layoutControlItem129.Location = new System.Drawing.Point(1203, 128);
-            this.layoutControlItem129.Name = "layoutControlItem129";
-            this.layoutControlItem129.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem129.Size = new System.Drawing.Size(120, 28);
-            this.layoutControlItem129.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem129.TextVisible = false;
-            // 
-            // layoutControlItem130
-            // 
-            this.layoutControlItem130.Control = this.cboExamMuscleBoneRank2;
-            this.layoutControlItem130.Location = new System.Drawing.Point(1202, 156);
-            this.layoutControlItem130.Name = "layoutControlItem130";
-            this.layoutControlItem130.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem130.Size = new System.Drawing.Size(120, 28);
-            this.layoutControlItem130.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem130.TextVisible = false;
-            // 
-            // layoutControlItem131
-            // 
-            this.layoutControlItem131.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem131.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem131.Control = this.txtExamDigestion2;
-            this.layoutControlItem131.Location = new System.Drawing.Point(1323, 128);
-            this.layoutControlItem131.Name = "layoutControlItem131";
-            this.layoutControlItem131.Size = new System.Drawing.Size(267, 28);
-            this.layoutControlItem131.Text = "c. Tiêu hóa";
-            this.layoutControlItem131.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem131.TextSize = new System.Drawing.Size(90, 20);
-            this.layoutControlItem131.TextToControlDistance = 5;
-            // 
-            // layoutControlItem132
-            // 
-            this.layoutControlItem132.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem132.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem132.Control = this.txtExamNeurological2;
-            this.layoutControlItem132.Location = new System.Drawing.Point(1322, 156);
-            this.layoutControlItem132.Name = "layoutControlItem132";
-            this.layoutControlItem132.Size = new System.Drawing.Size(267, 28);
-            this.layoutControlItem132.Text = "e. Thần kinh:";
-            this.layoutControlItem132.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem132.TextSize = new System.Drawing.Size(90, 20);
-            this.layoutControlItem132.TextToControlDistance = 5;
-            // 
-            // layoutControlItem133
-            // 
-            this.layoutControlItem133.Control = this.cboExamDigestionRank2;
-            this.layoutControlItem133.Location = new System.Drawing.Point(1590, 128);
-            this.layoutControlItem133.Name = "layoutControlItem133";
-            this.layoutControlItem133.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem133.Size = new System.Drawing.Size(113, 28);
-            this.layoutControlItem133.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem133.TextVisible = false;
-            // 
-            // layoutControlItem134
-            // 
-            this.layoutControlItem134.Control = this.cboExamNeurologicalRank2;
-            this.layoutControlItem134.Location = new System.Drawing.Point(1589, 156);
-            this.layoutControlItem134.Name = "layoutControlItem134";
-            this.layoutControlItem134.Size = new System.Drawing.Size(114, 28);
-            this.layoutControlItem134.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem134.TextVisible = false;
-            // 
-            // layoutControlItem135
-            // 
-            this.layoutControlItem135.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem135.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem135.Control = this.txtExamMental2;
-            this.layoutControlItem135.Location = new System.Drawing.Point(425, 184);
-            this.layoutControlItem135.Name = "layoutControlItem135";
-            this.layoutControlItem135.Size = new System.Drawing.Size(301, 28);
-            this.layoutControlItem135.Text = "g. Tâm thần";
-            this.layoutControlItem135.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem135.TextSize = new System.Drawing.Size(90, 20);
-            this.layoutControlItem135.TextToControlDistance = 5;
-            // 
-            // layoutControlItem137
-            // 
-            this.layoutControlItem137.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem137.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem137.Control = this.txtExamRespiratory2;
-            this.layoutControlItem137.Location = new System.Drawing.Point(840, 128);
-            this.layoutControlItem137.Name = "layoutControlItem137";
-            this.layoutControlItem137.Size = new System.Drawing.Size(363, 28);
-            this.layoutControlItem137.Text = "b. Hô hấp:";
-            this.layoutControlItem137.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem137.TextSize = new System.Drawing.Size(110, 20);
-            this.layoutControlItem137.TextToControlDistance = 5;
-            // 
-            // layoutControlItem138
-            // 
-            this.layoutControlItem138.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem138.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem138.Control = this.txtExamMuscleBone2;
-            this.layoutControlItem138.Location = new System.Drawing.Point(839, 156);
-            this.layoutControlItem138.Name = "layoutControlItem138";
-            this.layoutControlItem138.OptionsToolTip.ToolTip = "Cơ xương khớp";
-            this.layoutControlItem138.Size = new System.Drawing.Size(363, 28);
-            this.layoutControlItem138.Text = "đ. CXK:";
-            this.layoutControlItem138.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem138.TextSize = new System.Drawing.Size(110, 20);
-            this.layoutControlItem138.TextToControlDistance = 5;
-            // 
-            // layoutControlItem139
-            // 
-            this.layoutControlItem139.Control = this.txtExamSurgery2;
-            this.layoutControlItem139.Location = new System.Drawing.Point(425, 212);
-            this.layoutControlItem139.Name = "layoutControlItem139";
-            this.layoutControlItem139.Size = new System.Drawing.Size(301, 28);
-            this.layoutControlItem139.Text = "2. Ngoại khoa:";
-            this.layoutControlItem139.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem139.TextSize = new System.Drawing.Size(90, 20);
-            this.layoutControlItem139.TextToControlDistance = 5;
-            // 
-            // layoutControlItem136
-            // 
-            this.layoutControlItem136.Control = this.cboExamMentalRank2;
-            this.layoutControlItem136.Location = new System.Drawing.Point(726, 184);
-            this.layoutControlItem136.Name = "layoutControlItem136";
-            this.layoutControlItem136.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem136.Size = new System.Drawing.Size(113, 28);
-            this.layoutControlItem136.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem136.TextVisible = false;
-            // 
-            // layoutControlItem141
-            // 
-            this.layoutControlItem141.Control = this.cboExamSurgeryRank2;
-            this.layoutControlItem141.Location = new System.Drawing.Point(726, 212);
-            this.layoutControlItem141.Name = "layoutControlItem141";
-            this.layoutControlItem141.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem141.Size = new System.Drawing.Size(113, 28);
-            this.layoutControlItem141.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem141.TextVisible = false;
-            // 
-            // layoutControlItem142
-            // 
-            this.layoutControlItem142.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem142.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem142.Control = this.txtExamObstetric2;
-            this.layoutControlItem142.Location = new System.Drawing.Point(839, 212);
-            this.layoutControlItem142.Name = "layoutControlItem142";
-            this.layoutControlItem142.Size = new System.Drawing.Size(363, 28);
-            this.layoutControlItem142.Text = "3. Sản phụ khoa:";
-            this.layoutControlItem142.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem142.TextSize = new System.Drawing.Size(110, 20);
-            this.layoutControlItem142.TextToControlDistance = 5;
-            // 
-            // layoutControlItem143
-            // 
-            this.layoutControlItem143.Control = this.cboExamObstetricRank2;
-            this.layoutControlItem143.Location = new System.Drawing.Point(1202, 212);
-            this.layoutControlItem143.Name = "layoutControlItem143";
-            this.layoutControlItem143.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem143.Size = new System.Drawing.Size(120, 28);
-            this.layoutControlItem143.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem143.TextVisible = false;
-            // 
-            // emptySpaceItem11
-            // 
-            this.emptySpaceItem11.AllowHotTrack = false;
-            this.emptySpaceItem11.Location = new System.Drawing.Point(1322, 212);
-            this.emptySpaceItem11.Name = "emptySpaceItem11";
-            this.emptySpaceItem11.Size = new System.Drawing.Size(381, 28);
-            this.emptySpaceItem11.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem128.Size = new System.Drawing.Size(377, 28);
+            this.layoutControlItem128.Text = "Phân loại:";
+            this.layoutControlItem128.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem128.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem128.TextToControlDistance = 5;
             // 
             // layoutControlItem145
             // 
             this.layoutControlItem145.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem145.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem145.Control = this.txtExamEyeSightRight2;
-            this.layoutControlItem145.Location = new System.Drawing.Point(649, 240);
+            this.layoutControlItem145.Location = new System.Drawing.Point(534, 474);
             this.layoutControlItem145.Name = "layoutControlItem145";
-            this.layoutControlItem145.Size = new System.Drawing.Size(213, 31);
-            this.layoutControlItem145.Text = "Phải:";
+            this.layoutControlItem145.Size = new System.Drawing.Size(186, 31);
+            this.layoutControlItem145.Text = "Mắt phải:";
             this.layoutControlItem145.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem145.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem145.TextToControlDistance = 5;
@@ -8219,36 +8757,40 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem146.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem146.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem146.Control = this.txtExamEyeSightLeft2;
-            this.layoutControlItem146.Location = new System.Drawing.Point(862, 240);
+            this.layoutControlItem146.Location = new System.Drawing.Point(720, 474);
             this.layoutControlItem146.Name = "layoutControlItem146";
-            this.layoutControlItem146.Size = new System.Drawing.Size(200, 31);
-            this.layoutControlItem146.Text = "Trái:";
+            this.layoutControlItem146.Size = new System.Drawing.Size(290, 31);
+            this.layoutControlItem146.Text = "Mắt trái:";
             this.layoutControlItem146.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem146.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem146.TextToControlDistance = 5;
             // 
             // layoutControlItem148
             // 
+            this.layoutControlItem148.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem148.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem148.Control = this.label22;
-            this.layoutControlItem148.Location = new System.Drawing.Point(425, 240);
+            this.layoutControlItem148.Location = new System.Drawing.Point(406, 474);
             this.layoutControlItem148.Name = "layoutControlItem148";
             this.layoutControlItem148.OptionsToolTip.ToolTip = "Thị lực không kính";
-            this.layoutControlItem148.Size = new System.Drawing.Size(224, 31);
-            this.layoutControlItem148.Text = "4. Mắt: - TL không kính:";
-            this.layoutControlItem148.TextSize = new System.Drawing.Size(145, 16);
+            this.layoutControlItem148.Size = new System.Drawing.Size(128, 31);
+            this.layoutControlItem148.Text = "Không kính:";
+            this.layoutControlItem148.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem148.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem148.TextToControlDistance = 5;
             // 
             // layoutControlItem144
             // 
             this.layoutControlItem144.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem144.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem144.Control = this.label23;
-            this.layoutControlItem144.Location = new System.Drawing.Point(1062, 240);
+            this.layoutControlItem144.Location = new System.Drawing.Point(1010, 474);
             this.layoutControlItem144.Name = "layoutControlItem144";
             this.layoutControlItem144.OptionsToolTip.ToolTip = "Thị lực có kính";
-            this.layoutControlItem144.Size = new System.Drawing.Size(208, 31);
-            this.layoutControlItem144.Text = "- TL có kính:";
+            this.layoutControlItem144.Size = new System.Drawing.Size(158, 31);
+            this.layoutControlItem144.Text = "Có kính:";
             this.layoutControlItem144.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem144.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem144.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem144.TextToControlDistance = 5;
             // 
             // layoutControlItem147
@@ -8256,10 +8798,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem147.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem147.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem147.Control = this.txtExamEyeSightGlassRight2;
-            this.layoutControlItem147.Location = new System.Drawing.Point(1270, 240);
+            this.layoutControlItem147.Location = new System.Drawing.Point(1168, 474);
             this.layoutControlItem147.Name = "layoutControlItem147";
-            this.layoutControlItem147.Size = new System.Drawing.Size(200, 31);
-            this.layoutControlItem147.Text = "Phải:";
+            this.layoutControlItem147.Size = new System.Drawing.Size(219, 31);
+            this.layoutControlItem147.Text = "Mắt phải:";
             this.layoutControlItem147.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem147.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem147.TextToControlDistance = 5;
@@ -8269,32 +8811,36 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem149.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem149.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem149.Control = this.txtExamEyeSightGlassLeft2;
-            this.layoutControlItem149.Location = new System.Drawing.Point(1470, 240);
+            this.layoutControlItem149.Location = new System.Drawing.Point(1387, 474);
             this.layoutControlItem149.Name = "layoutControlItem149";
-            this.layoutControlItem149.Size = new System.Drawing.Size(233, 31);
-            this.layoutControlItem149.Text = "Trái:";
+            this.layoutControlItem149.Size = new System.Drawing.Size(316, 31);
+            this.layoutControlItem149.Text = "Mắt trái:";
             this.layoutControlItem149.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem149.TextSize = new System.Drawing.Size(50, 20);
+            this.layoutControlItem149.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem149.TextToControlDistance = 5;
             // 
             // layoutControlItem151
             // 
+            this.layoutControlItem151.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem151.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem151.Control = this.label24;
-            this.layoutControlItem151.Location = new System.Drawing.Point(425, 299);
+            this.layoutControlItem151.Location = new System.Drawing.Point(406, 555);
             this.layoutControlItem151.Name = "layoutControlItem151";
             this.layoutControlItem151.OptionsToolTip.ToolTip = "Tai mũi họng - Thính lực trái";
-            this.layoutControlItem151.Size = new System.Drawing.Size(224, 31);
-            this.layoutControlItem151.Text = "5. TMH: - TL trái:";
-            this.layoutControlItem151.TextSize = new System.Drawing.Size(145, 16);
+            this.layoutControlItem151.Size = new System.Drawing.Size(128, 31);
+            this.layoutControlItem151.Text = "Tai trái:";
+            this.layoutControlItem151.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem151.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem151.TextToControlDistance = 5;
             // 
             // layoutControlItem152
             // 
             this.layoutControlItem152.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem152.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem152.Control = this.txtExamEntLeftNormal2;
-            this.layoutControlItem152.Location = new System.Drawing.Point(649, 299);
+            this.layoutControlItem152.Location = new System.Drawing.Point(534, 555);
             this.layoutControlItem152.Name = "layoutControlItem152";
-            this.layoutControlItem152.Size = new System.Drawing.Size(213, 31);
+            this.layoutControlItem152.Size = new System.Drawing.Size(186, 31);
             this.layoutControlItem152.Text = "Nói thường:";
             this.layoutControlItem152.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem152.TextSize = new System.Drawing.Size(70, 20);
@@ -8305,9 +8851,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem153.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem153.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem153.Control = this.txtExamEntLeftWhisper2;
-            this.layoutControlItem153.Location = new System.Drawing.Point(862, 299);
+            this.layoutControlItem153.Location = new System.Drawing.Point(720, 555);
             this.layoutControlItem153.Name = "layoutControlItem153";
-            this.layoutControlItem153.Size = new System.Drawing.Size(200, 31);
+            this.layoutControlItem153.Size = new System.Drawing.Size(290, 31);
             this.layoutControlItem153.Text = "Nói thầm:";
             this.layoutControlItem153.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem153.TextSize = new System.Drawing.Size(70, 20);
@@ -8318,9 +8864,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem154.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem154.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem154.Control = this.txtExamEntRightNomal2;
-            this.layoutControlItem154.Location = new System.Drawing.Point(1270, 299);
+            this.layoutControlItem154.Location = new System.Drawing.Point(1168, 555);
             this.layoutControlItem154.Name = "layoutControlItem154";
-            this.layoutControlItem154.Size = new System.Drawing.Size(200, 31);
+            this.layoutControlItem154.Size = new System.Drawing.Size(219, 31);
             this.layoutControlItem154.Text = "Nói thường:";
             this.layoutControlItem154.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem154.TextSize = new System.Drawing.Size(70, 20);
@@ -8331,12 +8877,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem155.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem155.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem155.Control = this.txtExamEntRightWhisper2;
-            this.layoutControlItem155.Location = new System.Drawing.Point(1470, 299);
+            this.layoutControlItem155.Location = new System.Drawing.Point(1387, 555);
             this.layoutControlItem155.Name = "layoutControlItem155";
-            this.layoutControlItem155.Size = new System.Drawing.Size(233, 31);
+            this.layoutControlItem155.Size = new System.Drawing.Size(316, 31);
             this.layoutControlItem155.Text = "Nói thầm:";
             this.layoutControlItem155.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem155.TextSize = new System.Drawing.Size(50, 20);
+            this.layoutControlItem155.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem155.TextToControlDistance = 5;
             // 
             // layoutControlItem156
@@ -8344,33 +8890,37 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem156.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem156.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem156.Control = this.label25;
-            this.layoutControlItem156.Location = new System.Drawing.Point(1062, 299);
+            this.layoutControlItem156.Location = new System.Drawing.Point(1010, 555);
             this.layoutControlItem156.Name = "layoutControlItem156";
             this.layoutControlItem156.OptionsToolTip.ToolTip = "Thính lực phải";
-            this.layoutControlItem156.Size = new System.Drawing.Size(208, 31);
-            this.layoutControlItem156.Text = "- TL phải:";
+            this.layoutControlItem156.Size = new System.Drawing.Size(158, 31);
+            this.layoutControlItem156.Text = "Tai phải:";
             this.layoutControlItem156.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem156.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem156.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem156.TextToControlDistance = 5;
             // 
             // layoutControlItem160
             // 
+            this.layoutControlItem160.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem160.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem160.Control = this.label26;
-            this.layoutControlItem160.Location = new System.Drawing.Point(425, 358);
+            this.layoutControlItem160.Location = new System.Drawing.Point(406, 636);
             this.layoutControlItem160.Name = "layoutControlItem160";
             this.layoutControlItem160.OptionsToolTip.ToolTip = "Răng hàm mặt";
-            this.layoutControlItem160.Size = new System.Drawing.Size(224, 31);
-            this.layoutControlItem160.Text = "6. RHM:";
-            this.layoutControlItem160.TextSize = new System.Drawing.Size(145, 16);
+            this.layoutControlItem160.Size = new System.Drawing.Size(128, 31);
+            this.layoutControlItem160.Text = "Hàm trên:";
+            this.layoutControlItem160.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem160.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem160.TextToControlDistance = 5;
             // 
             // layoutControlItem161
             // 
             this.layoutControlItem161.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem161.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem161.Control = this.txtExamStomatologyUpper2;
-            this.layoutControlItem161.Location = new System.Drawing.Point(649, 358);
+            this.layoutControlItem161.Location = new System.Drawing.Point(534, 636);
             this.layoutControlItem161.Name = "layoutControlItem161";
-            this.layoutControlItem161.Size = new System.Drawing.Size(213, 31);
+            this.layoutControlItem161.Size = new System.Drawing.Size(476, 31);
             this.layoutControlItem161.Text = "Hàm trên:";
             this.layoutControlItem161.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem161.TextSize = new System.Drawing.Size(70, 20);
@@ -8381,103 +8931,40 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem162.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem162.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem162.Control = this.txtExamStomatologyLower2;
-            this.layoutControlItem162.Location = new System.Drawing.Point(862, 358);
+            this.layoutControlItem162.Location = new System.Drawing.Point(1010, 636);
             this.layoutControlItem162.Name = "layoutControlItem162";
-            this.layoutControlItem162.Size = new System.Drawing.Size(200, 31);
+            this.layoutControlItem162.Size = new System.Drawing.Size(693, 31);
             this.layoutControlItem162.Text = "Hàm dưới:";
             this.layoutControlItem162.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem162.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem162.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem162.TextToControlDistance = 5;
-            // 
-            // layoutControlItem163
-            // 
-            this.layoutControlItem163.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem163.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem163.Control = this.txtExamStomatologyDisease2;
-            this.layoutControlItem163.Location = new System.Drawing.Point(1062, 358);
-            this.layoutControlItem163.Name = "layoutControlItem163";
-            this.layoutControlItem163.OptionsToolTip.ToolTip = "Bệnh răng hàm mặt";
-            this.layoutControlItem163.Size = new System.Drawing.Size(486, 31);
-            this.layoutControlItem163.Text = "Bệnh RHM:";
-            this.layoutControlItem163.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem163.TextSize = new System.Drawing.Size(70, 20);
-            this.layoutControlItem163.TextToControlDistance = 5;
-            // 
-            // layoutControlItem164
-            // 
-            this.layoutControlItem164.Control = this.cboExamStomatologyRank2;
-            this.layoutControlItem164.Location = new System.Drawing.Point(1548, 358);
-            this.layoutControlItem164.Name = "layoutControlItem164";
-            this.layoutControlItem164.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem164.Size = new System.Drawing.Size(155, 31);
-            this.layoutControlItem164.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem164.TextVisible = false;
             // 
             // layoutControlItem167
             // 
             this.layoutControlItem167.Control = this.labelControl22;
-            this.layoutControlItem167.Location = new System.Drawing.Point(425, 417);
+            this.layoutControlItem167.Location = new System.Drawing.Point(406, 745);
             this.layoutControlItem167.Name = "layoutControlItem167";
-            this.layoutControlItem167.Size = new System.Drawing.Size(1278, 22);
+            this.layoutControlItem167.Size = new System.Drawing.Size(1297, 22);
             this.layoutControlItem167.Text = "IV. KHÁM CẬN LÂM SÀNG";
             this.layoutControlItem167.TextSize = new System.Drawing.Size(145, 16);
-            // 
-            // layoutControlItem169
-            // 
-            this.layoutControlItem169.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem169.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem169.Control = this.txtTestBloodHc2;
-            this.layoutControlItem169.Location = new System.Drawing.Point(649, 439);
-            this.layoutControlItem169.Name = "layoutControlItem169";
-            this.layoutControlItem169.OptionsToolTip.ToolTip = "Số lượng hồng cầu";
-            this.layoutControlItem169.Size = new System.Drawing.Size(244, 31);
-            this.layoutControlItem169.Text = "Số lượng HC:";
-            this.layoutControlItem169.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem169.TextSize = new System.Drawing.Size(70, 20);
-            this.layoutControlItem169.TextToControlDistance = 5;
-            // 
-            // layoutControlItem168
-            // 
-            this.layoutControlItem168.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem168.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem168.Control = this.txtTestBloodBc2;
-            this.layoutControlItem168.Location = new System.Drawing.Point(893, 439);
-            this.layoutControlItem168.Name = "layoutControlItem168";
-            this.layoutControlItem168.OptionsToolTip.ToolTip = "Số lượng bạch cầu";
-            this.layoutControlItem168.Size = new System.Drawing.Size(230, 31);
-            this.layoutControlItem168.Text = "Số lượng BC:";
-            this.layoutControlItem168.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem168.TextSize = new System.Drawing.Size(70, 20);
-            this.layoutControlItem168.TextToControlDistance = 5;
-            // 
-            // layoutControlItem171
-            // 
-            this.layoutControlItem171.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem171.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem171.Control = this.txtTestBloodTc2;
-            this.layoutControlItem171.Location = new System.Drawing.Point(1123, 439);
-            this.layoutControlItem171.Name = "layoutControlItem171";
-            this.layoutControlItem171.OptionsToolTip.ToolTip = "Số lượng tiểu cầu";
-            this.layoutControlItem171.Size = new System.Drawing.Size(264, 31);
-            this.layoutControlItem171.Text = "Số lượng TC:";
-            this.layoutControlItem171.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem171.TextSize = new System.Drawing.Size(110, 20);
-            this.layoutControlItem171.TextToControlDistance = 5;
             // 
             // emptySpaceItem13
             // 
             this.emptySpaceItem13.AllowHotTrack = false;
-            this.emptySpaceItem13.Location = new System.Drawing.Point(1387, 439);
+            this.emptySpaceItem13.Location = new System.Drawing.Point(1387, 767);
             this.emptySpaceItem13.Name = "emptySpaceItem13";
-            this.emptySpaceItem13.Size = new System.Drawing.Size(316, 31);
+            this.emptySpaceItem13.Size = new System.Drawing.Size(316, 53);
             this.emptySpaceItem13.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem172
             // 
             this.layoutControlItem172.Control = this.label28;
-            this.layoutControlItem172.Location = new System.Drawing.Point(425, 470);
+            this.layoutControlItem172.Location = new System.Drawing.Point(406, 820);
+            this.layoutControlItem172.MaxSize = new System.Drawing.Size(10000, 0);
+            this.layoutControlItem172.MinSize = new System.Drawing.Size(1, 31);
             this.layoutControlItem172.Name = "layoutControlItem172";
-            this.layoutControlItem172.Size = new System.Drawing.Size(224, 31);
+            this.layoutControlItem172.Size = new System.Drawing.Size(148, 31);
+            this.layoutControlItem172.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem172.Text = "b. Sinh hóa máu:";
             this.layoutControlItem172.TextSize = new System.Drawing.Size(145, 16);
             // 
@@ -8486,12 +8973,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem173.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem173.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem173.Control = this.txtTestBloodGluco2;
-            this.layoutControlItem173.Location = new System.Drawing.Point(649, 470);
+            this.layoutControlItem173.Location = new System.Drawing.Point(554, 820);
             this.layoutControlItem173.Name = "layoutControlItem173";
-            this.layoutControlItem173.Size = new System.Drawing.Size(244, 31);
+            this.layoutControlItem173.Size = new System.Drawing.Size(226, 31);
             this.layoutControlItem173.Text = "Đường máu:";
             this.layoutControlItem173.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem173.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem173.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem173.TextToControlDistance = 5;
             // 
             // layoutControlItem174
@@ -8499,9 +8986,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem174.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem174.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem174.Control = this.txtTestBloodUre2;
-            this.layoutControlItem174.Location = new System.Drawing.Point(893, 470);
+            this.layoutControlItem174.Location = new System.Drawing.Point(780, 820);
             this.layoutControlItem174.Name = "layoutControlItem174";
-            this.layoutControlItem174.Size = new System.Drawing.Size(206, 31);
+            this.layoutControlItem174.Size = new System.Drawing.Size(230, 31);
             this.layoutControlItem174.Text = "Urê:";
             this.layoutControlItem174.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem174.TextSize = new System.Drawing.Size(70, 20);
@@ -8512,12 +8999,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem175.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem175.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem175.Control = this.txtTestBloodCreatinin2;
-            this.layoutControlItem175.Location = new System.Drawing.Point(1099, 470);
+            this.layoutControlItem175.Location = new System.Drawing.Point(1010, 820);
             this.layoutControlItem175.Name = "layoutControlItem175";
-            this.layoutControlItem175.Size = new System.Drawing.Size(228, 31);
+            this.layoutControlItem175.Size = new System.Drawing.Size(257, 31);
             this.layoutControlItem175.Text = "Creatinin:";
             this.layoutControlItem175.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem175.TextSize = new System.Drawing.Size(110, 20);
+            this.layoutControlItem175.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem175.TextToControlDistance = 5;
             // 
             // layoutControlItem176
@@ -8525,12 +9012,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem176.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem176.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem176.Control = this.txtTestBloodAsat2;
-            this.layoutControlItem176.Location = new System.Drawing.Point(1327, 470);
+            this.layoutControlItem176.Location = new System.Drawing.Point(1267, 820);
             this.layoutControlItem176.Name = "layoutControlItem176";
-            this.layoutControlItem176.Size = new System.Drawing.Size(175, 31);
+            this.layoutControlItem176.Size = new System.Drawing.Size(215, 31);
             this.layoutControlItem176.Text = "ASAT (GOT):";
             this.layoutControlItem176.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem176.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem176.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem176.TextToControlDistance = 5;
             // 
             // layoutControlItem177
@@ -8538,9 +9025,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem177.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem177.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem177.Control = this.txtTestBloodAlat2;
-            this.layoutControlItem177.Location = new System.Drawing.Point(1502, 470);
+            this.layoutControlItem177.Location = new System.Drawing.Point(1482, 820);
             this.layoutControlItem177.Name = "layoutControlItem177";
-            this.layoutControlItem177.Size = new System.Drawing.Size(201, 31);
+            this.layoutControlItem177.Size = new System.Drawing.Size(221, 31);
             this.layoutControlItem177.Text = "ALAT (GPT):";
             this.layoutControlItem177.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem177.TextSize = new System.Drawing.Size(90, 20);
@@ -8549,43 +9036,36 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem178
             // 
             this.layoutControlItem178.Control = this.txtTestBloodOther2;
-            this.layoutControlItem178.Location = new System.Drawing.Point(425, 501);
+            this.layoutControlItem178.Location = new System.Drawing.Point(406, 851);
             this.layoutControlItem178.Name = "layoutControlItem178";
-            this.layoutControlItem178.Size = new System.Drawing.Size(591, 28);
+            this.layoutControlItem178.Size = new System.Drawing.Size(980, 28);
             this.layoutControlItem178.Text = "c. Khác (nếu có):";
             this.layoutControlItem178.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem178.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem178.TextToControlDistance = 5;
             // 
-            // emptySpaceItem14
-            // 
-            this.emptySpaceItem14.AllowHotTrack = false;
-            this.emptySpaceItem14.Location = new System.Drawing.Point(1016, 501);
-            this.emptySpaceItem14.Name = "emptySpaceItem14";
-            this.emptySpaceItem14.Size = new System.Drawing.Size(687, 28);
-            this.emptySpaceItem14.TextSize = new System.Drawing.Size(0, 0);
-            // 
             // layoutControlItem179
             // 
             this.layoutControlItem179.Control = this.label29;
-            this.layoutControlItem179.Location = new System.Drawing.Point(425, 529);
+            this.layoutControlItem179.Location = new System.Drawing.Point(406, 901);
             this.layoutControlItem179.Name = "layoutControlItem179";
             this.layoutControlItem179.OptionsToolTip.ToolTip = "Xét nghiệm nước tiểu";
-            this.layoutControlItem179.Size = new System.Drawing.Size(301, 31);
+            this.layoutControlItem179.Size = new System.Drawing.Size(148, 31);
             this.layoutControlItem179.Text = "2. XN nước tiểu";
-            this.layoutControlItem179.TextSize = new System.Drawing.Size(145, 16);
+            this.layoutControlItem179.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem179.TextVisible = false;
             // 
             // layoutControlItem180
             // 
             this.layoutControlItem180.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem180.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem180.Control = this.txtTestUrineGluco2;
-            this.layoutControlItem180.Location = new System.Drawing.Point(726, 529);
+            this.layoutControlItem180.Location = new System.Drawing.Point(554, 901);
             this.layoutControlItem180.Name = "layoutControlItem180";
-            this.layoutControlItem180.Size = new System.Drawing.Size(290, 31);
+            this.layoutControlItem180.Size = new System.Drawing.Size(226, 31);
             this.layoutControlItem180.Text = "a. Đường:";
             this.layoutControlItem180.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem180.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem180.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem180.TextToControlDistance = 5;
             // 
             // layoutControlItem181
@@ -8593,12 +9073,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem181.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem181.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem181.Control = this.txtTestUrineProtein2;
-            this.layoutControlItem181.Location = new System.Drawing.Point(1016, 529);
+            this.layoutControlItem181.Location = new System.Drawing.Point(780, 901);
             this.layoutControlItem181.Name = "layoutControlItem181";
-            this.layoutControlItem181.Size = new System.Drawing.Size(486, 31);
+            this.layoutControlItem181.Size = new System.Drawing.Size(230, 31);
             this.layoutControlItem181.Text = "b. Prôtêin:";
             this.layoutControlItem181.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem181.TextSize = new System.Drawing.Size(180, 20);
+            this.layoutControlItem181.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem181.TextToControlDistance = 5;
             // 
             // layoutControlItem182
@@ -8606,9 +9086,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem182.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem182.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem182.Control = this.txtTestUrineOther2;
-            this.layoutControlItem182.Location = new System.Drawing.Point(1502, 529);
+            this.layoutControlItem182.Location = new System.Drawing.Point(1010, 901);
             this.layoutControlItem182.Name = "layoutControlItem182";
-            this.layoutControlItem182.Size = new System.Drawing.Size(201, 31);
+            this.layoutControlItem182.Size = new System.Drawing.Size(377, 31);
             this.layoutControlItem182.Text = "Khác (nếu có):";
             this.layoutControlItem182.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem182.TextSize = new System.Drawing.Size(90, 20);
@@ -8616,40 +9096,34 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // layoutControlItem183
             // 
+            this.layoutControlItem183.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem183.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem183.Control = this.txtResultDiim2;
-            this.layoutControlItem183.Location = new System.Drawing.Point(425, 560);
+            this.layoutControlItem183.Location = new System.Drawing.Point(406, 954);
             this.layoutControlItem183.Name = "layoutControlItem183";
             this.layoutControlItem183.OptionsToolTip.ToolTip = "Chẩn đoán hình ảnh";
-            this.layoutControlItem183.Size = new System.Drawing.Size(591, 28);
-            this.layoutControlItem183.Text = "3. CĐHA:";
+            this.layoutControlItem183.Size = new System.Drawing.Size(981, 28);
+            this.layoutControlItem183.Text = "Kết quả:";
             this.layoutControlItem183.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem183.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem183.TextToControlDistance = 5;
             // 
-            // emptySpaceItem16
-            // 
-            this.emptySpaceItem16.AllowHotTrack = false;
-            this.emptySpaceItem16.Location = new System.Drawing.Point(1016, 560);
-            this.emptySpaceItem16.Name = "emptySpaceItem16";
-            this.emptySpaceItem16.Size = new System.Drawing.Size(428, 28);
-            this.emptySpaceItem16.TextSize = new System.Drawing.Size(0, 0);
-            // 
             // emptySpaceItem17
             // 
             this.emptySpaceItem17.AllowHotTrack = false;
-            this.emptySpaceItem17.Location = new System.Drawing.Point(1663, 22);
+            this.emptySpaceItem17.Location = new System.Drawing.Point(882, 22);
             this.emptySpaceItem17.Name = "emptySpaceItem17";
-            this.emptySpaceItem17.Size = new System.Drawing.Size(40, 31);
+            this.emptySpaceItem17.Size = new System.Drawing.Size(821, 31);
             this.emptySpaceItem17.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem27
             // 
             this.layoutControlItem27.Control = this.label9;
-            this.layoutControlItem27.Location = new System.Drawing.Point(425, 439);
+            this.layoutControlItem27.Location = new System.Drawing.Point(406, 789);
             this.layoutControlItem27.Name = "layoutControlItem27";
             this.layoutControlItem27.OptionsToolTip.ToolTip = "Xét nghiệm máu - Công thức máu";
-            this.layoutControlItem27.Size = new System.Drawing.Size(224, 31);
-            this.layoutControlItem27.Text = "1. XN máu: a. CTM:";
+            this.layoutControlItem27.Size = new System.Drawing.Size(148, 31);
+            this.layoutControlItem27.Text = "a. Công thức máu:";
             this.layoutControlItem27.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem27.TextSize = new System.Drawing.Size(110, 13);
             this.layoutControlItem27.TextToControlDistance = 5;
@@ -8659,7 +9133,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem428.Control = this.labelControl3;
             this.layoutControlItem428.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem428.Name = "layoutControlItem428";
-            this.layoutControlItem428.Size = new System.Drawing.Size(425, 26);
+            this.layoutControlItem428.Size = new System.Drawing.Size(406, 26);
             this.layoutControlItem428.Text = "I. TIỀN SỬ BỆNH TẬT";
             this.layoutControlItem428.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem428.TextSize = new System.Drawing.Size(200, 20);
@@ -8668,10 +9142,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem430
             // 
             this.layoutControlItem430.Control = this.gridControl3;
-            this.layoutControlItem430.Location = new System.Drawing.Point(0, 158);
+            this.layoutControlItem430.Location = new System.Drawing.Point(0, 184);
             this.layoutControlItem430.MinSize = new System.Drawing.Size(126, 40);
             this.layoutControlItem430.Name = "layoutControlItem430";
-            this.layoutControlItem430.Size = new System.Drawing.Size(425, 231);
+            this.layoutControlItem430.Size = new System.Drawing.Size(406, 452);
             this.layoutControlItem430.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem430.Text = "2. Tiền sử bản thân:";
             this.layoutControlItem430.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -8682,10 +9156,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem431
             // 
             this.layoutControlItem431.Control = this.txtPathologicalHistory2;
-            this.layoutControlItem431.Location = new System.Drawing.Point(0, 389);
+            this.layoutControlItem431.Location = new System.Drawing.Point(0, 636);
             this.layoutControlItem431.MinSize = new System.Drawing.Size(54, 80);
             this.layoutControlItem431.Name = "layoutControlItem431";
-            this.layoutControlItem431.Size = new System.Drawing.Size(425, 104);
+            this.layoutControlItem431.Size = new System.Drawing.Size(406, 131);
             this.layoutControlItem431.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem431.Text = "Nếu có đề nghị ghi rõ tên bệnh:";
             this.layoutControlItem431.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -8696,9 +9170,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem432
             // 
             this.layoutControlItem432.Control = this.labelControl4;
-            this.layoutControlItem432.Location = new System.Drawing.Point(0, 493);
+            this.layoutControlItem432.Location = new System.Drawing.Point(0, 767);
             this.layoutControlItem432.Name = "layoutControlItem432";
-            this.layoutControlItem432.Size = new System.Drawing.Size(425, 26);
+            this.layoutControlItem432.Size = new System.Drawing.Size(406, 26);
             this.layoutControlItem432.Text = "3. Câu hỏi khác (nếu có):";
             this.layoutControlItem432.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem432.TextSize = new System.Drawing.Size(250, 20);
@@ -8707,10 +9181,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem433
             // 
             this.layoutControlItem433.Control = this.txtMedicineUsing;
-            this.layoutControlItem433.Location = new System.Drawing.Point(0, 519);
+            this.layoutControlItem433.Location = new System.Drawing.Point(0, 793);
             this.layoutControlItem433.MinSize = new System.Drawing.Size(54, 80);
             this.layoutControlItem433.Name = "layoutControlItem433";
-            this.layoutControlItem433.Size = new System.Drawing.Size(425, 109);
+            this.layoutControlItem433.Size = new System.Drawing.Size(406, 134);
             this.layoutControlItem433.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem433.Text = "a. Thuốc đang dùng (nếu có):";
             this.layoutControlItem433.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -8721,9 +9195,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem184
             // 
             this.layoutControlItem184.Control = this.labelControl23;
-            this.layoutControlItem184.Location = new System.Drawing.Point(425, 588);
+            this.layoutControlItem184.Location = new System.Drawing.Point(406, 982);
             this.layoutControlItem184.Name = "layoutControlItem184";
-            this.layoutControlItem184.Size = new System.Drawing.Size(1278, 22);
+            this.layoutControlItem184.Size = new System.Drawing.Size(1297, 22);
             this.layoutControlItem184.Text = "V. KẾT LUẬN";
             this.layoutControlItem184.TextSize = new System.Drawing.Size(145, 16);
             // 
@@ -8732,11 +9206,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem185.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem185.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem185.Control = this.cboHealthExamRank2;
-            this.layoutControlItem185.Location = new System.Drawing.Point(425, 610);
+            this.layoutControlItem185.Location = new System.Drawing.Point(406, 1004);
             this.layoutControlItem185.Name = "layoutControlItem185";
             this.layoutControlItem185.OptionsToolTip.ToolTip = "Phân loại sức khỏe";
-            this.layoutControlItem185.Size = new System.Drawing.Size(295, 28);
-            this.layoutControlItem185.Text = "Phân loại SK:";
+            this.layoutControlItem185.Size = new System.Drawing.Size(304, 28);
+            this.layoutControlItem185.Text = "Phân loại:";
             this.layoutControlItem185.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem185.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem185.TextToControlDistance = 5;
@@ -8746,94 +9220,51 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem186.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem186.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem186.Control = this.txtDiseases2;
-            this.layoutControlItem186.Location = new System.Drawing.Point(1015, 610);
+            this.layoutControlItem186.Location = new System.Drawing.Point(1010, 1004);
             this.layoutControlItem186.Name = "layoutControlItem186";
-            this.layoutControlItem186.Size = new System.Drawing.Size(688, 28);
+            this.layoutControlItem186.Size = new System.Drawing.Size(693, 28);
             this.layoutControlItem186.Text = "Bệnh tật (nếu có):";
             this.layoutControlItem186.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem186.TextSize = new System.Drawing.Size(180, 20);
+            this.layoutControlItem186.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem186.TextToControlDistance = 5;
-            // 
-            // layoutControlItem429
-            // 
-            this.layoutControlItem429.Control = this.txtPathologicalHistoryFamily;
-            this.layoutControlItem429.Location = new System.Drawing.Point(0, 26);
-            this.layoutControlItem429.Name = "layoutControlItem429";
-            this.layoutControlItem429.Size = new System.Drawing.Size(425, 132);
-            this.layoutControlItem429.Text = "1. Tiền sử gia đình:";
-            this.layoutControlItem429.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem429.TextLocation = DevExpress.Utils.Locations.Top;
-            this.layoutControlItem429.TextSize = new System.Drawing.Size(50, 20);
-            this.layoutControlItem429.TextToControlDistance = 5;
             // 
             // layoutControlItem106
             // 
+            this.layoutControlItem106.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem106.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem106.Control = this.txtHealthExamRankDescription2;
-            this.layoutControlItem106.Location = new System.Drawing.Point(720, 610);
+            this.layoutControlItem106.Location = new System.Drawing.Point(710, 1004);
             this.layoutControlItem106.Name = "layoutControlItem106";
-            this.layoutControlItem106.Size = new System.Drawing.Size(295, 28);
-            this.layoutControlItem106.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem106.TextVisible = false;
-            // 
-            // layoutControlItem107
-            // 
-            this.layoutControlItem107.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem107.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem107.Control = this.txtExamOend2;
-            this.layoutControlItem107.Location = new System.Drawing.Point(839, 184);
-            this.layoutControlItem107.Name = "layoutControlItem107";
-            this.layoutControlItem107.Size = new System.Drawing.Size(363, 28);
-            this.layoutControlItem107.Text = "h. Nội tiết:";
-            this.layoutControlItem107.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem107.TextSize = new System.Drawing.Size(110, 20);
-            this.layoutControlItem107.TextToControlDistance = 5;
-            // 
-            // layoutControlItem108
-            // 
-            this.layoutControlItem108.Control = this.cboExamOend2;
-            this.layoutControlItem108.Location = new System.Drawing.Point(1202, 184);
-            this.layoutControlItem108.Name = "layoutControlItem108";
-            this.layoutControlItem108.Size = new System.Drawing.Size(120, 28);
-            this.layoutControlItem108.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem108.TextVisible = false;
+            this.layoutControlItem106.Size = new System.Drawing.Size(300, 28);
+            this.layoutControlItem106.Text = "Mô tả:";
+            this.layoutControlItem106.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem106.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem106.TextToControlDistance = 5;
             // 
             // layoutControlItem442
             // 
             this.layoutControlItem442.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem442.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem442.Control = this.cboExecuteLoginName2;
-            this.layoutControlItem442.Location = new System.Drawing.Point(1444, 53);
+            this.layoutControlItem442.Location = new System.Drawing.Point(1410, 53);
             this.layoutControlItem442.Name = "layoutControlItem442";
-            this.layoutControlItem442.Size = new System.Drawing.Size(259, 31);
+            this.layoutControlItem442.Size = new System.Drawing.Size(293, 31);
             this.layoutControlItem442.Text = "Người khám:";
             this.layoutControlItem442.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem442.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem442.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem442.TextToControlDistance = 5;
-            // 
-            // layoutControlItem443
-            // 
-            this.layoutControlItem443.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem443.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem443.Control = this.cboExamCirculationLoginName2;
-            this.layoutControlItem443.Location = new System.Drawing.Point(1444, 184);
-            this.layoutControlItem443.Name = "layoutControlItem443";
-            this.layoutControlItem443.Size = new System.Drawing.Size(259, 28);
-            this.layoutControlItem443.Text = "Người khám:";
-            this.layoutControlItem443.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem443.TextSize = new System.Drawing.Size(70, 20);
-            this.layoutControlItem443.TextToControlDistance = 5;
             // 
             // layoutControlItem444
             // 
             this.layoutControlItem444.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem444.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem444.Control = this.cboDiimLoginName2;
-            this.layoutControlItem444.Location = new System.Drawing.Point(1444, 560);
+            this.layoutControlItem444.Location = new System.Drawing.Point(1387, 954);
             this.layoutControlItem444.Name = "layoutControlItem444";
-            this.layoutControlItem444.Size = new System.Drawing.Size(259, 28);
+            this.layoutControlItem444.Size = new System.Drawing.Size(316, 28);
             this.layoutControlItem444.Text = "Người khám:";
             this.layoutControlItem444.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem444.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem444.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem444.TextToControlDistance = 5;
             // 
             // layoutControlItem157
@@ -8841,12 +9272,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem157.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem157.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem157.Control = this.txtExamEyeDisease2;
-            this.layoutControlItem157.Location = new System.Drawing.Point(425, 271);
+            this.layoutControlItem157.Location = new System.Drawing.Point(406, 505);
             this.layoutControlItem157.Name = "layoutControlItem157";
-            this.layoutControlItem157.Size = new System.Drawing.Size(638, 28);
-            this.layoutControlItem157.Text = "- Bệnh về mắt";
+            this.layoutControlItem157.Size = new System.Drawing.Size(603, 28);
+            this.layoutControlItem157.Text = "Bệnh (nếu có):";
             this.layoutControlItem157.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem157.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem157.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem157.TextToControlDistance = 5;
             // 
             // layoutControlItem150
@@ -8854,39 +9285,25 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem150.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem150.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem150.Control = this.cboExamEyeRank2;
-            this.layoutControlItem150.Location = new System.Drawing.Point(1063, 271);
+            this.layoutControlItem150.Location = new System.Drawing.Point(1009, 505);
             this.layoutControlItem150.Name = "layoutControlItem150";
-            this.layoutControlItem150.Size = new System.Drawing.Size(355, 28);
+            this.layoutControlItem150.Size = new System.Drawing.Size(378, 28);
             this.layoutControlItem150.Text = "Phân loại:";
             this.layoutControlItem150.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem150.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem150.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem150.TextToControlDistance = 5;
-            // 
-            // layoutControlItem158
-            // 
-            this.layoutControlItem158.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem158.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem158.Control = this.txtExamEntDisease2;
-            this.layoutControlItem158.Location = new System.Drawing.Point(425, 330);
-            this.layoutControlItem158.Name = "layoutControlItem158";
-            this.layoutControlItem158.OptionsToolTip.ToolTip = "Bệnh tai mũi họng";
-            this.layoutControlItem158.Size = new System.Drawing.Size(638, 28);
-            this.layoutControlItem158.Text = "- Bệnh TMH:";
-            this.layoutControlItem158.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem158.TextSize = new System.Drawing.Size(70, 20);
-            this.layoutControlItem158.TextToControlDistance = 5;
             // 
             // layoutControlItem159
             // 
             this.layoutControlItem159.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem159.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem159.Control = this.cboExamEntDiseaseRank2;
-            this.layoutControlItem159.Location = new System.Drawing.Point(1063, 330);
+            this.layoutControlItem159.Location = new System.Drawing.Point(1009, 586);
             this.layoutControlItem159.Name = "layoutControlItem159";
-            this.layoutControlItem159.Size = new System.Drawing.Size(381, 28);
+            this.layoutControlItem159.Size = new System.Drawing.Size(378, 28);
             this.layoutControlItem159.Text = "Phân loại:";
             this.layoutControlItem159.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem159.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem159.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem159.TextToControlDistance = 5;
             // 
             // layoutControlItem165
@@ -8894,12 +9311,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem165.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem165.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem165.Control = this.txtExamDernatology2;
-            this.layoutControlItem165.Location = new System.Drawing.Point(425, 389);
+            this.layoutControlItem165.Location = new System.Drawing.Point(406, 717);
             this.layoutControlItem165.Name = "layoutControlItem165";
-            this.layoutControlItem165.Size = new System.Drawing.Size(567, 28);
-            this.layoutControlItem165.Text = "7. Da liễu:";
+            this.layoutControlItem165.Size = new System.Drawing.Size(603, 28);
+            this.layoutControlItem165.Text = "Kết quả:";
             this.layoutControlItem165.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem165.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem165.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem165.TextToControlDistance = 5;
             // 
             // layoutControlItem166
@@ -8907,24 +9324,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem166.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem166.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem166.Control = this.cboExamDernatologyRank2;
-            this.layoutControlItem166.Location = new System.Drawing.Point(992, 389);
+            this.layoutControlItem166.Location = new System.Drawing.Point(1009, 717);
             this.layoutControlItem166.Name = "layoutControlItem166";
-            this.layoutControlItem166.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem166.Size = new System.Drawing.Size(72, 28);
-            this.layoutControlItem166.Text = "Phân loại:";
+            this.layoutControlItem166.Size = new System.Drawing.Size(377, 28);
+            this.layoutControlItem166.Text = "Phân loại: ";
             this.layoutControlItem166.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem166.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem166.TextSize = new System.Drawing.Size(125, 20);
             this.layoutControlItem166.TextToControlDistance = 0;
-            this.layoutControlItem166.TextVisible = false;
             // 
             // layoutControlItem459
             // 
             this.layoutControlItem459.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem459.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem459.Control = this.cboExamEyeLoginName2;
-            this.layoutControlItem459.Location = new System.Drawing.Point(1418, 271);
+            this.layoutControlItem459.Location = new System.Drawing.Point(1387, 505);
             this.layoutControlItem459.Name = "layoutControlItem459";
-            this.layoutControlItem459.Size = new System.Drawing.Size(285, 28);
+            this.layoutControlItem459.Size = new System.Drawing.Size(316, 28);
             this.layoutControlItem459.Text = "Người khám:";
             this.layoutControlItem459.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem459.TextSize = new System.Drawing.Size(90, 20);
@@ -8935,50 +9350,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem460.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem460.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem460.Control = this.cboExamEntLoginName2;
-            this.layoutControlItem460.Location = new System.Drawing.Point(1444, 330);
+            this.layoutControlItem460.Location = new System.Drawing.Point(1387, 586);
             this.layoutControlItem460.Name = "layoutControlItem460";
-            this.layoutControlItem460.Size = new System.Drawing.Size(259, 28);
+            this.layoutControlItem460.Size = new System.Drawing.Size(316, 28);
             this.layoutControlItem460.Text = "Người khám:";
             this.layoutControlItem460.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem460.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem460.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem460.TextToControlDistance = 5;
-            // 
-            // layoutControlItem461
-            // 
-            this.layoutControlItem461.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem461.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem461.Control = this.cboExamStomatologyLoginName2;
-            this.layoutControlItem461.Location = new System.Drawing.Point(1446, 389);
-            this.layoutControlItem461.Name = "layoutControlItem461";
-            this.layoutControlItem461.Size = new System.Drawing.Size(257, 28);
-            this.layoutControlItem461.Text = "Người khám:";
-            this.layoutControlItem461.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem461.TextSize = new System.Drawing.Size(70, 20);
-            this.layoutControlItem461.TextToControlDistance = 5;
-            // 
-            // emptySpaceItem9
-            // 
-            this.emptySpaceItem9.AllowHotTrack = false;
-            this.emptySpaceItem9.Location = new System.Drawing.Point(1322, 184);
-            this.emptySpaceItem9.Name = "emptySpaceItem9";
-            this.emptySpaceItem9.Size = new System.Drawing.Size(122, 28);
-            this.emptySpaceItem9.TextSize = new System.Drawing.Size(0, 0);
-            // 
-            // emptySpaceItem10
-            // 
-            this.emptySpaceItem10.AllowHotTrack = false;
-            this.emptySpaceItem10.Location = new System.Drawing.Point(1064, 389);
-            this.emptySpaceItem10.Name = "emptySpaceItem10";
-            this.emptySpaceItem10.Size = new System.Drawing.Size(382, 28);
-            this.emptySpaceItem10.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem434
             // 
             this.layoutControlItem434.Control = this.txtMaternityHistory;
-            this.layoutControlItem434.Location = new System.Drawing.Point(0, 628);
+            this.layoutControlItem434.Location = new System.Drawing.Point(0, 927);
             this.layoutControlItem434.MinSize = new System.Drawing.Size(54, 80);
             this.layoutControlItem434.Name = "layoutControlItem434";
-            this.layoutControlItem434.Size = new System.Drawing.Size(425, 122);
+            this.layoutControlItem434.Size = new System.Drawing.Size(406, 115);
             this.layoutControlItem434.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem434.Text = "b. Đang có thai hoặc con nhỏ dưới 12 tháng (Đối với phụ nữ):";
             this.layoutControlItem434.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -8989,10 +9375,617 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // emptySpaceItem12
             // 
             this.emptySpaceItem12.AllowHotTrack = false;
-            this.emptySpaceItem12.Location = new System.Drawing.Point(425, 638);
+            this.emptySpaceItem12.Location = new System.Drawing.Point(406, 1032);
             this.emptySpaceItem12.Name = "emptySpaceItem12";
-            this.emptySpaceItem12.Size = new System.Drawing.Size(1278, 112);
+            this.emptySpaceItem12.Size = new System.Drawing.Size(1297, 10);
             this.emptySpaceItem12.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem137
+            // 
+            this.layoutControlItem137.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem137.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem137.Control = this.txtExamRespiratory2;
+            this.layoutControlItem137.Location = new System.Drawing.Point(406, 156);
+            this.layoutControlItem137.Name = "layoutControlItem137";
+            this.layoutControlItem137.Size = new System.Drawing.Size(603, 28);
+            this.layoutControlItem137.Text = "b. Hô hấp:";
+            this.layoutControlItem137.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem137.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem137.TextToControlDistance = 5;
+            // 
+            // layoutControlItem129
+            // 
+            this.layoutControlItem129.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem129.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem129.Control = this.cboExamRespiratoryRank2;
+            this.layoutControlItem129.Location = new System.Drawing.Point(1009, 156);
+            this.layoutControlItem129.Name = "layoutControlItem129";
+            this.layoutControlItem129.Size = new System.Drawing.Size(377, 28);
+            this.layoutControlItem129.Text = "Phân loại:";
+            this.layoutControlItem129.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem129.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem129.TextToControlDistance = 5;
+            // 
+            // layoutControlItem131
+            // 
+            this.layoutControlItem131.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem131.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem131.Control = this.txtExamDigestion2;
+            this.layoutControlItem131.Location = new System.Drawing.Point(406, 184);
+            this.layoutControlItem131.Name = "layoutControlItem131";
+            this.layoutControlItem131.Size = new System.Drawing.Size(603, 28);
+            this.layoutControlItem131.Text = "c. Tiêu hóa";
+            this.layoutControlItem131.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem131.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem131.TextToControlDistance = 5;
+            // 
+            // layoutControlItem133
+            // 
+            this.layoutControlItem133.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem133.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem133.Control = this.cboExamDigestionRank2;
+            this.layoutControlItem133.Location = new System.Drawing.Point(1009, 184);
+            this.layoutControlItem133.Name = "layoutControlItem133";
+            this.layoutControlItem133.Size = new System.Drawing.Size(377, 28);
+            this.layoutControlItem133.Text = "Phân loại:";
+            this.layoutControlItem133.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem133.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem133.TextToControlDistance = 5;
+            // 
+            // layoutControlItem138
+            // 
+            this.layoutControlItem138.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem138.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem138.Control = this.txtExamMuscleBone2;
+            this.layoutControlItem138.Location = new System.Drawing.Point(406, 268);
+            this.layoutControlItem138.Name = "layoutControlItem138";
+            this.layoutControlItem138.OptionsToolTip.ToolTip = "Cơ xương khớp";
+            this.layoutControlItem138.Size = new System.Drawing.Size(603, 28);
+            this.layoutControlItem138.Text = "e. CXK:";
+            this.layoutControlItem138.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem138.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem138.TextToControlDistance = 5;
+            // 
+            // layoutControlItem130
+            // 
+            this.layoutControlItem130.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem130.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem130.Control = this.cboExamMuscleBoneRank2;
+            this.layoutControlItem130.Location = new System.Drawing.Point(1009, 268);
+            this.layoutControlItem130.Name = "layoutControlItem130";
+            this.layoutControlItem130.Size = new System.Drawing.Size(377, 28);
+            this.layoutControlItem130.Text = "Phân loại:";
+            this.layoutControlItem130.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem130.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem130.TextToControlDistance = 5;
+            // 
+            // layoutControlItem132
+            // 
+            this.layoutControlItem132.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem132.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem132.Control = this.txtExamNeurological2;
+            this.layoutControlItem132.Location = new System.Drawing.Point(406, 296);
+            this.layoutControlItem132.Name = "layoutControlItem132";
+            this.layoutControlItem132.Size = new System.Drawing.Size(603, 28);
+            this.layoutControlItem132.Text = "g. Thần kinh:";
+            this.layoutControlItem132.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem132.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem132.TextToControlDistance = 5;
+            // 
+            // layoutControlItem134
+            // 
+            this.layoutControlItem134.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem134.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem134.Control = this.cboExamNeurologicalRank2;
+            this.layoutControlItem134.Location = new System.Drawing.Point(1009, 296);
+            this.layoutControlItem134.Name = "layoutControlItem134";
+            this.layoutControlItem134.Size = new System.Drawing.Size(377, 28);
+            this.layoutControlItem134.Text = "Phân loại:";
+            this.layoutControlItem134.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem134.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem134.TextToControlDistance = 5;
+            // 
+            // layoutControlItem443
+            // 
+            this.layoutControlItem443.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem443.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem443.Control = this.cboExamCirculationLoginName2;
+            this.layoutControlItem443.Location = new System.Drawing.Point(1386, 128);
+            this.layoutControlItem443.Name = "layoutControlItem443";
+            this.layoutControlItem443.Size = new System.Drawing.Size(317, 28);
+            this.layoutControlItem443.Text = "Người khám:";
+            this.layoutControlItem443.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem443.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem443.TextToControlDistance = 5;
+            // 
+            // layoutControlItem107
+            // 
+            this.layoutControlItem107.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem107.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem107.Control = this.txtExamOend2;
+            this.layoutControlItem107.Location = new System.Drawing.Point(406, 240);
+            this.layoutControlItem107.Name = "layoutControlItem107";
+            this.layoutControlItem107.Size = new System.Drawing.Size(603, 28);
+            this.layoutControlItem107.Text = "đ. Nội tiết:";
+            this.layoutControlItem107.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem107.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem107.TextToControlDistance = 5;
+            // 
+            // layoutControlItem108
+            // 
+            this.layoutControlItem108.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem108.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem108.Control = this.cboExamOend2;
+            this.layoutControlItem108.Location = new System.Drawing.Point(1009, 240);
+            this.layoutControlItem108.Name = "layoutControlItem108";
+            this.layoutControlItem108.Size = new System.Drawing.Size(377, 28);
+            this.layoutControlItem108.Text = "Phân loại:";
+            this.layoutControlItem108.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem108.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem108.TextToControlDistance = 5;
+            // 
+            // layoutControlItem142
+            // 
+            this.layoutControlItem142.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem142.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem142.Control = this.txtExamObstetric2;
+            this.layoutControlItem142.Location = new System.Drawing.Point(406, 424);
+            this.layoutControlItem142.Name = "layoutControlItem142";
+            this.layoutControlItem142.Size = new System.Drawing.Size(603, 28);
+            this.layoutControlItem142.Text = "Kết quả:";
+            this.layoutControlItem142.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem142.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem142.TextToControlDistance = 5;
+            // 
+            // layoutControlItem143
+            // 
+            this.layoutControlItem143.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem143.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem143.Control = this.cboExamObstetricRank2;
+            this.layoutControlItem143.Location = new System.Drawing.Point(1009, 424);
+            this.layoutControlItem143.Name = "layoutControlItem143";
+            this.layoutControlItem143.Size = new System.Drawing.Size(377, 28);
+            this.layoutControlItem143.Text = "Phân loại:";
+            this.layoutControlItem143.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem143.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem143.TextToControlDistance = 5;
+            // 
+            // layoutControlItem135
+            // 
+            this.layoutControlItem135.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem135.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem135.Control = this.txtExamMental2;
+            this.layoutControlItem135.Location = new System.Drawing.Point(406, 324);
+            this.layoutControlItem135.Name = "layoutControlItem135";
+            this.layoutControlItem135.Size = new System.Drawing.Size(603, 28);
+            this.layoutControlItem135.Text = "h. Tâm thần";
+            this.layoutControlItem135.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem135.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem135.TextToControlDistance = 5;
+            // 
+            // layoutControlItem136
+            // 
+            this.layoutControlItem136.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem136.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem136.Control = this.cboExamMentalRank2;
+            this.layoutControlItem136.Location = new System.Drawing.Point(1009, 324);
+            this.layoutControlItem136.Name = "layoutControlItem136";
+            this.layoutControlItem136.Size = new System.Drawing.Size(377, 28);
+            this.layoutControlItem136.Text = "Phân loại:";
+            this.layoutControlItem136.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem136.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem136.TextToControlDistance = 5;
+            // 
+            // layoutControlItem429
+            // 
+            this.layoutControlItem429.Control = this.txtPathologicalHistoryFamily;
+            this.layoutControlItem429.Location = new System.Drawing.Point(0, 26);
+            this.layoutControlItem429.Name = "layoutControlItem429";
+            this.layoutControlItem429.Size = new System.Drawing.Size(406, 158);
+            this.layoutControlItem429.Text = "1. Tiền sử gia đình:";
+            this.layoutControlItem429.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem429.TextLocation = DevExpress.Utils.Locations.Top;
+            this.layoutControlItem429.TextSize = new System.Drawing.Size(50, 20);
+            this.layoutControlItem429.TextToControlDistance = 5;
+            // 
+            // layoutControlItem139
+            // 
+            this.layoutControlItem139.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem139.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem139.Control = this.txtExamSurgery2;
+            this.layoutControlItem139.Location = new System.Drawing.Point(406, 374);
+            this.layoutControlItem139.Name = "layoutControlItem139";
+            this.layoutControlItem139.Size = new System.Drawing.Size(603, 28);
+            this.layoutControlItem139.Text = "Kết quả:";
+            this.layoutControlItem139.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem139.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem139.TextToControlDistance = 5;
+            // 
+            // layoutControlItem141
+            // 
+            this.layoutControlItem141.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem141.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem141.Control = this.cboExamSurgeryRank2;
+            this.layoutControlItem141.Location = new System.Drawing.Point(1009, 374);
+            this.layoutControlItem141.Name = "layoutControlItem141";
+            this.layoutControlItem141.Size = new System.Drawing.Size(377, 28);
+            this.layoutControlItem141.Text = "Phân loại:";
+            this.layoutControlItem141.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem141.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem141.TextToControlDistance = 5;
+            // 
+            // layoutControlItem587
+            // 
+            this.layoutControlItem587.Control = this.labelControl61;
+            this.layoutControlItem587.Location = new System.Drawing.Point(406, 352);
+            this.layoutControlItem587.MaxSize = new System.Drawing.Size(10000, 22);
+            this.layoutControlItem587.MinSize = new System.Drawing.Size(88, 22);
+            this.layoutControlItem587.Name = "layoutControlItem587";
+            this.layoutControlItem587.Size = new System.Drawing.Size(1297, 22);
+            this.layoutControlItem587.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem587.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem587.TextVisible = false;
+            // 
+            // layoutControlItem125
+            // 
+            this.layoutControlItem125.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem125.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem125.Control = this.txtExamCirculation2;
+            this.layoutControlItem125.Location = new System.Drawing.Point(406, 128);
+            this.layoutControlItem125.Name = "layoutControlItem125";
+            this.layoutControlItem125.Size = new System.Drawing.Size(603, 28);
+            this.layoutControlItem125.Text = "a. Tuần hoàn:";
+            this.layoutControlItem125.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem125.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem125.TextToControlDistance = 5;
+            // 
+            // layoutControlItem588
+            // 
+            this.layoutControlItem588.Control = this.labelControl62;
+            this.layoutControlItem588.Location = new System.Drawing.Point(406, 402);
+            this.layoutControlItem588.MaxSize = new System.Drawing.Size(10000, 22);
+            this.layoutControlItem588.MinSize = new System.Drawing.Size(88, 22);
+            this.layoutControlItem588.Name = "layoutControlItem588";
+            this.layoutControlItem588.Size = new System.Drawing.Size(1297, 22);
+            this.layoutControlItem588.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem588.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem588.TextVisible = false;
+            // 
+            // layoutControlItem589
+            // 
+            this.layoutControlItem589.Control = this.labelControl63;
+            this.layoutControlItem589.Location = new System.Drawing.Point(406, 452);
+            this.layoutControlItem589.MaxSize = new System.Drawing.Size(10000, 22);
+            this.layoutControlItem589.MinSize = new System.Drawing.Size(88, 22);
+            this.layoutControlItem589.Name = "layoutControlItem589";
+            this.layoutControlItem589.Size = new System.Drawing.Size(1297, 22);
+            this.layoutControlItem589.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem589.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem589.TextVisible = false;
+            // 
+            // layoutControlItem591
+            // 
+            this.layoutControlItem591.Control = this.labelControl65;
+            this.layoutControlItem591.Location = new System.Drawing.Point(406, 533);
+            this.layoutControlItem591.MaxSize = new System.Drawing.Size(10000, 22);
+            this.layoutControlItem591.MinSize = new System.Drawing.Size(88, 22);
+            this.layoutControlItem591.Name = "layoutControlItem591";
+            this.layoutControlItem591.Size = new System.Drawing.Size(1297, 22);
+            this.layoutControlItem591.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem591.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem591.TextVisible = false;
+            // 
+            // layoutControlItem592
+            // 
+            this.layoutControlItem592.Control = this.labelControl66;
+            this.layoutControlItem592.Location = new System.Drawing.Point(406, 614);
+            this.layoutControlItem592.MaxSize = new System.Drawing.Size(10000, 22);
+            this.layoutControlItem592.MinSize = new System.Drawing.Size(88, 22);
+            this.layoutControlItem592.Name = "layoutControlItem592";
+            this.layoutControlItem592.Size = new System.Drawing.Size(1297, 22);
+            this.layoutControlItem592.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem592.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem592.TextVisible = false;
+            // 
+            // layoutControlItem593
+            // 
+            this.layoutControlItem593.Control = this.labelControl67;
+            this.layoutControlItem593.Location = new System.Drawing.Point(406, 695);
+            this.layoutControlItem593.MaxSize = new System.Drawing.Size(10000, 22);
+            this.layoutControlItem593.MinSize = new System.Drawing.Size(88, 22);
+            this.layoutControlItem593.Name = "layoutControlItem593";
+            this.layoutControlItem593.Size = new System.Drawing.Size(1297, 22);
+            this.layoutControlItem593.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem593.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem593.TextVisible = false;
+            // 
+            // layoutControlItem163
+            // 
+            this.layoutControlItem163.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem163.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem163.Control = this.txtExamStomatologyDisease2;
+            this.layoutControlItem163.Location = new System.Drawing.Point(406, 667);
+            this.layoutControlItem163.Name = "layoutControlItem163";
+            this.layoutControlItem163.OptionsToolTip.ToolTip = "Bệnh răng hàm mặt";
+            this.layoutControlItem163.Size = new System.Drawing.Size(603, 28);
+            this.layoutControlItem163.Text = "Bệnh (nếu có):";
+            this.layoutControlItem163.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem163.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem163.TextToControlDistance = 5;
+            // 
+            // layoutControlItem164
+            // 
+            this.layoutControlItem164.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem164.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem164.Control = this.cboExamStomatologyRank2;
+            this.layoutControlItem164.Location = new System.Drawing.Point(1009, 667);
+            this.layoutControlItem164.Name = "layoutControlItem164";
+            this.layoutControlItem164.Size = new System.Drawing.Size(378, 28);
+            this.layoutControlItem164.Text = "Phân loại:";
+            this.layoutControlItem164.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem164.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem164.TextToControlDistance = 5;
+            // 
+            // layoutControlItem590
+            // 
+            this.layoutControlItem590.Control = this.labelControl64;
+            this.layoutControlItem590.Location = new System.Drawing.Point(406, 767);
+            this.layoutControlItem590.MaxSize = new System.Drawing.Size(10020, 22);
+            this.layoutControlItem590.MinSize = new System.Drawing.Size(120, 22);
+            this.layoutControlItem590.Name = "layoutControlItem590";
+            this.layoutControlItem590.Size = new System.Drawing.Size(981, 22);
+            this.layoutControlItem590.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem590.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem590.TextVisible = false;
+            // 
+            // layoutControlItem169
+            // 
+            this.layoutControlItem169.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem169.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem169.Control = this.txtTestBloodHc2;
+            this.layoutControlItem169.Location = new System.Drawing.Point(554, 789);
+            this.layoutControlItem169.Name = "layoutControlItem169";
+            this.layoutControlItem169.OptionsToolTip.ToolTip = "Số lượng hồng cầu";
+            this.layoutControlItem169.Size = new System.Drawing.Size(226, 31);
+            this.layoutControlItem169.Text = "Hồng cầu:";
+            this.layoutControlItem169.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem169.TextSize = new System.Drawing.Size(80, 20);
+            this.layoutControlItem169.TextToControlDistance = 5;
+            // 
+            // layoutControlItem168
+            // 
+            this.layoutControlItem168.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem168.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem168.Control = this.txtTestBloodBc2;
+            this.layoutControlItem168.Location = new System.Drawing.Point(780, 789);
+            this.layoutControlItem168.Name = "layoutControlItem168";
+            this.layoutControlItem168.OptionsToolTip.ToolTip = "Số lượng bạch cầu";
+            this.layoutControlItem168.Size = new System.Drawing.Size(230, 31);
+            this.layoutControlItem168.Text = "Bạch cầu:";
+            this.layoutControlItem168.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem168.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem168.TextToControlDistance = 5;
+            // 
+            // layoutControlItem171
+            // 
+            this.layoutControlItem171.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem171.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem171.Control = this.txtTestBloodTc2;
+            this.layoutControlItem171.Location = new System.Drawing.Point(1010, 789);
+            this.layoutControlItem171.Name = "layoutControlItem171";
+            this.layoutControlItem171.OptionsToolTip.ToolTip = "Số lượng tiểu cầu";
+            this.layoutControlItem171.Size = new System.Drawing.Size(377, 31);
+            this.layoutControlItem171.Text = "Số lượng TC:";
+            this.layoutControlItem171.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem171.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem171.TextToControlDistance = 5;
+            // 
+            // layoutControlItem594
+            // 
+            this.layoutControlItem594.Control = this.labelControl68;
+            this.layoutControlItem594.Location = new System.Drawing.Point(406, 879);
+            this.layoutControlItem594.MaxSize = new System.Drawing.Size(10000, 22);
+            this.layoutControlItem594.MinSize = new System.Drawing.Size(88, 22);
+            this.layoutControlItem594.Name = "layoutControlItem594";
+            this.layoutControlItem594.Size = new System.Drawing.Size(1297, 22);
+            this.layoutControlItem594.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem594.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem594.TextVisible = false;
+            // 
+            // layoutControlItem595
+            // 
+            this.layoutControlItem595.Control = this.labelControl69;
+            this.layoutControlItem595.Location = new System.Drawing.Point(406, 932);
+            this.layoutControlItem595.MaxSize = new System.Drawing.Size(10000, 22);
+            this.layoutControlItem595.MinSize = new System.Drawing.Size(88, 22);
+            this.layoutControlItem595.Name = "layoutControlItem595";
+            this.layoutControlItem595.Size = new System.Drawing.Size(1297, 22);
+            this.layoutControlItem595.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem595.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem595.TextVisible = false;
+            // 
+            // layoutControlItem158
+            // 
+            this.layoutControlItem158.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem158.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem158.Control = this.txtExamEntDisease2;
+            this.layoutControlItem158.Location = new System.Drawing.Point(406, 586);
+            this.layoutControlItem158.Name = "layoutControlItem158";
+            this.layoutControlItem158.OptionsToolTip.ToolTip = "Bệnh tai mũi họng";
+            this.layoutControlItem158.Size = new System.Drawing.Size(603, 28);
+            this.layoutControlItem158.Text = "Bệnh (nếu có):";
+            this.layoutControlItem158.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem158.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem158.TextToControlDistance = 5;
+            // 
+            // layoutControlItem596
+            // 
+            this.layoutControlItem596.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem596.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem596.Control = this.cboExamRespiratoryLoginName2;
+            this.layoutControlItem596.Location = new System.Drawing.Point(1386, 156);
+            this.layoutControlItem596.Name = "layoutControlItem596";
+            this.layoutControlItem596.Size = new System.Drawing.Size(317, 28);
+            this.layoutControlItem596.Text = "Người khám:";
+            this.layoutControlItem596.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem596.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem596.TextToControlDistance = 5;
+            // 
+            // layoutControlItem597
+            // 
+            this.layoutControlItem597.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem597.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem597.Control = this.cboExamDigestionLoginName2;
+            this.layoutControlItem597.Location = new System.Drawing.Point(1386, 184);
+            this.layoutControlItem597.Name = "layoutControlItem597";
+            this.layoutControlItem597.Size = new System.Drawing.Size(317, 28);
+            this.layoutControlItem597.Text = "Người khám:";
+            this.layoutControlItem597.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem597.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem597.TextToControlDistance = 5;
+            // 
+            // layoutControlItem598
+            // 
+            this.layoutControlItem598.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem598.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem598.Control = this.cboExamKidneyUrologyLoginName2;
+            this.layoutControlItem598.Location = new System.Drawing.Point(1386, 212);
+            this.layoutControlItem598.Name = "layoutControlItem598";
+            this.layoutControlItem598.Size = new System.Drawing.Size(317, 28);
+            this.layoutControlItem598.Text = "Người khám:";
+            this.layoutControlItem598.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem598.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem598.TextToControlDistance = 5;
+            // 
+            // layoutControlItem599
+            // 
+            this.layoutControlItem599.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem599.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem599.Control = this.cboExamOendLoginName2;
+            this.layoutControlItem599.Location = new System.Drawing.Point(1386, 240);
+            this.layoutControlItem599.Name = "layoutControlItem599";
+            this.layoutControlItem599.Size = new System.Drawing.Size(317, 28);
+            this.layoutControlItem599.Text = "Người khám:";
+            this.layoutControlItem599.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem599.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem599.TextToControlDistance = 5;
+            // 
+            // layoutControlItem600
+            // 
+            this.layoutControlItem600.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem600.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem600.Control = this.cboExamMuscleBoneLoginName2;
+            this.layoutControlItem600.Location = new System.Drawing.Point(1386, 268);
+            this.layoutControlItem600.Name = "layoutControlItem600";
+            this.layoutControlItem600.Size = new System.Drawing.Size(317, 28);
+            this.layoutControlItem600.Text = "Người khám:";
+            this.layoutControlItem600.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem600.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem600.TextToControlDistance = 5;
+            // 
+            // layoutControlItem601
+            // 
+            this.layoutControlItem601.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem601.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem601.Control = this.cboExamNeurologicalLoginName2;
+            this.layoutControlItem601.Location = new System.Drawing.Point(1386, 296);
+            this.layoutControlItem601.Name = "layoutControlItem601";
+            this.layoutControlItem601.Size = new System.Drawing.Size(317, 28);
+            this.layoutControlItem601.Text = "Người khám:";
+            this.layoutControlItem601.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem601.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem601.TextToControlDistance = 5;
+            // 
+            // layoutControlItem602
+            // 
+            this.layoutControlItem602.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem602.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem602.Control = this.cboExamMentalLoginName2;
+            this.layoutControlItem602.Location = new System.Drawing.Point(1386, 324);
+            this.layoutControlItem602.Name = "layoutControlItem602";
+            this.layoutControlItem602.Size = new System.Drawing.Size(317, 28);
+            this.layoutControlItem602.Text = "Người khám:";
+            this.layoutControlItem602.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem602.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem602.TextToControlDistance = 5;
+            // 
+            // layoutControlItem603
+            // 
+            this.layoutControlItem603.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem603.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem603.Control = this.cboExamSurgeryLoginName2;
+            this.layoutControlItem603.Location = new System.Drawing.Point(1386, 374);
+            this.layoutControlItem603.Name = "layoutControlItem603";
+            this.layoutControlItem603.Size = new System.Drawing.Size(317, 28);
+            this.layoutControlItem603.Text = "Người khám:";
+            this.layoutControlItem603.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem603.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem603.TextToControlDistance = 5;
+            // 
+            // layoutControlItem604
+            // 
+            this.layoutControlItem604.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem604.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem604.Control = this.cboExamObstetricLoginName2;
+            this.layoutControlItem604.Location = new System.Drawing.Point(1386, 424);
+            this.layoutControlItem604.Name = "layoutControlItem604";
+            this.layoutControlItem604.Size = new System.Drawing.Size(317, 28);
+            this.layoutControlItem604.Text = "Người khám:";
+            this.layoutControlItem604.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem604.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem604.TextToControlDistance = 5;
+            // 
+            // layoutControlItem606
+            // 
+            this.layoutControlItem606.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem606.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem606.Control = this.cboTestBloodLoginName;
+            this.layoutControlItem606.Location = new System.Drawing.Point(1386, 851);
+            this.layoutControlItem606.Name = "layoutControlItem606";
+            this.layoutControlItem606.Size = new System.Drawing.Size(317, 28);
+            this.layoutControlItem606.Text = "Người khám:";
+            this.layoutControlItem606.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem606.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem606.TextToControlDistance = 5;
+            // 
+            // layoutControlItem607
+            // 
+            this.layoutControlItem607.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem607.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem607.Control = this.cboTestUrineLoginName;
+            this.layoutControlItem607.Location = new System.Drawing.Point(1387, 901);
+            this.layoutControlItem607.Name = "layoutControlItem607";
+            this.layoutControlItem607.Size = new System.Drawing.Size(316, 31);
+            this.layoutControlItem607.Text = "Người khám:";
+            this.layoutControlItem607.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem607.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem607.TextToControlDistance = 5;
+            // 
+            // layoutControlItem461
+            // 
+            this.layoutControlItem461.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem461.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem461.Control = this.cboExamStomatologyLoginName2;
+            this.layoutControlItem461.Location = new System.Drawing.Point(1387, 667);
+            this.layoutControlItem461.Name = "layoutControlItem461";
+            this.layoutControlItem461.Size = new System.Drawing.Size(316, 28);
+            this.layoutControlItem461.Text = "Người khám:";
+            this.layoutControlItem461.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem461.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem461.TextToControlDistance = 5;
+            // 
+            // layoutControlItem605
+            // 
+            this.layoutControlItem605.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem605.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem605.Control = this.cboExamDermatologyLoginName2;
+            this.layoutControlItem605.Location = new System.Drawing.Point(1386, 717);
+            this.layoutControlItem605.Name = "layoutControlItem605";
+            this.layoutControlItem605.Size = new System.Drawing.Size(317, 28);
+            this.layoutControlItem605.Text = "Người khám:";
+            this.layoutControlItem605.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem605.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem605.TextToControlDistance = 5;
             // 
             // xtraTabPage3
             // 
@@ -19817,204 +20810,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.labelControl8.Size = new System.Drawing.Size(0, 13);
             this.labelControl8.TabIndex = 0;
             // 
-            // cboExamDigestionLoginName
-            // 
-            this.cboExamDigestionLoginName.Location = new System.Drawing.Point(1088, 237);
-            this.cboExamDigestionLoginName.MenuManager = this.barManager1;
-            this.cboExamDigestionLoginName.Name = "cboExamDigestionLoginName";
-            this.cboExamDigestionLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboExamDigestionLoginName.Properties.NullText = "";
-            this.cboExamDigestionLoginName.Properties.PopupSizeable = false;
-            this.cboExamDigestionLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboExamDigestionLoginName.Properties.View = this.gridView60;
-            this.cboExamDigestionLoginName.Size = new System.Drawing.Size(159, 22);
-            this.cboExamDigestionLoginName.StyleController = this.layoutControl8;
-            this.cboExamDigestionLoginName.TabIndex = 89;
-            // 
-            // gridView60
-            // 
-            this.gridView60.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView60.Name = "gridView60";
-            this.gridView60.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView60.OptionsView.ShowGroupPanel = false;
-            // 
-            // cboExamKidneyUrologyLoginName
-            // 
-            this.cboExamKidneyUrologyLoginName.Location = new System.Drawing.Point(1088, 265);
-            this.cboExamKidneyUrologyLoginName.MenuManager = this.barManager1;
-            this.cboExamKidneyUrologyLoginName.Name = "cboExamKidneyUrologyLoginName";
-            this.cboExamKidneyUrologyLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboExamKidneyUrologyLoginName.Properties.NullText = "";
-            this.cboExamKidneyUrologyLoginName.Properties.PopupSizeable = false;
-            this.cboExamKidneyUrologyLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboExamKidneyUrologyLoginName.Properties.View = this.gridView61;
-            this.cboExamKidneyUrologyLoginName.Size = new System.Drawing.Size(159, 22);
-            this.cboExamKidneyUrologyLoginName.StyleController = this.layoutControl8;
-            this.cboExamKidneyUrologyLoginName.TabIndex = 90;
-            // 
-            // gridView61
-            // 
-            this.gridView61.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView61.Name = "gridView61";
-            this.gridView61.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView61.OptionsView.ShowGroupPanel = false;
-            // 
-            // cboExamOendLoginName
-            // 
-            this.cboExamOendLoginName.Location = new System.Drawing.Point(1088, 293);
-            this.cboExamOendLoginName.MenuManager = this.barManager1;
-            this.cboExamOendLoginName.Name = "cboExamOendLoginName";
-            this.cboExamOendLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboExamOendLoginName.Properties.NullText = "";
-            this.cboExamOendLoginName.Properties.PopupSizeable = false;
-            this.cboExamOendLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboExamOendLoginName.Properties.View = this.gridView62;
-            this.cboExamOendLoginName.Size = new System.Drawing.Size(159, 22);
-            this.cboExamOendLoginName.StyleController = this.layoutControl8;
-            this.cboExamOendLoginName.TabIndex = 91;
-            // 
-            // gridView62
-            // 
-            this.gridView62.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView62.Name = "gridView62";
-            this.gridView62.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView62.OptionsView.ShowGroupPanel = false;
-            // 
-            // cboExamMuscleBoneLoginName
-            // 
-            this.cboExamMuscleBoneLoginName.Location = new System.Drawing.Point(1088, 321);
-            this.cboExamMuscleBoneLoginName.MenuManager = this.barManager1;
-            this.cboExamMuscleBoneLoginName.Name = "cboExamMuscleBoneLoginName";
-            this.cboExamMuscleBoneLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboExamMuscleBoneLoginName.Properties.NullText = "";
-            this.cboExamMuscleBoneLoginName.Properties.PopupSizeable = false;
-            this.cboExamMuscleBoneLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboExamMuscleBoneLoginName.Properties.View = this.gridView63;
-            this.cboExamMuscleBoneLoginName.Size = new System.Drawing.Size(159, 22);
-            this.cboExamMuscleBoneLoginName.StyleController = this.layoutControl8;
-            this.cboExamMuscleBoneLoginName.TabIndex = 92;
-            // 
-            // gridView63
-            // 
-            this.gridView63.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView63.Name = "gridView63";
-            this.gridView63.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView63.OptionsView.ShowGroupPanel = false;
-            // 
-            // cboExamNeurologicalLoginName
-            // 
-            this.cboExamNeurologicalLoginName.Location = new System.Drawing.Point(1088, 349);
-            this.cboExamNeurologicalLoginName.MenuManager = this.barManager1;
-            this.cboExamNeurologicalLoginName.Name = "cboExamNeurologicalLoginName";
-            this.cboExamNeurologicalLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboExamNeurologicalLoginName.Properties.NullText = "";
-            this.cboExamNeurologicalLoginName.Properties.PopupSizeable = false;
-            this.cboExamNeurologicalLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboExamNeurologicalLoginName.Properties.View = this.gridView64;
-            this.cboExamNeurologicalLoginName.Size = new System.Drawing.Size(159, 22);
-            this.cboExamNeurologicalLoginName.StyleController = this.layoutControl8;
-            this.cboExamNeurologicalLoginName.TabIndex = 93;
-            // 
-            // gridView64
-            // 
-            this.gridView64.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView64.Name = "gridView64";
-            this.gridView64.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView64.OptionsView.ShowGroupPanel = false;
-            // 
-            // cboExamMentalLoginName
-            // 
-            this.cboExamMentalLoginName.Location = new System.Drawing.Point(1088, 377);
-            this.cboExamMentalLoginName.MenuManager = this.barManager1;
-            this.cboExamMentalLoginName.Name = "cboExamMentalLoginName";
-            this.cboExamMentalLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboExamMentalLoginName.Properties.NullText = "";
-            this.cboExamMentalLoginName.Properties.PopupSizeable = false;
-            this.cboExamMentalLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboExamMentalLoginName.Properties.View = this.gridView65;
-            this.cboExamMentalLoginName.Size = new System.Drawing.Size(159, 22);
-            this.cboExamMentalLoginName.StyleController = this.layoutControl8;
-            this.cboExamMentalLoginName.TabIndex = 94;
-            // 
-            // gridView65
-            // 
-            this.gridView65.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView65.Name = "gridView65";
-            this.gridView65.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView65.OptionsView.ShowGroupPanel = false;
-            // 
-            // cboExamSurgeryLoginName
-            // 
-            this.cboExamSurgeryLoginName.Location = new System.Drawing.Point(1088, 427);
-            this.cboExamSurgeryLoginName.MenuManager = this.barManager1;
-            this.cboExamSurgeryLoginName.Name = "cboExamSurgeryLoginName";
-            this.cboExamSurgeryLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboExamSurgeryLoginName.Properties.NullText = "";
-            this.cboExamSurgeryLoginName.Properties.PopupSizeable = false;
-            this.cboExamSurgeryLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboExamSurgeryLoginName.Properties.View = this.gridView66;
-            this.cboExamSurgeryLoginName.Size = new System.Drawing.Size(159, 22);
-            this.cboExamSurgeryLoginName.StyleController = this.layoutControl8;
-            this.cboExamSurgeryLoginName.TabIndex = 95;
-            // 
-            // gridView66
-            // 
-            this.gridView66.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView66.Name = "gridView66";
-            this.gridView66.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView66.OptionsView.ShowGroupPanel = false;
-            // 
-            // cboExamObstetricLoginName
-            // 
-            this.cboExamObstetricLoginName.Location = new System.Drawing.Point(1088, 477);
-            this.cboExamObstetricLoginName.MenuManager = this.barManager1;
-            this.cboExamObstetricLoginName.Name = "cboExamObstetricLoginName";
-            this.cboExamObstetricLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboExamObstetricLoginName.Properties.NullText = "";
-            this.cboExamObstetricLoginName.Properties.PopupSizeable = false;
-            this.cboExamObstetricLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboExamObstetricLoginName.Properties.View = this.gridView67;
-            this.cboExamObstetricLoginName.Size = new System.Drawing.Size(159, 22);
-            this.cboExamObstetricLoginName.StyleController = this.layoutControl8;
-            this.cboExamObstetricLoginName.TabIndex = 96;
-            // 
-            // gridView67
-            // 
-            this.gridView67.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView67.Name = "gridView67";
-            this.gridView67.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView67.OptionsView.ShowGroupPanel = false;
-            // 
-            // cboExamDermatologyLoginName
-            // 
-            this.cboExamDermatologyLoginName.Location = new System.Drawing.Point(1088, 767);
-            this.cboExamDermatologyLoginName.MenuManager = this.barManager1;
-            this.cboExamDermatologyLoginName.Name = "cboExamDermatologyLoginName";
-            this.cboExamDermatologyLoginName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboExamDermatologyLoginName.Properties.NullText = "";
-            this.cboExamDermatologyLoginName.Properties.PopupSizeable = false;
-            this.cboExamDermatologyLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboExamDermatologyLoginName.Properties.View = this.gridView68;
-            this.cboExamDermatologyLoginName.Size = new System.Drawing.Size(159, 22);
-            this.cboExamDermatologyLoginName.StyleController = this.layoutControl8;
-            this.cboExamDermatologyLoginName.TabIndex = 97;
-            // 
-            // gridView68
-            // 
-            this.gridView68.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView68.Name = "gridView68";
-            this.gridView68.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView68.OptionsView.ShowGroupPanel = false;
-            // 
             // frmEnterKskInfomantionVer2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -20044,8 +20839,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControl3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl8)).EndInit();
             this.layoutControl8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboConcluderLoginName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamSubclinicalLoginName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView11)).EndInit();
@@ -20126,6 +20921,24 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.txtResultSubclinical.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamRespiratoryLoginName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView59)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamDigestionLoginName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView60)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamKidneyUrologyLoginName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView61)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamOendLoginName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView62)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMuscleBoneLoginName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView63)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamNeurologicalLoginName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView64)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMentalLoginName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView65)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamSurgeryLoginName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView66)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamObstetricLoginName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView67)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamDermatologyLoginName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView68)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
@@ -20182,7 +20995,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem435)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem437)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem438)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem439)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem440)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem441)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem61)).EndInit();
@@ -20214,6 +21026,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem583)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem584)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem585)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem439)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem586)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).EndInit();
@@ -20380,6 +21193,30 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.txtTestBloodCreatinin2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTestBloodAsat2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTestBloodAlat2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamRespiratoryLoginName2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView69)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamDigestionLoginName2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView70)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamKidneyUrologyLoginName2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView71)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamOendLoginName2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView72)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMuscleBoneLoginName2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView73)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamNeurologicalLoginName2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView74)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMentalLoginName2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView75)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamSurgeryLoginName2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView76)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamObstetricLoginName2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView77)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamDermatologyLoginName2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView78)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTestBloodLoginName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView79)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTestUrineLoginName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView80)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem140)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem111)).EndInit();
@@ -20396,25 +21233,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem122)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem50)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem124)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem125)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem126)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem127)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem128)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem129)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem130)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem131)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem132)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem133)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem134)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem135)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem137)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem138)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem139)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem136)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem141)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem142)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem143)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem145)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem146)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem148)).EndInit();
@@ -20430,12 +21251,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem160)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem161)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem162)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem163)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem164)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem167)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem169)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem168)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem171)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem172)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem173)).EndInit();
@@ -20444,13 +21260,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem176)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem177)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem178)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem179)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem180)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem181)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem182)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem183)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem428)).EndInit();
@@ -20461,26 +21275,65 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem184)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem185)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem186)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem429)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem106)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem107)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem108)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem442)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem443)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem444)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem157)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem150)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem158)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem159)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem165)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem166)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem459)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem460)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem461)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem434)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem12)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem137)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem129)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem131)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem133)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem138)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem130)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem132)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem134)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem443)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem107)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem108)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem142)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem143)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem135)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem136)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem429)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem139)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem141)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem587)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem125)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem588)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem589)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem591)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem592)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem593)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem163)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem164)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem590)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem169)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem168)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem171)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem594)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem595)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem158)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem596)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem597)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem598)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem599)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem600)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem601)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem602)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem603)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem604)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem606)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem607)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem461)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem605)).EndInit();
             this.xtraTabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl7)).EndInit();
             this.layoutControl7.ResumeLayout(false);
@@ -21286,24 +22139,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.gridView47)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView48)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView49)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamDigestionLoginName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView60)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamKidneyUrologyLoginName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView61)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamOendLoginName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView62)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamMuscleBoneLoginName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView63)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamNeurologicalLoginName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView64)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamMentalLoginName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView65)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamSurgeryLoginName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView66)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamObstetricLoginName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView67)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboExamDermatologyLoginName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView68)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -21634,7 +22469,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem141;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem142;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem143;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem11;
         private DevExpress.XtraEditors.TextEdit txtDiseases2;
         private DevExpress.XtraEditors.GridLookUpEdit cboHealthExamRank2;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit32View;
@@ -21704,13 +22538,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem176;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem177;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem178;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem14;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem179;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem180;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem181;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem182;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem183;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem16;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem184;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem185;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem186;
@@ -22421,8 +23253,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem459;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem460;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem461;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem9;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem10;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem12;
         private DevExpress.XtraEditors.SimpleButton btnSaveAndSign;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem462;
@@ -22726,5 +23556,59 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private DevExpress.XtraGrid.Views.Grid.GridView gridView67;
         private DevExpress.XtraEditors.GridLookUpEdit cboExamDermatologyLoginName;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView68;
+        private DevExpress.XtraEditors.LabelControl labelControl61;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem587;
+        private DevExpress.XtraEditors.LabelControl labelControl67;
+        private DevExpress.XtraEditors.LabelControl labelControl66;
+        private DevExpress.XtraEditors.LabelControl labelControl65;
+        private DevExpress.XtraEditors.LabelControl labelControl63;
+        private DevExpress.XtraEditors.LabelControl labelControl62;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem588;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem589;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem591;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem592;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem593;
+        private DevExpress.XtraEditors.LabelControl labelControl64;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem590;
+        private DevExpress.XtraEditors.LabelControl labelControl69;
+        private DevExpress.XtraEditors.LabelControl labelControl68;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem594;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem595;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem596;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem597;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem598;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem599;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem600;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem601;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem602;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem603;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem604;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem605;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem606;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem607;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamRespiratoryLoginName2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView69;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamDigestionLoginName2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView70;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamKidneyUrologyLoginName2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView71;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamOendLoginName2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView72;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamMuscleBoneLoginName2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView73;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamNeurologicalLoginName2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView74;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamMentalLoginName2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView75;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamSurgeryLoginName2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView76;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamObstetricLoginName2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView77;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamDermatologyLoginName2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView78;
+        private DevExpress.XtraEditors.GridLookUpEdit cboTestBloodLoginName;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView79;
+        private DevExpress.XtraEditors.GridLookUpEdit cboTestUrineLoginName;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView80;
     }
 }
