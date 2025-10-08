@@ -38,6 +38,7 @@ namespace MPS.Processor.Mps000049
         List<MedicineUseFormADO> medicineUseForms;
         List<ExpMestADO> listMedicineType = new List<ExpMestADO>();
         List<ExpMestADO> listMedicineParent = new List<ExpMestADO>();
+        List<ExpMestADO> listOtherPaySource = new List<ExpMestADO>();
 
         public Mps000049Processor(CommonParam param, PrintData printData)
             : base(param, printData)
@@ -105,7 +106,8 @@ namespace MPS.Processor.Mps000049
 
                 GetMedicineGroup();
                 GetMedicineParent();
-
+                GetOtherPaySourceGroup();
+                objectTag.AddObjectData(store, "OtherPaySourceGroup", listOtherPaySource);
                 objectTag.AddObjectData(store, "ExpMestAggregates", rdo.listAdo);
                 objectTag.AddObjectData(store, "ExpMests", this.ExpMestADOs);
                 objectTag.AddObjectData(store, "MedicineUseForms", medicineUseForms);
@@ -539,6 +541,24 @@ namespace MPS.Processor.Mps000049
                 result = false;
             }
             return result;
+        }
+        private void GetOtherPaySourceGroup()
+        {
+            try
+            {
+                if (ExpMestADOs != null && ExpMestADOs.Count > 0)
+                {
+                    var group = ExpMestADOs.GroupBy(o => new { o.OTHER_PAY_SOURCE_ID, o.OTHER_PAY_SOURCE_CODE, o.OTHER_PAY_SOURCE_NAME });
+                    foreach (var item in group)
+                    {
+                        listOtherPaySource.Add(item.ToList().First());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         public override string ProcessPrintLogData()

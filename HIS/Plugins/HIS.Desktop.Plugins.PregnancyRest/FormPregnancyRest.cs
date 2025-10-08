@@ -15,15 +15,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using ACS.EFMODEL.DataModels;
+using ACS.Filter;
+using ACS.SDO;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
+using His.Bhyt.InsuranceExpertise;
+using His.Bhyt.InsuranceExpertise.LDO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.Core.RelaytionType;
+using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt;
+using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.Plugins.PregnancyRest.ADO;
+using HIS.Desktop.Plugins.PregnancyRest.Validation;
+using HIS.Desktop.Utility;
+using HIS.UC.WorkPlace;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.Message;
@@ -31,9 +44,6 @@ using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
 using SDA.EFMODEL.DataModels;
-using ACS.Filter;
-using ACS.SDO;
-using ACS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,15 +53,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraEditors.Controls;
-using HIS.UC.WorkPlace;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Utility;
-using HIS.Desktop.Plugins.Library.RegisterConfig;
-using Inventec.Common.Logging;
-using HIS.Desktop.Plugins.PregnancyRest.Validation;
-using His.Bhyt.InsuranceExpertise.LDO;
-using His.Bhyt.InsuranceExpertise;
 
 namespace HIS.Desktop.Plugins.PregnancyRest
 {
@@ -624,12 +625,16 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 long TreatmentEndTypExtID = CboTreatmentEndTypExt.EditValue != null ? Inventec.Common.TypeConvert.Parse.ToInt64(CboTreatmentEndTypExt.EditValue.ToString()) : -99;
                 if (this.hisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && TreatmentEndTypExtID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM)
                 {
-                    if (SpLeaveDay.EditValue != null && SpLeaveDay.Value > 30)
+                    var allowLeaveOver30days = HisConfigs.Get<string>("His.LeaveDay.AllowBhxhLeaveOver30days");
+                    if (allowLeaveOver30days != "1")
                     {
-                        SpLeaveDay.Focus();
-                        SpLeaveDay.SelectAll();
-                        DevExpress.XtraEditors.XtraMessageBox.Show("Số ngày nghỉ không được vượt quá 30 ngày", "Thông báo");
-                        return;
+                        if (SpLeaveDay.EditValue != null && SpLeaveDay.Value > 30)
+                        {
+                            SpLeaveDay.Focus();
+                            SpLeaveDay.SelectAll();
+                            DevExpress.XtraEditors.XtraMessageBox.Show("Số ngày nghỉ không được vượt quá 30 ngày", "Thông báo");
+                            return;
+                        }
                     }
 
                     LoadTreatmentByPatient();

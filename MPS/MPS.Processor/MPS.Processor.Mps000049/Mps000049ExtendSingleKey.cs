@@ -52,5 +52,10 @@ namespace MPS.Processor.Mps000049
         internal const string TOTAL_REQ_ROOM_NAME_DISPLAY = "TOTAL_REQ_ROOM_NAME";
 
         internal const string EXP_MEST_CODEs = "EXP_MEST_CODEs";
+
+        internal const string OTHER_PAY_SOURCE_ID = "OTHER_PAY_SOURCE_ID";
+        internal const string OTHER_PAY_SOURCE_CODE = "OTHER_PAY_SOURCE_CODE";
+        internal const string OTHER_PAY_SOURCE_NAME = "OTHER_PAY_SOURCE_NAME";
+
     }
 }
