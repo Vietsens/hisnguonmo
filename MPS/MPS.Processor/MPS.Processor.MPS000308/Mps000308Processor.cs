@@ -182,7 +182,7 @@ namespace MPS.Processor.MPS000308
                 if (rdo._CurrentBaby != null)
                 {
                     var isReissued = rdo._CurrentBaby.IS_REISSUED;
-                    string issuedMark = ((isReissued ?? 0) == 0) ? "X" : ""; 
+                    string issuedMark = ((isReissued ?? 0) == 0 || isReissued == null) ? "X" : ""; 
                     string reissuedMark = ((isReissued ?? 0) == 1) ? "X" : "";
                     SetSingleKey(new KeyValue(Mps000308ExtendSingleKey.IS_ISSUED_STR, issuedMark));
                     SetSingleKey(new KeyValue(Mps000308ExtendSingleKey.IS_REISSUED_STR, reissuedMark));
