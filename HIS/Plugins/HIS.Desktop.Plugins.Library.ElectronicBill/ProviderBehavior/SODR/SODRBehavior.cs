@@ -292,8 +292,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                     invoice.CusPhone = adoInfo.BuyerPhone;
 
                     string cusName = adoInfo.BuyerName;
-
-                    if (Config.HisConfigCFG.IsSwapNameOption)
+                    //qtcode
+                    //HisConfigCFG config = new HisConfigCFG();
+                    if (HisConfigCFG.IsSwapNameOption)
                     {
                         invoice.Buyer = cusName;
                         invoice.CusName = "";
@@ -473,7 +474,20 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                     invoiceV.CusBankName = "";
                     invoiceV.CusBankNo = data.BuyerAccountNumber;
                     invoiceV.CusPhone = data.BuyerPhone;
-                    invoiceV.CusName = (data.BuyerName ?? data.BuyerOrganization);
+                    //invoiceV.CusName = (data.BuyerName ?? data.BuyerOrganization);
+                    string cusName = (data.BuyerName ?? data.BuyerOrganization);
+                    //qtcode
+                    HisConfigCFG config = new HisConfigCFG();
+                    if (HisConfigCFG.IsSwapNameOption)
+                    {
+                        invoiceV.BuyerName = cusName;
+                        invoiceV.CusName = "";
+                    }
+                    else
+                    {
+                        invoiceV.BuyerName = "";
+                        invoiceV.CusName = cusName;
+                    }
                     invoiceV.CusTaxCode = data.BuyerTaxCode;
                     invoiceV.Email = data.BuyerEmail;
                     invoiceV.PaymentMethod = this.ElectronicBillDataInput.PaymentMethod;
