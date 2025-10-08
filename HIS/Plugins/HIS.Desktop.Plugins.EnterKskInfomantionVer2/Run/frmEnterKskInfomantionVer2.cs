@@ -555,6 +555,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private void FillNoteBMI(DevExpress.XtraEditors.SpinEdit spinHeight, DevExpress.XtraEditors.SpinEdit spinWeight, System.Windows.Forms.Label txtBMI)
         {
             try
