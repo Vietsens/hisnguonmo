@@ -331,7 +331,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     }
                     CommonParam param = new CommonParam();
                     var patients = (new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));
-                    bool exists = patients.Any(p => p.PATIENT_CODE == ucPatientRaw1.txtPatientCode.Text);
+                    bool exists = patients.Any(p => p.PATIENT_CODE == ucPatientRaw1.txtPatientCode.Text || p.CCCD_NUMBER == ucPatientRaw1.txtPatientCode.Text);
                     if (exists) return true;
                     if (patients != null && patients.Count > 0)
                     {

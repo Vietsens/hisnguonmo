@@ -289,6 +289,12 @@
     <Compile Include="ProviderBehavior\SODR\Process\UriStore.cs" />
     <Compile Include="ProviderBehavior\SODR\SODRBehavior.cs" />
     <Compile Include="ProviderBehavior\VIETTEL\VIETTELBehavior.cs" />
+    <Compile Include="ProviderBehavior\VNInvoice\Model\ConvertInvoice.cs" />
+    <Compile Include="ProviderBehavior\VNInvoice\Model\CreateAndSignInvoice.cs" />
+    <Compile Include="ProviderBehavior\VNInvoice\Model\LoginVNInvoice.cs" />
+    <Compile Include="ProviderBehavior\VNInvoice\Model\ReplaceInvoice.cs" />
+    <Compile Include="ProviderBehavior\VNInvoice\Model\SignInvoice.cs" />
+    <Compile Include="ProviderBehavior\VNInvoice\VNInvoiceBehavior.cs" />
     <Compile Include="ProviderBehavior\VNPT\VNPTBehavior.cs" />
     <Compile Include="ProxyBehavior\BACHMAI\ApiConsumer.cs" />
     <Compile Include="ProxyBehavior\BACHMAI\BACHMAIBehavior.cs" />

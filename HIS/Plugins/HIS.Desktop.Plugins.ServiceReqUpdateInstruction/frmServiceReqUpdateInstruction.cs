@@ -257,20 +257,28 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         private void UcIcd_OnIcdMapCodeChanged(string icdMapCode)
         {
-            if (!string.IsNullOrEmpty(icdMapCode))
+            try
             {
-                var icdCaus = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == icdMapCode);
-
-                HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
-                icd.ICD_CODE = icdCaus.ICD_CODE;
-                icd.ICD_NAME = icdCaus.ICD_NAME;
-
-                if (ucIcd != null)
+                if (!string.IsNullOrEmpty(icdMapCode))
                 {
-                    icdProcessor.Reload(ucIcd, icd);
+                    var icdCaus = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == icdMapCode);
+
+                    HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
+                    icd.ICD_CODE = icdCaus.ICD_CODE;
+                    icd.ICD_NAME = icdCaus.ICD_NAME;
+
+                    if (ucIcd != null)
+                    {
+                        icdProcessor.Reload(ucIcd, icd);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
