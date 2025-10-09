@@ -118,7 +118,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
@@ -135,9 +135,8 @@
     <Reference Include="MPS.Processor.Mps000093.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000093.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000100.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000100.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000100.PDO">
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000100.PDO\bin\Debug\MPS.Processor.Mps000100.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000101.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000101.PDO.dll</HintPath>

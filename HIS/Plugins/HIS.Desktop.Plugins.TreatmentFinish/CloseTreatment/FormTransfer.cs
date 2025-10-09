@@ -1001,7 +1001,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                     currentTreatmentFinishSDO.TransferOutMediOrgCode = null;
                     currentTreatmentFinishSDO.TransferOutMediOrgName = null;
                 }
-
+                if (!string.IsNullOrEmpty(txtSurgeryName.Text) && Inventec.Common.String.CountVi.Count(txtSurgeryName.Text) > 3000)
+                {
+                    XtraMessageBox.Show("Dữ liệu phẫu thuật, thủ thuật vượt quá 3000 ký tự!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtSurgeryName.Focus();
+                    txtSurgeryName.SelectAll();
+                    return;
+                }
                 currentTreatmentFinishSDO.PatientCondition = txtTinhTrangNguoiBenh.Text;
                 currentTreatmentFinishSDO.TransportVehicle = txtPhuongTienVanChuyen.Text;
                 List<string> lstLoginNames = new List<string>();

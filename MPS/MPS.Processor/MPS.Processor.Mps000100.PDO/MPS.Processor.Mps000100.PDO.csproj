@@ -95,8 +95,9 @@
     <Reference Include="Inventec.WCFService.ReadServiceCodeService">
       <HintPath>..\..\..\..\LIB\WCF\Inventec.WCF\Service\.Net 4.5\Inventec.WCFService.ReadServiceCodeService\Inventec.WCFService.ReadServiceCodeService.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt">
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
@@ -108,7 +109,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
-      <HintPath>..\..\..\..\FE\YTE\DESKTOP\TEST\HIS\x64\ReferencedAssemblies\MPS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.ProcessorBase.dll</HintPath>

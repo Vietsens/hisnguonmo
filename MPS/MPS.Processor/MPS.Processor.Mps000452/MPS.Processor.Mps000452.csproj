@@ -87,6 +87,10 @@
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000452.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MPS.Processor.Mps000452.PDO\bin\Debug\MPS.Processor.Mps000452.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
@@ -103,12 +107,6 @@
     <Compile Include="Mps000452ExtendSingleKey.cs" />
     <Compile Include="Mps000452Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MPS.Processor.Mps000452.PDO\MPS.Processor.Mps000452.PDO.csproj">
-      <Project>{51ba5ef6-869e-4abb-857e-3ebc4d801879}</Project>
-      <Name>MPS.Processor.Mps000452.PDO</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

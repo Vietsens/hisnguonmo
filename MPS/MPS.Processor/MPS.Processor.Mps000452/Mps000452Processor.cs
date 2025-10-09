@@ -39,7 +39,7 @@ namespace MPS.Processor.Mps000452
         {
             rdo = (Mps000452PDO)rdoBase;
         }
-        public override bool ProcessData()
+        public override bool ProcessData() 
         {
             bool result = false;
             try
@@ -52,6 +52,7 @@ namespace MPS.Processor.Mps000452
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName)); 
                 //objectTag.AddObjectData(store, "ServiceReq", new List<V_HIS_SERVICE_REQ>() { rdo.HisServiceReq });
                 objectTag.AddObjectData(store, "KskOverEighteen", new List<HIS_KSK_OVER_EIGHTEEN>() { rdo.HisKskOverEighteen });
+                objectTag.AddObjectData(store, "Treatment", new List<V_HIS_TREATMENT_4>() { rdo.Treatment });
                 objectTag.AddObjectData(store, "Dhst", new List<HIS_DHST>() { rdo.HisDhst });
                 objectTag.AddRelationship(store, "KskOverEighteen", "Dhst", "DHST_ID", "ID");
 
@@ -61,6 +62,7 @@ namespace MPS.Processor.Mps000452
                 objectTag.AddObjectData(store, "DiseaseType", rdo.DiseaseType);
 
                 objectTag.AddObjectData(store, "ExamRank",  rdo.examRank );
+                
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
                 result = true;
