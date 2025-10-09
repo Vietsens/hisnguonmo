@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MPS.Processor.Mps000049
@@ -35,6 +36,7 @@ namespace MPS.Processor.Mps000049
     {
         Mps000049PDO rdo;
         List<ExpMestADO> ExpMestADOs;
+        List<Mps000049ADO> ExpMestADOsSplit;
         List<MedicineUseFormADO> medicineUseForms;
         List<ExpMestADO> listMedicineType = new List<ExpMestADO>();
         List<ExpMestADO> listMedicineParent = new List<ExpMestADO>();
@@ -108,6 +110,8 @@ namespace MPS.Processor.Mps000049
 
                 objectTag.AddObjectData(store, "ExpMestAggregates", rdo.listAdo);
                 objectTag.AddObjectData(store, "ExpMests", this.ExpMestADOs);
+                //Bổ sung key gom theo lô
+                objectTag.AddObjectData(store, "ExpMestsSplit", this.ExpMestADOsSplit);
                 objectTag.AddObjectData(store, "MedicineUseForms", medicineUseForms);
                 objectTag.AddObjectData(store, "MedicineGroup", listMedicineType);
                 objectTag.AddObjectData(store, "MedicineParent", listMedicineParent);
@@ -296,6 +300,7 @@ namespace MPS.Processor.Mps000049
             {
                 List<long> reqRoomIds = new List<long>();
                 ExpMestADOs = new List<ExpMestADO>();
+                ExpMestADOsSplit = new List<Mps000049ADO>();
                 if (rdo.IsMedicine && rdo._ExpMestMedicines != null && rdo._ExpMestMedicines.Count > 0)
                 {
                     var query = rdo._ExpMestMedicines.ToList();
@@ -394,7 +399,16 @@ namespace MPS.Processor.Mps000049
                         rdo.listAdo.AddRange(dataMedis);
                     }
 
-
+                    #region Group Split
+                    var GroupsSplit = query.GroupBy(g => new { g.MEDICINE_ID, g.CONCENTRA }).Select(p => p.ToList()).ToList();
+                    ExpMestADOsSplit.AddRange(from r in GroupsSplit
+                                       select new Mps000049ADO(rdo.AggrExpMest,
+                                           r,
+                                           rdo._MedicineTypes,
+                                           rdo.ConfigMps49._ExpMestSttId__Approved,
+                                           rdo.ConfigMps49._ExpMestSttId__Exported,
+                                           rdo.ConfigMps49.PatientTypeId__BHYT));
+                    #endregion
                 }
 
                 //TODO VT
@@ -469,6 +483,40 @@ namespace MPS.Processor.Mps000049
                     {
                         dataMates = dataMates.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
                         rdo.listAdo.AddRange(dataMates);
+                    }
+
+                    var GroupsSplit = query.GroupBy(g => new { g.MATERIAL_ID, g.IS_CHEMICAL_SUBSTANCE }).Select(p => p.ToList()).ToList();
+                    ExpMestADOsSplit.AddRange(from r in GroupsSplit
+                                              select new Mps000049ADO(rdo.AggrExpMest,
+                                           r,
+                                           rdo.ConfigMps49._ExpMestSttId__Approved,
+                                           rdo.ConfigMps49._ExpMestSttId__Exported,
+                                           rdo.ConfigMps49.PatientTypeId__BHYT));
+
+                    if (ExpMestADOsSplit != null && ExpMestADOsSplit.Count > 0)
+                    {
+                        switch (rdo.ConfigMps49._ConfigKeyOderOption)
+                        {
+                            case 1:
+                                ExpMestADOsSplit = ExpMestADOsSplit.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
+                                break;
+                            case 2:
+                                ExpMestADOsSplit = ExpMestADOsSplit.OrderBy(p => p.MEDICINE_USE_FORM_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
+                                break;
+                            case 3:
+                                ExpMestADOsSplit = ExpMestADOsSplit.OrderByDescending(p => p.MEDICINE_USE_FORM_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
+                                break;
+                            case 4:
+                                ExpMestADOsSplit = ExpMestADOsSplit.OrderBy(p => p.SERVICE_UNIT_NAME).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
+                                break;
+                            case 5:
+                                ExpMestADOsSplit = ExpMestADOsSplit
+                                    .OrderBy(p => p.MEDICINE_TYPE_NUM_ORDER == null ? 1 : 0)
+                                    .ThenBy(p => p.MEDICINE_TYPE_NUM_ORDER)
+                                    .ThenBy(p => p.MEDICINE_TYPE_NAME)
+                                    .ToList();
+                                break;
+                        }
                     }
                 }
 
