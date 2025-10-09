@@ -57,26 +57,20 @@ namespace MPS.Processor.Mps000049
                 this.TDL_PATIENT_GENDER_NAME = ExpMest.TDL_PATIENT_GENDER_NAME;
                 this.TDL_PATIENT_LAST_NAME = ExpMest.TDL_PATIENT_LAST_NAME;
                 this.TDL_PATIENT_NAME = ExpMest.TDL_PATIENT_NAME;
-                this.CREATE_TIME_AGGR_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(ExpMest.CREATE_TIME ?? 0);
-                if (_expMestMedicines != null && _expMestMedicines.Count > 0 && _medicinetype != null)
+                this.CREATE_TIME_AGGR_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(ExpMest.CREATE_TIME ?? 0);               
+                if (_expMestMedicines != null && _expMestMedicines.Count > 0)
                 {
-                    var medicineTypeId = _expMestMedicines.First().MEDICINE_TYPE_ID;
-                    var medicineType = _medicinetype.FirstOrDefault(x => x.ID == medicineTypeId);
-                    if (medicineType != null)
-                    {
-                        this.OTHER_PAY_SOURCE_ID = medicineType.OTHER_PAY_SOURCE_ID;
-                        this.OTHER_PAY_SOURCE_CODE = medicineType.OTHER_PAY_SOURCE_CODE;
-                        this.OTHER_PAY_SOURCE_NAME = medicineType.OTHER_PAY_SOURCE_NAME;
-                    }
+                    var firstMedicine = _expMestMedicines.First();
+                    this.OTHER_PAY_SOURCE_ID = firstMedicine.OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_CODE = firstMedicine.OTHER_PAY_SOURCE_CODE;
+                    this.OTHER_PAY_SOURCE_NAME = firstMedicine.OTHER_PAY_SOURCE_NAME != null ? firstMedicine.OTHER_PAY_SOURCE_NAME.ToUpper() : null;
                 }
-
             }
         }
 
         public ExpMestADO(
             V_HIS_EXP_MEST _aggrExpMest,
             List<V_HIS_EXP_MEST_MATERIAL> _expMestMaterials,
-            List<V_HIS_MATERIAL_TYPE> materialTypes,
             long _expMesttSttId__Approval,
             long _expMesttSttId__Export,
             long PatientTypeId__BHYT,
@@ -93,16 +87,12 @@ namespace MPS.Processor.Mps000049
                 this.TDL_PATIENT_LAST_NAME = ExpMest.TDL_PATIENT_LAST_NAME;
                 this.TDL_PATIENT_NAME = ExpMest.TDL_PATIENT_NAME;
                 this.CREATE_TIME_AGGR_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(ExpMest.CREATE_TIME ?? 0);
-                if (_expMestMaterials != null && _expMestMaterials.Count > 0 && materialTypes != null)
+                if (_expMestMaterials != null && _expMestMaterials.Count > 0)
                 {
-                    var materialTypeId = _expMestMaterials.First().MATERIAL_TYPE_ID;
-                    var materialType = materialTypes.FirstOrDefault(x => x.ID == materialTypeId);
-                    if (materialType != null)
-                    {
-                        this.OTHER_PAY_SOURCE_ID = materialType.OTHER_PAY_SOURCE_ID;
-                        this.OTHER_PAY_SOURCE_CODE = materialType.OTHER_PAY_SOURCE_CODE;
-                        this.OTHER_PAY_SOURCE_NAME = materialType.OTHER_PAY_SOURCE_NAME;
-                    }
+                    var firstMaterial = _expMestMaterials.First();
+                    this.OTHER_PAY_SOURCE_ID = firstMaterial.OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_CODE = firstMaterial.OTHER_PAY_SOURCE_CODE;
+                    this.OTHER_PAY_SOURCE_NAME = firstMaterial.OTHER_PAY_SOURCE_NAME != null ? firstMaterial.OTHER_PAY_SOURCE_NAME.ToUpper() : null;
                 }
             }
         }

@@ -511,7 +511,7 @@ namespace HIS.Desktop.Plugins.HisImport
                 btnImport.Focus();
                 var lisData = (List<ImportADO>)gridControlData.DataSource;
                 if (lisData == null || lisData.Count <= 0) return;
-                if (lisData.Exists(o => String.IsNullOrEmpty(o.ERROR))) return;
+                if (lisData.Exists(o => !String.IsNullOrEmpty(o.ERROR))) return;
                 bool success = false;
                 WaitingManager.Show();
                 List<HIS_SUPPLIER> datas = new List<HIS_SUPPLIER>();

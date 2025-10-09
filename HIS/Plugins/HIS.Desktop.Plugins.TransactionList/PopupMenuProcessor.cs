@@ -163,13 +163,11 @@ namespace HIS.Desktop.Plugins.TransactionList
                     this._PopupMenu.AddItems(items.ToArray());
                 }
 
-//             else if (this._Transaction.TRANSACTION_TYPE_ID == 3 && this._Transaction.IS_CANCEL != 1 && this._Transaction.ORIGINAL_TRANSACTION_ID == null && this._Transaction.IS_ADJUSTMENT != 1 && frmTransactionList.controlAcs != null && frmTransactionList.controlAcs.Exists(o => o.CONTROL_CODE == "HIS000047")
-//)
-//                {
-             else if (this._Transaction.TRANSACTION_TYPE_ID == 3 && this._Transaction.IS_CANCEL != 1 && this._Transaction.ORIGINAL_TRANSACTION_ID == null  && frmTransactionList.controlAcs != null && frmTransactionList.controlAcs.Exists(o => o.CONTROL_CODE == "HIS000047")
-)
+                else if (this._Transaction.TRANSACTION_TYPE_ID == 3 && this._Transaction.IS_CANCEL != 1 && this._Transaction.ORIGINAL_TRANSACTION_ID == null && this._Transaction.IS_ADJUSTMENT != 1 && frmTransactionList.controlAcs != null && frmTransactionList.controlAcs.Exists(o => o.CONTROL_CODE == "HIS000047"))
                 {
-                    BarButtonItem btnDieuChinhHoaDon = new BarButtonItem(this._BarManager, "Điều chỉnh hóa đơn", 100);
+
+                    
+                        BarButtonItem btnDieuChinhHoaDon = new BarButtonItem(this._BarManager, "Điều chỉnh hóa đơn", 100);
                     btnDieuChinhHoaDon.Tag = ItemType.DieuChinhHoaDon;
                     btnDieuChinhHoaDon.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                     this._PopupMenu.AddItem(btnDieuChinhHoaDon);

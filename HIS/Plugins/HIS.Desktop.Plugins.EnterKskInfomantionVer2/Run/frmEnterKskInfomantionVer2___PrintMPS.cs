@@ -168,6 +168,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 CommonParam param = new CommonParam();
                 WaitingManager.Show();
+
+                var serviceReqId = currentServiceReq.ID;
+                var treatmentId = currentServiceReq.TREATMENT_ID;
+
+
+                var kskOccupational = currentKsKOccupational;
+
+                var treatments = new List<V_HIS_TREATMENT_4>();
+                if (treatmentId > 0)
+                {
+                    var tFilter = new HisTreatmentView4Filter { ID = treatmentId };
+                    treatments = new BackendAdapter(param).Get<List<V_HIS_TREATMENT_4>>(
+                        "api/HisTreatment/GetView4", ApiConsumers.MosConsumer, tFilter, null);
+                }
+
+                var selectedTreatment = treatments.FirstOrDefault();
+
                 HIS_DHST currentDhst = new HIS_DHST();
                 if (currentKskOverEight.DHST_ID != null && currentKskOverEight.DHST_ID > 0)
                 {
@@ -191,7 +208,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     currentDhst,
                     HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(),
                     dataVacine,
-                    GetDriverDityOverE()
+                    GetDriverDityOverE(),
+                    selectedTreatment
                     );
 
                 PrintData(printTypeCode, fileName, rdo, ref result);
@@ -210,6 +228,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     CommonParam param = new CommonParam();
                     WaitingManager.Show();
+
+                    var serviceReqId = currentServiceReq.ID;
+                    var treatmentId = currentServiceReq.TREATMENT_ID;
+
+
+                    var kskOccupational = currentKsKOccupational;
+
+                    var treatments = new List<V_HIS_TREATMENT_4>();
+                    if (treatmentId > 0)
+                    {
+                        var tFilter = new HisTreatmentView4Filter { ID = treatmentId };
+                        treatments = new BackendAdapter(param).Get<List<V_HIS_TREATMENT_4>>(
+                            "api/HisTreatment/GetView4", ApiConsumers.MosConsumer, tFilter, null);
+                    }
+
+                    var selectedTreatment = treatments.FirstOrDefault();
+
                     HIS_DHST currentDhst = new HIS_DHST();
                     if (currentKskUnderEight.DHST_ID != null && currentKskUnderEight.DHST_ID > 0)
                     {
@@ -240,7 +275,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         currentDhst,
                         lstVaccinType,
                         lstUneiVaty,
-                        HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList()
+                        HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(),
+                        selectedTreatment
 
                         );
 
