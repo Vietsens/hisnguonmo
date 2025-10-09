@@ -38,6 +38,7 @@ namespace MPS.Processor.Mps000215
         List<Mps000215ADODetail> listAdoPrintDetail = new List<Mps000215ADODetail>();
         List<Mps000215ADO> listMedicineType = new List<Mps000215ADO>();
         List<Mps000215ADO> lstMedicineParent = new List<Mps000215ADO>();
+        List<Mps000215ADO> lstOtherPaySource = new List<Mps000215ADO>();
         const int countMax = 1500;
         public Mps000215Processor(CommonParam param, PrintData printData)
             : base(param, printData)
@@ -89,6 +90,7 @@ namespace MPS.Processor.Mps000215
                 }
                 GetMedicineGroup();
                 GetMedicineParent();
+                GetOtherPaySource();
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
                 objectTag.AddObjectData(store, "ListMediMate1", listAdoPrint);
@@ -100,8 +102,10 @@ namespace MPS.Processor.Mps000215
                 objectTag.AddObjectData(store, "ListMediMate3Detail", listAdoPrintDetail);
                 objectTag.AddObjectData(store, "MedicineGroup", listMedicineType);
                 objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent);
+                objectTag.AddObjectData(store, "OtherPaySource", lstOtherPaySource);
 
                 objectTag.AddRelationship(store, "ListMediMate1", "ListMediMate1Detail", "KEY_GROUP", "KEY_GROUP");
+                objectTag.AddRelationship(store, "OtherPaySource", "ListMediMate1", "KEY_GROUP", "KEY_GROUP");
                 objectTag.AddRelationship(store, "ListMediMate2", "ListMediMate2Detail", "KEY_GROUP", "KEY_GROUP");
                 objectTag.AddRelationship(store, "ListMediMate3", "ListMediMate3Detail", "KEY_GROUP", "KEY_GROUP");
                 objectTag.AddRelationship(store, "MedicineGroup", "ListMediMate1", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
@@ -133,6 +137,32 @@ namespace MPS.Processor.Mps000215
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        private void GetOtherPaySource()
+        {
+            try
+            {
+                lstOtherPaySource = new List<Mps000215ADO>();
+                if (listAdoPrint != null && listAdoPrint.Count > 0)
+                {
+                    var group = listAdoPrint
+                        .Where(o => o.OTHER_PAY_SOURCE_ID.HasValue)
+                        .GroupBy(o => new
+                        {
+                            o.OTHER_PAY_SOURCE_ID
+                        });
+
+                    foreach (var item in group)
+                    {
+                        lstOtherPaySource.Add(item.First());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         void ProcessSingleKey()
