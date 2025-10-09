@@ -138,6 +138,9 @@ namespace MPS.Processor.Mps000234
                                 ado.REQUEST_USERNAME = serviceReq.REQUEST_USERNAME;
                                 ado.ICD_SUB_CODE = serviceReq.ICD_SUB_CODE;
                                 ado.ICD_TEXT = serviceReq.ICD_TEXT;
+                                ado.ICD_CODE = serviceReq.ICD_CODE ?? "";
+                                ado.ICD_NAME = serviceReq.ICD_NAME ?? "";
+                                ado.ADVISE = serviceReq.ADVISE ?? "";
 
                                 if (rdo.ListAcsUser != null && rdo.ListAcsUser.Count > 0)
                                 {
@@ -371,6 +374,9 @@ namespace MPS.Processor.Mps000234
                             ado.REQUEST_LOGINNAME = serviceReq.REQUEST_LOGINNAME;
                             ado.REQUEST_USER_TITLE = serviceReq.REQUEST_USER_TITLE;
                             ado.REQUEST_USERNAME = serviceReq.REQUEST_USERNAME;
+                            ado.ICD_CODE = serviceReq.ICD_CODE ?? "";
+                            ado.ICD_NAME = serviceReq.ICD_NAME ?? "";
+                            ado.ADVISE = serviceReq.ADVISE ?? "";
 
                             if (rdo.ListAcsUser != null && rdo.ListAcsUser.Count > 0)
                             {
