@@ -194,7 +194,9 @@ namespace MPS.Processor.Mps000049.PDO
         public string MEDICINE_PARENT_CODE { get; set; }
         public long? MEDICINE_PARENT_ID { get; set; }
         public string MEDICINE_PARENT_NAME { get; set; }
+        public long? OTHER_PAY_SOURCE_ID { get; set; }
 
+        public string OTHER_PAY_SOURCE_NAME { get; set; }
 
         public Mps000049ADO(
             V_HIS_EXP_MEST _expMest,
@@ -237,6 +239,8 @@ namespace MPS.Processor.Mps000049.PDO
 
                     this.MEDICINE_USE_FORM_ID = _expMestMedicines[0].MEDICINE_USE_FORM_ID;
                     this.MEDICINE_USE_FORM_CODE = _expMestMedicines[0].MEDICINE_USE_FORM_CODE;
+                    this.OTHER_PAY_SOURCE_ID = _expMestMedicines[0].OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_NAME = _expMestMedicines[0].OTHER_PAY_SOURCE_NAME;
                     this.MEDICINE_USE_FORM_NAME = _expMestMedicines[0].MEDICINE_USE_FORM_NAME;
                     this.MEDICINE_USE_FORM_NUM_ORDER = _expMestMedicines[0].MEDICINE_USE_FORM_NUM_ORDER;
 
@@ -322,7 +326,8 @@ namespace MPS.Processor.Mps000049.PDO
                     this.IMP_VAT_RATIO = _expMestMaterials[0].IMP_VAT_RATIO * 100;
                     this.MEDI_MATE_NUM_ORDER = _expMestMaterials[0].MEDICINE_NUM_ORDER ?? 0;
                     this.NUM_ORDER = _expMestMaterials[0].NUM_ORDER;
-
+                    this.OTHER_PAY_SOURCE_ID = _expMestMaterials[0].OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_NAME = _expMestMaterials[0].OTHER_PAY_SOURCE_NAME;
                     this.MANUFACTURER_CODE = _expMestMaterials[0].MANUFACTURER_CODE;
                     this.MANUFACTURER_ID = _expMestMaterials[0].MANUFACTURER_ID;
                     this.MANUFACTURER_NAME = _expMestMaterials[0].MANUFACTURER_NAME;

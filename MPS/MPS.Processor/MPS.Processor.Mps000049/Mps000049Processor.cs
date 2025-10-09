@@ -120,6 +120,10 @@ namespace MPS.Processor.Mps000049
 
                 objectTag.AddRelationship(store, "ExpMestAggregates", "ExpMests", new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" }, new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" });
 
+                objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMestsSplit", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
+                objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMestAggregates", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
+                objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMests", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
+
                 objectTag.AddRelationship(store, "MedicineUseForms", "ExpMests", "MEDICINE_USE_FORM_CODE", "MEDICINE_USE_FORM_CODE");
                 objectTag.AddRelationship(store, "MedicineUseForms", "ExpMestAggregates", "MEDICINE_USE_FORM_CODE", "MEDICINE_USE_FORM_CODE");
                 objectTag.AddRelationship(store, "MedicineGroup", "ExpMestAggregates", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
