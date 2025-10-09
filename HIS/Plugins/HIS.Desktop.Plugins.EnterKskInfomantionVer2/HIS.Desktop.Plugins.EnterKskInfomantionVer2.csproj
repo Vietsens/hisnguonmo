@@ -159,11 +159,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000315.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000452.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000452.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000452.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000452.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000453.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000453.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000453.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000453.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000454.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000454.PDO.dll</HintPath>

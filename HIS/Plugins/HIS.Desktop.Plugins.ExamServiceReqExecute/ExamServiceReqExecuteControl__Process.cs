@@ -1935,7 +1935,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 SickLeaveTo_Date = Int64.Parse((dtSickLeaveTo ?? new DateTime()).ToString("yyyyMMdd") + "000000");
                             }
 
-                            if (SickLeaveDay != null && SickLeaveDay > 30)
+                            if (SickLeaveDay != null && SickLeaveDay > 30 && HisConfigCFG.AllowBhxhLeaveOver30days != "1")
                             {
                                 XtraMessageBox.Show("Số ngày nghỉ không được vượt quá 30 ngày", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 treatmentFinishProcessor.FocusControl(ucTreatmentFinish);
