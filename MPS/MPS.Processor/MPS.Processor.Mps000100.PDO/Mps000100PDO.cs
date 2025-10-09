@@ -38,6 +38,7 @@ namespace MPS.Processor.Mps000100.PDO
         public List<long> ServiceUnitIds { get; set; }
         public List<long> UseFormIds { get; set; }
         public List<V_HIS_MEDICINE_TYPE> _MedicineTypes;
+        public List<V_HIS_MATERIAL_TYPE> _MaterialTypes;
         public long HisImpMestSttId__Approved;
         public long HisImpMestSttId__Imported;
         public IsTittle keyNameTitles;
@@ -61,6 +62,7 @@ namespace MPS.Processor.Mps000100.PDO
             long HisImpMestSttId__Imported,
             long HisImpMestSttId__Approved,
             List<V_HIS_MEDICINE_TYPE> _medicineTypes,
+            List<V_HIS_MATERIAL_TYPE> _materialTypes,
             IsTittle keyNameTitles
             )
         {
@@ -76,6 +78,7 @@ namespace MPS.Processor.Mps000100.PDO
             this.HisImpMestSttId__Imported = HisImpMestSttId__Imported;
             this.HisImpMestSttId__Approved = HisImpMestSttId__Approved;
             this._MedicineTypes = _medicineTypes;
+            this._MaterialTypes = _materialTypes;
             this.keyNameTitles = keyNameTitles;
         }
 
@@ -92,6 +95,7 @@ namespace MPS.Processor.Mps000100.PDO
             long HisImpMestSttId__Imported,
             long HisImpMestSttId__Approved,
             List<V_HIS_MEDICINE_TYPE> _medicineTypes,
+            List<V_HIS_MATERIAL_TYPE> _materialTypes,
             IsTittle keyNameTitles,
             List<V_HIS_ROOM> _HisRoom
             )
@@ -108,6 +112,7 @@ namespace MPS.Processor.Mps000100.PDO
             this.HisImpMestSttId__Imported = HisImpMestSttId__Imported;
             this.HisImpMestSttId__Approved = HisImpMestSttId__Approved;
             this._MedicineTypes = _medicineTypes;
+            this._MaterialTypes = _materialTypes;
             this.keyNameTitles = keyNameTitles;
             this.HisRoom = _HisRoom;
         }
@@ -125,6 +130,7 @@ namespace MPS.Processor.Mps000100.PDO
             long HisImpMestSttId__Imported,
             long HisImpMestSttId__Approved,
             List<V_HIS_MEDICINE_TYPE> _medicineTypes,
+            List<V_HIS_MATERIAL_TYPE> _materialTypes,
             IsTittle keyNameTitles,
             List<V_HIS_ROOM> _HisRoom,
             List<HIS_EXP_MEST> mobaExpMests
@@ -142,6 +148,7 @@ namespace MPS.Processor.Mps000100.PDO
             this.HisImpMestSttId__Imported = HisImpMestSttId__Imported;
             this.HisImpMestSttId__Approved = HisImpMestSttId__Approved;
             this._MedicineTypes = _medicineTypes;
+            this._MaterialTypes = _materialTypes;
             this.keyNameTitles = keyNameTitles;
             this.HisRoom = _HisRoom;
             this._MobaExpMests = mobaExpMests;
@@ -161,6 +168,7 @@ namespace MPS.Processor.Mps000100.PDO
                long HisImpMestSttId__Imported,
                long HisImpMestSttId__Approved,
                List<V_HIS_MEDICINE_TYPE> _medicineTypes,
+               List<V_HIS_MATERIAL_TYPE> _materialTypes,
                IsTittle keyNameTitles,
                List<V_HIS_ROOM> _HisRoom,
                List<HIS_EXP_MEST> mobaExpMests,
@@ -179,6 +187,7 @@ namespace MPS.Processor.Mps000100.PDO
             this.HisImpMestSttId__Imported = HisImpMestSttId__Imported;
             this.HisImpMestSttId__Approved = HisImpMestSttId__Approved;
             this._MedicineTypes = _medicineTypes;
+            this._MaterialTypes = _materialTypes;
             this.keyNameTitles = keyNameTitles;
             this.HisRoom = _HisRoom;
             this._MobaExpMests = mobaExpMests;
@@ -198,6 +207,7 @@ namespace MPS.Processor.Mps000100.PDO
               long HisImpMestSttId__Imported,
               long HisImpMestSttId__Approved,
               List<V_HIS_MEDICINE_TYPE> _medicineTypes,
+              List<V_HIS_MATERIAL_TYPE> _materialTypes,
               IsTittle keyNameTitles,
               List<V_HIS_ROOM> _HisRoom,
               List<HIS_EXP_MEST> mobaExpMests,
@@ -217,6 +227,7 @@ namespace MPS.Processor.Mps000100.PDO
             this.HisImpMestSttId__Imported = HisImpMestSttId__Imported;
             this.HisImpMestSttId__Approved = HisImpMestSttId__Approved;
             this._MedicineTypes = _medicineTypes;
+            this._MaterialTypes = _materialTypes;
             this.keyNameTitles = keyNameTitles;
             this.HisRoom = _HisRoom;
             this._MobaExpMests = mobaExpMests;
