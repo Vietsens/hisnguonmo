@@ -70,6 +70,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         Action<CauseOfDeathADO> causeReult { get; set; }
 
         bool IsFocusSickLeaveDay = false;
+        private bool _stopFocusTimer = false;
 
 
         public frmPopUpSick(SickInitADO sickInitADO, Action<HisTreatmentFinishSDO> sickResult, bool IsFocusSickLeaveDay = false)
@@ -242,10 +243,13 @@ namespace HIS.UC.ExamTreatmentFinish.Run
 
         private void timer1_Tick()
         {
+            if (_stopFocusTimer) return;
+
             try
             {
                 sickProcessor.FocusControl(ucSick);
-                StopTimer(ModuleLink, this.Name + "timer1");
+                _stopFocusTimer = true;
+                StopTimer(ModuleLink, this.Name + ".timer1");
             }
             catch (Exception ex)
             {

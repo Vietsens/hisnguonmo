@@ -83,7 +83,20 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboExamLoginName(cboExamEyeLoginName2);
                 SetDataCboExamLoginName(cboExamEntLoginName2);
                 SetDataCboExamLoginName(cboExamCirculationLoginName2);
+                //dangth
+                SetDataCboExamLoginName(cboExamRespiratoryLoginName2);
+                SetDataCboExamLoginName(cboExamDigestionLoginName2);
+                SetDataCboExamLoginName(cboExamKidneyUrologyLoginName2);
+                SetDataCboExamLoginName(cboExamOendLoginName2);
+                SetDataCboExamLoginName(cboExamMuscleBoneLoginName2);
+                SetDataCboExamLoginName(cboExamNeurologicalLoginName2);
+                SetDataCboExamLoginName(cboExamMentalLoginName2);
+                SetDataCboExamLoginName(cboExamSurgeryLoginName2);
+                SetDataCboExamLoginName(cboExamObstetricLoginName2);
                 SetDataCboExamLoginName(cboExamStomatologyLoginName2);
+                SetDataCboExamLoginName(cboExamDermatologyLoginName2);
+                SetDataCboExamLoginName(cboTestBloodLoginName);
+                SetDataCboExamLoginName(cboTestUrineLoginName);
                 SetDataCboExamLoginName(cboDiimLoginName2);
                 FillDataOverEighteen();
             }
@@ -220,6 +233,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         cboExamEyeLoginName2.EditValue = currentKskOverEight.EXAM_EYE_LOGINNAME;
                         cboExamEntLoginName2.EditValue = currentKskOverEight.EXAM_ENT_LOGINNAME;
                         cboExamCirculationLoginName2.EditValue = currentKskOverEight.EXAM_CIRCULATION_LOGINNAME;
+                        //dangth
+                        cboExamRespiratoryLoginName2.EditValue = currentKskOverEight.EXAM_RESPIRATORY_LOGINNAME;
+                        cboExamDigestionLoginName2.EditValue = currentKskOverEight.EXAM_DIGESTION_LOGINNAME;
+                        cboExamKidneyUrologyLoginName2.EditValue = currentKskOverEight.EXAM_KIDNEY_UROLOGY_LOGINNAME;
+                        cboExamOendLoginName2.EditValue = currentKskOverEight.EXAM_OEND_LOGINNAME;
+                        cboExamMuscleBoneLoginName2.EditValue = currentKskOverEight.EXAM_MUSCLE_BONE_LOGINNAME;
+                        cboExamNeurologicalLoginName2.EditValue = currentKskOverEight.EXAM_NEUROLOGICAL_LOGINNAME;
+                        cboExamMentalLoginName2.EditValue = currentKskOverEight.EXAM_MENTAL_LOGINNAME;
+                        cboExamSurgeryLoginName2.EditValue = currentKskOverEight.EXAM_SURGERY_LOGINNAME;
+                        cboExamObstetricLoginName2.EditValue = currentKskOverEight.EXAM_OBSTETRIC_LOGINNAME;
+                        cboExamDermatologyLoginName2.EditValue = currentKskOverEight.EXAM_DERMATOLOGY_LOGINNAME;
+                        cboTestBloodLoginName.EditValue = currentKskOverEight.TEST_BLOOD;
+                        cboTestUrineLoginName.EditValue = currentKskOverEight.TEST_URINE_LOGINNAME;
                         cboDiimLoginName2.EditValue = currentKskOverEight.DIIM_LOGINNAME;
                         cboExamStomatologyLoginName2.EditValue = currentKskOverEight.EXAM_STOMATOLOGY_LOGINNAME;
 
@@ -416,9 +442,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_OEND_RANK = cboExamOend2.EditValue != null ? (long?)Int64.Parse(cboExamOend2.EditValue.ToString()) : null;
 
                 obj.EXAM_CIRCULATION_LOGINNAME = cboExamCirculationLoginName2.EditValue != null ? cboExamCirculationLoginName2.EditValue.ToString() : null;
+                //dangth
+                obj.EXAM_RESPIRATORY_LOGINNAME = cboExamRespiratoryLoginName2.EditValue != null ? cboExamRespiratoryLoginName2.EditValue.ToString() : null;
+                obj.EXAM_DIGESTION_LOGINNAME = cboExamDigestionLoginName2.EditValue != null ? cboExamDigestionLoginName2.EditValue.ToString() : null;
+                obj.EXAM_KIDNEY_UROLOGY_LOGINNAME = cboExamKidneyUrologyLoginName2.EditValue != null ? cboExamKidneyUrologyLoginName2.EditValue.ToString() : null;
+                obj.EXAM_OEND_LOGINNAME = cboExamOendLoginName2.EditValue != null ? cboExamOendLoginName2.EditValue.ToString() : null;
+                obj.EXAM_MUSCLE_BONE_LOGINNAME = cboExamMuscleBoneLoginName2.EditValue != null ? cboExamMuscleBoneLoginName2.EditValue.ToString() : null;
+                obj.EXAM_NEUROLOGICAL_LOGINNAME = cboExamNeurologicalLoginName2.EditValue != null ? cboExamNeurologicalLoginName2.EditValue.ToString() : null;
+                obj.EXAM_MENTAL_LOGINNAME = cboExamMentalLoginName2.EditValue != null ? cboExamMentalLoginName2.EditValue.ToString() : null;
+                obj.EXAM_SURGERY_LOGINNAME = cboExamSurgeryLoginName2.EditValue != null ? cboExamSurgeryLoginName2.EditValue.ToString() : null;
+                obj.EXAM_OBSTETRIC_LOGINNAME = cboExamObstetricLoginName2.EditValue != null ? cboExamObstetricLoginName2.EditValue.ToString() : null;
                 obj.EXAM_EYE_LOGINNAME = cboExamEyeLoginName2.EditValue != null ? cboExamEyeLoginName2.EditValue.ToString() : null;
                 obj.EXAM_ENT_LOGINNAME = cboExamEntLoginName2.EditValue != null ? cboExamEntLoginName2.EditValue.ToString() : null;
                 obj.EXAM_STOMATOLOGY_LOGINNAME = cboExamStomatologyLoginName2.EditValue != null ? cboExamStomatologyLoginName2.EditValue.ToString() : null;
+                obj.EXAM_DERMATOLOGY_LOGINNAME = cboExamDermatologyLoginName2.EditValue != null ? cboExamDermatologyLoginName2.EditValue.ToString() : null;
+                obj.TEST_BLOOD = cboTestBloodLoginName.EditValue != null ? cboTestBloodLoginName.EditValue.ToString() : null;
+                obj.TEST_URINE_LOGINNAME = cboTestUrineLoginName.EditValue != null ? cboTestUrineLoginName.EditValue.ToString() : null;
                 obj.DIIM_LOGINNAME = cboDiimLoginName2.EditValue != null ? cboDiimLoginName2.EditValue.ToString() : null;
             }
             catch (Exception ex)
