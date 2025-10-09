@@ -870,9 +870,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             return result;
         }
 
-        private List<Metadata> GetMetadata(SummarizeInfo summarizeInfo)
+        private List<Inventec.Common.ElectronicBillViettel.Model.Metadata> GetMetadata(SummarizeInfo summarizeInfo)
         {
-            List<Metadata> result = new List<Metadata>();
+            List<Inventec.Common.ElectronicBillViettel.Model.Metadata> result = new List<Inventec.Common.ElectronicBillViettel.Model.Metadata>();
             try
             {
                 if (this.ElectronicBillDataInput != null)
@@ -959,7 +959,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                             string[] split = lstKeyTag[i].Split('#');
                             if (split.Length > 2)
                             {
-                                Metadata metadata = new Metadata();
+                                Inventec.Common.ElectronicBillViettel.Model.Metadata metadata = new Inventec.Common.ElectronicBillViettel.Model.Metadata();
                                 metadata.invoiceCustomFieldId = i + 1;
                                 metadata.keyLabel = split[1];
                                 metadata.keyTag = split[0];
@@ -980,7 +980,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
 
                     if (!String.IsNullOrWhiteSpace(sotien0))
                     {
-                        Metadata totalPrice = new Metadata();
+                        Inventec.Common.ElectronicBillViettel.Model.Metadata totalPrice = new Inventec.Common.ElectronicBillViettel.Model.Metadata();
                         totalPrice.invoiceCustomFieldId = 1;
                         totalPrice.keyLabel = !string.IsNullOrWhiteSpace(lable0) ? lable0 : "Tổng chi phí";
                         totalPrice.keyTag = sotien0;
@@ -991,7 +991,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
 
                     if (!String.IsNullOrWhiteSpace(sotien1))
                     {
-                        Metadata totalPriceBhyt = new Metadata();
+                        Inventec.Common.ElectronicBillViettel.Model.Metadata totalPriceBhyt = new Inventec.Common.ElectronicBillViettel.Model.Metadata();
                         totalPriceBhyt.invoiceCustomFieldId = 2;
                         totalPriceBhyt.keyLabel = !string.IsNullOrWhiteSpace(lable1) ? lable1 : "Số tiền BHYT";
                         totalPriceBhyt.keyTag = sotien1;
@@ -1002,7 +1002,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
 
                     if (!String.IsNullOrWhiteSpace(sotien2))
                     {
-                        Metadata patientPriceBhyt = new Metadata();
+                        Inventec.Common.ElectronicBillViettel.Model.Metadata patientPriceBhyt = new Inventec.Common.ElectronicBillViettel.Model.Metadata();
                         patientPriceBhyt.invoiceCustomFieldId = 3;
                         patientPriceBhyt.keyLabel = !string.IsNullOrWhiteSpace(lable2) ? lable2 : "Trong đó Số tiền BN cùng chi trả BHYT";
                         patientPriceBhyt.keyTag = sotien2;
@@ -1014,7 +1014,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
 
                     if (!String.IsNullOrWhiteSpace(sotien3))
                     {
-                        Metadata otherPrice = new Metadata();
+                        Inventec.Common.ElectronicBillViettel.Model.Metadata otherPrice = new Inventec.Common.ElectronicBillViettel.Model.Metadata();
                         otherPrice.invoiceCustomFieldId = 4;
                         otherPrice.keyLabel = !string.IsNullOrWhiteSpace(lable3) ? lable3 : "Số tiền các quỹ tài trợ khác";
                         otherPrice.keyTag = sotien3;
@@ -1042,7 +1042,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
 
                     if (!String.IsNullOrWhiteSpace(sotien4))
                     {
-                        Metadata patientPrice = new Metadata();
+                        Inventec.Common.ElectronicBillViettel.Model.Metadata patientPrice = new Inventec.Common.ElectronicBillViettel.Model.Metadata();
                         patientPrice.invoiceCustomFieldId = 5;
                         patientPrice.keyLabel = !string.IsNullOrWhiteSpace(lable4) ? lable4 : "Số tiền BN thanh toán";
                         patientPrice.keyTag = sotien4;
@@ -1054,7 +1054,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             }
             catch (Exception ex)
             {
-                result = new List<Metadata>();
+                result = new List<Inventec.Common.ElectronicBillViettel.Model.Metadata>();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
