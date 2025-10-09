@@ -36,5 +36,9 @@ namespace MPS.Processor.Mps000100
         internal const string MAX_INTRUCTION_TIME_DISPLAY = "MAX_INTRUCTION_TIME_DISPLAY";
         internal const string MAX_INTRUCTION_DATE_DISPLAY = "MAX_INTRUCTION_DATE_DISPLAY";
         internal const string IMP_MEST_CODEs = "IMP_MEST_CODEs";
+
+        internal const string OTHER_PAY_SOURCE_ID = "OTHER_PAY_SOURCE_ID";
+        internal const string OTHER_PAY_SOURCE_CODE = "OTHER_PAY_SOURCE_CODE";
+        internal const string OTHER_PAY_SOURCE_NAME = "OTHER_PAY_SOURCE_NAME";
     }
 }

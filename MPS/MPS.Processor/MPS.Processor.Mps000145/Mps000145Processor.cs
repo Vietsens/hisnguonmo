@@ -63,22 +63,28 @@ namespace MPS.Processor.Mps000145
 
                       
                       
-                }  
-                objectTag.AddObjectData(store, "MediMaties1", rdo._ListAdo);
+                }
+                //objectTag.AddObjectData(store, "MediMaties1", rdo._ListAdo);
                 objectTag.AddObjectData(store, "MediMaties2", rdo._ListAdo);
                 objectTag.AddObjectData(store, "MediMaties3", rdo._ListAdo);
-
                 if (rdo._ListAdo != null && rdo._ListAdo.Count > 0)
                 {
+                    //var groupByParent = rdo._ListAdo
+                    //    .GroupBy(p => new { p.PARENT_ID, p.PARENT_NAME })
+                    //    .OrderBy(g => g.Key.PARENT_ID)
+                    //    .Select(g => new { ParentID = g.Key, Items = g.ToList() })
+                    //    .ToList();
                     var groupByParent = rdo._ListAdo
                         .GroupBy(p => new { p.PARENT_ID, p.PARENT_NAME })
-                        .OrderBy(g => g.Key.PARENT_ID)
-                        .Select(g => new { ParentID = g.Key, Items = g.ToList() })
+                        .Select(g => new {
+                            PARENT_ID = g.Key.PARENT_ID,
+                            PARENT_NAME = g.Key.PARENT_NAME
+                        })
                         .ToList();
-
+                    objectTag.AddObjectData(store, "MediMaties1", rdo._ListAdo);
                     objectTag.AddObjectData(store, "MediMaties", rdo._ListAdo);
                     objectTag.AddObjectData(store, "MediMatiesGroups", groupByParent);
-                    objectTag.AddRelationship(store, "MediMatiesGroups", "MediMaties", "PARENT_ID", "PARENT_ID");
+                    objectTag.AddRelationship(store, "MediMatiesGroups", "MediMaties1", "PARENT_ID", "PARENT_ID");
                 }
                 result = true;
             }
