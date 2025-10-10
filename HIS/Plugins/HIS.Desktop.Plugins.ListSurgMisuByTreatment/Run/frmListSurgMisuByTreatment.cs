@@ -55,6 +55,7 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
         V_HIS_SERE_SERV_1 currentRow = new V_HIS_SERE_SERV_1();
         List<HIS_SERE_SERV_EXT> lstSereServExts = new List<HIS_SERE_SERV_EXT>();
         bool isPTTT = false;
+        private bool _handlingCtrlS = false;
 
         public frmListSurgMisuByTreatment()
         {
@@ -110,6 +111,7 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
         {
             try
             {
+                this.KeyPreview = true;
                 SetIconFrm();
                 if (this.currentModule != null)
                 {
@@ -590,7 +592,15 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
             {
                 if (e.Control && e.KeyCode == Keys.S)
                 {
+                    if (_handlingCtrlS) return;        
+                    _handlingCtrlS = true;
+
+                    e.Handled = true;                 
+                    e.SuppressKeyPress = true;
+
                     btnSelect_Click(sender, e);
+                    _handlingCtrlS = false;
+                    return;
                 }
             }
             catch (Exception ex)
