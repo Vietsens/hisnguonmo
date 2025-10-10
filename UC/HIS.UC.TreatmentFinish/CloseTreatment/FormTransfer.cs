@@ -918,8 +918,8 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
 
                 var isBHYT = hisTreatment.TDL_PATIENT_TYPE_ID;
 
-                if((isBHYT == 1 && isRequiredBHYT == 1) || ((pathologicalProcessOption == "1" || pathologicalProcessOption == "2") 
-                    && (hisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU))
+                if(((isBHYT == 1 && isRequiredBHYT == 1) || ((pathologicalProcessOption == "1" || pathologicalProcessOption == "2") 
+                    && (hisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)))
                     && string.IsNullOrWhiteSpace(txtQuaTrinhBenhLy.Text))
                 {     
                     var result = XtraMessageBox.Show("Bắt buộc nhập quá trình bệnh lý đối với bệnh nhân chuyển viện", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -930,7 +930,14 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                     }
                     return;
                 }
-
+                //qtcode
+                if (!string.IsNullOrEmpty(memPttt.Text) && Inventec.Common.String.CountVi.Count(memPttt.Text) > 3000)
+                {
+                    XtraMessageBox.Show("Dữ liệu phẫu thuật, thủ thuật vượt quá 3000 ký tự!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    memPttt.Focus();
+                    memPttt.SelectAll();
+                    return;
+                }
                 currentTreatmentFinishSDO.TreatmentId = hisTreatment.ID;
 
                 if (cboTranPatiReason.EditValue != null)
@@ -995,7 +1002,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
 
                 currentTreatmentFinishSDO.UsedMedicine = txtUsedMedicine.Text.Trim();
                 currentTreatmentFinishSDO.SurgeryName = memPttt.Text.Trim();
-                if (dteBegin.EditValue != null && dteBegin.DateTime != DateTime.MinValue)
+                        if (dteBegin.EditValue != null && dteBegin.DateTime != DateTime.MinValue)
                     currentTreatmentFinishSDO.SurgeryBeginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteBegin.DateTime);
                 if (dteEnd.EditValue != null && dteEnd.DateTime != DateTime.MinValue)
                     currentTreatmentFinishSDO.SurgeryEndTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteEnd.DateTime);
