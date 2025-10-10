@@ -282,8 +282,12 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     }
                     if (!IsStayingDepartment(row.DEPARTMENT_IDS))
                     {
-                        MessageManager.Show("Bệnh nhân đang ở khoa khác");
-                        return;
+                        if (HisConfigCFG.isAllowFinishDifferentDepartment && TreatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM) { }
+                        else
+                        {
+                            MessageManager.Show("Bệnh nhân đang ở khoa khác");
+                            return;
+                        }
                     }
                     WaitingManager.Show();
                     //Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.TreatmentFinish").FirstOrDefault();
@@ -319,7 +323,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             }
         }
 
-        private void repositoryItembtnFinish_Click(MOS.EFMODEL.DataModels.V_HIS_TREATMENT_4 data)
+        private void repositoryItembtnFinish_Click(MOS.EFMODEL.DataModels.V_HIS_TREATMENT_4 data, long treatmentTypeId)
         {
             try
             {
@@ -332,10 +336,14 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         MessageManager.Show("Bệnh nhân đã kết thúc điều trị");
                         return;
                     }
-                    if (!IsStayingDepartment(row.DEPARTMENT_IDS))
+                    if (!IsStayingDepartment(row.DEPARTMENT_IDS) )
                     {
-                        MessageManager.Show("Bệnh nhân đang ở khoa khác");
-                        return;
+                        if (HisConfigCFG.isAllowFinishDifferentDepartment && treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM) { }
+                        else
+                        {
+                            MessageManager.Show("Bệnh nhân đang ở khoa khác");
+                            return;
+                        }
                     }
                     WaitingManager.Show();
                     //Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.TreatmentFinish").FirstOrDefault();
@@ -345,7 +353,6 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     List<object> listArgs = new List<object>();
 
                     TreatmentLogADO TreatmentLogADO = new TreatmentLogADO();
-
                     TreatmentLogADO.RoomId = currentModule.RoomId;
                     TreatmentLogADO.TreatmentId = row.ID;
                     listArgs.Add(TreatmentLogADO);
@@ -591,8 +598,12 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     }
                     if (!IsStayingDepartment(row.DEPARTMENT_IDS))
                     {
-                        MessageManager.Show("Bệnh nhân đang ở khoa khác");
-                        return;
+                        if (HisConfigCFG.isAllowFinishDifferentDepartment && TreatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM) { }
+                        else
+                        {
+                            MessageManager.Show("Bệnh nhân đang ở khoa khác");
+                            return;
+                        }
                     }
                     string mess = null;
 
@@ -643,7 +654,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             }
         }
 
-        private void repositoryItembtnUnifinish_Click(V_HIS_TREATMENT_4 data)
+        private void repositoryItembtnUnifinish_Click(V_HIS_TREATMENT_4 data, long treatmentTypeId)
         {
             CommonParam param = new CommonParam();
             bool success = false;
@@ -660,8 +671,12 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     }
                     if (!IsStayingDepartment(row.DEPARTMENT_IDS))
                     {
-                        MessageManager.Show("Bệnh nhân đang ở khoa khác");
-                        return;
+                        if (HisConfigCFG.isAllowFinishDifferentDepartment && treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM) { }
+                        else
+                        {
+                            MessageManager.Show("Bệnh nhân đang ở khoa khác");
+                            return;
+                        }
                     }
                     string mess = null;
                     bool IsContinue = true;

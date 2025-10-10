@@ -77,6 +77,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
         int dataTotal = 0;
         int start = 0;
         int lastRowHandle = -1;
+        long TreatmentTypeId;
         GridColumn lastColumn = null;
         ToolTipControlInfo lastInfo = null;
         Inventec.Desktop.Common.Modules.Module currentModule = null;
@@ -1918,7 +1919,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         bool isfinishButton = false;
                         long endDepartmentId = Int64.Parse((view.GetRowCellValue(hi.RowHandle, "END_DEPARTMENT_ID") ?? "0").ToString());
 
-                        long TreatmentTypeId = Int64.Parse((view.GetRowCellValue(hi.RowHandle, "TDL_TREATMENT_TYPE_ID") ?? "0").ToString());
+                        TreatmentTypeId = Int64.Parse((view.GetRowCellValue(hi.RowHandle, "TDL_TREATMENT_TYPE_ID") ?? "0").ToString());
                         string TreatmentCode = (view.GetRowCellValue(hi.RowHandle, "TREATMENT_CODE") ?? "0").ToString();
                         long endRoomId = Int64.Parse((view.GetRowCellValue(hi.RowHandle, "END_ROOM_ID") ?? "0").ToString());
                         if (treatmentData != null)
@@ -1928,16 +1929,17 @@ namespace HIS.Desktop.Plugins.TreatmentList
                                 #region ----- Kết thúc điều trị -----
                                 if (treatmentData != null)
                                 {
+                                    
                                     if (!HisConfigCFG.IsUnlockConditionOption)
                                     {
                                         isfinishButton = (isPause != 1) && (CheckLoginAdmin.IsAdmin(loginName) || IsStayingDepartment(departmentIds));
                                         if ((isPause != 1) && (CheckLoginAdmin.IsAdmin(loginName) || IsStayingDepartment(departmentIds)))
                                         {
-                                            repositoryItembtnFinish_Click(treatmentData);
+                                            repositoryItembtnFinish_Click(treatmentData, TreatmentTypeId);
                                         }
                                         else if (isPause == 1 && (CheckLoginAdmin.IsAdmin(loginName) || IsStayingDepartment(endDepartmentId.ToString())))
                                         {
-                                            repositoryItembtnUnifinish_Click(treatmentData);
+                                            repositoryItembtnUnifinish_Click(treatmentData, TreatmentTypeId);
                                         }
                                     }
                                     else
@@ -1945,9 +1947,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                                         bool IsEnableFinish = (isPause != 1) && (TreatmentTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && IsStayingDepartment(departmentIds) || CheckLoginAdmin.IsAdmin(loginName));
                                         bool IsEnableUnFinish = (isPause == 1) && ((TreatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && endRoomId == currentModule.RoomId) || (TreatmentTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && IsStayingDepartment(endDepartmentId.ToString())) || CheckLoginAdmin.IsAdmin(loginName));
                                         if (IsEnableFinish)
-                                            repositoryItembtnFinish_Click(treatmentData);
+                                            repositoryItembtnFinish_Click(treatmentData, TreatmentTypeId);
                                         else if (IsEnableUnFinish)
-                                            repositoryItembtnUnifinish_Click(treatmentData);
+                                            repositoryItembtnUnifinish_Click(treatmentData, TreatmentTypeId);
                                     }
                                 }
                                 #endregion
