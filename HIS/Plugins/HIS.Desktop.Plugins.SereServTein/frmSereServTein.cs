@@ -671,6 +671,45 @@ namespace HIS.Desktop.Plugins.SereServTein
             return result;
         }
 
+        internal static string CalculateFullAge(long ageNumber)
+        {
+            string tuoi;
+            try
+            {
+                DateTime dtNgSinh = Inventec.Common.TypeConvert.Parse.ToDateTime(Inventec.Common.DateTime.Convert.TimeNumberToTimeString(ageNumber));
+                TimeSpan diff = DateTime.Now - dtNgSinh;
+                long tongsogiay = diff.Ticks;
+                if (tongsogiay < 0)
+                {
+                    tuoi = "";
+                    return "";
+                }
+                DateTime newDate = new DateTime(tongsogiay);
+
+                int nam = newDate.Year - 1;
+                int thang = newDate.Month - 1;
+                int ngay = newDate.Day - 1;
+                int gio = newDate.Hour;
+                int phut = newDate.Minute;
+                int giay = newDate.Second;
+
+                if (nam > 0)
+                {
+                    tuoi = nam.ToString();
+                }
+                else
+                {
+                    tuoi = "1";
+                }
+                return tuoi;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return "";
+            }
+        }
+
         private void LoadBieuMauPhieuXetNghiem(string printTypeCode, string fileName, ref bool result)
         {
             try
@@ -718,6 +757,7 @@ namespace HIS.Desktop.Plugins.SereServTein
                             IseGFR = true;
                         }
                     }
+                    var age = Convert.ToInt32(CalculateFullAge(_Treatment.TDL_PATIENT_DOB));
 
                     bool IsuACR = false;
                     if (lciACRPRC.Visible)
@@ -732,17 +772,13 @@ namespace HIS.Desktop.Plugins.SereServTein
                     var mlct = "";
                     if (!string.IsNullOrEmpty(lblMlct.Text))
                     {
-                        int idx = lblMlct.Text.IndexOf("(");
-                        if (idx > 0)
-                            mlct = lblMlct.Text.Substring(0, idx);
-                        else
-                            mlct = lblMlct.Text;
+                       mlct = lblMlct.Text;
                     }
 
                     pdo.mLCTADOs = new MPS.Processor.Mps000096.PDO.MLCTADO()
                     {
-                        EGFR = IseGFR ? mlct : null,
-                        CRCL = !IseGFR ? mlct : null,
+                        EGFR = age < 18 ? mlct : null,
+                        CRCL = age > 18 ? mlct : null,
                         UACR = IsuACR ? lblACRPRC.Text : null,
                         UPCR = !IsuACR ? lblACRPRC.Text : null,
                     };
@@ -1260,21 +1296,17 @@ namespace HIS.Desktop.Plugins.SereServTein
                         }
                     }
                     //var mlct = !String.IsNullOrEmpty(lblMlct.Text) ? lblMlct.Text.Substring(0, lblMlct.Text.IndexOf("(")) : "";
-
+                    var age = Convert.ToInt32(CalculateFullAge(_Treatment.TDL_PATIENT_DOB));
                     var mlct = "";
                     if (!string.IsNullOrEmpty(lblMlct.Text))
                     {
-                        int idx = lblMlct.Text.IndexOf("(");
-                        if (idx > 0)
-                            mlct = lblMlct.Text.Substring(0, idx);
-                        else
-                            mlct = lblMlct.Text;
+                        mlct = lblMlct.Text;
                     }
 
                     mps000014RDO.mLCTADO = new MPS.Processor.Mps000014.PDO.MLCTADO()
                     {
-                        EGFR = IseGFR ? mlct : null,
-                        CRCL = !IseGFR ? mlct : null,
+                        EGFR = age < 18 ? mlct : null,
+                        CRCL = age > 18 ? mlct : null,
                         UACR = IsuACR ? lblACRPRC.Text : null,
                         UPCR = !IsuACR ? lblACRPRC.Text : null,
                     };
