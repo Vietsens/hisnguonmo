@@ -99,6 +99,18 @@
     <Reference Include="Inventec.Desktop.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
