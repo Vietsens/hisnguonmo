@@ -35,7 +35,9 @@ namespace MPS.Processor.Mps000143.PDO
         public List<Mps000143ADO> _ListAdo = null;
         public Mps000143Key _mps000143Key = null;
         public int NumberDigit;
-
+        //qtcode
+        public List<V_HIS_MEDICINE_TYPE> _MedicineTypes = null;
+        public List<V_HIS_MATERIAL_TYPE> _MaterialTypes = null;
         public class Mps000143Key
         {
             public string EXP_MEDI_STOCK_NAME { get; set; }
@@ -50,6 +52,16 @@ namespace MPS.Processor.Mps000143.PDO
             public long TYPE_ID { get; set; }
             public long MEDI_MATE_NUM_ORDER { get; set; }
             public string MEDI_MATE_TYPE_CODE { get; set; }
+            //qtcode
+            public long? OTHER_PAY_SOURCE_ID { get; set; }
+            public string OTHER_PAY_SOURCE_CODE { get; set; }
+            public string OTHER_PAY_SOURCE_NAME { get; set; }
+            //public long? MEDICINE_GROUP_ID { get; set; } // Ch? cho thu?c
+            public string MEDICINE_GROUP_CODE { get; set; }
+            public string MEDICINE_GROUP_NAME { get; set; }
+            public long? PARENT_ID { get; set; }
+            public string PARENT_CODE { get; set; }
+            public string PARENT_NAME { get; set; }
 
             public Mps000143ADO(V_HIS_IMP_MEST_MEDICINE medicine)
             {
