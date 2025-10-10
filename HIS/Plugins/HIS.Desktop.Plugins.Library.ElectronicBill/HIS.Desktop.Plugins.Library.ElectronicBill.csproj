@@ -294,6 +294,7 @@
     <Compile Include="ProviderBehavior\VIETTEL\VIETTELBehavior.cs" />
     <Compile Include="ProviderBehavior\VNInvoice\Model\ConvertInvoice.cs" />
     <Compile Include="ProviderBehavior\VNInvoice\Model\CreateAndSignInvoice.cs" />
+    <Compile Include="ProviderBehavior\VNInvoice\Model\CreateInvoice.cs" />
     <Compile Include="ProviderBehavior\VNInvoice\Model\LoginVNInvoice.cs" />
     <Compile Include="ProviderBehavior\VNInvoice\Model\ReplaceInvoice.cs" />
     <Compile Include="ProviderBehavior\VNInvoice\Model\SignInvoice.cs" />
