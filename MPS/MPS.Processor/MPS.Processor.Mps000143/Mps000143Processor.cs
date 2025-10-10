@@ -59,15 +59,67 @@ namespace MPS.Processor.Mps000143
                 //lấy số lần in
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
 
-                singleTag.ProcessData(store, singleValueDictionary);
-                if (rdo._ListAdo != null && rdo._ListAdo.Count > 0)
+                var groupedByOtherPaySource = rdo._ListAdo
+                                                .GroupBy(o => o.OTHER_PAY_SOURCE_ID ?? 0)
+                                                .ToList();
+
+                var allListAdo = new List<Mps000143PDO.Mps000143ADO>();
+                var allMedicineGroups = new List<Mps000143PDO.Mps000143ADO>();
+                var allParents = new List<Mps000143PDO.Mps000143ADO>();
+
+                foreach (var group in groupedByOtherPaySource)
                 {
-                    rdo._ListAdo = rdo._ListAdo.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
+                    var paySourceId = group.Key;
+                    if(rdo._MedicineTypes?.FirstOrDefault(m => m.OTHER_PAY_SOURCE_ID == paySourceId) != null) { 
+                    }
+                    var paySourceType = rdo._MedicineTypes?.FirstOrDefault(m => m.OTHER_PAY_SOURCE_ID == paySourceId);
+
+                    //?? rdo._MaterialTypes?.FirstOrDefault(m => m.OTHER_PAY_SOURCE_ID == paySourceId);
+                    string paySourceName = paySourceType?.OTHER_PAY_SOURCE_NAME ?? "Không xác định";
+
+
+                    var listAdo = group.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
+                    foreach (var item in listAdo)
+                    {
+                        item.OTHER_PAY_SOURCE_NAME = paySourceName;
+                    }
+
+                    var groupMedicineGroups = listAdo
+                        .Where(o => o.MEDICINE_GROUP_ID.HasValue)
+                        .GroupBy(o => new { o.MEDICINE_GROUP_ID, o.MEDICINE_GROUP_CODE, o.MEDICINE_GROUP_NAME })
+                        .Select(g => g.First())
+                        .ToList();
+                    var groupParents = listAdo
+                        .GroupBy(o => new { o.PARENT_ID, o.PARENT_CODE, o.PARENT_NAME })
+                        .Select(g => g.First())
+                        .ToList();
+
+                    allListAdo.AddRange(listAdo);
+                    allMedicineGroups.AddRange(groupMedicineGroups);
+                    allParents.AddRange(groupParents);
                 }
-                objectTag.AddObjectData(store, "MediMaties1", rdo._ListAdo);
-                objectTag.AddObjectData(store, "MediMaties2", rdo._ListAdo);
-                objectTag.AddObjectData(store, "MediMaties3", rdo._ListAdo);
+
+                objectTag.AddObjectData(store, "MediMaties1", allListAdo);
+                objectTag.AddObjectData(store, "MedicineGroups", allMedicineGroups);
+                objectTag.AddObjectData(store, "Parents", allParents);
+                objectTag.AddObjectData(store, "OtherPaySource", groupedByOtherPaySource);
+
+                objectTag.AddRelationship(store, "MedicineGroups", "MediMaties1", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
+                objectTag.AddRelationship(store, "Parents", "MediMaties1", "PARENT_ID", "PARENT_ID");
+
+                singleTag.ProcessData(store, singleValueDictionary);
+                objectTag.SetUserFunction(store, "FuncMergeData", new CalculateMergerData());
                 result = true;
+
+                //singleTag.ProcessData(store, singleValueDictionary);
+                //if (rdo._ListAdo != null && rdo._ListAdo.Count > 0)
+                //{
+                //    rdo._ListAdo = rdo._ListAdo.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
+                //}
+                //objectTag.AddObjectData(store, "MediMaties1", rdo._ListAdo);
+                //objectTag.AddObjectData(store, "MediMaties2", rdo._ListAdo);
+                //objectTag.AddObjectData(store, "MediMaties3", rdo._ListAdo);
+                //result = true;
             }
             catch (Exception ex)
             {
