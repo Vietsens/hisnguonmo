@@ -33,5 +33,10 @@ namespace MPS.Processor.Mps000143
         internal static string CREATE_DATE_SEPARATE_STR = "CREATE_DATE_SEPARATE_STR";
         internal static string SUM_PRICE = "SUM_PRICE";
         internal static string SUM_PRICE_TEXT = "SUM_PRICE_TEXT";
+        //qtcode
+        internal const string PAGE_TITLE = "PAGE_TITLE";
+        internal const string OTHER_PAY_SOURCE_ID = "OTHER_PAY_SOURCE_ID";
+        internal const string OTHER_PAY_SOURCE_CODE = "OTHER_PAY_SOURCE_CODE";
+        internal const string OTHER_PAY_SOURCE_NAME = "OTHER_PAY_SOURCE_NAME";
     }
 }

@@ -29,16 +29,18 @@ namespace MPS.Processor.Mps000143.PDO
     public partial class Mps000143PDO : RDOBase
     {
         public Mps000143PDO() { }
-        public Mps000143PDO(V_HIS_IMP_MEST chmsImpMest, List<V_HIS_IMP_MEST_MEDICINE> impMestMedicines, List<V_HIS_IMP_MEST_MATERIAL> impMestMaterials, int numberDigit)
+        public Mps000143PDO(V_HIS_IMP_MEST chmsImpMest, List<V_HIS_IMP_MEST_MEDICINE> impMestMedicines, List<V_HIS_IMP_MEST_MATERIAL> impMestMaterials, int numberDigit, List<V_HIS_MATERIAL_TYPE> materialTypes, List<V_HIS_MEDICINE_TYPE> medicineTypes)
         {
             this._ChmsImpMest = chmsImpMest;
             this._ImpMestMaterials = impMestMaterials;
             this._ImpMestMedicines = impMestMedicines;
             this._ListAdo = new List<Mps000143ADO>();
             this.NumberDigit = numberDigit;
+            this._MedicineTypes = medicineTypes;
+            this._MaterialTypes = materialTypes;
         }
 
-        public Mps000143PDO(V_HIS_IMP_MEST chmsImpMest, List<V_HIS_IMP_MEST_MEDICINE> impMestMedicines, List<V_HIS_IMP_MEST_MATERIAL> impMestMaterials, Mps000143Key mps000143Key, int numberDigit)
+        public Mps000143PDO(V_HIS_IMP_MEST chmsImpMest, List<V_HIS_IMP_MEST_MEDICINE> impMestMedicines, List<V_HIS_IMP_MEST_MATERIAL> impMestMaterials, Mps000143Key mps000143Key, int numberDigit, List<V_HIS_MATERIAL_TYPE> materialTypes, List<V_HIS_MEDICINE_TYPE> medicineTypes)
         {
             this._ChmsImpMest = chmsImpMest;
             this._ImpMestMaterials = impMestMaterials;
@@ -46,6 +48,8 @@ namespace MPS.Processor.Mps000143.PDO
             this._ListAdo = new List<Mps000143ADO>();
             this._mps000143Key = mps000143Key;
             this.NumberDigit = numberDigit;
+            this._MedicineTypes = medicineTypes;
+            this._MaterialTypes = materialTypes;
         }
     }
 }
