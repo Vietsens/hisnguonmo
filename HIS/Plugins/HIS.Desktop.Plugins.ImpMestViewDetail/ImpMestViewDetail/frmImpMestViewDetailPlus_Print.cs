@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Office.Utils;
 using DevExpress.Utils.Menu;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -1672,6 +1673,25 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
 
                     var ImpMestMaterialPrints = MapImpMestMaterialFromSDO(this.impMestMaterials);
 
+                    List<V_HIS_MEDICINE_TYPE> medicineTypes = new List<V_HIS_MEDICINE_TYPE>();
+                    List<V_HIS_MATERIAL_TYPE> materialTypes = new  List<V_HIS_MATERIAL_TYPE>();
+
+                    HisMedicineTypeViewFilter medicineTypeFilter = new HisMedicineTypeViewFilter
+                    {
+                        IDs = impMestMedicinePrints.Select(o => o.MEDICINE_TYPE_ID).Distinct().ToList()
+                    };
+                    medicineTypes = new BackendAdapter(param)
+                        .Get<List<V_HIS_MEDICINE_TYPE>>("api/HisMedicineType/GetView", ApiConsumers.MosConsumer, medicineTypeFilter, param);
+
+
+                    HisMaterialTypeViewFilter materialTypeFilter = new HisMaterialTypeViewFilter
+                    {
+                        IDs = ImpMestMaterialPrints.Select(o => o.MATERIAL_TYPE_ID).Distinct().ToList()
+                    };
+                    materialTypes = new BackendAdapter(param)
+                        .Get<List<V_HIS_MATERIAL_TYPE>>("api/HisMaterial/GetView", ApiConsumers.MosConsumer, materialTypeFilter, param);
+
+
                     Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this.impMest?.TDL_TREATMENT_CODE) ? this.impMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModuleBase != null ? this.currentModuleBase.RoomId : 0);
                     if ((ImpMestMaterialPrints != null && ImpMestMaterialPrints.Count > 0) || (impMestMedicinePrints != null && impMestMedicinePrints.Count > 0))
                     {
@@ -1681,7 +1701,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                         if (keyPrintType == 1)
                         {
                             _Mps000143Key.KEY_NAME_TITLES = "";
-                            MPS.Processor.Mps000143.PDO.Mps000143PDO rdo = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, impMestMedicinePrints, ImpMestMaterialPrints, _Mps000143Key, ConfigApplications.NumberSeperator);
+                            MPS.Processor.Mps000143.PDO.Mps000143PDO rdo = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, impMestMedicinePrints, ImpMestMaterialPrints, _Mps000143Key, ConfigApplications.NumberSeperator, materialTypes, medicineTypes);
                             PrintData(printTypeCode, fileName, rdo, false, inputADO, ref result);
                         }
                         else
@@ -1719,7 +1739,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                             if (_ImpMestMedi_Ts != null && _ImpMestMedi_Ts.Count > 0)
                             {
                                 _Mps000143Key.KEY_NAME_TITLES = "THUỐC THƯỜNG";
-                                MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_Ts = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_Ts, null, _Mps000143Key, ConfigApplications.NumberSeperator);
+                                MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_Ts = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_Ts, null, _Mps000143Key, ConfigApplications.NumberSeperator, materialTypes, medicineTypes);
                                 PrintData(printTypeCode, fileName, rdo_Ts, false, inputADO, ref result);
                             }
                             #endregion
@@ -1743,7 +1763,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                                     }
 
                                     _Mps000143Key.KEY_NAME_TITLES = "GÂY NGHIỆN, HƯỚNG THẦN";
-                                    MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_GNHTs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, DataGroups, null, _Mps000143Key, ConfigApplications.NumberSeperator);
+                                    MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_GNHTs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, DataGroups, null, _Mps000143Key, ConfigApplications.NumberSeperator, materialTypes, medicineTypes);
                                     PrintData(printTypeCode, fileName, rdo_GNHTs, false, inputADO, ref result);
                                 }
                                 else
@@ -1751,14 +1771,14 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                                     if (_ImpMestMedi_GNs != null && _ImpMestMedi_GNs.Count > 0)
                                     {
                                         _Mps000143Key.KEY_NAME_TITLES = "GÂY NGHIỆN";
-                                        MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_GNs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_GNs, null, _Mps000143Key, ConfigApplications.NumberSeperator);
+                                        MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_GNs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_GNs, null, _Mps000143Key, ConfigApplications.NumberSeperator, materialTypes, medicineTypes);
                                         PrintData(printTypeCode, fileName, rdo_GNs, false, inputADO, ref result);
                                     }
 
                                     if (_ImpMestMedi_HTs != null && _ImpMestMedi_HTs.Count > 0)
                                     {
                                         _Mps000143Key.KEY_NAME_TITLES = "HƯỚNG THẦN";
-                                        MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_HTs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_HTs, null, _Mps000143Key, ConfigApplications.NumberSeperator);
+                                        MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_HTs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_HTs, null, _Mps000143Key, ConfigApplications.NumberSeperator, materialTypes, medicineTypes);
                                         PrintData(printTypeCode, fileName, rdo_HTs, false, inputADO, ref result);
                                     }
                                 }
@@ -1769,7 +1789,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                             if (_ImpMestMedi_TDs != null && _ImpMestMedi_TDs.Count > 0)
                             {
                                 _Mps000143Key.KEY_NAME_TITLES = "ĐỘC";
-                                MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_TDs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_TDs, null, _Mps000143Key, ConfigApplications.NumberSeperator);
+                                MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_TDs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_TDs, null, _Mps000143Key, ConfigApplications.NumberSeperator, materialTypes, medicineTypes);
                                 PrintData(printTypeCode, fileName, rdo_TDs, false, inputADO, ref result);
                             }
                             #endregion
@@ -1778,7 +1798,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                             if (_ImpMestMedi_PXs != null && _ImpMestMedi_PXs.Count > 0)
                             {
                                 _Mps000143Key.KEY_NAME_TITLES = "PHÓNG XẠ";
-                                MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_PXs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_PXs, null, _Mps000143Key, ConfigApplications.NumberSeperator);
+                                MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_PXs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_PXs, null, _Mps000143Key, ConfigApplications.NumberSeperator, materialTypes, medicineTypes);
                                 PrintData(printTypeCode, fileName, rdo_PXs, false, inputADO, ref result);
                             }
                             #endregion
@@ -1787,7 +1807,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                             if (_ImpMestMedi_Others != null && _ImpMestMedi_Others.Count > 0)
                             {
                                 _Mps000143Key.KEY_NAME_TITLES = "KHÁC";
-                                MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_Ks = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_Others, null, _Mps000143Key, ConfigApplications.NumberSeperator);
+                                MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_Ks = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, _ImpMestMedi_Others, null, _Mps000143Key, ConfigApplications.NumberSeperator, materialTypes, medicineTypes);
                                 PrintData(printTypeCode, fileName, rdo_Ks, false, inputADO, ref result);
                             }
                             #endregion
@@ -1796,7 +1816,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                             if (ImpMestMaterialPrints != null && ImpMestMaterialPrints.Count > 0)
                             {
                                 _Mps000143Key.KEY_NAME_TITLES = "VẬT TƯ";
-                                MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_VTs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, null, ImpMestMaterialPrints, _Mps000143Key, ConfigApplications.NumberSeperator);
+                                MPS.Processor.Mps000143.PDO.Mps000143PDO rdo_VTs = new MPS.Processor.Mps000143.PDO.Mps000143PDO(this.impMest, null, ImpMestMaterialPrints, _Mps000143Key, ConfigApplications.NumberSeperator, materialTypes, medicineTypes);
                                 PrintData(printTypeCode, fileName, rdo_VTs, false, inputADO, ref result);
                             }
                             #endregion
