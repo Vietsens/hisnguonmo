@@ -35,8 +35,8 @@ namespace MPS.Processor.Mps000254
         public string TDL_PATIENT_NAME { get; set; }   
         public string TREATMENT_CODE { get; set; }
 
-        public Mps000254ADODetail(V_HIS_EXP_MEST _BcsExpMest, List<HIS_EXP_MEST_METY_REQ> req, List<V_HIS_MEDICINE_TYPE> _medicineTypes, List<V_HIS_EXP_MEST_MEDICINE> medicines, bool isReplace, HIS_TREATMENT dataPatient)
-            : base(_BcsExpMest, req, _medicineTypes, medicines, isReplace)
+        public Mps000254ADODetail(V_HIS_EXP_MEST _BcsExpMest, List<HIS_EXP_MEST_METY_REQ> req, List<V_HIS_MEDICINE_TYPE> _medicineTypes, List<V_HIS_EXP_MEST_MEDICINE> medicines, bool isReplace, HIS_TREATMENT dataPatient, V_HIS_MATERIAL_TYPE mateType)
+            : base(_BcsExpMest, req, _medicineTypes, medicines, isReplace, mateType)
         {
             if (dataPatient != null)
             {

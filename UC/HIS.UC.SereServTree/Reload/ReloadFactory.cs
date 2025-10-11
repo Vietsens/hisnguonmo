@@ -27,7 +27,7 @@ namespace HIS.UC.SereServTree.Reload
 {
     class ReloadFactory
     {
-        internal static IReload MakeIReload(CommonParam param, UserControl data, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5> sereServs)
+        internal static IReload MakeIReload(CommonParam param, UserControl data, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5> sereServs)   
         {
             IReload result = null;
             try
@@ -35,6 +35,29 @@ namespace HIS.UC.SereServTree.Reload
                 if (data is UserControl)
                 {
                     result = new ReloadBehavior(param, (UserControl)data, sereServs);
+                }
+                if (result == null) throw new NullReferenceException();
+            }
+            catch (NullReferenceException ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error("Factory khong khoi tao duoc doi tuong." + data.GetType().ToString() + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data), ex);
+                result = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = null;
+            }
+            return result;
+        }
+        internal static IReload MakeIReload(CommonParam param, UserControl data, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5> sereServs, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_BILL_1> sereServBill)
+        {
+            IReload result = null;
+            try
+            {
+                if (data is UserControl)
+                {
+                    result = new ReloadBehavior(param, (UserControl)data, sereServs, sereServBill);
                 }
                 if (result == null) throw new NullReferenceException();
             }

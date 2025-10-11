@@ -22,6 +22,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.UC.SereServTree
 {
@@ -37,5 +38,8 @@ namespace HIS.UC.SereServTree
     public delegate void SereServTree_CheckAllNode(TreeListNodes node);
     public delegate void SereServTree_CustomDrawNodeCell(SereServADO data,DevExpress.XtraTreeList.CustomDrawNodeCellEventArgs e);
     public delegate void SereServTree_CustomDrawNodeCheckBox(SereServADO data,DevExpress.XtraTreeList.CustomDrawNodeCheckBoxEventArgs e);
+    public delegate void SereServTree_MouseDown(SereServADO data, MouseEventArgs e);
+    public delegate void sereServTree_ShowingEditorArgs(SereServADO data, DevExpress.XtraTreeList.GetCustomNodeCellEditEventArgs e);
+    public delegate void treeSereServ_CellValueChanged(SereServADO data, DevExpress.XtraTreeList.CellValueChangedEventArgs e);
     public delegate List<DevExpress.Utils.Menu.DXMenuItem> MenuItems(SereServADO data);
 }
