@@ -28,6 +28,7 @@ namespace HIS.UC.SereServTree
         public List<ColumnButtonEditADO> ColumnButtonEdits { get; set; }
         public List<SereServTreeColumn> SereServTreeColumns { get; set; }
         public List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5> SereServs { get; set; }
+        public List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_BILL_1> SereServBills { get; set; }
         public List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_DEPOSIT> SereServDeposits { get; set; }
 
         public bool? IsShowSearchPanel { get; set; }
@@ -47,9 +48,11 @@ namespace HIS.UC.SereServTree
         public SereServTree_CheckAllNode SereServTree_CheckAllNode { get; set; }
         public SereServTree_CustomDrawNodeCell SereServTree_CustomDrawNodeCell { get; set; }
         public SereServTree_CustomDrawNodeCheckBox SereServTree_CustomDrawNodeCheckBox { get; set; }
+        public sereServTree_ShowingEditorArgs sereServTree_ShowingEditorArgs { get; set; }
+        public treeSereServ_CellValueChanged treeSereServ_CellValueChanged { get; set; }
         public DevExpress.Utils.ImageCollection StateImageCollection { get; set; }
         public DevExpress.Utils.ImageCollection SelectImageCollection { get; set; }
-
+        public SereServTree_MouseDown SereServTree_MouseDown { get; set; }   
         public SereServHandler UpdateSingleRow { get; set; }
         public MenuItems MenuItems { get; set; }
 
@@ -62,5 +65,7 @@ namespace HIS.UC.SereServTree
         public bool? isAdvance { get; set; }
 
         public bool IsShowForRegisterV2 { get; set; }
+
+        public bool HideCheckColumn { get; set; } = false;
     }
 }

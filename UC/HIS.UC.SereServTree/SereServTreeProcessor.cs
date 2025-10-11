@@ -84,6 +84,18 @@ namespace HIS.UC.SereServTree
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        public void Reload(UserControl control, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5> sereServs, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_BILL_1> sereServBills)
+        {
+            try
+            {
+                IReload behavior = ReloadFactory.MakeIReload(param, (control == null ? (UserControl)uc : control), sereServs, sereServBills);
+                if (behavior != null) behavior.Run();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         public void Reload(UserControl control, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_DEPOSIT> sereServDeposits)
         {
