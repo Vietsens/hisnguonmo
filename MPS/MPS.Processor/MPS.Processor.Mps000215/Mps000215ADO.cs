@@ -76,6 +76,9 @@ namespace MPS.Processor.Mps000215
         public long? MEDICINE_PARENT_ID { get; set; }
         public string MEDICINE_PARENT_NAME { get; set; }
         public string SCIENTIFIC_NAME { get; set; }
+        public long? OTHER_PAY_SOURCE_ID { get; set; }
+        public string OTHER_PAY_SOURCE_NAME { get; set; }
+        public string OTHER_PAY_SOURCE_CODE { get; set; }
 
         public Mps000215ADO(V_HIS_EXP_MEST expMest, List<HIS_EXP_MEST_METY_REQ> req, List<V_HIS_MEDICINE_TYPE> _medicineTypes, List<V_HIS_EXP_MEST_MEDICINE> medicines, bool isReplace, bool IsGroup = false)
         {
@@ -111,6 +114,9 @@ namespace MPS.Processor.Mps000215
                     this.SCIENTIFIC_NAME = data.SCIENTIFIC_NAME;
                     this.STORAGE_CONDITION_CODE = data.STORAGE_CONDITION_CODE;
                     this.STORAGE_CONDITION_NAME = data.STORAGE_CONDITION_NAME;
+                    this.OTHER_PAY_SOURCE_ID = data.OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_NAME = data.OTHER_PAY_SOURCE_NAME;
+                    this.OTHER_PAY_SOURCE_CODE = data.OTHER_PAY_SOURCE_CODE;
                 }
 
                 if (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
@@ -171,6 +177,9 @@ namespace MPS.Processor.Mps000215
                     this.SCIENTIFIC_NAME = replace.SCIENTIFIC_NAME;
                     this.STORAGE_CONDITION_CODE = replace.STORAGE_CONDITION_CODE;
                     this.STORAGE_CONDITION_NAME = replace.STORAGE_CONDITION_NAME;
+                    this.OTHER_PAY_SOURCE_ID = replace.OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_NAME = replace.OTHER_PAY_SOURCE_NAME;
+                    this.OTHER_PAY_SOURCE_CODE = replace.OTHER_PAY_SOURCE_CODE;
                 }
                 var data = _medicineTypes.FirstOrDefault(p => p.ID == req.First().MEDICINE_TYPE_ID);
                 if (data != null)
@@ -183,6 +192,9 @@ namespace MPS.Processor.Mps000215
                     this.SCIENTIFIC_NAME = data.SCIENTIFIC_NAME;
                     this.STORAGE_CONDITION_CODE = data.STORAGE_CONDITION_CODE;
                     this.STORAGE_CONDITION_NAME = data.STORAGE_CONDITION_NAME;
+                    this.OTHER_PAY_SOURCE_ID = data.OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_NAME = data.OTHER_PAY_SOURCE_NAME;
+                    this.OTHER_PAY_SOURCE_CODE = data.OTHER_PAY_SOURCE_CODE;
 
                 }
                 if (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
@@ -239,6 +251,9 @@ namespace MPS.Processor.Mps000215
                     this.MANUFACTURER_NAME = data.MANUFACTURER_NAME;
                     this.NATIONAL_NAME = data.NATIONAL_NAME;
                     this.PACKING_TYPE_NAME = data.PACKING_TYPE_NAME;
+                    this.OTHER_PAY_SOURCE_ID = data.OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_NAME = data.OTHER_PAY_SOURCE_NAME;
+                    this.OTHER_PAY_SOURCE_CODE = data.OTHER_PAY_SOURCE_CODE;
                 }
 
                 if (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
@@ -285,6 +300,9 @@ namespace MPS.Processor.Mps000215
                     this.MANUFACTURER_NAME = replace.MANUFACTURER_NAME;
                     this.NATIONAL_NAME = replace.NATIONAL_NAME;
                     this.PACKING_TYPE_NAME = replace.PACKING_TYPE_NAME;
+                    this.OTHER_PAY_SOURCE_ID = replace.OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_NAME = replace.OTHER_PAY_SOURCE_NAME;
+                    this.OTHER_PAY_SOURCE_CODE = replace.OTHER_PAY_SOURCE_CODE;
                 }
                 var data = _materialTypes.FirstOrDefault(p => p.ID == req.First().MATERIAL_TYPE_ID);
                 if (data != null)
