@@ -28,6 +28,7 @@ using MPS.Processor.Mps000254.PDO;
 using FlexCel.Report;
 using MPS.ProcessorBase;
 using Inventec.Common.Logging;
+using FlexCel.Core;
 
 namespace MPS.Processor.Mps000254
 {
@@ -38,6 +39,7 @@ namespace MPS.Processor.Mps000254
         List<Mps000254ADO> listAdoPrintGroup = new List<Mps000254ADO>();
         List<Mps000254ADODetail> listAdoPrintDetail = new List<Mps000254ADODetail>();
         List<Mps000254ADO> listMedicineType = new List<Mps000254ADO>();
+        List<Mps000254ADO> listMedicineTypeOTherPaySource = new List<Mps000254ADO>();
 
         const int countMax = 1500;
         public Mps000254Processor(CommonParam param, PrintData printData)
@@ -59,6 +61,8 @@ namespace MPS.Processor.Mps000254
                 SetBarcodeKey();
                 ProcessSingleKey();
 
+                GetMediMateOtherPaySourceGroup();
+                GetMediMatePatientGroup();
                 //ghi đè PrintLogData và UniqueCodeData
                 ProcessPrintLogData();
                 //lấy số lần in
@@ -76,18 +80,33 @@ namespace MPS.Processor.Mps000254
                 objectTag.AddObjectData(store, "Medicine1", listAdoPrint);
                 objectTag.AddObjectData(store, "Medicine2", listAdoPrint);
                 objectTag.AddObjectData(store, "Medicine3", listAdoPrint);
+
+                objectTag.AddObjectData(store, "MedicineGroup1", listMedicineType);
+
+                if (listMedicineTypeOTherPaySource != null && listMedicineTypeOTherPaySource.Count > 0)
+                {
+                    objectTag.AddObjectData(store, "MedicineGroup2", listMedicineTypeOTherPaySource);
+                }
+                objectTag.AddObjectData(store, "MedicineGroup3", listMedicineType);
+
+
                 objectTag.AddObjectData(store, "ListMediMateSplitedByPackage", listAdoPrintGroup);
                 objectTag.AddObjectData(store, "Medicine1Detail", listAdoPrintDetail);
                 objectTag.AddObjectData(store, "Medicine2Detail", listAdoPrintDetail);
                 objectTag.AddObjectData(store, "Medicine3Detail", listAdoPrintDetail);
                 LogSystem.Debug($"listMedicineType count: {listMedicineType.Count}");
                 objectTag.AddObjectData(store, "MedicineGroup", listMedicineType);
-
+    
                 objectTag.AddRelationship(store, "Medicine1", "Medicine1Detail", "KEY_GROUP", "KEY_GROUP");
                 objectTag.AddRelationship(store, "Medicine2", "Medicine2Detail", "KEY_GROUP", "KEY_GROUP");
                 objectTag.AddRelationship(store, "Medicine3", "Medicine3Detail", "KEY_GROUP", "KEY_GROUP");
-                objectTag.AddRelationship(store, "MedicineGroup", "Medicine1", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
-                //objectTag.AddRelationship(store, "MedicineGroup", "Medicine1Detail", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
+
+
+                objectTag.AddRelationship(store, "MedicineGroup1", "ListMediMateSplitedByPackage", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
+                objectTag.AddRelationship(store, "MedicineGroup2", "ListMediMateSplitedByPackage", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
+                objectTag.AddRelationship(store, "MedicineGroup3", "ListMediMateSplitedByPackage", "PARENT_ID ", "PARENT_ID");
+
+                objectTag.AddRelationship(store, "MedicineGroup", "Medicine1Detail", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
 
                 result = true;
             }
@@ -96,6 +115,43 @@ namespace MPS.Processor.Mps000254
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        private void GetMediMateOtherPaySourceGroup()
+        {
+            try
+            {
+                if (listAdoPrint != null && listAdoPrint.Count > 0)
+                {
+                    var group = listAdoPrint.GroupBy(o => new { o.OTHER_PAY_SOURCE_ID, o.OTHER_PAY_SOURCE_CODE, o.OTHER_PAY_SOURCE_NAME });
+                    foreach (var item in group)
+                    {
+                        listMedicineTypeOTherPaySource.Add(item.ToList().First());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void GetMediMatePatientGroup()
+        {
+            try
+            {
+                if (listAdoPrint != null && listAdoPrint.Count > 0)
+                {
+                    var group = listAdoPrint.GroupBy(o => new { o.PARENT_ID, o.PARENT_CODE, o.PARENT_NAME });
+                    foreach (var item in group)
+                    {
+                        listMedicineType.Add(item.ToList().First());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
         private void GetMedicineGroup()
         {
@@ -217,7 +273,7 @@ namespace MPS.Processor.Mps000254
                         var approve = this.rdo._Medicines != null ? this.rdo._Medicines.Where(o => req.Select(s => s.ID).Contains(o.EXP_MEST_METY_REQ_ID ?? 0) && o.MEDICINE_TYPE_ID == req.First().MEDICINE_TYPE_ID).ToList() : null;
                         var replaces = this.rdo._Medicines != null ? this.rdo._Medicines.Where(o => req.Select(s => s.ID).Contains(o.EXP_MEST_METY_REQ_ID ?? 0) && o.MEDICINE_TYPE_ID != req.First().MEDICINE_TYPE_ID).ToList() : null;
 
-                        Mps000254ADO adoReq = new Mps000254ADO(rdo._BcsExpMest, req.ToList(), rdo._MedicineTypes, approve, false);
+                        Mps000254ADO adoReq = new Mps000254ADO(rdo._BcsExpMest, req.ToList(), rdo._MedicineTypes, approve, false,rdo._MateriaType);
                         adoReq.KEY_GROUP = parent;
                         listAdoPrint.Add(adoReq);
                         if (approve != null && approve.Count > 0)
@@ -225,7 +281,7 @@ namespace MPS.Processor.Mps000254
                             var dtGroup = approve.GroupBy(o => new { o.PACKAGE_NUMBER, o.EXPIRED_DATE }).ToList();
                             foreach (var item in dtGroup)
                             {
-                                Mps000254ADO adoReqGroup = new Mps000254ADO(rdo._BcsExpMest, req.ToList(), rdo._MedicineTypes, item.ToList(), false,true);
+                                Mps000254ADO adoReqGroup = new Mps000254ADO(rdo._BcsExpMest, req.ToList(), rdo._MedicineTypes, item.ToList(), false, rdo._MateriaType, true);
                                 adoReqGroup.KEY_GROUP = parent;
                                 listAdoPrintGroup.Add(adoReqGroup);
                             }
@@ -244,7 +300,7 @@ namespace MPS.Processor.Mps000254
                                 {
                                     var appr = approve.Where(s => s.TDL_TREATMENT_ID == trea.ID).ToList();
                                     var re = req.Where(o => o.TREATMENT_ID == trea.ID).ToList();
-                                    Mps000254ADODetail adoDetail = new Mps000254ADODetail(rdo._BcsExpMest, re, rdo._MedicineTypes, appr, false, trea);
+                                    Mps000254ADODetail adoDetail = new Mps000254ADODetail(rdo._BcsExpMest, re, rdo._MedicineTypes, appr, false, trea, rdo._MateriaType);
                                     adoDetail.KEY_GROUP = parent;
                                     listAdoPrintDetail.Add(adoDetail);
                                 }
@@ -259,7 +315,7 @@ namespace MPS.Processor.Mps000254
                                 {
                                     var appr = approve.Where(s => s.TDL_TREATMENT_ID == trea.ID).ToList();
                                     var re = req.Where(o => o.TREATMENT_ID == trea.ID).ToList();
-                                    Mps000254ADODetail adoDetail = new Mps000254ADODetail(rdo._BcsExpMest, re, rdo._MedicineTypes, appr, false, trea);
+                                    Mps000254ADODetail adoDetail = new Mps000254ADODetail(rdo._BcsExpMest, re, rdo._MedicineTypes, appr, false, trea, rdo._MateriaType);
                                     adoDetail.KEY_GROUP = parent;
                                     listAdoPrintDetail.Add(adoDetail);
                                 }
@@ -272,14 +328,14 @@ namespace MPS.Processor.Mps000254
                             var dtGroupReplace = replaces.GroupBy(o => new { o.PACKAGE_NUMBER, o.EXPIRED_DATE }).ToList();
                             foreach (var item in dtGroupReplace)
                             {
-                                Mps000254ADO adoReqGroup = new Mps000254ADO(rdo._BcsExpMest, req.ToList(), rdo._MedicineTypes, item.ToList(), false,true);
+                                Mps000254ADO adoReqGroup = new Mps000254ADO(rdo._BcsExpMest, req.ToList(), rdo._MedicineTypes, item.ToList(), false, rdo._MateriaType, true);
                                 adoReqGroup.KEY_GROUP = parent;
                                 listAdoPrintGroup.Add(adoReqGroup);
                             }
                             var Groups = replaces.GroupBy(g => g.MEDICINE_TYPE_ID).ToList();
                             foreach (var gr in Groups)
                             {
-                                Mps000254ADO adoRp = new Mps000254ADO(rdo._BcsExpMest, req.ToList(), rdo._MedicineTypes, gr.ToList(), true);
+                                Mps000254ADO adoRp = new Mps000254ADO(rdo._BcsExpMest, req.ToList(), rdo._MedicineTypes, gr.ToList(), true, rdo._MateriaType);
                                 adoRp.KEY_GROUP = parent;
                                 listAdoPrint.Add(adoRp);
 
@@ -288,7 +344,7 @@ namespace MPS.Processor.Mps000254
                                 {
                                     var appr = gr.Where(s => s.TDL_TREATMENT_ID == trea.ID).ToList();
                                     var re = req.Where(o => o.TREATMENT_ID == trea.ID).ToList();
-                                    Mps000254ADODetail adoDetail = new Mps000254ADODetail(rdo._BcsExpMest, re, rdo._MedicineTypes, appr, true, trea);
+                                    Mps000254ADODetail adoDetail = new Mps000254ADODetail(rdo._BcsExpMest, re, rdo._MedicineTypes, appr, true, trea, rdo._MateriaType);
                                     adoDetail.KEY_GROUP = parent;
                                     listAdoPrintDetail.Add(adoDetail);
                                 }
@@ -318,7 +374,6 @@ namespace MPS.Processor.Mps000254
                         }
                     }
                 }
-
 
                 if (this.rdo.ListTreatment != null && this.rdo.ListTreatment.Count > 0)
                 {
@@ -405,6 +460,8 @@ namespace MPS.Processor.Mps000254
 
                     SetSingleKey(new KeyValue(Mps000254ExtendSingleKey.COUNT_PRESCRIPTION, this.rdo._BcsMoreInfoSDO.PrescriptionCount));
                 }
+
+                
 
 
                 string sumpTotalPriceSeparate = Inventec.Common.Number.Convert.NumberToString(totalPrice, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
