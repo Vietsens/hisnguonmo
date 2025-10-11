@@ -182,9 +182,8 @@ namespace MPS.Processor.Mps000220.PDO
                         VIR_PATIENT_NAME = "";
                         TREATMENT_CODE = "";
                         VIR_PATIENT_ADDRESS = "";
-                        if (string.IsNullOrEmpty(DOCUMENT_NUMBER))
-                            DOCUMENT_NUMBER = firstimp.DOCUMENT_NUMBER;
 
+                        DOCUMENT_NUMBER = imp.DOCUMENT_NUMBER ?? firstimp?.DOCUMENT_NUMBER;
                         if (data != null)
                         {
                             IMP_MEST_TYPE_NAME = data.IMP_MEST_TYPE_NAME;

@@ -179,7 +179,8 @@ namespace MPS.Processor.Mps000175
     {
         PARENT_ID = g.Key.PARENT_ID,
         PARENT_CODE = g.Key.PARENT_CODE,
-        PARENT_NAME = g.Key.PARENT_NAME
+        //PARENT_NAME = g.Key.PARENT_NAME
+        PARENT_NAME = (g.Key.PARENT_NAME == "VTYT" ? "Y Tế trong danh mục BHYT" : g.Key.PARENT_NAME).ToUpper()
     })
     .ToList();
 

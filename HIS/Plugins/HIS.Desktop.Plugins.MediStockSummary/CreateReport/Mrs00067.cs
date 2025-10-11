@@ -304,6 +304,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
                 List<Mrs00067RDO> p = group.ToList<Mrs00067RDO>();
                 Mrs00067RDO rdo = new Mrs00067RDO()
                 {
+                    DOCUMENT_NUMBER = p.First().DOCUMENT_NUMBER,
                     EXP_MEST_CODE = p.First().EXP_MEST_CODE,
                     EXECUTE_DATE_STR = p.First().EXECUTE_DATE_STR,
                     EXECUTE_TIME = p.First().EXECUTE_TIME,
@@ -351,7 +352,8 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
             {
                 List<Mrs00067RDO> p = group.ToList<Mrs00067RDO>();
                 Mrs00067RDO rdo = new Mrs00067RDO()
-                {
+                {   
+                    DOCUMENT_NUMBER = p.First().DOCUMENT_NUMBER,
                     EXP_MEST_CODE = p.First().EXP_MEST_CODE,
                     EXECUTE_DATE_STR = p.First().EXECUTE_DATE_STR,
                     EXECUTE_TIME = p.First().EXECUTE_TIME,
