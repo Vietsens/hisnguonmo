@@ -309,6 +309,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
                 List<Mrs00085RDO> p = group.ToList<Mrs00085RDO>();
                 Mrs00085RDO rdo = new Mrs00085RDO()
                 {
+                    DOCUMENT_NUMBER = p.First().DOCUMENT_NUMBER,
                     EXP_MEST_CODE = p.First().EXP_MEST_CODE,
                     EXECUTE_DATE_STR = p.First().EXECUTE_DATE_STR,
                     EXECUTE_TIME = p.First().EXECUTE_TIME,
@@ -356,6 +357,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
                 List<Mrs00085RDO> p = group.ToList<Mrs00085RDO>();
                 Mrs00085RDO rdo = new Mrs00085RDO()
                 {
+                    DOCUMENT_NUMBER = p.First().DOCUMENT_NUMBER,
                     EXP_MEST_CODE = p.First().EXP_MEST_CODE,
                     EXECUTE_DATE_STR = p.First().EXECUTE_DATE_STR,
                     EXECUTE_TIME = p.First().EXECUTE_TIME,
@@ -403,6 +405,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
                 List<Mrs00085RDO> p = group.ToList<Mrs00085RDO>();
                 Mrs00085RDO rdo = new Mrs00085RDO()
                 {
+                    DOCUMENT_NUMBER = p.First().DOCUMENT_NUMBER,
                     EXP_MEST_CODE = p.First().EXP_MEST_CODE,
                     EXECUTE_DATE_STR = p.First().EXECUTE_DATE_STR,
                     EXECUTE_TIME = p.First().EXECUTE_TIME,
@@ -450,6 +453,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
                 List<Mrs00085RDO> p = group.ToList<Mrs00085RDO>();
                 Mrs00085RDO rdo = new Mrs00085RDO()
                 {
+                    DOCUMENT_NUMBER = p.First().DOCUMENT_NUMBER,
                     EXP_MEST_CODE = p.First().EXP_MEST_CODE,
                     EXECUTE_DATE_STR = p.First().EXECUTE_DATE_STR,
                     EXECUTE_TIME = p.First().EXECUTE_TIME,
@@ -691,6 +695,8 @@ namespace HIS.Desktop.Plugins.MediStockSummary.CreateReport
                     {
                         dicMaterial[item.MATERIAL_ID] = new Mrs00085RDO();
                         dicMaterial[item.MATERIAL_ID].MATERIAL_ID = item.ID;
+                        dicMaterial[item.MATERIAL_ID].DOCUMENT_NUMBER = item.DOCUMENT_NUMBER ;
+                        
                         dicMaterial[item.MATERIAL_ID].EXP_MEST_TYPE_NAME = "Tồn cuối kì";
                         dicMaterial[item.MATERIAL_ID].EXECUTE_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(this._ReportFilter.TIME_TO);
                         dicMaterial[item.MATERIAL_ID].PACKAGE_NUMBER = item.PACKAGE_NUMBER;
