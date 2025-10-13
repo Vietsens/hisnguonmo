@@ -64,7 +64,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         private HisServiceReqListResultSDO HisServiceReqListResultSDO { get; set; }
         const string invoiceTypeCreate__CreateInvoiceHIS = "2";
         bool isPrintNow = false;
-
+        const string ACCOUNT_BOOK_CODE_VN = "vninv";
         private void MouseRightItemClick(object sender, ItemClickEventArgs e)
         {
             try
@@ -121,6 +121,20 @@ namespace HIS.Desktop.Plugins.TransactionList
                             this.SuaSoBienLai();
                             break;
                         case PopupMenuProcessor.ItemType.ThayThe:
+                            var gridView = gridControlTransaction.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+                            if (gridView != null)
+                            {
+                                var selectedRow = gridView.GetFocusedRow();
+                                if (selectedRow != null)
+                                {
+                                    var accountBookCode = gridView.GetFocusedRowCellValue("ACCOUNT_BOOK_CODE")?.ToString();
+                                    if(!string.IsNullOrWhiteSpace(accountBookCode) && accountBookCode == ACCOUNT_BOOK_CODE_VN)
+                                    {
+                                        MessageBox.Show("Tính năng này chưa được hỗ trợ. Vui lòng lên website để thực hiện.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        break; 
+                                    }
+                                }
+                            }
                             this.ThayThe();
                             break;
                         case PopupMenuProcessor.ItemType.InBienLaiHuy:

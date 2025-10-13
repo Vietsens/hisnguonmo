@@ -380,7 +380,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                 else
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, "Chuyển đổi hóa đơn thất bại, vui lòng lên website để thực hiện thao tác này");
+                    ElectronicBillResultUtil.Set(ref result, false, "Tính năng này chưa được hỗ trợ. Vui lòng lên website để thực hiện.");
                 }
             }
             catch (Exception ex)
@@ -404,7 +404,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                 else
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, "Chuyển đổi hóa đơn thất bại, vui lòng lên website để thực hiện thao tác này");
+                    ElectronicBillResultUtil.Set(ref result, false, "Tính năng này chưa được hỗ trợ. Vui lòng lên website để thực hiện.");
                 }
             }
             catch (Exception ex)
@@ -608,8 +608,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
             try
             {
                 string[] configArr = serviceConfig.Split('|');
-                if (configArr.Length < 3)
-                    throw new Exception("Sai định dạng cấu hình hệ thống.");
+                //if (configArr.Length < 3)
+                //    throw new Exception("Sai định dạng cấu hình hệ thống.");
                 if (configArr[0] != ProviderType.VNINVOICE)
                     throw new Exception("Không đúng cấu hình nhà cung cấp VN-invoice");
 
