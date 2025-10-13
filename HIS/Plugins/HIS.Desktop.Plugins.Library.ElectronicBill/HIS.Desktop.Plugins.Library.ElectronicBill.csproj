@@ -88,7 +88,7 @@
     </Reference>
     <Reference Include="Inventec.Common.ElectronicBill, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Common\Inventec.Common\Inventec.Common.ElectronicBill\Inventec.Common.ElectronicBill\bin\Debug\Inventec.Common.ElectronicBill.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.ElectronicBill.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.ElectronicBill.Misa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
