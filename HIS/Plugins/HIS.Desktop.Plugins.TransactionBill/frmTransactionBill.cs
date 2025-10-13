@@ -363,7 +363,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         private void setWindowScreen()
         {
             var screen = Screen.FromControl(this);
-            if (screen.Bounds.Width == 1366 && screen.Bounds.Height == 768) //1366*768
+            if ((screen.Bounds.Width == 1366 || screen.Bounds.Width == 1360) && screen.Bounds.Height == 768) //1366*768
             {
                 this.WindowState = FormWindowState.Maximized;
             }
