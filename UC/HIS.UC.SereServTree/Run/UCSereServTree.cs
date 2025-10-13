@@ -57,6 +57,9 @@ namespace HIS.UC.SereServTree.Run
         SereServTree_CheckAllNode sereServTree_CheckAllNode;
         SereServTree_CustomDrawNodeCell sereServTree_CustomDrawNodeCell;
         SereServTree_CustomDrawNodeCheckBox sereServTree_CustomDrawNodeCheckBox;
+        SereServTree_MouseDown SereServTree_MouseDown;
+        treeSereServ_CellValueChanged treeSereServ_CellValueChanged;
+        sereServTree_ShowingEditorArgs sereServTree_ShowingEditorArgs;
         bool IsShowCheckNode;
         bool isAutoWidth;
         bool isAdvance;
@@ -96,6 +99,9 @@ namespace HIS.UC.SereServTree.Run
                 this.sereServTree_CheckAllNode = sereServTreeADO.SereServTree_CheckAllNode;
                 this.sereServTree_CustomDrawNodeCell = sereServTreeADO.SereServTree_CustomDrawNodeCell;
                 this.sereServTree_CustomDrawNodeCheckBox = sereServTreeADO.SereServTree_CustomDrawNodeCheckBox;
+                this.SereServTree_MouseDown = sereServTreeADO.SereServTree_MouseDown;
+                this.sereServTree_ShowingEditorArgs = sereServTreeADO.sereServTree_ShowingEditorArgs;
+                this.treeSereServ_CellValueChanged = sereServTreeADO.treeSereServ_CellValueChanged;
                 if (sereServTreeADO.IsShowCheckNode.HasValue)
                 {
                     this.IsShowCheckNode = sereServTreeADO.IsShowCheckNode.Value;
@@ -154,16 +160,25 @@ namespace HIS.UC.SereServTree.Run
                 SereServADOs = new List<SereServADO>();
                 if (SereServTreeADO.SereServs != null)
                 {
-                    var sereServs = (from r in SereServTreeADO.SereServs select new SereServADO(r)).ToList();
+                    List<SereServADO> sereServs = new List<SereServADO>();
+                    if (SereServTreeADO.SereServBills != null)
+                    {
+                        sereServs = (from r in SereServTreeADO.SereServs select new SereServADO(r, SereServTreeADO.SereServBills)).ToList();
+                    }
+                    else
+                    {
+                        sereServs = (from r in SereServTreeADO.SereServs select new SereServADO(r)).ToList();
+                    }
+                        
                     List<SereServADO> listSereServExpend = new List<SereServADO>();
                     if (this.isCreateParentNodeWithSereServExpend)
                     {
-                        listSereServExpend = sereServs.Where(o => o.IsExpend.HasValue && o.IsExpend.Value).ToList(); // && o.VIR_TOTAL_PATIENT_PRICE > 0
+                        listSereServExpend = sereServs.Where(o => o.IsExpend.HasValue && o.IsExpend.Value).ToList(); // && o.VIR_TOTAL_PATIENT_PRICE > 0    
                         sereServs = sereServs.Where(o => o.IsExpend != true).ToList();
                     }
-                    if (IsShowForRegisterV2)
+                    if (IsShowForRegisterV2)      
                     {
-                        SereServADO ssRootPaty = new SereServADO();
+                        SereServADO ssRootPaty = new SereServADO();          
                         ssRootPaty.CONCRETE_ID__IN_SETY = "IsShowForRegisterV2";
                         ssRootPaty.TDL_SERVICE_NAME = "Tổng chi phí";
                         SereServADOs.Add(ssRootPaty);
@@ -228,6 +243,7 @@ namespace HIS.UC.SereServTree.Run
                             ssRootSety.VIR_TOTAL_PRICE = listBySety.Sum(o => o.VIR_TOTAL_PRICE);
                             ssRootSety.VIR_TOTAL_HEIN_PRICE = listBySety.Sum(o => o.VIR_TOTAL_HEIN_PRICE);
                             ssRootSety.VIR_TOTAL_PATIENT_PRICE = listBySety.Sum(o => o.VIR_TOTAL_PATIENT_PRICE);
+                            ssRootSety.TOTAL_BILL_AMOUNT = listBySety.Sum(o => o.TOTAL_BILL_AMOUNT);
                             SereServADOs.Add(ssRootSety);
                             foreach (var item in listBySety)
                             {
@@ -330,7 +346,7 @@ namespace HIS.UC.SereServTree.Run
                     }
                     SereServADOs = SereServADOs.OrderBy(o => o.PARENT_ID__IN_SETY).ThenByDescending(o => o.TDL_SERVICE_CODE).ToList();
                 }
-                records = new BindingList<SereServADO>(SereServADOs);
+                    records = new BindingList<SereServADO>(SereServADOs);
                 trvService.DataSource = records;
                 trvService.ExpandAll();
                 if (this.sereServTree_CheckAllNode != null)
@@ -393,10 +409,96 @@ namespace HIS.UC.SereServTree.Run
                         trvService.Columns.Add(treeListColumn);
                     }
                 }
+
+                if (this.SereServTreeADO.SereServTree_MouseDown != null)
+                {
+                    this.trvService.MouseDown -= trvService_MouseDown_Wrapper;
+                    this.trvService.MouseDown += trvService_MouseDown_Wrapper;
+                }
+
+                if (this.SereServTreeADO.HideCheckColumn)
+                {
+                    this.trvService.OptionsView.ShowCheckBoxes = false;
+                }
+
+                if (this.SereServTreeADO.sereServTree_ShowingEditorArgs != null)
+                {
+                    this.trvService.GetCustomNodeCellEdit -= trvService_GetCustomNodeCellEdit;
+                    this.trvService.GetCustomNodeCellEdit += trvService_GetCustomNodeCellEdit;
+                }
+
+                if (this.SereServTreeADO.treeSereServ_CellValueChanged != null)
+                {
+                    this.trvService.CellValueChanged -= trvService_CellValueChanged;
+                    this.trvService.CellValueChanged += trvService_CellValueChanged;
+                }
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void trvService_GetCustomNodeCellEdit(object sender, GetCustomNodeCellEditEventArgs e)
+        {
+            try
+            {
+                try
+                {
+                    // Chỉ xử lý cho các cột KHÔNG PHẢI là EDIT_AMOUNT
+                    if (e.Column.FieldName == "EDIT_AMOUNT")
+                    {
+                        // Không làm gì, để TreeList xử lý editor mặc định
+                        return;
+                    }
+
+                    var data = this.trvService.GetDataRecordByNode(e.Node) as SereServADO;
+                    this.SereServTreeADO.sereServTree_ShowingEditorArgs?.Invoke(data, e);
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void trvService_CellValueChanged(object sender, CellValueChangedEventArgs e)
+        {
+            try
+            {
+                var data = this.trvService.GetDataRecordByNode(e.Node) as SereServADO;
+                this.SereServTreeADO.treeSereServ_CellValueChanged?.Invoke(data, e);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void trvService_MouseDown_Wrapper(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (this.SereServTreeADO != null && this.SereServTreeADO.SereServTree_MouseDown != null)
+                {
+                    // Lấy data từ node được click
+                    var hitInfo = this.trvService.CalcHitInfo(e.Location);
+                    if (hitInfo != null && hitInfo.Node != null)
+                    {
+                        var data = this.trvService.GetDataRecordByNode(hitInfo.Node) as SereServADO;
+
+                        // Gọi delegate với SereServADO
+                        this.SereServTreeADO.SereServTree_MouseDown(data, e);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -531,6 +633,26 @@ namespace HIS.UC.SereServTree.Run
             {
                 txtKeyword.Text = "";
                 this.SereServTreeADO.SereServs = sereServs;
+                if (this.SereServTreeADO.SereServs == null)
+                    records = null;
+                BindTreePlus();
+                //this.SereServADOs = (from m in SereServTreeADO.SereServs select new SereServADO(m)).ToList();
+                //records = new BindingList<SereServADO>(SereServADOs);
+                //trvService.DataSource = records;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public void Reload(List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5> sereServs, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_BILL_1> sereServBills)
+        {
+            try
+            {
+                txtKeyword.Text = "";
+                this.SereServTreeADO.SereServs = sereServs;
+                this.SereServTreeADO.SereServBills = sereServBills;
                 if (this.SereServTreeADO.SereServs == null)
                     records = null;
                 BindTreePlus();

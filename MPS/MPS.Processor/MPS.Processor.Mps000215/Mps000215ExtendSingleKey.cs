@@ -47,5 +47,8 @@ namespace MPS.Processor.Mps000215
         internal static string TREATMENT_CODES = "TREATMENT_CODES";
         internal static string EXP_MEST_CODES = "EXP_MEST_CODES";
         internal static string COUNT_PRESCRIPTION = "COUNT_PRESCRIPTION";
+        internal static string OTHER_PAY_SOURCE_ID = "OTHER_PAY_SOURCE_ID";
+        internal static string OTHER_PAY_SOURCE_CODE = "OTHER_PAY_SOURCE_CODE";
+        internal static string OTHER_PAY_SOURCE_NAME = "OTHER_PAY_SOURCE_NAME";
     }
 }

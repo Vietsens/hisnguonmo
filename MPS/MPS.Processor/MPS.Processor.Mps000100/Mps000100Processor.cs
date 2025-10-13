@@ -112,7 +112,7 @@ namespace MPS.Processor.Mps000100
 
                 objectTag.AddRelationship(store, "MedicineGroup", "ImpMestAggregates", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
                 objectTag.AddRelationship(store, "MedicineParent", "ImpMestAggregates", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
-                objectTag.AddRelationship(store, "OtherPaySource", "ImpMestAggregates", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
+                objectTag.AddRelationship(store, "OtherPaySource", "ImpMestAggregatesV2", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
                 result = true;
             }
             catch (Exception ex)
@@ -169,13 +169,13 @@ namespace MPS.Processor.Mps000100
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void GetOtherPaySource()
+        private void GetOtherPaySource() 
         {
             try
             {
-                if (ImpMestManuMedicineSumForPrints != null && ImpMestManuMedicineSumForPrints.Count > 0)
+                if (ImpMestManuMedicineSumForPrintsV2 != null && ImpMestManuMedicineSumForPrintsV2.Count > 0)
                 {
-                    var group = ImpMestManuMedicineSumForPrints.GroupBy(o => new { o.OTHER_PAY_SOURCE_ID, o.OTHER_PAY_SOURCE_CODE, o.OTHER_PAY_SOURCE_NAME });
+                    var group = ImpMestManuMedicineSumForPrintsV2.GroupBy(o => new { o.OTHER_PAY_SOURCE_ID, o.OTHER_PAY_SOURCE_CODE, o.OTHER_PAY_SOURCE_NAME });
                     foreach (var item in group)
                     {
                         listOtherPaySource.Add(item.ToList().First());

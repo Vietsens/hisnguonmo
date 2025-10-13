@@ -31,6 +31,7 @@ namespace HIS.UC.SereServTree
         public string PARENT_ID__IN_SETY { get; set; }
         public decimal? AMOUNT_PLUS { get; set; }
         public string AMOUNT_DISPLAY { get; set; }
+        public decimal? TOTAL_BILL_AMOUNT { get; set; }
         //public string VIR_TOTAL_PRICE_DISPLAY { get; set; }// thành tiền
         //public string VIR_TOTAL_HEIN_PRICE_DISPLAY { get; set; }// đồng chi trả
         //public string VIR_TOTAL_PATIENT_PRICE_DISPLAY { get; set; }// bệnh nhân trả
@@ -49,6 +50,23 @@ namespace HIS.UC.SereServTree
             this.AMOUNT_PLUS = service.AMOUNT;
             this.VAT = service.VAT_RATIO * 100;
             this.AMOUNT_DISPLAY = Inventec.Common.Number.Convert.NumberToString(service.AMOUNT, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
+            //this.VIR_TOTAL_PRICE_DISPLAY = Inventec.Common.Number.Convert.NumberToString(service.VIR_TOTAL_PRICE ?? 0, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
+            //this.VIR_TOTAL_HEIN_PRICE_DISPLAY = Inventec.Common.Number.Convert.NumberToString(service.VIR_TOTAL_HEIN_PRICE ?? 0, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
+            //this.VIR_TOTAL_PATIENT_PRICE_DISPLAY = Inventec.Common.Number.Convert.NumberToString(service.VIR_TOTAL_PATIENT_PRICE ?? 0, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
+
+            //this.CONCRETE_ID__IN_SETY = (service.SERVICE_TYPE_ID + "." + service.CONCRETE_ID);
+            //this.PARENT_ID__IN_SETY = (service.SERVICE_TYPE_ID + "." + service.PARENT_ID);
+
+        }
+
+        public SereServADO(V_HIS_SERE_SERV_5 service, List<V_HIS_SERE_SERV_BILL_1> sereServBills)
+        {
+            Inventec.Common.Mapper.DataObjectMapper.Map<SereServADO>(this, service);
+            IsExpend = (service.IS_EXPEND == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+            this.AMOUNT_PLUS = service.AMOUNT;
+            this.VAT = service.VAT_RATIO * 100;
+            this.AMOUNT_DISPLAY = Inventec.Common.Number.Convert.NumberToString(service.AMOUNT, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
+            this.TOTAL_BILL_AMOUNT = sereServBills.FirstOrDefault(o => o.SERE_SERV_ID == service.ID)?.TOTAL_BILL_AMOUNT ?? 0;
             //this.VIR_TOTAL_PRICE_DISPLAY = Inventec.Common.Number.Convert.NumberToString(service.VIR_TOTAL_PRICE ?? 0, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
             //this.VIR_TOTAL_HEIN_PRICE_DISPLAY = Inventec.Common.Number.Convert.NumberToString(service.VIR_TOTAL_HEIN_PRICE ?? 0, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
             //this.VIR_TOTAL_PATIENT_PRICE_DISPLAY = Inventec.Common.Number.Convert.NumberToString(service.VIR_TOTAL_PATIENT_PRICE ?? 0, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);

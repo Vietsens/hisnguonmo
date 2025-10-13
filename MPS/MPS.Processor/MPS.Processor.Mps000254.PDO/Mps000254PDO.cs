@@ -34,6 +34,7 @@ namespace MPS.Processor.Mps000254.PDO
         public keyTitles _keyTitles { get; set; }
         public List<HIS_TREATMENT> ListTreatment { get; set; }
         public HisExpMestBcsMoreInfoSDO _BcsMoreInfoSDO { get; set; }
+        public V_HIS_MATERIAL_TYPE _MateriaType { get; set; }
 
         public Mps000254PDO(
             V_HIS_EXP_MEST chmsExpMest,
@@ -77,6 +78,32 @@ namespace MPS.Processor.Mps000254.PDO
             this._keyTitles = _KeyTitles;
             this.ListTreatment = _ListTreatment;
             this._BcsMoreInfoSDO = moreInfoSDO;
+        }
+
+
+        public Mps000254PDO(
+            V_HIS_EXP_MEST chmsExpMest,
+            List<V_HIS_EXP_MEST_MEDICINE> listMedicine,
+            List<HIS_EXP_MEST_METY_REQ> _expMestMetyReqs,
+            long _expMesttSttId__Approval,
+            long _expMesttSttId__Export,
+            List<V_HIS_MEDI_STOCK> listMediStock,
+            List<V_HIS_MEDICINE_TYPE> _medicineTypes,
+            keyTitles _KeyTitles,
+            List<HIS_TREATMENT> _ListTreatment,
+            V_HIS_MATERIAL_TYPE _materiaType,
+            HisExpMestBcsMoreInfoSDO moreInfoSDO
+            )
+        {
+            this._BcsExpMest = chmsExpMest;
+            this._Medicines = listMedicine;
+            this._ExpMestMetyReqs = _expMestMetyReqs;
+            this._MediStocks = listMediStock;
+            this._MedicineTypes = _medicineTypes;
+            this._keyTitles = _KeyTitles;
+            this.ListTreatment = _ListTreatment;
+            this._BcsMoreInfoSDO = moreInfoSDO;
+            this._MateriaType = _materiaType;
         }
     }
 

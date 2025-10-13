@@ -44,7 +44,7 @@
       <HintPath>..\..\..\..\LIB\ACS\ACS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -89,7 +89,7 @@
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\IMSys.DbConfig.HIS_RS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
@@ -169,7 +169,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
@@ -180,7 +180,7 @@
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -207,30 +207,29 @@
     </Reference>
     <Reference Include="MPS.Processor.Mps000085.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000085.PDO.dll</HintPath>
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000085.PDO\bin\Debug\MPS.Processor.Mps000085.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000092.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000092.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000141.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000141.PDO.dll</HintPath>
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000141.PDO\bin\Debug\MPS.Processor.Mps000141.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000142.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000142.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000143.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000143.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000143.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000145.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000145.PDO\bin\Debug\MPS.Processor.Mps000145.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000145.PDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000145.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000149.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000149.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000199.PDO">
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000199.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000199.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000213.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000213.PDO.dll</HintPath>
@@ -270,7 +269,7 @@
     </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.ProcessorBase.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

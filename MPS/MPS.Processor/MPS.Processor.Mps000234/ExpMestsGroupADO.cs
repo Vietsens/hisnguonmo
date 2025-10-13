@@ -37,6 +37,9 @@ namespace MPS.Processor.Mps000234
         public string MEDI_STOCK_NAME { get; set; }
         public string ICD_SUB_CODE { get; set; }
         public string ICD_TEXT { get; set; }
+        public string ICD_CODE { get; set; }
+        public string ICD_NAME { get; set; }
+        public string ADVISE { get; set; }
 
         public ExpMestsGroupADO()
         {
