@@ -35,6 +35,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -72,6 +73,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
         HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillResult IRun.Run(ElectronicBillType.ENUM _electronicBillTypeEnum, TemplateEnum.TYPE templateType)
         {
+            //chứng chỉ SecurityProtocol
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             this.ElectronicBillTypeEnum = _electronicBillTypeEnum;
             HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillResult result = new HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillResult();
             try
