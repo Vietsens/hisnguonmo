@@ -1112,7 +1112,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             try
             {
                 timerReloadTransReq.Stop();
-                var lstCheckBank = new List<string>() { "VCB", "MBB", "CTG" };
+                // xử lý thêm ngân hàng SHB
+                var lstCheckBank = new List<string>() { "VCB", "MBB", "CTG", "SHB" };
                 if (string.IsNullOrEmpty(inputTransReq.BankName) || !lstCheckBank.Contains(inputTransReq.BankName))
                 {
                     if (currentTransReq != null)
