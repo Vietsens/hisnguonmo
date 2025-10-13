@@ -73,8 +73,6 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
         HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillResult IRun.Run(ElectronicBillType.ENUM _electronicBillTypeEnum, TemplateEnum.TYPE templateType)
         {
-            //chứng chỉ SecurityProtocol
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             this.ElectronicBillTypeEnum = _electronicBillTypeEnum;
             HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillResult result = new HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillResult();
             try
@@ -172,7 +170,6 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                                 AdjustInvoice adjustInvoice = new AdjustInvoice();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<AdjustInvoice>(adjustInvoice, invoices.First().InvoiceDetail);
                                 adjustInvoice.key = invoices.First().Key;
-                                adjustInvoice.Type = 2; // Mặc định là điều chỉnh tăng, có thể thay đổi dựa trên logic nghiệp vụ
                                 adjustInvoice.Products = new List<Product>();
                                 foreach (var item in invoices.First().InvoiceDetail.Products)
                                 {
@@ -326,7 +323,22 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     Inventec.Common.ElectronicBill.ElectronicBillManager eHoaDon = new Inventec.Common.ElectronicBill.ElectronicBillManager(electronicBillInput);
 
                     Inventec.Common.Logging.LogSystem.Debug(String.Format("{0} ,{1}, {2}", serviceUrl, account, username));
-
+                    try
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("RegisToken.1");
+                        ServicePointManager
+                     .ServerCertificateValidationCallback +=
+                     (sender, cert, chain, sslPolicyErrors) => true;
+                        System.Net.ServicePointManager.SecurityProtocol =
+                SecurityProtocolType.Tls12 |
+                SecurityProtocolType.Tls11 |
+                SecurityProtocolType.Tls;
+                        Inventec.Common.Logging.LogSystem.Debug("RegisToken.2");
+                    }
+                    catch (Exception exx)
+                    {
+                        LogSystem.Warn("ServicePointManager.ServerCertificateValidationCallback error:", exx);
+                    }
                     Inventec.Common.ElectronicBill.Base.ElectronicBillResult billResult = eHoaDon.Run(cmdType);
                     if (billResult != null && billResult.Success)
                     {
@@ -368,7 +380,22 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         if (cmdType == Inventec.Common.ElectronicBill.CmdType.ConvertForStoreFkey || cmdType == Inventec.Common.ElectronicBill.CmdType.downloadInvPDFFkeyNoPay)
                         {
                             Inventec.Common.Logging.LogSystem.Debug(String.Format("{0} ,{1}, {2}", serviceUrl, account, username));
-
+                            try
+                            {
+                                Inventec.Common.Logging.LogSystem.Debug("RegisToken.1");
+                                ServicePointManager
+                             .ServerCertificateValidationCallback +=
+                             (sender, cert, chain, sslPolicyErrors) => true;
+                                System.Net.ServicePointManager.SecurityProtocol =
+                        SecurityProtocolType.Tls12 |
+                        SecurityProtocolType.Tls11 |
+                        SecurityProtocolType.Tls;
+                                Inventec.Common.Logging.LogSystem.Debug("RegisToken.2");
+                            }
+                            catch (Exception exx)
+                            {
+                                LogSystem.Warn("ServicePointManager.ServerCertificateValidationCallback error:", exx);
+                            }
                             Inventec.Common.ElectronicBill.Base.ElectronicBillResult billResult1 = eHoaDon.Run(Inventec.Common.ElectronicBill.CmdType.GetInvErrorViewFkey);
                             if (billResult1 != null && billResult1.Success)
                             {

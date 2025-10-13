@@ -20,10 +20,12 @@ using Inventec.Common.ElectronicBill.Base;
 using Inventec.Common.ElectronicBill.MD;
 using Inventec.Common.ElectronicBill.PorttalServiceVNPT;
 using Inventec.Common.ElectronicBill.WSPublicVNPT;
+using Inventec.Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,6 +59,22 @@ namespace Inventec.Common.ElectronicBill
             ElectronicBillResult result = new ElectronicBillResult();
             try
             {
+                try
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("RegisToken.1");
+                    ServicePointManager
+                 .ServerCertificateValidationCallback +=
+                 (sender, cert, chain, sslPolicyErrors) => true;
+                    System.Net.ServicePointManager.SecurityProtocol =
+            SecurityProtocolType.Tls12 |
+            SecurityProtocolType.Tls11 |
+            SecurityProtocolType.Tls;
+                    Inventec.Common.Logging.LogSystem.Debug("RegisToken.2");
+                }
+                catch (Exception exx)
+                {
+                    LogSystem.Warn("ServicePointManager.ServerCertificateValidationCallback error:", exx);
+                }
                 switch (cmdType)
                 {
                     case CmdType.ImportAndPublishInv:
@@ -135,7 +153,6 @@ namespace Inventec.Common.ElectronicBill
                     electronicBillInput.adjustInvoice.Total = FormatReplaceStringPrice(electronicBillInput.adjustInvoice.Total);
                     electronicBillInput.adjustInvoice.DiscountAmount = FormatReplaceStringPrice(electronicBillInput.adjustInvoice.DiscountAmount);
                     electronicBillInput.adjustInvoice.VATAmount = FormatReplaceStringPrice(electronicBillInput.adjustInvoice.VATAmount);
-                    electronicBillInput.adjustInvoice.Type = electronicBillInput.adjustInvoice.Type ?? 2; 
                     if (electronicBillInput.adjustInvoice.Products != null && electronicBillInput.adjustInvoice.Products.Count > 0)
                     {
                         foreach (var product in electronicBillInput.adjustInvoice.Products)
