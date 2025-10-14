@@ -55,6 +55,7 @@ namespace MPS.Processor.Mps000086
                 ProcessSingleKey();
                 List<Mps000086ADO> listAdoPrint = new List<Mps000086ADO>();
                 List<Mps000086ADO> listAdoPrintSplitedByPackage = new List<Mps000086ADO>();
+                List<Mps000086ADO> otherPaySourceList = new List<Mps000086ADO>();
                 if (rdo.listAdo != null && rdo.listAdo.Count > 0)
                 {
                     if (rdo._keyMert == 0)
@@ -164,7 +165,6 @@ namespace MPS.Processor.Mps000086
                 ProcessPrintLogData();
                 //lấy số lần in
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
-
                 singleTag.ProcessData(store, singleValueDictionary);
                 objectTag.AddObjectData(store, "ListMediMate1", listAdoPrint);
                 objectTag.AddObjectData(store, "ListMediMate2", listAdoPrint);
@@ -173,6 +173,23 @@ namespace MPS.Processor.Mps000086
                 objectTag.AddObjectData(store, "ListMediMatePackage2", rdo.listAdo);
                 objectTag.AddObjectData(store, "ListMediMatePackage3", rdo.listAdo);
                 objectTag.AddObjectData(store, "ListMediMateSplitedByPackage", listAdoPrintSplitedByPackage);
+
+                var otherPaySourceGroup1 = listAdoPrint
+                    .GroupBy(x => new { x.OTHER_PAY_SOURCE_ID, x.OTHER_PAY_SOURCE_CODE, x.OTHER_PAY_SOURCE_NAME })
+                    //.Select(g => new
+                    //{
+                    //    OTHER_PAY_SOURCE_ID = g.Key.OTHER_PAY_SOURCE_ID,
+                    //    OTHER_PAY_SOURCE_CODE = g.Key.OTHER_PAY_SOURCE_CODE,
+                    //    OTHER_PAY_SOURCE_NAME = g.Key.OTHER_PAY_SOURCE_NAME
+                    //})
+                    .ToList();
+                foreach (var item in otherPaySourceGroup1)
+                {
+                    otherPaySourceList.Add(item.First());
+                }
+                objectTag.AddObjectData(store, "OtherPaySourceGroup", otherPaySourceList);
+                objectTag.AddRelationship(store, "OtherPaySourceGroup", "ListMediMate1", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
+
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
                 objectTag.SetUserFunction(store, "FuncMergeData12", new CalculateMergerData());
                 objectTag.SetUserFunction(store, "FuncMergeData13", new CalculateMergerData());
@@ -256,6 +273,9 @@ namespace MPS.Processor.Mps000086
                                 adoMediGr.PACKAGE_NUMBER = mediGr.First().PACKAGE_NUMBER;
                                 adoMediGr.SUPPLIER_CODE = mediGr.First().SUPPLIER_CODE;
                                 adoMediGr.SUPPLIER_NAME = mediGr.First().SUPPLIER_NAME;
+                                adoMediGr.OTHER_PAY_SOURCE_ID = mediGr.First().OTHER_PAY_SOURCE_ID;
+                                adoMediGr.OTHER_PAY_SOURCE_CODE = mediGr.First().OTHER_PAY_SOURCE_CODE;
+                                adoMediGr.OTHER_PAY_SOURCE_NAME = mediGr.First().OTHER_PAY_SOURCE_NAME;
 
                                 adoMediGr.EXPIRED_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(mediGr.First().EXPIRED_DATE ?? 0);
                                 adoMediGr.PRICE = mediGr.First().PRICE;
@@ -385,13 +405,16 @@ namespace MPS.Processor.Mps000086
                                 ado.ACTIVE_INGR_BHYT_NAME = data.ACTIVE_INGR_BHYT_NAME;
                                 ado.MANUFACTURER_CODE = data.MANUFACTURER_CODE;
                                 ado.MANUFACTURER_NAME = data.MANUFACTURER_NAME;
+                                ado.OTHER_PAY_SOURCE_ID = data.OTHER_PAY_SOURCE_ID;
+                                ado.OTHER_PAY_SOURCE_CODE = data.OTHER_PAY_SOURCE_CODE;
+                                ado.OTHER_PAY_SOURCE_NAME = data.OTHER_PAY_SOURCE_NAME;
                                 if (rdo._MedicineUserForms != null && rdo._MedicineUserForms.Count > 0)
                                 {
                                     ado.MEDICINE_USE_FORM_NUM_ORDER = rdo._MedicineUserForms.Where(o => o.ID == data.MEDICINE_USE_FORM_ID).First().NUM_ORDER;
                                 }
 
                             }
-                            if(rdo._Medicines != null)
+                            if (rdo._Medicines != null)
                             {
                                 var medi = rdo._Medicines.Where(s => itemGr.Select(p => p.MEDICINE_TYPE_ID).ToList().Contains(s.MEDICINE_TYPE_ID));
 
@@ -444,6 +467,9 @@ namespace MPS.Processor.Mps000086
                                 adoMediGr.PRICE = mediGr.First().PRICE;
                                 adoMediGr.IMP_PRICE = mediGr.First().IMP_PRICE;
                                 adoMediGr.MEDICINE_TYPE_NAME = mediGr.First().MATERIAL_TYPE_NAME;
+                                adoMediGr.OTHER_PAY_SOURCE_ID = mediGr.First().OTHER_PAY_SOURCE_ID;
+                                adoMediGr.OTHER_PAY_SOURCE_CODE = mediGr.First().OTHER_PAY_SOURCE_CODE;
+                                adoMediGr.OTHER_PAY_SOURCE_NAME = mediGr.First().OTHER_PAY_SOURCE_NAME;
                                 adoMediGr.IMP_VAT_RATIO = mediGr.First().IMP_VAT_RATIO;
                                 adoMediGr.IMP_PRICE_RATIO = mediGr.First().IMP_PRICE + mediGr.First().IMP_PRICE * mediGr.First().IMP_VAT_RATIO;
                                 adoMediGr.DESCRIPTION = mediGr.First().DESCRIPTION;
@@ -541,6 +567,9 @@ namespace MPS.Processor.Mps000086
                             var data = rdo._MaterialTypes.FirstOrDefault(p => p.ID == itemGr[0].MATERIAL_TYPE_ID);
                             if (data != null)
                             {
+                                ado.OTHER_PAY_SOURCE_ID = data.OTHER_PAY_SOURCE_ID;
+                                ado.OTHER_PAY_SOURCE_CODE = data.OTHER_PAY_SOURCE_CODE;
+                                ado.OTHER_PAY_SOURCE_NAME = data.OTHER_PAY_SOURCE_NAME;
                                 ado.MEDI_MATE_TYPE_CODE = data.MATERIAL_TYPE_CODE;
                                 ado.MEDI_MATE_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64(itemGr.First().MATERIAL_TYPE_ID.ToString() + ado.TYPE_ID.ToString());
                                 ado.MEDI_MATE_TYPE_NAME = data.MATERIAL_TYPE_NAME;
@@ -553,7 +582,7 @@ namespace MPS.Processor.Mps000086
                                 ado.PACKING_TYPE_NAME = data.PACKING_TYPE_NAME;
                                 ado.CONCENTRA = data.CONCENTRA;
                                 ado.REGISTER_NUMBER = data.REGISTER_NUMBER;
-                                
+
                             }
 
                             ado.TOTAL_AMOUNT_IN_REQUEST = itemGr.Sum(o => o.AMOUNT);
@@ -687,7 +716,6 @@ namespace MPS.Processor.Mps000086
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         public override string ProcessPrintLogData()
         {
             string log = "";

@@ -578,6 +578,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
+                    cboExecuteLoginName.Focus();
+                    cboExecuteLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExecuteLoginName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
                     txtExamCirculation.Focus();
                     txtExamCirculation.SelectAll();
                 }
@@ -605,6 +620,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
         private void cboExamCirculationRank_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    cboExamCirculationLoginName.Focus();
+                    cboExamCirculationLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamCirculationLoginName_Closed(object sender, ClosedEventArgs e)
         {
             try
             {
@@ -642,6 +672,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
+                    cboExamRespiratoryLoginName.Focus();
+                    cboExamRespiratoryLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamRespiratoryLoginName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
                     txtExamDigestion.Focus();
                     txtExamDigestion.SelectAll();
                 }
@@ -651,7 +696,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void txtExamDigestion_PreviewKeyDown(object sender, System.Windows.Forms.PreviewKeyDownEventArgs e)
         {
             try
@@ -669,6 +713,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
         private void cboExamDigestionRank_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    cboExamDigestionLoginName.Focus();
+                    cboExamDigestionLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+        private void cboExamDigestionLoginName_Closed(object sender, ClosedEventArgs e)
         {
             try
             {
@@ -707,8 +767,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
-                    txtExamNeurological.Focus();
-                    txtExamNeurological.SelectAll();
+                    cboExamKidneyUrologyLoginName.Focus();
+                    cboExamKidneyUrologyLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamKidneyUrologyLoginName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    txtExamOend.Focus();
+                    txtExamOend.SelectAll();
                 }
             }
             catch (System.Exception ex)
@@ -739,8 +814,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
-                    txtExamMuscleBone.Focus();
-                    txtExamMuscleBone.SelectAll();
+                    cboExamNeurologicalLoginName.Focus();
+                    cboExamNeurologicalLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamNeurologicalLoginName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    txtExamMental.Focus();
+                    txtExamMental.SelectAll();
                 }
             }
             catch (System.Exception ex)
@@ -771,8 +861,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
-                    txtExamOend.Focus();
-                    txtExamOend.SelectAll();
+                    cboExamMuscleBoneLoginName.Focus();
+                    cboExamMuscleBoneLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamMuscleBoneLoginName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    txtExamNeurological.Focus();
+                    txtExamNeurological.SelectAll();
                 }
             }
             catch (System.Exception ex)
@@ -803,8 +908,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
-                    txtExamMental.Focus();
-                    txtExamMental.SelectAll();
+                    cboExamOendLoginName.Focus();
+                    cboExamOendLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamOendLoginName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    txtExamMuscleBone.Focus();
+                    txtExamMuscleBone.SelectAll();
                 }
             }
             catch (System.Exception ex)
@@ -830,6 +950,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
         private void cboExamMentalRank_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    cboExamMentalLoginName.Focus();
+                    cboExamMentalLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamMentalLoginName_Closed(object sender, ClosedEventArgs e)
         {
             try
             {
@@ -867,6 +1002,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
+                    cboExamSurgeryLoginName.Focus();
+                    cboExamSurgeryLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamSurgeryLoginName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
                     txtExamObstetric.Focus();
                     txtExamObstetric.SelectAll();
                 }
@@ -894,6 +1044,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
         private void cboExamObstetricRank_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    cboExamObstetricLoginName.Focus();
+                    cboExamObstetricLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamObstetricLoginName_Closed(object sender, ClosedEventArgs e)
         {
             try
             {
@@ -995,6 +1160,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
+                    cboExamEyeLoginName.Focus();
+                    cboExamEyeLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamEyeLoginName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
                     txtExamEntLeftNormal.Focus();
                     txtExamEntLeftNormal.SelectAll();
                 }
@@ -1091,6 +1271,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
+                    cboExamEntLoginName.Focus();
+                    cboExamEntLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamEntLoginName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
                     txtExamStomatologyUpper.Focus();
                     txtExamStomatologyUpper.SelectAll();
                 }
@@ -1155,6 +1350,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
+                    cboExamStomatologyLoginName.Focus();
+                    cboExamStomatologyLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamStomatologyLoginName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
                     txtExamDernatology.Focus();
                     txtExamDernatology.SelectAll();
                 }
@@ -1164,7 +1374,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void txtExamDernatology_PreviewKeyDown(object sender, System.Windows.Forms.PreviewKeyDownEventArgs e)
         {
             try
@@ -1182,6 +1391,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
         private void cboExamDernatologyRank_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    cboExamDermatologyLoginName.Focus();
+                    cboExamDermatologyLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamDermatologyLoginName_Closed(object sender, ClosedEventArgs e)
         {
             try
             {
@@ -1219,6 +1443,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (e.KeyCode == Keys.Enter)
                 {
+                    cboExamSubclinicalLoginName.Focus();
+                    cboExamSubclinicalLoginName.ShowPopup();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboExamSubclinicalLoginName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
                     cboHealthExamRank.Focus();
                     cboHealthExamRank.ShowPopup();
                 }
@@ -1250,6 +1489,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 if (e.KeyCode == Keys.Enter)
+                {
+                    cboConcluderLoginName.Focus();
+                    cboConcluderLoginName.ShowPopup();
+                    //btnSave.Focus();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboConcluderLoginName_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
                     btnSave.Focus();
                 }
