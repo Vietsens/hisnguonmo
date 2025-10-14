@@ -105,7 +105,7 @@ namespace MPS.Processor.Mps000215
                 objectTag.AddObjectData(store, "OtherPaySource", lstOtherPaySource);
 
                 objectTag.AddRelationship(store, "ListMediMate1", "ListMediMate1Detail", "KEY_GROUP", "KEY_GROUP");
-                objectTag.AddRelationship(store, "OtherPaySource", "ListMediMate1", "KEY_GROUP", "KEY_GROUP");
+                objectTag.AddRelationship(store, "OtherPaySource", "ListMediMate1", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
                 objectTag.AddRelationship(store, "ListMediMate2", "ListMediMate2Detail", "KEY_GROUP", "KEY_GROUP");
                 objectTag.AddRelationship(store, "ListMediMate3", "ListMediMate3Detail", "KEY_GROUP", "KEY_GROUP");
                 objectTag.AddRelationship(store, "MedicineGroup", "ListMediMate1", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
@@ -143,14 +143,14 @@ namespace MPS.Processor.Mps000215
         {
             try
             {
-                lstOtherPaySource = new List<Mps000215ADO>();
                 if (listAdoPrint != null && listAdoPrint.Count > 0)
                 {
                     var group = listAdoPrint
-                        .Where(o => o.OTHER_PAY_SOURCE_ID.HasValue)
                         .GroupBy(o => new
                         {
-                            o.OTHER_PAY_SOURCE_ID
+                            OTHER_PAY_SOURCE_ID = o.OTHER_PAY_SOURCE_ID ?? 0, 
+                            OTHER_PAY_SOURCE_CODE = o.OTHER_PAY_SOURCE_CODE ?? "", 
+                            OTHER_PAY_SOURCE_NAME = o.OTHER_PAY_SOURCE_NAME ?? ""
                         });
 
                     foreach (var item in group)
