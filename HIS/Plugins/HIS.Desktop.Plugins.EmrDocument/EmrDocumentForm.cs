@@ -260,6 +260,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 InitEmployee();
                 if (refreshData != null)
                     this.refreshData();
+
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -1073,6 +1074,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                     pictureEdit1.Image = imageCheck.Images[0];
                     Inventec.Common.Logging.LogSystem.Debug("LoadPaging.13");
+                    this.layoutControl1.Refresh();
+
                 }
             }
             catch (Exception ex)
@@ -1329,12 +1332,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     LoadPdfViewer(data);
                 }
+
             }
             catch (Exception ex)
             {
                 this.panel1.Controls.Clear();
-                this.panel1 = new Panel();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                this.layoutControl1.Refresh();
             }
         }
 
@@ -1364,7 +1368,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
             catch (Exception ex)
             {
-                this.panel1.Controls.Clear();
+                this.panel1.Controls.Clear(); 
                 this.panel1 = new Panel();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -1786,6 +1790,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     treeListColumnDOCUMENT_TYPE_NAME.Visible = false;
                     treeListColumnDOCUMENT_TYPE_NAME.VisibleIndex = -1;
                     treeListDocument.CollapseAll();
+
                 }
                 else
                 {
@@ -2051,6 +2056,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     Inventec.Common.Logging.LogSystem.Info("currentPage: " + currentPage);
                     WaitingManager.Show();
                     LoadPdf(rowEmrDocumentData);
+                    this.layoutControl1.Refresh();
                     curentEmrDocument = rowEmrDocumentData;
                     Inventec.Common.Logging.LogSystem.Warn("CURRENT EMR ______________________");
                     loadViewSign(rowEmrDocumentData.ID);
@@ -4021,6 +4027,43 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     this.currentControlStateRDO.Add(csAddOrUpdate);
                 }
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnDocumentScanned_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var treatmentCode = (txtTreatmentCode != null && !string.IsNullOrEmpty(txtTreatmentCode.Text)) ? txtTreatmentCode.Text : this.treatmentCode;
+                var args = new List<object> { treatmentCode };
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    "EMR.Desktop.Plugins.ListEmrDocumentScaned",
+                    this.currentModule.RoomId,
+                    this.currentModule.RoomTypeId,
+                    args);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void btnDocument_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var treatmentCode = (txtTreatmentCode != null && !string.IsNullOrEmpty(txtTreatmentCode.Text)) ? txtTreatmentCode.Text : this.treatmentCode;
+                var args = new List<object> { treatmentCode };
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    "EMR.Desktop.Plugins.ListEmrDocumentScaned",
+                    this.currentModule.RoomId,
+                    this.currentModule.RoomTypeId,
+                    args);
             }
             catch (Exception ex)
             {
