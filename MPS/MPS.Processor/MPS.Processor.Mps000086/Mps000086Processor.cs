@@ -175,14 +175,13 @@ namespace MPS.Processor.Mps000086
                 objectTag.AddObjectData(store, "ListMediMateSplitedByPackage", listAdoPrintSplitedByPackage);
 
                 var otherPaySourceGroup1 = listAdoPrint
-                    .GroupBy(x => new { x.OTHER_PAY_SOURCE_ID, x.OTHER_PAY_SOURCE_CODE, x.OTHER_PAY_SOURCE_NAME })
-                    //.Select(g => new
-                    //{
-                    //    OTHER_PAY_SOURCE_ID = g.Key.OTHER_PAY_SOURCE_ID,
-                    //    OTHER_PAY_SOURCE_CODE = g.Key.OTHER_PAY_SOURCE_CODE,
-                    //    OTHER_PAY_SOURCE_NAME = g.Key.OTHER_PAY_SOURCE_NAME
-                    //})
-                    .ToList();
+                        .GroupBy(o => new
+                        {
+                            OTHER_PAY_SOURCE_ID = o.OTHER_PAY_SOURCE_ID ?? 0,
+                            OTHER_PAY_SOURCE_CODE = o.OTHER_PAY_SOURCE_CODE ?? "",
+                            OTHER_PAY_SOURCE_NAME = o.OTHER_PAY_SOURCE_NAME ?? ""
+                        });
+
                 foreach (var item in otherPaySourceGroup1)
                 {
                     otherPaySourceList.Add(item.First());
@@ -273,9 +272,9 @@ namespace MPS.Processor.Mps000086
                                 adoMediGr.PACKAGE_NUMBER = mediGr.First().PACKAGE_NUMBER;
                                 adoMediGr.SUPPLIER_CODE = mediGr.First().SUPPLIER_CODE;
                                 adoMediGr.SUPPLIER_NAME = mediGr.First().SUPPLIER_NAME;
-                                adoMediGr.OTHER_PAY_SOURCE_ID = mediGr.First().OTHER_PAY_SOURCE_ID;
-                                adoMediGr.OTHER_PAY_SOURCE_CODE = mediGr.First().OTHER_PAY_SOURCE_CODE;
-                                adoMediGr.OTHER_PAY_SOURCE_NAME = mediGr.First().OTHER_PAY_SOURCE_NAME;
+                                //adoMediGr.OTHER_PAY_SOURCE_ID = mediGr.First().OTHER_PAY_SOURCE_ID;
+                                //adoMediGr.OTHER_PAY_SOURCE_CODE = mediGr.First().OTHER_PAY_SOURCE_CODE;
+                                //adoMediGr.OTHER_PAY_SOURCE_NAME = mediGr.First().OTHER_PAY_SOURCE_NAME;
 
                                 adoMediGr.EXPIRED_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(mediGr.First().EXPIRED_DATE ?? 0);
                                 adoMediGr.PRICE = mediGr.First().PRICE;
@@ -301,6 +300,10 @@ namespace MPS.Processor.Mps000086
                                     adoMediGr.CONCENTRA = _dataMedi.CONCENTRA;
                                     adoMediGr.MANUFACTURER_CODE = _dataMedi.MEDICINE_GROUP_CODE;
                                     adoMediGr.MANUFACTURER_NAME = _dataMedi.MANUFACTURER_NAME;
+                                    adoMediGr.OTHER_PAY_SOURCE_NAME = _dataMedi.OTHER_PAY_SOURCE_NAME;
+                                    adoMediGr.OTHER_PAY_SOURCE_ID = _dataMedi.OTHER_PAY_SOURCE_ID;
+                                    adoMediGr.OTHER_PAY_SOURCE_CODE = _dataMedi.OTHER_PAY_SOURCE_CODE;
+
 
                                     var _parentMedicineType = rdo._MedicineTypes.FirstOrDefault(p => p.ID == _dataMedi.PARENT_ID);
                                     if (_parentMedicineType != null)
@@ -467,9 +470,9 @@ namespace MPS.Processor.Mps000086
                                 adoMediGr.PRICE = mediGr.First().PRICE;
                                 adoMediGr.IMP_PRICE = mediGr.First().IMP_PRICE;
                                 adoMediGr.MEDICINE_TYPE_NAME = mediGr.First().MATERIAL_TYPE_NAME;
-                                adoMediGr.OTHER_PAY_SOURCE_ID = mediGr.First().OTHER_PAY_SOURCE_ID;
-                                adoMediGr.OTHER_PAY_SOURCE_CODE = mediGr.First().OTHER_PAY_SOURCE_CODE;
-                                adoMediGr.OTHER_PAY_SOURCE_NAME = mediGr.First().OTHER_PAY_SOURCE_NAME;
+                                //adoMediGr.OTHER_PAY_SOURCE_ID = mediGr.First().OTHER_PAY_SOURCE_ID;
+                                //adoMediGr.OTHER_PAY_SOURCE_CODE = mediGr.First().OTHER_PAY_SOURCE_CODE;
+                                //adoMediGr.OTHER_PAY_SOURCE_NAME = mediGr.First().OTHER_PAY_SOURCE_NAME;
                                 adoMediGr.IMP_VAT_RATIO = mediGr.First().IMP_VAT_RATIO;
                                 adoMediGr.IMP_PRICE_RATIO = mediGr.First().IMP_PRICE + mediGr.First().IMP_PRICE * mediGr.First().IMP_VAT_RATIO;
                                 adoMediGr.DESCRIPTION = mediGr.First().DESCRIPTION;
@@ -487,6 +490,9 @@ namespace MPS.Processor.Mps000086
                                     adoMediGr.MANUFACTURER_CODE = _dataMate.MANUFACTURER_CODE;
                                     adoMediGr.MANUFACTURER_NAME = _dataMate.MANUFACTURER_NAME;
                                     adoMediGr.REGISTER_NUMBER = _dataMate.REGISTER_NUMBER;
+                                    adoMediGr.OTHER_PAY_SOURCE_ID = _dataMate.OTHER_PAY_SOURCE_ID;
+                                    adoMediGr.OTHER_PAY_SOURCE_CODE = _dataMate.OTHER_PAY_SOURCE_CODE;
+                                    adoMediGr.OTHER_PAY_SOURCE_NAME = _dataMate.OTHER_PAY_SOURCE_NAME;
 
                                 }
 
