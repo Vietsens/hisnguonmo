@@ -1585,7 +1585,7 @@ namespace HIS.UC.UCHeniInfo
                     this.FocusNextControlFreeCoPainTime();//#18970
                 }
                 //qtcode
-                if (e.CloseMode == PopupCloseMode.Normal && !HisConfigCFG.IsAutoShowTransferFormInCaseOfAppointment)
+                if (e.CloseMode == PopupCloseMode.Normal && HisConfigCFG.IsShowNumberAppointment)
                 {
                     if (this.cboHeinRightRoute.EditValue != null && this.cboHeinRightRoute.EditValue.ToString() == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT)
                     {
