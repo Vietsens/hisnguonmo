@@ -749,9 +749,11 @@ namespace HIS.Desktop.Plugins.HisTranPatiToInfo
                 _treatmentupdate.TRANSFER_IN_CODE = txtSoChuyenVien.Text;
                 var treatmentExt = lsttreatmentExt.Where(o => o.TREATMENT_ID == this.treatmentId).FirstOrDefault();
                 sdoUpdate.HisTreatment = _treatmentupdate;
-                sdoUpdate.ClinicalNote = treatmentExt.CLINICAL_NOTE;
-                sdoUpdate.SubclinicalResult = treatmentExt.SUBCLINICAL_RESULT;
-
+                if(treatmentExt != null)
+                {
+                    sdoUpdate.ClinicalNote = treatmentExt.CLINICAL_NOTE;
+                    sdoUpdate.SubclinicalResult = treatmentExt.SUBCLINICAL_RESULT;
+                }
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("sdoUpdate___:", sdoUpdate));
                 var outPut = new BackendAdapter(param).Post<HIS_TREATMENT>("api/HisTreatment/UpdateTranPatiInfo", ApiConsumers.MosConsumer, sdoUpdate, param);
                 if (outPut != null)
