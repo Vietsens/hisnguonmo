@@ -55,6 +55,8 @@ using WCF.Client;
 using HIS.Desktop.Plugins.TransactionCancel.Config;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.Utility;
+using Inventec.Common.Logging;
+
 
 namespace HIS.Desktop.Plugins.TransactionCancel
 {
