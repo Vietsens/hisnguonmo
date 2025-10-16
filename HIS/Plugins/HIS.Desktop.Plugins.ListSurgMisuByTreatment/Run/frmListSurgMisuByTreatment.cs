@@ -558,6 +558,7 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
             try
             {
                 List<SurgMisuADO> selectedAdos = new List<SurgMisuADO>();
+                int firstSelectedHandle = -1;
                 for (int i = 0; i < gridView.DataRowCount; i++)
                 {
                     var ado = (SurgMisuADO)gridView.GetRow(i);
@@ -565,6 +566,7 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                     if (isSelected)
                     {
                         selectedAdos.Add(ado);
+                        if (firstSelectedHandle < 0) firstSelectedHandle = i;
                     }
                 }
                 if (selectedAdos.Count == 0)
@@ -573,6 +575,33 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                     return;
                 }
                 string surgeryNames = string.Join(";", selectedAdos.Select(s => s.TDL_SERVICE_NAME));
+                if (selectedAdos.Count == 1)
+                {
+                    int rowHandle = firstSelectedHandle;
+
+                    GridColumn colBeginTime = gridView.Columns[8];
+                    GridColumn colEndTime = gridView.Columns[9];
+
+                    DateTime? dtBeginTime = null, dtEndTime = null;
+
+                    var cellBegin = gridView.GetRowCellValue(rowHandle, colBeginTime);
+                    if (cellBegin != null && !string.IsNullOrWhiteSpace(cellBegin.ToString()))
+                    {
+                        if (DateTime.TryParse(cellBegin.ToString(), out var tmpBegin)) dtBeginTime = tmpBegin;
+                    }
+
+                    var cellEnd = gridView.GetRowCellValue(rowHandle, colEndTime);
+                    if (cellEnd != null && !string.IsNullOrWhiteSpace(cellEnd.ToString()))
+                    {
+                        if (DateTime.TryParse(cellEnd.ToString(), out var tmpEnd)) dtEndTime = tmpEnd;
+                    }
+
+                    if (loadPTTT != null)
+                        loadPTTT(surgeryNames, dtBeginTime, dtEndTime);
+
+                    this.Close();
+                    return;
+                }
                 if (loadPTTT != null)
                 {
                     loadPTTT(surgeryNames, null, null);

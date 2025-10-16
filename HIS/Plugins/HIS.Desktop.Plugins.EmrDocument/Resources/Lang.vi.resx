@@ -342,4 +342,7 @@
   <data name="toolTipItem2.Text" xml:space="preserve">
     <value>Chọn file trong máy tính</value>
   </data>
+  <data name="EmrDocumentForm.btnDocumentScanned.Text" xml:space="preserve">
+    <value>VB chưa ghi nhận</value>
+  </data>
 </root>
