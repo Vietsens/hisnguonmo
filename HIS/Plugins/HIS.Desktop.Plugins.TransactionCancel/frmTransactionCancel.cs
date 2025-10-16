@@ -54,6 +54,7 @@ using WCF;
 using WCF.Client;
 using HIS.Desktop.Plugins.TransactionCancel.Config;
 using DevExpress.XtraEditors.DXErrorProvider;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.TransactionCancel
 {
@@ -67,14 +68,14 @@ namespace HIS.Desktop.Plugins.TransactionCancel
         V_HIS_EXP_MEST_2 expMest = null;
         V_HIS_TRANSACTION TransactionCancelResult;
         private int positionHandleControl = -1;
-
+        List<HisTransactionCancelSDO> ado = new List<HisTransactionCancelSDO>();
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         string moduleLink = "HIS.Desktop.Plugins.TransactionCancel";
         List<V_HIS_TRANSACTION> listTranPrint { get; set; }
         bool isVisileCancelHIS = false;
-
+        List<HIS_TRANSACTION> lstTransOriginal = new List<HIS_TRANSACTION>();
         public frmTransactionCancel(Inventec.Desktop.Common.Modules.Module module, V_HIS_TRANSACTION data)
             : base(module)
         {
@@ -258,6 +259,21 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         lciCheckCK.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     }
                     //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.transaction), this.transaction));
+                    if(this.transaction.IS_ADJUSTMENT == 1)
+                    {
+                        DialogResult rs = DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Hóa đơn điều chỉnh không cho phép hủy",
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                            Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        MessageBoxButtons.OK
+                    );
+
+                        if (rs == DialogResult.OK)
+                        {
+                            btnSave.Enabled = false;
+                            return;
+                        }
+                    }
                 }
                 else
                 {
@@ -308,6 +324,33 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void GetTransactionOriginal()
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                HisTransactionFilter filter = new HisTransactionFilter();
+                filter.ORIGINAL_TRANSACTION_ID = this.transaction.ID;
+                filter.IS_ADJUSTMENT = true;
+
+                var result = new BackendAdapter(paramCommon)
+                    .Get<List<HIS_TRANSACTION>>(
+                        "api/HisTransaction/Get",
+                        ApiConsumer.ApiConsumers.MosConsumer,
+                        filter,
+                        HIS.Desktop.Controls.Session.SessionManager.ActionLostToken,
+                        paramCommon
+                    );
+
+                lstTransOriginal = (result != null && result.Count > 0) ? result : null;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
 
         private void ValidControl()
         {
@@ -390,6 +433,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel
         {
             try
             {
+                this.GetTransactionOriginal();
                 this.ValidControl();
                 this.positionHandleControl = -1;
                 if (!this.dxValidationProvider1.Validate())
@@ -560,16 +604,45 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         }
                     }
                 }
+                if(this.lstTransOriginal != null)
+                {
+                    DialogResult dr = DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Tồn tại hóa đơn điều chỉnh của hóa đơn hiện tại. Khi hủy, toàn bộ các giao dịch điều chỉnh đi kèm sẽ bị hủy theo. Bạn có chắc chắn muốn tiếp tục?",
+                            Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                                Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                            MessageBoxButtons.YesNo
+                        );
+
+                    if (dr == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
+                sdo.RequestRoomId = this.currentModule.RoomId;
+                sdo.CancelReasonId = Convert.ToInt64(cboCancelReason.EditValue);
+                if (dtCancelTime.EditValue != null)
+                {
+                    DateTime date = dtCancelTime.DateTime;
+                    sdo.CancelTime = Convert.ToInt64(date.ToString("yyyyMMddHHmmss"));
+                }
+                else
+                {
+                    sdo.CancelTime = 0; 
+                }
 
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANSACTION>("api/HisTransaction/Cancel", ApiConsumers.MosConsumer, sdo, param);
                 if (rs != null)
                 {
                     success = true;
+                    foreach (var item in lstTransOriginal)
+                    {
+                        sdo.TransactionId = item.ID;
+                        var rso = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANSACTION>("api/HisTransaction/Cancel", ApiConsumers.MosConsumer, sdo, param);
+                    }
                     if (this.refreshDelegate != null) this.refreshDelegate(true);
                     TransactionCancelResult = GetViewTransaction(rs.ID);
                     listTranPrint.Add(this.TransactionCancelResult);
                 }
-
                 WaitingManager.Hide();
                 if (success)
                 {
@@ -639,7 +712,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                     sdo.CancelTime = Convert.ToInt64(dtCancelTime.DateTime.ToString("yyyyMMddHHmm") + "00");
                 }
 
-                sdo.IsInternal = isInternal;
+                sdo.IsInternal = (bool)isInternal;
             }
             catch (Exception ex)
             {
