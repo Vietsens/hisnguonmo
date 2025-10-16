@@ -24,7 +24,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+   
 namespace MPS.Processor.Mps000145
 {
     public class Mps000145Processor : AbstractProcessor
@@ -51,7 +51,6 @@ namespace MPS.Processor.Mps000145
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 ProcessSingleKey();
-
                 //ghi đè PrintLogData và UniqueCodeData
                 ProcessPrintLogData();
                 //lấy số lần in
@@ -61,10 +60,32 @@ namespace MPS.Processor.Mps000145
                 if (rdo._ListAdo != null && rdo._ListAdo.Count > 0)
                 {
                     rdo._ListAdo = rdo._ListAdo.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
+
+                      
+                      
                 }
-                objectTag.AddObjectData(store, "MediMaties1", rdo._ListAdo);
+                //objectTag.AddObjectData(store, "MediMaties1", rdo._ListAdo);
                 objectTag.AddObjectData(store, "MediMaties2", rdo._ListAdo);
                 objectTag.AddObjectData(store, "MediMaties3", rdo._ListAdo);
+                if (rdo._ListAdo != null && rdo._ListAdo.Count > 0)
+                {
+                    //var groupByParent = rdo._ListAdo
+                    //    .GroupBy(p => new { p.PARENT_ID, p.PARENT_NAME })
+                    //    .OrderBy(g => g.Key.PARENT_ID)
+                    //    .Select(g => new { ParentID = g.Key, Items = g.ToList() })
+                    //    .ToList();
+                    var groupByParent = rdo._ListAdo
+                        .GroupBy(p => new { p.PARENT_ID, p.PARENT_NAME })
+                        .Select(g => new {
+                            PARENT_ID = g.Key.PARENT_ID,
+                            PARENT_NAME = g.Key.PARENT_NAME
+                        })
+                        .ToList();
+                    objectTag.AddObjectData(store, "MediMaties1", rdo._ListAdo);
+                    objectTag.AddObjectData(store, "MediMaties", rdo._ListAdo);
+                    objectTag.AddObjectData(store, "MediMatiesGroups", groupByParent);
+                    objectTag.AddRelationship(store, "MediMatiesGroups", "MediMaties1", "PARENT_ID", "PARENT_ID");
+                }
                 result = true;
             }
             catch (Exception ex)
@@ -87,7 +108,7 @@ namespace MPS.Processor.Mps000145
                     {
                         if (item.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT && item.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN)
                         {
-                            rdo._ListAdo.Add(new MPS.Processor.Mps000145.PDO.Mps000145PDO.Mps000145ADO(item));
+                            rdo._ListAdo.Add(new MPS.Processor.Mps000145.PDO.Mps000145PDO.Mps000145ADO(item, rdo._MedicineTypes));
                             sumPrice += item.AMOUNT * (item.PRICE ?? 0) * (1 + (item.VAT_RATIO ?? 0));
                         }
                     }
@@ -96,11 +117,11 @@ namespace MPS.Processor.Mps000145
                 {
                     foreach (var item in rdo._ImpMestMaterials)
                     {
-                        rdo._ListAdo.Add(new MPS.Processor.Mps000145.PDO.Mps000145PDO.Mps000145ADO(item));
+                        rdo._ListAdo.Add(new MPS.Processor.Mps000145.PDO.Mps000145PDO.Mps000145ADO(item, rdo._MaterialTypes));
                         if (!item.PRICE.HasValue)
                             continue;
                         sumPrice += item.AMOUNT * item.PRICE.Value * (1 + (item.VAT_RATIO ?? 0));
-                    }
+                    }  
                 }
 
                 if (rdo._ChmsImpMest != null)

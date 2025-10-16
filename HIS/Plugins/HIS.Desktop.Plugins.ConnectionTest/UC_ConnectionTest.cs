@@ -1545,6 +1545,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (result != null)
                     {
                         lblNewestBarcode.Text = result.BARCODE;
+                        Inventec.Common.Logging.LogSystem.Info(String.Format("lblNewestBarcode.Text set to: {0} (from LIS_SAMPLE table)", lblNewestBarcode.Text));
                     }
                     else
                     {
@@ -2258,7 +2259,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 CommonParam param = new CommonParam();
                 LisSampleADO row = (LisSampleADO)gridViewSample.GetFocusedRow();
 
-                if (row != rowSample)
+                if (rowSample.ID != null && row.ID != rowSample.ID)
                 {
                     rowSample = row;
                     LoadLisResult(rowSample);
@@ -5557,6 +5558,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     lstSampleAll.FirstOrDefault(o => o.ID == rs.ID).BARCODE = rs.BARCODE;
                     result = true;
                     lblNewestBarcode.Text = sample.BARCODE;
+                    Inventec.Common.Logging.LogSystem.Info(String.Format("lblNewestBarcode.Text set to: {0} (from LIS_SAMPLE table)", lblNewestBarcode.Text));
                 }
                 else
                 {

@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -35,7 +35,9 @@ namespace MPS.Processor.Mps000143.PDO
         public List<Mps000143ADO> _ListAdo = null;
         public Mps000143Key _mps000143Key = null;
         public int NumberDigit;
-
+        //qtcode
+        public List<V_HIS_MEDICINE_TYPE> _MedicineTypes = null;
+        public List<V_HIS_MATERIAL_TYPE> _MaterialTypes = null;
         public class Mps000143Key
         {
             public string EXP_MEDI_STOCK_NAME { get; set; }
@@ -50,8 +52,19 @@ namespace MPS.Processor.Mps000143.PDO
             public long TYPE_ID { get; set; }
             public long MEDI_MATE_NUM_ORDER { get; set; }
             public string MEDI_MATE_TYPE_CODE { get; set; }
-
-            public Mps000143ADO(V_HIS_IMP_MEST_MEDICINE medicine)
+            //qtcode
+            public long? OTHER_PAY_SOURCE_ID { get; set; }
+            public string OTHER_PAY_SOURCE_CODE { get; set; }
+            public string OTHER_PAY_SOURCE_NAME { get; set; }
+            //public long? MEDICINE_GROUP_ID { get; set; } // Ch? cho thu?c
+            public string MEDICINE_GROUP_CODE { get; set; }
+            public string MEDICINE_GROUP_NAME { get; set; }
+            public long? MEDICINE_PARENT_ID { get; set; }
+            public string MEDICINE_PARENT_NAME { get; set; }
+            public string MEDICINE_PARENT_CODE { get; set; }
+            //qtcode
+            public Mps000143ADO() { }
+            public Mps000143ADO(V_HIS_IMP_MEST_MEDICINE medicine, List<V_HIS_MEDICINE_TYPE> medicineTypes)
             {
                 try
                 {
@@ -63,6 +76,20 @@ namespace MPS.Processor.Mps000143.PDO
                         this.TYPE_ID = 1;
                         this.MEDI_MATE_NUM_ORDER = medicine.MEDICINE_NUM_ORDER ?? 0;
                         this.MEDI_MATE_TYPE_CODE = medicine.MEDICINE_TYPE_CODE;
+                        // Gán các giá trị từ medicineTypes
+                        var medicineType = medicineTypes?.FirstOrDefault(o => o.ID == medicine.MEDICINE_TYPE_ID);
+                        if (medicineType != null)
+                        {
+                            this.OTHER_PAY_SOURCE_ID = medicineType.OTHER_PAY_SOURCE_ID;
+                            this.OTHER_PAY_SOURCE_CODE = medicineType.OTHER_PAY_SOURCE_CODE;
+                            this.OTHER_PAY_SOURCE_NAME = medicineType.OTHER_PAY_SOURCE_NAME;
+                            this.MEDICINE_GROUP_ID = medicineType.MEDICINE_GROUP_ID;
+                            this.MEDICINE_GROUP_CODE = medicineType.MEDICINE_GROUP_CODE;
+                            this.MEDICINE_GROUP_NAME = medicineType.MEDICINE_GROUP_NAME;
+                            this.MEDICINE_PARENT_ID = medicineType.PARENT_ID;
+                            this.MEDICINE_PARENT_CODE = medicineType.PARENT_CODE;
+                            this.MEDICINE_PARENT_NAME = medicineType.PARENT_NAME;
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -71,7 +98,7 @@ namespace MPS.Processor.Mps000143.PDO
                 }
             }
 
-            public Mps000143ADO(V_HIS_IMP_MEST_MATERIAL material)
+            public Mps000143ADO(V_HIS_IMP_MEST_MATERIAL material,List<V_HIS_MATERIAL_TYPE> materialTypes)
             {
                 try
                 {
@@ -83,6 +110,18 @@ namespace MPS.Processor.Mps000143.PDO
                         this.TYPE_ID = 2;
                         this.MEDI_MATE_NUM_ORDER = material.MEDICINE_NUM_ORDER ?? 0;
                         this.MEDI_MATE_TYPE_CODE = material.MATERIAL_TYPE_CODE;
+                        //qtcode
+                        var materialType = materialTypes?.FirstOrDefault(o => o.ID == material.MATERIAL_TYPE_ID);
+                        if (materialType != null)
+                        {
+                            this.OTHER_PAY_SOURCE_ID = materialType.OTHER_PAY_SOURCE_ID;
+                            this.OTHER_PAY_SOURCE_CODE = materialType.OTHER_PAY_SOURCE_CODE;
+                            this.OTHER_PAY_SOURCE_NAME = materialType.OTHER_PAY_SOURCE_NAME;
+                            this.MEDICINE_PARENT_ID = materialType.PARENT_ID;
+                            this.MEDICINE_PARENT_CODE = materialType.PARENT_CODE;
+                            this.MEDICINE_PARENT_NAME = materialType.PARENT_NAME;
+                            // MEDICINE_GROUP_ID không áp dụng cho vật tư
+                        }
                     }
                 }
                 catch (Exception ex)

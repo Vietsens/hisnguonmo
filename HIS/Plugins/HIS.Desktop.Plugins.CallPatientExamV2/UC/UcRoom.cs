@@ -13,17 +13,21 @@ using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.CallPatientExamV2
 {
+    public delegate void DelegateCallPatient(HIS_SERVICE_REQ PatientCall);
     public partial class UcRoom : UserControl
     {
         private ServiceReqGateADO state { get; set; }
         private RoomGateSDO serviceReq { get; set; }
         private HIS_SERVICE_REQ currentServiceReq { get; set; }
-        public UcRoom(ServiceReqGateADO ado, RoomGateSDO sdo)
+        private DelegateCallPatient dlg { get; set; }
+        private bool IsFirstLoad { get; set; } = true;
+        public UcRoom(ServiceReqGateADO ado, RoomGateSDO sdo, DelegateCallPatient dlg)
         {
             InitializeComponent();
 
             try
             {
+                this.dlg = dlg;
                 state = ado;
                 serviceReq = sdo;
             }
@@ -74,19 +78,17 @@ namespace HIS.Desktop.Plugins.CallPatientExamV2
                     .OrderByDescending(o => o.CALL_TIME)
                     .FirstOrDefault();
                 this.lblContentNumber.Text = currentCall != null ? currentCall.NUM_ORDER.ToString() : "";
+                
                 if (currentCall != null)
                 {
-                    if ((currentServiceReq != null && currentCall.CALL_TIME - currentServiceReq.CALL_TIME > 3) || currentServiceReq == null)
+                    if (!IsFirstLoad && ((currentServiceReq != null && currentCall.CALL_TIME - currentServiceReq.CALL_TIME > 3) || currentServiceReq == null))
                     {
-                        ChooseRoomForWaitingScreenProcess.StackServiceReqCall.RemoveAll(
-                            x => x.ServiceReq != null && x.ServiceReq.EXECUTE_ROOM_ID == currentCall.EXECUTE_ROOM_ID
-                        );
-                        ChooseRoomForWaitingScreenProcess.StackServiceReqCall.Add(
-                            new ServiceReqCallADO { ServiceReq = currentCall, IsCalling = true }
-                        );
+                        dlg(currentCall);
                     }
                     currentServiceReq = currentCall;
                 }
+                if(IsFirstLoad)
+                    IsFirstLoad = false;
                 var waitingList = ServiceReqs
                     .Where(o => (o.CALL_COUNT ?? -1) < 0)
                     .OrderBy(o => o.NUM_ORDER)

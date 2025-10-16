@@ -52,6 +52,7 @@ using HIS.Desktop.Plugins.Library.ElectronicBill.Data;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Template;
 using System.Transactions;
 using HIS.Desktop.Plugins.TransactionList;
+using MPS.Processor;
 
 namespace HIS.Desktop.Plugins.TransactionList
 {
@@ -63,7 +64,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         private HisServiceReqListResultSDO HisServiceReqListResultSDO { get; set; }
         const string invoiceTypeCreate__CreateInvoiceHIS = "2";
         bool isPrintNow = false;
-
+        const string ACCOUNT_BOOK_CODE_VN = "vninv";
         private void MouseRightItemClick(object sender, ItemClickEventArgs e)
         {
             try
@@ -73,6 +74,10 @@ namespace HIS.Desktop.Plugins.TransactionList
                     var type = (PopupMenuProcessor.ItemType)e.Item.Tag;
                     switch (type)
                     {
+
+                        case PopupMenuProcessor.ItemType.DieuChinhHoaDon:
+                            this.DieuChinhHoaDon();
+                            break;
                         case PopupMenuProcessor.ItemType.PhieuThuThanhToan:
                             this.PrintPhieuThuThanhToan();
                             break;
@@ -116,6 +121,20 @@ namespace HIS.Desktop.Plugins.TransactionList
                             this.SuaSoBienLai();
                             break;
                         case PopupMenuProcessor.ItemType.ThayThe:
+                            var gridView = gridControlTransaction.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+                            if (gridView != null)
+                            {
+                                var selectedRow = gridView.GetFocusedRow();
+                                if (selectedRow != null)
+                                {
+                                    var accountBookCode = gridView.GetFocusedRowCellValue("ACCOUNT_BOOK_CODE")?.ToString();
+                                    if(!string.IsNullOrWhiteSpace(accountBookCode) && accountBookCode == ACCOUNT_BOOK_CODE_VN)
+                                    {
+                                        MessageBox.Show("Tính năng này chưa được hỗ trợ. Vui lòng lên website để thực hiện.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        break; 
+                                    }
+                                }
+                            }
                             this.ThayThe();
                             break;
                         case PopupMenuProcessor.ItemType.InBienLaiHuy:
@@ -760,7 +779,22 @@ namespace HIS.Desktop.Plugins.TransactionList
             }
             return result;
         }
+        private void DieuChinhHoaDon()
+        {
+            try
+            {
+                if (this.transactionPrint == null )
+                    return;
 
+                List<object> listArgs = new List<object>();
+                listArgs.Add(transactionPrint);
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.AdjustmentTransaction", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void BangKeThanhToan()
         {
             try

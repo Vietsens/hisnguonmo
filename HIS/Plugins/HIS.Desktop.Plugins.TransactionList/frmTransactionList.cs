@@ -79,6 +79,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         long typeIdDeposit = 0;
         long typeIdRepay = 0;
         bool hasEditPermission = false;
+        bool canEditBill = false;
         List<V_HIS_TRANSACTION> _transactionList { get; set; }
         //private List<HIS_PERMISSION> _hisPermissionList;
         BarManager baManager = null;
@@ -1770,6 +1771,9 @@ namespace HIS.Desktop.Plugins.TransactionList
                         this.popupMenuProcessor = new PopupMenuProcessor(this.transactionPrint, this.baManager, MouseRightItemClick, currentModule);
                         this.popupMenuProcessor.InitMenu();
                     }
+                   
+
+                    
                 }
             }
             catch (Exception ex)
@@ -3464,6 +3468,22 @@ namespace HIS.Desktop.Plugins.TransactionList
 
             try
             {
+                WaitingManager.Show(); 
+                var gridView = gridControlTransaction.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (gridView != null)
+                {
+                    var selectedRow = gridView.GetFocusedRow();
+                    if (selectedRow != null)
+                    {
+                        var accountBookCode = gridView.GetFocusedRowCellValue("ACCOUNT_BOOK_CODE")?.ToString();
+                        if (!string.IsNullOrWhiteSpace(accountBookCode) && accountBookCode == ACCOUNT_BOOK_CODE_VN)
+                        {
+                            MessageBox.Show("Tính năng này chưa được hỗ trợ. Vui lòng lên website để thực hiện.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return; 
+                        }
+                    }
+                }
+                WaitingManager.Hide(); 
                 transactionPrint = new V_HIS_TRANSACTION();
                 this.transactionPrint = (V_HIS_TRANSACTION)gridViewTransaction.GetFocusedRow();
                 listData = new List<V_HIS_TRANSACTION>();

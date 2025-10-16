@@ -51,5 +51,18 @@ namespace MPS.Processor.Mps000141.PDO
             this._ListAdo = new List<Mps000141ADO>();
             this._ListMedicalContract = listMedicalContract;
         }
+        public Mps000141PDO(V_HIS_IMP_MEST manuImpMest, List<V_HIS_IMP_MEST_MEDICINE> impMestMedicines, List<V_HIS_IMP_MEST_MATERIAL> impMestMaterials, List<HIS_MEDICINE> _medicines, List<HIS_MATERIAL> _materials, List<HIS_IMP_SOURCE> _listImpSource, List<MedicalContractADO> listMedicalContract, List<V_HIS_MEDICINE_TYPE> medicineType, List<V_HIS_MATERIAL_TYPE> materialType)
+        {
+            this._ManuImpMest = manuImpMest;
+            this._ImpMestMaterials = impMestMaterials;
+            this._ImpMestMedicines = impMestMedicines;
+            this._Medicines = _medicines;
+            this._Materials = _materials;
+            this._listImpSource = _listImpSource;
+            this._ListAdo = new List<Mps000141ADO>();
+            this._ListMedicalContract = listMedicalContract;
+            this._MedicineType = medicineType;
+            this._MaterialType = materialType;
+        }
     }
 }

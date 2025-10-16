@@ -946,6 +946,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 sickInitADO.CurrentHisTreatment.PREGNANCY_TERMINATION_TIME = sickSdoResult.PregnancyTerminationTime;
                 sickInitADO.CurrentHisTreatment.TDL_PATIENT_MOTHER_NAME = sickSdoResult.MotherName;
                 sickInitADO.CurrentHisTreatment.TDL_PATIENT_FATHER_NAME = sickSdoResult.FatherName;
+                sickInitADO.CurrentHisTreatment.TDL_SOCIAL_INSURANCE_NUMBER = sickSdoResult.SocialInsuranceNumber;
                 this.dlgSendTreatmentMethod(sickInitADO.CurrentHisTreatment.TREATMENT_METHOD);
             }
             catch (Exception ex)

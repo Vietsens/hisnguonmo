@@ -35,6 +35,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -119,7 +120,15 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     electronicBillInput.account = account;
                     electronicBillInput.acPass = acPass;
                     electronicBillInput.convert = convert;
-                    if (cmdType != Inventec.Common.ElectronicBill.CmdType.ImportAndPublishInv && this.ElectronicBillDataInput != null && !String.IsNullOrWhiteSpace(this.ElectronicBillDataInput.InvoiceCode))
+                    
+                    //if (cmdType != Inventec.Common.ElectronicBill.CmdType.ImportAndPublishInv && this.ElectronicBillDataInput != null && !String.IsNullOrWhiteSpace(this.ElectronicBillDataInput.InvoiceCode))
+                    //{
+                    //    electronicBillInput.fKey = this.ElectronicBillDataInput.InvoiceCode;
+                    //}
+                    //qtcode
+                    if (cmdType != Inventec.Common.ElectronicBill.CmdType.ImportAndPublishInv &&
+                        cmdType != Inventec.Common.ElectronicBill.CmdType.AdjustInvoiceAction && // Thêm điều kiện cho AdjustInvoiceAction
+                        this.ElectronicBillDataInput != null && !String.IsNullOrWhiteSpace(this.ElectronicBillDataInput.InvoiceCode))
                     {
                         electronicBillInput.fKey = this.ElectronicBillDataInput.InvoiceCode;
                     }
@@ -154,7 +163,24 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         else
                         {
                             List<Invoice> invoices = this.GetInvoiceContrVietSens(this.ElectronicBillDataInput, notShowTaxBreakdown);
-                            if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
+                            if (this.ElectronicBillDataInput.Transaction != null &&
+                                this.ElectronicBillDataInput.Transaction.IS_ADJUSTMENT == 1)
+                            {
+                                // Xử lý hóa đơn điều chỉnh
+                                AdjustInvoice adjustInvoice = new AdjustInvoice();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<AdjustInvoice>(adjustInvoice, invoices.First().InvoiceDetail);
+                                adjustInvoice.key = invoices.First().Key;
+                                adjustInvoice.Products = new List<Product>();
+                                foreach (var item in invoices.First().InvoiceDetail.Products)
+                                {
+                                    Product product = new Product();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<Product>(product, item);
+                                    adjustInvoice.Products.Add(product);
+                                }
+                                electronicBillInput.fKey = this.ElectronicBillDataInput.Transaction.TDL_ORIGINAL_EI_CODE; // fKey là mã hóa đơn gốc
+                                electronicBillInput.adjustInvoice = adjustInvoice;
+                            }
+                            else if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
                             {
                                 //Nếu là thay thế hóa đơn thì lấy thông tin hóa đơn cũ
                                 ReplaceInvoice replaceInvoice = new ReplaceInvoice();
@@ -232,34 +258,87 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         }
                     }
 
-                    Dictionary<string, string> dataReplate = new Dictionary<string, string>();
+                    Dictionary<string, string> dataReplace = new Dictionary<string, string>();
 
-                    electronicBillInput.DataXmlStringPlus = General.GenarateXmlStringFromConfig(this.ElectronicBillDataInput, typeof(InvoiceDetail), dataReplate);
+                    electronicBillInput.DataXmlStringPlus = General.GenarateXmlStringFromConfig(this.ElectronicBillDataInput, typeof(InvoiceDetail), dataReplace);
 
                     //Nếu có thay thế dữ liệu thì gán giá trị
-                    if (dataReplate.Count > 0 && electronicBillInput.invoices != null && electronicBillInput.invoices.Count > 0)
+                    //if (dataReplate.Count > 0 && electronicBillInput.invoices != null && electronicBillInput.invoices.Count > 0)
+                    //{
+                    //    System.Reflection.PropertyInfo[] pi = Inventec.Common.Repository.Properties.Get<InvoiceDetail>();
+                    //    foreach (var inv in electronicBillInput.invoices)
+                    //    {
+                    //        foreach (var item in pi)
+                    //        {
+                    //            if (dataReplate.ContainsKey(item.Name) && !string.IsNullOrWhiteSpace(dataReplate[item.Name]))
+                    //            {
+                    //                if (dataReplate[item.Name].StartsWith("<![CDATA[") && dataReplate[item.Name].EndsWith("]]>"))
+                    //                {
+                    //                    dataReplate[item.Name] = dataReplate[item.Name].Substring(9, dataReplate[item.Name].Length - 12);
+                    //                }
+                    //                item.SetValue(inv.InvoiceDetail, dataReplate[item.Name]);
+                    //            }
+                    //        }
+                    //    }
+                    //}
+                    //qtcode
+                    // Nếu có thay thế dữ liệu thì gán giá trị
+                    if (dataReplace.Count > 0)
                     {
                         System.Reflection.PropertyInfo[] pi = Inventec.Common.Repository.Properties.Get<InvoiceDetail>();
-                        foreach (var inv in electronicBillInput.invoices)
+                        if (electronicBillInput.invoices != null && electronicBillInput.invoices.Count > 0)
                         {
-                            foreach (var item in pi)
+                            foreach (var inv in electronicBillInput.invoices)
                             {
-                                if (dataReplate.ContainsKey(item.Name) && !string.IsNullOrWhiteSpace(dataReplate[item.Name]))
+                                foreach (var item in pi)
                                 {
-                                    if (dataReplate[item.Name].StartsWith("<![CDATA[") && dataReplate[item.Name].EndsWith("]]>"))
+                                    if (dataReplace.ContainsKey(item.Name) && !string.IsNullOrWhiteSpace(dataReplace[item.Name]))
                                     {
-                                        dataReplate[item.Name] = dataReplate[item.Name].Substring(9, dataReplate[item.Name].Length - 12);
+                                        if (dataReplace[item.Name].StartsWith("<![CDATA[") && dataReplace[item.Name].EndsWith("]]>"))
+                                        {
+                                            dataReplace[item.Name] = dataReplace[item.Name].Substring(9, dataReplace[item.Name].Length - 12);
+                                        }
+                                        item.SetValue(inv.InvoiceDetail, dataReplace[item.Name]);
                                     }
-                                    item.SetValue(inv.InvoiceDetail, dataReplate[item.Name]);
+                                }
+                            }
+                        }
+                        // Thêm xử lý cho adjustInvoice
+                        if (electronicBillInput.adjustInvoice != null)
+                        {
+                            System.Reflection.PropertyInfo[] piAdjust = Inventec.Common.Repository.Properties.Get<AdjustInvoice>();
+                            foreach (var item in piAdjust)
+                            {
+                                if (dataReplace.ContainsKey(item.Name) && !string.IsNullOrWhiteSpace(dataReplace[item.Name]))
+                                {
+                                    if (dataReplace[item.Name].StartsWith("<![CDATA[") && dataReplace[item.Name].EndsWith("]]>"))
+                                    {
+                                        dataReplace[item.Name] = dataReplace[item.Name].Substring(9, dataReplace[item.Name].Length - 12);
+                                    }
+                                    item.SetValue(electronicBillInput.adjustInvoice, dataReplace[item.Name]);
                                 }
                             }
                         }
                     }
-
                     Inventec.Common.ElectronicBill.ElectronicBillManager eHoaDon = new Inventec.Common.ElectronicBill.ElectronicBillManager(electronicBillInput);
 
                     Inventec.Common.Logging.LogSystem.Debug(String.Format("{0} ,{1}, {2}", serviceUrl, account, username));
-
+                    try
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("RegisToken.1");
+                        ServicePointManager
+                     .ServerCertificateValidationCallback +=
+                     (sender, cert, chain, sslPolicyErrors) => true;
+                        System.Net.ServicePointManager.SecurityProtocol =
+                SecurityProtocolType.Tls12 |
+                SecurityProtocolType.Tls11 |
+                SecurityProtocolType.Tls;
+                        Inventec.Common.Logging.LogSystem.Debug("RegisToken.2");
+                    }
+                    catch (Exception exx)
+                    {
+                        LogSystem.Warn("ServicePointManager.ServerCertificateValidationCallback error:", exx);
+                    }
                     Inventec.Common.ElectronicBill.Base.ElectronicBillResult billResult = eHoaDon.Run(cmdType);
                     if (billResult != null && billResult.Success)
                     {
@@ -284,6 +363,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         {
                             result.InvoiceCode = electronicBillInput.replaceInvoice.key;
                         }
+                        //qtcode
+                        else if (electronicBillInput.adjustInvoice != null)
+                        {
+                            result.InvoiceCode = electronicBillInput.adjustInvoice.key;
+                        }
 
                         result.InvoiceSys = ProviderType.VNPT;
                         result.InvoiceLink = billResult.InvoiceLink;
@@ -296,7 +380,22 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                         if (cmdType == Inventec.Common.ElectronicBill.CmdType.ConvertForStoreFkey || cmdType == Inventec.Common.ElectronicBill.CmdType.downloadInvPDFFkeyNoPay)
                         {
                             Inventec.Common.Logging.LogSystem.Debug(String.Format("{0} ,{1}, {2}", serviceUrl, account, username));
-
+                            try
+                            {
+                                Inventec.Common.Logging.LogSystem.Debug("RegisToken.1");
+                                ServicePointManager
+                             .ServerCertificateValidationCallback +=
+                             (sender, cert, chain, sslPolicyErrors) => true;
+                                System.Net.ServicePointManager.SecurityProtocol =
+                        SecurityProtocolType.Tls12 |
+                        SecurityProtocolType.Tls11 |
+                        SecurityProtocolType.Tls;
+                                Inventec.Common.Logging.LogSystem.Debug("RegisToken.2");
+                            }
+                            catch (Exception exx)
+                            {
+                                LogSystem.Warn("ServicePointManager.ServerCertificateValidationCallback error:", exx);
+                            }
                             Inventec.Common.ElectronicBill.Base.ElectronicBillResult billResult1 = eHoaDon.Run(Inventec.Common.ElectronicBill.CmdType.GetInvErrorViewFkey);
                             if (billResult1 != null && billResult1.Success)
                             {
@@ -437,6 +536,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                 {
                     case ElectronicBillType.ENUM.CREATE_INVOICE:
                         result = Inventec.Common.ElectronicBill.CmdType.ImportAndPublishInv;
+                        if (ElectronicBillDataInput.Transaction != null &&
+                            ElectronicBillDataInput.Transaction.IS_ADJUSTMENT == 1)
+                        {
+                            result = Inventec.Common.ElectronicBill.CmdType.AdjustInvoiceAction;
+                        }
                         //thay thế hóa đơn
                         if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
                         {

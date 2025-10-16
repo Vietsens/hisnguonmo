@@ -15,19 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.CallPatientExamV2
+namespace HIS.Desktop.Plugins.TransactionBill.ADO
 {
-    public class ServiceReqCallADO
+    public class PayFormADO : MOS.EFMODEL.DataModels.HIS_PAY_FORM
     {
-        public bool IsCalling { get; set; }
-        public HIS_SERVICE_REQ ServiceReq { get; set; }
+        public string PayFormId { get; set; }
+        public long? BANK_ID { get; set; }
     }
 }

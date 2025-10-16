@@ -147,6 +147,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Add.MediStockD1SDO
                                 return success = false;
                             }
                         }
+                        else
+                        {
+
+                            success = true;
+                            this.SaveDataAndRefesh(item);
+                            frmAssignPrescription.ReloadDataAvaiableMediBeanInCombo();
+                            LogSystem.Debug("SaveDataAndRefesh => 4");
+                        }    
                         //if (frmAssignPrescription.servicePatyAllows != null && frmAssignPrescription.servicePatyAllows.ContainsKey(item.SERVICE_ID))
                         //{
                         //    var data_ServicePrice = frmAssignPrescription.servicePatyAllows[item.SERVICE_ID].Where(o => o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID).OrderByDescending(m => m.MODIFY_TIME).ToList();

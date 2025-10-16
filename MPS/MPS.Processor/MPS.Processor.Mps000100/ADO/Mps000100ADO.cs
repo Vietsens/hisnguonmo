@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -32,7 +32,7 @@ namespace MPS.Processor.Mps000100.ADO
         public string AMOUNT_IMPORTED_STRING { get; set; }
         public string AMOUNT_STRING { get; set; }
         public string CONCENTRA_PACKING_TYPE_NAME { get; set; }
-
+        public string EXPIRED_DATE_STR { get; set; }
         public string DESCRIPTION { get; set; }
         public string IS_BHYT { get; set; }
         public bool IS_MEDICINE { get; set; }
@@ -44,10 +44,16 @@ namespace MPS.Processor.Mps000100.ADO
         public long? MEDICINE_PARENT_ID { get; set; }
         public string MEDICINE_PARENT_NAME { get; set; }
         //public long? MEDICINE_USE_FORM_NUM_ORDER { get; set; }
-       // public string MEDICINE_TYPE_NAME { get; set; }
+        // public string MEDICINE_TYPE_NAME { get; set; }
+
+        //huannh bổ sung other_pay_source
+        public long? OTHER_PAY_SOURCE_ID { get; set; }
+        public string OTHER_PAY_SOURCE_CODE { get; set; }
+        public string OTHER_PAY_SOURCE_NAME { get; set; }
+
         public Mps000100ADO() { }
 
-        public Mps000100ADO(List<V_HIS_IMP_MEST_MATERIAL> datas, long _impMestSttId, long HisImpMestSttId__Imported, long HisImpMestSttId__Approved)
+        public Mps000100ADO(List<V_HIS_IMP_MEST_MATERIAL> datas, List<V_HIS_MATERIAL_TYPE> vHisMaterialTypes, long _impMestSttId, long HisImpMestSttId__Imported, long HisImpMestSttId__Approved)
         {
             try
             {
@@ -63,6 +69,17 @@ namespace MPS.Processor.Mps000100.ADO
                     this.SERVICE_UNIT_NAME = datas[0].SERVICE_UNIT_NAME;
                     this.NUM_ORDER = datas[0].NUM_ORDER;
                     this.EXPIRED_DATE = datas[0].EXPIRED_DATE;
+                    if (this.EXPIRED_DATE > 0)
+                    {
+                        string dateStr = this.EXPIRED_DATE.ToString();
+                        if (dateStr.Length >= 8)
+                        {
+                            this.EXPIRED_DATE_STR = string.Format("{0}/{1}/{2}",
+                                dateStr.Substring(6, 2),
+                                dateStr.Substring(4, 2),
+                                dateStr.Substring(0, 4));
+                        }
+                    }
                     this.AMOUNT = datas.Sum(p => p.AMOUNT);
                     //this.AMOUNT = datas[0].AMOUNT;
                     if (_impMestSttId == HisImpMestSttId__Imported)
@@ -79,6 +96,36 @@ namespace MPS.Processor.Mps000100.ADO
 
                     this.REQ_AMOUNT = datas.Sum(p => p.REQ_AMOUNT ?? 0);
                     this.NOTE = string.Join("; ", datas.Select(s => s.NOTE).Distinct());
+
+                    if (vHisMaterialTypes != null && vHisMaterialTypes.Count > 0)
+                    {
+                        //V_HIS_MEDICINE_TYPE MedicineType = vHisMaterialTypes.FirstOrDefault(o => o.ID == datas[0].MEDICINE_TYPE_ID);
+                        V_HIS_MATERIAL_TYPE MaterialType = vHisMaterialTypes.FirstOrDefault(o => o.ID == datas[0].MATERIAL_TYPE_ID);
+
+                        if (MaterialType != null)
+                        {
+                         
+                            this.OTHER_PAY_SOURCE_ID = MaterialType.OTHER_PAY_SOURCE_ID;
+                            this.OTHER_PAY_SOURCE_CODE = MaterialType.OTHER_PAY_SOURCE_CODE;
+                            this.OTHER_PAY_SOURCE_NAME = MaterialType.OTHER_PAY_SOURCE_NAME != null ? MaterialType.OTHER_PAY_SOURCE_NAME.ToUpper() : null;
+
+                        }
+                    }
+
+                    //huannh bổ sung other_pay_source
+                    if (datas != null && datas.Count > 0 && vHisMaterialTypes != null)
+                    {
+                        //var materialTypeId = datas.First().MATERIAL_TYPE_ID;
+                        //var materialType = vHisMaterialTypes.FirstOrDefault(x => x.ID == materialTypeId);
+                        var firstMaterial = vHisMaterialTypes.First();
+                        if (firstMaterial != null)
+                        {
+                            this.OTHER_PAY_SOURCE_ID = firstMaterial.OTHER_PAY_SOURCE_ID;
+                            this.OTHER_PAY_SOURCE_CODE = firstMaterial.OTHER_PAY_SOURCE_CODE;
+                            this.OTHER_PAY_SOURCE_NAME = firstMaterial.OTHER_PAY_SOURCE_NAME != null ? firstMaterial.OTHER_PAY_SOURCE_NAME.ToUpper() : null;
+                        }
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -97,6 +144,17 @@ namespace MPS.Processor.Mps000100.ADO
                     this.Type = 1;
                     this.IS_MEDICINE = true;
                     this.EXPIRED_DATE = datas[0].EXPIRED_DATE;
+                    if (this.EXPIRED_DATE > 0)
+                    {
+                        string dateStr = this.EXPIRED_DATE.ToString();
+                        if (dateStr.Length >= 8)
+                        {
+                            this.EXPIRED_DATE_STR = string.Format("{0}/{1}/{2}",
+                                dateStr.Substring(6, 2),
+                                dateStr.Substring(4, 2),
+                                dateStr.Substring(0, 4));
+                        }
+                    }
                     this.AMOUNT = datas.Sum(p => p.AMOUNT);
                     //this.AMOUNT = datas[0].AMOUNT;
                     if (_impMestSttId == HisImpMestSttId__Imported)
@@ -126,10 +184,16 @@ namespace MPS.Processor.Mps000100.ADO
                             this.MEDICINE_PARENT_ID = MedicineType.PARENT_ID;
                             this.MEDICINE_PARENT_CODE = MedicineType.PARENT_CODE;
                             this.MEDICINE_PARENT_NAME = MedicineType.PARENT_NAME;
+                            this.OTHER_PAY_SOURCE_ID = MedicineType.OTHER_PAY_SOURCE_ID;
+                            this.OTHER_PAY_SOURCE_CODE = MedicineType.OTHER_PAY_SOURCE_CODE;
+                            this.OTHER_PAY_SOURCE_NAME = MedicineType.OTHER_PAY_SOURCE_NAME != null ? MedicineType.OTHER_PAY_SOURCE_NAME.ToUpper() : null;
+
                         }
                     }
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => datas[0].MEDICINE_TYPE_NAME), datas[0].MEDICINE_TYPE_NAME));
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => datas[0].MEDICINE_USE_FORM_NUM_ORDER), datas[0].MEDICINE_USE_FORM_NUM_ORDER));
+
+                   
                 }
             }
             catch (Exception ex)

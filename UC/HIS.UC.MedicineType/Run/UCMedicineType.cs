@@ -41,6 +41,8 @@ using Inventec.Desktop.Common.LanguageManager;
 using System.Resources;
 using DevExpress.Utils.Paint;
 using DevExpress.Utils.Text;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Columns;
 
 namespace HIS.UC.MedicineType.Run
 {
@@ -1729,8 +1731,23 @@ namespace HIS.UC.MedicineType.Run
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("MEDICAL_CONTRACT_CODE", "", 100, 1));
                 columnInfos.Add(new ColumnInfo("MEDICAL_CONTRACT_NAME", "", 300, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("MEDICAL_CONTRACT_CODE", "ID", columnInfos, false, 450);
+                ControlEditorADO controlEditorADO = new ControlEditorADO("MEDICAL_CONTRACT_CODE", "ID", columnInfos, false, 400);
                 ControlEditorLoader.Load(cboContract, data, controlEditorADO);
+                GridView view = cboContract.Properties.View;
+                view.OptionsView.ColumnAutoWidth = false;
+                view.BestFitMaxRowCount = -1;
+                view.BestFitColumns();
+                cboContract.Popup += delegate (object s, EventArgs e)
+                {
+                    GridView view2 = cboContract.Properties.View;
+                    view2.BestFitColumns();
+                    int num = (from GridColumn c in view2.Columns
+                               where c.Visible
+                               select c).Sum((GridColumn c) => c.Width);
+                    int width = Math.Min(num+20, 1000);
+                    cboContract.Properties.PopupFormSize = new Size(width, cboContract.Properties.PopupFormSize.Height);
+                };
+                
             }
             catch (Exception ex)
             {

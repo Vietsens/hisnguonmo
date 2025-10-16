@@ -2360,5 +2360,40 @@ namespace HIS.Desktop.Plugins.AccidentHurt
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void txtCdChinh_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    string icdCode = txtCdChinh.Text.Trim().ToUpper();
+                    if (!string.IsNullOrEmpty(icdCode))
+                    {
+                        var icd = currentIcds.FirstOrDefault(o => o.ICD_CODE.ToUpper() == icdCode);
+                        if (icd != null)
+                        {
+                            cboCdChinh.EditValue = icd.ID;
+                            cboCdChinh.Properties.Buttons[1].Visible = true;
+                            _TextIcdName = icd.ICD_NAME;
+                            //txtCd.Text = icd.ICD_NAME;
+                            chkSua.Checked = false;
+                        }
+                        else
+                        {
+                            cboCdChinh.EditValue = null;
+                            cboCdChinh.Properties.Buttons[1].Visible = false;
+                            //txtCd.Text = "";
+                        }
+                        cboCdChinh.ClosePopup();
+                        chkSua.Focus();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

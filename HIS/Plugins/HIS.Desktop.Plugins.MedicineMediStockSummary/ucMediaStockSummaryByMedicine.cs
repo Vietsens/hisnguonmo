@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraExport;
 using DevExpress.XtraGrid.Columns;
@@ -51,6 +52,7 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
         string fileNameMaterial = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.IO.Path.Combine("ModuleDesign", "HIS.Desktop.Plugins.MedicineMediStockSummary.gridViewMediMateStockSum2.xml"));
 
         List<MOS.EFMODEL.DataModels.V_HIS_USER_ROOM> lstV_UserRoom;
+        List<MOS.EFMODEL.DataModels.V_HIS_USER_ROOM> lstV_UserRoomForBranch;
         HIS_MEDI_STOCK mediStock;
         MedicineTypeInHospitalSDO lstMediInStocks = new MedicineTypeInHospitalSDO();
         MaterialTypeInHospitalSDO lstMateInStocks = new MaterialTypeInHospitalSDO();
@@ -67,15 +69,18 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             try
             {
                 WaitingManager.Show();
+                InitCheck(cboBrach, SelectionGrid__Status);
                 lstV_UserRoom = new List<V_HIS_USER_ROOM>();
 
                 var rooms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                var branchId = HIS.Desktop.LocalStorage.LocalData.BranchWorker.GetCurrentBranchId();
 
                 lstV_UserRoom = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_USER_ROOM>().Where(o => o.LOGINNAME == loginName && (o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)).ToList();
                 if (lstV_UserRoom != null)
                     roomIds = lstV_UserRoom.Select(o => o.ROOM_ID).Distinct().ToList();
 
+                lstV_UserRoomForBranch  = lstV_UserRoom.GroupBy(o => o.BRANCH_ID).Select(g => g.FirstOrDefault()).ToList();
                 //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => roomIds), roomIds));
                 var _WorkPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.RoomId);
                 if (_WorkPlace != null)
@@ -88,8 +93,9 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                     ShowGridControl(loadFirst);
                 }
 
-                InitComboBranh();
-                InitComboBranhCheck();
+                InitCombo(cboBrach, lstV_UserRoomForBranch, "BRANCH_NAME", "BRANCH_ID");     
+                //InitComboBranh();
+                //InitComboBranhCheck();
                   
                 WaitingManager.Hide();
             }
@@ -768,6 +774,88 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void InitCheck(GridLookUpEdit cbo, GridCheckMarksSelection.SelectionChangedEventHandler eventSelect)
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cbo.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(eventSelect);
+                cbo.Properties.View.SelectionChanged += (s, e) =>
+                {
+                    // Sử dụng BeginInvoke để đảm bảo chạy sau khi selection đã được cập nhật
+                    cbo.BeginInvoke(new MethodInvoker(() =>
+                    {
+                        eventSelect(gridCheck, EventArgs.Empty);
+                        cbo.RefreshEditValue();
+                    }));
+                };
+
+                // Event khi đóng popup
+                cbo.CloseUp += (s, e) =>
+                {
+                    eventSelect(gridCheck, EventArgs.Empty);
+                    cbo.RefreshEditValue();
+                };
+                cbo.Properties.Tag = gridCheck;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cbo.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SelectionGrid__Status(object sender, EventArgs e)
+        {
+            try
+            {
+                cboBrach.RefreshEditValue();
+                lstV_UserRoomForBranch = new List<V_HIS_USER_ROOM>();
+                foreach (V_HIS_USER_ROOM rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        lstV_UserRoomForBranch.Add(rv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void InitCombo(GridLookUpEdit cbo, object data, string DisplayValue, string ValueMember)
+        {
+            try
+            {
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = DisplayValue;
+                cbo.Properties.ValueMember = ValueMember;
+
+                DevExpress.XtraGrid.Columns.GridColumn col2 = cbo.Properties.View.Columns.AddField(DisplayValue);
+                col2.VisibleIndex = 1;
+                col2.Width = 200;
+                col2.Caption = "Tất cả";
+                cbo.Properties.PopupFormWidth = 200;
+                cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cbo.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
         private void InitComboBranhCheck()
         {
             try
@@ -875,21 +963,23 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummary
             try
             {
                 e.DisplayText = "";
-                string roomName = "";
-                if (this.lstV_UserRoom != null && this.lstV_UserRoom.Count > 0)
-                {
-                    foreach (var item in this.lstV_UserRoom)
-                    {
-                        roomName += item.BRANCH_NAME + ", ";
+                GridLookUpEdit cbo = sender as GridLookUpEdit;
+                if (cbo == null) return;
 
-                    }
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark == null) return;
+
+                var selectedItems = gridCheckMark.Selection.OfType<MOS.EFMODEL.DataModels.V_HIS_USER_ROOM>().ToList();
+
+                if (selectedItems.Count > 0)
+                {
+                    string statusName = string.Join(", ", selectedItems.Select(x => x.BRANCH_NAME));
+                    e.DisplayText = statusName;
                 }
-                e.DisplayText = roomName;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-
             }
         }
     }

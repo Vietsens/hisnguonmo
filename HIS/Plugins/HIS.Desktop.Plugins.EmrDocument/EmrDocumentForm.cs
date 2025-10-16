@@ -72,6 +72,7 @@ using static Aspose.Pdf.Operator;
 using DevExpress.XtraTreeList.Nodes;
 using DevExpress.XtraEditors.Filtering;
 using DevExpress.XtraExport;
+using HIS.Desktop.Plugins.EmrDocument.Config;
 
 namespace HIS.Desktop.Plugins.EmrDocument
 {
@@ -259,6 +260,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 InitEmployee();
                 if (refreshData != null)
                     this.refreshData();
+
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -1072,6 +1074,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                     pictureEdit1.Image = imageCheck.Images[0];
                     Inventec.Common.Logging.LogSystem.Debug("LoadPaging.13");
+                    this.layoutControl1.Refresh();
+
                 }
             }
             catch (Exception ex)
@@ -1328,12 +1332,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     LoadPdfViewer(data);
                 }
+
             }
             catch (Exception ex)
             {
                 this.panel1.Controls.Clear();
-                this.panel1 = new Panel();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                this.layoutControl1.Refresh();
             }
         }
 
@@ -1363,7 +1368,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
             catch (Exception ex)
             {
-                this.panel1.Controls.Clear();
+                this.panel1.Controls.Clear(); 
                 this.panel1 = new Panel();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -1405,6 +1410,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 Inventec.Common.Logging.LogSystem.Info("data.LAST_VERSION_URL: " + data.LAST_VERSION_URL);
                 if (!String.IsNullOrEmpty(data.LAST_VERSION_URL))
                 {
+                    //int opt = 0; int.TryParse(Config.ConfigKey.PrintUsingWatermark, out opt);
+                    //bool showWatermark = (opt == 1 || opt == 2);
                     var documentFileSDOs = GetEmrDocumentFile(data, null, null, null, null);
                     var uc = libraryProcessor.GetUC(documentFileSDOs != null && documentFileSDOs.Count > 0 ? documentFileSDOs[0].Base64Data : null, FileType.Pdf, inputADO);
                     if (uc != null)
@@ -1447,9 +1454,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
             sdo.IsMerge = IsMerge;
             sdo.IsShowPatientSign = IsShowPatientSign;
             sdo.IsShowWatermark = IsShowWatermark;
+            int opt = 0;
+            int.TryParse(Config.ConfigKey.PrintUsingWatermark, out opt);
+            sdo.IsView = (opt == 1 || opt == 2);
             sdo.RoomCode = room != null ? room.ROOM_CODE : null;
             sdo.DepartmentCode = room != null ? room.DEPARTMENT_CODE : null;
-            sdo.IsRoomLT = room != null ? room.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT : false;
+            sdo.IsRoomLT = room != null ? room.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT : false; 
             listNumOrderDocument.Clear();
             CreateNumOrderDocuments();
             sdo.NumOrderDocuments = listNumOrderDocument.Select(x => new EMR.SDO.NumOrderDocumentSDO
@@ -1780,6 +1790,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     treeListColumnDOCUMENT_TYPE_NAME.Visible = false;
                     treeListColumnDOCUMENT_TYPE_NAME.VisibleIndex = -1;
                     treeListDocument.CollapseAll();
+
                 }
                 else
                 {
@@ -2045,6 +2056,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     Inventec.Common.Logging.LogSystem.Info("currentPage: " + currentPage);
                     WaitingManager.Show();
                     LoadPdf(rowEmrDocumentData);
+                    this.layoutControl1.Refresh();
                     curentEmrDocument = rowEmrDocumentData;
                     Inventec.Common.Logging.LogSystem.Warn("CURRENT EMR ______________________");
                     loadViewSign(rowEmrDocumentData.ID);
@@ -2640,7 +2652,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 }
                 else
                 {
-                    var documents = GetEmrDocumentFile(null, listDataTrue.Select(o => o.ID).ToList(), chkDowloadGroup.Checked, chkAddPatientSign.Checked, false);
+                    int opt = 0; int.TryParse(Config.ConfigKey.PrintUsingWatermark, out opt);
+                    bool showWatermark = (opt == 1);
+                    var documents = GetEmrDocumentFile(null, listDataTrue.Select(o => o.ID).ToList(), chkDowloadGroup.Checked, chkAddPatientSign.Checked, showWatermark);
 
                     string output = Utils.GenerateTempFileWithin();
                     if (documents != null && documents.Count > 0)
@@ -3259,7 +3273,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     }
                     else
                     {
-                        var documents = GetEmrDocumentFile(null, listDataTrue.Select(o => o.ID).ToList(), chkDowloadGroup.Checked, chkAddPatientSign.Checked, false);
+                        int opt = 0; int.TryParse(Config.ConfigKey.PrintUsingWatermark, out opt);
+                        bool showWatermark = (opt == 1);
+                        var documents = GetEmrDocumentFile(null, listDataTrue.Select(o => o.ID).ToList(), chkDowloadGroup.Checked, chkAddPatientSign.Checked, showWatermark);
                         if (documents == null || documents.Count() == 0)
                         {
                             MessageManager.Show(ResourceMessage.KhongLayDuocFile);
@@ -3928,7 +3944,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     if (IsBreak)
                         break;
 
-                    var file = GetEmrDocumentFile(item, null, null, null, null);
+                    int opt = 0; int.TryParse(Config.ConfigKey.PrintUsingWatermark, out opt);
+                    bool showWatermark = (opt == 1 || opt == 2);
+                    var file = GetEmrDocumentFile(item, null, null, null, showWatermark);
                     if (file == null || file.Count == 0)
                         continue;
 
@@ -4009,6 +4027,43 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     this.currentControlStateRDO.Add(csAddOrUpdate);
                 }
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnDocumentScanned_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var treatmentCode = (txtTreatmentCode != null && !string.IsNullOrEmpty(txtTreatmentCode.Text)) ? txtTreatmentCode.Text : this.treatmentCode;
+                var args = new List<object> { treatmentCode };
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    "EMR.Desktop.Plugins.ListEmrDocumentScaned",
+                    this.currentModule.RoomId,
+                    this.currentModule.RoomTypeId,
+                    args);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void btnDocument_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var treatmentCode = (txtTreatmentCode != null && !string.IsNullOrEmpty(txtTreatmentCode.Text)) ? txtTreatmentCode.Text : this.treatmentCode;
+                var args = new List<object> { treatmentCode };
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    "EMR.Desktop.Plugins.ListEmrDocumentScaned",
+                    this.currentModule.RoomId,
+                    this.currentModule.RoomTypeId,
+                    args);
             }
             catch (Exception ex)
             {

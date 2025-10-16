@@ -86,8 +86,9 @@
     <Reference Include="Inventec.Common.EHoaDon">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.EHoaDon\Inventec.Common.EHoaDon.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.ElectronicBill">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.ElectronicBill\Inventec.Common.ElectronicBill.dll</HintPath>
+    <Reference Include="Inventec.Common.ElectronicBill, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Common\Inventec.Common\Inventec.Common.ElectronicBill\Inventec.Common.ElectronicBill\bin\Debug\Inventec.Common.ElectronicBill.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.ElectronicBill.Misa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -166,10 +167,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter">
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -291,6 +294,7 @@
     <Compile Include="ProviderBehavior\VIETTEL\VIETTELBehavior.cs" />
     <Compile Include="ProviderBehavior\VNInvoice\Model\ConvertInvoice.cs" />
     <Compile Include="ProviderBehavior\VNInvoice\Model\CreateAndSignInvoice.cs" />
+    <Compile Include="ProviderBehavior\VNInvoice\Model\CreateInvoice.cs" />
     <Compile Include="ProviderBehavior\VNInvoice\Model\LoginVNInvoice.cs" />
     <Compile Include="ProviderBehavior\VNInvoice\Model\ReplaceInvoice.cs" />
     <Compile Include="ProviderBehavior\VNInvoice\Model\SignInvoice.cs" />

@@ -38,6 +38,7 @@ namespace MPS.Processor.Mps000100
         List<Mps000100ADO> ImpMestManuMedicineSumForPrintsV2 = new List<Mps000100ADO>();
         List<Mps000100ADO> lstMedicineType = new List<Mps000100ADO>();
         List<Mps000100ADO> lstMedicineParent = new List<Mps000100ADO>();
+        List<Mps000100ADO> listOtherPaySource = new List<Mps000100ADO>();
         public Mps000100Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -80,6 +81,7 @@ namespace MPS.Processor.Mps000100
                 ProcessListADO();
                 GetMedicineGroup();
                 GetMedicineParent();
+                GetOtherPaySource();
                 Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
@@ -100,6 +102,7 @@ namespace MPS.Processor.Mps000100
                 objectTag.AddObjectData(store, "ImpMestAggregatesV2", ImpMestManuMedicineSumForPrintsV2);
                 objectTag.AddObjectData(store, "MedicineGroup", lstMedicineType);
                 objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent);
+                objectTag.AddObjectData(store, "OtherPaySource", listOtherPaySource);
 
                 if (rdo._ImpMestMedicines != null)
                     objectTag.AddObjectData(store, "ImpMestMedicines", rdo._ImpMestMedicines);
@@ -109,6 +112,7 @@ namespace MPS.Processor.Mps000100
 
                 objectTag.AddRelationship(store, "MedicineGroup", "ImpMestAggregates", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
                 objectTag.AddRelationship(store, "MedicineParent", "ImpMestAggregates", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
+                objectTag.AddRelationship(store, "OtherPaySource", "ImpMestAggregatesV2", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
                 result = true;
             }
             catch (Exception ex)
@@ -126,7 +130,7 @@ namespace MPS.Processor.Mps000100
             {
                 if (ImpMestManuMedicineSumForPrints != null && ImpMestManuMedicineSumForPrints.Count > 0)
                 {
-                    var group = ImpMestManuMedicineSumForPrints.GroupBy(o => new { o.MEDICINE_GROUP_ID});
+                    var group = ImpMestManuMedicineSumForPrints.GroupBy(o => new { o.MEDICINE_GROUP_ID });
                     foreach (var item in group)
                     {
                         var meGroup = rdo._MedicineTypes.FirstOrDefault(o => o.MEDICINE_GROUP_ID == item.ToList().First().MEDICINE_GROUP_ID);
@@ -165,6 +169,25 @@ namespace MPS.Processor.Mps000100
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void GetOtherPaySource() 
+        {
+            try
+            {
+                if (ImpMestManuMedicineSumForPrintsV2 != null && ImpMestManuMedicineSumForPrintsV2.Count > 0)
+                {
+                    var group = ImpMestManuMedicineSumForPrintsV2.GroupBy(o => new { o.OTHER_PAY_SOURCE_ID, o.OTHER_PAY_SOURCE_CODE, o.OTHER_PAY_SOURCE_NAME });
+                    foreach (var item in group)
+                    {
+                        listOtherPaySource.Add(item.ToList().First());
+                      
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         void ProcessListADO()
         {
@@ -190,7 +213,9 @@ namespace MPS.Processor.Mps000100
                         rdo._ImpMestMaterials = rdo._ImpMestMaterials.Where(o => rdo.RoomIds.Contains(o.REQ_ROOM_ID ?? 0)).ToList();
                     }
                     var dataGroups = rdo._ImpMestMaterials.GroupBy(p => p.MATERIAL_TYPE_ID).Select(p => p.ToList()).ToList();
-                    ImpMestManuMedicineSumForPrints.AddRange((from r in dataGroups select new Mps000100ADO(r, rdo.AggrImpMest.IMP_MEST_STT_ID, rdo.HisImpMestSttId__Imported, rdo.HisImpMestSttId__Approved)).ToList());
+                    ImpMestManuMedicineSumForPrints.AddRange((from r in dataGroups select new Mps000100ADO(r, rdo._MaterialTypes, rdo.AggrImpMest.IMP_MEST_STT_ID, rdo.HisImpMestSttId__Imported, rdo.HisImpMestSttId__Approved)).ToList());
+
+                    
                 }
 
                 if (ImpMestManuMedicineSumForPrints != null && ImpMestManuMedicineSumForPrints.Count > 0)
@@ -240,7 +265,7 @@ namespace MPS.Processor.Mps000100
                         rdo._ImpMestMaterials = rdo._ImpMestMaterials.Where(o => rdo.RoomIds.Contains(o.REQ_ROOM_ID ?? 0)).ToList();
                     }
                     var dataGroups = rdo._ImpMestMaterials.GroupBy(p => p.MATERIAL_ID).Select(p => p.ToList()).ToList();
-                    ImpMestManuMedicineSumForPrintsV2.AddRange((from r in dataGroups select new Mps000100ADO(r, rdo.AggrImpMest.IMP_MEST_STT_ID, rdo.HisImpMestSttId__Imported, rdo.HisImpMestSttId__Approved)).ToList());
+                    ImpMestManuMedicineSumForPrintsV2.AddRange((from r in dataGroups select new Mps000100ADO(r, rdo._MaterialTypes, rdo.AggrImpMest.IMP_MEST_STT_ID, rdo.HisImpMestSttId__Imported, rdo.HisImpMestSttId__Approved)).ToList());
                 }
 
                 if (ImpMestManuMedicineSumForPrintsV2 != null && ImpMestManuMedicineSumForPrintsV2.Count > 0)

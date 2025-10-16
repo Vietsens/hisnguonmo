@@ -138,6 +138,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         public static bool IsDefaultTreatmentTypeExam;
         public static bool IsSuggestCardHolderInformationByUsingPhoneNumber;
         const string valueString__true = "1";
+        const string valueStringHK_true = "2"; 
         const int valueInt__true = 1;
 
         /// <summary>
@@ -170,6 +171,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         public static bool IsShowingExamRoomInArea;
         public static bool IsShowingExamRoomInDepartment;
         public static bool IsAutoShowTransferFormInCaseOfAppointment;//đúng tuyến hẹn khám hiển thị popup chuyển tuyến
+        public static bool IsShowNumberAppointment;//đúng tuyến hẹn khám hiển thị popup chuyển tuyến
         public static string IsAllowProgramPatientOld;
         public static string WarningHeinPatientTypeCode;
         /// <summary>
@@ -400,6 +402,8 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
                 CallCpaOption = HisConfigs.Get<int>(CONFIG_KEY_CALL_PATIENT_NUM_ORDER_OPTION);
                 IsByPassTextBoxRoomCode = (GetValue(CONFIG_KEY_HIS_DESKTOP_PLUGIN_REGISTER_BY_PASS_TEXT_BOX_ROOM_CODE) == valueString__true);
                 IsAutoShowTransferFormInCaseOfAppointment = GetValue(CONFIG_KEY_IsAutoShowTransferFormInCaseOfAppointment) == valueString__true;
+                //qtcode
+                IsShowNumberAppointment = GetValue(CONFIG_KEY_IsAutoShowTransferFormInCaseOfAppointment) == valueStringHK_true; 
                 IsBlockingInvalidBhyt = GetValue(IS_BLOCK_INVALID_BHYT);
                 BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_SERVICE_FOLLOW>();
                 IsUsingRecognition = GetValue(IS_USING_RECOGNITION) == valueString__true;

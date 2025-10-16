@@ -67,11 +67,17 @@ namespace MPS.Processor.Mps000254
         public long? MEDICINE_GROUP_ID { get; set; }
         public string MEDICINE_GROUP_CODE { get; set; }
         public string MEDICINE_GROUP_NAME { get; set; }
+        public long? OTHER_PAY_SOURCE_ID { get; set; }
+        public string OTHER_PAY_SOURCE_CODE { get; set; }
+        public string OTHER_PAY_SOURCE_NAME { get; set; }
+        public long? PARENT_ID { get; set; }
+        public string PARENT_CODE { get; set; }
+        public string PARENT_NAME { get; set; }
         public Mps000254ADO()
         {
         }
 
-        public Mps000254ADO(V_HIS_EXP_MEST expMest, List<HIS_EXP_MEST_METY_REQ> req, List<V_HIS_MEDICINE_TYPE> _medicineTypes, List<V_HIS_EXP_MEST_MEDICINE> medicines, bool isReplace,bool IsGroup = false)
+        public Mps000254ADO(V_HIS_EXP_MEST expMest, List<HIS_EXP_MEST_METY_REQ> req, List<V_HIS_MEDICINE_TYPE> _medicineTypes, List<V_HIS_EXP_MEST_MEDICINE> medicines, bool isReplace, V_HIS_MATERIAL_TYPE mateType, bool IsGroup = false)
         {
 
             this.TYPE_ID = 1;
@@ -101,6 +107,13 @@ namespace MPS.Processor.Mps000254
                     this.MEDICINE_GROUP_ID = data.MEDICINE_GROUP_ID;
                     this.MEDICINE_GROUP_CODE = data.MEDICINE_GROUP_CODE;
                     this.MEDICINE_GROUP_NAME = data.MEDICINE_GROUP_NAME;
+
+                    this.OTHER_PAY_SOURCE_ID = data.OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_CODE = data.OTHER_PAY_SOURCE_CODE;
+                    this.OTHER_PAY_SOURCE_NAME = data.OTHER_PAY_SOURCE_NAME;
+                    this.PARENT_ID = data.PARENT_ID;
+                    this.PARENT_CODE = data.PARENT_CODE;
+                    this.PARENT_NAME = data.PARENT_NAME;
                 }
 
                 if (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
@@ -130,6 +143,7 @@ namespace MPS.Processor.Mps000254
                 {
                     TOTAL_AMOUNT_IN_REQUEST = TOTAL_AMOUNT_IN_EXECUTE;
                 }
+
             }
             else
             {
@@ -154,6 +168,14 @@ namespace MPS.Processor.Mps000254
                     this.MEDICINE_GROUP_ID = replace.MEDICINE_GROUP_ID;
                     this.MEDICINE_GROUP_CODE = replace.MEDICINE_GROUP_CODE;
                     this.MEDICINE_GROUP_NAME = replace.MEDICINE_GROUP_NAME;
+
+
+                    this.OTHER_PAY_SOURCE_ID = replace.OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_CODE = replace.OTHER_PAY_SOURCE_CODE;
+                    this.OTHER_PAY_SOURCE_NAME = replace.OTHER_PAY_SOURCE_NAME;
+                    this.PARENT_ID = replace.PARENT_ID;
+                    this.PARENT_CODE = replace.PARENT_CODE;
+                    this.PARENT_NAME = replace.PARENT_NAME;
                 }
                 var data = _medicineTypes.FirstOrDefault(p => p.ID == req.First().MEDICINE_TYPE_ID);
                 if (data != null)
@@ -188,6 +210,15 @@ namespace MPS.Processor.Mps000254
                 this.TOTAL_AMOUNT_IN_REQUEST = 0;
             }
 
+            if (mateType != null)
+            {
+                this.OTHER_PAY_SOURCE_ID = mateType.OTHER_PAY_SOURCE_ID;
+                this.OTHER_PAY_SOURCE_CODE = mateType.OTHER_PAY_SOURCE_CODE;
+                this.OTHER_PAY_SOURCE_NAME = mateType.OTHER_PAY_SOURCE_NAME;
+                this.PARENT_ID = mateType.PARENT_ID;
+                this.PARENT_CODE = mateType.PARENT_CODE;
+                this.PARENT_NAME = mateType.PARENT_NAME;
+            }
             this.TOTAL_AMOUNT = this.TOTAL_AMOUNT_IN_REQUEST;
             this.AMOUNT_REQUEST_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(this.TOTAL_AMOUNT_IN_REQUEST)));
             this.AMOUNT_EXECUTE_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(this.TOTAL_AMOUNT_IN_EXECUTE)));

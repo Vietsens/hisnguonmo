@@ -50,6 +50,7 @@ namespace HIS.Desktop.Plugins.TransactionList
 
         internal enum ItemType
         {
+            DieuChinhHoaDon,
             PhieuThuThanhToan,
             PhieuTamUng,
             //PhieuTamUngDichVu,
@@ -161,6 +162,16 @@ namespace HIS.Desktop.Plugins.TransactionList
 
                     this._PopupMenu.AddItems(items.ToArray());
                 }
+
+                else if (this._Transaction.TRANSACTION_TYPE_ID == 3 && this._Transaction.IS_CANCEL != 1 && this._Transaction.ORIGINAL_TRANSACTION_ID == null && this._Transaction.IS_ADJUSTMENT != 1 && frmTransactionList.controlAcs != null && frmTransactionList.controlAcs.Exists(o => o.CONTROL_CODE == "HIS000047"))
+                {
+
+                    
+                        BarButtonItem btnDieuChinhHoaDon = new BarButtonItem(this._BarManager, "Điều chỉnh hóa đơn", 100);
+                    btnDieuChinhHoaDon.Tag = ItemType.DieuChinhHoaDon;
+                    btnDieuChinhHoaDon.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                    this._PopupMenu.AddItem(btnDieuChinhHoaDon);
+                }
                 else if (this._Transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT && this._Transaction.IS_CANCEL == 1)
                 {
                     if (Config.HisConfigCFG.TransactionBillSelect == "1"
@@ -216,7 +227,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         btnHoaDonDienTu.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                         this._PopupMenu.AddItems(new BarItem[] { btnHoaDonDienTu });
 
-                        if (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT || 
+                        if (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT ||
                             (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VIETEL && HisConfigCFG.autoPrintType == "1") ||
                             (this._Transaction.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__CYBERBILL && HisConfigCFG.autoPrintType == "1"))
                         {

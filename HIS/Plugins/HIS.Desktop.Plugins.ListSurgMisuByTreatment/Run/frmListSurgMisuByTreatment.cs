@@ -36,11 +36,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.Desktop.LocalStorage.LocalData;
 using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using HIS.Desktop.Plugins.ListSurgMisuByTreatment.ADO;
 
 namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
 {
+    
     public partial class frmListSurgMisuByTreatment : HIS.Desktop.Utility.FormBase
     {
+        //QTCODE
+        private bool isHeaderChecked = false;
         Inventec.Desktop.Common.Modules.Module currentModule;
         long treatmentId;
         long _patientTypeId;
@@ -48,6 +55,7 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
         V_HIS_SERE_SERV_1 currentRow = new V_HIS_SERE_SERV_1();
         List<HIS_SERE_SERV_EXT> lstSereServExts = new List<HIS_SERE_SERV_EXT>();
         bool isPTTT = false;
+        private bool _handlingCtrlS = false;
 
         public frmListSurgMisuByTreatment()
         {
@@ -103,6 +111,7 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
         {
             try
             {
+                this.KeyPreview = true;
                 SetIconFrm();
                 if (this.currentModule != null)
                 {
@@ -168,8 +177,12 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                         hisSereServExtFilter.SERE_SERV_IDs = lstID;
                         lstSereServExts = new BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumer.ApiConsumers.MosConsumer, hisSereServExtFilter, null);
                     }
+                    //gridControl.DataSource = null;
+                    //gridControl.DataSource = sereServData;
+                    //qtcode
+                    List<SurgMisuADO> adoList = sereServData != null ? sereServData.Select(s => new SurgMisuADO(s)).ToList() : new List<SurgMisuADO>();
                     gridControl.DataSource = null;
-                    gridControl.DataSource = sereServData;
+                    gridControl.DataSource = adoList;
 
                 }
             }
@@ -363,7 +376,8 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                 if (e.IsGetData && e.Column.UnboundType != DevExpress.Data.UnboundColumnType.Bound)
                 {
                     //DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-                    var data = (V_HIS_SERE_SERV_1)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    //var data = (V_HIS_SERE_SERV_1)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    var data = (SurgMisuADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (data != null)
                     {
                         if (e.Column.FieldName == "INSTRUCTION_TIME_DISPLAY")
@@ -426,6 +440,22 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                                 }
                             }
                         }
+                        //qtcode
+                        if (e.Column.FieldName == "IS_SELECTED_STR")
+                        {
+                            e.Value = data.IS_SELECTED;
+                        }
+                    }
+                }
+                else if (e.IsSetData)
+                {
+                    var ado = (SurgMisuADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    if (ado != null)
+                    {
+                        if (e.Column.FieldName == "IS_SELECTED_STR")
+                        {
+                            ado.IS_SELECTED = (bool)e.Value; 
+                        }
                     }
                 }
             }
@@ -437,44 +467,44 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
 
         private void gridView_DoubleClick(object sender, EventArgs e)
         {
-            try
-            {
-                if (gridView.GetSelectedRows().Length > 0)
-                {
-                    int selectedRowIndex = gridView.GetSelectedRows()[0];
-                    var dataRow = gridView.GetRow(selectedRowIndex);
-                    if (dataRow != null && gridView.Columns.Count > 0)
-                    {
-                        GridColumn colNamePTTT = gridView.Columns[2];
-                        GridColumn colBeginTime = gridView.Columns[7];
-                        GridColumn colEndTime = gridView.Columns[8];
-                        string namePTTT = (string)gridView.GetRowCellValue(selectedRowIndex, colNamePTTT);
-                        DateTime? dtBeginTime = null;
-                        object cellValueBeginTime = gridView.GetRowCellValue(selectedRowIndex, colBeginTime);
-                        if (cellValueBeginTime != null)
-                        {
-                            dtBeginTime = DateTime.Parse(cellValueBeginTime.ToString());
-                        }
-                        DateTime? dtEndTime = null;
-                        object cellValuedtEndTime = gridView.GetRowCellValue(selectedRowIndex, colEndTime);
-                        if (cellValuedtEndTime != null)
-                        {
-                            dtEndTime = DateTime.Parse(cellValuedtEndTime.ToString());
-                        }
-                        loadPTTT(namePTTT, dtBeginTime, dtEndTime);
-                        this.Close();
-                    }
-                }
-                else
-                {
-                    // Không có dòng nào được chọn
-                    MessageBox.Show("Vui lòng chọn một dòng.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            //try
+            //{
+            //    if (gridView.GetSelectedRows().Length > 0)
+            //    {
+            //        int selectedRowIndex = gridView.GetSelectedRows()[0];
+            //        var dataRow = gridView.GetRow(selectedRowIndex);
+            //        if (dataRow != null && gridView.Columns.Count > 0)
+            //        {
+            //            GridColumn colNamePTTT = gridView.Columns[2];
+            //            GridColumn colBeginTime = gridView.Columns[7];
+            //            GridColumn colEndTime = gridView.Columns[8];
+            //            string namePTTT = (string)gridView.GetRowCellValue(selectedRowIndex, colNamePTTT);
+            //            DateTime? dtBeginTime = null;
+            //            object cellValueBeginTime = gridView.GetRowCellValue(selectedRowIndex, colBeginTime);
+            //            if (cellValueBeginTime != null)
+            //            {
+            //                dtBeginTime = DateTime.Parse(cellValueBeginTime.ToString());
+            //            }
+            //            DateTime? dtEndTime = null;
+            //            object cellValuedtEndTime = gridView.GetRowCellValue(selectedRowIndex, colEndTime);
+            //            if (cellValuedtEndTime != null)
+            //            {
+            //                dtEndTime = DateTime.Parse(cellValuedtEndTime.ToString());
+            //            }
+            //            loadPTTT(namePTTT, dtBeginTime, dtEndTime);
+            //            this.Close();
+            //        }
+            //    }
+            //    else
+            //    {
+            //        // Không có dòng nào được chọn
+            //        MessageBox.Show("Vui lòng chọn một dòng.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Error(ex);
+            //}
         }
 
         private void gridView_KeyDown(object sender, KeyEventArgs e)
@@ -522,5 +552,169 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
             }
         }
 
+        //qtcode
+        private void btnSelect_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<SurgMisuADO> selectedAdos = new List<SurgMisuADO>();
+                int firstSelectedHandle = -1;
+                for (int i = 0; i < gridView.DataRowCount; i++)
+                {
+                    var ado = (SurgMisuADO)gridView.GetRow(i);
+                    bool isSelected = (bool?)gridView.GetRowCellValue(i, "IS_SELECTED_STR") ?? false;
+                    if (isSelected)
+                    {
+                        selectedAdos.Add(ado);
+                        if (firstSelectedHandle < 0) firstSelectedHandle = i;
+                    }
+                }
+                if (selectedAdos.Count == 0)
+                {
+                    MessageBox.Show("Vui lòng chọn ít nhất một dịch vụ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                string surgeryNames = string.Join(";", selectedAdos.Select(s => s.TDL_SERVICE_NAME));
+                if (selectedAdos.Count == 1)
+                {
+                    int rowHandle = firstSelectedHandle;
+
+                    GridColumn colBeginTime = gridView.Columns[8];
+                    GridColumn colEndTime = gridView.Columns[9];
+
+                    DateTime? dtBeginTime = null, dtEndTime = null;
+
+                    var cellBegin = gridView.GetRowCellValue(rowHandle, colBeginTime);
+                    if (cellBegin != null && !string.IsNullOrWhiteSpace(cellBegin.ToString()))
+                    {
+                        if (DateTime.TryParse(cellBegin.ToString(), out var tmpBegin)) dtBeginTime = tmpBegin;
+                    }
+
+                    var cellEnd = gridView.GetRowCellValue(rowHandle, colEndTime);
+                    if (cellEnd != null && !string.IsNullOrWhiteSpace(cellEnd.ToString()))
+                    {
+                        if (DateTime.TryParse(cellEnd.ToString(), out var tmpEnd)) dtEndTime = tmpEnd;
+                    }
+
+                    if (loadPTTT != null)
+                        loadPTTT(surgeryNames, dtBeginTime, dtEndTime);
+
+                    this.Close();
+                    return;
+                }
+                if (loadPTTT != null)
+                {
+                    loadPTTT(surgeryNames, null, null);
+                }
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                MessageBox.Show("Đã xảy ra lỗi khi xử lý.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void frmListSurgMisuByTreatment_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Control && e.KeyCode == Keys.S)
+                {
+                    if (_handlingCtrlS) return;        
+                    _handlingCtrlS = true;
+
+                    e.Handled = true;                 
+                    e.SuppressKeyPress = true;
+
+                    btnSelect_Click(sender, e);
+                    _handlingCtrlS = false;
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridView_CustomDrawColumnHeader(object sender, DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventArgs e)
+        {
+            if (e.Column != null && e.Column.FieldName == "IS_SELECTED_STR")
+            {
+                e.Info.InnerElements.Clear();
+                e.Painter.DrawObject(e.Info);
+
+                RepositoryItemCheckEdit checkEdit = e.Column.ColumnEdit as RepositoryItemCheckEdit;
+                if (checkEdit != null)
+                {
+                    int size = 16;
+                    int x = e.Bounds.X + (e.Bounds.Width - size) / 2;
+                    int y = e.Bounds.Y + (e.Bounds.Height - size) / 2;
+                    Rectangle rect = new Rectangle(x, y, size, size);
+
+                    var info = (DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo)checkEdit.CreateViewInfo();
+                    var painter = (DevExpress.XtraEditors.Drawing.CheckEditPainter)checkEdit.CreatePainter();
+                    info.EditValue = isHeaderChecked;
+                    info.Bounds = rect;
+                    info.CalcViewInfo(e.Graphics);
+
+                    using (DevExpress.Utils.Drawing.GraphicsCache cache = new DevExpress.Utils.Drawing.GraphicsCache(e.Graphics))
+                    {
+                        painter.Draw(new DevExpress.XtraEditors.Drawing.ControlGraphicsInfoArgs(info, cache, rect));
+                    }
+                }
+                e.Handled = true;
+            }
+        }
+
+        private void gridView_MouseDown(object sender, MouseEventArgs e)
+        {
+            GridView view = sender as GridView;
+            GridHitInfo info = view.CalcHitInfo(e.Location);
+            if (info.InColumn && info.Column.FieldName == "IS_SELECTED_STR")
+            {
+                isHeaderChecked = !isHeaderChecked;
+                for (int i = 0; i < view.RowCount; i++)
+                {
+                    view.SetRowCellValue(i, view.Columns["IS_SELECTED_STR"], isHeaderChecked);
+                }
+                view.InvalidateColumnHeader(view.Columns["IS_SELECTED_STR"]);
+            }
+        }
+
+        private void gridView_CellValueChanging(object sender, CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName == "IS_SELECTED_STR")
+                {
+                    var service = (V_HIS_SERE_SERV_1)gridView.GetRow(e.RowHandle);
+                    if (service != null)
+                    {
+                        bool newValue = !(bool?)gridView.GetRowCellValue(e.RowHandle, "IS_SELECTED_STR") ?? true;
+                        gridView.SetRowCellValue(e.RowHandle, "IS_SELECTED_STR", newValue);
+
+                        List<V_HIS_SERE_SERV_1> selectedServices = new List<V_HIS_SERE_SERV_1>();
+                        for (int i = 0; i < gridView.DataRowCount; i++)
+                        {
+                            var row = (V_HIS_SERE_SERV_1)gridView.GetRow(i);
+                            bool isSelected = (bool?)gridView.GetRowCellValue(i, "IS_SELECTED_STR") ?? false;
+                            if (isSelected)
+                            {
+                                selectedServices.Add(row);
+                            }
+                        }
+
+                        //gridControl.RefreshDataSource();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
     }
 }

@@ -1037,6 +1037,15 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                 buttonEdit1_Validated(buttonEdit1, null);
                 this.positionHandle = -1;
                 if (!dxValidationProvider.Validate()) return;
+                if (!string.IsNullOrEmpty(memPttt.Text)
+                && Inventec.Common.String.CountVi.Count(memPttt.Text) > 3000)
+                {
+                    XtraMessageBox.Show("Dữ liệu phẫu thuật, thủ thuật vượt quá 3000 ký tự!",
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    memPttt.Focus();
+                    memPttt.SelectAll();
+                    return;
+                }
 
                 if (actEdited == null) return;
 
@@ -2034,6 +2043,17 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void memPttt_EditValueChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(memPttt.Text) && Inventec.Common.String.CountVi.Count(memPttt.Text) > 3000)
+            {
+                XtraMessageBox.Show("Dữ liệu phẫu thuật, thủ thuật vượt quá 3000 ký tự!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                memPttt.Focus();
+                memPttt.SelectAll();
+                return;
+            }
         }
     }
 }

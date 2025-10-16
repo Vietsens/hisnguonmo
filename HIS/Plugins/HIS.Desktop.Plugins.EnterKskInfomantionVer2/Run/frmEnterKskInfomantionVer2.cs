@@ -535,18 +535,47 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        //private void SetDataCboExamLoginName(DevExpress.XtraEditors.GridLookUpEdit cbo)
+        //{
+        //    try
+        //    {
+        //        CommonParam param = new CommonParam();
+        //        var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+        //        List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+        //        columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 100, 1));
+        //        columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Họ tên", 150, 2));
+        //        columnInfos.Add(new ColumnInfo("DEPARTMENT_NAME", "Khoa", 150, 3));
+        //        ControlEditorADO controlEditorADO = new ControlEditorADO("LOGINNAME", "TDL_USERNAME", columnInfos, true, 400);
+        //        ControlEditorLoader.Load(cbo, data, controlEditorADO);
+        //        cbo.Properties.ImmediatePopup = true;
+        //        cbo.Properties.PopupFormMinSize = new System.Drawing.Size(400, cbo.Properties.PopupFormSize.Height);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
         private void SetDataCboExamLoginName(DevExpress.XtraEditors.GridLookUpEdit cbo)
         {
             try
             {
                 CommonParam param = new CommonParam();
-                var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                            .Get<V_HIS_EMPLOYEE>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                            .ToList();
+
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 100, 1));
                 columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Họ tên", 150, 2));
                 columnInfos.Add(new ColumnInfo("DEPARTMENT_NAME", "Khoa", 150, 3));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("LOGINNAME", "LOGINNAME", columnInfos, true, 400);
+
+                ControlEditorADO controlEditorADO = new ControlEditorADO("LOGINNAME", "TDL_USERNAME", columnInfos, true, 400);
                 ControlEditorLoader.Load(cbo, data, controlEditorADO);
+
+                cbo.Properties.ValueMember = "LOGINNAME";
+                cbo.Properties.DisplayMember = "TDL_USERNAME";
+                cbo.Properties.NullText = "";
                 cbo.Properties.ImmediatePopup = true;
                 cbo.Properties.PopupFormMinSize = new System.Drawing.Size(400, cbo.Properties.PopupFormSize.Height);
             }
@@ -555,6 +584,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+
         private void FillNoteBMI(DevExpress.XtraEditors.SpinEdit spinHeight, DevExpress.XtraEditors.SpinEdit spinWeight, System.Windows.Forms.Label txtBMI)
         {
             try
@@ -715,6 +746,32 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 btnSave_Click(null, null);
             }
             catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void Control_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    // Lấy control tiếp theo trong TabOrder
+                    Control nextControl = GetNextControl((Control)sender, true);
+
+                    // Nếu control tiếp theo là ComboBoxEdit thì hiển thị popup
+                    if (nextControl is DevExpress.XtraEditors.ComboBoxEdit combo)
+                    {
+                        combo.Focus();
+                        combo.ShowPopup();
+                    }
+                    else
+                    {
+                        nextControl?.Focus();
+                    }
+                }
+            }
+            catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }

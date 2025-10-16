@@ -33,13 +33,15 @@ namespace MPS.Processor.Mps000453.PDO
         public List<HIS_VACCINE_TYPE> lstVaccineType { get; set; }
         public List<HIS_KSK_UNEI_VATY> lstUneiVaty { get; set; }
         public List<HIS_HEALTH_EXAM_RANK> examRank { get; set; }
+        public V_HIS_TREATMENT_4 treatment { get; set; }
         public Mps000453PDO(
             HIS_KSK_UNDER_EIGHTEEN HisKskUnderEighteen,
            V_HIS_SERVICE_REQ HisServiceReq,
            HIS_DHST HisDhst,
             List<HIS_VACCINE_TYPE> lstVaccineType,
             List<HIS_KSK_UNEI_VATY> lstUneiVaty,
-            List<HIS_HEALTH_EXAM_RANK> examRank
+            List<HIS_HEALTH_EXAM_RANK> examRank,
+            V_HIS_TREATMENT_4 treatment
             )
         {
             try
@@ -50,6 +52,7 @@ namespace MPS.Processor.Mps000453.PDO
                 this.lstVaccineType = lstVaccineType;
                 this.lstUneiVaty = lstUneiVaty;
                 this.examRank = examRank;
+                this.treatment = treatment;
             }
             catch (Exception ex)
             {

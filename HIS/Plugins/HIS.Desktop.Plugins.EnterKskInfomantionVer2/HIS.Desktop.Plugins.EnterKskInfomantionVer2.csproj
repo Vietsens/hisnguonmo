@@ -55,14 +55,14 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.TreatmentLog">
-      <HintPath>..\HIS.Desktop.Plugins.TreatmentLog\obj\Debug\HIS.Desktop.Plugins.TreatmentLog.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Plugins\Module\HIS.Desktop.Plugins.TreatmentLog.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCRelativeInfo">
-      <HintPath>..\..\..\UC\HIS.UC.UCRelativeInfo\obj\Debug\HIS.UC.UCRelativeInfo.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.UCRelativeInfo.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -159,11 +159,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000315.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000452.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000452.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000452.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000452.PDO\bin\Debug\MPS.Processor.Mps000452.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000453.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000453.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000453.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000453.PDO\bin\Debug\MPS.Processor.Mps000453.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000454.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000454.PDO.dll</HintPath>

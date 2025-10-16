@@ -441,14 +441,15 @@ namespace HIS.UC.UCHeniInfo
                     var minItem = heinPatientTypeDataFiltered.OrderBy(o => o.NUM_ORDER == null ? 1 : 0)
                                                                 .ThenBy(o => o.NUM_ORDER)
                                                                 .ThenByDescending(o => o.ID)
-                                                                .FirstOrDefault(); ;
-                    cboHeinPatientType.EditValue = minItem.HEIN_PATIENT_TYPE_CODE;
+                                                                .FirstOrDefault();
+                    if (!string.IsNullOrEmpty(minItem.HEIN_PATIENT_TYPE_CODE))
+                        cboHeinPatientType.EditValue = minItem.HEIN_PATIENT_TYPE_CODE;
                     //this._previousHeinPatientTypeCode = minItem.HEIN_PATIENT_TYPE_CODE;
                 }
-                else
-                {
-                    cboHeinPatientType.EditValue = null;
-                }
+                //else
+                //{
+                //    cboHeinPatientType.EditValue = null;
+                //}
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "", 40, 1));
@@ -1584,7 +1585,7 @@ namespace HIS.UC.UCHeniInfo
                     this.FocusNextControlFreeCoPainTime();//#18970
                 }
                 //qtcode
-                if (e.CloseMode == PopupCloseMode.Normal)
+                if (e.CloseMode == PopupCloseMode.Normal && HisConfigCFG.IsShowNumberAppointment)
                 {
                     if (this.cboHeinRightRoute.EditValue != null && this.cboHeinRightRoute.EditValue.ToString() == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT)
                     {
@@ -1593,6 +1594,7 @@ namespace HIS.UC.UCHeniInfo
                     }
                     this.FocusNextControlFreeCoPainTime();
                 }
+
             }
             catch (Exception ex)
             {
@@ -2432,8 +2434,8 @@ namespace HIS.UC.UCHeniInfo
         }
         //private string _previousHeinPatientTypeCode = null;
         private void cboHeinPatientType_Closed(object sender, ClosedEventArgs e)
-        { 
-            isChooseCboPatientType = true; 
+        {
+            isChooseCboPatientType = true;
             string selectedHeinTypeCode = "";
             if (this.cboHeinPatientType.EditValue != null)
                 selectedHeinTypeCode = this.cboHeinPatientType.EditValue.ToString(); // ô mã đối tượng

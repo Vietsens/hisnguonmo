@@ -14,10 +14,10 @@
  *  
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 using System;
 using System.Collections.Generic;
-using System.ComponentModel; 
+using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Linq;
@@ -3921,7 +3921,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
                         }
                     }
-                    
+
                     VisibleLayoutTemperature();
                     if (this.currrentServiceAdo.TEMPERATURE != null)
                         spnTemperature.Value = this.currrentServiceAdo.TEMPERATURE ?? 0;
@@ -4371,7 +4371,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     }
                     IsEditImpPriceVAT = false;
                 }
-                if (this.currrentServiceAdo != null)
+                if (this.currrentServiceAdo != null && (spinImpPrice.Visible == true || spinImpPrice1.Visible == true))
                     this.currrentServiceAdo.IMP_PRICE = spinImpPrice.Visible ? spinImpPrice.Value : spinImpPrice1.Visible ? spinImpPrice1.Value : 0;
                 LoadServicePatyByAdo();
             }

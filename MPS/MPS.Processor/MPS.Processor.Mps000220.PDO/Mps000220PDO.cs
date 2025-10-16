@@ -84,6 +84,7 @@ namespace MPS.Processor.Mps000220.PDO
 
     public class Mrs00085RDO
     {
+        public string DOCUMENT_NUMBER { get; set; }
         public long? EXECUTE_TIME { get; set; }
         public string EXECUTE_DATE_STR { get; set; }
         public string IMP_MEST_CODE { get; set; }
@@ -121,11 +122,13 @@ namespace MPS.Processor.Mps000220.PDO
         public decimal? IMP_AMOUNT_KHONG_GOM_HOAN { get; set; }
         public decimal? IMP_AMOUNT_HOAN { get; set; }
         public decimal? CHMS_TYPE_ID { get; set; }
-
+        
+        
         public Mrs00085RDO(V_HIS_IMP_MEST_MATERIAL imp, List<V_HIS_IMP_MEST> Listimp, List<V_HIS_EXP_MEST> sourceMest, List<HIS_IMP_MEST_TYPE> impMestTypes, List<HIS_DEPARTMENT> _Departments, List<V_HIS_ROOM> _Rooms)
         {
             try
             {
+                DOCUMENT_NUMBER = imp.DOCUMENT_NUMBER;
                 EXECUTE_TIME = imp.IMP_TIME;
                 PACKAGE_NUMBER = imp.PACKAGE_NUMBER;
                 IMP_MEST_CODE = imp.IMP_MEST_CODE;
@@ -161,7 +164,7 @@ namespace MPS.Processor.Mps000220.PDO
                         this.SECOND_MEST_CODE = chmsExpMest.EXP_MEST_CODE;
                     }
                 }
-
+                 
                 var data = impMestTypes != null ? impMestTypes.Where(o => o.ID == imp.IMP_MEST_TYPE_ID).FirstOrDefault() : null;
 
                 if (data != null)
@@ -180,6 +183,7 @@ namespace MPS.Processor.Mps000220.PDO
                         TREATMENT_CODE = "";
                         VIR_PATIENT_ADDRESS = "";
 
+                        DOCUMENT_NUMBER = imp.DOCUMENT_NUMBER ?? firstimp?.DOCUMENT_NUMBER;
                         if (data != null)
                         {
                             IMP_MEST_TYPE_NAME = data.IMP_MEST_TYPE_NAME;

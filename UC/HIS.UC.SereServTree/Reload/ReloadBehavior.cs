@@ -30,6 +30,7 @@ namespace HIS.UC.SereServTree.Reload
         UserControl control;
         List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5> sereServs;
         List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_DEPOSIT> sereServDeposits;
+        List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_BILL_1> sereServBill;
         public ReloadBehavior()
             : base()
         {
@@ -40,6 +41,13 @@ namespace HIS.UC.SereServTree.Reload
         {
             this.control = data;
             this.sereServs = sereServs;
+        }
+        public ReloadBehavior(CommonParam param, UserControl data, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_5> sereServs, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_BILL_1> sereServBill)
+            : base()
+        {
+            this.control = data;
+            this.sereServs = sereServs;
+            this.sereServBill = sereServBill;
         }
         public ReloadBehavior(CommonParam param, UserControl data, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV_DEPOSIT> sereServDeposits)
             : base()
@@ -52,6 +60,10 @@ namespace HIS.UC.SereServTree.Reload
         {
             try
             {
+                if (sereServs != null && sereServBill != null)
+                {
+                    ((HIS.UC.SereServTree.Run.UCSereServTree)this.control).Reload(sereServs, sereServBill);
+                }
                 if (sereServs != null)
                 {
                     ((HIS.UC.SereServTree.Run.UCSereServTree)this.control).Reload(sereServs);

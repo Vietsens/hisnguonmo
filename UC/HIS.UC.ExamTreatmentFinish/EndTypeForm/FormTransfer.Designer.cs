@@ -46,20 +46,16 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.dteEnd = new DevExpress.XtraEditors.DateEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.chkValid1Year = new DevExpress.XtraEditors.CheckEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.dteEnd = new DevExpress.XtraEditors.DateEdit();
             this.dteBegin = new DevExpress.XtraEditors.DateEdit();
             this.memPttt = new DevExpress.XtraEditors.MemoEdit();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -122,16 +118,20 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.chkValid1Year = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkValid1Year.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteEnd.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteEnd.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteBegin.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteBegin.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memPttt.Properties)).BeginInit();
@@ -192,11 +192,10 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkValid1Year.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -237,34 +236,21 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // dteEnd
+            // chkValid1Year
             // 
-            this.dteEnd.EditValue = null;
-            this.dteEnd.Location = new System.Drawing.Point(296, 408);
-            this.dteEnd.MenuManager = this.barManager1;
-            this.dteEnd.Name = "dteEnd";
-            this.dteEnd.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.dteEnd.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dteEnd.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dteEnd.Properties.DisplayFormat.FormatString = "dd/MM/yyy HH:mm:ss";
-            this.dteEnd.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dteEnd.Properties.EditFormat.FormatString = "dd/MM/yyy HH:mm:ss";
-            this.dteEnd.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dteEnd.Properties.Mask.EditMask = "dd/MM/yyy HH:mm:ss";
-            this.dteEnd.Size = new System.Drawing.Size(170, 20);
-            this.dteEnd.StyleController = this.layoutControl1;
-            this.dteEnd.TabIndex = 31;
+            this.chkValid1Year.Location = new System.Drawing.Point(470, 409);
+            this.chkValid1Year.MenuManager = this.barManager1;
+            this.chkValid1Year.Name = "chkValid1Year";
+            this.chkValid1Year.Properties.Caption = "Có giá trị trong 01 năm";
+            this.chkValid1Year.Size = new System.Drawing.Size(142, 19);
+            this.chkValid1Year.StyleController = this.layoutControl1;
+            this.chkValid1Year.TabIndex = 32;
+            this.chkValid1Year.ToolTip = "Trường hợp chuyển cơ sở khám bệnh, chữa bệnh có giá trị trong 01 năm";
             // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItemSave});
@@ -289,33 +275,25 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.barButtonItemSave.Name = "barButtonItemSave";
             this.barButtonItemSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItemSave_ItemClick);
             // 
-            // barDockControlTop
+            // dteEnd
             // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(880, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 485);
-            this.barDockControlBottom.Size = new System.Drawing.Size(880, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 456);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(880, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 456);
+            this.dteEnd.EditValue = null;
+            this.dteEnd.Location = new System.Drawing.Point(296, 408);
+            this.dteEnd.MenuManager = this.barManager1;
+            this.dteEnd.Name = "dteEnd";
+            this.dteEnd.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.dteEnd.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteEnd.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteEnd.Properties.DisplayFormat.FormatString = "dd/MM/yyy HH:mm:ss";
+            this.dteEnd.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dteEnd.Properties.EditFormat.FormatString = "dd/MM/yyy HH:mm:ss";
+            this.dteEnd.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dteEnd.Properties.Mask.EditMask = "dd/MM/yyy HH:mm:ss";
+            this.dteEnd.Size = new System.Drawing.Size(170, 20);
+            this.dteEnd.StyleController = this.layoutControl1;
+            this.dteEnd.TabIndex = 31;
             // 
             // dteBegin
             // 
@@ -347,6 +325,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.memPttt.Size = new System.Drawing.Size(464, 64);
             this.memPttt.StyleController = this.layoutControl1;
             this.memPttt.TabIndex = 29;
+            this.memPttt.EditValueChanged += new System.EventHandler(this.memPttt_EditValueChanged);
             this.memPttt.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.memPttt_PreviewKeyDown);
             // 
             // panel1
@@ -1059,25 +1038,6 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.layoutControlItem14.TextSize = new System.Drawing.Size(60, 20);
             this.layoutControlItem14.TextToControlDistance = 5;
             // 
-            // dxValidationProvider
-            // 
-            this.dxValidationProvider.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider_ValidationFailed);
-            // 
-            // dxErrorProvider1
-            // 
-            this.dxErrorProvider1.ContainerControl = this;
-            // 
-            // chkValid1Year
-            // 
-            this.chkValid1Year.Location = new System.Drawing.Point(470, 409);
-            this.chkValid1Year.MenuManager = this.barManager1;
-            this.chkValid1Year.Name = "chkValid1Year";
-            this.chkValid1Year.Properties.Caption = "Có giá trị trong 01 năm";
-            this.chkValid1Year.Size = new System.Drawing.Size(142, 19);
-            this.chkValid1Year.StyleController = this.layoutControl1;
-            this.chkValid1Year.TabIndex = 32;
-            this.chkValid1Year.ToolTip = "Trường hợp chuyển cơ sở khám bệnh, chữa bệnh có giá trị trong 01 năm";
-            // 
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.chkValid1Year;
@@ -1094,6 +1054,42 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(266, 23);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(880, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 485);
+            this.barDockControlBottom.Size = new System.Drawing.Size(880, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 456);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(880, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 456);
+            // 
+            // dxValidationProvider
+            // 
+            this.dxValidationProvider.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider_ValidationFailed);
+            // 
+            // dxErrorProvider1
+            // 
+            this.dxErrorProvider1.ContainerControl = this;
             // 
             // FormTransfer
             // 
@@ -1116,9 +1112,10 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkValid1Year.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteEnd.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteEnd.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteBegin.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteBegin.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memPttt.Properties)).EndInit();
@@ -1179,11 +1176,10 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkValid1Year.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

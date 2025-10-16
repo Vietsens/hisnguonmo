@@ -27,6 +27,7 @@ namespace Inventec.Common.ElectronicBill
     {
         public Dictionary<string, string> dicMapping;
         public Dictionary<string, string> dicMappingReplace;
+        public Dictionary<string, string> dicMappingAdjust;
         public MappingError()
         {
             dicMapping = new Dictionary<string, string>();
@@ -58,6 +59,24 @@ namespace Inventec.Common.ElectronicBill
             dicMappingReplace.Add("ERR:29", "Lỗi chứng thư hết hạn");
             dicMappingReplace.Add("ERR:30", "Danh sách hóa đơn tồn tại ngày hóa đơn nhỏ hơn ngày hóa đơn đã phát hành");
             dicMappingReplace.Add("ERR:9", "Trạng thái hóa đơn ko được thay thế");
+
+            dicMappingAdjust = new Dictionary<string, string>();
+            dicMappingAdjust.Add("ERR:1", "Tài khoản đăng nhập sai hoặc không có quyền");
+            dicMappingAdjust.Add("ERR:2", "Hóa đơn cần điều chỉnh không tồn tại");
+            dicMappingAdjust.Add("ERR:3", "Dữ liệu xml đầu vào không đúng quy định");
+            dicMappingAdjust.Add("ERR:5", "Không phát hành được hóa đơn");
+            dicMappingAdjust.Add("ERR:6", "Dải hóa đơn cũ đã hết");
+            dicMappingAdjust.Add("ERR:7", "User name không phù hợp, không tìm thấy company tương ứng cho user.");
+            dicMappingAdjust.Add("ERR:8", "Hóa đơn cần điều chỉnh đã bị thay thế. Không thể điều chỉnh được nữa.");
+            dicMappingAdjust.Add("ERR:13", "Lỗi trùng fkey");
+            dicMappingAdjust.Add("ERR:14", "Lỗi trong quá trình thực hiện cấp số hóa đơn");
+            dicMappingAdjust.Add("ERR:15", "Lỗi khi thực hiện Deserialize chuỗi hóa đơn đầu vào");
+            dicMappingAdjust.Add("ERR:19", "Pattern truyền vào không giống với hóa đơn cần điều chỉnh");
+            dicMappingAdjust.Add("ERR:20", "Dải hóa đơn hết, User/Account không có quyền với Serial/Pattern và serial không phù hợp");
+            dicMappingAdjust.Add("ERR:21", "Trùng Fkey truyền vào");
+            dicMappingAdjust.Add("ERR:29", "Lỗi chứng thư hết hạn");
+            dicMappingAdjust.Add("ERR:30", "Danh sách hóa đơn tồn tại ngày hóa đơn nhỏ hơn ngày hóa đơn đã phát hành");
+            dicMappingAdjust.Add("ERR:9", "Trạng thái hóa đơn không được điều chỉnh");
         }
     }
 }

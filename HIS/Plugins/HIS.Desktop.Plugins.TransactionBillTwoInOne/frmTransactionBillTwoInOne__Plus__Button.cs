@@ -270,34 +270,33 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         return;
                 }
                
-                    if (billTwoBookSDO.RecieptTransaction == null)
-                    billTwoBookSDO.RecieptTransaction = new HIS_TRANSACTION();
+                  
 
-                if (payFormList != null && payFormList.Count > 0 && cboPayForm.EditValue != null)
-                {
-                    var payForm = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue.ToString());
-                    billTwoBookSDO.RecieptTransaction.PAY_FORM_ID = payForm?.ID ?? 0;
-                }
+        
    
 
                 if (billTwoBookSDO.RecieptTransaction != null)
                 {
-
+                    if (payFormList != null && payFormList.Count > 0 && cboPayForm.EditValue != null)
+                    {
+                        var payForm = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue.ToString());
+                        billTwoBookSDO.RecieptTransaction.PAY_FORM_ID = payForm?.ID ?? 0;
+                    }
                     if (cboBank.EditValue != null && !string.IsNullOrEmpty(cboBank.EditValue.ToString()))
                         billTwoBookSDO.RecieptTransaction.BANK_ID = Convert.ToInt64(cboBank.EditValue);
                     else
                         billTwoBookSDO.RecieptTransaction.BANK_ID = null;
 
                 }
-                if (billTwoBookSDO.InvoiceTransaction != null)
-                {
+                //if (billTwoBookSDO.InvoiceTransaction != null)
+                //{
 
-                    if (cboBank.EditValue != null && !string.IsNullOrEmpty(cboBank.EditValue.ToString()))
-                        billTwoBookSDO.InvoiceTransaction.BANK_ID = Convert.ToInt64(cboBank.EditValue);
-                    else
-                        billTwoBookSDO.InvoiceTransaction.BANK_ID = null;
+                //    if (cboBank.EditValue != null && !string.IsNullOrEmpty(cboBank.EditValue.ToString()))
+                //        billTwoBookSDO.InvoiceTransaction.BANK_ID = Convert.ToInt64(cboBank.EditValue);
+                //    else
+                //        billTwoBookSDO.InvoiceTransaction.BANK_ID = null;
 
-                }
+                //}
 
 
                 billTwoBookSDO.TreatmentId = this.treatmentId.Value;

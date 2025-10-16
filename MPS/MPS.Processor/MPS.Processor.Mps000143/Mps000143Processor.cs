@@ -32,6 +32,10 @@ namespace MPS.Processor.Mps000143
     public class Mps000143Processor : AbstractProcessor
     {
         Mps000143PDO rdo;
+        List<Mps000143PDO.Mps000143ADO> MediMaties1 = new List<Mps000143PDO.Mps000143ADO>();
+        List<Mps000143PDO.Mps000143ADO> listOtherPaySource = new List<Mps000143PDO.Mps000143ADO>();
+        List<Mps000143PDO.Mps000143ADO> lstMedicineType = new List<Mps000143PDO.Mps000143ADO>();
+        List<Mps000143PDO.Mps000143ADO> lstMedicineParent = new List<Mps000143PDO.Mps000143ADO>();
         public Mps000143Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -48,26 +52,47 @@ namespace MPS.Processor.Mps000143
             bool result = false;
             try
             {
+
                 Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 ProcessSingleKey();
-
+                //qtcode
+                GetOtherPaySource();
+                GetMedicineGroup();
+                GetMedicineParent();
                 //ghi đè PrintLogData và UniqueCodeData
                 ProcessPrintLogData();
                 //lấy số lần in
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
+                //qtcode
+                objectTag.AddObjectData(store, "MediMaties1", MediMaties1);
+                objectTag.AddObjectData(store, "MedicineGroup", lstMedicineType);
+                objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent);
+                objectTag.AddObjectData(store, "OtherPaySource", listOtherPaySource);
 
+                if (rdo._ImpMestMedicines != null)
+                    objectTag.AddObjectData(store, "ImpMestMedicines", rdo._ImpMestMedicines);
+
+                if (rdo._ImpMestMaterials != null)
+                    objectTag.AddObjectData(store, "ImpMestMaterials", rdo._ImpMestMaterials);
+
+                objectTag.AddRelationship(store, "MedicineGroup", "MediMaties1", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
+                objectTag.AddRelationship(store, "MedicineParent", "MediMaties1", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
+                objectTag.AddRelationship(store, "OtherPaySource", "MediMaties1", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
                 singleTag.ProcessData(store, singleValueDictionary);
-                if (rdo._ListAdo != null && rdo._ListAdo.Count > 0)
-                {
-                    rdo._ListAdo = rdo._ListAdo.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
-                }
-                objectTag.AddObjectData(store, "MediMaties1", rdo._ListAdo);
-                objectTag.AddObjectData(store, "MediMaties2", rdo._ListAdo);
-                objectTag.AddObjectData(store, "MediMaties3", rdo._ListAdo);
                 result = true;
+                // original
+                //singleTag.ProcessData(store, singleValueDictionary);
+                //if (rdo._ListAdo != null && rdo._ListAdo.Count > 0)
+                //{
+                //    rdo._ListAdo = rdo._ListAdo.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
+                //}
+                //objectTag.AddObjectData(store, "MediMaties1", rdo._ListAdo);
+                //objectTag.AddObjectData(store, "MediMaties2", rdo._ListAdo);
+                //objectTag.AddObjectData(store, "MediMaties3", rdo._ListAdo);
+                //result = true;
             }
             catch (Exception ex)
             {
@@ -77,7 +102,68 @@ namespace MPS.Processor.Mps000143
 
             return result;
         }
-
+        private void GetOtherPaySource()
+        {
+            try
+            {
+                if (MediMaties1 != null && MediMaties1.Count > 0)
+                {
+                    var group = MediMaties1.GroupBy(o => new { o.OTHER_PAY_SOURCE_ID, o.OTHER_PAY_SOURCE_CODE, o.OTHER_PAY_SOURCE_NAME });
+                    foreach (var item in group)
+                    {
+                        listOtherPaySource.Add(item.ToList().First());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void GetMedicineGroup()
+        {
+            try
+            {
+                if (MediMaties1 != null && MediMaties1.Count > 0)
+                {
+                    var group = MediMaties1.GroupBy(o => new { o.MEDICINE_GROUP_ID });
+                    foreach (var item in group)
+                    {
+                        var meGroup = rdo._MedicineTypes.FirstOrDefault(o => o.MEDICINE_GROUP_ID == item.ToList().First().MEDICINE_GROUP_ID);
+                        if (meGroup != null)
+                        {
+                            Mps000143PDO.Mps000143ADO ado = new Mps000143PDO.Mps000143ADO();
+                            ado.MEDICINE_GROUP_ID = meGroup.MEDICINE_GROUP_ID;
+                            ado.MEDICINE_GROUP_CODE = meGroup.MEDICINE_GROUP_CODE;
+                            ado.MEDICINE_GROUP_NAME = meGroup.MEDICINE_GROUP_NAME;
+                            lstMedicineType.Add(ado);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void GetMedicineParent()
+        {
+            try
+            {
+                if (MediMaties1 != null && MediMaties1.Count > 0)
+                {
+                    var group = MediMaties1.GroupBy(o => o.MEDICINE_PARENT_ID);
+                    foreach (var item in group)
+                    {
+                        lstMedicineParent.Add(item.ToList().First());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         void ProcessSingleKey()
         {
             try
@@ -87,7 +173,8 @@ namespace MPS.Processor.Mps000143
                 {
                     foreach (var item in rdo._ImpMestMedicines)
                     {
-                        rdo._ListAdo.Add(new MPS.Processor.Mps000143.PDO.Mps000143PDO.Mps000143ADO(item));
+                        //rdo._ListAdo.Add(new MPS.Processor.Mps000143.PDO.Mps000143PDO.Mps000143ADO(item, rdo._MedicineTypes));
+                        MediMaties1.Add(new MPS.Processor.Mps000143.PDO.Mps000143PDO.Mps000143ADO(item, rdo._MedicineTypes));
                         if (!item.PRICE.HasValue)
                             continue;
                         sumPrice += item.AMOUNT * item.PRICE.Value * (1 + (item.VAT_RATIO ?? 0));
@@ -97,7 +184,8 @@ namespace MPS.Processor.Mps000143
                 {
                     foreach (var item in rdo._ImpMestMaterials)
                     {
-                        rdo._ListAdo.Add(new MPS.Processor.Mps000143.PDO.Mps000143PDO.Mps000143ADO(item));
+                        rdo._ListAdo.Add(new MPS.Processor.Mps000143.PDO.Mps000143PDO.Mps000143ADO(item, rdo._MaterialTypes));
+                        MediMaties1.Add(new MPS.Processor.Mps000143.PDO.Mps000143PDO.Mps000143ADO(item, rdo._MaterialTypes));
                         if (!item.PRICE.HasValue)
                             continue;
                         sumPrice += item.AMOUNT * item.PRICE.Value * (1 + (item.VAT_RATIO ?? 0));

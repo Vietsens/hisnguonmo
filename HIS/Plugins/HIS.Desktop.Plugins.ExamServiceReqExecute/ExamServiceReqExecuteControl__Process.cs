@@ -1847,21 +1847,23 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             //HIS_PATIENT patient = GetPatientByID(treatment.PATIENT_ID);
                             if (treatment != null)
                             {
-                                var age = Inventec.Common.DateTime.Calculation.Age(treatment.TDL_PATIENT_DOB);
-                                if (age < 7 && 
-                                    (!string.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.FatherName) || 
-                                    !string.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.MotherName) ||
-                                    (!String.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.PatientRelativeName) 
-                                    && !String.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.PatientRelativeType))))
-                                {
 
-                                }
-                                else
+                                // sửa đoạn này nếu trẻ em < 7 tuổi và ko có thông tin bố mẹ/người thân thì ko cho lưu(cảnh báo)
+                                var age = Inventec.Common.DateTime.Calculation.Age(treatment.TDL_PATIENT_DOB);
+                                if (age < 7)
                                 {
-                                    MessageBox.Show("Thông tin nghỉ hưởng BHXH thiếu thông tin bố mẹ. Vui lòng kiểm tra lại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                    return false;
+                                    bool hasFather = !string.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.FatherName);
+                                    bool hasMother = !string.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.MotherName);
+                                    bool hasRelative = !string.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.PatientRelativeName)
+                                                       && !string.IsNullOrWhiteSpace(treatmentFinish.TreatmentFinishSDO.PatientRelativeType);
+
+                                    if (!hasFather && !hasMother && !hasRelative)
+                                    {
+                                        MessageBox.Show("Thông tin nghỉ hưởng BHXH thiếu thông tin bố mẹ/người thân. Vui lòng kiểm tra lại!",
+                                                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        return false;
+                                    }
                                 }
-                                
                             }
                         }
                         else if (cboThongTinBoSung == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_DUONG_THAI)
@@ -1933,7 +1935,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 SickLeaveTo_Date = Int64.Parse((dtSickLeaveTo ?? new DateTime()).ToString("yyyyMMdd") + "000000");
                             }
 
-                            if (SickLeaveDay != null && SickLeaveDay > 30)
+                            if (SickLeaveDay != null && SickLeaveDay > 30 && HisConfigCFG.AllowBhxhLeaveOver30days != "1")
                             {
                                 XtraMessageBox.Show("Số ngày nghỉ không được vượt quá 30 ngày", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 treatmentFinishProcessor.FocusControl(ucTreatmentFinish);

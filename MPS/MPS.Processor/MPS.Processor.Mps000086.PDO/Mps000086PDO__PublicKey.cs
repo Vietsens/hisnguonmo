@@ -102,6 +102,10 @@ namespace MPS.Processor.Mps000086.PDO
         public string BID_YEAR { get; set; }
         public decimal EXP_PRICE_VP { get; set; }
         public decimal EXP_VAT_RATIO_VP { get; set; }
+        public long? OTHER_PAY_SOURCE_ID { get; set; }
+
+        public string OTHER_PAY_SOURCE_CODE { get; set; }
+        public string OTHER_PAY_SOURCE_NAME { get; set; }
 
         public Mps000086ADO()
         {
@@ -118,6 +122,14 @@ namespace MPS.Processor.Mps000086.PDO
         {
             try
             {
+                if (_expMestMeidicines != null && _expMestMeidicines.Count > 0)
+                {
+                    var firstMedicine = _expMestMeidicines.First();
+                    this.OTHER_PAY_SOURCE_ID = firstMedicine.OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_CODE = firstMedicine.OTHER_PAY_SOURCE_CODE;
+                    this.OTHER_PAY_SOURCE_NAME = firstMedicine.OTHER_PAY_SOURCE_NAME != null ? firstMedicine.OTHER_PAY_SOURCE_NAME.ToUpper() : null;
+                }
+
                 if (_expMestMetyReqs != null && _expMestMetyReqs.Count > 0)
                 {
                     this.TYPE_ID = 1;
@@ -125,6 +137,9 @@ namespace MPS.Processor.Mps000086.PDO
                     var data = _medicineTypes.FirstOrDefault(p => p.ID == _expMestMetyReqs[0].MEDICINE_TYPE_ID);
                     if (data != null)
                     {
+                        //this.OTHER_PAY_SOURCE_ID = data.OTHER_PAY_SOURCE_ID;
+                        //this.OTHER_PAY_SOURCE_CODE = data.OTHER_PAY_SOURCE_CODE;
+                        //this.OTHER_PAY_SOURCE_NAME = data.OTHER_PAY_SOURCE_NAME;
                         this.MEDI_MATE_TYPE_CODE = data.MEDICINE_TYPE_CODE;
                         this.MEDI_MATE_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64(_expMestMetyReqs.First().MEDICINE_TYPE_ID.ToString() + this.TYPE_ID.ToString());
                         this.MEDI_MATE_TYPE_NAME = data.MEDICINE_TYPE_NAME;
@@ -143,6 +158,9 @@ namespace MPS.Processor.Mps000086.PDO
                                 : null;
                         if (listMedicines != null && listMedicines.Count > 0)
                         {
+                            //this.OTHER_PAY_SOURCE_ID = listMedicines.First().OTHER_PAY_SOURCE_ID;
+                            //this.OTHER_PAY_SOURCE_CODE = listMedicines.First().OTHER_PAY_SOURCE_CODE;
+                            //this.OTHER_PAY_SOURCE_NAME = listMedicines.First().OTHER_PAY_SOURCE_NAME;
                             this.TOTAL_AMOUNT_IN_EXECUTE = listMedicines.Sum(p => p.AMOUNT);
                             this.PACKAGE_NUMBER = listMedicines.First().PACKAGE_NUMBER;
                             this.SUPPLIER_CODE = listMedicines.First().SUPPLIER_CODE;
@@ -192,6 +210,14 @@ namespace MPS.Processor.Mps000086.PDO
         {
             try
             {
+                if (_expMestMaterials != null && _expMestMaterials.Count > 0)
+                {
+                    var firstMaterial = _expMestMaterials.First();
+                    this.OTHER_PAY_SOURCE_ID = firstMaterial.OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_CODE = firstMaterial.OTHER_PAY_SOURCE_CODE;
+                    this.OTHER_PAY_SOURCE_NAME = firstMaterial.OTHER_PAY_SOURCE_NAME != null ? firstMaterial.OTHER_PAY_SOURCE_NAME.ToUpper() : null;
+                }
+
                 if (_expMestMatyReqs != null && _expMestMatyReqs.Count > 0)
                 {
                     this.TYPE_ID = 2;
@@ -199,6 +225,9 @@ namespace MPS.Processor.Mps000086.PDO
                     var data = _materialTypes.FirstOrDefault(p => p.ID == _expMestMatyReqs[0].MATERIAL_TYPE_ID);
                     if (data != null)
                     {
+                        //this.OTHER_PAY_SOURCE_ID = data.OTHER_PAY_SOURCE_ID;
+                        //this.OTHER_PAY_SOURCE_CODE = data.OTHER_PAY_SOURCE_CODE;
+                        //this.OTHER_PAY_SOURCE_NAME = data.OTHER_PAY_SOURCE_NAME;
                         this.MEDI_MATE_TYPE_CODE = data.MATERIAL_TYPE_CODE;
                         this.MEDI_MATE_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64(_expMestMatyReqs.First().MATERIAL_TYPE_ID.ToString() + this.TYPE_ID.ToString());
                         this.MEDI_MATE_TYPE_NAME = data.MATERIAL_TYPE_NAME;
@@ -216,6 +245,9 @@ namespace MPS.Processor.Mps000086.PDO
                                 : null;
                         if (listMedicines != null && listMedicines.Count > 0)
                         {
+                            //this.OTHER_PAY_SOURCE_ID = listMedicines.First().OTHER_PAY_SOURCE_ID;
+                            //this.OTHER_PAY_SOURCE_CODE = listMedicines.First().OTHER_PAY_SOURCE_CODE;
+                            //this.OTHER_PAY_SOURCE_NAME = listMedicines.First().OTHER_PAY_SOURCE_NAME;
                             this.TOTAL_AMOUNT_IN_EXECUTE = listMedicines.Sum(p => p.AMOUNT);
                             this.PACKAGE_NUMBER = listMedicines.First().PACKAGE_NUMBER;
                             this.SUPPLIER_CODE = listMedicines.First().SUPPLIER_CODE;

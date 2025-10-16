@@ -252,7 +252,7 @@ namespace HIS.UC.PlusInfo.Design
                 if (this.dlgFocusNextUserControl != null)
                     this.dlgFocusNextUserControl(this.TabIndex, null);
             }
-                catch (Exception ex)
+            catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn("Focus ra khoi UCProgram that bai: \n" + ex);
                 SendKeys.Send("{TAB}");
@@ -315,10 +315,10 @@ namespace HIS.UC.PlusInfo.Design
                 //}
                 //this.txtProgramCode.TabIndex = this.TabIndex;
                 this.patientId = patientID;
-                this.programId = programId;
+                this.programId = programid;
                 this.txtProgramCode.Text = "";
                 this.cboProgram.EditValue = null;
-                
+
                 if (patientID > 0)
                 {
                     CommonParam param = new CommonParam();
@@ -374,9 +374,9 @@ namespace HIS.UC.PlusInfo.Design
             {
                 if (this.cboProgram.EditValue != null)
                 {
-                    MOS.EFMODEL.DataModels.V_HIS_PATIENT_PROGRAM data = this._HisPatientPrograms.FirstOrDefault(o => o.PROGRAM_ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboProgram.EditValue ?? "0").ToString()));
-                    if (data != null)
-                        PROGRAM_ID = data.PROGRAM_ID;
+                    //MOS.EFMODEL.DataModels.V_HIS_PATIENT_PROGRAM data = this._HisPatientPrograms.FirstOrDefault(o => o.PROGRAM_ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboProgram.EditValue ?? "0").ToString()));
+                    //if (data != null)
+                    PROGRAM_ID = Convert.ToInt64(this.cboProgram.EditValue);
                 }
             }
             catch (Exception ex)
