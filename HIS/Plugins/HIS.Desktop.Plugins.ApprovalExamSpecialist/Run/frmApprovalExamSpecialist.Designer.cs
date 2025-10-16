@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmApprovalExamSpecialist));
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
@@ -1515,6 +1515,7 @@
             this.gridColumnIcdText});
             this.gridViewTreatment.GridControl = this.gridControl1;
             this.gridViewTreatment.Name = "gridViewTreatment";
+            this.gridViewTreatment.OptionsView.ColumnAutoWidth = false;
             this.gridViewTreatment.OptionsView.RowAutoHeight = true;
             this.gridViewTreatment.OptionsView.ShowGroupPanel = false;
             this.gridViewTreatment.OptionsView.ShowIndicator = false;
@@ -1532,7 +1533,7 @@
             this.gridColumnDateTime.OptionsColumn.ReadOnly = true;
             this.gridColumnDateTime.Visible = true;
             this.gridColumnDateTime.VisibleIndex = 0;
-            this.gridColumnDateTime.Width = 85;
+            this.gridColumnDateTime.Width = 95;
             // 
             // memLine
             // 
@@ -1554,7 +1555,7 @@
             this.gridColumnDoctor.OptionsColumn.ReadOnly = true;
             this.gridColumnDoctor.Visible = true;
             this.gridColumnDoctor.VisibleIndex = 1;
-            this.gridColumnDoctor.Width = 85;
+            this.gridColumnDoctor.Width = 95;
             // 
             // gridColumnProgress
             // 
@@ -1569,7 +1570,7 @@
             this.gridColumnProgress.OptionsColumn.ReadOnly = true;
             this.gridColumnProgress.Visible = true;
             this.gridColumnProgress.VisibleIndex = 2;
-            this.gridColumnProgress.Width = 111;
+            this.gridColumnProgress.Width = 222;
             // 
             // gridColumnMedicalOrder
             // 
@@ -1583,7 +1584,7 @@
             this.gridColumnMedicalOrder.OptionsColumn.ReadOnly = true;
             this.gridColumnMedicalOrder.Visible = true;
             this.gridColumnMedicalOrder.VisibleIndex = 3;
-            this.gridColumnMedicalOrder.Width = 162;
+            this.gridColumnMedicalOrder.Width = 395;
             // 
             // gridColumnIcdCode
             // 
@@ -1598,7 +1599,7 @@
             this.gridColumnIcdCode.OptionsColumn.ReadOnly = true;
             this.gridColumnIcdCode.Visible = true;
             this.gridColumnIcdCode.VisibleIndex = 4;
-            this.gridColumnIcdCode.Width = 55;
+            this.gridColumnIcdCode.Width = 122;
             // 
             // gridColumnIcdName
             // 
@@ -1610,7 +1611,7 @@
             this.gridColumnIcdName.OptionsColumn.ReadOnly = true;
             this.gridColumnIcdName.Visible = true;
             this.gridColumnIcdName.VisibleIndex = 5;
-            this.gridColumnIcdName.Width = 132;
+            this.gridColumnIcdName.Width = 222;
             // 
             // gridColumnIcdSubCode
             // 
@@ -1622,7 +1623,7 @@
             this.gridColumnIcdSubCode.OptionsColumn.ReadOnly = true;
             this.gridColumnIcdSubCode.Visible = true;
             this.gridColumnIcdSubCode.VisibleIndex = 6;
-            this.gridColumnIcdSubCode.Width = 55;
+            this.gridColumnIcdSubCode.Width = 122;
             // 
             // gridColumnIcdText
             // 
@@ -1634,7 +1635,7 @@
             this.gridColumnIcdText.OptionsColumn.ReadOnly = true;
             this.gridColumnIcdText.Visible = true;
             this.gridColumnIcdText.VisibleIndex = 7;
-            this.gridColumnIcdText.Width = 178;
+            this.gridColumnIcdText.Width = 222;
             // 
             // layoutControlGroup2
             // 
@@ -1976,7 +1977,7 @@
             this.cboDoctor.Name = "cboDoctor";
             this.cboDoctor.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboDoctor.Properties.NullText = "";
             this.cboDoctor.Properties.PopupSizeable = false;
             this.cboDoctor.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
