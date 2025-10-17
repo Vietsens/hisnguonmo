@@ -697,8 +697,8 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         if (alters != null && alters.Count > 0)
                             patientTypeAlter = alters.OrderByDescending(x => x.LOG_TIME).FirstOrDefault();
 
-                        var msg = "Một số dịch vụ đã thực hiện cần phải thu tiền, nếu bỏ thu có thể phát sinh rủi ro. Người dùng cần cân nhắc kỹ trước khi gỡ ra, hệ thống sẽ không chịu trách nhiệm đối với phần hủy hóa đơn này";
-                        XtraMessageBox.Show(msg, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        //var msg = "Một số dịch vụ đã thực hiện cần phải thu tiền, nếu bỏ thu có thể phát sinh rủi ro. Người dùng cần cân nhắc kỹ trước khi gỡ ra, hệ thống sẽ không chịu trách nhiệm đối với phần hủy hóa đơn này";
+                        //XtraMessageBox.Show(msg, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                         string moduleLink = "HIS.Desktop.Plugins.TransactionBill";
 
@@ -707,31 +707,35 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         {
                             if (item.ModuleLink == moduleLink)
                             {
-                                currentModule = item;
+                                moduleData = item;
                                 break;
                             }
                         }
 
-                        if (currentModule == null)
+                        if (moduleData == null)
                         {
                             Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = " + moduleLink);
                         }
-                        else if (currentModule.IsPlugin && currentModule.ExtensionInfo != null)
+                        else if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                         {
                             List<object> listArgs = new List<object>();
                             listArgs.Add(treatmentFee);
                             listArgs.Add(canceledServices);
                             listArgs.Add(patientTypeAlter);
-                            listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(currentModule, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+                            listArgs.Add(false);
+                            listArgs.Add(TransactionCancelResult);
+                            listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
 
                             var instance = PluginInstance.GetPluginInstance(
-                                PluginInstance.GetModuleWithWorkingRoom(currentModule, this.currentModule.RoomId, this.currentModule.RoomTypeId),
+                                PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId),
                                 listArgs);
 
                             if (instance == null)
                                 throw new ArgumentNullException("Không khởi tạo được plugin thay thế hóa đơn");
 
-                            ((Form)instance).ShowDialog();
+                            ((Form)instance).Show();
+                            var msg = "Một số dịch vụ đã thực hiện cần phải thu tiền, nếu bỏ thu có thể phát sinh rủi ro. Người dùng cần cân nhắc kỹ trước khi gỡ ra, hệ thống sẽ không chịu trách nhiệm đối với phần hủy hóa đơn này";
+                            XtraMessageBox.Show(msg, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                     else
