@@ -1024,7 +1024,6 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                 return null;
             }
         }
-
         private void btnDongBo_Click(object sender, EventArgs e)
         {
             try
@@ -1032,13 +1031,28 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                 CommonParam param = new CommonParam();
                 bool rs = false;
                 List<BabySyncSDO> listSyncData = new List<BabySyncSDO>();
-                // bool isError = false;
+
                 WaitingManager.Show();
                 var rowHandles = gridView1.GetSelectedRows();
 
-
                 if (rowHandles != null && rowHandles.Count() > 0)
                 {
+                    // ===== Gom danh sách hồ sơ được chọn =====
+                    List<V_HIS_BABY> selectedRows = new List<V_HIS_BABY>();
+                    foreach (var i in rowHandles)
+                    {
+                        var row = (V_HIS_BABY)gridView1.GetRow(i);
+                        if (row != null)
+                            selectedRows.Add(row);
+                    }
+
+                    // ===== Kiểm tra 1 lần duy nhất xem có hồ sơ nào đã gửi thành công chưa =====
+                    if (!CanSyncBabyRecord(selectedRows))
+                    {
+                        WaitingManager.Hide();
+                        return;
+                    }
+
                     List<ConnectionInfoADO> listConnectionInfo = GetConnectionInfo();
 
                     if (chkSignFileCertUtil.Checked && settingSignADO != null)
@@ -1047,62 +1061,67 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                         {
                             foreach (var item in listConnectionInfo)
                             {
-                                HIS.Bhyt.Hssk.SyncDataProcess data = new Bhyt.Hssk.SyncDataProcess(HisConfigs.Get<string>("HIS.CHECK_HEIN_CARD.BHXH__ADDRESS"), item.UserName, item.Password);
-                                foreach (var i in rowHandles)
+                                HIS.Bhyt.Hssk.SyncDataProcess data = new Bhyt.Hssk.SyncDataProcess(
+                                    HisConfigs.Get<string>("HIS.CHECK_HEIN_CARD.BHXH__ADDRESS"),
+                                    item.UserName,
+                                    item.Password
+                                );
+
+                                foreach (var row in selectedRows)
                                 {
-                                    var row = (V_HIS_BABY)gridView1.GetRow(i);
-                                    if (row != null)
+                                    HIS_BRANCH branch = listBranchs.FirstOrDefault(o => o.ID == row.BRANCH_ID);
+                                    var treatment = GetTreatment_ByID(row.TREATMENT_ID);
+
+                                    string messageError = null;
+                                    EMR.SDO.SignXmlBhytSDO signXmlBhytSDO = new EMR.SDO.SignXmlBhytSDO();
+                                    signXmlBhytSDO.XmlBase64 = data.Base64XmlGCS(branch, row, treatment, ref messageError);
+
+                                    if (!string.IsNullOrEmpty(messageError))
                                     {
-                                        if (!CanSyncBabyRecord(row)) continue;
-                                        HIS_BRANCH branch = listBranchs.FirstOrDefault(o => o.ID == row.BRANCH_ID);
-                                        var treatment = GetTreatment_ByID(row.TREATMENT_ID);
-
-                                        EMR.SDO.SignXmlBhytSDO signXmlBhytSDO = new EMR.SDO.SignXmlBhytSDO();
-                                        string messageError = null;
-                                        signXmlBhytSDO.XmlBase64 = data.Base64XmlGCS(branch, row, treatment, ref messageError);
-
-                                        if (!String.IsNullOrEmpty(messageError))
-                                        {
-                                            WaitingManager.Hide();
-                                            XtraMessageBox.Show(String.Format("{0}: {1}", row.TREATMENT_CODE, messageError), Resources.ResourceMessage.ThongBao);
-                                           
-                                        }
-
-                                        signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
-                                        signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO()
-                                        {
-                                            HsmSerialNumber = settingSignADO.SerialNumber,
-                                            HsmType = settingSignADO.Id,
-                                            HsmUserCode = settingSignADO.Name,
-                                            Password = settingSignADO.Password,
-                                            SecretKey = settingSignADO.SercetKey,
-                                            IdentityNumber = settingSignADO.CccdNumber
-                                        };
-
-                                        var stringbase64 = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
-                                        if (param != null && param.Messages != null && param.Messages.Count > 0)
-                                        {
-                                            string message = string.Join(Environment.NewLine, param.Messages);
-                                            DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                            Inventec.Common.Logging.LogSystem.Warn(message);
-                                            return;
-                                        }
-                                        BabySyncSDO sdo = new BabySyncSDO();
-                                        sdo.BabyID = row.ID;
-                                        if (!string.IsNullOrEmpty(stringbase64))
-                                        {
-                                            sdo.FileBase64Str = stringbase64;
-                                        }
-
-                                        listSyncData.Add(sdo);
+                                        WaitingManager.Hide();
+                                        XtraMessageBox.Show(string.Format("{0}: {1}", row.TREATMENT_CODE, messageError), Resources.ResourceMessage.ThongBao);
+                                        continue;
                                     }
+
+                                    signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
+                                    signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO()
+                                    {
+                                        HsmSerialNumber = settingSignADO.SerialNumber,
+                                        HsmType = settingSignADO.Id,
+                                        HsmUserCode = settingSignADO.Name,
+                                        Password = settingSignADO.Password,
+                                        SecretKey = settingSignADO.SercetKey,
+                                        IdentityNumber = settingSignADO.CccdNumber
+                                    };
+
+                                    var stringbase64 = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>(
+                                        "api/EmrSign/SignXmlBhyt",
+                                        ApiConsumer.ApiConsumers.EmrConsumer,
+                                        signXmlBhytSDO,
+                                        SessionManager.ActionLostToken,
+                                        param
+                                    );
+
+                                    if (param != null && param.Messages != null && param.Messages.Count > 0)
+                                    {
+                                        string message = string.Join(Environment.NewLine, param.Messages);
+                                        DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        Inventec.Common.Logging.LogSystem.Warn(message);
+                                        return;
+                                    }
+
+                                    BabySyncSDO sdo = new BabySyncSDO();
+                                    sdo.BabyID = row.ID;
+                                    if (!string.IsNullOrEmpty(stringbase64))
+                                        sdo.FileBase64Str = stringbase64;
+
+                                    listSyncData.Add(sdo);
                                 }
-                               
                             }
                         }
-                        else 
+                        else
                         {
-                            if (certificate == null && !String.IsNullOrWhiteSpace(settingSignADO.SerialNumber))
+                            if (certificate == null && !string.IsNullOrWhiteSpace(settingSignADO.SerialNumber))
                             {
                                 certificate = Inventec.Common.SignFile.CertUtil.GetBySerial(settingSignADO.SerialNumber, requirePrivateKey: true, validOnly: false);
                                 if (certificate == null)
@@ -1111,7 +1130,7 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                                     chkSignFileCertUtil.Checked = false;
                                     if (XtraMessageBox.Show(Resources.ResourceMessage.TiepTucHSM, Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                                     {
-                                       
+                                        return;
                                     }
                                 }
                             }
@@ -1120,7 +1139,10 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                             {
                                 foreach (var item in listConnectionInfo)
                                 {
-                                    HIS.Bhyt.Hssk.SyncDataProcess data = new Bhyt.Hssk.SyncDataProcess(HisConfigs.Get<string>("HIS.CHECK_HEIN_CARD.BHXH__ADDRESS"), item.UserName, item.Password,
+                                    HIS.Bhyt.Hssk.SyncDataProcess data = new Bhyt.Hssk.SyncDataProcess(
+                                        HisConfigs.Get<string>("HIS.CHECK_HEIN_CARD.BHXH__ADDRESS"),
+                                        item.UserName,
+                                        item.Password,
                                         (string xmlData, string element, string serialNumber) =>
                                         {
                                             if (VerifyServiceSignProcessorIsRunning())
@@ -1130,59 +1152,50 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                                             }
                                             else
                                                 return null;
-                                        });
-
-                                    foreach (var i in rowHandles)
-                                    {
-                                        var row = (V_HIS_BABY)gridView1.GetRow(i);
-                                        if (row != null)
-                                        {
-                                            if (!CanSyncBabyRecord(row)) continue;
-                                            string messageError = null;
-                                            BabySyncSDO sdo = new BabySyncSDO();
-                                            sdo.BabyID = row.ID;
-                                            HIS_BRANCH branch = listBranchs.FirstOrDefault(o => o.ID == row.BRANCH_ID);
-                                            if (certificate != null)
-                                            {
-                                                var treatment = GetTreatment_ByID(row.TREATMENT_ID);
-                                                sdo.FileBase64Str = data.ProcessBornInfo(branch, row, treatment, certificate, ref messageError);
-                                                if (!String.IsNullOrEmpty(messageError))
-                                                {
-                                                    WaitingManager.Hide();
-                                                    XtraMessageBox.Show(String.Format("{0}: {1}", row.TREATMENT_CODE, messageError), Resources.ResourceMessage.ThongBao);
-                                                   
-                                                }
-                                            }
-                                            listSyncData.Add(sdo);
                                         }
+                                    );
+
+                                    foreach (var row in selectedRows)
+                                    {
+                                        string messageError = null;
+                                        BabySyncSDO sdo = new BabySyncSDO();
+                                        sdo.BabyID = row.ID;
+                                        HIS_BRANCH branch = listBranchs.FirstOrDefault(o => o.ID == row.BRANCH_ID);
+
+                                        if (certificate != null)
+                                        {
+                                            var treatment = GetTreatment_ByID(row.TREATMENT_ID);
+                                            sdo.FileBase64Str = data.ProcessBornInfo(branch, row, treatment, certificate, ref messageError);
+
+                                            if (!string.IsNullOrEmpty(messageError))
+                                            {
+                                                WaitingManager.Hide();
+                                                XtraMessageBox.Show(string.Format("{0}: {1}", row.TREATMENT_CODE, messageError), Resources.ResourceMessage.ThongBao);
+                                                continue;
+                                            }
+                                        }
+
+                                        listSyncData.Add(sdo);
                                     }
-                                      
                                 }
                             }
                             else
                             {
                                 WaitingManager.Hide();
                                 XtraMessageBox.Show(Resources.ResourceMessage.CauHinhKhaiBaoSaiDinhDang, Resources.ResourceMessage.ThongBao);
-                               
+                                return;
                             }
                         }
                     }
-                    else 
+                    else
                     {
-                        foreach (var i in rowHandles)
+                        foreach (var row in selectedRows)
                         {
-                            var row = (V_HIS_BABY)gridView1.GetRow(i);
-                            if (row != null)
-                            {
-                                if (!CanSyncBabyRecord(row)) continue;
-                                BabySyncSDO sdo = new BabySyncSDO();
-                                sdo.BabyID = row.ID;
-                                listSyncData.Add(sdo);
-                            }
+                            BabySyncSDO sdo = new BabySyncSDO();
+                            sdo.BabyID = row.ID;
+                            listSyncData.Add(sdo);
                         }
                     }
-
-
 
                     if (listSyncData.Count > 0)
                     {
@@ -1199,76 +1212,121 @@ namespace HIS.Desktop.Plugins.InfantInformationList
                             FillDataToGrid();
                         }
                     }
-
                 }
 
                 WaitingManager.Hide();
 
-                #region Show message
                 if (listSyncData.Count > 0)
                 {
-                    // Chỉ hiển thị thông báo khi thực sự có xử lý
                     MessageManager.Show(this.ParentForm, param, rs);
                 }
-                #endregion
 
-                #region Process has exception
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
-                #endregion
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                WaitingManager.Hide();
             }
         }
+
         private bool CanSyncBabyRecord(V_HIS_BABY row)
         {
             if (row == null) return false;
-            if (row.SYNC_RESULT_TYPE == 2)
+
+            List<V_HIS_BABY> singleList = new List<V_HIS_BABY>();
+            singleList.Add(row);
+
+            return CanSyncBabyRecord(singleList);
+        }
+
+        private bool CanSyncBabyRecord(List<V_HIS_BABY> selectedRows)
+        {
+            try
             {
-                string birthCert = "";
-                if (row.BIRTH_CERT_NUM != null)
+                if (selectedRows == null || selectedRows.Count == 0)
+                    return false;
+
+                List<string> existedCerts = new List<string>();
+
+                for (int i = 0; i < selectedRows.Count; i++)
                 {
-                    string birthCertStr = row.BIRTH_CERT_NUM.ToString();
-                    if (birthCertStr.Length < 5)
-                        birthCert = string.Format("{0:00000}", row.BIRTH_CERT_NUM);
-                    else
-                        birthCert = birthCertStr;
-                }
-                HIS_BRANCH branch = null;
-                if (listBranchs != null)
-                {
-                    for (int b = 0; b < listBranchs.Count; b++)
+                    var row = selectedRows[i];
+                    if (row == null) continue;
+
+                    if (row.SYNC_RESULT_TYPE == 2) // 2 = Đã gửi thành công
                     {
-                        if (listBranchs[b].ID == row.BRANCH_ID)
+                        string birthCert = "";
+                        if (row.BIRTH_CERT_NUM != null)
                         {
-                            branch = listBranchs[b];
-                            break;
+                            string birthCertStr = row.BIRTH_CERT_NUM.ToString();
+                            if (birthCertStr.Length < 5)
+                                birthCert = string.Format("{0:00000}", row.BIRTH_CERT_NUM);
+                            else
+                                birthCert = birthCertStr;
                         }
+
+                        HIS_BRANCH branch = null;
+                        if (listBranchs != null)
+                        {
+                            for (int b = 0; b < listBranchs.Count; b++)
+                            {
+                                if (listBranchs[b].ID == row.BRANCH_ID)
+                                {
+                                    branch = listBranchs[b];
+                                    break;
+                                }
+                            }
+                        }
+
+                        string orgCode = branch != null ? branch.HEIN_MEDI_ORG_CODE : "";
+                        string yearSuffix = "";
+                        if (row.ISSUED_DATE != null)
+                        {
+                            string issuedDateStr = row.ISSUED_DATE.ToString();
+                            if (issuedDateStr.Length >= 4)
+                                yearSuffix = issuedDateStr.Substring(2, 2);
+                        }
+
+                        string birthCertCode = string.Format("{0}.GCS.{1}.{2}", birthCert, orgCode, yearSuffix);
+
+                        string treatmentCode = "";
+                        V_HIS_TREATMENT treatment = GetTreatment_ByID(row.TREATMENT_ID);
+                        if (treatment != null)
+                            treatmentCode = treatment.TREATMENT_CODE;
+
+                        existedCerts.Add(string.Format("{0} của hồ sơ {1}", birthCertCode, treatmentCode));
                     }
                 }
-                string orgCode = branch != null ? branch.HEIN_MEDI_ORG_CODE : "";
-                string yearSuffix = "";
-                if (row.ISSUED_DATE != null)
+
+                if (existedCerts.Count > 0)
                 {
-                    string issuedDateStr = row.ISSUED_DATE.ToString();
-                    if (issuedDateStr.Length >= 4)
-                        yearSuffix = issuedDateStr.Substring(2, 2);
+                    string joinedMessage = string.Join(", ", existedCerts.ToArray());
+                    string message = string.Format(
+                        "Giấy chứng sinh {0} đã được gửi thành công trước đó. Bạn có muốn gửi lại không?",
+                        joinedMessage
+                    );
+
+                    DialogResult dlgResult = XtraMessageBox.Show(
+                        message,
+                        Resources.ResourceMessage.ThongBao,
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    );
+
+                    if (dlgResult != DialogResult.Yes)
+                        return false;
                 }
-                string birthCertCode = string.Format("{0}.GCS.{1}.{2}", birthCert, orgCode, yearSuffix);
-                string treatmentCode = "";
-                V_HIS_TREATMENT treatment = GetTreatment_ByID(row.TREATMENT_ID);
-                if (treatment != null)
-                    treatmentCode = treatment.TREATMENT_CODE;
-                string message = string.Format("Giấy chứng sinh {0} của hồ sơ {1} đã được gửi thành công trước đó. Bạn có muốn gửi lại không?", birthCertCode, treatmentCode);
-                DialogResult dlgResult = XtraMessageBox.Show(message, Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (dlgResult != DialogResult.Yes)
-                {
-                    return false;
-                }
+
+                return true;
             }
-            return true;
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
         }
+
         private V_HIS_TREATMENT GetTreatment_ByID(long treatmentId)
         {
             V_HIS_TREATMENT result = null;

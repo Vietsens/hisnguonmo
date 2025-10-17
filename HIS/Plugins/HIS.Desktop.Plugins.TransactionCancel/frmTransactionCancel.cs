@@ -636,11 +636,15 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                 if (rs != null)
                 {
                     success = true;
-                    foreach (var item in lstTransOriginal)
+                    if (lstTransOriginal != null && lstTransOriginal.Count > 0)
                     {
-                        sdo.TransactionId = item.ID;
-                        var rso = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANSACTION>("api/HisTransaction/Cancel", ApiConsumers.MosConsumer, sdo, param);
-                    }
+                        foreach (var item in lstTransOriginal)
+                        {
+                            sdo.TransactionId = item.ID;
+                            var rso = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANSACTION>("api/HisTransaction/Cancel", ApiConsumers.MosConsumer, sdo, param);
+                        }
+                    }    
+                    
                     if (this.refreshDelegate != null) this.refreshDelegate(true);
                     TransactionCancelResult = GetViewTransaction(rs.ID);
                     listTranPrint.Add(this.TransactionCancelResult);
