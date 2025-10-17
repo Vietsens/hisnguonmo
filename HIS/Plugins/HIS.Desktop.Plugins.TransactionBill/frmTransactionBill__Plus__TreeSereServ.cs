@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -267,6 +267,20 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (node != null)
                 {
                     var nodeData = (SereServADO)node.TreeList.GetDataRecordByNode(node);
+                    if (isReplaceMode)
+                    {
+                        long stt = nodeData.SERVICE_REQ_STT_ID;
+                        bool isExam = nodeData.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH;
+                        if (stt == 3 || (isExam && stt == 2))
+                        {
+                            e.CanCheck = false; 
+                            return;
+                        }
+                        else
+                        {
+                            e.CanCheck = true; 
+                        }
+                    }
                     if (nodeData != null && Config.HisConfigCFG.MustFinishTreatmentForBill == "1" && this.currentTreatment.IS_PAUSE != 1 && nodeData.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
                     {
                         e.CanCheck = false;
@@ -342,6 +356,19 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             try
             {
+                if (isReplaceMode)
+                {
+                    if (data != null)
+                    {
+                        long stt = data.SERVICE_REQ_STT_ID;
+                        bool isExam = data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH;
+                        if (stt == 3 || (isExam && stt == 2))
+                        {
+                            e.ObjectArgs.State = DevExpress.Utils.Drawing.ObjectState.Disabled;
+                            e.Handled = true;
+                        }
+                    }
+                }
                 if (data != null && Config.HisConfigCFG.MustFinishTreatmentForBill == "1" && this.currentTreatment.IS_PAUSE != 1 && data.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
                 {
                     e.Handled = true;

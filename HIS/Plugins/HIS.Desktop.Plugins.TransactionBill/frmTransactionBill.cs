@@ -43,7 +43,7 @@ using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using Inventec.Fss.Client;
-using MOS.EFMODEL.DataModels;      
+using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.LibraryHein.HcmPoorFund;
 using MOS.SDO;
@@ -76,7 +76,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA,
             IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN,
             IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT,
-            IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN          
+            IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
         };
 
         bool isNotLoadWhilechkAutoCloseStateInFirst = true;
@@ -89,7 +89,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
         const string invoiceTypeCreate__CreateInvoiceVnpt = "1";
         const string invoiceTypeCreate__CreateInvoiceHIS = "2";
         public static decimal? RepayAmount;
-
+        //qtcode
+        private bool isReplaceMode = false;
         SereServTreeProcessor ssTreeProcessor = null;
         UserControl ucSereServTree = null;
         Inventec.Desktop.Common.Modules.Module currentModule = null;
@@ -122,7 +123,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         V_HIS_PATIENT_TYPE_ALTER resultPatientType;
         List<V_HIS_BILL_FUND> ListBillFundPay;
         HIS_BRANCH branch = null;
-        string userName = "";        
+        string userName = "";
         bool? IsDirectlyBilling = null;
 
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -541,6 +542,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 1");
+                //qtcode
+                if (isReplaceMode)
+                {
+                    ssTreeProcessor.CheckAllNode(ucSereServTree);
+                }
                 this.timerInitForm.Stop();
                 SetStateEnableControl();
                 SetDefaultValueTransaction();
@@ -573,6 +579,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
             {
                 Inventec.Common.Logging.LogSystem.Debug("frmTransactionBill_Load. 1");
                 WaitingManager.Show();
+                //qtcode
+                if (this.currentTransaction != null && this.currentTransaction.IS_CANCEL == 1 && HisConfigCFG.AutoReplaceInvoiceOnCancel == "1")
+                {
+                    isReplaceMode = true;
+                }
                 timerClose.Tick += new System.EventHandler(this.timerClose_Tick);
                 timerClose.Interval = 100;
                 CheckEnableBtnQR();
@@ -2496,7 +2507,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             {
                 InformationBuyerADO ado = new InformationBuyerADO();
                 ado.FullName = txtBuyerName.Text;
-                ado.TaxCode = txtBuyerTaxCode.Text; 
+                ado.TaxCode = txtBuyerTaxCode.Text;
                 ado.BuyerType = radioBuyerUser.Checked ? 1 : (radioBuyerCompany.Checked ? 2 : (int?)null); // Lưu loại người mua
                 ado.Email = txtBuyerEmail.Text;
                 ado.PhoneNumber = txtSDT.Text;
@@ -3606,13 +3617,13 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganization.EditValue.ToString())).First();
                     txtBuyerAddress.Text = dt.ADDRESS;
-                    if(dt.TAX_CODE != null)
+                    if (dt.TAX_CODE != null)
                     {
                         txtBuyerTaxCode.Text = dt.TAX_CODE;
                     }
                     //if (!chkAddressBhyt.Checked)
                     //{
-                        
+
                     //}
                     //
                     cboBuyerOrganization.Properties.Buttons[1].Visible = true;
@@ -3927,7 +3938,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     return;
                 }
-                if(chkAddressBhyt.Checked)
+                if (chkAddressBhyt.Checked)
                 {
                     if (resultPatientType != null && !string.IsNullOrEmpty(resultPatientType.ADDRESS))
                     {
@@ -3941,7 +3952,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     {
                         txtBuyerAddress.Text = "";
                     }
-                }                    
+                }
                 else
                 {
                     txtBuyerAddress.Text = currentTreatment.TDL_PATIENT_ADDRESS;
@@ -4025,7 +4036,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 layoutControlItem33.Visibility = LayoutVisibility.Never;
                 layoutControlItem34.Visibility = LayoutVisibility.Never;
                 layoutControlItem62.Visibility = LayoutVisibility.Always;
-                if(checkEdit1.Checked)
+                if (checkEdit1.Checked)
                 {
                     layoutControlItem58.Visibility = LayoutVisibility.Never;
                     layoutControlItem61.Visibility = LayoutVisibility.Always;
@@ -4061,7 +4072,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
         private void checkEdit1_CheckedChanged_1(object sender, EventArgs e)
         {
-            if(checkEdit1.Checked)
+            if (checkEdit1.Checked)
             {
                 layoutControlItem58.Visibility = LayoutVisibility.Never;
                 layoutControlItem61.Visibility = LayoutVisibility.Always;
@@ -4188,6 +4199,42 @@ namespace HIS.Desktop.Plugins.TransactionBill
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+            }
+        }
+        private void frmTransactionBill_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                if (isReplaceMode && btnSave.Enabled)
+                {
+                    var processingSereServs = currentSereServs
+                        .Where(o => o.SERVICE_REQ_STT_ID == 2 || o.SERVICE_REQ_STT_ID == 3)
+                        .ToList();
+
+                    if (processingSereServs != null && processingSereServs.Count > 0)
+                    {
+                        var rooms = BackendDataWorker.Get<V_HIS_ROOM>();
+                        string message = "Tồn tại dịch vụ đã thực hiện cần phải thu tiền: \n";
+                        int stt = 1;
+
+                        foreach (var ss in processingSereServs)
+                        {
+                            var room = rooms.FirstOrDefault(r => r.ID == ss.TDL_EXECUTE_ROOM_ID);
+                            string roomName = room != null ? room.ROOM_NAME : "";
+                            string address = room != null ? room.ADDRESS : "";
+                            message += string.Format("{0}. {1} - {2} - {3}: {4}\n", stt, ss.TDL_SERVICE_REQ_CODE, roomName, address, ss.TDL_SERVICE_NAME
+                            );
+                            stt++;
+                        }
+
+                        message += ". Nếu bỏ thu mọi rủi ro phát sinh người dùng sẽ tự chịu trách nhiệm";
+                        MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
