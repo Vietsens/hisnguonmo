@@ -505,7 +505,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                 if (payFormList.Count > 0)
                 {
                     cboPayForm.EditValue = payFormList.First().PayFormId;
-                   // cboPayForm.EditValue = payFormList.First().ID;
+                    // cboPayForm.EditValue = payFormList.First().ID;
                 }
             }
             catch (Exception ex)
@@ -859,7 +859,8 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                     ado.PayFormId = payForm.ID;
                 else
                     ado.PayFormId = 0;
-                ado.TransferAmount = spinEditChuyenKhoan.Value;
+                if (spinEditChuyenKhoan.Value > 0)
+                    ado.TransferAmount = spinEditChuyenKhoan.Value;
 
                 if (cboAccountBook.EditValue != null)
                     ado.AccountBookId = Convert.ToInt64(cboAccountBook.EditValue);
