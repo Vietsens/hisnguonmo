@@ -1826,9 +1826,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
 
                 fullFileName = "DATA_XML_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xml";
-                saveFilePath = String.Format("{0}/{1}", this.savePathADO.pathXml, fullFileName);
-                saveFilePathXml12 = String.Format("{0}/{1}{2}", this.savePathADO.pathXmlGDYK, "XML12_", fullFileName);
-
+                saveFilePath = String.Format("{0}/{1}", IsProcessingExcel ? this.PathTempXml : this.savePathADO.pathXml, fullFileName);
+                saveFilePathXml12 = String.Format("{0}/{1}{2}", IsProcessingExcel ? this.PathTempXml : this.savePathADO.pathXmlGDYK, "XML12_", fullFileName);
+                if (IsProcessingExcel)
+                {
+                    saveFileExcel = saveFilePath;
+                    saveFileExcel12 = saveFilePathXml12;
+                }
                 var rs = xmlProcessor.RunPlus(saveFilePath, ref errorMess);
                 var rsXml12 = XuatXml12 ? xmlProcessor.RunXml12Plus(saveFilePathXml12, ref errorMessXml12) : null;
                 if (!String.IsNullOrWhiteSpace(errorMess))
@@ -1856,7 +1860,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     isSuccess = true;
                 }
 
-                if (isNotFileSign == false && SettingSignADO != null)
+                if (!IsProcessingExcel && isNotFileSign == false && SettingSignADO != null)
                 {
                     string currentDirectory = Directory.GetCurrentDirectory();
                     string tempFolderPath = Path.Combine(currentDirectory, "Temp");
@@ -4560,12 +4564,20 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                     DXMenuItem menuItemXuatXmlTT = new DXMenuItem("Xuất XML thông tuyến", new EventHandler(this.btnExportCollinearXml_Click));
                     e.Menu.Items.Add(menuItemXuatXmlTT);
+
+                    DXMenuItem menuItemXuatXmlExcel = new DXMenuItem("Xuất XML dưới dạng excel", new EventHandler(this.btnExportXmlToExcel_Click));
+                    e.Menu.Items.Add(menuItemXuatXmlExcel);
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void btnExportXmlToExcel_Click(object sender, EventArgs e)
+        {
+            ProcessDataExcel();
         }
 
         private void MenuItemClick_XuatXmlCheckIn(object sender, EventArgs e)
@@ -5046,7 +5058,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         if (XtraMessageBox.Show("Chưa chọn thư mục lưu file chỉ tiêu dữ liệu giám định y khoa. Bạn có muốn chọn đường dẫn không?", Resources.ResourceMessageLang.ThongBao, MessageBoxButtons.YesNo) == DialogResult.Yes)
                             btnSavePath_Click(null, null);
                     }
-
+                    IsProcessingExcel = false;
                     if (chkSignFileCertUtil.Checked == false)
                     {
                         WaitingManager.Show();
