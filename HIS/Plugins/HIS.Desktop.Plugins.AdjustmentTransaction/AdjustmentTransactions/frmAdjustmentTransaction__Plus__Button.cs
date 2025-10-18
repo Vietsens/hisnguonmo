@@ -474,16 +474,16 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                                 {
 
                                 }
-                            }
+                            }            
                         }
                     }
                 }
 
-                WaitingManager.Show();
+                WaitingManager.Show();    
                 CommonParam param = new CommonParam();
                 success = (bool)ProcessSave(ref param, false);
                 WaitingManager.Hide();
-                SetEnableButtonSave(!success.Value);
+                SetEnableButtonSave(!success);
                 if (success == true)
                 {
                     this.hienHoaDonNhap = false;
