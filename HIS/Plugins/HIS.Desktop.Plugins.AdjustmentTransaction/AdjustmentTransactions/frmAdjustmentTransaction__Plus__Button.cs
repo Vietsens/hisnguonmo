@@ -60,22 +60,22 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
         bool isEmr = false;
         bool isnotPrintMPS000111 = false;
         public HisTransactionBillResultSDO TransactionBillResultSDO { get; private set; }
-        
-        private void SetEnableButtonSave(bool? enable)
+
+        private void SetEnableButtonSave(bool enable)
         {
             try
             {
-                btnSave.Enabled = enable ?? true;
-                btnSaveAndSign.Enabled = enable ?? true;
-                btnSavePrint.Enabled = enable ?? true;
+                btnSave.Enabled = enable;
+                btnSaveAndSign.Enabled = enable;
+                btnSavePrint.Enabled = enable;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private bool? ProcessSave(ref CommonParam param, bool isLuuKy)      
-         {
+        private bool? ProcessSave(ref CommonParam param, bool isLuuKy)
+        {
             Inventec.Common.Logging.LogSystem.Info("ProcessSave 1.1");
             this.isPrintNow = false;
             bool? success = false;
@@ -164,11 +164,11 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 data.Transaction.ADJUSTMENT_REASON = txtReason.Text;
                 data.Transaction.IS_ADJUSTMENT = 1;
 
-                
+
                 decimal AmountTransaction = 0;
                 decimal ToyalPriceGoc = 0;
                 List<HIS_SERE_SERV_BILL> hisSSBills = new List<HIS_SERE_SERV_BILL>();
-                foreach (var item in listData)  
+                foreach (var item in listData)
                 {
                     HIS_SERE_SERV_BILL ssBill = new HIS_SERE_SERV_BILL();
                     ssBill.SERE_SERV_ID = item.ID;
@@ -192,7 +192,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                     hisSSBills.Add(ssBill);
                 }
 
-                if (AmountTransaction == 0 )
+                if (AmountTransaction == 0)
                 {
                     param.Messages.Add(HIS.Desktop.Plugins.AdjustmentTransaction.Base.ResourceMessageLang.DieuChinh);
                     return success;
@@ -201,7 +201,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 {
                     data.Transaction.AMOUNT = AmountTransaction;
                 }
-                
+
                 if (data.Transaction.AMOUNT >= 0)
                 {
                     data.Transaction.ADJUSTMENT_TYPE = 2; //AMOUNT dương        
@@ -258,11 +258,9 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                     {
                         if (isnotPrintMPS000111 == false)
                         {
-                            MOS.EFMODEL.DataModels.HIS_TRANSACTION tran = new MOS.EFMODEL.DataModels.HIS_TRANSACTION();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_TRANSACTION>(tran, resultTranBill);
                             //tran.HIS_BILL_FUND = data.Transaction.HIS_BILL_FUND;
                             //Tao hoa don dien thu ben thu3 
-                            ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(tran);
+                            ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(rs);
                             if (electronicBillResult == null || !electronicBillResult.Success)
                             {
                                 CreatAgain = true;
@@ -338,8 +336,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 if (!btnSave.Enabled)
                     return;
 
-                SetEnableButtonSave(false);
-
                 if (treatmentFee.TDL_TREATMENT_TYPE_ID != null)
                 {
                     var treatmentType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == treatmentFee.TDL_TREATMENT_TYPE_ID);
@@ -368,21 +364,15 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 CommonParam param = new CommonParam();
                 success = ProcessSave(ref param, false);
                 WaitingManager.Hide();
+                SetEnableButtonSave(!success.Value);
 
-                if (success == false)
+                if (chkPrintHddt.Checked)
                 {
-                    SetEnableButtonSave(true);
-                    Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, false);
+                    this.onClickInHoaDonDienTu(null, null);
                 }
-                else
-                {
-                    if (chkPrintHddt.Checked)
-                    {
-                        this.onClickInHoaDonDienTu(null, null);
-                    }
-                }
+
                 SessionManager.ProcessTokenLost(param);
-                
+
             }
             catch (Exception ex)
             {
@@ -456,7 +446,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 this.positionHandleControl = -1;
                 if (!btnSavePrint.Enabled)
                     return;
-                SetEnableButtonSave(false);
 
                 if (HisConfigCFG.AttachAssignPrintWarningOption == "1")
                 {
@@ -494,17 +483,14 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 CommonParam param = new CommonParam();
                 success = (bool)ProcessSave(ref param, false);
                 WaitingManager.Hide();
-
+                SetEnableButtonSave(!success.Value);
                 if (success == true)
                 {
                     this.hienHoaDonNhap = false;
                     this.onClickPhieuThuThanhToan();
                 }
-                else
-                {
-                    SetEnableButtonSave(true);
-                    Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, false);
-                }
+                    
+                Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, false);
             }
             catch (Exception ex)
             {
@@ -522,7 +508,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                     return;
                 if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show("Thanh toán QR chưa thể tự động tạo hóa đơn điện tử bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                     return;
-                SetEnableButtonSave(false);
                 if (String.IsNullOrEmpty(AdjustmentTransactionConfig.InvoiceTypeCreate))
                     return;
 
@@ -530,17 +515,17 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 {
                     return;
                 }
-                    
+
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 ErrorElectronicBill = new List<string>();
                 success = ProcessSave(ref param, true);
                 param.Messages = param.Messages.Distinct().ToList();
                 WaitingManager.Hide();
-
+                SetEnableButtonSave(!success.Value);
                 if (success == true)
                 {
-                    this.hienHoaDonNhap = false;   
+                    this.hienHoaDonNhap = false;
                     bool showResult = true;
                     if (CreatAgain && success == true)
                     {
@@ -587,7 +572,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 }
                 else if (success == false)
                 {
-                    SetEnableButtonSave(true);
                     Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, false);
                 }
 
@@ -637,7 +621,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 }
                 else
                 {
-                    store.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__PhieuThuThanhToan_MPS000111, InPhieuThuThanhToan);   
+                    store.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__PhieuThuThanhToan_MPS000111, InPhieuThuThanhToan);
                 }
             }
             catch (Exception ex)
@@ -2300,36 +2284,21 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
             }
         }
 
-        private ElectronicBillResult TaoHoaDonDienTuBenThu3CungCap(MOS.EFMODEL.DataModels.HIS_TRANSACTION transaction)
+        private ElectronicBillResult TaoHoaDonDienTuBenThu3CungCap(HisAdjustmentBillResultSDO transactionRs)
         {
             ElectronicBillResult result = new ElectronicBillResult();
             try
             {
-                List<V_HIS_SERE_SERV_5> sereServBills = new List<V_HIS_SERE_SERV_5>();
-                var sereServBillADOs = ssTreeProcessor.GetListCheck(this.ucSereServTree);
-                if (sereServBillADOs == null)
-                {
-                    result.Success = false;
-                    LogSystem.Debug("Khong co dich vu thanh toan nao duoc chon!");
-                    return result;
-                }
-                foreach (var item in sereServBillADOs)
-                {
-                    V_HIS_SERE_SERV_5 sereServBill = new V_HIS_SERE_SERV_5();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERE_SERV_5>(sereServBill, item);
-                    sereServBills.Add(sereServBill);
-                }
-
                 ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
-                dataInput.Amount = transaction.AMOUNT;
+                dataInput.Amount = transactionRs.TransactionBill.AMOUNT;
                 dataInput.Branch = LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == LocalStorage.LocalData.WorkPlace.GetBranchId());
                 dataInput.Discount = this.resultTranBill.EXEMPTION ?? 0;
                 dataInput.DiscountRatio = ((this.resultTranBill.EXEMPTION / this.resultTranBill.AMOUNT) * 100) ?? 0;
                 dataInput.PaymentMethod = cboPayForm.Text;
-                dataInput.SereServs = sereServBills;
+                dataInput.SereServBill = transactionRs.SereServBills;
                 dataInput.Treatment = this.treatmentFee;
                 dataInput.Currency = "VND";
-                dataInput.Transaction = transaction;
+                dataInput.Transaction = transactionRs.TransactionBill;
                 var accountBook = ListAccountBook.FirstOrDefault(o => o.ID == Convert.ToInt64(cboAccountBook.EditValue));
                 if (accountBook != null)
                 {
