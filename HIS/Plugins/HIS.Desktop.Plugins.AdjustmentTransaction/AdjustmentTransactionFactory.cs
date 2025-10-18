@@ -1,4 +1,5 @@
-﻿using Inventec.Core;
+﻿using HIS.Desktop.Common;
+using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction
         {
             IAdjustmentTransaction result = null;
             Inventec.Desktop.Common.Modules.Module moduleData = null;
+            DelegateRefreshData delegateRefreshData = null;
             V_HIS_TRANSACTION tran = null;
             try
             {
@@ -31,12 +33,16 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction
                             {
                                 moduleData = (Inventec.Desktop.Common.Modules.Module)data[i];
                             }
+                            else if (data[i] is DelegateRefreshData)
+                            {
+                                delegateRefreshData = (DelegateRefreshData)data[i];
+                            }
                         }
                     }
                 }
                 if (moduleData != null && tran != null)
                 {
-                    result = new AdjustmentTransactionBehavior(moduleData, tran);
+                    result = new AdjustmentTransactionBehavior(moduleData, tran, delegateRefreshData);
                 }
 
             }

@@ -33,10 +33,11 @@ using HIS.Desktop.LocalStorage.LocalData;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Repository;
+using HIS.Desktop.Common;
 
 namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
 {
-    public partial class frmAdjustmentTransaction : FormBase
+    public partial class frmAdjustmentTransaction : FormBase    
     {
         V_HIS_TREATMENT_FEE treatmentFee = new V_HIS_TREATMENT_FEE();
         V_HIS_PATIENT_TYPE_ALTER resultPatientType;
@@ -64,7 +65,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
         private List<V_HIS_TRANSACTION> lstTranPrint { get; set; }
         private List<HIS_SESE_DEPO_REPAY> lstSeseRepayPrint { get; set; }
         private List<HIS_SERE_SERV_DEPOSIT> listSereDepoPrint { get; set; }
-        decimal totalDiscount = 0;
         decimal totalCanThu = 0;
         const string invoiceTypeCreate__CreateInvoiceHIS = "2";
         const string invoiceTypeCreate__CreateInvoiceVnpt = "1";
@@ -80,13 +80,15 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
         HIS_BRANCH branch = null;
         string departmentName = "";
         private Dictionary<object, decimal> adjustmentValues = new Dictionary<object, decimal>();
-        public frmAdjustmentTransaction(Inventec.Desktop.Common.Modules.Module module, V_HIS_TRANSACTION tran) 
+        DelegateRefreshData delegateRefreshData = null;
+        public frmAdjustmentTransaction(Inventec.Desktop.Common.Modules.Module module, V_HIS_TRANSACTION tran, DelegateRefreshData delegateRefreshData) 
             : base(module)
         {
             InitializeComponent();
             Base.ResourceLangManager.InitResourceLanguageManager();
             this.currentTransaction = tran;
             this.currentModule = module;
+            this.delegateRefreshData = delegateRefreshData;
             InitSereServTree();
         }
 
@@ -120,11 +122,11 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                         string rightRoute = "";
                         if (resultPatientType.RIGHT_ROUTE_CODE == MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE)
                         {
-                            rightRoute = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__RIGHT_ROUTE_TRUE", Base.ResourceLangManager.LanguageFrmTransactionBill, LanguageManager.GetCulture());
+                            rightRoute = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__RIGHT_ROUTE_TRUE", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, LanguageManager.GetCulture());
                         }
                         else
                         {
-                            rightRoute = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__RIGHT_ROUTE_FALSE", Base.ResourceLangManager.LanguageFrmTransactionBill, LanguageManager.GetCulture());
+                            rightRoute = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__RIGHT_ROUTE_FALSE", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, LanguageManager.GetCulture());
                         }
                         txtRightRoute.Text = rightRoute ?? "";
                         string ratio = "";
@@ -204,6 +206,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 this.LoadDataToTreeSereServ(false);//TODO
                 this.LoadCashierRoomAndBranch();
                 this.LoadAccountBookToLocal();
+                this.ResetControlValue();
 
             }
             catch (Exception ex)
@@ -466,19 +469,19 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 ado.treeSereServ_CellValueChanged = treeSereServ_CellValueChanged;
 
                 ado.SereServTreeColumns = new List<SereServTreeColumn>();
-                ado.LayoutSereServExpend = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_SERE_SERV_EXPEND", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.LayoutSereServExpend = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__LAYOUT_SERE_SERV_EXPEND", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 //Column tên dịch vụ
-                SereServTreeColumn serviceNameCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_NAME", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_NAME", 180, false);
+                SereServTreeColumn serviceNameCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_SERVICE_NAME", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_NAME", 180, false);
                 serviceNameCol.VisibleIndex = 0;
                 ado.SereServTreeColumns.Add(serviceNameCol);
 
                 //Column mã dịch vụ
-                SereServTreeColumn serviceCodeCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_CODE", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_CODE", 80, false);
+                SereServTreeColumn serviceCodeCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_SERVICE_CODE", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_CODE", 80, false);
                 serviceCodeCol.VisibleIndex = 1;
                 ado.SereServTreeColumns.Add(serviceCodeCol);   
 
                 //Column Số lượng
-                SereServTreeColumn amountCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_AMOUNT", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "AMOUNT_PLUS", 40, false);//AMOUNT_PLUS
+                SereServTreeColumn amountCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_AMOUNT", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "AMOUNT_PLUS", 40, false);//AMOUNT_PLUS
                 amountCol.VisibleIndex = 2;
                 amountCol.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
                 amountCol.Format = new DevExpress.Utils.FormatInfo();
@@ -487,36 +490,37 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 ado.SereServTreeColumns.Add(amountCol);
 
                 //Column đơn giá
-                SereServTreeColumn virPriceCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_PRICE", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "VIR_PRICE_DISPLAY", 80, false);//VIR_PRICE
+                SereServTreeColumn virPriceCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_VIR_PRICE", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "VIR_PRICE_DISPLAY", 80, false);//VIR_PRICE
                 virPriceCol.VisibleIndex = 3;
                 virPriceCol.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
                 ado.SereServTreeColumns.Add(virPriceCol);
 
                 //Column vat (%)
-                SereServTreeColumn virVatRatioCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VAT_RATIO", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "VAT_DISPLAY", 80, false);
+                SereServTreeColumn virVatRatioCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_VAT_RATIO", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "VAT_DISPLAY", 80, false);
                 virVatRatioCol.VisibleIndex = 4;
                 virVatRatioCol.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
                 ado.SereServTreeColumns.Add(virVatRatioCol);
 
                 //Column thành tiền
-                SereServTreeColumn virTotalPriceCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PRICE", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "VIR_TOTAL_PRICE_DISPLAY", 80, false);//VIR_TOTAL_PRICE
+                SereServTreeColumn virTotalPriceCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PRICE", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "VIR_TOTAL_PRICE_DISPLAY", 80, false);//VIR_TOTAL_PRICE
                 virTotalPriceCol.VisibleIndex = 5;
                 virTotalPriceCol.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
                 ado.SereServTreeColumns.Add(virTotalPriceCol);
 
                 //Column bệnh nhân trả
-                SereServTreeColumn virTotalPatientPriceCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PATIENT_PRICE", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "VIR_TOTAL_PATIENT_PRICE_DISPLAY", 80, false);//VIR_TOTAL_PATIENT_PRICE
+                SereServTreeColumn virTotalPatientPriceCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PATIENT_PRICE", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "VIR_TOTAL_PATIENT_PRICE_DISPLAY", 80, false);//VIR_TOTAL_PATIENT_PRICE
                 virTotalPatientPriceCol.VisibleIndex = 6;
                 virTotalPatientPriceCol.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
                 ado.SereServTreeColumns.Add(virTotalPatientPriceCol);
 
                 //Column tổng hóa đơn
-                SereServTreeColumn virTotalBillAmountCol = new SereServTreeColumn("Tổng hóa đơn", "TOTAL_BILL_AMOUNT", 80, false);//TOTAL_BILL_AMOUNT
+                SereServTreeColumn virTotalBillAmountCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_TOTAL_BILL_AMOUNT", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TOTAL_BILL_AMOUNT", 80, false);//TOTAL_BILL_AMOUNT
                 virTotalBillAmountCol.VisibleIndex = 7;
                 virTotalBillAmountCol.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
                 ado.SereServTreeColumns.Add(virTotalBillAmountCol);
 
-                SereServTreeColumn virEditAmountCol = new SereServTreeColumn("Điều chỉnh", "EDIT_AMOUNT", 80, true);
+                //Column điều chỉnh
+                SereServTreeColumn virEditAmountCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_EDIT_AMOUNT", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "EDIT_AMOUNT", 80, true);
                 virEditAmountCol.VisibleIndex = 8;
                 virEditAmountCol.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Decimal;
                 virEditAmountCol.Format = new DevExpress.Utils.FormatInfo();
@@ -576,6 +580,8 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
             {
                 if (e.Column.FieldName == "EDIT_AMOUNT" && data != null)
                 {
+                    if (data.IsFather == true || e.Node.Level == 0)
+                        return;
                     // Lấy giá trị mới
                     decimal newValue = 0;
                     if (e.Value != null && decimal.TryParse(e.Value.ToString(), out decimal parsedValue))
@@ -587,11 +593,25 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                     object nodeKey = data.ID;
                     adjustmentValues[nodeKey] = newValue;
 
-                    // Refresh node cha (nếu có)
+                    // ✅ QUAN TRỌNG: Refresh node hiện tại trước
                     TreeList tree = FindTreeListInControl(this.ucSereServTree);
-                    if (tree != null && e.Node != null && e.Node.ParentNode != null)
+                    if (tree != null && e.Node != null)
                     {
-                        tree.RefreshNode(e.Node.ParentNode);
+                        tree.RefreshNode(e.Node); // ← Thêm dòng này
+
+                        // Refresh node cha (nếu có)
+                        if (e.Node.ParentNode != null)
+                        {
+                            tree.RefreshNode(e.Node.ParentNode);
+
+                            // Refresh cả node cha của cha (nếu có)
+                            TreeListNode grandParent = e.Node.ParentNode.ParentNode;
+                            while (grandParent != null)
+                            {
+                                tree.RefreshNode(grandParent);
+                                grandParent = grandParent.ParentNode;
+                            }
+                        }
                     }
 
                     // Cập nhật tổng
@@ -634,9 +654,9 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
 
                 // Lấy key duy nhất cho node
                 object nodeKey = data.ID;
-
                 // Lấy giá trị bệnh nhân trả
-                decimal patientPrice = data.VIR_TOTAL_PATIENT_PRICE ?? 0;
+                // Lấy giá trị bệnh nhân trả
+                decimal patientPrice = data.TOTAL_BILL_AMOUNT ?? 0;
 
                 // Nếu click chuột phải hoặc giữa thì bỏ qua
                 if (e.Button != MouseButtons.Left)
@@ -740,8 +760,27 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 // Tính tổng tất cả giá trị trong dictionary
                 decimal total = adjustmentValues.Values.Sum();
 
-                // Gán vào textbox, định dạng đẹp hơn
-                this.txtTotalAdjustment.Text = total.ToString("#,##0.00");
+                if (total != 0)
+                {
+                    btnSave.Enabled = true;
+                    btnSavePrint.Enabled = true;
+                    btnSaveAndSign.Enabled = true;
+                    bbtnRCSave.Enabled = true;
+                    bbtnRCSavePrint.Enabled = true;
+                    bbtnRCSaveSign.Enabled = true;
+                }
+                else
+                {
+                    btnSave.Enabled = false;
+                    btnSavePrint.Enabled = false;
+                    btnSaveAndSign.Enabled = false;
+                    bbtnRCSave.Enabled = false;
+                    bbtnRCSavePrint.Enabled = false;
+                    bbtnRCSaveSign.Enabled = false;
+                }
+                    // Gán vào textbox, định dạng đẹp hơn
+                    this.txtTotalAdjustment.Text = total.ToString("#,##0.00");
+                
             }
             catch (Exception ex)
             {
@@ -801,7 +840,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                     HisSereServBillFilter ssBillFilter = new HisSereServBillFilter();
                     ssBillFilter.TDL_TREATMENT_ID = this.currentTransaction.TREATMENT_ID ?? 0;
                     ssBillFilter.BILL_ID = this.currentTransaction.ID;
-                    listSSBill = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV_BILL_1>>("api/HisSereServBill/Get", ApiConsumers.MosConsumer, ssBillFilter, null);
+                    listSSBill = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV_BILL_1>>("api/HisSereServBill/GetView1", ApiConsumers.MosConsumer, ssBillFilter, null);
                     if (listSSBill != null && listSSBill.Count > 0)
                     {
                         foreach (var item in listSSBill)
@@ -946,13 +985,10 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
             {
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 this.ListAccountBook = new List<V_HIS_ACCOUNT_BOOK>();
-
-                //Sửa lại đoạn code này
-                //Api bổ sung filter chứ không get nhiều api
-                //TODO               
+            
                 HisAccountBookViewFilter acFilter = new HisAccountBookViewFilter();
-                acFilter.CASHIER_ROOM_ID = this.currentModule.RoomId;//Kiểm tra sổ còn hay k
-                acFilter.LOGINNAME = loginName;//Kiểm tra sổ còn hay k
+                acFilter.CASHIER_ROOM_ID = this.currentModule.RoomId;
+                acFilter.LOGINNAME = loginName;
                 acFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 acFilter.FOR_BILL = true;
                 acFilter.IS_OUT_OF_BILL = false;
@@ -972,7 +1008,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 }
 
                 LoadDataToComboAccountBook();
-                SetDefaultAccountBook();//TODO
+                SetDefaultAccountBook();
             }
             catch (Exception ex)
             {
@@ -986,7 +1022,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
             {
                 cboAccountBook.EditValue = null;
                 V_HIS_ACCOUNT_BOOK accountBook = null;
-                //chọn mặc định sổ nếu có sổ tương ứng
                 if (GlobalVariables.DefaultAccountBookTransactionBill != null && GlobalVariables.DefaultAccountBookTransactionBill.Count > 0)
                 {
                     var lstBook = GlobalVariables.DefaultAccountBookTransactionBill.Where(o => ListAccountBook.Select(s => s.ID).Contains(o.ID)).ToList();
@@ -1004,7 +1039,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 if (accountBook != null)
                 {
                     cboAccountBook.EditValue = accountBook.ID;
-                    //SetDataToDicNumOrderInAccountBook(accountBook);
                 }
                 else
                 {
@@ -1030,6 +1064,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                     var account = this.ListAccountBook.FirstOrDefault(o => o.ID == Convert.ToInt64(cboAccountBook.EditValue));
                     if (account != null)
                     {
+                        spinTongTuDen.EditValue = setDataToDicNumOrderInAccountBook(account);
                         if (account.IS_NOT_GEN_TRANSACTION_ORDER == 1)
                         {
                             spinTongTuDen.Enabled = true;
@@ -1068,6 +1103,58 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private decimal setDataToDicNumOrderInAccountBook(V_HIS_ACCOUNT_BOOK accountBook)
+        {
+            decimal result = (accountBook.CURRENT_NUM_ORDER ?? 0) + 1;
+            try
+            {
+                if (accountBook != null)
+                {
+                    if (LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook == null || LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook.Count == 0 || (LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook != null && LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook.Count > 0 && !LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook.ContainsKey(accountBook.ID)))
+                    {
+                        if (LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook == null)
+                        {
+                            LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook = new Dictionary<long, decimal>();
+                        }
+
+                        CommonParam param = new CommonParam();
+                        MOS.Filter.HisAccountBookViewFilter hisAccountBookViewFilter = new MOS.Filter.HisAccountBookViewFilter();
+                        hisAccountBookViewFilter.ID = accountBook.ID;
+                        var accountBooks = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_ACCOUNT_BOOK>>(ApiConsumer.HisRequestUriStore.HIS_ACCOUNT_BOOK_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, hisAccountBookViewFilter, param);
+                        if (accountBooks != null && accountBooks.Count > 0)
+                        {
+                            var accountBookNew = accountBooks.FirstOrDefault();
+                            decimal num = 0;
+                            if ((accountBookNew.CURRENT_NUM_ORDER ?? 0) > 0)
+                            {
+                                num = (accountBookNew.CURRENT_NUM_ORDER ?? 0);
+                            }
+                            else
+                            {
+                                num = (decimal)accountBookNew.FROM_NUM_ORDER - 1;
+                            }
+
+                            LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook.Add(accountBookNew.ID, num);
+                            result = (LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook[accountBook.ID]) + 1;
+                        }
+                    }
+                    else
+                    {
+                        result = (LocalStorage.LocalData.GlobalVariables.dicNumOrderInAccountBook[accountBook.ID]) + 1;
+                    }
+                }
+                else
+                {
+                    result = (accountBook.CURRENT_NUM_ORDER ?? 0) + 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private void cboAccountBook_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -1162,6 +1249,86 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 {
                     cboPayForm.Focus();
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ResetControlValue()
+        {
+            try
+            {
+                resultTranBill = null;
+                totalPatientPrice = 0;
+                totalPatientPriceFund = 0;
+                dxValidationProvider1.RemoveControlError(dtTransactionTime);
+                dxValidationProvider1.RemoveControlError(cboPayForm);
+                totalCanThu = 0;
+                spinTongTuDen.Value = 0;
+                txtReason.Text = "";
+                //
+                if (AdjustmentTransactionConfig.InvoiceTypeCreate == invoiceTypeCreate__CreateInvoiceVnpt)
+                {
+                    ddBtnPrint.Enabled = true;
+                }
+                else
+                {
+                    ddBtnPrint.Enabled = false;
+                }
+
+                // ✅ Cấu hình hiển thị thời gian có cả giờ, phút, giây
+                dtTransactionTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+                dtTransactionTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+                dtTransactionTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+                dtTransactionTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+                dtTransactionTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
+                dtTransactionTime.Properties.Mask.UseMaskAsDisplayFormat = true;
+
+                // Nếu dùng CalendarTimeProperties (tránh trường hợp control DateEdit chưa có time mask)
+                dtTransactionTime.Properties.CalendarTimeProperties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+                dtTransactionTime.Properties.CalendarTimeProperties.EditFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+                dtTransactionTime.Properties.CalendarTimeProperties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
+
+                // ✅ Gán thời gian hiện tại (có cả giờ/phút/giây)
+                DateTime now = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Inventec.Common.DateTime.Get.Now() ?? 0) ?? DateTime.Now;
+                dtTransactionTime.EditValue = now;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void bbtnRCSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                btnSave_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void bbtnRCSavePrint_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                btnSavePrint_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void bbtnRCSaveSign_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                btnSaveAndSign_Click(null, null);
             }
             catch (Exception ex)
             {
