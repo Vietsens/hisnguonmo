@@ -337,11 +337,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     dxValidationProvider1.SetValidationRule(this.txtReplaceReason, validate);
 
 
-                    HisSereServBillViewFilter ssBillFilter = new HisSereServBillViewFilter();
-                    ssBillFilter.BILL_ID = currentTransaction.ID;
-                    var hisSSBills = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV_BILL>>("api/HisSereServBill/GetView", ApiConsumers.MosConsumer, ssBillFilter, null);
-                    if (hisSSBills != null && hisSSBills.Count > 0)
-                        lstSereServId = hisSSBills.Select(o => o.SERE_SERV_ID).ToList();
+                    //HisSereServBillViewFilter ssBillFilter = new HisSereServBillViewFilter();
+                    //ssBillFilter.BILL_ID = currentTransaction.ID;
+                    //var hisSSBills = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV_BILL>>("api/HisSereServBill/GetView", ApiConsumers.MosConsumer, ssBillFilter, null);
+                    //if (hisSSBills != null && hisSSBills.Count > 0)
+                    //    lstSereServId = hisSSBills.Select(o => o.SERE_SERV_ID).ToList();
 
                 }
             }
@@ -542,11 +542,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 1");
-                //qtcode
-                if (isReplaceMode)
-                {
-                    ssTreeProcessor.CheckAllNode(ucSereServTree);
-                }
+                ////qtcode
+                //if (isReplaceMode)
+                //{
+                //    ssTreeProcessor.CheckAllNode(ucSereServTree);
+                //}
                 this.timerInitForm.Stop();
                 SetStateEnableControl();
                 SetDefaultValueTransaction();
@@ -4215,7 +4215,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     if (processingSereServs != null && processingSereServs.Count > 0)
                     {
                         var rooms = BackendDataWorker.Get<V_HIS_ROOM>();
-                        string message = "Tồn tại dịch vụ đã thực hiện cần phải thu tiền: \n";
+                        string message = "Tồn tại dịch vụ đã thực hiện cần phải thu tiền:\n";
                         int stt = 1;
 
                         foreach (var ss in processingSereServs)
@@ -4223,13 +4223,21 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             var room = rooms.FirstOrDefault(r => r.ID == ss.TDL_EXECUTE_ROOM_ID);
                             string roomName = room != null ? room.ROOM_NAME : "";
                             string address = room != null ? room.ADDRESS : "";
-                            message += string.Format("{0}. {1} - {2} - {3}: {4}\n", stt, ss.TDL_SERVICE_REQ_CODE, roomName, address, ss.TDL_SERVICE_NAME
-                            );
+                            message += string.Format("{0}. {1} - {2} - {3}: {4}\n",
+                                stt, ss.TDL_SERVICE_REQ_CODE, roomName, address, ss.TDL_SERVICE_NAME);
                             stt++;
                         }
 
-                        message += ". Nếu bỏ thu mọi rủi ro phát sinh người dùng sẽ tự chịu trách nhiệm";
-                        MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        message += "Nếu bỏ thu, mọi rủi ro phát sinh người dùng sẽ tự chịu trách nhiệm. Bạn có chắc chắn muốn thoát không?";
+
+                        XtraMessageBox.SmartTextWrap = true;
+                        XtraMessageBox.AllowCustomLookAndFeel = true;
+                        var result = XtraMessageBox.Show(this, message, "Thông báo",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (result == DialogResult.No)
+                        {
+                            e.Cancel = true; 
+                        }
                     }
                 }
             }

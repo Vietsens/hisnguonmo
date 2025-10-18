@@ -159,7 +159,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         var nodeData = (SereServADO)node.TreeList.GetDataRecordByNode(childNode);
                         if (nodeData != null)
                         {
-                            if (currentTransaction != null && currentTransaction.IS_CANCEL == 1 && !lstSereServId.Exists(o => o == nodeData.ID))
+                            if (currentTransaction != null && currentTransaction.IS_CANCEL == 1 && !lstSereServId.Exists(o => o == nodeData.ID) && !isReplaceMode)
                             {
                                 childNode.UncheckAll();
                                 CheckNode(childNode);
@@ -276,10 +276,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             e.CanCheck = false; 
                             return;
                         }
-                        else
-                        {
-                            e.CanCheck = true; 
-                        }
                     }
                     if (nodeData != null && Config.HisConfigCFG.MustFinishTreatmentForBill == "1" && this.currentTreatment.IS_PAUSE != 1 && nodeData.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
                     {
@@ -366,6 +362,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         {
                             e.ObjectArgs.State = DevExpress.Utils.Drawing.ObjectState.Disabled;
                             e.Handled = true;
+                            return; 
                         }
                     }
                 }
