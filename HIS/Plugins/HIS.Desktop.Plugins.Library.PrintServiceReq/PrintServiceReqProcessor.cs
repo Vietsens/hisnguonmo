@@ -646,6 +646,33 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                         dicSereNmseData.Add(item.Key, item.ToList());
                 }
                 PrintNow(reportTypeCode);
+                if (Config.IsmergePrint)
+                {
+                    int countTimeOut = 0;
+                    //in gộp xét nghiệp sẽ tăng số lượng dịch vụ
+                    while (this.TotalSereServPrint != this.CountSereServPrinted && countTimeOut < TIME_OUT_PRINT_MERGE && !CancelPrint)
+                    {
+                        Thread.Sleep(50);
+                        countTimeOut++;
+                    }
+
+                    if (countTimeOut > TIME_OUT_PRINT_MERGE)
+                    {
+                        throw new Exception("TimeOut");
+                    }
+                    if (CancelPrint)
+                    {
+                        throw new Exception("Cancel Print");
+                    }
+
+                    Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo adodata = this.GroupStreamPrint.First();
+
+                    Inventec.Common.Logging.LogSystem.Debug("List MPS Group: " + string.Join("; ", this.GroupStreamPrint.Select(s => s.printTypeCode).Distinct()));
+                    Inventec.Common.Print.FlexCelPrintProcessor printProcess = new Inventec.Common.Print.FlexCelPrintProcessor(adodata.saveMemoryStream, adodata.printerName, adodata.fileName, adodata.numCopy, true,
+                        adodata.isAllowExport, adodata.TemplateKey, adodata.eventLog, adodata.eventPrint, adodata.EmrInputADO, adodata.PrintLog, adodata.ShowPrintLog, adodata.IsAllowEditTemplateFile, adodata.IsSingleCopy);
+                    printProcess.SetPartialFile(this.GroupStreamPrint);
+                    printProcess.PrintPreviewShow();
+                }
             }
             catch (Exception ex)
             {

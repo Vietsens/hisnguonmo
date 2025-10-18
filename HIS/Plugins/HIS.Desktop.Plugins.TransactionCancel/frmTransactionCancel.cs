@@ -620,8 +620,10 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         return;
                     }
                 }
+
                 sdo.RequestRoomId = this.currentModule.RoomId;
-                sdo.CancelReasonId = Convert.ToInt64(cboCancelReason.EditValue);
+                if (this.cboCancelReason.Text.Trim() != "")
+                    sdo.CancelReasonId = Convert.ToInt64(cboCancelReason.EditValue);
                 if (dtCancelTime.EditValue != null)
                 {
                     DateTime date = dtCancelTime.DateTime;

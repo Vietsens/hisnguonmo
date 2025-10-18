@@ -1315,6 +1315,39 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 Inventec.Common.Logging.LogSystem.Error(ex);
                             }
                         }
+                        else if (e.Column.FieldName == "REPAY_REASON_NAME")
+                        {
+                            try
+                            {
+                                e.Value = data != null && !string.IsNullOrEmpty(data.REPAY_REASON_NAME) ? data.REPAY_REASON_NAME : "";
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
+                        else if (e.Column.FieldName == "ADJUSTMENT_REPLACE")
+                        {
+                            try
+                            {
+                                if (data != null && data.IS_ADJUSTMENT == 1 && !string.IsNullOrEmpty(data.TDL_ORIGINAL_TRAN_CODE))
+                                {
+                                    e.Value = string.Format("Giao dịch điều chỉnh của giao dịch {0}", data.TDL_ORIGINAL_TRAN_CODE);
+                                }
+                                else if (data != null && data.IS_ADJUSTMENT != 1 && !string.IsNullOrEmpty(data.TDL_ORIGINAL_TRAN_CODE))
+                                {
+                                    e.Value = string.Format("Giao dịch thay thế cho giao dịch {0}", data.TDL_ORIGINAL_TRAN_CODE);
+                                }
+                                else
+                                {
+                                    e.Value = "";
+                                }
+                            } 
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
                         else if (e.Column.FieldName == "CANCEL_REASON_str")
                         {
                             try
@@ -2905,7 +2938,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                                         var HisPermissionList = await GetHisPermissionLoad();
                                         isPremission = HisPermissionList
                                             .FirstOrDefault(o => o.EFFECTIVE_DATE == transactionData.TRANSACTION_DATE);
-                                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("result_____ttzz:", isPremission));
+                                      
                                     }
                                     catch (Exception ex)
                                     {
