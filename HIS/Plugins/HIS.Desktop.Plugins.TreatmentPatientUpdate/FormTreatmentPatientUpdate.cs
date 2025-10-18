@@ -61,7 +61,7 @@ namespace HIS.Desktop.Plugins.TreatmentPatientUpdate
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT> treatmentList;
         System.Globalization.CultureInfo cultureLang;
-        MOS.EFMODEL.DataModels.V_HIS_PATIENT patient;
+        MOS.EFMODEL.DataModels.HIS_PATIENT patient;
         List<Base.HisPatientADO> listPatient;
         ApiResultObject<List<Base.HisPatientADO>> apiResult = null;
         List<string> listPatientCode;
@@ -392,6 +392,7 @@ namespace HIS.Desktop.Plugins.TreatmentPatientUpdate
                 if (apiResult != null)
                 {
                     var data = (List<Base.HisPatientADO>)apiResult.Data;
+                    listPatient = data;
                     if (data != null)
                     {
                         gridControl.DataSource = data;
@@ -448,7 +449,7 @@ namespace HIS.Desktop.Plugins.TreatmentPatientUpdate
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    var data = (MOS.EFMODEL.DataModels.V_HIS_PATIENT)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    var data = (MOS.EFMODEL.DataModels.HIS_PATIENT)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (data != null)
                     {
                         if (e.Column.FieldName == "STT")
@@ -469,15 +470,15 @@ namespace HIS.Desktop.Plugins.TreatmentPatientUpdate
                         }
                         else if (e.Column.FieldName == "GENDER_NAME_STR")
                         {
-                            if (e.Value.ToString() == "1")
+                            if (data.GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__FEMALE)
                             {
                                 e.Value = "Nữ";
                             }
-                            else if (e.Value.ToString() == "2")
+                            if (data.GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE)
                             {
                                 e.Value = "Nam";
                             }
-                         }
+                        }
                     }
                 }
             }
@@ -666,8 +667,8 @@ namespace HIS.Desktop.Plugins.TreatmentPatientUpdate
             {
                 CommonParam param = new CommonParam();
                 bool success = false;
-                patient = new MOS.EFMODEL.DataModels.V_HIS_PATIENT();
-                if (listPatient.Count > 0)
+                patient = new MOS.EFMODEL.DataModels.HIS_PATIENT();
+                if (listPatient != null && listPatient.Count > 0)
                 {
                     foreach (var item in listPatient)
                     {
