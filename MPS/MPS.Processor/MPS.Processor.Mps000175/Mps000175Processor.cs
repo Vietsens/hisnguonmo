@@ -177,10 +177,11 @@ namespace MPS.Processor.Mps000175
     .GroupBy(x => new { x.PARENT_ID, x.PARENT_CODE, x.PARENT_NAME })
     .Select(g => new Mps000175ADO
     {
+
         PARENT_ID = g.Key.PARENT_ID,
         PARENT_CODE = g.Key.PARENT_CODE,
         //PARENT_NAME = g.Key.PARENT_NAME
-        PARENT_NAME = (g.Key.PARENT_NAME == "VTYT" ? "Y Tế trong danh mục BHYT" : g.Key.PARENT_NAME).ToUpper()
+        PARENT_NAME = string.IsNullOrEmpty(g.Key.PARENT_NAME) ? "" : (g.Key.PARENT_NAME == "VTYT" ? "Y Tế trong danh mục BHYT": g.Key.PARENT_NAME.ToUpper())
     })
     .ToList();
 
