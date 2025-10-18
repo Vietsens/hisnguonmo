@@ -788,6 +788,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                     return;
 
                 List<object> listArgs = new List<object>();
+                listArgs.Add((HIS.Desktop.Common.DelegateRefreshData)RefeshDataBefoEdit);
                 listArgs.Add(transactionPrint);
                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.AdjustmentTransaction", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
             }
