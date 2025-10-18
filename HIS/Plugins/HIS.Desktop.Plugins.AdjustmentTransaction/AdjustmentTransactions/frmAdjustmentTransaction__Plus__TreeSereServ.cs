@@ -165,15 +165,15 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                         }
                         else if (e.Column.FieldName == "EDIT_AMOUNT")
                         {
-                            TreeList tree = e.Column.TreeList;
+                            //TreeList tree = e.Column.TreeList;
 
-                            if (e.Node.HasChildren)
-                            {
-                                // 🔹 Tính tổng đệ quy cho tất cả node con (mọi cấp)
-                                decimal totalChildAdjustment = CalculateTotalAdjustmentRecursive(tree, e.Node);
-                                e.Value = totalChildAdjustment;
-                            }
-                            else
+                            //if (e.Node.HasChildren)
+                            //{
+                            //    // 🔹 Tính tổng đệ quy cho tất cả node con (mọi cấp)
+                            //    decimal totalChildAdjustment = CalculateTotalAdjustmentRecursive(tree, e.Node);
+                            //    e.Value = totalChildAdjustment;
+                            //}
+                            //else
                             {
                                 // 🔹 Node con bình thường
                                 if (data.ID != null && adjustmentValues.ContainsKey(data.ID))
@@ -215,21 +215,29 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                         }
                         else if (e.Column.FieldName == "EDIT_AMOUNT")
                         {
-                            // Tính tổng điều chỉnh của các node con
-                            decimal totalAdjustment = 0;
-                            foreach (DevExpress.XtraTreeList.Nodes.TreeListNode childNode in e.Node.Nodes)
+                            // ✅ Chỉ ẩn node cấp cao nhất (Yêu cầu), node cấp 2 trở xuống vẫn hiển thị
+                            if (e.Node.ParentNode == null || e.Node.Level == 0)
                             {
-                                var childData = childNode.TreeList.GetDataRecordByNode(childNode) as SereServADO;
-                                if (childData != null)
+                                e.Value = ""; // Ẩn giá trị ở node "Yêu cầu" (cấp cao nhất)
+                            }
+                            else
+                            {
+                                // Tính tổng điều chỉnh của các node con (cho "Chẩn đoán hình ảnh"...)
+                                decimal totalAdjustment = 0;
+                                foreach (DevExpress.XtraTreeList.Nodes.TreeListNode childNode in e.Node.Nodes)
                                 {
-                                    object childKey = childData.ID;
-                                    if (adjustmentValues.ContainsKey(childKey))
+                                    var childData = childNode.TreeList.GetDataRecordByNode(childNode) as SereServADO;
+                                    if (childData != null)
                                     {
-                                        totalAdjustment += adjustmentValues[childKey];
+                                        object childKey = childData.ID;
+                                        if (adjustmentValues.ContainsKey(childKey))
+                                        {
+                                            totalAdjustment += adjustmentValues[childKey];
+                                        }
                                     }
                                 }
+                                e.Value = ConvertNumberToString(totalAdjustment);
                             }
-                            e.Value = ConvertNumberToString(totalAdjustment);
                         }
                     }
                 }

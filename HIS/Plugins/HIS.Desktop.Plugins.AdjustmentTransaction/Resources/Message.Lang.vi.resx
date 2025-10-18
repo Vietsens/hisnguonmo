@@ -156,7 +156,22 @@
   <data name="Plugins_AdjustmentTransaction__ThanhToanTheThatBai" xml:space="preserve">
     <value>Thanh toán thẻ thất bại</value>
   </data>
-  <data name="Plugins_AdjustmentTransaction__ThieuTruongDuLieuBatBuoc" xml:space="preserve">
+  <data name="Plugins_AdjustmentTransaction__ThieuThoiGianGiaoDich" xml:space="preserve">
+    <value>Bắt buộc chọn thời gian giao dịch.</value>
+  </data>
+	<data name="Plugins_AdjustmentTransaction__ThieuLyDoThayDoi" xml:space="preserve">
+    <value>Bắt buộc nhập lý do thay đổi.</value>
+  </data>
+	<data name="Plugins_AdjustmentTransaction__LyDoQuaKyTu" xml:space="preserve">
+    <value>Lý do vượt quá 1000 ký tự</value>
+  </data>
+	<data name="Plugins_AdjustmentTransaction__VuotMax" xml:space="preserve">
+    <value>Số tiền điều chỉnh không phù hợp</value>
+  </data>
+<data name="Plugins_AdjustmentTransaction__DieuChinh" xml:space="preserve">
+    <value>Không có điều chỉnh</value>
+  </data>
+	<data name="Plugins_AdjustmentTransaction__ThieuTruongDuLieuBatBuoc" xml:space="preserve">
     <value>Thiếu trường dữ liệu bắt buộc.</value>
   </data>
   <data name="Plugins_AdjustmentTransaction__ThongBao" xml:space="preserve">
