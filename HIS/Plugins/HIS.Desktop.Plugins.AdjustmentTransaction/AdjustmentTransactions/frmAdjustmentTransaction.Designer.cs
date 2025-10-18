@@ -281,6 +281,7 @@
             this.btnSavePrint.StyleController = this.layoutControl1;
             this.btnSavePrint.TabIndex = 25;
             this.btnSavePrint.Text = "Lưu in(Ctrl I)";
+            this.btnSavePrint.EnabledChanged += new System.EventHandler(this.btnSavePrint_EnabledChanged);
             this.btnSavePrint.Click += new System.EventHandler(this.btnSavePrint_Click);
             // 
             // btnSave

@@ -37,7 +37,7 @@ using HIS.Desktop.Common;
 
 namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
 {
-    public partial class frmAdjustmentTransaction : FormBase    
+    public partial class frmAdjustmentTransaction : FormBase
     {
         V_HIS_TREATMENT_FEE treatmentFee = new V_HIS_TREATMENT_FEE();
         V_HIS_PATIENT_TYPE_ALTER resultPatientType;
@@ -81,7 +81,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
         string departmentName = "";
         private Dictionary<object, decimal> adjustmentValues = new Dictionary<object, decimal>();
         DelegateRefreshData delegateRefreshData = null;
-        public frmAdjustmentTransaction(Inventec.Desktop.Common.Modules.Module module, V_HIS_TRANSACTION tran, DelegateRefreshData delegateRefreshData) 
+        public frmAdjustmentTransaction(Inventec.Desktop.Common.Modules.Module module, V_HIS_TRANSACTION tran, DelegateRefreshData delegateRefreshData)
             : base(module)
         {
             InitializeComponent();
@@ -107,7 +107,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                     if (this.resultPatientType == null || this.resultPatientType.ID == 0)
                     {
                         this.resultPatientType = new BackendAdapter(new CommonParam())
-                        .Get<MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER>("api/HisPatientTypeAlter/GetViewLastByTreatmentId", 
+                        .Get<MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER>("api/HisPatientTypeAlter/GetViewLastByTreatmentId",
                         ApiConsumers.MosConsumer, treatmentFee.ID, null);
                     }
 
@@ -219,7 +219,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
         {
             try
             {
-                if (currentTransaction != null && 
+                if (currentTransaction != null &&
                     (currentTransaction.TRANSACTION_TYPE_ID != 3 || currentTransaction.IS_ADJUSTMENT == 1 || currentTransaction.IS_CANCEL == 1))
                 {
                     this.btnSaveAndSign.Enabled = false;
@@ -478,14 +478,14 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 //Column mã dịch vụ
                 SereServTreeColumn serviceCodeCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_SERVICE_CODE", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_CODE", 80, false);
                 serviceCodeCol.VisibleIndex = 1;
-                ado.SereServTreeColumns.Add(serviceCodeCol);   
+                ado.SereServTreeColumns.Add(serviceCodeCol);
 
                 //Column Số lượng
                 SereServTreeColumn amountCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_AMOUNT", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "AMOUNT_PLUS", 40, false);//AMOUNT_PLUS
                 amountCol.VisibleIndex = 2;
                 amountCol.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
                 amountCol.Format = new DevExpress.Utils.FormatInfo();
-                amountCol.Format.FormatString = "#,##0.00";      
+                amountCol.Format.FormatString = "#,##0.00";
                 amountCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.SereServTreeColumns.Add(amountCol);
 
@@ -527,7 +527,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 virEditAmountCol.Format.FormatString = "#,##0";
                 virEditAmountCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.SereServTreeColumns.Add(virEditAmountCol);
-                     
+
 
                 // Column nút ↑     
                 SereServTreeColumn increaseCol = new SereServTreeColumn(" ", "INCREASE_BTN", 40, false);
@@ -760,7 +760,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 // Tính tổng tất cả giá trị trong dictionary
                 decimal total = adjustmentValues.Values.Sum();
 
-                if (total != 0)
+                if(total != 0 && HisAdjustmentBillResult == null)
                 {
                     btnSave.Enabled = true;
                     btnSavePrint.Enabled = true;
@@ -778,9 +778,9 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                     bbtnRCSavePrint.Enabled = false;
                     bbtnRCSaveSign.Enabled = false;
                 }
-                    // Gán vào textbox, định dạng đẹp hơn
-                    this.txtTotalAdjustment.Text = total.ToString("#,##0.00");
-                
+                // Gán vào textbox, định dạng đẹp hơn
+                this.txtTotalAdjustment.Text = total.ToString("#,##0.00");
+
             }
             catch (Exception ex)
             {
@@ -834,7 +834,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 ListSereServ = new List<V_HIS_SERE_SERV_5>();
                 currentSereServs = new List<V_HIS_SERE_SERV_5>();
                 dicSereServBill = new Dictionary<long, List<V_HIS_SERE_SERV_BILL_1>>();
-                List <V_HIS_SERE_SERV_BILL_1> listSSBill = new List<V_HIS_SERE_SERV_BILL_1>();
+                List<V_HIS_SERE_SERV_BILL_1> listSSBill = new List<V_HIS_SERE_SERV_BILL_1>();
                 if (this.currentTransaction != null && this.currentTransaction.TREATMENT_ID != null)
                 {
                     HisSereServBillFilter ssBillFilter = new HisSereServBillFilter();
@@ -985,7 +985,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
             {
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 this.ListAccountBook = new List<V_HIS_ACCOUNT_BOOK>();
-            
+
                 HisAccountBookViewFilter acFilter = new HisAccountBookViewFilter();
                 acFilter.CASHIER_ROOM_ID = this.currentModule.RoomId;
                 acFilter.LOGINNAME = loginName;
@@ -1333,6 +1333,19 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnSavePrint_EnabledChanged(object sender, EventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }
