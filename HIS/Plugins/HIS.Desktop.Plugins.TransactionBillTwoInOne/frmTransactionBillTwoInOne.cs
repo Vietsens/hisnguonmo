@@ -856,6 +856,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 if (lData != null && lData.Count > 0)
                 {
+             
                     foreach (var item in lData)
                     {
                         payFormList.Add(new PayFormADO
@@ -903,14 +904,15 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 };
 
-                ControlEditorADO controlEditorADO = new ControlEditorADO("PAY_FORM_NAME", "PayFormId", columnInfos, false, 350);
+                ControlEditorADO controlEditorADO = new ControlEditorADO("PAY_FORM_NAME", "ID", columnInfos, false, 350);
                 ControlEditorLoader.Load(cboPayForm, payFormList, controlEditorADO);
 
 
                 if (payFormList.Count > 0)
                 {
-                    cboPayForm.EditValue = payFormList.First().PayFormId;
                     //cboPayForm.EditValue = payFormList.First().ID;
+                    payFormList = payFormList.OrderBy(x => x.ID).ToList();
+                    cboPayForm.EditValue = payFormList.First().ID;
                 }
             }
             catch (Exception ex)

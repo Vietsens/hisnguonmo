@@ -153,42 +153,45 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }  
+            }
         }
         private void checkValidateCboBank()
         {
-
-            var payForm2 = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue?.ToString());
-            if (payForm2 != null)
+            if (cboPayForm.EditValue != null)
             {
-                txtPayForm.Text = payForm2.PAY_FORM_CODE;
-
-                if (payForm2.IS_REQUIRED_BANK == 1)
+                var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayForm.EditValue));
+                if (payFormL != null)
                 {
-                    layoutControlItem70.AppearanceItemCaption.ForeColor = Color.Maroon;
-                    Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule bankRule = new Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule();
-                    bankRule.editor = cboBank;
-                    bankRule.ErrorText = "Trường dữ liệu bắt buộc nhập";
-                    bankRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                    
-                    dxValidationProvider1.SetValidationRule(cboBank, bankRule);
+                    var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayForm.Text);
+                    txtPayForm.Text = payForm.PAY_FORM_CODE;
 
-                    // Nếu chưa chọn ngân hàng thì validate sẽ báo lỗi
-                    if (cboBank.EditValue == null || string.IsNullOrEmpty(cboBank.EditValue.ToString()))
+                    if (payForm.IS_REQUIRED_BANK == 1)
                     {
-                        dxValidationProvider1.Validate();
+                        layoutControlItem70.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule bankRule = new Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule();
+                        bankRule.editor = cboBank;
+                        bankRule.ErrorText = "Trường dữ liệu bắt buộc nhập";
+                        bankRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+
+                        dxValidationProvider1.SetValidationRule(cboBank, bankRule);
+
+                        // Nếu chưa chọn ngân hàng thì validate sẽ báo lỗi
+                        if (cboBank.EditValue == null || string.IsNullOrEmpty(cboBank.EditValue.ToString()))
+                        {
+                            dxValidationProvider1.Validate();
+                        }
+                        else
+                        {
+                            dxValidationProvider1.SetValidationRule(cboBank, null);
+                            dxValidationProvider1.RemoveControlError(cboBank);
+                        }
                     }
                     else
                     {
+                        layoutControlItem70.AppearanceItemCaption.ForeColor = Color.Black;
                         dxValidationProvider1.SetValidationRule(cboBank, null);
                         dxValidationProvider1.RemoveControlError(cboBank);
                     }
-                }
-                else
-                {
-                    layoutControlItem70.AppearanceItemCaption.ForeColor = Color.Black;
-                    dxValidationProvider1.SetValidationRule(cboBank, null);
-                    dxValidationProvider1.RemoveControlError(cboBank);
                 }
             }
         }
@@ -240,14 +243,16 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         //    txtPayForm.Text = payForm.PAY_FORM_CODE;
                         //}
 
-                        var payForm2 = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue?.ToString());
-                        if (payForm2 != null)
+                        var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayForm.EditValue));
+                        if (payFormL != null)
                         {
-                            txtPayForm.Text = payForm2.PAY_FORM_CODE;
+                            var payFormI = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayForm.Text);
+                            txtPayForm.Text = payFormI.PAY_FORM_CODE;
 
-                            if (payForm2.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm2.BANK_ID != null)
+
+                            if (payFormI.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payFormI.BANK_ID != null)
                             {
-                                cboBank.EditValue = payForm2.BANK_ID;
+                                cboBank.EditValue = payFormI.BANK_ID;
                                 cboBank.Enabled = false;
                             }
                             else
@@ -261,7 +266,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         {
                             cboBank.EditValue = null;
                             cboBank.Enabled = true;
-                            
+
                         }
 
 
@@ -279,43 +284,45 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
-
-
-                txtPayForm.Text = "";
-                //var payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue) && o.IS_ACTIVE == 1);
-                var payForm = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue?.ToString());
-                if (payForm != null)
+                if (cboPayForm.EditValue != null)
                 {
-                    txtPayForm.Text = payForm.PAY_FORM_CODE;
 
-
-                    if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
+                    txtPayForm.Text = "";
+                    //var payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue) && o.IS_ACTIVE == 1);
+                    var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayForm.EditValue));
+                    if (payFormL != null)
                     {
-                        cboBank.EditValue = payForm.BANK_ID;
-                        cboBank.Enabled = false;
+                        var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayForm.Text);
+                        txtPayForm.Text = payForm.PAY_FORM_CODE;
+
+
+                        if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
+                        {
+                            cboBank.EditValue = payForm.BANK_ID;
+                            cboBank.Enabled = false;
+                        }
+                        else
+                        {
+                            cboBank.EditValue = null;
+                            cboBank.Enabled = true;
+                        }
+                        if (payForm.IS_REQUIRED_BANK == 1)
+                        {
+                            layoutControlItem70.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        }
+                        else
+                        {
+                            layoutControlItem70.AppearanceItemCaption.ForeColor = Color.Black;
+                        }
                     }
                     else
                     {
                         cboBank.EditValue = null;
                         cboBank.Enabled = true;
+
                     }
-                    if (payForm.IS_REQUIRED_BANK == 1)
-                    {
-                        layoutControlItem70.AppearanceItemCaption.ForeColor = Color.Maroon;
-                    }
-                    else
-                    {
-                        layoutControlItem70.AppearanceItemCaption.ForeColor = Color.Black;
-                    }
-                }
-                else
-                {
-                    cboBank.EditValue = null;
-                    cboBank.Enabled = true;
 
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -577,15 +584,15 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
-                   if (e.KeyCode == Keys.Enter)
-                {  
+                if (e.KeyCode == Keys.Enter)
+                {
                     txtInvoiceDescription.Focus();
                     txtInvoiceDescription.SelectAll();
                 }
             }
             catch (Exception ex)
             {
-                
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -621,7 +628,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             this.cboPayForm.ShowPopup();
                         }
                     }
-                    Inventec.Common.Logging.LogSystem.Info("hisCard: " +Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisCard), hisCard) + "hispatient.REGISTER_CODE: " + hispatient.REGISTER_CODE);
+                    Inventec.Common.Logging.LogSystem.Info("hisCard: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisCard), hisCard) + "hispatient.REGISTER_CODE: " + hispatient.REGISTER_CODE);
                 }
             }
             catch (Exception ex)
@@ -630,7 +637,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
-      
+
 
 
         private void txtInvoiceDescription_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -809,7 +816,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
-                txtRecieptAccountBookCode.Enabled = enable;           
+                txtRecieptAccountBookCode.Enabled = enable;
                 cboRecieptAccountBook.Enabled = enable;
                 txtRecieptDescription.Enabled = enable;
                 txtRecieptReason.Enabled = enable;
