@@ -395,6 +395,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 SetEnableButtonSave(!success.Value);
                 if (chkPrintHddt.Checked)
                 {
+                    FillAdjustmentBill();
                     this.onClickInHoaDonDienTu(null, null);
                 }
 
