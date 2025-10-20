@@ -1455,7 +1455,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             sdo.IsView = (opt == 1 || opt == 2);
             sdo.RoomCode = room != null ? room.ROOM_CODE : null;
             sdo.DepartmentCode = room != null ? room.DEPARTMENT_CODE : null;
-            sdo.IsRoomLT = room != null ? room.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT : false; 
+            sdo.IsRoomLT = room != null ? room.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT : false;
             listNumOrderDocument.Clear();
             CreateNumOrderDocuments();
             sdo.NumOrderDocuments = listNumOrderDocument.Select(x => new EMR.SDO.NumOrderDocumentSDO
@@ -1471,15 +1471,15 @@ namespace HIS.Desktop.Plugins.EmrDocument
             try
             {
                 string configValue = Config.ConfigKey.DoNotAllowDeletingIfExistServiceReq;
-                if (configValue != "1") return true; 
+                if (configValue != "1") return true;
 
                 if (string.IsNullOrEmpty(doc.SIGNERS) || string.IsNullOrEmpty(doc.HIS_CODE)) return true;
 
                 string pattern = "SERVICE_REQ_CODE:";
                 int idx = doc.HIS_CODE.IndexOf(pattern, StringComparison.OrdinalIgnoreCase);
-                if (idx < 0) return true; 
+                if (idx < 0) return true;
 
-                int start = idx + pattern.Length; 
+                int start = idx + pattern.Length;
 
                 if (doc.HIS_CODE.Length < start + 12)
                 {
@@ -2185,7 +2185,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-            }           
+            }
         }
         private void SetCheckedRecursive(TreeList view, TreeListNode parentNode, bool isChecked)
         {
@@ -3265,37 +3265,98 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             }
                         }
                     }
+                    //xử lý download không có quyền đọc file
                     else
                     {
-                        int opt = 0; int.TryParse(Config.ConfigKey.PrintUsingWatermark, out opt);
-                        bool showWatermark = (opt == 1);
-                        var documents = GetEmrDocumentFile(null, listDataTrue.Select(o => o.ID).ToList(), chkDowloadGroup.Checked, chkAddPatientSign.Checked, showWatermark);
-                        if (documents == null || documents.Count() == 0)
+                        // Xác định showWatermark dựa vào config và trạng thái ký
+                        int opt = 0;
+                        int.TryParse(Config.ConfigKey.PrintUsingWatermark, out opt);
+                        bool showWatermark = false;
+
+                        bool isSigned = chkAddPatientSign.Checked; // file đã ký
+                        Inventec.Common.Logging.LogSystem.Info(
+    String.Format("[Download] isSigned={0}, chkAddPatientSign.Checked={1}, Config.PrintUsingWatermark={2}",
+                  isSigned, chkAddPatientSign.Checked, opt));
+
+                        if (!isSigned)
+                        {
+                            // Chỉ chèn watermark khi chưa ký
+                            if (opt == 1)
+                                showWatermark = true; // watermark khi in/view/download
+                            else if (opt == 2)
+                                showWatermark = false; // chỉ view watermark
+                        }
+                        else
+                        {
+                            showWatermark = false; // file đã ký, không thao tác watermark
+                        }
+                        Inventec.Common.Logging.LogSystem.Info(
+    String.Format("[Download] showWatermark={0}, NumberOfDocumentsToFetch={1}",
+                  showWatermark, listDataTrue.Count));
+                        var documents = GetEmrDocumentFile(
+                            null,
+                            listDataTrue.Select(o => o.ID).ToList(),
+                            chkDowloadGroup.Checked,
+                            chkAddPatientSign.Checked,
+                            showWatermark
+                        );
+
+                        if (documents == null || !documents.Any())
                         {
                             MessageManager.Show(ResourceMessage.KhongLayDuocFile);
                             return;
                         }
-                        string directoryPath = Path.GetDirectoryName(openFolder.FileName) + @"\" + listDataTrue.FirstOrDefault().TREATMENT_CODE + "_" + listDataTrue.FirstOrDefault().VIR_PATIENT_NAME;
-                        if (!System.IO.Directory.Exists(directoryPath))
+
+                        string treatmentCode = listDataTrue.First().TREATMENT_CODE ?? "NO_CODE";
+                        string patientName = listDataTrue.First().VIR_PATIENT_NAME ?? "UNKNOWN";
+                        string safePatientName = string.Join("_", patientName.Split(Path.GetInvalidFileNameChars()));
+
+                        string baseFolder = Path.GetDirectoryName(openFolder.FileName);
+                        if (string.IsNullOrEmpty(baseFolder) || !Directory.Exists(baseFolder))
                         {
-                            System.IO.Directory.CreateDirectory(directoryPath);
+                            baseFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                         }
 
-                        if (chkDowloadGroup.Checked)
+                        string directoryPath = Path.Combine(baseFolder, string.Format("{0}_{1}", treatmentCode, safePatientName));
+                        if (!Directory.Exists(directoryPath))
                         {
-                            string pdfAddFile = directoryPath + @"\" + documents[0].DocumentName + "." + documents[0].Extension;
-                            Utils.ByteToFile(Utils.StreamToByte(new MemoryStream(Convert.FromBase64String(documents[0].Base64Data))), pdfAddFile);
+                            Directory.CreateDirectory(directoryPath);
                         }
-                        else
+                        int count = 1;
+                        foreach (var item in documents)
                         {
-                            int count = 1;
-                            foreach (var item in documents)
+                            string safeFileName = string.Join("_", item.DocumentName.Split(Path.GetInvalidFileNameChars()));
+                            string filePath = Path.Combine(directoryPath,
+                                string.Format("{0}_{1}.{2}", count.ToString(), safeFileName, item.Extension));
+                            Inventec.Common.Logging.LogSystem.Info(
+    String.Format("[Download PDF] DocumentName={0}, ID={1}, IsSigned={2}, ShowWatermark={3}, Base64Length={4}",
+                  item.DocumentName, item.DocumentId, isSigned, showWatermark, item.Base64Data?.Length));
+                            if (isSigned)
                             {
-                                string file = directoryPath + @"\" + count + "_" + item.DocumentName + "." + item.Extension;
-                                Utils.ByteToFile(Utils.StreamToByte(new MemoryStream(Convert.FromBase64String(item.Base64Data))), file);
-                                count++;
+
+                                Utils.ByteToFile(Utils.StreamToByte(new MemoryStream(Convert.FromBase64String(item.Base64Data))), filePath);
                             }
+                            else
+                            {
+                                MemoryStream pdfStream = new MemoryStream(Convert.FromBase64String(item.Base64Data));
+                                pdfStream.Position = 0;
+
+                                if (chkDowloadGroup.Checked)
+                                {
+                                    InsertPage1(pdfStream, null, null, filePath, null, 0); 
+
+                                }
+                                else
+                                {
+                                    InsertPageOne(pdfStream, null, filePath, null, 0); 
+                                }
+                            }
+
+                            count++;
                         }
+
+                        MessageManager.ShowAlert(this, ResourceMessage.ThongBao, ResourceMessage.TaiVeThanhCong);
+
                     }
                 }
                 #region Hien thi message thong bao
@@ -4002,9 +4063,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
         {
             try
             {
-                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) 
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
                     ? this.currentControlStateRDO.Where(o => o.KEY ==
-                    layoutControlGroup4.Name 
+                    layoutControlGroup4.Name
                     && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
                 if (csAddOrUpdate != null)
                 {
