@@ -10,13 +10,13 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.Base
 {
     class ResourceLangManager
     {
-        internal static ResourceManager LanguageFrmTransactionBill { get; set; }
+        internal static ResourceManager LanguageFrmAdjustmentTransaction { get; set; }
 
         internal static void InitResourceLanguageManager()
         {
             try
             {
-                LanguageFrmTransactionBill = new ResourceManager("HIS.Desktop.Plugins.AdjustmentTransaction.Resources.Lang", typeof(AdjustmentTransaction.frmAdjustmentTransaction).Assembly);
+                LanguageFrmAdjustmentTransaction = new ResourceManager("HIS.Desktop.Plugins.AdjustmentTransaction.Resources.Lang", typeof(AdjustmentTransaction.frmAdjustmentTransaction).Assembly);
             }
             catch (Exception ex)
             {

@@ -47,6 +47,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static DevExpress.XtraPrinting.Native.ExportOptionsPropertiesNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
 {
@@ -59,22 +60,25 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
         bool isPrintNow = false;
         bool isEmr = false;
         bool isnotPrintMPS000111 = false;
+        bool IsCheckPrint = false;
         public HisTransactionBillResultSDO TransactionBillResultSDO { get; private set; }
-        
-        private void SetEnableButtonSave(bool? enable)
+
+        HisAdjustmentBillResultSDO HisAdjustmentBillResult = null;
+
+        private void SetEnableButtonSave(bool enable)
         {
             try
             {
-                btnSave.Enabled = enable ?? true;
-                btnSaveAndSign.Enabled = enable ?? true;
-                btnSavePrint.Enabled = enable ?? true;
+                btnSave.Enabled = enable;
+                btnSaveAndSign.Enabled = enable;
+                btnSavePrint.Enabled = enable;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private bool? ProcessSave(ref CommonParam param, [Optional] bool isLuuKy)
+        private bool? ProcessSave(ref CommonParam param, bool isLuuKy)
         {
             Inventec.Common.Logging.LogSystem.Info("ProcessSave 1.1");
             this.isPrintNow = false;
@@ -83,14 +87,10 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
             {
                 TransactionBillResultSDO = null;
                 long payFormId = 0;
-
-                Inventec.Common.Logging.LogSystem.Info("ProcessSave 1.2");
                 var payForm = this.payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue);
                 if (payForm == null)
                     return success;
                 payFormId = payForm.ID;
-
-                Inventec.Common.Logging.LogSystem.Info("ProcessSave 1.3");
 
                 var listData = this.ssTreeProcessor.GetListCheck(this.ucSereServTree);
                 if (listData == null || listData.Count == 0)
@@ -99,7 +99,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                     return success;
                 }
 
-                if (cboPayForm.EditValue == null)
+                if (cboPayForm.EditValue == null)    
                 {
                     param.Messages.Add(HIS.Desktop.Plugins.AdjustmentTransaction.Base.ResourceMessageLang.ThieuTruongDuLieuBatBuoc);
                     return success;
@@ -113,13 +113,18 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
 
                 if (txtReason.Text.Trim() == null || txtReason.Text.Trim() == "")
                 {
-                    param.Messages.Add(HIS.Desktop.Plugins.AdjustmentTransaction.Base.ResourceMessageLang.ThieuTruongDuLieuBatBuoc);
+                    param.Messages.Add(HIS.Desktop.Plugins.AdjustmentTransaction.Base.ResourceMessageLang.ThieuLyDoDieuChinh);
+                    return success;
+                }
+                if (Encoding.UTF8.GetByteCount(txtReason.Text.Trim()) > 1000)
+                {
+                    param.Messages.Add(HIS.Desktop.Plugins.AdjustmentTransaction.Base.ResourceMessageLang.LyDoQuaKyTu);
                     return success;
                 }
 
                 if (dtTransactionTime.EditValue == null)
                 {
-                    param.Messages.Add(HIS.Desktop.Plugins.AdjustmentTransaction.Base.ResourceMessageLang.ThieuTruongDuLieuBatBuoc);
+                    param.Messages.Add(HIS.Desktop.Plugins.AdjustmentTransaction.Base.ResourceMessageLang.ThieuThoiGianGiaoDich);
                     return success;
                 }
 
@@ -136,6 +141,11 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 LogSystem.Info("this.currentTransaction: " + LogUtil.TraceData("", this.currentTransaction));
                 LogSystem.Info("data.Transaction: " + LogUtil.TraceData("", data.Transaction));
                 data.Transaction.ID = 0;
+                data.Transaction.INVOICE_CODE = null;
+                data.Transaction.INVOICE_SYS = null;
+                data.Transaction.EINVOICE_NUM_ORDER = null;
+                data.Transaction.EINVOICE_TIME = null;
+                data.Transaction.EINVOICE_LOGINNAME = null;
                 var accountBook = ListAccountBook.FirstOrDefault(o => o.ID == Convert.ToInt64(cboAccountBook.EditValue));
                 if (accountBook != null)
                 {
@@ -150,10 +160,17 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 data.Transaction.PAY_FORM_ID = payFormId;
                 if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
                     data.Transaction.TRANSACTION_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
-                        Convert.ToDateTime(dtTransactionTime.EditValue).ToString("yyyyMMddHHmm") + "00");
-                data.Transaction.EXEMPTION = Math.Round(totalDiscount, 4);
+                        Convert.ToDateTime(dtTransactionTime.EditValue).ToString("yyyyMMddHHmmss"));
+                if (data.Transaction.EXEMPTION == 0)
+                {
+                    data.Transaction.EXEMPTION = null;
+                }
                 data.Transaction.ADJUSTMENT_REASON = txtReason.Text;
+                data.Transaction.IS_ADJUSTMENT = 1;
 
+
+                decimal AmountTransaction = 0;
+                decimal ToyalPriceGoc = 0;
                 List<HIS_SERE_SERV_BILL> hisSSBills = new List<HIS_SERE_SERV_BILL>();
                 foreach (var item in listData)
                 {
@@ -162,32 +179,139 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
 
                     if (adjustmentValues.TryGetValue(item.ID, out decimal adjustedPrice))
                     {
-                        ssBill.PRICE = adjustedPrice;
+                        if (adjustedPrice > item.VIR_TOTAL_PATIENT_PRICE || (adjustedPrice * -1) > item.VIR_TOTAL_PATIENT_PRICE)
+                        {
+                            param.Messages.Add(HIS.Desktop.Plugins.AdjustmentTransaction.Base.ResourceMessageLang.VuotMax);
+                            return success;
+                        }
+                        else if (item.TOTAL_BILL_AMOUNT == 0 && adjustedPrice < 0)
+                        {
+                            param.Messages.Add(HIS.Desktop.Plugins.AdjustmentTransaction.Base.ResourceMessageLang.VuotMax);
+                            return success;
+                        }
                     }
-                    else
-                    {
-                        // 🔹 Không có điều chỉnh => lấy giá trị gốc
-                        ssBill.PRICE = item.VIR_TOTAL_PATIENT_PRICE ?? 0;   
-                    }
-
+                    ssBill.PRICE = adjustedPrice;
+                    AmountTransaction += ssBill.PRICE;
+                    ToyalPriceGoc += item.TOTAL_BILL_AMOUNT ?? 0;
                     hisSSBills.Add(ssBill);
+                }
+
+                if (AmountTransaction == 0)
+                {
+                    param.Messages.Add(HIS.Desktop.Plugins.AdjustmentTransaction.Base.ResourceMessageLang.DieuChinh);
+                    return success;
+                }
+                if (AmountTransaction != 0)
+                {
+                    data.Transaction.AMOUNT = AmountTransaction;
+                }
+
+                if (data.Transaction.AMOUNT >= 0)
+                {
+                    data.Transaction.ADJUSTMENT_TYPE = 2; //AMOUNT dương        
+                }
+                else if (data.Transaction.AMOUNT < 0)
+                {
+                    data.Transaction.ADJUSTMENT_TYPE = 1; //AMOUNT âm
+                }
+                else
+                {
+                    data.Transaction.ADJUSTMENT_TYPE = 3;
                 }
                 data.SereServBills = hisSSBills;
 
+                #region không tạo hóa đơn điện tử khi tiền bệnh nhân phải trả bằng 0     
+                if (isLuuKy && HisConfigCFG.AllowToCreateNoPriceTransaction != "1")
+                {
+                    var listFund1 = bindingSource1.DataSource as List<VHisBillFundADO>;
+                    decimal totalFund1 = 0;
+                    decimal canthuAmount = 0;
+                    if (listFund1 != null && listFund1.Count > 0)
+                    {
+                        totalFund1 = listFund1.Sum(o => o.AMOUNT);
+                    }
+                    string totalAmountBNTra = Inventec.Common.Number.Convert.NumberToString((ToyalPriceGoc - AmountTransaction), ConfigApplications.NumberSeperator);
+
+                    if (totalAmountBNTra == "0")
+                    {
+                        param.Messages.Add(HIS.Desktop.Plugins.AdjustmentTransaction.Base.ResourceMessageLang.TienBenhNhanTraBangKhong);
+                        isnotPrintMPS000111 = true;
+                        Inventec.Common.Logging.LogSystem.Info("param123: ");
+                    }
+                }
+                #endregion
+
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
-                var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HisAdjustmentBillResultSDO>
+                HisAdjustmentBillResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<HisAdjustmentBillResultSDO>
                     ("api/HisTransaction/AdjustmentBill", ApiConsumers.MosConsumer, data, param);
 
-                if (rs != null)
+                if (HisAdjustmentBillResult != null)
                 {
                     success = true;
-                    HisTransactionViewFilter fl = new HisTransactionViewFilter();
-                    fl.ID = rs.TransactionBill.ID;
-                    var lstTransaction = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumer.ApiConsumers.MosConsumer, fl, null);
-                    this.resultTranBill = lstTransaction.FirstOrDefault();
+                    //HisTransactionViewFilter fl = new HisTransactionViewFilter();
+                    //fl.ID = rs.TransactionBill.ID;
+                    //var lstTransaction = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumer.ApiConsumers.MosConsumer, fl, null);
+                    //this.resultTranBill = lstTransaction.FirstOrDefault();
+
+                    if (IsCheckPrint)
+                    {
+                        FillAdjustmentBill();
+                    }
+
+                    if (delegateRefreshData != null)
+                    {
+                        delegateRefreshData();
+                    }
+
+                    if (isLuuKy && AdjustmentTransactionConfig.InvoiceTypeCreate == invoiceTypeCreate__CreateInvoiceVnpt)
+                    {
+                        if (isnotPrintMPS000111 == false)
+                        {
+                            //tran.HIS_BILL_FUND = data.Transaction.HIS_BILL_FUND;
+                            //Tao hoa don dien thu ben thu3 
+                            ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(HisAdjustmentBillResult);
+                            if (electronicBillResult == null || !electronicBillResult.Success)
+                            {
+                                CreatAgain = true;
+
+                                ErrorElectronicBill.Add("Tạo hóa đơn điện tử thất bại");
+                                if (electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
+                                {
+                                    ErrorElectronicBill.AddRange(electronicBillResult.Messages.Distinct().ToList());
+                                }
+
+                                ErrorElectronicBill.Add("Bạn có muốn phát hành lại hóa đơn điện tử không?");
+
+                                param.Messages.AddRange(ErrorElectronicBill);
+
+                                //MessageManager.Show(this.ParentForm, param, success);
+                            }
+                            else
+                            {
+                                //goi api update
+                                CommonParam paramUpdate = new CommonParam();
+                                HisTransactionInvoiceInfoSDO sdo = new HisTransactionInvoiceInfoSDO();
+                                sdo.EinvoiceLoginname = electronicBillResult.InvoiceLoginname;
+                                sdo.InvoiceCode = electronicBillResult.InvoiceCode;
+                                sdo.InvoiceSys = electronicBillResult.InvoiceSys;
+                                sdo.EinvoiceNumOrder = electronicBillResult.InvoiceNumOrder;
+                                sdo.EInvoiceTime = electronicBillResult.InvoiceTime ?? (Inventec.Common.DateTime.Get.Now() ?? 0);
+                                sdo.Id = resultTranBill.ID;
+                                sdo.InvoiceLookupCode = electronicBillResult.InvoiceLookupCode;
+                                var apiResult = new BackendAdapter(paramUpdate).Post<bool>("api/HisTransaction/UpdateInvoiceInfo", ApiConsumers.MosConsumer, sdo, paramUpdate);
+                                if (apiResult)
+                                {
+                                    resultTranBill.INVOICE_CODE = electronicBillResult.InvoiceCode;
+                                    resultTranBill.INVOICE_SYS = electronicBillResult.InvoiceSys;
+                                    resultTranBill.EINVOICE_NUM_ORDER = electronicBillResult.InvoiceNumOrder;
+                                    resultTranBill.EINVOICE_TIME = electronicBillResult.InvoiceTime;
+                                    resultTranBill.EINVOICE_LOGINNAME = electronicBillResult.InvoiceLoginname;
+                                }
+                            }
+                        }
+                    }
 
                     Inventec.Desktop.Common.Message.WaitingManager.Hide();
-                    Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, true);
                 }
             }
             catch (Exception ex)
@@ -196,6 +320,25 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return success;
+        }
+
+        public void FillAdjustmentBill()
+        {
+            try
+            {
+                if (HisAdjustmentBillResult != null)
+                {
+                    HisTransactionViewFilter fl = new HisTransactionViewFilter();
+                    fl.ID = HisAdjustmentBillResult.TransactionBill.ID;
+                    var lstTransaction = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumer.ApiConsumers.MosConsumer, fl, null);
+                    this.resultTranBill = lstTransaction.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex); 
+                throw;
+            }
         }
         private void RefreshSessionInfo()
         {
@@ -219,8 +362,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
             {
                 if (!btnSave.Enabled)
                     return;
-
-                SetEnableButtonSave(false);
 
                 if (treatmentFee.TDL_TREATMENT_TYPE_ID != null)
                 {
@@ -247,14 +388,20 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 }
 
                 WaitingManager.Show();
-                CommonParam param = new CommonParam();    
-                success = ProcessSave(ref param);
+                CommonParam param = new CommonParam();
+                success = ProcessSave(ref param, false);
                 WaitingManager.Hide();
+                SetEnableButtonSave(!success.Value);
+                SetEnableButtonSave(!success.Value);
                 if (chkPrintHddt.Checked)
                 {
+                    FillAdjustmentBill();
                     this.onClickInHoaDonDienTu(null, null);
                 }
+
                 SessionManager.ProcessTokenLost(param);
+                Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
+
             }
             catch (Exception ex)
             {
@@ -328,7 +475,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 this.positionHandleControl = -1;
                 if (!btnSavePrint.Enabled)
                     return;
-                SetEnableButtonSave(false);
 
                 if (HisConfigCFG.AttachAssignPrintWarningOption == "1")
                 {
@@ -357,23 +503,25 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                                 {
 
                                 }
-                            }
+                            }            
                         }
                     }
-
-                    
                 }
 
-                WaitingManager.Show();
+                WaitingManager.Show();    
                 CommonParam param = new CommonParam();
-                success = (bool)ProcessSave(ref param);
+                IsCheckPrint = true;
+                success = (bool)ProcessSave(ref param, false);
                 WaitingManager.Hide();
-
+                SetEnableButtonSave(!success);
+                SetEnableButtonSave(!success);
                 if (success == true)
                 {
                     this.hienHoaDonNhap = false;
                     this.onClickPhieuThuThanhToan();
                 }
+                    
+                Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
             }
             catch (Exception ex)
             {
@@ -391,7 +539,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                     return;
                 if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show("Thanh toán QR chưa thể tự động tạo hóa đơn điện tử bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                     return;
-                SetEnableButtonSave(false);
                 if (String.IsNullOrEmpty(AdjustmentTransactionConfig.InvoiceTypeCreate))
                     return;
 
@@ -406,7 +553,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 success = ProcessSave(ref param, true);
                 param.Messages = param.Messages.Distinct().ToList();
                 WaitingManager.Hide();
-
                 if (success == true)
                 {
                     this.hienHoaDonNhap = false;
@@ -451,16 +597,18 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                         }
                     }
 
-                    if (showResult)
-                        MessageManager.Show(this, param, success);
+                    //if (showResult)
+                    //    MessageManager.Show(this, param, success);
                 }
                 else if (success == false)
                 {
-                    MessageManager.Show(param, success);
+                    Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
                 }
 
                 GeneratePopupMenu();
 
+                SetEnableButtonSave(!success.Value);
+                SetEnableButtonSave(!success.Value);
                 Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
 
             }
@@ -1220,39 +1368,39 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
             }
         }
 
-        private void GeneratePopupMenu()
+        private void GeneratePopupMenu()      
         {
             try
             {
                 DXPopupMenu menu = new DXPopupMenu();
-
+                FillAdjustmentBill();
                 //if (this.hienHoaDonNhap && AdjustmentTransactionConfig.InvoiceTypeCreate == invoiceTypeCreate__CreateInvoiceVnpt)
                 //{
                 //    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_HOA_DON_NHAP", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickHoaDonNhap)));
                 //}
                 //else
                 {
-                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_THANH_TOAN", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickPhieuThuThanhToan)));
+                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_THANH_TOAN", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickPhieuThuThanhToan)));
 
-                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_TT_THEO_YEU_CAU", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickPhieuThuThanhToanTheoYeuCau)));
+                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_TT_THEO_YEU_CAU", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickPhieuThuThanhToanTheoYeuCau)));
 
-                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_TT_CHI_TIET_DICH_VU", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickPhieuThuThanhToanChiTietDichVu)));
+                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_PHIEU_THU_TT_CHI_TIET_DICH_VU", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickPhieuThuThanhToanChiTietDichVu)));
 
-                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_BIEN_LAI_PHI_LE_PHI", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickBienLaiThuPhiLePhi)));
+                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_BIEN_LAI_PHI_LE_PHI", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickBienLaiThuPhiLePhi)));
 
-                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_PHIEU_CHI_DINH", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickPhieuChiDinh)));
+                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_PHIEU_CHI_DINH", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickPhieuChiDinh)));
 
-                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_HOA_DON_DIEN_TU", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickInHoaDonDienTu)));
+                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_HOA_DON_DIEN_TU", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickInHoaDonDienTu)));
                     if (resultTranBill != null && resultTranBill.EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT)
                     {
-                        menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_CHUYEN_DOI_HOA_DON_DIEN_TU", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickChuyenDoiHoaDonDienTu)));
+                        menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_CHUYEN_DOI_HOA_DON_DIEN_TU", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickChuyenDoiHoaDonDienTu)));
                     }
 
                     if (this.treatmentFee != null && this.treatmentFee.IS_PAUSE == 1)
                     {
-                        menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_HOAN_UNG_THANH_TOAN", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickInThanhToanHoanUng)));
+                        menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_IN_HOAN_UNG_THANH_TOAN", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickInThanhToanHoanUng)));
                     }
-                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__PHIEU_THU_HOAN_UNG_MPS113", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickPhieuThuHoanUng)));
+                    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__PHIEU_THU_HOAN_UNG_MPS113", Base.ResourceLangManager.LanguageFrmAdjustmentTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickPhieuThuHoanUng)));
                 }
                 ddBtnPrint.DropDownControl = menu;
             }
@@ -2168,5 +2316,45 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
             }
         }
 
+        private ElectronicBillResult TaoHoaDonDienTuBenThu3CungCap(HisAdjustmentBillResultSDO transactionRs)
+        {
+            ElectronicBillResult result = new ElectronicBillResult();
+            try
+            {
+                ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
+                dataInput.Amount = transactionRs.TransactionBill.AMOUNT;
+                dataInput.Branch = LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == LocalStorage.LocalData.WorkPlace.GetBranchId());
+                dataInput.Discount = this.resultTranBill.EXEMPTION ?? 0;
+                dataInput.DiscountRatio = ((this.resultTranBill.EXEMPTION / this.resultTranBill.AMOUNT) * 100) ?? 0;
+                dataInput.PaymentMethod = cboPayForm.Text;
+                dataInput.SereServBill = transactionRs.SereServBills;
+                dataInput.Treatment = this.treatmentFee;
+                dataInput.Currency = "VND";
+                dataInput.Transaction = transactionRs.TransactionBill;
+                var accountBook = ListAccountBook.FirstOrDefault(o => o.ID == Convert.ToInt64(cboAccountBook.EditValue));
+                if (accountBook != null)
+                {
+                    dataInput.SymbolCode = accountBook.SYMBOL_CODE;
+                    dataInput.TemplateCode = accountBook.TEMPLATE_CODE;
+                    dataInput.EinvoiceTypeId = accountBook.EINVOICE_TYPE_ID;
+                }
+
+                if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
+                {
+                    dataInput.TransactionTime = Convert.ToInt64(dtTransactionTime.DateTime.ToString("yyyyMMddHHmmss"));
+                }
+
+                WaitingManager.Show();
+                ElectronicBillProcessor electronicBillProcessor = new ElectronicBillProcessor(dataInput);
+                result = electronicBillProcessor.Run(ElectronicBillType.ENUM.CREATE_INVOICE);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
     }
 }
