@@ -32,6 +32,8 @@ namespace HIS.Desktop.Plugins.TransactionBill.Config
     {
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__VP = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.HOSPITAL_FEE";//Doi tuong 
+        //qtcode
+        private const string CONFIG_KEY__AUTO_REPLACE_INVOICE_ON_CANCEL = "HIS.Desktop.Plugins.TransactionBill.AutoReplaceInvoiceOnCancel";
 
         public const string HIS_FUND__FUND_CODE__HCM = "HIS.HIS_FUND.HIS_FUND_CODE.HCM";
 
@@ -70,6 +72,8 @@ namespace HIS.Desktop.Plugins.TransactionBill.Config
         internal static bool IsCheckAutoRepayAsDefault;
         internal static bool IsAutoSelectAccountBookIfHasOne;
         internal static string AttachAssignPrintWarningOption;
+        //qtcode
+        internal static string AutoReplaceInvoiceOnCancel;
 
         internal static string MustFinishTreatmentForBill;
         internal static string EnableSaveOption;
@@ -107,6 +111,7 @@ namespace HIS.Desktop.Plugins.TransactionBill.Config
                 Inventec.Common.Logging.LogSystem.Debug("HIS_TRANSACTION_SAVE_AND_PRINT_NOW_SERVICE_DETAIL>>>>>>>>>>>>>>" + HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HIS_TRANSACTION_SAVE_AND_PRINT_NOW_SERVICE_DETAIL));
                 EnableSaveOption = GetValue(ENABLE_SAVE_OPTION);
                 PatientTypeCode__BHYT = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT);
+                AutoReplaceInvoiceOnCancel = GetValue(CONFIG_KEY__AUTO_REPLACE_INVOICE_ON_CANCEL); 
                 PatientTypeId__BHYT = GetPatientTypeByCode(PatientTypeCode__BHYT).ID;
                 HcmPoorFund__Vcn = GetListValue(VCN_ACCEPTED_SERVICE_CODE_CFG);
                 IsketChuyenCFG = GetValue(His_Desktop_plugins_transactionBill_IsKetChuyen);

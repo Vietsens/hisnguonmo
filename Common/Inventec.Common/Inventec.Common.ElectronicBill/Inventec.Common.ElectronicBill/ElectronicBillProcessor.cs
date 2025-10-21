@@ -153,6 +153,7 @@ namespace Inventec.Common.ElectronicBill
                     electronicBillInput.adjustInvoice.Total = FormatReplaceStringPrice(electronicBillInput.adjustInvoice.Total);
                     electronicBillInput.adjustInvoice.DiscountAmount = FormatReplaceStringPrice(electronicBillInput.adjustInvoice.DiscountAmount);
                     electronicBillInput.adjustInvoice.VATAmount = FormatReplaceStringPrice(electronicBillInput.adjustInvoice.VATAmount);
+                    electronicBillInput.adjustInvoice.Type = electronicBillInput.adjustInvoice.Type; 
                     if (electronicBillInput.adjustInvoice.Products != null && electronicBillInput.adjustInvoice.Products.Count > 0)
                     {
                         foreach (var product in electronicBillInput.adjustInvoice.Products)

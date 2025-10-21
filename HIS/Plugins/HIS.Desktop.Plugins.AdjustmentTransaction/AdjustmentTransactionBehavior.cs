@@ -1,4 +1,5 @@
-﻿using HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction;
+﻿using HIS.Desktop.Common;
+using HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction;
 using Inventec.Desktop.Core;
 using Inventec.Desktop.Core.Tools;
 using MOS.EFMODEL.DataModels;
@@ -14,20 +15,22 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction
     {
         Inventec.Desktop.Common.Modules.Module Module;
         V_HIS_TRANSACTION tran = null;
-
-        internal AdjustmentTransactionBehavior(Inventec.Desktop.Common.Modules.Module module, V_HIS_TRANSACTION tran)
+        DelegateRefreshData delegateRefreshData = null;
+        internal AdjustmentTransactionBehavior(Inventec.Desktop.Common.Modules.Module module, V_HIS_TRANSACTION tran, DelegateRefreshData delegateRefreshData)
             : base()
         {
             this.Module = module;
             this.tran = tran;
+            this.delegateRefreshData = delegateRefreshData;
         }
 
         object IAdjustmentTransaction.Run()
         {
             object result = null;
+
             try
             {
-                result = new frmAdjustmentTransaction(Module, tran);
+                result = new frmAdjustmentTransaction(Module, tran, this.delegateRefreshData);
                 if (result == null) throw new NullReferenceException(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => tran), tran));
             }
             catch (Exception ex)

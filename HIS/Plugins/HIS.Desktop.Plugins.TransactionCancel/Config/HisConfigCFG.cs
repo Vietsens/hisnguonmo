@@ -29,11 +29,13 @@ namespace HIS.Desktop.Plugins.TransactionCancel.Config
 {
     internal class HisConfigCFG
     {
+        private const string CONFIG_KEY__AUTO_REPLACE_INVOICE_ON_CANCEL = "HIS.Desktop.Plugins.TransactionBill.AutoReplaceInvoiceOnCancel";
         private const string CONFIG_KEY__TRAN_BILL_SELECT = "HIS.Desktop.TransactionBillSelect";
         private const string CONFIG_KEY__TRAN_BILL_OTHER_AUTOCANCEL = "HIS.Desktop.Plugins.Transaction.BillOther.AutoCancel";
         private const string CONFIG_KEY__CASHIER_ROOM_PAYMENT_OPTION = "MOS.EPAYMENT.CASHIER_ROOM_PAYMENT_OPTION";
         private const string CONFIG_KEY__ALLOW_WHEN_REQUEST = "HIS.HIS_TRANSACTION.TRANSACTION_CANCEL.ALLOW_WHEN_REQUEST";
 
+        internal static string Auto__Replace__Invoice__On__Cancel;
         internal static string TransactionBill__Select;
         internal static string TransactionBill__AutoCancel;
         internal static string TransactionBill__CashierRoomPaymentOption;
@@ -42,6 +44,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel.Config
         {
             try
             {
+                Auto__Replace__Invoice__On__Cancel = GetValue(CONFIG_KEY__AUTO_REPLACE_INVOICE_ON_CANCEL);
                 TransactionBill__Select = GetValue(CONFIG_KEY__TRAN_BILL_SELECT);
                 TransactionBill__AutoCancel = GetValue(CONFIG_KEY__TRAN_BILL_OTHER_AUTOCANCEL);
                 TransactionBill__CashierRoomPaymentOption = GetValue(CONFIG_KEY__CASHIER_ROOM_PAYMENT_OPTION);

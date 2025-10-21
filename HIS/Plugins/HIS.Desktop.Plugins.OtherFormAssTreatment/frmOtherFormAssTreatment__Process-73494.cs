@@ -49,6 +49,8 @@ using System.Windows.Forms;
 using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Common.WordContent;
 using MPS.ProcessorBase;
+using DevExpress.XtraExport;
+using MOS.SDO;
 
 namespace HIS.Desktop.Plugins.OtherFormAssTreatment
 {
@@ -195,6 +197,54 @@ namespace HIS.Desktop.Plugins.OtherFormAssTreatment
                     dicParamPlus.Add("IN_TIME_STR", Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(this.Treatment.IN_TIME));
 
                     dicParamPlus["DOB_STR"] = Inventec.Common.DateTime.Convert.TimeNumberToDateString(Treatment.TDL_PATIENT_DOB);
+                    // bổ xuong key
+                    dicParamPlus["ICD_NGT_TEXT"] = Treatment.TRANSFER_IN_ICD_NAME;
+                    dicParamPlus["ICD_DEPARTMENT_TRAN"] = Treatment.ICD_NAME;
+                    dicParamPlus["TIME_IN_STR"] = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(this.Treatment.CLINICAL_IN_TIME ?? this.Treatment.IN_TIME); ;
+
+                    long? inTime = this.Treatment.CLINICAL_IN_TIME ?? this.Treatment.IN_TIME;
+
+                    if (inTime.HasValue)
+                    {
+                        DateTime dtIT = DateTime.ParseExact(inTime.Value.ToString(), "yyyyMMddHHmmss", null);
+
+                        dicParamPlus["IN_TIME_HOUR"] = dtIT.Hour;
+                        dicParamPlus["IN_TIME_MINUTE"] = dtIT.Minute;
+                        dicParamPlus["IN_TIME_DAY"] = dtIT.Day;
+                        dicParamPlus["IN_TIME_MONTH"] = dtIT.Month;
+                        dicParamPlus["IN_TIME_YEAR"] = dtIT.Year;
+                    }
+                    else
+                    {
+                        dicParamPlus["IN_TIME_HOUR"] = "";
+                        dicParamPlus["IN_TIME_MINUTE"] = "";
+                        dicParamPlus["IN_TIME_DAY"] = "";
+                        dicParamPlus["IN_TIME_MONTH"] = "";
+                        dicParamPlus["IN_TIME_YEAR"] = "";
+                    }
+
+                    DateTime? dtOT = this.Treatment.OUT_TIME.HasValue ? DateTime.ParseExact(this.Treatment.OUT_TIME.Value.ToString(), "yyyyMMddHHmmss", null) : (DateTime?)null;
+
+                    if (dtOT.HasValue)
+                    {
+                        dicParamPlus["OUT_TIME_HOUR"] = dtOT.Value.Hour;
+                        dicParamPlus["OUT_TIME_MINUTE"] = dtOT.Value.Minute;
+                        dicParamPlus["OUT_TIME_DAY"] = dtOT.Value.Day;
+                        dicParamPlus["OUT_TIME_MONTH"] = dtOT.Value.Month;
+                        dicParamPlus["OUT_TIME_YEAR"] = dtOT.Value.Year;
+                    }
+                    else
+                    {
+                        dicParamPlus["OUT_TIME_HOUR"] = "";
+                        dicParamPlus["OUT_TIME_MINUTE"] = "";
+                        dicParamPlus["OUT_TIME_DAY"] = "";
+                        dicParamPlus["OUT_TIME_MONTH"] = "";
+                        dicParamPlus["OUT_TIME_YEAR"] = "";
+                    }
+                    dicParamPlus["TIME_OUT_STR"] = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(this.Treatment.OUT_TIME ?? 0); ///Treatment.TDL_PATIENT_CCCD_DATE;
+                    
+
+                    dicParamPlus["TDL_PATIENT_CCCD_DATE_STR"] = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(this.Treatment.TDL_PATIENT_CCCD_DATE ?? 0); ///Treatment.TDL_PATIENT_CCCD_DATE;
 
                     // minhnq
                     TemplateKeyProcessor.SetSingleKey(dicParamPlus, CommonKey._PARENT_ORGANIZATION_NAME, PrintConfig.ParentOrganizationName);
@@ -249,6 +299,7 @@ namespace HIS.Desktop.Plugins.OtherFormAssTreatment
                     var LastDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(o => o.ID == this.Treatment.LAST_DEPARTMENT_ID);
                     if (LastDepartment != null)
                     {
+                        dicParamPlus.Add("EXECUTE_DEPARTMENT_NAME", LastDepartment.DEPARTMENT_NAME);
                         dicParamPlus.Add("LAST_DEPARTMENT_NAME", LastDepartment.DEPARTMENT_NAME);
                         dicParamPlus.Add("LAST_DEPARTMENT_CODE", LastDepartment.DEPARTMENT_CODE);
                     }
@@ -268,6 +319,17 @@ namespace HIS.Desktop.Plugins.OtherFormAssTreatment
                         dicParamPlus.Add("TREATMENT_BED_ROOM_CODE", "");
 
                         dicParamPlus.Add("TREATMENT_BED_ROOM_NAME", "");
+                    }
+
+                    // bổ xuong HIS_TRACKING cuối cùng lấy theo Treatment
+                    HisTrackingFilter trackingFilter = new HisTrackingFilter();
+                    trackingFilter.TREATMENT_ID = this.Treatment.ID;
+                    var trackings = new BackendAdapter(new CommonParam()).Get<List<HIS_TRACKING>>("api/HisTracking/Get", ApiConsumers.MosConsumer, trackingFilter, null);
+
+                    if (trackings != null && trackings.Count > 0)
+                    {
+                        var tracking = trackings.OrderByDescending(o => o.TRACKING_TIME).FirstOrDefault();
+                        AddKeyIntoDictionaryPrint<HIS_TRACKING>(tracking, dicParamPlus);
                     }
 
                 }

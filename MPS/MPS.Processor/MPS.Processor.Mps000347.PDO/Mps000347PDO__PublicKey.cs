@@ -85,6 +85,9 @@ namespace MPS.Processor.Mps000347.PDO
         public string STORAGE_CONDITION_CODE { get; set; }
         public string STORAGE_CONDITION_NAME { get; set; }
 
+        public long? OTHER_PAY_SOURCE_ID { get; set; }
+        public string OTHER_PAY_SOURCE_CODE { get; set; }
+        public string OTHER_PAY_SOURCE_NAME { get; set; }
         public Mps000347ADO()
         {
         }
@@ -100,7 +103,14 @@ namespace MPS.Processor.Mps000347.PDO
         {
             try
             {
-                
+                if (_expMestMeidicines != null && _expMestMeidicines.Count > 0)
+                {
+                    var firstMedicine = _expMestMeidicines.First();
+                    this.OTHER_PAY_SOURCE_ID = firstMedicine.OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_CODE = firstMedicine.OTHER_PAY_SOURCE_CODE;
+                    this.OTHER_PAY_SOURCE_NAME = firstMedicine.OTHER_PAY_SOURCE_NAME != null ? firstMedicine.OTHER_PAY_SOURCE_NAME.ToUpper() : null;
+                }
+
 
                 if (_expMestMetyReqs != null && _expMestMetyReqs.Count > 0)
                 {
@@ -144,6 +154,7 @@ namespace MPS.Processor.Mps000347.PDO
                             this.VIR_PRICE = listMedicines.Sum(p => p.VIR_PRICE);
                             this.MEDICINE_USE_FORM_NUM_ORDER = listMedicines.First().MEDICINE_USE_FORM_NUM_ORDER;
                             this.MEDICINE_TYPE_NAME = listMedicines.First().MEDICINE_TYPE_NAME;
+
                         }
                         else
                         {
@@ -179,6 +190,14 @@ namespace MPS.Processor.Mps000347.PDO
         {
             try
             {
+                if (_expMestMaterials != null && _expMestMaterials.Count > 0)
+                {
+                    var firstMaterial = _expMestMaterials.First();
+                    this.OTHER_PAY_SOURCE_ID = firstMaterial.OTHER_PAY_SOURCE_ID;
+                    this.OTHER_PAY_SOURCE_CODE = firstMaterial.OTHER_PAY_SOURCE_CODE;
+                    this.OTHER_PAY_SOURCE_NAME = firstMaterial.OTHER_PAY_SOURCE_NAME != null ? firstMaterial.OTHER_PAY_SOURCE_NAME.ToUpper() : null;
+                }
+
                 if (_expMestMatyReqs != null && _expMestMatyReqs.Count > 0)
                 {
                     this.TYPE_ID = 2;

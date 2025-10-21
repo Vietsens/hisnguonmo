@@ -44,8 +44,10 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
         private const string CONFIG_KEY__SearchPatientsAcrossHospital = "HIS.Desktop.Plugins.TreatmentList.SearchPatientsAcrossHospital";
         private const string CONFIG_KEY__AIConnectionInfo = "HIS.Desktop.AI.ConnectionInfo";
         private const string CONFIG_KEY__AIViewChatUrlFormat = "HIS.Desktop.AI.ViewChatUrlFormat";
-        
-        
+
+        private const string CONFIG_KEY__ALLOW_FINISH_DIFFERENT_DEPARTMENT = "MOS.HIS_TREATMENT.ALLOW_FINISH_DIFFERENT_DEPARTMENT";
+
+
         internal static string AIViewChatUrlFormat;
         internal static string AIConnectionInfo;
         internal static bool SearchPatientsAcrossHospital;
@@ -64,6 +66,7 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
         internal static string OldSystemIntegrationType;
         internal static string MPS_PrintPrescription;
 
+        internal static bool isAllowFinishDifferentDepartment;
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -99,6 +102,7 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
                 SearchPatientsAcrossHospital = GetValue(CONFIG_KEY__SearchPatientsAcrossHospital) == "1";
                 AIConnectionInfo = GetValue(CONFIG_KEY__AIConnectionInfo);
                 AIViewChatUrlFormat = GetValue(CONFIG_KEY__AIViewChatUrlFormat);
+                isAllowFinishDifferentDepartment = GetValue(CONFIG_KEY__ALLOW_FINISH_DIFFERENT_DEPARTMENT) == "1";
             }
             catch (Exception ex)
             {

@@ -36,6 +36,10 @@ namespace MPS.Processor.Mps000347
     class Mps000347Processor : AbstractProcessor
     {
         Mps000347PDO rdo;
+        List<Mps000347ADO> listOtherPaySource = new List<Mps000347ADO>();
+        List<Mps000347ADO> ExpMestADOs;
+
+
         public Mps000347Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -52,6 +56,7 @@ namespace MPS.Processor.Mps000347
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 ProcessSingleKey();
+
                 List<Mps000347ADO> listAdoPrint = new List<Mps000347ADO>();
                 if (rdo.listAdo != null && rdo.listAdo.Count > 0)
                 {
@@ -121,10 +126,17 @@ namespace MPS.Processor.Mps000347
                 //lấy số lần in
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
 
+                GetOtherPaySourceGroup();
                 singleTag.ProcessData(store, singleValueDictionary);
                 objectTag.AddObjectData(store, "ListMediMate1", listAdoPrint);
                 objectTag.AddObjectData(store, "ListMediMate2", listAdoPrint);
                 objectTag.AddObjectData(store, "ListMediMate3", listAdoPrint);
+
+                objectTag.AddObjectData(store, "OtherPaySourceGroup", listOtherPaySource);
+
+                objectTag.AddRelationship(store, "OtherPaySourceGroup", "ListMediMate1", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
+
+
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
                 objectTag.SetUserFunction(store, "FuncMergeData12", new CalculateMergerData());
                 objectTag.SetUserFunction(store, "FuncMergeData13", new CalculateMergerData());
@@ -227,7 +239,9 @@ namespace MPS.Processor.Mps000347
                                 adoMediGr.VIR_PRICE = mediGr.Sum(p => p.VIR_PRICE);
                                 adoMediGr.MEDICINE_USE_FORM_NUM_ORDER = mediGr.First().MEDICINE_USE_FORM_NUM_ORDER;
                                 adoMediGr.MEDICINE_TYPE_NAME = mediGr.First().MEDICINE_TYPE_NAME;
-
+                                //adoMediGr.OTHER_PAY_SOURCE_CODE = mediGr.First().OTHER_PAY_SOURCE_CODE;
+                                //adoMediGr.OTHER_PAY_SOURCE_ID = mediGr.First().OTHER_PAY_SOURCE_ID;
+                                //adoMediGr.OTHER_PAY_SOURCE_NAME = mediGr.First().OTHER_PAY_SOURCE_NAME;
                                 var _dataMedi = rdo._MedicineTypes.FirstOrDefault(p => p.ID == mediGr.First().MEDICINE_TYPE_ID);
                                 if (_dataMedi != null)
                                 {
@@ -237,6 +251,9 @@ namespace MPS.Processor.Mps000347
                                     adoMediGr.CONCENTRA = _dataMedi.CONCENTRA;
                                     adoMediGr.STORAGE_CONDITION_CODE = _dataMedi.STORAGE_CONDITION_CODE;
                                     adoMediGr.STORAGE_CONDITION_NAME = _dataMedi.STORAGE_CONDITION_NAME;
+                                    adoMediGr.OTHER_PAY_SOURCE_NAME = _dataMedi.OTHER_PAY_SOURCE_NAME;
+                                    adoMediGr.OTHER_PAY_SOURCE_ID = _dataMedi.OTHER_PAY_SOURCE_ID;
+                                    adoMediGr.OTHER_PAY_SOURCE_CODE = _dataMedi.OTHER_PAY_SOURCE_CODE;
                                 }
 
                                 var medicines = rdo._Medicines.Where(p => mediGr.Select(x => x.MEDICINE_ID).ToList().Contains(p.ID)).ToList();
@@ -294,7 +311,9 @@ namespace MPS.Processor.Mps000347
                                 ado.MEDICINE_TYPE_NAME = data.MEDICINE_TYPE_NAME;
                                 ado.STORAGE_CONDITION_CODE = data.STORAGE_CONDITION_CODE;
                                 ado.STORAGE_CONDITION_NAME = data.STORAGE_CONDITION_NAME;
-
+                                ado.OTHER_PAY_SOURCE_CODE = data.OTHER_PAY_SOURCE_CODE;
+                                ado.OTHER_PAY_SOURCE_ID = data.OTHER_PAY_SOURCE_ID;
+                                ado.OTHER_PAY_SOURCE_NAME = data.OTHER_PAY_SOURCE_NAME;
                                 if (rdo.useform != null && rdo.useform.Count() > 0)
                                     ado.MEDICINE_USE_FORM_NUM_ORDER = rdo.useform.FirstOrDefault(o => o.ID == data.MEDICINE_USE_FORM_ID).NUM_ORDER;
                             }
@@ -359,6 +378,9 @@ namespace MPS.Processor.Mps000347
                                     adoMediGr.NATIONAL_NAME = _dataMate.NATIONAL_NAME;
                                     adoMediGr.PACKING_TYPE_NAME = _dataMate.PACKING_TYPE_NAME;
                                     adoMediGr.CONCENTRA = _dataMate.CONCENTRA;
+                                    adoMediGr.OTHER_PAY_SOURCE_CODE = _dataMate.OTHER_PAY_SOURCE_CODE;
+                                    adoMediGr.OTHER_PAY_SOURCE_ID = _dataMate.OTHER_PAY_SOURCE_ID;
+                                    adoMediGr.OTHER_PAY_SOURCE_NAME = _dataMate.OTHER_PAY_SOURCE_NAME;
                                 }
 
                                 var materials = rdo._Materials.Where(p => mediGr.Select(x => x.MATERIAL_ID).ToList().Contains(p.ID)).ToList();
@@ -405,6 +427,9 @@ namespace MPS.Processor.Mps000347
                                 ado.NATIONAL_NAME = data.NATIONAL_NAME;
                                 ado.PACKING_TYPE_NAME = data.PACKING_TYPE_NAME;
                                 ado.CONCENTRA = data.CONCENTRA;
+                                ado.OTHER_PAY_SOURCE_CODE = data.OTHER_PAY_SOURCE_CODE;
+                                ado.OTHER_PAY_SOURCE_ID = data.OTHER_PAY_SOURCE_ID;
+                                ado.OTHER_PAY_SOURCE_NAME = data.OTHER_PAY_SOURCE_NAME;
                             }
 
                             ado.TOTAL_AMOUNT_IN_REQUEST = itemGr.Sum(o => o.AMOUNT);
@@ -424,6 +449,32 @@ namespace MPS.Processor.Mps000347
                 SetSingleKey(new KeyValue(Mps000347ExtendSingleKey.SUM_TOTAL_PRICE_NO_VAT_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(totalPriceNoVat)))));
 
                 rdo.listAdo = rdo.listAdo.OrderBy(o => o.TYPE_ID).ThenByDescending(t => t.NUM_ORDER).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GetOtherPaySourceGroup()
+        {
+            try
+            {
+                if (rdo.listAdo != null && rdo.listAdo.Count > 0)
+                {
+                    var group = rdo.listAdo
+                        .GroupBy(o => new
+                        {
+                            o.OTHER_PAY_SOURCE_ID,
+                            o.OTHER_PAY_SOURCE_CODE,
+                            o.OTHER_PAY_SOURCE_NAME
+                        })
+                        .ToList();
+                    foreach (var item in group)
+                    {
+                        listOtherPaySource.Add(item.First());
+                    }
+                }
             }
             catch (Exception ex)
             {

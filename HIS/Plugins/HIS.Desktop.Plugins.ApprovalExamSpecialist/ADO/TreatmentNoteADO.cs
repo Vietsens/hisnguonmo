@@ -14,6 +14,10 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.ADO
         public string UserName { get; set; }
         public string Content { get; set; }
         public string Medical_order { get; set; }
+        public string ICD_CODE { get; set; }
+        public string ICD_NAME { get; set; }
+        public string ICD_SUB_CODE { get; set; }
+        public string ICD_TEXT { get; set; }
 
         public TreatmentNoteADO(HIS_TRACKING tracking, V_HIS_EMPLOYEE employee, List<DHisSereServ2> allSereServ2)
         {
@@ -46,6 +50,12 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.ADO
                     Medical_order = string.Join("\r\n", lst);
 
                 }
+
+                ICD_CODE = tracking.ICD_CODE;
+                ICD_NAME = tracking.ICD_NAME;
+                ICD_SUB_CODE = tracking.ICD_SUB_CODE;
+                ICD_TEXT = tracking.ICD_TEXT;
+
             }
             catch (Exception ex)
             {

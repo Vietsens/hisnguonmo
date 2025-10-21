@@ -250,6 +250,8 @@ namespace MPS.Processor.Mps000062.PDO
         public string IMP_MEST_MATERIAL___DATA { get; set; }
         public string TT_SERVICE___DATA { get; set; }
         public string SERVICE_CLS___DATA { get; set; }
+        public string SERVICE_RATION___DATA { get; set; }
+
         public string SERVICE_CLS_X01___DATA { get; set; }
         public string SERVICE_CLS_BOLD___DATA { get; set; }
         public string SERVICE_CLS_BOLD_X01___DATA { get; set; }

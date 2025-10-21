@@ -388,7 +388,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                 IssueCreateV2 issueCreate = GetInvoiceDetailV2();
                 rp.Pattern = issueCreate.Pattern;
                 rp.Invoices = issueCreate.Invoices;
-                rp.Ikey = ElectronicBillDataInput.Transaction.TDL_ORIGINAL_EI_CODE.ToString();
+                rp.Ikey = ElectronicBillDataInput.Transaction.TDL_ORIGINAL_EI_CODE?.ToString();
             }
             catch (Exception ex)
             {

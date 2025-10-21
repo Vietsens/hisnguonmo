@@ -750,6 +750,32 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void Control_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    // Lấy control tiếp theo trong TabOrder
+                    Control nextControl = GetNextControl((Control)sender, true);
+
+                    // Nếu control tiếp theo là ComboBoxEdit thì hiển thị popup
+                    if (nextControl is DevExpress.XtraEditors.ComboBoxEdit combo)
+                    {
+                        combo.Focus();
+                        combo.ShowPopup();
+                    }
+                    else
+                    {
+                        nextControl?.Focus();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         private void xtraTabControl1_SelectedPageChanged(object sender, DevExpress.XtraTab.TabPageChangedEventArgs e)
         {

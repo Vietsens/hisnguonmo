@@ -138,8 +138,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                     }
                     //qtcode
                     if (String.IsNullOrWhiteSpace(this._Transaction.INVOICE_CODE)
-                         && this._Transaction.IS_CANCEL != 1
-                         && (this._Transaction.AMOUNT - (this._Transaction.EXEMPTION ?? 0) - (this._Transaction.TDL_BILL_FUND_AMOUNT ?? 0) > 0))
+                         && this._Transaction.IS_CANCEL != 1)
+                        // && (this._Transaction.AMOUNT - (this._Transaction.EXEMPTION ?? 0) - (this._Transaction.TDL_BILL_FUND_AMOUNT ?? 0) > 0))
                     {
                         //xuất hóa đơn điện tủ
                         BarButtonItem btnHoaDonDienTu = new BarButtonItem(this._BarManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_HOADONDIENTU", Base.ResourceLangManager.LanguageFrmTransactionList, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 5);
@@ -163,15 +163,6 @@ namespace HIS.Desktop.Plugins.TransactionList
                     this._PopupMenu.AddItems(items.ToArray());
                 }
 
-                else if (this._Transaction.TRANSACTION_TYPE_ID == 3 && this._Transaction.IS_CANCEL != 1 && this._Transaction.ORIGINAL_TRANSACTION_ID == null && this._Transaction.IS_ADJUSTMENT != 1 && frmTransactionList.controlAcs != null && frmTransactionList.controlAcs.Exists(o => o.CONTROL_CODE == "HIS000047"))
-                {
-
-                    
-                        BarButtonItem btnDieuChinhHoaDon = new BarButtonItem(this._BarManager, "Điều chỉnh hóa đơn", 100);
-                    btnDieuChinhHoaDon.Tag = ItemType.DieuChinhHoaDon;
-                    btnDieuChinhHoaDon.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
-                    this._PopupMenu.AddItem(btnDieuChinhHoaDon);
-                }
                 else if (this._Transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT && this._Transaction.IS_CANCEL == 1)
                 {
                     if (Config.HisConfigCFG.TransactionBillSelect == "1"
@@ -254,7 +245,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                     //có AMOUNT - EXEMPTION - TDL_BILL_FUND_AMOUNT >0
                     if (String.IsNullOrWhiteSpace(this._Transaction.INVOICE_CODE)
                         && this._Transaction.IS_CANCEL != 1
-                        && (this._Transaction.AMOUNT - (this._Transaction.EXEMPTION ?? 0) - (this._Transaction.TDL_BILL_FUND_AMOUNT ?? 0) > 0))
+                        //&& (this._Transaction.AMOUNT - (this._Transaction.EXEMPTION ?? 0) - (this._Transaction.TDL_BILL_FUND_AMOUNT ?? 0) > 0)
+                        )
                     {
                         //xuất hóa đơn điện tủ
                         BarButtonItem btnHoaDonDienTu = new BarButtonItem(this._BarManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_HOADONDIENTU", Base.ResourceLangManager.LanguageFrmTransactionList, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 5);
@@ -367,6 +359,16 @@ namespace HIS.Desktop.Plugins.TransactionList
                     this._PopupMenu.AddItems(new BarItem[] { btnPhieuThuNo });
                 }
 
+
+                 if (this._Transaction.TRANSACTION_TYPE_ID == 3 && this._Transaction.IS_CANCEL != 1 && this._Transaction.ORIGINAL_TRANSACTION_ID == null && this._Transaction.INVOICE_CODE != null && this._Transaction.IS_ADJUSTMENT != 1 && frmTransactionList.controlAcs != null && frmTransactionList.controlAcs.Exists(o => o.CONTROL_CODE == "HIS000047"))
+                {
+
+
+                    BarButtonItem btnDieuChinhHoaDon = new BarButtonItem(this._BarManager, "Điều chỉnh hóa đơn", 100);
+                    btnDieuChinhHoaDon.Tag = ItemType.DieuChinhHoaDon;
+                    btnDieuChinhHoaDon.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                    this._PopupMenu.AddItem(btnDieuChinhHoaDon);
+                }
                 if (_Transaction.TREATMENT_ID.HasValue && _Transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU && _Transaction.IS_CANCEL == 1)
                 {
                     BarButtonItem btnPhieuHuyTamUng = new BarButtonItem(this._BarManager, "Phiếu hủy giao dịch tạm ứng", 1);

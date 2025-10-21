@@ -372,23 +372,31 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TRANSACTION_TIME__TOOLTIP" xml:space="preserve">
     <value>Thời gian giao dịch</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_AMOUNT" xml:space="preserve">
-    <value>SL</value>
+	<data name="IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_SERVICE_NAME" xml:space="preserve">
+    <value>Tên dịch vụ</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
+	<data name="IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
     <value>Mã dịch vụ</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VAT_RATIO" xml:space="preserve">
-    <value>VAT (%)</value>
+	<data name="IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_AMOUNT" xml:space="preserve">
+    <value>Số lượng</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_PRICE" xml:space="preserve">
+	<data name="IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_VIR_PRICE" xml:space="preserve">
     <value>Đơn giá</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PRICE" xml:space="preserve">
+	<data name="IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_VAT_RATIO" xml:space="preserve">
+    <value>Vat(%)</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PRICE" xml:space="preserve">
     <value>Thành tiền</value>
   </data>
-	<data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_TOTAL_BILL_AMOUNT" xml:space="preserve">
-    <value>Tổng hóa đơn</value>     
+	<data name="IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PATIENT_PRICE" xml:space="preserve">
+    <value>Bệnh nhân trả</value>
   </data>
-	
+	<data name="IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_TOTAL_BILL_AMOUNT" xml:space="preserve">
+    <value>Tổng hóa đơn</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__FRM_ADJUSTMENT_TRANSACTION__TREE_SERE_SERV__COLUMN_EDIT_AMOUNT" xml:space="preserve">
+    <value>Điều chỉnh</value>
+  </data>
 </root>

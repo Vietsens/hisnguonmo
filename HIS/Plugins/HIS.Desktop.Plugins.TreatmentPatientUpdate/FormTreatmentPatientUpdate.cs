@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -45,6 +45,7 @@ using MOS.Filter;
 using Inventec.Common.Adapter;
 using MOS.SDO;
 using HIS.Desktop.ApiConsumer;
+using System.Security.Cryptography;
 
 namespace HIS.Desktop.Plugins.TreatmentPatientUpdate
 {
@@ -60,7 +61,7 @@ namespace HIS.Desktop.Plugins.TreatmentPatientUpdate
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT> treatmentList;
         System.Globalization.CultureInfo cultureLang;
-        MOS.EFMODEL.DataModels.V_HIS_PATIENT patient;
+        MOS.EFMODEL.DataModels.HIS_PATIENT patient;
         List<Base.HisPatientADO> listPatient;
         ApiResultObject<List<Base.HisPatientADO>> apiResult = null;
         List<string> listPatientCode;
@@ -381,20 +382,22 @@ namespace HIS.Desktop.Plugins.TreatmentPatientUpdate
                 int limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(startPage, limit);
 
-                MOS.Filter.HisPatientViewFilter filter = new MOS.Filter.HisPatientViewFilter();
+                MOS.Filter.HisPatientFilter filter = new MOS.Filter.HisPatientFilter();
                 SetFilter(ref filter);
+                filter.ID__NOT_EQUAL = treatmentList.FirstOrDefault().PATIENT_ID;
                 gridView.BeginUpdate();
                 apiResult = new Inventec.Common.Adapter.BackendAdapter
                     (paramCommon).GetRO<List<Base.HisPatientADO>>
-                    (ApiConsumer.HisRequestUriStore.HIS_PATIENT_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
-                if (apiResult != null && apiResult.Success)
+                    (ApiConsumer.HisRequestUriStore.HIS_PATIENT_GET, ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
+                if (apiResult != null)
                 {
-                    listPatient = apiResult.Data.Where(o => o.ID != treatmentList.FirstOrDefault().PATIENT_ID).ToList();
-                    if (listPatient != null && listPatient.Count > 0)
+                    var data = (List<Base.HisPatientADO>)apiResult.Data;
+                    listPatient = data;
+                    if (data != null)
                     {
-                        gridControl.DataSource = listPatient;
-                        rowCount = (listPatient == null ? 0 : listPatient.Count);
-                        dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count - 1 ?? 0);
+                        gridControl.DataSource = data;
+                        rowCount = (data == null ? 0 : data.Count);
+                        dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                     }
                     else
                     {
@@ -416,7 +419,7 @@ namespace HIS.Desktop.Plugins.TreatmentPatientUpdate
             }
         }
 
-        private void SetFilter(ref MOS.Filter.HisPatientViewFilter filter)
+        private void SetFilter(ref MOS.Filter.HisPatientFilter filter)
         {
             try
             {
@@ -446,7 +449,7 @@ namespace HIS.Desktop.Plugins.TreatmentPatientUpdate
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    var data = (MOS.EFMODEL.DataModels.V_HIS_PATIENT)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    var data = (MOS.EFMODEL.DataModels.HIS_PATIENT)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (data != null)
                     {
                         if (e.Column.FieldName == "STT")
@@ -464,6 +467,17 @@ namespace HIS.Desktop.Plugins.TreatmentPatientUpdate
                         else if (e.Column.FieldName == "MODIFY_TIME_DISPLAY")
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.MODIFY_TIME ?? 0);
+                        }
+                        else if (e.Column.FieldName == "GENDER_NAME_STR")
+                        {
+                            if (data.GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__FEMALE)
+                            {
+                                e.Value = "Nữ";
+                            }
+                            if (data.GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE)
+                            {
+                                e.Value = "Nam";
+                            }
                         }
                     }
                 }
@@ -653,8 +667,8 @@ namespace HIS.Desktop.Plugins.TreatmentPatientUpdate
             {
                 CommonParam param = new CommonParam();
                 bool success = false;
-                patient = new MOS.EFMODEL.DataModels.V_HIS_PATIENT();
-                if (listPatient.Count > 0)
+                patient = new MOS.EFMODEL.DataModels.HIS_PATIENT();
+                if (listPatient != null && listPatient.Count > 0)
                 {
                     foreach (var item in listPatient)
                     {

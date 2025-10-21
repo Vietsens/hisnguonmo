@@ -75,9 +75,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                     switch (type)
                     {
 
-                        case PopupMenuProcessor.ItemType.DieuChinhHoaDon:
-                            this.DieuChinhHoaDon();
-                            break;
+                        
                         case PopupMenuProcessor.ItemType.PhieuThuThanhToan:
                             this.PrintPhieuThuThanhToan();
                             break;
@@ -182,6 +180,9 @@ namespace HIS.Desktop.Plugins.TransactionList
                         case PopupMenuProcessor.ItemType.InHoaDonNhap:
                             Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
                             store.RunPrintTemplate(MPS.Processor.Mps000431.PDO.Mps000431PDO.printTypeCode, DeletegatePrintTemplate);
+                            break;
+                        case PopupMenuProcessor.ItemType.DieuChinhHoaDon:
+                            this.DieuChinhHoaDon();
                             break;
                         default:
                             break;
@@ -787,6 +788,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                     return;
 
                 List<object> listArgs = new List<object>();
+                listArgs.Add((HIS.Desktop.Common.DelegateRefreshData)RefeshDataBefoEdit);
                 listArgs.Add(transactionPrint);
                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.AdjustmentTransaction", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
             }

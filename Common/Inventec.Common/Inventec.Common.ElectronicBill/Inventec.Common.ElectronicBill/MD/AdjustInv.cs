@@ -12,5 +12,6 @@ namespace Inventec.Common.ElectronicBill.MD
     {
         [XmlElement("key")]
         public string key { get; set; }
+        public int? Type { get; set; }
     }
 }

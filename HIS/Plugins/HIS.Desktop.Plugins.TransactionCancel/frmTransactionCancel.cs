@@ -54,6 +54,9 @@ using WCF;
 using WCF.Client;
 using HIS.Desktop.Plugins.TransactionCancel.Config;
 using DevExpress.XtraEditors.DXErrorProvider;
+using HIS.Desktop.Utility;
+using Inventec.Common.Logging;
+
 
 namespace HIS.Desktop.Plugins.TransactionCancel
 {
@@ -67,14 +70,14 @@ namespace HIS.Desktop.Plugins.TransactionCancel
         V_HIS_EXP_MEST_2 expMest = null;
         V_HIS_TRANSACTION TransactionCancelResult;
         private int positionHandleControl = -1;
-
+        List<HisTransactionCancelSDO> ado = new List<HisTransactionCancelSDO>();
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         string moduleLink = "HIS.Desktop.Plugins.TransactionCancel";
         List<V_HIS_TRANSACTION> listTranPrint { get; set; }
         bool isVisileCancelHIS = false;
-
+        List<HIS_TRANSACTION> lstTransOriginal = new List<HIS_TRANSACTION>();
         public frmTransactionCancel(Inventec.Desktop.Common.Modules.Module module, V_HIS_TRANSACTION data)
             : base(module)
         {
@@ -258,6 +261,21 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         lciCheckCK.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     }
                     //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.transaction), this.transaction));
+                    if(this.transaction.IS_ADJUSTMENT == 1)
+                    {
+                        DialogResult rs = DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Hóa đơn điều chỉnh không cho phép hủy",
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                            Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        MessageBoxButtons.OK
+                    );
+
+                        if (rs == DialogResult.OK)
+                        {
+                            btnSave.Enabled = false;
+                            return;
+                        }
+                    }
                 }
                 else
                 {
@@ -308,6 +326,33 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void GetTransactionOriginal()
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                HisTransactionFilter filter = new HisTransactionFilter();
+                filter.ORIGINAL_TRANSACTION_ID = this.transaction.ID;
+                filter.IS_ADJUSTMENT = true;
+
+                var result = new BackendAdapter(paramCommon)
+                    .Get<List<HIS_TRANSACTION>>(
+                        "api/HisTransaction/Get",
+                        ApiConsumer.ApiConsumers.MosConsumer,
+                        filter,
+                        HIS.Desktop.Controls.Session.SessionManager.ActionLostToken,
+                        paramCommon
+                    );
+
+                lstTransOriginal = (result != null && result.Count > 0) ? result : null;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
 
         private void ValidControl()
         {
@@ -390,6 +435,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel
         {
             try
             {
+                this.GetTransactionOriginal();
                 this.ValidControl();
                 this.positionHandleControl = -1;
                 if (!this.dxValidationProvider1.Validate())
@@ -417,7 +463,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 bool success = false;
-                HisTransactionCancelSDO sdo = ProcessDataForSave();
+                HisTransactionCancelSDO sdo = ProcessDataForSave(false);
 
                 if (this.transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__THE && HisConfigCFG.TransactionBill__CashierRoomPaymentOption == "1" && !isVisileCancelHIS)
                 {
@@ -560,16 +606,51 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         }
                     }
                 }
+                if(this.lstTransOriginal != null)
+                {
+                    DialogResult dr = DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Tồn tại hóa đơn điều chỉnh của hóa đơn hiện tại. Khi hủy, toàn bộ các giao dịch điều chỉnh đi kèm sẽ bị hủy theo. Bạn có chắc chắn muốn tiếp tục?",
+                            Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                                Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                            MessageBoxButtons.YesNo
+                        );
+
+                    if (dr == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
+
+                sdo.RequestRoomId = this.currentModule.RoomId;
+                if (this.cboCancelReason.Text.Trim() != "")
+                    sdo.CancelReasonId = Convert.ToInt64(cboCancelReason.EditValue);
+                if (dtCancelTime.EditValue != null)
+                {
+                    DateTime date = dtCancelTime.DateTime;
+                    sdo.CancelTime = Convert.ToInt64(date.ToString("yyyyMMddHHmmss"));
+                }
+                else
+                {
+                    sdo.CancelTime = 0; 
+                }
 
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANSACTION>("api/HisTransaction/Cancel", ApiConsumers.MosConsumer, sdo, param);
                 if (rs != null)
                 {
                     success = true;
+                    if (lstTransOriginal != null && lstTransOriginal.Count > 0)
+                    {
+                        foreach (var item in lstTransOriginal)
+                        {
+                            sdo.TransactionId = item.ID;
+                            var rso = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANSACTION>("api/HisTransaction/Cancel", ApiConsumers.MosConsumer, sdo, param);
+                        }
+                    }    
+                    
                     if (this.refreshDelegate != null) this.refreshDelegate(true);
                     TransactionCancelResult = GetViewTransaction(rs.ID);
                     listTranPrint.Add(this.TransactionCancelResult);
                 }
-
                 WaitingManager.Hide();
                 if (success)
                 {
@@ -582,16 +663,95 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                 SessionManager.ProcessTokenLost(param);
                 if (success)
                 {
-                    ProcessUpdateServiceReq();
-                    if (this.transaction.IS_CANCEL_EINVOICE != 1)
+                    if (HisConfigCFG.Auto__Replace__Invoice__On__Cancel == "1" && this.transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
                     {
-                        this.CancelElectronicBill(sdo);
-                    }
-                    if (HisConfigCFG.TransactionBill__AutoCancel == "1" && this.transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT && this.transaction.SALE_TYPE_ID == null)
-                    {
-                        AutoCancel(sdo);
-                    }
+                        V_HIS_TREATMENT_FEE treatmentFee = null;
+                        var feeFilter = new HisTreatmentFeeViewFilter();
+                        feeFilter.ID = this.TransactionCancelResult.TREATMENT_ID ?? 0;
+                        var fees = new Inventec.Common.Adapter.BackendAdapter(new CommonParam())
+                            .Get<List<V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumers.MosConsumer, feeFilter, null);
+                        if (fees != null && fees.Count > 0)
+                            treatmentFee = fees.FirstOrDefault();
 
+                        List<V_HIS_SERE_SERV_5> canceledServices = null;
+                        List<long> sereServIds = new List<long>();
+                        var billFilter = new HisSereServBillFilter();
+                        billFilter.BILL_ID = this.TransactionCancelResult.ID;
+                        var sereServBills = new Inventec.Common.Adapter.BackendAdapter(new CommonParam())
+                            .Get<List<HIS_SERE_SERV_BILL>>("api/HisSereServBill/Get", ApiConsumers.MosConsumer, billFilter, null);
+                        if (sereServBills != null && sereServBills.Count > 0)
+                        {
+                            sereServIds = sereServBills.Select(o => o.SERE_SERV_ID).ToList();
+                        }
+                        if (sereServIds != null && sereServIds.Count > 0)
+                        {
+                            var sereServFilter = new HisSereServView5Filter();
+                            sereServFilter.IDs = sereServIds;
+                            canceledServices = new Inventec.Common.Adapter.BackendAdapter(new CommonParam())
+                                .Get<List<V_HIS_SERE_SERV_5>>("api/HisSereServ/GetView5", ApiConsumers.MosConsumer, sereServFilter, null);
+                        }
+
+                        V_HIS_PATIENT_TYPE_ALTER patientTypeAlter = null;
+                        var alterFilter = new HisPatientTypeAlterViewFilter();
+                        alterFilter.TREATMENT_ID = this.TransactionCancelResult.TREATMENT_ID ?? 0;
+                        var alters = new Inventec.Common.Adapter.BackendAdapter(new CommonParam())
+                            .Get<List<V_HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/GetView", ApiConsumers.MosConsumer, alterFilter, null);
+                        if (alters != null && alters.Count > 0)
+                            patientTypeAlter = alters.OrderByDescending(x => x.LOG_TIME).FirstOrDefault();
+
+                        //var msg = "Một số dịch vụ đã thực hiện cần phải thu tiền, nếu bỏ thu có thể phát sinh rủi ro. Người dùng cần cân nhắc kỹ trước khi gỡ ra, hệ thống sẽ không chịu trách nhiệm đối với phần hủy hóa đơn này";
+                        //XtraMessageBox.Show(msg, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                        string moduleLink = "HIS.Desktop.Plugins.TransactionBill";
+
+                        Inventec.Desktop.Common.Modules.Module moduleData = null;
+                        foreach (var item in GlobalVariables.currentModuleRaws)
+                        {
+                            if (item.ModuleLink == moduleLink)
+                            {
+                                moduleData = item;
+                                break;
+                            }
+                        }
+
+                        if (moduleData == null)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = " + moduleLink);
+                        }
+                        else if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                        {
+                            List<object> listArgs = new List<object>();
+                            listArgs.Add(treatmentFee);
+                            listArgs.Add(canceledServices);
+                            listArgs.Add(patientTypeAlter);
+                            listArgs.Add(false);
+                            listArgs.Add(TransactionCancelResult);
+                            listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+
+                            var instance = PluginInstance.GetPluginInstance(
+                                PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId),
+                                listArgs);
+
+                            if (instance == null)
+                                throw new ArgumentNullException("Không khởi tạo được plugin thay thế hóa đơn");
+
+                            ((Form)instance).Show();
+                            var msg = "Một số dịch vụ đã thực hiện cần phải thu tiền, nếu bỏ thu có thể phát sinh rủi ro. Người dùng cần cân nhắc kỹ trước khi gỡ ra, hệ thống sẽ không chịu trách nhiệm đối với phần hủy hóa đơn này";
+                            XtraMessageBox.Show(msg, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                    else
+                    {
+                        ProcessUpdateServiceReq();
+                        if (this.transaction.IS_CANCEL_EINVOICE != 1)
+                        {
+                            this.CancelElectronicBill(sdo);
+                        }
+                        if (HisConfigCFG.TransactionBill__AutoCancel == "1" && this.transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT && this.transaction.SALE_TYPE_ID == null)
+                        {
+                            AutoCancel(sdo);
+                        }
+                    }
                     btnCancelHIS.Enabled = false;
                     btnSave.Enabled = false;
                     if (LblBtnPrint.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
@@ -612,7 +772,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel
             }
         }
 
-        private HisTransactionCancelSDO ProcessDataForSave(bool? isInternal = null)
+        private HisTransactionCancelSDO ProcessDataForSave(bool isInternal)
         {
             HisTransactionCancelSDO sdo = new HisTransactionCancelSDO();
             try
@@ -639,7 +799,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                     sdo.CancelTime = Convert.ToInt64(dtCancelTime.DateTime.ToString("yyyyMMddHHmm") + "00");
                 }
 
-                sdo.IsInternal = isInternal;
+                sdo.IsInternal = (bool)isInternal;
             }
             catch (Exception ex)
             {

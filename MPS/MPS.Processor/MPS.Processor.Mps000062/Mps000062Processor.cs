@@ -833,6 +833,7 @@ namespace MPS.Processor.Mps000062
                         {
                             ado.RATION_INFO = String.Join("; ", RationInfos);
                         }
+
                         _SereServRationADO.Add(ado);
                     }
                 }
@@ -6571,7 +6572,62 @@ namespace MPS.Processor.Mps000062
                                 dem++;
                             }
                         }
+
+
                     }
+                    var serviceReqDSAs = (ServiceReq != null && ServiceReq.Count > 0) ?
+                    ServiceReq
+                    : null;
+                    LogSystem.Info("serviceReqDSAs: " + LogUtil.TraceData("serviceReqDSAs: ", serviceReqDSAs));
+                    if (rdo._SereServRations != null && rdo._SereServRations.Count > 0)
+                    {
+                        var groupedRations = rdo._SereServRations
+                            .GroupBy(o => o.TRACKING_ID)
+                            .Select(g => g.ToList())
+                            .ToList();
+                        foreach (var rationGroup in groupedRations)
+                        {
+                            SereServRationADO ado = new SereServRationADO(rationGroup[0]);
+
+                            List<string> completedList = new List<string>();
+                            List<string> uncompletedList = new List<string>();
+
+                            foreach (var ration in rationGroup.OrderBy(o => o.RATION_TIME_ID))
+                            {
+                                var rationService = serviceReqDSAs.FirstOrDefault(s => s.ID == ration.SERVICE_REQ_ID);
+                                if (rationService == null)
+                                    continue;
+
+                                string info = ration.RATION_TIME_NAME + ": " + ration.SERVICE_CODE + " - " + ration.SERVICE_NAME;
+
+                                if (rationService.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                                    completedList.Add(info);
+                                else
+                                    uncompletedList.Add(info);
+                            }
+
+                            string completedText = completedList.Count > 0 ? string.Join("; ", completedList) : "";
+                            string uncompletedText = uncompletedList.Count > 0 ? string.Join("; ", uncompletedList) : "";
+
+                            string finalText = "";
+
+                            if (!string.IsNullOrEmpty(completedText))
+                                finalText += completedText;
+
+                            if (!string.IsNullOrEmpty(uncompletedText))
+                            {
+                                if (finalText != "")
+                                {
+                                    finalText += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                }    
+                                finalText += uncompletedText;
+                                finalText += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                            }
+
+                            item.SERVICE_RATION___DATA = finalText;
+                        }
+                    }
+
 
 
                     //CARE

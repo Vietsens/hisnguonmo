@@ -177,7 +177,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                                     Inventec.Common.Mapper.DataObjectMapper.Map<Product>(product, item);
                                     adjustInvoice.Products.Add(product);
                                 }
-                                electronicBillInput.fKey = this.ElectronicBillDataInput.Transaction.TDL_ORIGINAL_EI_CODE; // fKey là mã hóa đơn gốc
+                                electronicBillInput.fKey = this.ElectronicBillDataInput.Transaction.TDL_ORIGINAL_TRAN_CODE;
                                 electronicBillInput.adjustInvoice = adjustInvoice;
                             }
                             else if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
@@ -542,7 +542,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                             result = Inventec.Common.ElectronicBill.CmdType.AdjustInvoiceAction;
                         }
                         //thay thế hóa đơn
-                        if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
+                        else if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
                         {
                             result = Inventec.Common.ElectronicBill.CmdType.ReplaceInvoiceAction;
                         }

@@ -188,13 +188,29 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 CommonParam param = new CommonParam();
                 HisBirthCertBookViewFilter filter = new HisBirthCertBookViewFilter();
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                lstBirthCertBook = new BackendAdapter(param).Get<List<V_HIS_BIRTH_CERT_BOOK>>("api/HisBirthCertBook/GetView", ApiConsumers.MosConsumer, filter, null).ToList();
+
+                // Lấy tất cả sổ chứng sinh còn hiệu lực
+                var allBooks = new BackendAdapter(param)
+                    .Get<List<V_HIS_BIRTH_CERT_BOOK>>("api/HisBirthCertBook/GetView", ApiConsumers.MosConsumer, filter, null);
+
+                // Lấy tất cả bản ghi trẻ sinh để đếm số lượng đã dùng theo từng sổ
+                var allBabies = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_BABY>();
+
+                // Lọc các sổ còn số lượng chưa cấp hết
+                lstBirthCertBook = allBooks
+                    .Where(book =>
+                    {
+                        long usedCount = allBabies.LongCount(b => b.BIRTH_CERT_BOOK_ID == book.ID);
+                        return usedCount < (book.TOTAL);
+                    })
+                    .ToList();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
 
         private void LoadComboEthnic()
         {

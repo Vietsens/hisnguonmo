@@ -37,6 +37,7 @@ namespace HIS.UC.UCHeniInfo.Design
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtAppointment.Properties)).BeginInit();
@@ -45,6 +46,7 @@ namespace HIS.UC.UCHeniInfo.Design
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -71,9 +73,9 @@ namespace HIS.UC.UCHeniInfo.Design
             // 
             // txtAppointment
             // 
-            this.txtAppointment.Location = new System.Drawing.Point(127, 2);
+            this.txtAppointment.Location = new System.Drawing.Point(107, 2);
             this.txtAppointment.Name = "txtAppointment";
-            this.txtAppointment.Size = new System.Drawing.Size(201, 20);
+            this.txtAppointment.Size = new System.Drawing.Size(164, 20);
             this.txtAppointment.StyleController = this.layoutControl1;
             this.txtAppointment.TabIndex = 4;
             // 
@@ -85,7 +87,8 @@ namespace HIS.UC.UCHeniInfo.Design
             this.layoutControlItem1,
             this.layoutControlItem2,
             this.emptySpaceItem1,
-            this.emptySpaceItem2});
+            this.emptySpaceItem2,
+            this.emptySpaceItem3});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Size = new System.Drawing.Size(330, 60);
@@ -98,10 +101,10 @@ namespace HIS.UC.UCHeniInfo.Design
             this.layoutControlItem1.Control = this.txtAppointment;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(330, 24);
+            this.layoutControlItem1.Size = new System.Drawing.Size(273, 24);
             this.layoutControlItem1.Text = "Sổ hẹn khám:";
             this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem1.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem1.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem1.TextToControlDistance = 5;
             // 
             // layoutControlItem2
@@ -129,6 +132,14 @@ namespace HIS.UC.UCHeniInfo.Design
             this.emptySpaceItem2.Size = new System.Drawing.Size(90, 10);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
+            // emptySpaceItem3
+            // 
+            this.emptySpaceItem3.AllowHotTrack = false;
+            this.emptySpaceItem3.Location = new System.Drawing.Point(273, 0);
+            this.emptySpaceItem3.Name = "emptySpaceItem3";
+            this.emptySpaceItem3.Size = new System.Drawing.Size(57, 24);
+            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
+            // 
             // frmApointmentInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -146,6 +157,7 @@ namespace HIS.UC.UCHeniInfo.Design
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -160,5 +172,6 @@ namespace HIS.UC.UCHeniInfo.Design
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
     }
 }

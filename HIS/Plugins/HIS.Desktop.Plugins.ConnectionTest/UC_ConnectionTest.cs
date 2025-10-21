@@ -2259,7 +2259,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 CommonParam param = new CommonParam();
                 LisSampleADO row = (LisSampleADO)gridViewSample.GetFocusedRow();
 
-                if (row != rowSample)
+                if (rowSample.ID != null && row.ID != rowSample.ID)
                 {
                     rowSample = row;
                     LoadLisResult(rowSample);
