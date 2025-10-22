@@ -4641,7 +4641,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                             if (sang == trua || sang == chieu || sang == toi || trua == chieu || trua == toi || chieu == toi)
                             {
-                                solan = 4; 
+                                solan = 1; 
                                 List<double> lst = new List<double>() { sang };
                                 lst = lst.Where(o => o > 0).Distinct().ToList();
 
