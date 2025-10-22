@@ -4639,33 +4639,41 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             if (toi > 0)
                                 huongDan.Append((huongDan.Length > 0 ? strSeperator : "") + String.Format(format__Toi, ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName));
 
-                            if (sang == trua || sang == chieu || sang == toi || trua == chieu || trua == toi || chieu == toi)
+                            if (new List<double> { sang, trua, chieu, toi }.Where(o => o > 0).Distinct().Count() == 1)
                             {
-                                solan = 1; 
-                                List<double> lst = new List<double>() { sang };
+                                List<double> lst = new List<double>() { sang, trua, chieu, toi };
                                 lst = lst.Where(o => o > 0).Distinct().ToList();
 
                                 if (lst.Count == 1)
                                 {
-                                    huongDan.Clear();
-                                    huongDan.Append(
-                                        String.Format(
-                                            "{0} {1}/lần * {2} lần/ngày * {3} ngày",
-                                            Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)lst[0], 2),
-                                            serviceUnitName,
-                                            solan,
-                                            ((int)spinSoLuongNgay.Value >= 1 && (int)spinSoLuongNgay.Value < 10)
-                                                ? "0" + ((int)spinSoLuongNgay.Value).ToString()
-                                                : ((int)spinSoLuongNgay.Value).ToString()
-                                        )
-                                    );
+                                    solan = 0;
+                                    if (sang > 0) solan++;
+                                    if (trua > 0) solan++;
+                                    if (chieu > 0) solan++;
+                                    if (toi > 0) solan++;
 
-                                    tongCong = lst[0] * solan;
+                                    if (solan > 0)
+                                    {
+                                        huongDan.Clear();
+                                        huongDan.Append(
+                                            String.Format(
+                                                "{0} {1}/lần * {2} lần/ngày * {3} ngày",
+                                                Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)lst[0], 2),
+                                                serviceUnitName,
+                                                solan,
+                                                ((int)spinSoLuongNgay.Value >= 1 && (int)spinSoLuongNgay.Value < 10)
+                                                    ? "0" + ((int)spinSoLuongNgay.Value).ToString()
+                                                    : ((int)spinSoLuongNgay.Value).ToString()
+                                            )
+                                        );
 
-                                    if ((int)tongCong == tongCong)
-                                        huongDan.Append(string.Format(" [{0} {1}/ngày]", (int)tongCong, serviceUnitName));
-                                    else
-                                        huongDan.Append(string.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName));
+                                        tongCong = lst[0] * solan;
+
+                                        if ((int)tongCong == tongCong)
+                                            huongDan.Append(string.Format(" [{0} {1}/ngày]", (int)tongCong, serviceUnitName));
+                                        else
+                                            huongDan.Append(string.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName));
+                                    }
                                 }
                             }
                             else if (spinSoLuongNgay.Value > 0)
