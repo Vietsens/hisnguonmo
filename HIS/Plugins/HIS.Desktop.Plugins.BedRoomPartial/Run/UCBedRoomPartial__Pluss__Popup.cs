@@ -313,17 +313,17 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             {
                 if (treatmentBedRoomRow != null)
                 {
-                    var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.InviteConsultation");
+                    var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.InviteSpecialistExam");
                     if (moduleData == null)
                     {
                         MessageBox.Show("Chức năng đang phát triển.Vui lòng liên hệ quản trị. ", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = HIS.Desktop.Plugins.InviteConsultation");
+                        Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = HIS.Desktop.Plugins.InviteSpecialistExam");
                         return;
                     }
                     if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                     { 
                         var listArgs = new List<object>();
-                        listArgs.Add(treatmentBedRoomRow);
+                        listArgs.Add(treatmentBedRoomRow.ID);
                         HIS_SPECIALIST_EXAM specialistExam = null;
                         listArgs.Add(specialistExam);
                         listArgs.Add(moduleData);
@@ -350,11 +350,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             {
                 if (treatmentBedRoomRow != null)
                 {
-                    var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.InviteSpecialistExam");
+                    var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.InviteConsultation");
                     if (moduleData == null)
                     {
                         MessageBox.Show("Chức năng đang phát triển.Vui lòng liên hệ quản trị. ", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = HIS.Desktop.Plugins.InviteSpecialistExam");
+                        Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = HIS.Desktop.Plugins.InviteConsultation");
                         return;
                     }
                     if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
