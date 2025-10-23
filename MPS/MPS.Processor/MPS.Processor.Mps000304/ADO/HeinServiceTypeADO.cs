@@ -32,8 +32,10 @@ namespace MPS.Processor.Mps000304.ADO
         public decimal? TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE { get; set; }
         public decimal? TOTAL_PRICE_HEIN_SERVICE_TYPE { get; set; }
         public decimal? TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE { get; set; }
+        public decimal? TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE_ROW_2 { get; set; }
         public decimal? TOTAL_PATIENT_PRICE_VIR_HEIN_SERVICE_TYPE { get; set; }
         public decimal? TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE { get; set; }
+        public decimal? TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE_ROW_2 { get; set; }
         public decimal? TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE { get; set; }
         public decimal? NUM_ORDER { get; set; }
         public string KEY_PATY_ALTER { get; set; }
@@ -59,5 +61,7 @@ namespace MPS.Processor.Mps000304.ADO
         public long GROUP_ROOM_ID__ExeRoom { get; set; }
         public string GROUP_ROOM_CODE { get; set; }
         public string GROUP_ROOM_NAME { get; set; }
+        public decimal? VIR_TOTAL_HEIN_PRICE_ROW_2 { get; set; }
+        public decimal? VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 { get; set; }
     }
 }

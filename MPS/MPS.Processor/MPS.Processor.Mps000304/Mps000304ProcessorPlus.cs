@@ -46,7 +46,7 @@ namespace MPS.Processor.Mps000304
                 sereServADOTemps.AddRange(from r in rdo.SereServs
                                           select new SereServADO(r, rdo.SereServs, rdo.SereServExts, rdo.HeinServiceTypes, rdo.Services, rdo.Rooms, rdo.Departments, rdo.medicineTypes, rdo.MedicineLines, rdo.materialTypes, rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, rdo.ListOtherPaySource, rdo.Treatment));
 
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADOTemps), sereServADOTemps));
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADOTemps.Where(o => o.TDL_SERVICE_NAME.Contains("Natri clorid"))), sereServADOTemps.Where(o => o.TDL_SERVICE_NAME.Contains("Natri clorid"))));
 
                 sereServADOTemps = sereServADOTemps
                     .Where(o =>
@@ -90,6 +90,8 @@ namespace MPS.Processor.Mps000304
                     sereServ.TOTAL_PATIENT_PRICE_LEFT = sereServBHYTGroup.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
                     sereServ.TOTAL_PATIENT_LEFT = sereServBHYTGroup.Sum(o => o.TOTAL_PATIENT_LEFT);
                     sereServ.TOTAL_PRICE_VP = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_VP);
+                    sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2);
+                    sereServ.VIR_TOTAL_HEIN_PRICE_ROW_2 = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_HEIN_PRICE_ROW_2);
                     sereServADOs.Add(sereServ);
 
                     if (sereServ.STENT_ORDER.HasValue && sereServ.STENT_ORDER.Value > 1)
@@ -182,8 +184,10 @@ namespace MPS.Processor.Mps000304
                     heinServiceType.TOTAL_PRICE_HEIN_SERVICE_TYPE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
                     heinServiceType.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_BHYT);
                     heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0);
+                    heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE_ROW_2 = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_HEIN_PRICE_ROW_2 ?? 0);
                     heinServiceType.TOTAL_PATIENT_PRICE_VIR_HEIN_SERVICE_TYPE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0);
                     heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0);
+                    heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE_ROW_2 = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 ?? 0);
                     heinServiceType.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
                     heinServiceType.OTHER_SOURCE_PRICE = sereServBHYTGroup.Sum(o => o.OTHER_SOURCE_PRICE ?? 0);
                     heinServiceType.TOTAL_PATIENT_PRICE_LEFT = sereServBHYTGroup.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
@@ -207,6 +211,8 @@ namespace MPS.Processor.Mps000304
                                 goi.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE += heinServiceType.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE;
                                 goi.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE += heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE;
                                 goi.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE += heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE;
+                                goi.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE_ROW_2 += heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE_ROW_2;
+                                goi.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE_ROW_2 += heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE_ROW_2;
                                 goi.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE += heinServiceType.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE;
                                 goi.OTHER_SOURCE_PRICE += heinServiceType.OTHER_SOURCE_PRICE;
                                 goi.TOTAL_BHYT_PRICE += heinServiceType.TOTAL_BHYT_PRICE;
@@ -228,6 +234,8 @@ namespace MPS.Processor.Mps000304
                                 goi.TOTAL_PRICE_HEIN_SERVICE_TYPE = heinServiceType.TOTAL_PRICE_HEIN_SERVICE_TYPE;
                                 goi.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = heinServiceType.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE;
                                 goi.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE;
+                                goi.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE_ROW_2 += heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE_ROW_2;
+                                goi.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE_ROW_2 += heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE_ROW_2;
                                 goi.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE = heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE;
                                 goi.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE = heinServiceType.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE;
                                 goi.OTHER_SOURCE_PRICE = heinServiceType.OTHER_SOURCE_PRICE;
@@ -321,10 +329,13 @@ namespace MPS.Processor.Mps000304
                         heinServiceType.TOTAL_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
                         heinServiceType.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_BHYT);
                         heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE.Value);
+                        heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE_ROW_2 = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE_ROW_2.Value);
                         heinServiceType.TOTAL_PATIENT_PRICE_VIR_HEIN_SERVICE_TYPE = g
                             .Sum(o => o.VIR_TOTAL_PATIENT_PRICE.Value);
                         heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE = g
                             .Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT.Value);
+                        heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE_ROW_2 = g
+                            .Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2.Value);
                         heinServiceType.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE = g
                            .Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
                         heinServiceType.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE);
@@ -413,6 +424,9 @@ namespace MPS.Processor.Mps000304
                         ado.TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
                         ado.TOTAL_PATIENT_LEFT = g.Sum(o => o.TOTAL_PATIENT_LEFT);
                         ado.TOTAL_PRICE_VP = g.Sum(o => o.TOTAL_PRICE_VP);
+
+                        ado.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2);
+                        ado.VIR_TOTAL_HEIN_PRICE_ROW_2 = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE_ROW_2);
                         if (g.First().PatientTypeAlter.LEVEL_CODE == MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.PROVINCE
                             && g.First().PatientTypeAlter.RIGHT_ROUTE_CODE == MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.FALSE
                             && rdo.Treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
@@ -451,8 +465,10 @@ namespace MPS.Processor.Mps000304
                         ado.TOTAL_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
                         ado.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_BHYT);
                         ado.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE.Value);
+                        ado.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE_ROW_2 = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE_ROW_2.Value);
                         ado.TOTAL_PATIENT_PRICE_VIR_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE.Value);
                         ado.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT.Value);
+                        ado.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE_ROW_2 = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2.Value);
                         ado.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
                         ado.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE);
                         ado.TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
