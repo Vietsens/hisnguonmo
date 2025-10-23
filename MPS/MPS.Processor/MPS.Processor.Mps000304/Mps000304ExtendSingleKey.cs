@@ -53,6 +53,8 @@ namespace MPS.Processor.Mps000304
         internal const string TOTAL_PRICE = "TOTAL_PRICE";
         internal const string TOTAL_PRICE_HEIN = "TOTAL_PRICE_HEIN";
         internal const string TOTAL_PRICE_PATIENT = "TOTAL_PRICE_PATIENT";
+        internal const string TOTAL_PRICE_HEIN_ROW2 = "TOTAL_PRICE_HEIN_ROW2";
+        internal const string TOTAL_PRICE_PATIENT_ROW2 = "TOTAL_PRICE_PATIENT_ROW2";
         internal const string TOTAL_PRICE_OTHER = "TOTAL_PRICE_OTHER";
         internal const string CURRENT_DATE_SEPARATE_FULL_STR = "CURRENT_DATE_SEPARATE_FULL_STR";
         internal const string HEIN_MEDI_ORG_CODE = "HEIN_MEDI_ORG_CODE";
@@ -60,6 +62,8 @@ namespace MPS.Processor.Mps000304
         internal const string TOTAL_PRICE_TEXT = "TOTAL_PRICE_TEXT";
         internal const string TOTAL_PRICE_HEIN_TEXT = "TOTAL_PRICE_HEIN_TEXT";
         internal const string TOTAL_PRICE_PATIENT_TEXT = "TOTAL_PRICE_PATIENT_TEXT";
+        internal const string TOTAL_PRICE_HEIN_ROW2_TEXT = "TOTAL_PRICE_HEIN_ROW2_TEXT";
+        internal const string TOTAL_PRICE_PATIENT_ROW2_TEXT = "TOTAL_PRICE_PATIENT_ROW2_TEXT";
         internal const string TOTAL_PRICE_OTHER_TEXT = "TOTAL_PRICE_OTHER_TEXT";
         internal const string TOTAL_DEPOSIT_AMOUNT = "TOTAL_DEPOSIT_AMOUNT";
         internal const string TOTAL_DAY = "TOTAL_DAY";

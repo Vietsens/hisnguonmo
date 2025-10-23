@@ -87,6 +87,8 @@ namespace MPS.Processor.Mps000304.ADO
         public decimal PRICE_VP { get; set; }
         public decimal TOTAL_PRICE_VP { get; set; }
         public decimal TOTAL_PATIENT_LEFT { get; set; }
+        public decimal? VIR_TOTAL_HEIN_PRICE_ROW_2 { get; set; }
+        public decimal? VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 { get; set; }
 
         public SereServADO(HIS_SERE_SERV data, List<HIS_SERE_SERV> SereServs, List<HIS_SERE_SERV_EXT> sereServExts, List<HIS_HEIN_SERVICE_TYPE> heinServiceTypes, List<V_HIS_SERVICE> services, List<V_HIS_ROOM> rooms, List<HIS_DEPARTMENT> departments, List<HIS_MEDICINE_TYPE> medicineTypes, List<HIS_MEDICINE_LINE> medicineLines, List<HIS_MATERIAL_TYPE> materialTypes, PatientTypeCFG patientTypeCFG, HisConfigValue hisConfigValue, List<HIS_SERVICE_UNIT> hisServiceUnit, List<HIS_OTHER_PAY_SOURCE> _listOtherPaySource, V_HIS_TREATMENT treatment, GroupType? groupType = null)
         {
@@ -261,17 +263,20 @@ namespace MPS.Processor.Mps000304.ADO
                 this.RADIO_SERIVCE = this.ORIGINAL_PRICE > 0 ? (this.HEIN_LIMIT_PRICE.HasValue ? (this.HEIN_LIMIT_PRICE.Value / this.ORIGINAL_PRICE) * 100 : (this.PRICE / this.ORIGINAL_PRICE) * 100) : 0;
 
                 decimal? t = null;
-                if (this.HEIN_LIMIT_PRICE.HasValue)
+                if (this.ORIGINAL_PRICE > 0)
                 {
-                    t = 100 * Math.Round(this.HEIN_LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
-                }
-                else if (this.LIMIT_PRICE.HasValue)
-                {
-                    t = 100 * Math.Round(this.LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
-                }
-                else
-                {
-                    t = 100 * Math.Round(this.PRICE / this.ORIGINAL_PRICE, 2);
+                    if (this.HEIN_LIMIT_PRICE.HasValue)
+                    {
+                        t = 100 * Math.Round(this.HEIN_LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
+                    }
+                    else if (this.LIMIT_PRICE.HasValue)
+                    {
+                        t = 100 * Math.Round(this.LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
+                    }
+                    else
+                    {
+                        t = 100 * Math.Round(this.PRICE / this.ORIGINAL_PRICE, 2);
+                    }
                 }
 
                 //Ty le thanh toan dich vu
@@ -325,7 +330,13 @@ namespace MPS.Processor.Mps000304.ADO
 
                 if (this.TOTAL_PATIENT_LEFT < 0)
                     this.TOTAL_PATIENT_LEFT = 0;
-
+                //Làm tròn giá trị 2 số, rồi lấy tổng tiền bhyt trừ đi dể tránh sai số
+                this.VIR_TOTAL_HEIN_PRICE_ROW_2 = Math.Round(this.VIR_TOTAL_HEIN_PRICE ?? 0, 2, MidpointRounding.AwayFromZero);
+                this.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 = Math.Round(this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0, 2, MidpointRounding.AwayFromZero);
+                if (this.VIR_TOTAL_HEIN_PRICE_ROW_2 + this.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 > ((this.VIR_TOTAL_HEIN_PRICE ?? 0) + (this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0)))
+                    this.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 = ((this.VIR_TOTAL_HEIN_PRICE ?? 0) + (this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0)) - this.VIR_TOTAL_HEIN_PRICE_ROW_2;
+                if (this.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 < 0)
+                    this.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 = 0;
                 //có đơn vị quy đổi thì gán lại số lượng giá, đơn vị
                 //Nếu trường này khác 1 thì xử lý như hiện tại, tức là: nếu có đơn vị chuyển đổi thì hiển thị theo đơn vị chuyển đổi, nếu ko có đơn vị chuyển đổi thì hiển thị theo đơn vị tính gốc
                 var svUnit = hisServiceUnit.FirstOrDefault(o => o.ID == this.TDL_SERVICE_UNIT_ID);
@@ -376,7 +387,7 @@ namespace MPS.Processor.Mps000304.ADO
                         this.GROUP_DEPARTMENT_ROOM_NAME = department.DEPARTMENT_NAME;
                     }
 
-                    if ((department.IS_CLINICAL != 1 || department ==null) && rooms != null && rooms.Count > 0)
+                    if ((department.IS_CLINICAL != 1 || department == null) && rooms != null && rooms.Count > 0)
                     {
                         if (this.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__KH)
                         {
