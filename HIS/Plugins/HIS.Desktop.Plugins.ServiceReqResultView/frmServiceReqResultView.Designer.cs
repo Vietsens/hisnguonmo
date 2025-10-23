@@ -45,11 +45,16 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnDropDownPrint = new DevExpress.XtraEditors.DropDownButton();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnOpenWeb = new DevExpress.XtraEditors.SimpleButton();
             this.chkAutoOpenWeb = new DevExpress.XtraEditors.CheckEdit();
             this.xtraTab = new DevExpress.XtraTab.XtraTabControl();
@@ -104,10 +109,8 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciDropDownPrint = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.btnUpdateResult = new DevExpress.XtraEditors.SimpleButton();
+            this.layoutControlItemBtnUpdateResult = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
@@ -158,10 +161,12 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDropDownPrint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemBtnUpdateResult)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnUpdateResult);
             this.layoutControl1.Controls.Add(this.btnDropDownPrint);
             this.layoutControl1.Controls.Add(this.btnOpenWeb);
             this.layoutControl1.Controls.Add(this.chkAutoOpenWeb);
@@ -175,14 +180,14 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControl1.Root = this.layoutControlGroup1;
             this.layoutControl1.Size = new System.Drawing.Size(1100, 632);
             this.layoutControl1.TabIndex = 0;
-            this.layoutControl1.Text = "layoutControl1";
+            this.layoutControl1.Text = "`";
             // 
             // btnDropDownPrint
             // 
-            this.btnDropDownPrint.Location = new System.Drawing.Point(1030, 608);
+            this.btnDropDownPrint.Location = new System.Drawing.Point(1054, 608);
             this.btnDropDownPrint.MenuManager = this.barManager1;
             this.btnDropDownPrint.Name = "btnDropDownPrint";
-            this.btnDropDownPrint.Size = new System.Drawing.Size(68, 22);
+            this.btnDropDownPrint.Size = new System.Drawing.Size(44, 22);
             this.btnDropDownPrint.StyleController = this.layoutControl1;
             this.btnDropDownPrint.TabIndex = 14;
             this.btnDropDownPrint.Text = "In ấn";
@@ -192,6 +197,10 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1});
@@ -216,11 +225,39 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.barButtonItem1.Name = "barButtonItem1";
             this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem_Print_ItemClick);
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1100, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 661);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1100, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 632);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 632);
+            // 
             // btnOpenWeb
             // 
-            this.btnOpenWeb.Location = new System.Drawing.Point(797, 608);
+            this.btnOpenWeb.Location = new System.Drawing.Point(790, 608);
             this.btnOpenWeb.Name = "btnOpenWeb";
-            this.btnOpenWeb.Size = new System.Drawing.Size(114, 22);
+            this.btnOpenWeb.Size = new System.Drawing.Size(79, 22);
             this.btnOpenWeb.StyleController = this.layoutControl1;
             this.btnOpenWeb.TabIndex = 13;
             this.btnOpenWeb.Text = "Mở trình duyệt";
@@ -228,7 +265,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             // 
             // chkAutoOpenWeb
             // 
-            this.chkAutoOpenWeb.Location = new System.Drawing.Point(774, 608);
+            this.chkAutoOpenWeb.Location = new System.Drawing.Point(767, 608);
             this.chkAutoOpenWeb.MenuManager = this.barManager1;
             this.chkAutoOpenWeb.Name = "chkAutoOpenWeb";
             this.chkAutoOpenWeb.Properties.Caption = "";
@@ -413,7 +450,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             // 
             this.xtraTabPage_TabPdf.Controls.Add(this.layoutControl_TabPdf);
             this.xtraTabPage_TabPdf.Name = "xtraTabPage_TabPdf";
-            this.xtraTabPage_TabPdf.Size = new System.Drawing.Size(1080, 385);
+            this.xtraTabPage_TabPdf.Size = new System.Drawing.Size(1080, 361);
             this.xtraTabPage_TabPdf.Text = "TabPdf";
             // 
             // layoutControl_TabPdf
@@ -423,7 +460,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControl_TabPdf.Location = new System.Drawing.Point(0, 0);
             this.layoutControl_TabPdf.Name = "layoutControl_TabPdf";
             this.layoutControl_TabPdf.Root = this.layoutControlGroup_TabPdf;
-            this.layoutControl_TabPdf.Size = new System.Drawing.Size(1080, 385);
+            this.layoutControl_TabPdf.Size = new System.Drawing.Size(1080, 361);
             this.layoutControl_TabPdf.TabIndex = 0;
             this.layoutControl_TabPdf.Text = "layoutControl4";
             // 
@@ -432,7 +469,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.pdfViewer1.Location = new System.Drawing.Point(2, 2);
             this.pdfViewer1.Name = "pdfViewer1";
             this.pdfViewer1.NavigationPaneInitialVisibility = DevExpress.XtraPdfViewer.PdfNavigationPaneVisibility.Hidden;
-            this.pdfViewer1.Size = new System.Drawing.Size(1076, 381);
+            this.pdfViewer1.Size = new System.Drawing.Size(1076, 357);
             this.pdfViewer1.TabIndex = 4;
             this.pdfViewer1.ZoomMode = DevExpress.XtraPdfViewer.PdfZoomMode.FitToWidth;
             // 
@@ -445,7 +482,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControlGroup_TabPdf.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup_TabPdf.Name = "layoutControlGroup_TabPdf";
             this.layoutControlGroup_TabPdf.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup_TabPdf.Size = new System.Drawing.Size(1080, 385);
+            this.layoutControlGroup_TabPdf.Size = new System.Drawing.Size(1080, 361);
             this.layoutControlGroup_TabPdf.TextVisible = false;
             // 
             // layoutControlItem12
@@ -453,7 +490,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControlItem12.Control = this.pdfViewer1;
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(1080, 385);
+            this.layoutControlItem12.Size = new System.Drawing.Size(1080, 361);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
@@ -706,9 +743,9 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             // 
             // BtnEmr
             // 
-            this.BtnEmr.Location = new System.Drawing.Point(915, 608);
+            this.BtnEmr.Location = new System.Drawing.Point(969, 608);
             this.BtnEmr.Name = "BtnEmr";
-            this.BtnEmr.Size = new System.Drawing.Size(49, 22);
+            this.BtnEmr.Size = new System.Drawing.Size(21, 22);
             this.BtnEmr.StyleController = this.layoutControl1;
             this.BtnEmr.TabIndex = 7;
             this.BtnEmr.Text = "Ký";
@@ -716,9 +753,9 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             // 
             // btnPrint
             // 
-            this.btnPrint.Location = new System.Drawing.Point(968, 608);
+            this.btnPrint.Location = new System.Drawing.Point(994, 608);
             this.btnPrint.Name = "btnPrint";
-            this.btnPrint.Size = new System.Drawing.Size(58, 22);
+            this.btnPrint.Size = new System.Drawing.Size(56, 22);
             this.btnPrint.StyleController = this.layoutControl1;
             this.btnPrint.TabIndex = 1;
             this.btnPrint.Text = "In (Ctrl P)";
@@ -735,7 +772,8 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.layoutControlItem1,
             this.layoutControlItem9,
             this.layoutControlItem10,
-            this.lciDropDownPrint});
+            this.lciDropDownPrint,
+            this.layoutControlItemBtnUpdateResult});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -745,9 +783,9 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             // lciPrint
             // 
             this.lciPrint.Control = this.btnPrint;
-            this.lciPrint.Location = new System.Drawing.Point(966, 606);
+            this.lciPrint.Location = new System.Drawing.Point(992, 606);
             this.lciPrint.Name = "lciPrint";
-            this.lciPrint.Size = new System.Drawing.Size(62, 26);
+            this.lciPrint.Size = new System.Drawing.Size(60, 26);
             this.lciPrint.TextSize = new System.Drawing.Size(0, 0);
             this.lciPrint.TextVisible = false;
             this.lciPrint.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -757,15 +795,15 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 606);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(656, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(649, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.BtnEmr;
-            this.layoutControlItem5.Location = new System.Drawing.Point(913, 606);
+            this.layoutControlItem5.Location = new System.Drawing.Point(967, 606);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(53, 26);
+            this.layoutControlItem5.Size = new System.Drawing.Size(25, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -781,7 +819,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.chkAutoOpenWeb;
-            this.layoutControlItem9.Location = new System.Drawing.Point(656, 606);
+            this.layoutControlItem9.Location = new System.Drawing.Point(649, 606);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.OptionsToolTip.ToolTip = "Tự động mở trình duyệt web xem ảnh kết quả";
             this.layoutControlItem9.Size = new System.Drawing.Size(139, 26);
@@ -791,48 +829,40 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnOpenWeb;
-            this.layoutControlItem10.Location = new System.Drawing.Point(795, 606);
+            this.layoutControlItem10.Location = new System.Drawing.Point(788, 606);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(118, 26);
+            this.layoutControlItem10.Size = new System.Drawing.Size(83, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
             // lciDropDownPrint
             // 
             this.lciDropDownPrint.Control = this.btnDropDownPrint;
-            this.lciDropDownPrint.Location = new System.Drawing.Point(1028, 606);
+            this.lciDropDownPrint.Location = new System.Drawing.Point(1052, 606);
             this.lciDropDownPrint.Name = "lciDropDownPrint";
-            this.lciDropDownPrint.Size = new System.Drawing.Size(72, 26);
+            this.lciDropDownPrint.Size = new System.Drawing.Size(48, 26);
             this.lciDropDownPrint.TextSize = new System.Drawing.Size(0, 0);
             this.lciDropDownPrint.TextVisible = false;
             // 
-            // barDockControlTop
+            // btnUpdateResult
             // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1100, 0);
+            this.btnUpdateResult.Location = new System.Drawing.Point(873, 608);
+            this.btnUpdateResult.Name = "btnUpdateResult";
+            this.btnUpdateResult.Size = new System.Drawing.Size(92, 22);
+            this.btnUpdateResult.StyleController = this.layoutControl1;
+            this.btnUpdateResult.TabIndex = 15;
+            this.btnUpdateResult.Text = "Cập nhật kết quả";
+            this.btnUpdateResult.ToolTip = "Cập nhật kết quả từ hệ thống PACS";
+            this.btnUpdateResult.Click += new System.EventHandler(this.btnUpdateResult_Click);
             // 
-            // barDockControlBottom
+            // layoutControlItemBtnUpdateResult
             // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 661);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1100, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 632);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 632);
+            this.layoutControlItemBtnUpdateResult.Control = this.btnUpdateResult;
+            this.layoutControlItemBtnUpdateResult.Location = new System.Drawing.Point(871, 606);
+            this.layoutControlItemBtnUpdateResult.Name = "layoutControlItemBtnUpdateResult";
+            this.layoutControlItemBtnUpdateResult.Size = new System.Drawing.Size(96, 26);
+            this.layoutControlItemBtnUpdateResult.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItemBtnUpdateResult.TextVisible = false;
             // 
             // frmServiceReqResultView
             // 
@@ -903,6 +933,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDropDownPrint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemBtnUpdateResult)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -973,5 +1004,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
         private DevExpress.XtraEditors.LabelControl txtktv;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
+        private DevExpress.XtraEditors.SimpleButton btnUpdateResult;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItemBtnUpdateResult;
     }
 }
