@@ -91,15 +91,18 @@ namespace MPS.Processor.Mps000215
                 GetMedicineParent();
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
-                objectTag.AddObjectData(store, "ListMediMate1", listAdoPrint);
+                // objectTag.AddObjectData(store, "ListMediMate1", listAdoPrint);
+                objectTag.AddObjectData(store, "ListMediMate1", listAdoPrint.OrderBy(x => x.MEDI_MATE_TYPE_NAME).ToList());
                 objectTag.AddObjectData(store, "ListMediMate2", listAdoPrint);
                 objectTag.AddObjectData(store, "ListMediMate3", listAdoPrint);
                 objectTag.AddObjectData(store, "ListMediMateSplitedByPackage", listAdoPrintGroup);
                 objectTag.AddObjectData(store, "ListMediMate1Detail", listAdoPrintDetail);
                 objectTag.AddObjectData(store, "ListMediMate2Detail", listAdoPrintDetail);
                 objectTag.AddObjectData(store, "ListMediMate3Detail", listAdoPrintDetail);
-                objectTag.AddObjectData(store, "MedicineGroup", listMedicineType);
-                objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent);
+                //objectTag.AddObjectData(store, "MedicineGroup", listMedicineType);
+                //objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent);
+                objectTag.AddObjectData(store, "MedicineGroup", listMedicineType.OrderBy(x => x.MEDICINE_GROUP_NAME).ToList());
+                objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent.OrderBy(x => x.MEDICINE_PARENT_NAME).ToList());
 
                 objectTag.AddRelationship(store, "ListMediMate1", "ListMediMate1Detail", "KEY_GROUP", "KEY_GROUP");
                 objectTag.AddRelationship(store, "ListMediMate2", "ListMediMate2Detail", "KEY_GROUP", "KEY_GROUP");
