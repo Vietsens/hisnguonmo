@@ -217,6 +217,7 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 }
                 else if (specialistExam != null)
                 {
+                    dteNgayMoi.DateTime = (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)specialistExam.INVITE_TIME);
                     HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO
                     {
                         ICD_CODE = specialistExam.ICD_CODE,
@@ -230,6 +231,12 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                         ICD_TEXT = specialistExam.ICD_TEXT
                     };
                     subIcdProcessor.Reload(ucSecondaryIcd, subAdo);
+                    cboPhongKham.EditValue = specialistExam.EXAM_EXECUTE_DEPARMENT_ID;
+                    memContent.Text = specialistExam.INVITE_CONTENT;
+                    chkExamInBed.Checked = specialistExam.IS__EXAM_BED == 1 ? true : false;
+                    cboBacSiKham.EditValue = lstEmployee.FirstOrDefault(o => o.LOGINNAME == specialistExam.EXAM_EXECUTE_LOGINNAME)?.ID;
+                    cboBacSiMoi.EditValue = lstEmployee.FirstOrDefault(o => o.LOGINNAME == specialistExam.INVITE_DOCTOR_LOGINNAME)?.ID;
+                    cboDepartment.EditValue = specialistExam.INVITE_DEPARMENT_ID;
                 }
             }
             catch (Exception ex)
