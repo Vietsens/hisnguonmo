@@ -33,7 +33,6 @@ namespace HIS.Desktop.Plugins.Library.EmrGenerate
 {
     public class EmrGenerateProcessor
     {
-        public Action<bool> DelegateIssuanceCer { get; set; }
         public EmrGenerateProcessor() { }
 
         const int use__Sign_USB = 1;
@@ -120,6 +119,30 @@ namespace HIS.Desktop.Plugins.Library.EmrGenerate
 
             return inputADO;
         }
+
+        private void DelegateIssuanceCer()
+        {
+            try
+            {
+                var module = new Inventec.Desktop.Common.Modules.Module();
+                module.ModuleLink = "EMR.Desktop.Plugins.EmrPatientCertificateRegister";
+                module.ModuleTypeId = Inventec.Desktop.Common.Modules.Module.MODULE_TYPE_ID__FORM;
+
+                List<object> _listObj = new List<object>();
+
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    module.ModuleLink,
+                    module.RoomId,
+                    module.RoomTypeId,
+                    _listObj
+                );
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error("Lỗi mở module phát hành chứng thư", ex);
+            }
+        }
+
 
         public Inventec.Common.SignLibrary.ADO.InputADO GenerateInputADOWithPrintTypeCode(string treatmentCode, string printTypeCode)
         {
