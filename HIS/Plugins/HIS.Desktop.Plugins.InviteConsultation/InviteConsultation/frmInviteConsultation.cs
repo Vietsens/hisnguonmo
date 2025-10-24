@@ -114,16 +114,6 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 HisRoomFilter filter = new HisRoomFilter();
                 filter.ID = moduleData.RoomId;
                 var resultData = new BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_ROOM>>("api/HisRoom/Get", ApiConsumers.MosConsumer, filter, paramCommon);
-                if (resultData != null && resultData.Count > 0)
-                {
-                    if (resultData.FirstOrDefault().IS_ALLOW_NO_ICD == 1)
-                        ado.IsColor = false;
-                    else
-                        ado.IsColor = true;
-                }
-                else
-                    ado.IsColor = true;
-
                 ado.DataIcds = lstICD;
                 ado.AutoCheckIcd = AutoCheckIcd == "1";
                 ucIcd = (UserControl)icdProcessor.Run(ado);
@@ -234,7 +224,14 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                     cboPhongKham.EditValue = specialistExam.EXAM_EXECUTE_DEPARMENT_ID;
                     memContent.Text = specialistExam.INVITE_CONTENT;
                     chkExamInBed.Checked = specialistExam.IS__EXAM_BED == 1 ? true : false;
-                    cboBacSiKham.EditValue = lstEmployee.FirstOrDefault(o => o.LOGINNAME == specialistExam.EXAM_EXECUTE_LOGINNAME)?.ID;
+                    //cboBacSiKham.EditValue = lstEmployee.FirstOrDefault(o => o.LOGINNAME == specialistExam.EXAM_EXECUTE_LOGINNAME)?.ID;
+
+
+                    GridCheckMarksSelection gridCheckChiSo = cboBacSiKham.Properties.Tag as GridCheckMarksSelection;
+                    if (specialistExam.EXAM_EXECUTE_LOGINNAME != null)
+                    {
+                        ProcessSelectBS(specialistExam.EXAM_EXECUTE_LOGINNAME, gridCheckChiSo);
+                    }
                     cboBacSiMoi.EditValue = lstEmployee.FirstOrDefault(o => o.LOGINNAME == specialistExam.INVITE_DOCTOR_LOGINNAME)?.ID;
                     cboDepartment.EditValue = specialistExam.INVITE_DEPARMENT_ID;
                 }
@@ -523,7 +520,7 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 bool success = false;
                 string codeCheckCD = "";
                 string nameCheckCD = "";
-
+                MOS.SDO.WorkPlaceSDO workPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetWorkPlace((moduleData));
                 if (specialistExam != null)
                 {
                     AutoMapper.Mapper.CreateMap<HIS_SPECIALIST_EXAM, HIS_SPECIALIST_EXAM>();
@@ -535,6 +532,7 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 {
                     hIS_SPECIALIST_EXAM.INVITE_DEPARMENT_ID = Convert.ToInt64(cboDepartment.EditValue);
                 }
+                hIS_SPECIALIST_EXAM.ROOM_ID = moduleData.RoomId;
                 if (cboPhongKham.EditValue != null)
                 {
                     var selectedDepartment = cboPhongKham.EditValue.ToString();
@@ -558,10 +556,10 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 if (lstEmployee != null && lstEmployee.Count > 0)
                 {
                     hIS_SPECIALIST_EXAM.EXAM_EXECUTE_LOGINNAME =
-                        string.Join(", ", lstEmployee.Select(e => e.LOGINNAME));
+                        string.Join(",", lstEmployee.Select(e => e.LOGINNAME));
 
                     hIS_SPECIALIST_EXAM.EXAM_EXECUTE_USERNAME =
-                        string.Join(", ", lstEmployee.Select(e => e.TDL_USERNAME));
+                        string.Join(",", lstEmployee.Select(e => e.TDL_USERNAME));
                 }
 
                 if (ucIcd != null)
@@ -664,9 +662,11 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
         {
             try
             {
+                MOS.SDO.WorkPlaceSDO workPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetWorkPlace((moduleData));
+
                 dteNgayMoi.DateTime = DateTime.Now;
                 cboDepartment.EditValue = bedRoom.LAST_DEPARTMENT_ID;
-                cboPhongKham.EditValue = null;
+                cboPhongKham.EditValue = workPlace.DepartmentId; 
                 cboBacSiKham.EditValue = null;
                 chkExamInBed.Checked = false;
                 memContent.Text = string.Empty;
@@ -799,7 +799,7 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 {
                     foreach (var item in this.lstEmployee)
                     {
-                        roomName += item.TDL_USERNAME + ", ";
+                        roomName += item.TDL_USERNAME + ",";
 
                     }
                 }
@@ -809,6 +809,34 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
 
+            }
+        }
+
+        List<EmployeeADO> listHisSuimIndexDefault = new List<EmployeeADO>();
+        private void ProcessSelectBS(string p, GridCheckMarksSelection gridCheckMark)
+        {
+            try
+            {
+                List<EmployeeADO> ds = cboBacSiKham.Properties.DataSource as List<EmployeeADO>;
+                string[] arrays = p.Split(',');
+                if (arrays != null && arrays.Length > 0)
+                {
+                    List<EmployeeADO> selects = new List<EmployeeADO>();
+                    foreach (var item in arrays)
+                    {
+                        var row = ds != null ? ds.FirstOrDefault(o => o.LOGINNAME.ToString() == item) : null;
+                        if (row != null)
+                        {
+                            selects.Add(row);
+                            listHisSuimIndexDefault.Add(row);
+                        }
+                    }
+                    gridCheckMark.SelectAll(selects);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

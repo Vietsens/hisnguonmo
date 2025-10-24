@@ -1035,7 +1035,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                     HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();   
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, row);
 
-                    List<object> listArgs = new List<object> { null, datamapper, this.currentModule, true, (HIS.Desktop.Common.RefeshReference)FillDataToGrid };
+                    List<object> listArgs = new List<object> { this.currentModule, null, datamapper,  true, (HIS.Desktop.Common.RefeshReference)FillDataToGrid };
 
                     // Gọi hàm trả về instance của plugin
                     var extenceInstance = PluginInstance.GetPluginInstance(
