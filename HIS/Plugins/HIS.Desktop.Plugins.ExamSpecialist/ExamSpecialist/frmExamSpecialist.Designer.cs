@@ -47,6 +47,46 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject37 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject38 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject39 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject40 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject41 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject44 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject49 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject50 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject51 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject52 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject53 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject54 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject55 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject56 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.cboInviteDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -62,10 +102,20 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridControlExamSpecialist = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn_Transaction_Stt = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn_Details = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonEditDetails = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gridColumn_Delete = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonDeleteEnabled = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gridColumn_Edit = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonEditEnabled = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn_Approval = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemButtonEditApproval = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButtonEditApprovalEnabled = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn_Reject_Approval = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemButtonEditRejectApproval = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButtonEditRejectApprovalEnabled = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gridColumn_Is_Approval = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonEditIsApprovalEnableb = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gridColumn_Pint = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonEditPrint = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn_Status = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Patient_Code = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Treatment_Code = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -81,6 +131,11 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonDeleteDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButtonEditDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButtonEditIsApprovalDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButtonEditRejectApprovalDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButtonEditApprovalDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.cboExamSpecialistStt = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboExamExcuteDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -118,9 +173,19 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             ((System.ComponentModel.ISupportInitialize)(this.dtIntructionTimeFrom.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlExamSpecialist)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditApproval)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditRejectApproval)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditDetails)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonDeleteEnabled)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditEnabled)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditApprovalEnabled)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditRejectApprovalEnabled)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditIsApprovalEnableb)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditPrint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonDeleteDisable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditDisable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditIsApprovalDisable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditRejectApprovalDisable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditApprovalDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamSpecialistStt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamExcuteDepartment.Properties)).BeginInit();
@@ -291,9 +356,19 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridControlExamSpecialist.MainView = this.gridView1;
             this.gridControlExamSpecialist.Name = "gridControlExamSpecialist";
             this.gridControlExamSpecialist.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repositoryItemButtonEditApproval,
-            this.repositoryItemButtonEditRejectApproval,
-            this.repositoryItemCheckEdit1});
+            this.repositoryItemButtonEditApprovalEnabled,
+            this.repositoryItemButtonEditRejectApprovalEnabled,
+            this.repositoryItemCheckEdit1,
+            this.repositoryItemButtonEditDetails,
+            this.repositoryItemButtonEditPrint,
+            this.repositoryItemButtonEditIsApprovalEnableb,
+            this.repositoryItemButtonDeleteEnabled,
+            this.repositoryItemButtonDeleteDisable,
+            this.repositoryItemButtonEditEnabled,
+            this.repositoryItemButtonEditDisable,
+            this.repositoryItemButtonEditIsApprovalDisable,
+            this.repositoryItemButtonEditRejectApprovalDisable,
+            this.repositoryItemButtonEditApprovalDisable});
             this.gridControlExamSpecialist.Size = new System.Drawing.Size(1293, 601);
             this.gridControlExamSpecialist.TabIndex = 4;
             this.gridControlExamSpecialist.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -303,8 +378,13 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             // 
             this.gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn_Transaction_Stt,
+            this.gridColumn_Details,
+            this.gridColumn_Delete,
+            this.gridColumn_Edit,
             this.gridColumn_Approval,
             this.gridColumn_Reject_Approval,
+            this.gridColumn_Is_Approval,
+            this.gridColumn_Pint,
             this.gridColumn_Status,
             this.gridColumn_Patient_Code,
             this.gridColumn_Treatment_Code,
@@ -324,6 +404,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridView1.OptionsView.ShowGroupPanel = false;
             this.gridView1.OptionsView.ShowIndicator = false;
             this.gridView1.CustomDrawCell += new DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventHandler(this.gridView1_CustomDrawCell);
+            this.gridView1.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridView1_CustomRowCellEdit);
             this.gridView1.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridView1_CustomUnboundColumnData);
             // 
             // gridColumn_Transaction_Stt
@@ -340,10 +421,78 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Transaction_Stt.VisibleIndex = 0;
             this.gridColumn_Transaction_Stt.Width = 34;
             // 
+            // gridColumn_Details
+            // 
+            this.gridColumn_Details.Caption = "Xem";
+            this.gridColumn_Details.ColumnEdit = this.repositoryItemButtonEditDetails;
+            this.gridColumn_Details.FieldName = "IS_DETAILS";
+            this.gridColumn_Details.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn_Details.Name = "gridColumn_Details";
+            this.gridColumn_Details.OptionsColumn.ShowCaption = false;
+            this.gridColumn_Details.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn_Details.Visible = true;
+            this.gridColumn_Details.VisibleIndex = 1;
+            this.gridColumn_Details.Width = 26;
+            // 
+            // repositoryItemButtonEditDetails
+            // 
+            this.repositoryItemButtonEditDetails.AutoHeight = false;
+            this.repositoryItemButtonEditDetails.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditDetails.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            this.repositoryItemButtonEditDetails.Name = "repositoryItemButtonEditDetails";
+            this.repositoryItemButtonEditDetails.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButtonEditDetails.Click += new System.EventHandler(this.repositoryItemButtonEditDetails_Click);
+            // 
+            // gridColumn_Delete
+            // 
+            this.gridColumn_Delete.Caption = "Xóa";
+            this.gridColumn_Delete.ColumnEdit = this.repositoryItemButtonDeleteEnabled;
+            this.gridColumn_Delete.FieldName = "IS_Delete_STR";
+            this.gridColumn_Delete.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn_Delete.Name = "gridColumn_Delete";
+            this.gridColumn_Delete.OptionsColumn.ShowCaption = false;
+            this.gridColumn_Delete.ToolTip = "Xóa";
+            this.gridColumn_Delete.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn_Delete.Visible = true;
+            this.gridColumn_Delete.VisibleIndex = 2;
+            this.gridColumn_Delete.Width = 26;
+            // 
+            // repositoryItemButtonDeleteEnabled
+            // 
+            this.repositoryItemButtonDeleteEnabled.AutoHeight = false;
+            this.repositoryItemButtonDeleteEnabled.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonDeleteEnabled.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Xóa", null, null, true)});
+            this.repositoryItemButtonDeleteEnabled.Name = "repositoryItemButtonDeleteEnabled";
+            this.repositoryItemButtonDeleteEnabled.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButtonDeleteEnabled.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonDeleteEnabled_ButtonClick);
+            // 
+            // gridColumn_Edit
+            // 
+            this.gridColumn_Edit.Caption = "Sửa";
+            this.gridColumn_Edit.ColumnEdit = this.repositoryItemButtonEditEnabled;
+            this.gridColumn_Edit.FieldName = "IS_EDIT";
+            this.gridColumn_Edit.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn_Edit.Name = "gridColumn_Edit";
+            this.gridColumn_Edit.OptionsColumn.ShowCaption = false;
+            this.gridColumn_Edit.ToolTip = "Sửa";
+            this.gridColumn_Edit.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn_Edit.Visible = true;
+            this.gridColumn_Edit.VisibleIndex = 3;
+            this.gridColumn_Edit.Width = 26;
+            // 
+            // repositoryItemButtonEditEnabled
+            // 
+            this.repositoryItemButtonEditEnabled.AutoHeight = false;
+            this.repositoryItemButtonEditEnabled.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditEnabled.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Sửa", null, null, true)});
+            this.repositoryItemButtonEditEnabled.Name = "repositoryItemButtonEditEnabled";
+            this.repositoryItemButtonEditEnabled.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButtonEditEnabled.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEditEnabled_ButtonClick);
+            // 
             // gridColumn_Approval
             // 
             this.gridColumn_Approval.Caption = "gridColumn2";
-            this.gridColumn_Approval.ColumnEdit = this.repositoryItemButtonEditApproval;
+            this.gridColumn_Approval.ColumnEdit = this.repositoryItemButtonEditApprovalEnabled;
             this.gridColumn_Approval.FieldName = "APPROVAL_STR";
             this.gridColumn_Approval.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn_Approval.Name = "gridColumn_Approval";
@@ -352,22 +501,22 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Approval.ToolTip = "Duyệt";
             this.gridColumn_Approval.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Approval.Visible = true;
-            this.gridColumn_Approval.VisibleIndex = 1;
+            this.gridColumn_Approval.VisibleIndex = 4;
             this.gridColumn_Approval.Width = 26;
             // 
-            // repositoryItemButtonEditApproval
+            // repositoryItemButtonEditApprovalEnabled
             // 
-            this.repositoryItemButtonEditApproval.AutoHeight = false;
-            this.repositoryItemButtonEditApproval.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Duyệt", null, null, true)});
-            this.repositoryItemButtonEditApproval.Name = "repositoryItemButtonEditApproval";
-            this.repositoryItemButtonEditApproval.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.repositoryItemButtonEditApproval.Click += new System.EventHandler(this.repositoryItemButtonEditApproval_Click);
+            this.repositoryItemButtonEditApprovalEnabled.AutoHeight = false;
+            this.repositoryItemButtonEditApprovalEnabled.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditApprovalEnabled.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Duyệt", null, null, true)});
+            this.repositoryItemButtonEditApprovalEnabled.Name = "repositoryItemButtonEditApprovalEnabled";
+            this.repositoryItemButtonEditApprovalEnabled.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButtonEditApprovalEnabled.Click += new System.EventHandler(this.repositoryItemButtonEditApproval_Click);
             // 
             // gridColumn_Reject_Approval
             // 
             this.gridColumn_Reject_Approval.Caption = "gridColumn3";
-            this.gridColumn_Reject_Approval.ColumnEdit = this.repositoryItemButtonEditRejectApproval;
+            this.gridColumn_Reject_Approval.ColumnEdit = this.repositoryItemButtonEditRejectApprovalEnabled;
             this.gridColumn_Reject_Approval.FieldName = "REJECT_APPROVAL_STR";
             this.gridColumn_Reject_Approval.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn_Reject_Approval.Name = "gridColumn_Reject_Approval";
@@ -376,17 +525,63 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Reject_Approval.ToolTip = "Từ chối duyệt";
             this.gridColumn_Reject_Approval.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Reject_Approval.Visible = true;
-            this.gridColumn_Reject_Approval.VisibleIndex = 2;
+            this.gridColumn_Reject_Approval.VisibleIndex = 6;
             this.gridColumn_Reject_Approval.Width = 26;
             // 
-            // repositoryItemButtonEditRejectApproval
+            // repositoryItemButtonEditRejectApprovalEnabled
             // 
-            this.repositoryItemButtonEditRejectApproval.AutoHeight = false;
-            this.repositoryItemButtonEditRejectApproval.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditRejectApproval.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Từ chối duyệt", null, null, true)});
-            this.repositoryItemButtonEditRejectApproval.Name = "repositoryItemButtonEditRejectApproval";
-            this.repositoryItemButtonEditRejectApproval.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.repositoryItemButtonEditRejectApproval.Click += new System.EventHandler(this.repositoryItemButtonEditReject_Click);
+            this.repositoryItemButtonEditRejectApprovalEnabled.AutoHeight = false;
+            this.repositoryItemButtonEditRejectApprovalEnabled.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditRejectApprovalEnabled.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Từ chối duyệt", null, null, true)});
+            this.repositoryItemButtonEditRejectApprovalEnabled.Name = "repositoryItemButtonEditRejectApprovalEnabled";
+            this.repositoryItemButtonEditRejectApprovalEnabled.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButtonEditRejectApprovalEnabled.Click += new System.EventHandler(this.repositoryItemButtonEditReject_Click);
+            // 
+            // gridColumn_Is_Approval
+            // 
+            this.gridColumn_Is_Approval.Caption = "Hủy duyệt";
+            this.gridColumn_Is_Approval.ColumnEdit = this.repositoryItemButtonEditIsApprovalEnableb;
+            this.gridColumn_Is_Approval.FieldName = "IS_APPROVAL";
+            this.gridColumn_Is_Approval.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn_Is_Approval.Name = "gridColumn_Is_Approval";
+            this.gridColumn_Is_Approval.OptionsColumn.ShowCaption = false;
+            this.gridColumn_Is_Approval.ToolTip = "Hủy duyệt";
+            this.gridColumn_Is_Approval.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn_Is_Approval.Visible = true;
+            this.gridColumn_Is_Approval.VisibleIndex = 5;
+            this.gridColumn_Is_Approval.Width = 26;
+            // 
+            // repositoryItemButtonEditIsApprovalEnableb
+            // 
+            this.repositoryItemButtonEditIsApprovalEnableb.AutoHeight = false;
+            this.repositoryItemButtonEditIsApprovalEnableb.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditIsApprovalEnableb.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Hủy duyệt", null, null, true)});
+            this.repositoryItemButtonEditIsApprovalEnableb.Name = "repositoryItemButtonEditIsApprovalEnableb";
+            this.repositoryItemButtonEditIsApprovalEnableb.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButtonEditIsApprovalEnableb.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEditIsApproval_ButtonClick);
+            // 
+            // gridColumn_Pint
+            // 
+            this.gridColumn_Pint.Caption = "In";
+            this.gridColumn_Pint.ColumnEdit = this.repositoryItemButtonEditPrint;
+            this.gridColumn_Pint.FieldName = "IS_PRINT";
+            this.gridColumn_Pint.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn_Pint.Name = "gridColumn_Pint";
+            this.gridColumn_Pint.OptionsColumn.ShowCaption = false;
+            this.gridColumn_Pint.ToolTip = "In phiếu kết quả khám chuyên khoa";
+            this.gridColumn_Pint.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn_Pint.Visible = true;
+            this.gridColumn_Pint.VisibleIndex = 7;
+            this.gridColumn_Pint.Width = 26;
+            // 
+            // repositoryItemButtonEditPrint
+            // 
+            this.repositoryItemButtonEditPrint.AutoHeight = false;
+            this.repositoryItemButtonEditPrint.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditPrint.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "In phiếu kết quả khám chuyên khoa", null, null, true)});
+            this.repositoryItemButtonEditPrint.Name = "repositoryItemButtonEditPrint";
+            this.repositoryItemButtonEditPrint.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButtonEditPrint.Click += new System.EventHandler(this.repositoryItemButtonEditPrint_Click);
             // 
             // gridColumn_Status
             // 
@@ -398,7 +593,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Status.OptionsColumn.FixedWidth = true;
             this.gridColumn_Status.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Status.Visible = true;
-            this.gridColumn_Status.VisibleIndex = 3;
+            this.gridColumn_Status.VisibleIndex = 8;
             this.gridColumn_Status.Width = 90;
             // 
             // gridColumn_Patient_Code
@@ -409,7 +604,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Patient_Code.OptionsColumn.AllowEdit = false;
             this.gridColumn_Patient_Code.OptionsColumn.FixedWidth = true;
             this.gridColumn_Patient_Code.Visible = true;
-            this.gridColumn_Patient_Code.VisibleIndex = 4;
+            this.gridColumn_Patient_Code.VisibleIndex = 9;
             this.gridColumn_Patient_Code.Width = 90;
             // 
             // gridColumn_Treatment_Code
@@ -420,7 +615,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Treatment_Code.OptionsColumn.AllowEdit = false;
             this.gridColumn_Treatment_Code.OptionsColumn.FixedWidth = true;
             this.gridColumn_Treatment_Code.Visible = true;
-            this.gridColumn_Treatment_Code.VisibleIndex = 5;
+            this.gridColumn_Treatment_Code.VisibleIndex = 10;
             this.gridColumn_Treatment_Code.Width = 102;
             // 
             // gridColumn_Patient_Name
@@ -431,7 +626,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Patient_Name.OptionsColumn.AllowEdit = false;
             this.gridColumn_Patient_Name.OptionsColumn.FixedWidth = true;
             this.gridColumn_Patient_Name.Visible = true;
-            this.gridColumn_Patient_Name.VisibleIndex = 6;
+            this.gridColumn_Patient_Name.VisibleIndex = 11;
             this.gridColumn_Patient_Name.Width = 140;
             // 
             // gridColumn_Invite_Time
@@ -443,7 +638,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Invite_Time.OptionsColumn.FixedWidth = true;
             this.gridColumn_Invite_Time.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Invite_Time.Visible = true;
-            this.gridColumn_Invite_Time.VisibleIndex = 7;
+            this.gridColumn_Invite_Time.VisibleIndex = 12;
             this.gridColumn_Invite_Time.Width = 130;
             // 
             // gridColumn_Invite_Department
@@ -454,7 +649,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Invite_Department.OptionsColumn.AllowEdit = false;
             this.gridColumn_Invite_Department.OptionsColumn.FixedWidth = true;
             this.gridColumn_Invite_Department.Visible = true;
-            this.gridColumn_Invite_Department.VisibleIndex = 8;
+            this.gridColumn_Invite_Department.VisibleIndex = 13;
             this.gridColumn_Invite_Department.Width = 165;
             // 
             // gridColumn_Excute_Department
@@ -465,7 +660,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Excute_Department.OptionsColumn.AllowEdit = false;
             this.gridColumn_Excute_Department.OptionsColumn.FixedWidth = true;
             this.gridColumn_Excute_Department.Visible = true;
-            this.gridColumn_Excute_Department.VisibleIndex = 9;
+            this.gridColumn_Excute_Department.VisibleIndex = 14;
             this.gridColumn_Excute_Department.Width = 165;
             // 
             // gridColumn_Invite_Content
@@ -476,7 +671,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Invite_Content.OptionsColumn.AllowEdit = false;
             this.gridColumn_Invite_Content.OptionsColumn.FixedWidth = true;
             this.gridColumn_Invite_Content.Visible = true;
-            this.gridColumn_Invite_Content.VisibleIndex = 10;
+            this.gridColumn_Invite_Content.VisibleIndex = 15;
             this.gridColumn_Invite_Content.Width = 220;
             // 
             // gridColumn_Is_Exam_Bed
@@ -490,7 +685,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Is_Exam_Bed.ToolTip = "Khám tại giường";
             this.gridColumn_Is_Exam_Bed.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Is_Exam_Bed.Visible = true;
-            this.gridColumn_Is_Exam_Bed.VisibleIndex = 11;
+            this.gridColumn_Is_Exam_Bed.VisibleIndex = 16;
             this.gridColumn_Is_Exam_Bed.Width = 40;
             // 
             // repositoryItemCheckEdit1
@@ -508,7 +703,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Exam_Excute.OptionsColumn.FixedWidth = true;
             this.gridColumn_Exam_Excute.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Exam_Excute.Visible = true;
-            this.gridColumn_Exam_Excute.VisibleIndex = 12;
+            this.gridColumn_Exam_Excute.VisibleIndex = 17;
             this.gridColumn_Exam_Excute.Width = 160;
             // 
             // gridColumn1
@@ -520,7 +715,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn1.OptionsColumn.FixedWidth = true;
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 13;
+            this.gridColumn1.VisibleIndex = 18;
             this.gridColumn1.Width = 130;
             // 
             // gridColumn2
@@ -531,7 +726,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.OptionsColumn.FixedWidth = true;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 14;
+            this.gridColumn2.VisibleIndex = 19;
             this.gridColumn2.Width = 76;
             // 
             // gridColumn3
@@ -543,7 +738,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn3.OptionsColumn.FixedWidth = true;
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 15;
+            this.gridColumn3.VisibleIndex = 20;
             this.gridColumn3.Width = 130;
             // 
             // gridColumn4
@@ -554,8 +749,48 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 16;
+            this.gridColumn4.VisibleIndex = 21;
             this.gridColumn4.Width = 76;
+            // 
+            // repositoryItemButtonDeleteDisable
+            // 
+            this.repositoryItemButtonDeleteDisable.AutoHeight = false;
+            this.repositoryItemButtonDeleteDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonDeleteDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Xóa", null, null, true)});
+            this.repositoryItemButtonDeleteDisable.Name = "repositoryItemButtonDeleteDisable";
+            this.repositoryItemButtonDeleteDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // repositoryItemButtonEditDisable
+            // 
+            this.repositoryItemButtonEditDisable.AutoHeight = false;
+            this.repositoryItemButtonEditDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Sửa", null, null, true)});
+            this.repositoryItemButtonEditDisable.Name = "repositoryItemButtonEditDisable";
+            this.repositoryItemButtonEditDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // repositoryItemButtonEditIsApprovalDisable
+            // 
+            this.repositoryItemButtonEditIsApprovalDisable.AutoHeight = false;
+            this.repositoryItemButtonEditIsApprovalDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditIsApprovalDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "Hủy duyệt", null, null, true)});
+            this.repositoryItemButtonEditIsApprovalDisable.Name = "repositoryItemButtonEditIsApprovalDisable";
+            this.repositoryItemButtonEditIsApprovalDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // repositoryItemButtonEditRejectApprovalDisable
+            // 
+            this.repositoryItemButtonEditRejectApprovalDisable.AutoHeight = false;
+            this.repositoryItemButtonEditRejectApprovalDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditRejectApprovalDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "Từ chối duyệt", null, null, true)});
+            this.repositoryItemButtonEditRejectApprovalDisable.Name = "repositoryItemButtonEditRejectApprovalDisable";
+            this.repositoryItemButtonEditRejectApprovalDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // repositoryItemButtonEditApprovalDisable
+            // 
+            this.repositoryItemButtonEditApprovalDisable.AutoHeight = false;
+            this.repositoryItemButtonEditApprovalDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditApprovalDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "Duyệt", null, null, true)});
+            this.repositoryItemButtonEditApprovalDisable.Name = "repositoryItemButtonEditApprovalDisable";
+            this.repositoryItemButtonEditApprovalDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // cboExamSpecialistStt
             // 
@@ -585,7 +820,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.cboExamExcuteDepartment.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExamExcuteDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "", null, null, true)});
             this.cboExamExcuteDepartment.Properties.NullText = "";
             this.cboExamExcuteDepartment.Properties.PopupSizeable = false;
             this.cboExamExcuteDepartment.Properties.View = this.gridView3;
@@ -808,9 +1043,19 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             ((System.ComponentModel.ISupportInitialize)(this.dtIntructionTimeFrom.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlExamSpecialist)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditApproval)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditRejectApproval)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditDetails)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonDeleteEnabled)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditEnabled)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditApprovalEnabled)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditRejectApprovalEnabled)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditIsApprovalEnableb)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditPrint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonDeleteDisable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditDisable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditIsApprovalDisable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditRejectApprovalDisable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditApprovalDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamSpecialistStt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamExcuteDepartment.Properties)).EndInit();
@@ -880,8 +1125,8 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Is_Exam_Bed;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Exam_Excute;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Patient_Code;
-        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditApproval;
-        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditRejectApproval;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditApprovalEnabled;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditRejectApprovalEnabled;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit1;
         private Inventec.UC.Paging.UcPaging ucPaging1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
@@ -893,5 +1138,20 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Delete;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Pint;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Edit;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Is_Approval;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Details;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditDetails;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditIsApprovalEnableb;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditPrint;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonDeleteEnabled;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditEnabled;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonDeleteDisable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditDisable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditIsApprovalDisable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditRejectApprovalDisable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditApprovalDisable;
     }
 }
