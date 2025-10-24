@@ -74,6 +74,9 @@ namespace MPS.Processor.Mps000245
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
 
+                
+
+
                 SetBarcodeKey();
                 SetSingleKey();
 
