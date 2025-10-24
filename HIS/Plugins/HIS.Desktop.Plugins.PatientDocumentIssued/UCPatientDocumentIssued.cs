@@ -15,53 +15,58 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Utils.Menu;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using DevExpress.XtraTreeList;
+using DevExpress.XtraTreeList.Columns;
+using EMR.EFMODEL.DataModels;
+using EMR.Filter;
+using EMR.SDO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.LocalStorage.Location;
+using HIS.Desktop.Plugins.PatientDocumentIssued.ADO;
+using HIS.Desktop.Plugins.PatientDocumentIssued.Form;
+using HIS.Desktop.Plugins.PatientDocumentIssued.Resources;
+using HIS.Desktop.Utilities;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary;
+using Inventec.Common.SignLibrary.ADO;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using Inventec.Desktop.Common.Modules;
+using Inventec.Desktop.Core;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+
+using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Resources;
-using System.Collections;
-using System.IO;
 
-using DevExpress.Utils.Menu;
-using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraGrid.Views.Base;
-
-using HIS.Desktop.Utility;
-using HIS.Desktop.Utilities;
-using HIS.Desktop.LocalStorage.Location;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Controls.Session;
-using HIS.Desktop.Utilities.Extensions;
-using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.LocalStorage.ConfigSystem;
-using MOS.EFMODEL.DataModels;
-using MOS.Filter;
-using EMR.EFMODEL.DataModels;
-using EMR.Filter;
-using Inventec.Common.Logging;
-using Inventec.Common.Adapter;
-using Inventec.Core;
-using Inventec.Desktop.Common.Modules;
-using Inventec.Desktop.Core;
-using Inventec.Desktop.Common.LanguageManager;
-using Inventec.Desktop.Common.Message;
-using Inventec.Common.SignLibrary;
-using iTextSharp.text.pdf;
-using iTextSharp.text;
-using HIS.Desktop.Plugins.PatientDocumentIssued.Resources;
-using HIS.Desktop.Plugins.PatientDocumentIssued.ADO;
-using HIS.Desktop.Plugins.PatientDocumentIssued.Form;
-using DevExpress.XtraTreeList.Columns;
-using DevExpress.XtraTreeList;
-using EMR.SDO;
-using HIS.Desktop.LocalStorage.BackendData;
 
 namespace HIS.Desktop.Plugins.PatientDocumentIssued
 {
@@ -77,7 +82,14 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
         List<SignatureStatusADO> signatureStatusSelecteds;
         List<SignatureStatusADO> listSignatureStatus;
         // List emr_document for print
+
         List<V_EMR_DOCUMENT> listEmrDocument;
+        List<V_EMR_DOCUMENT> lstDataPage;
+        private bool isHeaderChecked = false;
+        bool IsMergeDocument = false;
+        List<ADO.EmrDocumentADO> _ImportAdos;
+        List<ADO.EmrDocumentADO> _CurrentAdos;
+        List<V_EMR_DOCUMENT> _ListDocuments { get; set; }
 
         //
         int numEmrDocumentSelecteds = 0;
@@ -147,7 +159,6 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
         {
             try
             {
-                List<EmrDocumentADO> EmrDocumentADOs = new List<EmrDocumentADO>();
                 WaitingManager.Show();
 
                 CommonParam param = new CommonParam();
@@ -155,6 +166,24 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                 SetEmrDocumentViewFilter(ref filter);
                 var listEmrrDocument = new BackendAdapter(param).Get<List<V_EMR_DOCUMENT>>(RequestUriStore.V_EMR_DOCUMENT_GET, ApiConsumers.EmrConsumer, filter, param);
                 LogSystem.Debug(listEmrrDocument.Count.ToString());
+                var EmrDocumentADOs = ProcessDataSource(listEmrrDocument);
+                treeEmrDocument.DataSource = new BindingList<EmrDocumentADO>(EmrDocumentADOs);
+                treeEmrDocument.ExpandAll();
+                Expand(true);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private List<EmrDocumentADO> ProcessDataSource(List<V_EMR_DOCUMENT> listEmrrDocument)
+        {
+            List<EmrDocumentADO> EmrDocumentADOs = new List<EmrDocumentADO>();
+            try
+            {
                 if (listEmrrDocument != null && listEmrrDocument.Count > 0)
                 {
                     var listRootSety = listEmrrDocument.GroupBy(o => o.TREATMENT_CODE).ToList();
@@ -203,16 +232,12 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                 }
 
                 EmrDocumentADOs = EmrDocumentADOs.OrderBy(o => o.PARENT_ID__IN_SETY).ToList();
-                treeEmrDocument.DataSource = new BindingList<EmrDocumentADO>(EmrDocumentADOs);
-                treeEmrDocument.ExpandAll();
-                Expand(true);
-                WaitingManager.Hide();
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            return EmrDocumentADOs;
         }
 
         private void SetEmrDocumentViewFilter(ref EmrDocumentViewFilter filter)
@@ -1387,26 +1412,58 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        List<NumOrderDocumentSDO> listNumOrderDocument = new List<NumOrderDocumentSDO>();
 
-        internal static void InsertPage1(Stream sourceStream, List<EmrDocumentFileSDO> fileBase64Data, string desFileJoined)
+
+
+        internal void InsertPage1(Stream sourceStream, string sourceFile, Dictionary<long, string> fileListJoin, string desFileJoined)
         {
             List<string> joinStreams = new List<string>();
-            if (fileBase64Data != null && fileBase64Data.Count > 0)
+            if (fileListJoin != null && fileListJoin.Count > 0)
             {
                 iTextSharp.text.pdf.PdfReader reader1 = null;
-                if (sourceStream != null)
+                Stream sourceStreamCopy = new MemoryStream();
+                if (!String.IsNullOrEmpty(sourceFile) && File.Exists(sourceFile))
                 {
+                    reader1 = new iTextSharp.text.pdf.PdfReader(sourceFile);
+                }
+                else if (sourceStream != null)
+                {
+                    sourceStream.Position = 0;
+                    sourceStreamCopy = new MemoryStream();
+                    sourceStream.CopyTo(sourceStreamCopy);
+                    sourceStream.Position = 0;
                     reader1 = new iTextSharp.text.pdf.PdfReader(sourceStream);
                 }
+
+                string output = Utils.GenerateTempFileWithin();
+                sourceStreamCopy.Position = 0;
+                Utils.ByteToFile(Utils.StreamToByte(sourceStreamCopy), output);
+                joinStreams.Add(output);
                 int pageCount = reader1.NumberOfPages;
                 iTextSharp.text.Rectangle pageSize = reader1.GetPageSizeWithRotation(reader1.NumberOfPages);
                 iTextSharp.text.Rectangle pageSize1 = new iTextSharp.text.Rectangle(pageSize.Left, pageSize.Bottom, pageSize.Right, (pageSize.Bottom + pageSize.Height), pageSize.Rotation);
 
-                foreach (var item in fileBase64Data)
+                foreach (var item in fileListJoin)
                 {
-                    if (item.Extension != "pdf")
+                    int lIndex1 = item.Value.LastIndexOf(".");
+                    string EXTENSION = item.Value.Substring(lIndex1 > 0 ? lIndex1 + 1 : lIndex1);
+                    if (EXTENSION != "pdf")
                     {
-                        var stream = new MemoryStream(Convert.FromBase64String(item.Base64Data));
+                        MemoryStream stream = null;
+                        if (File.Exists(item.Value))
+                        {
+                            using (var streamSource = new FileStream(item.Value, FileMode.Open, FileAccess.Read, FileShare.Read))
+                            {
+                                streamSource.Position = 0;
+                                stream = new MemoryStream();
+                                streamSource.CopyTo(stream);
+                            }
+                        }
+                        else
+                            stream = TryDownloadFile(item.Value);
+                        if (stream == null || stream.Length == 0)
+                            continue;
                         stream.Position = 0;
                         string convertTpPdf = Utils.GenerateTempFileWithin();
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Đây là dữ liệu convertTpPdf: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => convertTpPdf), convertTpPdf));
@@ -1432,12 +1489,22 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                         iTextdocument.Add(img);
                         iTextdocument.Close();
                         writer.Close();
-
                         joinStreams.Add(convertTpPdf);
                     }
                     else
                     {
-                        var stream = new MemoryStream(Convert.FromBase64String(item.Base64Data));
+                        MemoryStream stream = null;
+                        if (File.Exists(item.Value))
+                        {
+                            using (var streamSource = new FileStream(item.Value, FileMode.Open, FileAccess.Read, FileShare.Read))
+                            {
+                                streamSource.Position = 0;
+                                stream = new MemoryStream();
+                                streamSource.CopyTo(stream);
+                            }
+                        }
+                        else
+                            stream = TryDownloadFile(item.Value);
 
                         if (stream != null && stream.Length > 0)
                         {
@@ -1452,18 +1519,11 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                         }
                     }
                 }
-
                 Stream currentStream = File.Open(desFileJoined, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
 
                 var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
 
                 var pages = new List<int>();
-                for (int i = 0; i <= reader1.NumberOfPages; i++)
-                {
-                    pages.Add(i);
-                }
-                reader1.SelectPages(pages);
-                pdfConcat.AddPages(reader1);
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Đây là dữ liệu joinStreams: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => joinStreams), joinStreams));
 
@@ -1507,6 +1567,64 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                         File.Delete(file);
                     }
                     catch { }
+                }
+            }
+        }
+
+        private List<EmrDocumentFileSDO> GetEmrDocumentFile(V_EMR_DOCUMENT document, List<long> docIds, bool? IsMerge, bool? IsShowPatientSign, bool? IsShowWatermark)
+        {
+            CommonParam paramCommon = new CommonParam();
+            EmrDocumentDownloadFileSDO sdo = new EmrDocumentDownloadFileSDO();
+            var emrFilter = new EMR.Filter.EmrDocumentViewFilter();
+            if (document != null)
+                emrFilter.ID = document.ID;
+            else
+                emrFilter.IDs = docIds;
+            sdo.EmrDocumentViewFilter = emrFilter;
+            sdo.IsMerge = IsMerge;
+            sdo.IsShowPatientSign = IsShowPatientSign;
+            sdo.IsShowWatermark = IsShowWatermark;
+            int opt = 0;
+            int.TryParse(HIS.Desktop.LocalStorage.EmrConfig.EmrConfigs.Get<string>("EMR.DOCUMENT.PRINT_USING_WARTERMARK.OPTION"), out opt);
+            sdo.IsView = (opt == 1 || opt == 2);
+            var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
+            sdo.RoomCode = room != null ? room.ROOM_CODE : null;
+            sdo.DepartmentCode = room != null ? room.DEPARTMENT_CODE : null;
+            sdo.IsRoomLT = room != null ? room.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__LT : false;
+            listNumOrderDocument.Clear();
+            CreateNumOrderDocuments();
+            sdo.NumOrderDocuments = listNumOrderDocument.Select(x => new EMR.SDO.NumOrderDocumentSDO
+            {
+                IdDocument = x.IdDocument,
+                STT = x.STT,
+            }).ToList();
+            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+            return new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, paramCommon);
+        }
+        private void CreateNumOrderDocuments()
+        {
+            if (treeEmrDocument == null) return;
+            listNumOrderDocument.Clear();
+            int stt = 1;
+            CollectCheckedNodes(treeEmrDocument, treeEmrDocument.Nodes, listNumOrderDocument, ref stt);
+        }
+
+        private void CollectCheckedNodes(TreeList view, DevExpress.XtraTreeList.Nodes.TreeListNodes nodes, List<NumOrderDocumentSDO> outputList, ref int stt)
+        {
+            foreach (DevExpress.XtraTreeList.Nodes.TreeListNode node in nodes)
+            {
+                EmrDocumentADO data = view.GetDataRecordByNode(node) as EmrDocumentADO;
+                if (data != null && data.IS_CHECKED && data.ID > 0)
+                {
+                    outputList.Add(new NumOrderDocumentSDO
+                    {
+                        IdDocument = data.ID,
+                        STT = stt++
+                    });
+                }
+                if (node.HasChildren)
+                {
+                    CollectCheckedNodes(view, node.Nodes, outputList, ref stt);
                 }
             }
         }
@@ -1771,38 +1889,100 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
         {
             try
             {
-                TreeListColumn nextColumn = treeListColumn1;
-                if (nextColumn == null) return;
-                if (e.Column == nextColumn) { e.Handled = true; return; }
-                if (e.Column != treeEmpmtyColumn) return;
-                System.Drawing.Rectangle r = e.ObjectArgs.Bounds;
-                r.Width = r.Width + nextColumn.VisibleWidth;
-                e.ObjectArgs.Bounds = r;
+
+
+                if (e.Column != null && e.Column.VisibleIndex == 0)
+                {
+                    System.Drawing.Rectangle checkRect = new System.Drawing.Rectangle(e.Bounds.Left + 3, e.Bounds.Top + 3, 12, 12);
+                    DevExpress.XtraTreeList.ViewInfo.ColumnInfo info = (DevExpress.XtraTreeList.ViewInfo.ColumnInfo)e.ObjectArgs;
+                    if (info.CaptionRect.Left < 30)
+                        info.CaptionRect = new System.Drawing.Rectangle(new Point(info.CaptionRect.Left + 15, info.CaptionRect.Top), info.CaptionRect.Size);
+                    e.Painter.DrawObject(info);
+
+                    DrawCheckBox(e.Cache, repositoryItemCheckAll, checkRect, IsAllSelected(sender as TreeList));
+                    e.Handled = true;
+                }
+
+                else
+                {
+                    TreeListColumn nextColumn = treeListColumn1;
+                    if (nextColumn == null) return;
+                    if (e.Column == nextColumn) { e.Handled = true; return; }
+                    if (e.Column != treeEmpmtyColumn) return;
+                    System.Drawing.Rectangle r = e.ObjectArgs.Bounds;
+                    r.Width = r.Width + nextColumn.VisibleWidth;
+                    e.ObjectArgs.Bounds = r;
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+
+
         }
 
+
+        //private void toolTipControllerGrid_GetActiveObjectInfo(object sender, DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventArgs e)
+        //{
+        //    try
+        //    {
+        //        DevExpress.Utils.ToolTipControlInfo info = null;
+        //        TreeListHitInfo hi = treeEmrDocument.CalcHitInfo(e.ControlMousePosition);
+        //        var o = hi.Node;
+        //        var data = (EmrDocumentADO)treeEmrDocument.GetDataRecordByNode(o);
+        //        if (data != null && hi.Column.FieldName == "IMG")
+        //        {
+        //            string text = "";
+        //            if (!data.IS_PARENT)
+        //            {
+        //                if (String.IsNullOrEmpty(data.SIGNERS))
+        //                {
+        //                    text = "Văn bản chưa được ký";
+        //                }
+        //                else if (data.SIGNERS.Contains("#@!@#" + data.PATIENT_CODE)) //Đã ký
+        //                {
+        //                    text = "Bệnh nhân/người nhà đã ký";
+        //                }
+        //                else //Đang ký
+        //                {
+        //                    text = "Văn bản đang được ký và Bệnh nhân/người nhà chưa ký";
+        //                }
+        //            }
+        //            info = new DevExpress.Utils.ToolTipControlInfo(o, text);
+        //            e.Info = info;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
         private void toolTipControllerGrid_GetActiveObjectInfo(object sender, DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventArgs e)
         {
             try
             {
                 DevExpress.Utils.ToolTipControlInfo info = null;
-                TreeListHitInfo hi = treeEmrDocument.CalcHitInfo(e.ControlMousePosition);
-                var o = hi.Node;
-                var data = (EmrDocumentADO)treeEmrDocument.GetDataRecordByNode(o);
-                if (data != null && hi.Column.FieldName == "IMG")
+                if (treeEmrDocument == null || e == null)
+                    return;
+
+                var hitInfo = treeEmrDocument.CalcHitInfo(e.ControlMousePosition);
+                if (hitInfo == null || hitInfo.Node == null || hitInfo.Column == null)
+                    return;
+
+                var node = hitInfo.Node;
+                var dataObj = treeEmrDocument.GetDataRecordByNode(node);
+                var data = dataObj as EmrDocumentADO;
+                if (data != null && hitInfo.Column.FieldName == "IMG")
                 {
                     string text = "";
                     if (!data.IS_PARENT)
                     {
-                        if (String.IsNullOrEmpty(data.SIGNERS))
+                        if (string.IsNullOrEmpty(data.SIGNERS))
                         {
                             text = "Văn bản chưa được ký";
                         }
-                        else if (data.SIGNERS.Contains("#@!@#" + data.PATIENT_CODE)) //Đã ký
+                        else if (!string.IsNullOrEmpty(data.PATIENT_CODE) && data.SIGNERS.Contains("#@!@#" + data.PATIENT_CODE)) //Đã ký
                         {
                             text = "Bệnh nhân/người nhà đã ký";
                         }
@@ -1811,13 +1991,592 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                             text = "Văn bản đang được ký và Bệnh nhân/người nhà chưa ký";
                         }
                     }
-                    info = new DevExpress.Utils.ToolTipControlInfo(o, text);
+                    info = new DevExpress.Utils.ToolTipControlInfo(node, text);
                     e.Info = info;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnDownloadFile_Click(object sender, EventArgs e)
+        {
+
+            string fileName = System.IO.Path.Combine(Application.StartupPath + "\\Tmp\\Imp\\", "IMPORT_EMR_DOCUMENT_FILTER.xlsx");
+            Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+            param.Messages = new List<string>();
+            if (File.Exists(fileName))
+            {
+                saveFileDialog.Title = "Save File";
+                saveFileDialog.FileName = "IMPORT_EMR_DOCUMENT_FILTER ";
+                saveFileDialog.DefaultExt = "xlsx";
+                saveFileDialog.Filter = "Excel files (*.xlsx)|All files (*.*)";
+                saveFileDialog.FilterIndex = 2;
+                saveFileDialog.RestoreDirectory = true;
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    File.Copy(fileName, saveFileDialog.FileName);
+                    //MessageManager.Show(this.ParentForm, param, true);
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show("Bạn có muốn mở file ngay?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        System.Diagnostics.Process.Start(saveFileDialog.FileName);
+                    }
+                }
+            }
+        }
+
+
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Multiselect = false;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    WaitingManager.Show();
+
+                    var import = new Inventec.Common.ExcelImport.Import();
+
+                    if (import.ReadFileExcel(ofd.FileName))
+                    {
+                        var emrDocumentImport = import.GetWithCheck<ADO.EmrDocumentADO>(0);
+                        if (emrDocumentImport != null && emrDocumentImport.Count > 0)
+                        {
+
+                            WaitingManager.Hide();
+
+                            this._CurrentAdos = emrDocumentImport.ToList();
+
+                            if (this._CurrentAdos != null && this._CurrentAdos.Count > 0)
+                            {
+                                this._ImportAdos = new List<ADO.EmrDocumentADO>();
+
+                                bwLoadDocument.RunWorkerAsync();
+                            }
+
+                            //btnSave.Enabled = true;
+                        }
+                        else
+                        {
+                            WaitingManager.Hide();
+                            DevExpress.XtraEditors.XtraMessageBox.Show("Import thất bại");
+                        }
+                    }
+                    else
+                    {
+                        WaitingManager.Hide();
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Không đọc được file");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                DevExpress.XtraEditors.XtraMessageBox.Show("Có lỗi xảy ra khi import: " + ex.Message, "Lỗi");
+            }
+        }
+        private string SavePath = "";
+        private void btnDown_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                listEmrDocument = new List<V_EMR_DOCUMENT>();
+                var rowHandles = treeEmrDocument.GetAllCheckedNodes();
+                if (rowHandles != null && rowHandles.Count() > 0)
+                {
+                    foreach (var i in rowHandles)
+                    {
+                        var row = (V_EMR_DOCUMENT)treeEmrDocument.GetDataRecordByNode(i);
+                        if (row != null)
+                        {
+                            if (row.ID != null && row.ID > 0)
+                            {
+                                listEmrDocument.Add(row);
+                            }
+                        }
+                    }
+                }
+
+                if (listEmrDocument == null || listEmrDocument.Count == 0)
+                {
+                    MessageManager.Show(ResourceLanguageManager.VuiLongChonItNhatMotVanBan);
+                    return;
+                }
+
+                OpenFileDialog openFolder = new OpenFileDialog();
+                openFolder.ValidateNames = false;
+                openFolder.CheckFileExists = false;
+                openFolder.CheckPathExists = true;
+                openFolder.FileName = "Folder Selection.";
+
+                if (openFolder.ShowDialog() == DialogResult.OK)
+                {
+                    SavePath = openFolder.FileName;
+                    loadDictionary(listEmrDocument);
+                    bwDownLoadFile.RunWorkerAsync();
+
+                }
+                #region Hien thi message thong bao
+                // MessageManager.ShowAlert(this ResourceLanguageManager.ThongBao, ResourceLanguageManager.TaiVeThanhCong);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void MergePdfFiles(List<string> inputFiles, string outputFile)
+        {
+            using (FileStream stream = new FileStream(outputFile, FileMode.Create))
+            {
+                var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(stream);
+                foreach (var file in inputFiles)
+                {
+                    using (var reader = new iTextSharp.text.pdf.PdfReader(file))
+                    {
+                        pdfConcat.AddPages(reader);
+                    }
+                }
+                pdfConcat.Close();
+            }
+        }
+
+        private string SanitizeFileName(string name)
+        {
+            foreach (char c in System.IO.Path.GetInvalidFileNameChars())
+                name = name.Replace(c, '_');
+            return name.Trim();
+        }
+
+        private void treeEmrDocument_MouseUp(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                TreeList tree = sender as TreeList;
+                Point pt = new Point(e.X, e.Y);
+                TreeListHitInfo hit = tree.CalcHitInfo(pt);
+                if (hit.Column != null && hit.Column.VisibleIndex == 0)
+                {
+                    DevExpress.XtraTreeList.ViewInfo.ColumnInfo info = tree.ViewInfo.ColumnsInfo[hit.Column];
+                    System.Drawing.Rectangle checkRect = new System.Drawing.Rectangle(info.Bounds.Left + 3, info.Bounds.Top + 3, 12, 12);
+                    if (checkRect.Contains(pt))
+                    {
+                        hit.Column.OptionsColumn.AllowSort = false;
+                        EmbeddedCheckBoxChecked(tree);
+                    }
+                    else
+                    {
+                        hit.Column.OptionsColumn.AllowSort = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void bwLoadDocument_DoWork(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                int step = 0;
+                var treatmentCodes = this._CurrentAdos.Select(o => o.TREATMENT_CODE).Distinct().ToList();
+                while (treatmentCodes.Count - step > 0)
+                {
+                    var codes = treatmentCodes.Skip(step).Take(500).ToList();
+                    step += 500;
+                    EMR.Filter.EmrDocumentViewFilter filter = new EMR.Filter.EmrDocumentViewFilter();
+                    filter.TREATMENT_CODEs = codes;
+                    var documentType = BackendDataWorker.Get<EMR_DOCUMENT_TYPE>().Where(o => o.IS_ALLOW_PATIENT_ISSUE == 1).ToList();
+                    if (documentType != null && documentType.Count > 0)
+                    {
+                        filter.DOCUMENT_TYPE_IDs = documentType.Select(o => o.ID).ToList();
+                    }
+                    var _ListDocumentsTmp = new BackendAdapter(new CommonParam()).Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, filter, null);
+                    var EmrDocumentADOs = ProcessDataSource(_ListDocumentsTmp);
+                    if (EmrDocumentADOs != null && EmrDocumentADOs.Count > 0)
+                    {
+                        this._ImportAdos.AddRange(EmrDocumentADOs);
+                        bwLoadDocument.ReportProgress(0);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void bwLoadDocument_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            treeEmrDocument.DataSource = new BindingList<EmrDocumentADO>(_ImportAdos);
+            treeEmrDocument.ExpandAll();
+        }
+
+        private void bwLoadDocument_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            DevExpress.XtraEditors.XtraMessageBox.Show("Import thành công");
+        }
+
+        private void bwDownLoadFile_DoWork(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                int opt = 0;
+                int.TryParse(HIS.Desktop.LocalStorage.EmrConfig.EmrConfigs.Get<string>("EMR.DOCUMENT.PRINT_USING_WARTERMARK.OPTION"), out opt);
+                bool showWatermark = false;
+                // Chỉ chèn watermark khi chưa ký
+                if (opt == 1)
+                    showWatermark = true; // watermark khi in/view/download
+                else if (opt == 2)
+                    showWatermark = false; // chỉ view watermark
+                int step = 0;
+                List<EmrDocumentFileSDO> documentSdo = new List<EmrDocumentFileSDO>();
+
+                Dictionary<long, string> lstURL = new Dictionary<long, string>();
+                Dictionary<long, string> lstURLJSON = new Dictionary<long, string>();
+                Dictionary<long, string> lstURLXML = new Dictionary<long, string>();
+
+                List<EMR_ATTACHMENT> apiResultAttachment = new List<EMR_ATTACHMENT>();
+
+
+
+                #region File Attach
+                int totalList = listEmrDocument.Count;
+                string filePath = "";
+
+                long key = 0;
+                foreach (var item in this.listEmrDocument)
+                {
+                    if (!string.IsNullOrEmpty(DicoutPdfFile[item.ID])) lstURL.Add(item.ID, DicoutPdfFile[item.ID]);
+
+                    if (!lstURL.ContainsKey(item.ID)) lstURL.Add(item.ID, item.LAST_VERSION_URL);
+
+                    if (!lstURLJSON.ContainsKey(item.ID)) lstURLJSON.Add(item.ID, item.LAST_XML_VERSION_URL);
+
+                    if (!lstURLXML.ContainsKey(item.ID)) lstURLXML.Add(item.ID, item.LAST_JSON_VERSION_URL);
+                }
+                #endregion
+
+                #region Pre load file attach
+                while (listEmrDocument.Count - step > 0)
+                {
+                    var listEmrDocumentTmp = listEmrDocument.Skip(step).Take(500).ToList();
+                    step += 500;
+                    var documents = GetEmrDocumentFile(
+                null,
+                listEmrDocumentTmp.Select(o => o.ID).ToList(),
+                chkVB.Checked,
+                false,
+                showWatermark
+                    );
+                    if (documents != null && documents.Count > 0)
+                    {
+                        documentSdo.AddRange(documents);
+                    }
+
+
+                    CommonParam param1 = new CommonParam();
+                    EmrAttachmentFilter filterAttachment = new EmrAttachmentFilter();
+                    filterAttachment.DOCUMENT_IDs = listEmrDocumentTmp.Select(o => o.ID).ToList();
+                    filterAttachment.ORDER_DIRECTION = "DESC";
+                    filterAttachment.ORDER_FIELD = "ID";
+                    var apiResultAttachmentTmp = new BackendAdapter(param1).Get<List<EMR_ATTACHMENT>>("api/EmrAttachment/Get", ApiConsumers.EmrConsumer, filterAttachment, param1);
+                    if (apiResultAttachmentTmp != null && apiResultAttachmentTmp.Count > 0)
+                    {
+                        apiResultAttachment.AddRange(apiResultAttachmentTmp);
+                        Dictionary<long, string> lstURLTmp = new Dictionary<long, string>();
+                        foreach (var item in lstURL)
+                        {
+                            lstURLTmp.Add(item.Key, item.Value);
+                            foreach (var itemAttachment in apiResultAttachmentTmp)
+                            {
+                                if (itemAttachment.DOCUMENT_ID == item.Key)
+                                {
+                                    long a = itemAttachment.ID + 999999999999999;
+                                    if (lstURLTmp.ContainsKey(a) == false)
+                                    {
+                                        lstURLTmp.Add(a, itemAttachment.URL);
+                                    }
+                                    if (DicoutPdfFile.ContainsKey(a) == false)
+                                    {
+                                        DicoutPdfFile.Add(a, "");
+                                    }
+                                }
+                            }
+                        }
+                        // Thêm dòng này sau khi lstURLTmp được tạo ra để thêm các phần tử của lstURLTmp vào lstURL
+                        foreach (var kv in lstURLTmp)
+                        {
+                            if (!lstURL.ContainsKey(kv.Key))
+                            {
+                                lstURL.Add(kv.Key, kv.Value);
+                            }
+                        }
+
+                    }
+                }
+                #endregion
+
+                var parentNodes = listEmrDocument.GroupBy(o => o.TREATMENT_CODE).ToList();
+                foreach (var parent in parentNodes)
+                {
+                    int count = 0;
+                    var Treatment = parent.First();
+                    var pathFileTreatment = Treatment.TREATMENT_CODE + "-" +
+                           Treatment.PATIENT_CODE + "-" +
+                           Treatment.VIR_PATIENT_NAME + "-" +
+                           (Treatment.DOB.HasValue
+                               ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(Treatment.DOB.Value)
+                                   .Substring(Inventec.Common.DateTime.Convert.TimeNumberToDateString(Treatment.DOB.Value).Length - 4)
+                               : "") + "-" +
+                           Treatment.GENDER_NAME;
+                    string directoryPath = System.IO.Path.GetDirectoryName(SavePath) + @"\" + pathFileTreatment;
+                    if (!System.IO.Directory.Exists(directoryPath))
+                    {
+                        System.IO.Directory.CreateDirectory(directoryPath);
+                    }
+
+                    if (chkVB.Checked)
+                    {
+                        string output = Utils.GenerateTempFileWithin();
+                        if (lstURL != null && lstURL.Count > 0)
+                        {
+                            filePath = directoryPath + @"\" + pathFileTreatment + ".pdf";
+                            key = lstURL.Keys.FirstOrDefault();
+                            MemoryStream streamSource = null;
+                            string streamSourceStr = null;
+
+                            if (!string.IsNullOrEmpty(DicoutPdfFile[key]))
+                            {
+                                Inventec.Common.Logging.LogSystem.Info("nhận string");
+                                streamSourceStr = DicoutPdfFile[key];
+                            }
+                            else
+                            {
+                                Inventec.Common.Logging.LogSystem.Info("nhận MemoryStream");
+                                if (File.Exists(lstURL.Values.FirstOrDefault()))
+                                {
+                                    using (var stream = new FileStream(lstURL.Values.FirstOrDefault(), FileMode.Open, FileAccess.Read, FileShare.Read))
+                                    {
+                                        stream.Position = 0;
+                                        streamSource = new MemoryStream();
+                                        stream.CopyTo(streamSource);
+                                    }
+                                }
+                                else
+                                {
+                                    streamSource = TryDownloadFile(lstURL.Values.FirstOrDefault());
+                                    if (streamSource != null && streamSource.Length > 0)
+                                    {
+                                        streamSource.Position = 0;
+                                    }
+                                    else
+                                    {
+                                        Inventec.Common.Logging.LogSystem.Error("Loi convert va luu tam file pdf tu server fss ve may tram____item=" + lstURL.Values.FirstOrDefault());
+                                    }
+                                }
+                            }
+
+                            Dictionary<long, string> lst = new Dictionary<long, string>();
+                            int dem = 0;
+                            foreach (var item in lstURL)
+                            {
+                                if (dem != 0)
+                                {
+                                    if (lst.ContainsKey(item.Key) == false)
+                                    {
+                                        lst.Add(item.Key, item.Value);
+                                    }
+                                }
+                                dem++;
+                            }
+                            if (lst != null && lst.Count > 0)
+                            {
+                                InsertPage1(streamSource, streamSourceStr, lst, filePath);
+                            }
+                            else
+                            {
+                                InsertPageOne(streamSource, streamSourceStr, filePath);
+                            }
+
+                            Inventec.Common.Logging.LogSystem.Warn("filePath: " + filePath);
+                        }
+                        if (lstURLJSON != null && lstURLJSON.Count > 0)
+                        {
+                            foreach (var item in lstURLJSON)
+                            {
+                                if (string.IsNullOrEmpty(item.Value))
+                                    continue;
+                                filePath = directoryPath + @"\" + pathFileTreatment + ".json";
+                                using (MemoryStream streamSource = TryDownloadFile(item.Value))
+                                {
+                                    streamSource.Position = 0;
+                                    using (Stream saveFile = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+                                    {
+                                        streamSource.CopyTo(saveFile);
+                                    }
+                                }
+                            }
+                        }
+                        if (lstURLXML != null && lstURLXML.Count > 0)
+                        {
+                            foreach (var item in lstURLXML)
+                            {
+                                if (string.IsNullOrEmpty(item.Value))
+                                    continue;
+                                filePath = directoryPath + @"\" + pathFileTreatment + ".xml";
+                                using (MemoryStream streamSource = TryDownloadFile(item.Value))
+                                {
+                                    streamSource.Position = 0;
+                                    using (Stream saveFile = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+                                    {
+                                        streamSource.CopyTo(saveFile);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        var listDataTrue = parent.ToList();
+                        foreach (var item in listDataTrue)
+                        {
+                            if (!lstURL.ContainsKey(item.ID))
+                                return;
+                            count++;
+                            string documentName = null;
+                            if (!string.IsNullOrEmpty(item.DOCUMENT_NAME))
+                            {
+                                //loại bỏ các ký tự đặc biệt: \/:*?"<>|
+                                var charsToRemove = System.IO.Path.GetInvalidPathChars();
+                                documentName = string.Join("", item.DOCUMENT_NAME.Split(System.IO.Path.GetInvalidFileNameChars()));
+                            }
+                            else
+                            {
+                                documentName = item.DOCUMENT_NAME;
+                            }
+
+                            var versionURL = lstURL[item.ID];
+                            var versionJSON = lstURLJSON[item.ID];
+                            var versionXML = lstURLXML[item.ID];
+                            List<string> attachmentURLs = null;
+                            var attachment = apiResultAttachment.Where(o => o.DOCUMENT_ID == item.ID);
+                            if (attachment != null)
+                            {
+                                attachmentURLs = new List<string>();
+                                foreach (var att in attachment)
+                                {
+                                    if (lstURL.ContainsKey(att.ID + 999999999999999))
+                                        attachmentURLs.Add(att.URL);
+                                }
+                            }
+                            if (!string.IsNullOrEmpty(versionURL))
+                            {
+                                filePath = directoryPath + @"\" + count + "_" + documentName + ".pdf";
+                                MemoryStream streamSource = null;
+                                Inventec.Common.Logging.LogSystem.Info("nhận MemoryStream");
+                                streamSource = TryDownloadFile(versionURL);
+                                if (streamSource != null && streamSource.Length > 0)
+                                {
+                                    streamSource.Position = 0;
+                                    InsertPageOne(streamSource, null, filePath);
+                                }
+                                else
+                                {
+                                    Inventec.Common.Logging.LogSystem.Error("Loi convert va luu tam file pdf tu server fss ve may tram____item=" + versionURL);
+                                }
+                                if (attachmentURLs != null && attachmentURLs.Count > 0)
+                                {
+                                    count = 1;
+                                    foreach (var aURL in attachmentURLs)
+                                    {
+                                        filePath = directoryPath + @"\" + count + "_" + documentName + "_Đính kèm_" + count + aURL.Substring(aURL.LastIndexOf("."));
+                                        streamSource = TryDownloadFile(aURL);
+                                        if (streamSource != null && streamSource.Length > 0)
+                                        {
+                                            streamSource.Position = 0;
+                                            InsertPageOne(streamSource, null, filePath);
+                                        }
+                                        else
+                                        {
+                                            Inventec.Common.Logging.LogSystem.Error("Loi convert va luu tam file pdf tu server fss ve may tram____item=" + aURL);
+                                        }
+                                    }
+                                }
+                            }
+                            if (!string.IsNullOrEmpty(versionJSON))
+                            {
+                                filePath = directoryPath + @"\" + count + "_" + documentName + ".json";
+                                using (MemoryStream streamSource = TryDownloadFile(versionJSON))
+                                {
+                                    streamSource.Position = 0;
+                                    using (Stream saveFile = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+                                    {
+                                        streamSource.CopyTo(saveFile);
+                                    }
+                                }
+
+                            }
+                            if (!string.IsNullOrEmpty(versionXML))
+                            {
+                                filePath = directoryPath + @"\" + count + "_" + documentName + ".xml";
+                                using (MemoryStream streamSource = TryDownloadFile(versionXML))
+                                {
+                                    streamSource.Position = 0;
+                                    using (Stream saveFile = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+                                    {
+                                        streamSource.CopyTo(saveFile);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void bwDownLoadFile_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            try
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("Tải file thành công");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Attempts to download a file using TryDownloadFile and logs any exceptions.
+        /// </summary>
+        /// <param name="filePath">The file path or URL to download.</param>
+        /// <returns>MemoryStream if successful, otherwise null.</returns>
+        private MemoryStream TryDownloadFile(string filePath)
+        {
+            try
+            {
+                return Inventec.Fss.Client.FileDownload.GetFile(filePath);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
             }
         }
     }

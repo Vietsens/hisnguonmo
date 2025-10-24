@@ -34,9 +34,8 @@
     <Reference Include="FlexCel">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\FlexCel.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.LocalStorage.ConfigApplication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
+    <Reference Include="HIS.Desktop.LocalStorage.ConfigApplication">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
