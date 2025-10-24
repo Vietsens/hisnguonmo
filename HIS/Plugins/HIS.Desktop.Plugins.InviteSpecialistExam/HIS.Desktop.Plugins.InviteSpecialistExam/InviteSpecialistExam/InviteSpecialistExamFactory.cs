@@ -45,7 +45,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
 
                         if (moduleData != null)
                         {
-                            result = new InviteSpecialistExamBehavior(moduleData, commonParam, bed, exam, isEdit);
+                            result = new InviteSpecialistExamBehavior(moduleData, bed, exam, isEdit);
                         }
                     }
                 }

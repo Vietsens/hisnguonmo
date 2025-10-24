@@ -20,7 +20,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
             : base()
         {
         }
-        internal InviteSpecialistExamBehavior(Inventec.Desktop.Common.Modules.Module moduleData, CommonParam param, L_HIS_TREATMENT_BED_ROOM lBedRoom, HIS_SPECIALIST_EXAM hisExam, bool isEdit) : base()
+        internal InviteSpecialistExamBehavior(Inventec.Desktop.Common.Modules.Module moduleData, L_HIS_TREATMENT_BED_ROOM lBedRoom, HIS_SPECIALIST_EXAM hisExam, bool isEdit) : base()
         {
             Module = moduleData;
             bed = lBedRoom;

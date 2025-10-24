@@ -110,16 +110,6 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 HisRoomFilter filter = new HisRoomFilter();
                 filter.ID = moduleData.RoomId;
                 var resultData = new BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_ROOM>>("api/HisRoom/Get", ApiConsumers.MosConsumer, filter, paramCommon);
-                if (resultData != null && resultData.Count > 0)
-                {
-                    if (resultData.FirstOrDefault().IS_ALLOW_NO_ICD == 1)
-                        ado.IsColor = false;
-                    else
-                        ado.IsColor = true;
-                }
-                else
-                    ado.IsColor = true;
-
                 ado.DataIcds = lstICD;
                 ado.AutoCheckIcd = AutoCheckIcd == "1";
                 ucIcd = (UserControl)icdProcessor.Run(ado);
@@ -486,24 +476,24 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 if (ucIcd != null)
                 {
                     var icdValue = icdProcessor.GetValue(ucIcd);
-                    if (icdValue != null && icdValue is IcdInputADO)
+                    if (icdValue != null && icdValue is HIS.UC.Icd.ADO.IcdInputADO)
                     {
-                        hIS_SPECIALIST_EXAM.ICD_CODE = ((IcdInputADO)icdValue).ICD_CODE;
-                        hIS_SPECIALIST_EXAM.ICD_NAME = ((IcdInputADO)icdValue).ICD_NAME;
-                        codeCheckCD = ((IcdInputADO)icdValue).ICD_CODE;
-                        nameCheckCD = ((IcdInputADO)icdValue).ICD_NAME;
+                        hIS_SPECIALIST_EXAM.ICD_CODE = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                        hIS_SPECIALIST_EXAM.ICD_NAME = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_NAME;
+                        codeCheckCD = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                        nameCheckCD = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_NAME;
                     }
                 }
 
                 if (ucSecondaryIcd != null)
                 {
                     var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
-                    if (subIcd != null && subIcd is SecondaryIcdDataADO)
+                    if (subIcd != null && subIcd is HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)
                     {
-                        hIS_SPECIALIST_EXAM.ICD_SUB_CODE = ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
-                        hIS_SPECIALIST_EXAM.ICD_TEXT = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
-                        codeCheckCD += ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
-                        nameCheckCD += ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
+                        hIS_SPECIALIST_EXAM.ICD_SUB_CODE = ((HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                        hIS_SPECIALIST_EXAM.ICD_TEXT = ((HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)subIcd).ICD_TEXT;
+                        codeCheckCD += ((HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                        nameCheckCD += ((HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)subIcd).ICD_TEXT;
                     }
                 }
 
