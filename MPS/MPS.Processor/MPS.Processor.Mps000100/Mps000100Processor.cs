@@ -98,10 +98,10 @@ namespace MPS.Processor.Mps000100
 
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
-                objectTag.AddObjectData(store, "ImpMestAggregates", ImpMestManuMedicineSumForPrints);
+                objectTag.AddObjectData(store, "ImpMestAggregates", ImpMestManuMedicineSumForPrints.OrderBy(o=>o.MEDICINE_TYPE_NAME).ToList());
                 objectTag.AddObjectData(store, "ImpMestAggregatesV2", ImpMestManuMedicineSumForPrintsV2);
                 objectTag.AddObjectData(store, "MedicineGroup", lstMedicineType);
-                objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent);
+                objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent.OrderBy(o=>o.MEDICINE_PARENT_NAME).ToList());
                 objectTag.AddObjectData(store, "OtherPaySource", listOtherPaySource);
 
                 if (rdo._ImpMestMedicines != null)
@@ -130,16 +130,43 @@ namespace MPS.Processor.Mps000100
             {
                 if (ImpMestManuMedicineSumForPrints != null && ImpMestManuMedicineSumForPrints.Count > 0)
                 {
-                    var group = ImpMestManuMedicineSumForPrints.GroupBy(o => new { o.MEDICINE_GROUP_ID });
+                        var group = ImpMestManuMedicineSumForPrints
+                        .GroupBy(o =>
+                        {
+                            string name = (o.MEDICINE_GROUP_NAME ?? "").Trim().ToUpper();
+                            if (name.Contains("GÂY NGHIỆN"))
+                            {
+                                if (name.Contains("CHỨA DƯỢC CHẤT GÂY NGHIỆN"))
+                                    return "PHIẾU LĨNH THUỐC GÂY NGHIỆN Ở DẠNG PHỐI HỢP";
+                                else
+                                    return "PHIẾU LĨNH THUỐC GÂY NGHIỆN";
+                            }
+                            else if (name.Contains("HƯỚNG THẦN"))
+                            {
+                                return "PHIẾU LĨNH THUỐC HƯỚNG THẦN";
+                            }
+                            else if (name.Contains("LAO"))
+                            {
+                                return "PHIẾU LĨNH THUỐC ĐIỀU TRỊ LAO";
+                            }
+                            else
+                            {
+                                // Gom tất cả thuốc còn lại vào 1 nhóm duy nhất
+                                return "PHIẾU LĨNH THUỐC THƯỜNG";
+                            }
+                        })
+                        .OrderBy(g => g.Key);
                     foreach (var item in group)
                     {
                         var meGroup = rdo._MedicineTypes.FirstOrDefault(o => o.MEDICINE_GROUP_ID == item.ToList().First().MEDICINE_GROUP_ID);
                         if (meGroup != null)
                         {
                             Mps000100ADO ado = new Mps000100ADO();
+                            var firstItem = item.First();
+
                             ado.MEDICINE_GROUP_ID = meGroup.MEDICINE_GROUP_ID;
                             ado.MEDICINE_GROUP_CODE = meGroup.MEDICINE_GROUP_CODE;
-                            ado.MEDICINE_GROUP_NAME = meGroup.MEDICINE_GROUP_NAME;
+                            ado.MEDICINE_GROUP_NAME = item.Key;
                             lstMedicineType.Add(ado);
                         }
                     }
@@ -169,7 +196,7 @@ namespace MPS.Processor.Mps000100
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void GetOtherPaySource() 
+        private void GetOtherPaySource()
         {
             try
             {
@@ -179,7 +206,7 @@ namespace MPS.Processor.Mps000100
                     foreach (var item in group)
                     {
                         listOtherPaySource.Add(item.ToList().First());
-                      
+
                     }
                 }
             }
@@ -215,7 +242,7 @@ namespace MPS.Processor.Mps000100
                     var dataGroups = rdo._ImpMestMaterials.GroupBy(p => p.MATERIAL_TYPE_ID).Select(p => p.ToList()).ToList();
                     ImpMestManuMedicineSumForPrints.AddRange((from r in dataGroups select new Mps000100ADO(r, rdo._MaterialTypes, rdo.AggrImpMest.IMP_MEST_STT_ID, rdo.HisImpMestSttId__Imported, rdo.HisImpMestSttId__Approved)).ToList());
 
-                    
+
                 }
 
                 if (ImpMestManuMedicineSumForPrints != null && ImpMestManuMedicineSumForPrints.Count > 0)
