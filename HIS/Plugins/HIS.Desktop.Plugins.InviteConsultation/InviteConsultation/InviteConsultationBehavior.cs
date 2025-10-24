@@ -8,31 +8,31 @@ using System.Threading.Tasks;
 using MOS.EFMODEL.DataModels;
 using Inventec.Core;
 
-namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
+namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
 {
-    class InviteSpecialistExamBehavior : Tool<IDesktopToolContext>, IinviteSpecialistExam
+    class InviteConsultationBehavior : Tool<IDesktopToolContext>, IinviteConsultation
     {
         Inventec.Desktop.Common.Modules.Module Module;
         L_HIS_TREATMENT_BED_ROOM bed = null;
         bool isEdit = false;
         HIS_SPECIALIST_EXAM exam = null;
-        internal InviteSpecialistExamBehavior()
+        internal InviteConsultationBehavior()
             : base()
         {
         }
-        internal InviteSpecialistExamBehavior(Inventec.Desktop.Common.Modules.Module moduleData, L_HIS_TREATMENT_BED_ROOM lBedRoom, HIS_SPECIALIST_EXAM hisExam, bool isEdit) : base()
+        internal InviteConsultationBehavior(Inventec.Desktop.Common.Modules.Module moduleData, L_HIS_TREATMENT_BED_ROOM lBedRoom, HIS_SPECIALIST_EXAM hisExam, bool isEdit) : base()
         {
             Module = moduleData;
             bed = lBedRoom;
             exam = hisExam;
             this.isEdit = isEdit;
         }
-        object IinviteSpecialistExam.Run()
+        object IinviteConsultation.Run()
         {
             object result = null;
             try
             {
-                result = new frmInviteSpecialistExam(Module, bed, exam, isEdit);
+                result = new frmInviteConsultation(Module, bed, exam, isEdit);
                 if (result == null) throw new NullReferenceException(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Module), Module));
             }
             catch (Exception ex)

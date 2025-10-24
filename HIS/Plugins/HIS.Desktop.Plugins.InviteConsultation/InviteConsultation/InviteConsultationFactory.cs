@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
+namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
 {
-    class InviteSpecialistExamFactory
+    class InviteConsultationFactory
     {
-        internal static IinviteSpecialistExam MakeIControl(CommonParam commonParam, object[] data)
+        internal static IinviteConsultation MakeIControl(CommonParam commonParam, object[] data)
         {
-            IinviteSpecialistExam result = null;
+            IinviteConsultation result = null;
             Inventec.Desktop.Common.Modules.Module moduleData = null;
             L_HIS_TREATMENT_BED_ROOM bed = null;
             HIS_SPECIALIST_EXAM exam = null;
@@ -45,7 +45,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
 
                         if (moduleData != null)
                         {
-                            result = new InviteSpecialistExamBehavior(moduleData, bed, exam, isEdit);
+                            result = new InviteConsultationBehavior(moduleData, bed, exam, isEdit);
                         }
                     }
                 }
