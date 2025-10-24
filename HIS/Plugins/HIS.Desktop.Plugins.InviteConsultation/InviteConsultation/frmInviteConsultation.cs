@@ -587,7 +587,7 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                     hIS_SPECIALIST_EXAM.IS__EXAM_BED = null;
 
                 hIS_SPECIALIST_EXAM.INVITE_CONTENT = memContent.Text;
-                hIS_SPECIALIST_EXAM.INVITE_TYPE = 1;
+                hIS_SPECIALIST_EXAM.INVITE_TYPE = 2;
                 if (bedRoom != null)
                 {
                     hIS_SPECIALIST_EXAM.TREATMENT_CODE = bedRoom.TREATMENT_CODE;

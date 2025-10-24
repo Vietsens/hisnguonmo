@@ -45,7 +45,7 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
 
                         if (moduleData != null)
                         {
-                            result = new InviteConsultationBehavior(moduleData, commonParam, bed, exam, isEdit);
+                            result = new InviteConsultationBehavior(moduleData, bed, exam, isEdit);
                         }
                     }
                 }
