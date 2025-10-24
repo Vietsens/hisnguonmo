@@ -176,7 +176,8 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
             try
             {
                 dteNgayMoi.DateTime = DateTime.Now;
-
+                var dataDp = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(d => d.ID == moduleData.RoomId);
+                cboPhongKham.EditValue = dataDp.DEPARTMENT_ID;
                 var USER = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 if (USER != null && lstEmployee != null)
                 {
@@ -201,6 +202,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 }
                 else if(specialistExam != null)
                 {
+                    dteNgayMoi.DateTime = (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)specialistExam.INVITE_TIME);
                     HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO
                     {
                         ICD_CODE = specialistExam.ICD_CODE,
@@ -214,9 +216,12 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                         ICD_TEXT = specialistExam.ICD_TEXT
                     };
                     subIcdProcessor.Reload(ucSecondaryIcd, subAdo);
+                    cboPhongKham.EditValue = specialistExam.EXAM_EXECUTE_DEPARMENT_ID;
+                    memContent.Text = specialistExam.INVITE_CONTENT;
+                    chkExamInBed.Checked = specialistExam.IS__EXAM_BED == 1 ? true : false;
+                    cboBacSiKham.EditValue = lstEmployee.FirstOrDefault(o => o.LOGINNAME == specialistExam.EXAM_EXECUTE_LOGINNAME)?.ID;
+                    cboBacSi.EditValue = lstEmployee.FirstOrDefault(o => o.LOGINNAME == specialistExam.INVITE_DOCTOR_LOGINNAME)?.ID;                    
                 }
-                var dataDp = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(d => d.ID == moduleData.RoomId);
-                cboPhongKham.EditValue = dataDp.DEPARTMENT_ID;
             }
             catch (Exception ex)
             {
