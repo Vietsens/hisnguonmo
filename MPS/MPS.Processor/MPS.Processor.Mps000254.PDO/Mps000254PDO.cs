@@ -34,6 +34,7 @@ namespace MPS.Processor.Mps000254.PDO
         public keyTitles _keyTitles { get; set; }
         public List<HIS_TREATMENT> ListTreatment { get; set; }
         public HisExpMestBcsMoreInfoSDO _BcsMoreInfoSDO { get; set; }
+        public V_HIS_MATERIAL_TYPE _MateriaType { get; set; }
 
         public Mps000254PDO(
             V_HIS_EXP_MEST chmsExpMest,
@@ -66,6 +67,7 @@ namespace MPS.Processor.Mps000254.PDO
             List<V_HIS_MEDICINE_TYPE> _medicineTypes,
             keyTitles _KeyTitles,
             List<HIS_TREATMENT> _ListTreatment,
+             V_HIS_MATERIAL_TYPE _materiaType,
             HisExpMestBcsMoreInfoSDO moreInfoSDO
             )
         {
@@ -77,6 +79,7 @@ namespace MPS.Processor.Mps000254.PDO
             this._keyTitles = _KeyTitles;
             this.ListTreatment = _ListTreatment;
             this._BcsMoreInfoSDO = moreInfoSDO;
+            this._MateriaType = _materiaType;
         }
     }
 
