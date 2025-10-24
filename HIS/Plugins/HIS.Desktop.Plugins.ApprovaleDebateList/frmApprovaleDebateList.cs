@@ -28,6 +28,7 @@ using Inventec.Common.Controls.EditorLoader;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraEditors.Repository;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace HIS.Desktop.Plugins.ApprovaleDebateList
 {
@@ -284,6 +285,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                         var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId), listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                         ((Form)extenceInstance).ShowDialog();
+                        FillDataToGrid();
                     }
                 }
             }
@@ -320,6 +322,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
 
                         ((Form)extenceInstance).ShowDialog();
+                        FillDataToGrid();
                     }
                 }
             }
@@ -381,12 +384,175 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
         {
             try
             {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                var data = (V_HIS_SPECIALIST_EXAM)view.GetRow(e.RowHandle);
+                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                long deprtmentId = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID;
+                bool isEnabled = false;
                 if (e.Column.FieldName == "Debate")
                 {
                     var rowData = gridView1.GetRow(e.RowHandle) as V_HIS_SPECIALIST_EXAM;
                     if (rowData != null && rowData.IS_APPROVAL != 1)
                     {
                         e.RepositoryItem = null;
+                    }
+                }
+                else if (e.Column.FieldName == "Yes")
+                {
+                    isEnabled = false;
+                    if (data.IS_APPROVAL == null || data.IS_APPROVAL == 2)
+                    {
+                        if (data.EXAM_EXECUTE_DEPARMENT_ID == deprtmentId)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.EXAM_EXECUTE_LOGINNAME != null && data.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(loginName))
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (isEnabled)
+                        {
+                            e.RepositoryItem = btnYesEnabled;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = btnYesDisable;
+                        }
+                    }
+                    else
+                    {
+                        e.RepositoryItem = btnYesDisable;
+                    }
+                }
+                else if (e.Column.FieldName == "No")
+                {
+                    isEnabled = false;
+                    if (data.IS_APPROVAL == null || data.IS_APPROVAL == 2)
+                    {
+                        if (data.EXAM_EXECUTE_DEPARMENT_ID == deprtmentId)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.EXAM_EXECUTE_LOGINNAME != null && data.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(loginName))
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (isEnabled)
+                        {
+                            e.RepositoryItem = btnNoEnabled;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = btnNoDisable;
+                        }
+                    }
+                    else
+                    {
+                        e.RepositoryItem = btnNoDisable;
+                    }
+                }
+                else if (e.Column.FieldName == "DELETE")
+                {
+                    isEnabled = false;
+                    if (data.IS_APPROVAL == null)
+                    {
+                        if (data.CREATOR == loginName)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.INVITE_DEPARMENT_ID == deprtmentId)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.INVITE_DOCTOR_LOGINNAME != null && data.INVITE_DOCTOR_LOGINNAME == loginName)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (isEnabled)
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditDeleteEnabled;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditDeleteDisable;
+                        }
+
+                    }
+                    else
+                    {
+                        e.RepositoryItem = repositoryItemButtonEditDeleteDisable;
+                    }
+                }
+                else if (e.Column.FieldName == "EDIT")
+                {
+                    isEnabled = false;
+                    if (data.IS_APPROVAL == null)
+                    {
+                        if (data.CREATOR == loginName)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.INVITE_DEPARMENT_ID == deprtmentId)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.INVITE_DOCTOR_LOGINNAME != null && data.INVITE_DOCTOR_LOGINNAME == loginName)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (isEnabled)
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditEnabled;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditDisable;
+                        }
+
+                    }
+                    else
+                    {
+                        e.RepositoryItem = repositoryItemButtonEditDisable;
+                    }
+                }
+                else if (e.Column.FieldName == "IS_APPROVAL")
+                {
+                    isEnabled = false;
+                    if (data.IS_APPROVAL == 1)
+                    {
+                        if (data.EXAM_EXECUTE_DEPARMENT_ID == deprtmentId)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.EXAM_EXECUTE_LOGINNAME != null && data.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(loginName))
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (isEnabled)
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditApprovalEnabled;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditApprovalDisable;
+                        }
+
+                    }
+                    else
+                    {
+                        e.RepositoryItem = repositoryItemButtonEditApprovalDisable;
                     }
                 }
             }
@@ -425,7 +591,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                         }
                         if (e.Column.FieldName == "INVITE_TIME_CUS")
                         {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.INVITE_TIME ?? 0);
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.INVITE_TIME ?? 0);        
                         }
                         if (e.Column.FieldName == "IS_APPROVAL_CUS")
                         {
@@ -689,8 +855,13 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
 
                     Inventec.Common.Logging.LogSystem.Debug(apiResult.Data.Count + "");
                     Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => paramCommon), paramCommon));
+                    string UserName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
 
-                    var data = apiResult.Data;
+                    var data = apiResult.Data.Where(x => x.IS_ACTIVE == 1 && x.IS_DELETE != 1 && x.INVITE_TYPE == 2 && ((x.EXAM_EXECUTE_LOGINNAME != null && x.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(UserName))
+                    || (x.EXAM_EXECUTE_LOGINNAME == null && x.EXAM_EXECUTE_DEPARMENT_ID != null && x.EXAM_EXECUTE_DEPARMENT_ID == BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID)
+                    || (x.INVITE_DEPARMENT_ID == BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID)
+                    || (x.INVITE_DOCTOR_LOGINNAME == UserName))).ToList();
+
                     if (data != null && data.Count > 0)
                     {
                         gridControl1.DataSource = data;
@@ -796,6 +967,127 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
             }
         }
 
+        private void repositoryItemButtonEditDetails_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ApprovaleDebate").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ApprovaleDebate");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(row);
+                    listArgs.Add((HIS.Desktop.Common.RefeshReference)FillDataToGrid);
+                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance
+                        .GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+                    FillDataToGrid();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemButtonEditDeleteEnabled_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
+
+                if (row != null)
+                {
+                    var result = false;
+                    CommonParam param = new CommonParam();
+                    result = new BackendAdapter(param).Post<bool>("api/HisSpecialistExam/Delete", ApiConsumers.MosConsumer, row.ID, param);
+                    if (result)
+                    {
+                        FillDataToGrid();
+                    }
+                    MessageManager.Show(this, param, result);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemButtonEditEnabled_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
+                var moduleData = GlobalVariables.currentModuleRaws
+                    .FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.InviteConsultation");
+
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = HIS.Desktop.Plugins.InviteConsultation");   
+                    return;
+                }
+
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();   
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, row);
+
+                    List<object> listArgs = new List<object> { null, datamapper, this.currentModule, true, (HIS.Desktop.Common.RefeshReference)FillDataToGrid };
+
+                    // Gọi hàm trả về instance của plugin
+                    var extenceInstance = PluginInstance.GetPluginInstance(
+                        PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId),
+                        listArgs
+                    );
+                    Form form = null;
+                    if (extenceInstance is Form)
+                    {
+                        form = (Form)extenceInstance;
+                        form.ShowDialog();
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Không thể khởi tạo form từ plugin.");
+                    }
+                    FillDataToGrid();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemButtonEditApprovalEnabled_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {     
+                var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
+
+                if (row != null)
+                {
+                    var result = false;
+                    CommonParam param = new CommonParam();
+                    HIS_SPECIALIST_EXAM specialist = new HIS_SPECIALIST_EXAM();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(specialist, row);
+                    specialist.IS_APPROVAL = null;
+                    var a = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/UnApproval", ApiConsumers.MosConsumer, specialist, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                    if (a != null)
+                    {
+                        result = true;
+                        FillDataToGrid();
+                    }
+                    MessageManager.Show(this, param, result);   
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
 

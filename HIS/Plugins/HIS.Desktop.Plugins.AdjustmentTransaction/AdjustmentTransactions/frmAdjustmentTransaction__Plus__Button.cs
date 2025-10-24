@@ -248,15 +248,11 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 if (HisAdjustmentBillResult != null)
                 {
                     success = true;
-                    //HisTransactionViewFilter fl = new HisTransactionViewFilter();
-                    //fl.ID = rs.TransactionBill.ID;
-                    //var lstTransaction = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumer.ApiConsumers.MosConsumer, fl, null);
-                    //this.resultTranBill = lstTransaction.FirstOrDefault();
 
-                    if (IsCheckPrint)
-                    {
-                        FillAdjustmentBill();
-                    }
+                    HisTransactionViewFilter fl = new HisTransactionViewFilter();
+                    fl.ID = HisAdjustmentBillResult.TransactionBill.ID;
+                    var lstTransaction = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumer.ApiConsumers.MosConsumer, fl, null);
+                    this.resultTranBill = lstTransaction.FirstOrDefault();
 
                     if (delegateRefreshData != null)
                     {
@@ -267,8 +263,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                     {
                         if (isnotPrintMPS000111 == false)
                         {
-                            //tran.HIS_BILL_FUND = data.Transaction.HIS_BILL_FUND;
-                            //Tao hoa don dien thu ben thu3 
+                            
                             ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(HisAdjustmentBillResult);
                             if (electronicBillResult == null || !electronicBillResult.Success)
                             {
@@ -296,7 +291,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                                 sdo.InvoiceSys = electronicBillResult.InvoiceSys;
                                 sdo.EinvoiceNumOrder = electronicBillResult.InvoiceNumOrder;
                                 sdo.EInvoiceTime = electronicBillResult.InvoiceTime ?? (Inventec.Common.DateTime.Get.Now() ?? 0);
-                                sdo.Id = resultTranBill.ID;
+                                sdo.Id = HisAdjustmentBillResult.TransactionBill.ID;
                                 sdo.InvoiceLookupCode = electronicBillResult.InvoiceLookupCode;
                                 var apiResult = new BackendAdapter(paramUpdate).Post<bool>("api/HisTransaction/UpdateInvoiceInfo", ApiConsumers.MosConsumer, sdo, paramUpdate);
                                 if (apiResult)
@@ -320,25 +315,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return success;
-        }
-
-        public void FillAdjustmentBill()
-        {
-            try
-            {
-                if (HisAdjustmentBillResult != null)
-                {
-                    HisTransactionViewFilter fl = new HisTransactionViewFilter();
-                    fl.ID = HisAdjustmentBillResult.TransactionBill.ID;
-                    var lstTransaction = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumer.ApiConsumers.MosConsumer, fl, null);
-                    this.resultTranBill = lstTransaction.FirstOrDefault();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex); 
-                throw;
-            }
         }
         private void RefreshSessionInfo()
         {
@@ -395,7 +371,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 SetEnableButtonSave(!success.Value);
                 if (chkPrintHddt.Checked)
                 {
-                    FillAdjustmentBill();
                     this.onClickInHoaDonDienTu(null, null);
                 }
 
@@ -436,7 +411,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
 
                 electronicBillResult = electronicBillProcessor.Run(ElectronicBillType.ENUM.GET_INVOICE_LINK);
 
-                if (electronicBillResult == null || String.IsNullOrEmpty(electronicBillResult.InvoiceLink))
+                if (electronicBillResult == null || String.IsNullOrEmpty(electronicBillResult.InvoiceLink))   
                 {
                     if (electronicBillResult != null && electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
                     {
@@ -569,7 +544,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                         //tự động in hóa đơn điện tử
                         if (chkPrintHddt.Checked)
                         {
-                            int sleepTime = (int)(HisConfigCFG.ElectronicInvoicePublishingDelayTime * 1000);
+                            int sleepTime = (int)(HisConfigCFG.ElectronicInvoicePublishingDelayTime * 1000);  
                             Inventec.Common.Logging.LogSystem.Debug("SleepTime: " + sleepTime);
                             System.Threading.Thread.Sleep(sleepTime);
                             printPDFWithAcrobat();
@@ -1373,7 +1348,6 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
             try
             {
                 DXPopupMenu menu = new DXPopupMenu();
-                FillAdjustmentBill();
                 //if (this.hienHoaDonNhap && AdjustmentTransactionConfig.InvoiceTypeCreate == invoiceTypeCreate__CreateInvoiceVnpt)
                 //{
                 //    menu.Items.Add(new DXMenuItem(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__BTN_DROP_DOWN__ITEM_HOA_DON_NHAP", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), new EventHandler(onClickHoaDonNhap)));
@@ -2324,8 +2298,8 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
                 dataInput.Amount = transactionRs.TransactionBill.AMOUNT;
                 dataInput.Branch = LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == LocalStorage.LocalData.WorkPlace.GetBranchId());
-                dataInput.Discount = this.resultTranBill.EXEMPTION ?? 0;
-                dataInput.DiscountRatio = ((this.resultTranBill.EXEMPTION / this.resultTranBill.AMOUNT) * 100) ?? 0;
+                dataInput.Discount = transactionRs.TransactionBill.EXEMPTION ?? 0;
+                dataInput.DiscountRatio = ((transactionRs.TransactionBill.EXEMPTION / transactionRs.TransactionBill.AMOUNT) * 100) ?? 0;
                 dataInput.PaymentMethod = cboPayForm.Text;
                 dataInput.SereServBill = transactionRs.SereServBills;
                 dataInput.Treatment = this.treatmentFee;
