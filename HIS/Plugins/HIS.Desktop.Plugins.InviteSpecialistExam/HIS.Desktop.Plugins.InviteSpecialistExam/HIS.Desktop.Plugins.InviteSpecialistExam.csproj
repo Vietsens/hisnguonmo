@@ -114,7 +114,6 @@
     <EmbeddedResource Include="InviteSpecialistExam\frmInviteSpecialistExam.resx">
       <DependentUpon>frmInviteSpecialistExam.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Common\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.csproj">

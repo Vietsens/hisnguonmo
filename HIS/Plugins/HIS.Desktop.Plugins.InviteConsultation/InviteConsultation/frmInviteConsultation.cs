@@ -186,7 +186,11 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 if (USER != null && lstEmployee2 != null)
                 {
                     var selectedInviteDoctor = lstEmployee2.FirstOrDefault(o => o.LOGINNAME == USER);
-                    cboBacSiMoi.EditValue = selectedInviteDoctor.ID;
+                    if (selectedInviteDoctor != null)
+                    {
+                        cboBacSiMoi.EditValue = selectedInviteDoctor.ID;
+                    }
+                    
                 }
                 cboPhongKham.EditValue = dataDp.DEPARTMENT_ID;
                 if (bedRoom != null)
@@ -208,18 +212,29 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 else if (specialistExam != null)
                 {
                     dteNgayMoi.DateTime = (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)specialistExam.INVITE_TIME);
-                    HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO
+                    HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO();
+                    if (specialistExam.ICD_CODE != null)
                     {
-                        ICD_CODE = specialistExam.ICD_CODE,
-                        ICD_NAME = specialistExam.ICD_NAME
-                    };
+                        ado.ICD_CODE = specialistExam.ICD_CODE;
+                    }
+                    if (specialistExam.ICD_NAME != null)
+                    {
+                        ado.ICD_NAME = specialistExam.ICD_NAME;
+                    }
+                    
                     ((UCIcd)this.ucIcd).Reload(ado);
 
-                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subAdo = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO
+                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subAdo = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO();
+                    if (specialistExam.ICD_SUB_CODE != null)
                     {
-                        ICD_SUB_CODE = specialistExam.ICD_SUB_CODE,
-                        ICD_TEXT = specialistExam.ICD_TEXT
-                    };
+                        subAdo.ICD_SUB_CODE = specialistExam.ICD_SUB_CODE;
+                    }
+
+                    if (specialistExam.ICD_TEXT != null)
+                    {
+                        subAdo.ICD_TEXT = specialistExam.ICD_TEXT;
+                    }
+                    
                     subIcdProcessor.Reload(ucSecondaryIcd, subAdo);
                     cboPhongKham.EditValue = specialistExam.EXAM_EXECUTE_DEPARMENT_ID;
                     memContent.Text = specialistExam.INVITE_CONTENT;
@@ -330,6 +345,14 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 cboBacSiKham.Properties.ValueMember = "ID";
                 cboBacSiKham.Properties.NullText = "";
                 cboBacSiKham.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                cboBacSiKham.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+                cboBacSiKham.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
+                cboBacSiKham.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
+                cboBacSiKham.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                cboBacSiKham.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+                cboBacSiKham.Properties.View.OptionsView.ShowDetailButtons = false;
+                cboBacSiKham.Properties.View.OptionsView.ShowGroupPanel = false;
+                cboBacSiKham.Properties.View.OptionsView.ShowIndicator = false;
 
                 DevExpress.XtraGrid.Columns.GridColumn column = cboBacSiKham.Properties.View.Columns.AddField("LOGINNAME");
                 column.Caption = "Mã";

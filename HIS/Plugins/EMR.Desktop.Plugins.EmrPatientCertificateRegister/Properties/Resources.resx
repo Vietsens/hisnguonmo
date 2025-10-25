@@ -117,121 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="frmApprovaleDebate.bar1.Text" xml:space="preserve">
-    <value>Tools</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="clear" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\clear.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="frmApprovaleDebate.bbtnSave.Caption" xml:space="preserve">
-    <value>Lưu (Ctrl S)</value>
+  <data name="delete_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\delete_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="frmApprovaleDebate.btnSave.Text" xml:space="preserve">
-    <value>Duyệt (Ctrl S)</value>
-  </data>
-  <data name="frmApprovaleDebate.layoutControl1.Text" xml:space="preserve">
-    <value>layoutControl1</value>
-  </data>
-  <data name="frmApprovaleDebate.layoutControlItem2.Text" xml:space="preserve">
-    <value>Ý kiến bác sĩ:</value>
-  </data>
-  <data name="frmApprovaleDebate.layoutControlItem3.Text" xml:space="preserve">
-    <value>Bác sĩ hội chẩn:</value>
-  </data>
-  <data name="frmApprovaleDebate.tabCDHA.Text" xml:space="preserve">
-    <value>CĐHA</value>
-  </data>
-  <data name="frmApprovaleDebate.tabGiaiPhauBenh.Text" xml:space="preserve">
-    <value>Giải phẫu bệnh</value>
-  </data>
-  <data name="frmApprovaleDebate.tabPhauThuatThuThuat.Text" xml:space="preserve">
-    <value>Phẫu thuật/ thủ thuật</value>
-  </data>
-  <data name="frmApprovaleDebate.tabSieuAmNoiSoi.Text" xml:space="preserve">
-    <value>Siêu âm/ nội soi</value>
-  </data>
-  <data name="frmApprovaleDebate.tabThuocVatTuMau.Text" xml:space="preserve">
-    <value>Thuốc/vật tư/máu</value>
-  </data>
-  <data name="frmApprovaleDebate.tabToDieuTri.Text" xml:space="preserve">
-    <value>Tờ điều trị</value>
-  </data>
-  <data name="frmApprovaleDebate.tabXetNghiem.Text" xml:space="preserve">
-    <value>Xét nghiệm</value>
-  </data>
-  <data name="frmApprovaleDebate.Text" xml:space="preserve">
-    <value>Duyệt hội chẩn</value>
-  </data>
-  <data name="UCTreeListService.isRation.Caption" xml:space="preserve">
-    <value>ĐTTT</value>
-  </data>
-  <data name="UCTreeListService.layoutControl1.Text" xml:space="preserve">
-    <value>layoutControl1</value>
-  </data>
-  <data name="UCTreeListService.tc_Delete.Caption" xml:space="preserve">
-    <value> </value>
-  </data>
-  <data name="UCTreeListService.tc_Edit.Caption" xml:space="preserve">
-    <value> </value>
-  </data>
-  <data name="UCTreeListService.tc_MediUsed.Caption" xml:space="preserve">
-    <value> </value>
-  </data>
-  <data name="UCTreeListService.tc_NoteAdo.Caption" xml:space="preserve">
-    <value>Ghi chú</value>
-  </data>
-  <data name="UCTreeListService.tc_Number.Caption" xml:space="preserve">
-    <value>Số lượng</value>
-  </data>
-  <data name="UCTreeListService.tc_RequestDepartmentName.Caption" xml:space="preserve">
-    <value>Khoa yêu cầu</value>
-  </data>
-  <data name="UCTreeListService.tc_SendTestServiceReq.Caption" xml:space="preserve">
-    <value> </value>
-  </data>
-  <data name="UCTreeListService.tc_ServiceCode.Caption" xml:space="preserve">
-    <value>Mã dịch vụ</value>
-  </data>
-  <data name="UCTreeListService.tc_ServiceName.Caption" xml:space="preserve">
-    <value>Tên dịch vụ</value>
-  </data>
-  <data name="UCTreeListService.tc_TdlMedicineConcentra.Caption" xml:space="preserve">
-    <value>Hàm lượng</value>
-  </data>
-  <data name="UCTreeListService.treeListColumn1.Caption" xml:space="preserve">
-    <value> </value>
-  </data>
-  <data name="UCTreeListService.treeListColumn2.Caption" xml:space="preserve">
-    <value> </value>
-  </data>
-  <data name="UCTreeListService.treeSereServ.OptionsFind.FindNullPrompt" xml:space="preserve">
-    <value>Nhập chuỗi tìm kiếm ...</value>
-  </data>
-  <data name="UCTreeListTracking.CONTENT.Caption" xml:space="preserve">
-    <value>Diễn biến</value>
-  </data>
-  <data name="UCTreeListTracking.ICD_CODE.Caption" xml:space="preserve">
-    <value>Mã chẩn đoán chính</value>
-  </data>
-  <data name="UCTreeListTracking.ICD_NAME.Caption" xml:space="preserve">
-    <value>Tên chẩn đoán chính</value>
-  </data>
-  <data name="UCTreeListTracking.ICD_SUB_CODE.Caption" xml:space="preserve">
-    <value>Mã chẩn đoán phụ</value>
-  </data>
-  <data name="UCTreeListTracking.ICD_TEXT.Caption" xml:space="preserve">
-    <value>Tên chẩn đoán phụ</value>
-  </data>
-  <data name="UCTreeListTracking.layoutControl1.Text" xml:space="preserve">
-    <value>layoutControl1</value>
-  </data>
-  <data name="UCTreeListTracking.SERVICE.Caption" xml:space="preserve">
-    <value>Y lệnh</value>
-  </data>
-  <data name="UCTreeListTracking.TRACKING_TIME.Caption" xml:space="preserve">
-    <value>Ngày giờ</value>
-  </data>
-  <data name="UCTreeListTracking.treeSereServ.OptionsFind.FindNullPrompt" xml:space="preserve">
-    <value>Nhập chuỗi tìm kiếm ...</value>
-  </data>
-  <data name="UCTreeListTracking.USER_NAME.Caption" xml:space="preserve">
-    <value>Bác sĩ</value>
+  <data name="notImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\notImage.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

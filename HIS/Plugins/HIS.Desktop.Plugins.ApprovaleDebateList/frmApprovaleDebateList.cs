@@ -546,7 +546,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
                         }
                         else
                         {
-                            e.RepositoryItem = repositoryItemButtonEditApprovalDisable;
+                            e.RepositoryItem = repositoryItemButtonEditApprovalDisable;     
                         }
 
                     }
