@@ -54,5 +54,8 @@ namespace MPS.Processor.Mps000304.ADO
 
         public decimal TOTAL_PATIENT_LEFT { get; set; }
         public decimal TOTAL_PRICE_VP { get; set; }
+
+        public decimal? VIR_TOTAL_HEIN_PRICE_ROW_2 { get; set; }
+        public decimal? VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 { get; set; }
     }
 }

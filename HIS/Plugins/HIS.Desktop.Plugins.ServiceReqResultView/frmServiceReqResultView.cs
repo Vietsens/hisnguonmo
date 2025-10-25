@@ -27,6 +27,7 @@ using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Common.SignLibrary;
 using Inventec.Common.SignLibrary.ADO;
 using Inventec.Core;
@@ -162,6 +163,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                     this.lciDropDownPrint.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     this.lciPrint.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 }
+                VisibleBtnUpdateResult();
             }
             catch (Exception ex)
             {
@@ -2513,5 +2515,38 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
         {
             btnDropDownPrint.ShowDropDown();
         }
+
+        private void btnUpdateResult_Click(object sender, EventArgs e)
+        {
+            try 
+            {
+                var ext = new BackendAdapter(new CommonParam()).Get<bool>("api/HisSereServExt/GetResult", ApiConsumer.ApiConsumers.MosConsumer, this.sereServId, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void VisibleBtnUpdateResult()
+        {
+            try
+            {
+                int integrateOption = PacsCFG.PACS_INTEGRATE_OPTION;
+                LogSystem.Debug("integrateOption" + integrateOption);
+                bool isVisible = (integrateOption == 3);
+
+                btnUpdateResult.Visible = isVisible;
+
+                layoutControlItemBtnUpdateResult.Visibility =
+                    isVisible ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                              : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
     }
 }

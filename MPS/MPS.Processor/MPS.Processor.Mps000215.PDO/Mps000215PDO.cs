@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 namespace MPS.Processor.Mps000215.PDO
 {
     public partial class Mps000215PDO : RDOBase
-    {
+    {  
         public List<V_HIS_MEDI_STOCK> _MediStocks { get; set; }
         public List<V_HIS_MEDICINE_TYPE> _MedicineTypes { get; set; }
         public List<V_HIS_MATERIAL_TYPE> _MaterialTypes { get; set; }

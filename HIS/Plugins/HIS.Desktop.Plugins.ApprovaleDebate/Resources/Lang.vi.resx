@@ -124,7 +124,7 @@
     <value>Lưu (Ctrl S)</value>
   </data>
   <data name="frmApprovaleDebate.btnSave.Text" xml:space="preserve">
-    <value>Lưu (Ctrl S)</value>
+    <value>Duyệt (Ctrl S)</value>
   </data>
   <data name="frmApprovaleDebate.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
@@ -206,6 +206,18 @@
   </data>
   <data name="UCTreeListTracking.CONTENT.Caption" xml:space="preserve">
     <value>Diễn biến</value>
+  </data>
+  <data name="UCTreeListTracking.ICD_CODE.Caption" xml:space="preserve">
+    <value>Mã chẩn đoán chính</value>
+  </data>
+  <data name="UCTreeListTracking.ICD_NAME.Caption" xml:space="preserve">
+    <value>Tên chẩn đoán chính</value>
+  </data>
+  <data name="UCTreeListTracking.ICD_SUB_CODE.Caption" xml:space="preserve">
+    <value>Mã chẩn đoán phụ</value>
+  </data>
+  <data name="UCTreeListTracking.ICD_TEXT.Caption" xml:space="preserve">
+    <value>Tên chẩn đoán phụ</value>
   </data>
   <data name="UCTreeListTracking.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
