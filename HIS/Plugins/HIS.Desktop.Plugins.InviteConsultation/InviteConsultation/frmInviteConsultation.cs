@@ -424,6 +424,7 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 cbo.Properties.View.Columns.Clear();
                 cbo.Properties.PopupFormSize = new Size(300, 250);
 
+
                 DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cbo.Properties.View.Columns.AddField("DEPARTMENT_CODE");
                 aColumnCode.Caption = "Mã";
                 aColumnCode.Visible = true;
