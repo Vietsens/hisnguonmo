@@ -112,7 +112,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                         picCCCD.Image = new Bitmap(img);
                         picSignPatient.Image = new Bitmap(img);
 
-                        isDefaultImageLoaded = true; 
+                        isDefaultImageLoaded = true;
                         Inventec.Common.Logging.LogSystem.Info("LoadDefaultImage: set isDefaultImageLoaded = true");
                     }
                 }
@@ -305,31 +305,57 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
         {
             try
             {
+                //if (dataImage != null)
+                //{
+                //    Inventec.Common.Logging.LogSystem.Info("dataImage: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataImage), dataImage));
+                //    picSignPatient.Image = (System.Drawing.Image)dataImage;
+                //    var check = this.ListfileNameAttack.OrderByDescending(o => o.Dem).FirstOrDefault();
+
+                //    Inventec.Common.Logging.LogSystem.Info("dem max: " + check);
+                //    int dem = 0;
+                //    if (check == null || check.Dem == 0)
+                //    {
+                //        dem = 1;
+                //    }
+                //    else
+                //    {
+                //        dem = check.Dem + 1;
+                //    }
+                //    fileNameAttack = new AttackADO();
+                //    this.fileNameAttack.FILE_NAME = "Ảnh chụp " + dem.ToString() + ".jpg";
+                //    this.fileNameAttack.FullName = "Ảnh chụp " + dem.ToString() + ".jpg";
+                //    this.fileNameAttack.image = (System.Drawing.Image)dataImage;
+                //    this.fileNameAttack.Dem = dem;
+
+                //    picSignPatient.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
+                //    this.ListfileNameAttack.Add(this.fileNameAttack);
+                //    Inventec.Common.Logging.LogSystem.Info("dữ liệu ảnh chụp: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListfileNameAttack), this.ListfileNameAttack));
+                //}
                 if (dataImage != null)
                 {
-                    Inventec.Common.Logging.LogSystem.Info("dataImage: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataImage), dataImage));
-                    picSignPatient.Image = (System.Drawing.Image)dataImage;
-                    var check = this.ListfileNameAttack.OrderByDescending(o => o.Dem).FirstOrDefault();
-
-                    Inventec.Common.Logging.LogSystem.Info("dem max: " + check);
-                    int dem = 0;
-                    if (check == null || check.Dem == 0)
-                    {
-                        dem = 1;
-                    }
-                    else
-                    {
-                        dem = check.Dem + 1;
-                    }
-                    fileNameAttack = new AttackADO();
-                    this.fileNameAttack.FILE_NAME = "Ảnh chụp " + dem.ToString() + ".jpg";
-                    this.fileNameAttack.FullName = "Ảnh chụp " + dem.ToString() + ".jpg";
-                    this.fileNameAttack.image = (System.Drawing.Image)dataImage;
-                    this.fileNameAttack.Dem = dem;
-
+                    var originalImg = (System.Drawing.Image)dataImage;
+                    Bitmap bmp = new Bitmap((System.Drawing.Image)dataImage);
+                    Bitmap processed = ProcessSignatureImage(bmp);
+                    picSignPatient.Image = processed;
                     picSignPatient.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
+
+                    var check = this.ListfileNameAttack.OrderByDescending(o => o.Dem).FirstOrDefault();
+                    int dem = (check == null || check.Dem == 0) ? 1 : check.Dem + 1;
+
+                    fileNameAttack = new AttackADO()
+                    {
+                        FILE_NAME = "Ảnh chụp " + dem + ".jpg",
+                        FullName = "Ảnh chụp " + dem + ".jpg",
+                        image = (System.Drawing.Image)processed.Clone(),
+                        Dem = dem
+                    };
+
                     this.ListfileNameAttack.Add(this.fileNameAttack);
-                    Inventec.Common.Logging.LogSystem.Info("dữ liệu ảnh chụp: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListfileNameAttack), this.ListfileNameAttack));
+
+                    Inventec.Common.Logging.LogSystem.Info("dữ liệu ảnh chụp: " +
+                        Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => ListfileNameAttack),
+                            this.ListfileNameAttack));
                 }
             }
             catch (Exception ex)
@@ -337,6 +363,64 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private Bitmap ProcessSignatureImage(Bitmap original)
+        {
+            // Bước 1: Crop vùng có chữ ký
+            Rectangle cropRect = GetBoundingBox(original);
+            Bitmap cropped = original.Clone(cropRect, original.PixelFormat);
+
+            // Bước 2: Chuyển nền trắng sang trong suốt
+            Bitmap transparent = MakeTransparentSignature(cropped);
+            transparent.MakeTransparent();
+            return transparent;
+        }
+
+        private Rectangle GetBoundingBox(Bitmap bmp)
+        {
+            int xMin = bmp.Width, xMax = 0, yMin = bmp.Height, yMax = 0;
+
+            for (int y = 0; y < bmp.Height; y++)
+            {
+                for (int x = 0; x < bmp.Width; x++)
+                {
+                    Color c = bmp.GetPixel(x, y);
+                    // Xác định pixel có mực (không phải trắng)
+                    if (!(c.R > 240 && c.G > 240 && c.B > 240))
+                    {
+                        if (x < xMin) xMin = x;
+                        if (x > xMax) xMax = x;
+                        if (y < yMin) yMin = y;
+                        if (y > yMax) yMax = y;
+                    }
+                }
+            }
+
+            if (xMax < xMin || yMax < yMin)
+                return new Rectangle(0, 0, bmp.Width, bmp.Height); // fallback
+
+            int width = xMax - xMin + 1;
+            int height = yMax - yMin + 1;
+            return new Rectangle(xMin, yMin, width, height);
+        }
+
+        private Bitmap MakeTransparentSignature(Bitmap bmp)
+        {
+            Bitmap transparent = new Bitmap(bmp.Width, bmp.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            for (int y = 0; y < bmp.Height; y++)
+            {
+                for (int x = 0; x < bmp.Width; x++)
+                {
+                    Color c = bmp.GetPixel(x, y);
+                    if (c.R > 240 && c.G > 240 && c.B > 240)
+                        transparent.SetPixel(x, y, Color.FromArgb(0, 255, 255, 255)); // trong suốt
+                    else
+                        transparent.SetPixel(x, y, Color.FromArgb(255, c)); // giữ màu
+                }
+            }
+            return transparent;
+        }
+
+
         private void btnTakePicture_Click(object sender, EventArgs e)
         {
             try
@@ -457,26 +541,26 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
 
                 Image baseImage = null;
 
-                if (isDefaultImageLoaded)
-                {
-                    Inventec.Common.Logging.LogSystem.Info("Ảnh hiện tại là ảnh mặc định → tạo ảnh trắng để vẽ.");
+                //if (isDefaultImageLoaded)
+                //{
+                //    Inventec.Common.Logging.LogSystem.Info("Ảnh hiện tại là ảnh mặc định → tạo ảnh trắng để vẽ.");
 
-                    baseImage = new Bitmap(picSignPatient.Width, picSignPatient.Height);
-                    using (Graphics g = Graphics.FromImage(baseImage))
-                    {
-                        g.Clear(Color.White);
-                    }
-                }
-                else
-                {
-                    baseImage = picSignPatient.Image;
-                    if (baseImage == null)
-                    {
-                        MessageBox.Show("Chưa có ảnh để vẽ. Vui lòng chọn hoặc chụp ảnh trước.",
-                                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-                }
+                //    baseImage = new Bitmap(picSignPatient.Width, picSignPatient.Height);
+                //    using (Graphics g = Graphics.FromImage(baseImage))
+                //    {
+                //        g.Clear(Color.White);
+                //    }
+                //}
+                //else
+                //{
+                //    baseImage = picSignPatient.Image;
+                //    if (baseImage == null)
+                //    {
+                //        MessageBox.Show("Chưa có ảnh để vẽ. Vui lòng chọn hoặc chụp ảnh trước.",
+                //                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //        return;
+                //    }
+                //}
 
                 // Mở form vẽ
                 Inventec.DrawTools.frmDrawTools f = new Inventec.DrawTools.frmDrawTools(baseImage, SaveImageProcess);
@@ -487,7 +571,37 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }      
+        }
+        private EMR_PATIENT_CERTIFICATE CheckPatientCertificateByCCCD(string cccdNumber)
+        {
+            try
+            {
+                var param = new CommonParam();
+
+                var checkSdo = new EmrPatientCertificateCheckSDO
+                {
+                    CccdNumber = cccdNumber
+                };
+
+                var certInfo = new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Post<EMR_PATIENT_CERTIFICATE>(
+                        "api/EmrPatientCertificate/Check",
+                        ApiConsumers.EmrConsumer,
+                        checkSdo,
+                        param
+                    );
+
+                Inventec.Common.Logging.LogSystem.Info("Kết quả kiểm tra chứng thư CCCD: " +
+                    Inventec.Common.Logging.LogUtil.TraceData("certInfo", certInfo));
+
+                return certInfo;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Lỗi khi gọi API kiểm tra chứng thư CCCD", ex);
+                return null;
+            }
+        }
         private async void btnReadCCCD_Click(object sender, EventArgs e)
         {
             try
@@ -508,12 +622,18 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     var root = JsonConvert.DeserializeObject<RootResponse>(json);
                     Inventec.Common.Logging.LogSystem.Info("API CCCD trả về dữ liệu:\n" + json);
 
-                    if (root == null || root.success != true || root.result == null || root.result.data == null)
+                    if (root == null || root.success != true || root.result == null || root.result.data == null || root.result.data.isPass == false)
                     {
                         Inventec.Desktop.Common.Message.WaitingManager.Hide();
                         XtraMessageBox.Show("CCCD không hợp lệ hoặc không xác thực được.", "Thông báo");
                         return;
                     }
+                    if (root == null || root.result.data.score < 60)
+                    {
+                        Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                        XtraMessageBox.Show("Không xác thực được khuôn mặt.", "Thông báo");
+                        return;
+                    }    
 
                     var info = root.result.data;
 
@@ -592,7 +712,38 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
 
                     // --- Lưu dữ liệu CCCD hiện tại ---
                     this.currentCCCDInfo = info;
-                    btnRelease.Enabled = true;
+                    var certInfo = CheckPatientCertificateByCCCD(info.identifyNumber);
+
+                    if (certInfo != null && !string.IsNullOrEmpty(certInfo.SERIAL_NUMBER))
+                    {
+                        // Convert ngày hết hạn sang DateTime
+                        DateTime? expiredDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(certInfo.EXPIRED_DATE ?? 0);
+
+                        if (expiredDate > DateTime.Now)
+                        {
+                            XtraMessageBox.Show(
+                                "Bệnh nhân đã có chứng thư tương ứng với thẻ CCCD, không cần phát hành chứng thư mới.",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information
+                            );
+                            btnRelease.Enabled = false;
+                        }
+                        else
+                        {
+                            XtraMessageBox.Show(
+                                "Chứng thư của bệnh nhân đã hết hạn. Vui lòng phát hành chứng thư mới.",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                            btnRelease.Enabled = true;
+                        }
+                    }
+                    else
+                    {
+                        btnRelease.Enabled = true;
+                    }
                 }
 
                 Inventec.Desktop.Common.Message.WaitingManager.Hide();
@@ -631,7 +782,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     picSignPatient.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                     signatureBase64 = Convert.ToBase64String(ms.ToArray());
                 }
-                HisPatientSDO currentPatient = null;
+                HisPatientSDO currentPatient = new HisPatientSDO();
                 HisPatientAdvanceFilter hisPatientFilter = new HisPatientAdvanceFilter();
                 hisPatientFilter.CCCD_NUMBER__EXACT = this.currentCCCDInfo.identifyNumber;
 
@@ -642,13 +793,13 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                         hisPatientFilter,
                         param
                     );
-
                 if (lstPatient != null && lstPatient.Count > 0)
                 {
-                    currentPatient = lstPatient.FirstOrDefault();                    
+                    currentPatient = lstPatient.FirstOrDefault();
                 }
+                string placeOfResidence = string.IsNullOrWhiteSpace(currentCCCDInfo.address) ? currentCCCDInfo.hometown : currentCCCDInfo.address;
 
-                EmrPatientCertificateRegisterSDO  sdo = new EMR.SDO.EmrPatientCertificateRegisterSDO()
+                EmrPatientCertificateRegisterSDO sdo = new EMR.SDO.EmrPatientCertificateRegisterSDO()
                 {
                     citizenIdentify = currentCCCDInfo.identifyNumber,
                     oldCitizenIdentify = currentCCCDInfo.previousNumber,
@@ -660,7 +811,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     ethnic = currentCCCDInfo.nation,
                     religion = currentCCCDInfo.religion,
                     placeOfOrigin = currentCCCDInfo.hometown,
-                    placeOfResidence = currentCCCDInfo.address,
+                    placeOfResidence = placeOfResidence,
                     placeOfProvide = currentCCCDInfo.issuePlace,
                     personalIdentification = currentCCCDInfo.character,
                     dateOfProvide = currentCCCDInfo.issueDate,
@@ -683,16 +834,20 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 var result = new Inventec.Common.Adapter.BackendAdapter(param)
                     .Post<EMR_PATIENT_CERTIFICATE>(
                         "api/EmrPatientCertificate/Register",
-                        ApiConsumers.EmrConsumer, 
+                        ApiConsumers.EmrConsumer,
                         sdo,
                         param
                     );
 
                 if (result != null)
                 {
+                    WaitingManager.Show();
                     success = true;
                     Inventec.Common.Logging.LogSystem.Info("Phát hành chứng thư thành công. ID = " + result.ID);
+                    XtraMessageBox.Show("Phát hành chứng thư thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    WaitingManager.Hide();
                     btnRelease.Enabled = false;
+                    this.ParentForm?.Close();
                 }
                 else
                 {
