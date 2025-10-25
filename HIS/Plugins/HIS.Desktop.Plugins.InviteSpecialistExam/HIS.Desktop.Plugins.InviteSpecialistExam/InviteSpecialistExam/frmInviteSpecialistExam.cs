@@ -446,6 +446,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 {
                     hIS_SPECIALIST_EXAM.INVITE_DEPARMENT_ID = workPlace.DepartmentId;
                 }
+                hIS_SPECIALIST_EXAM.ROOM_ID = moduleData.RoomId;
 
                 if (cboBacSi.EditValue != null)
                 {
@@ -511,7 +512,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 hIS_SPECIALIST_EXAM.INVITE_TYPE = 1;
                 if (bedRoom != null)
                 {
-                    hIS_SPECIALIST_EXAM.TREATMENT_CODE = bedRoom.TREATMENT_CODE;
+                    hIS_SPECIALIST_EXAM.TREATMENT_CODE = bedRoom.TREATMENT_CODE;    
                     hIS_SPECIALIST_EXAM.PATIENT_CODE = bedRoom.TDL_PATIENT_CODE;
                     hIS_SPECIALIST_EXAM.TDL_PATIENT_NAME = bedRoom.TDL_PATIENT_NAME;
                     hIS_SPECIALIST_EXAM.TDL_PATIENT_DOB = bedRoom.TDL_PATIENT_DOB;

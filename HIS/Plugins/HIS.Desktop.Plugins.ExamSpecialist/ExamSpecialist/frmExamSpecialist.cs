@@ -331,6 +331,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                         .GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                     ((Form)extenceInstance).ShowDialog();
+                    FillDataToGrid();
                 }
             }
             catch (Exception ex)
@@ -437,6 +438,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, row);
                     frmReject form = new frmReject(datamapper, () => FillDataToGrid());
                     form.ShowDialog();
+                    FillDataToGrid();
                 }
             }
             catch (Exception ex)
@@ -701,6 +703,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                         .GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                     ((Form)extenceInstance).ShowDialog();
+                    FillDataToGrid();
                 }
             }
             catch (Exception ex)
@@ -820,6 +823,8 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             try
             {
                 var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
+                HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, row);
                 var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.InviteSpecialistExam");
 
                 if (moduleData == null)
@@ -827,11 +832,10 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = HIS.Desktop.Plugins.InviteSpecialistExam");
                     return;
                 }
-
                 if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)  
                 {
 
-                    List<object> listArgs = new List<object> { this.currentModule, null, row, true,(HIS.Desktop.Common.RefeshReference)FillDataToGrid};
+                    List<object> listArgs = new List<object> { this.currentModule, null, datamapper, true,(HIS.Desktop.Common.RefeshReference)FillDataToGrid};
 
 
                     var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId),listArgs);
@@ -845,6 +849,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     {
                         Inventec.Common.Logging.LogSystem.Warn("Không thể khởi tạo form từ plugin.");
                     }
+                    FillDataToGrid();
                 }
             }
             catch (Exception ex)
