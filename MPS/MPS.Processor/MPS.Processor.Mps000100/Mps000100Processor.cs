@@ -95,13 +95,51 @@ namespace MPS.Processor.Mps000100
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
-
+                List<Mps000100ADO> listAdoFilter = new List<Mps000100ADO>();
+                foreach (var item in ImpMestManuMedicineSumForPrints)
+                {
+                    // Kiểm tra nếu MEDICINE_GROUP_NAME là null hoặc không chứa các từ khóa cụ thể
+                    string name = item.MEDICINE_GROUP_NAME?.Trim().ToUpper();
+                    if (string.IsNullOrEmpty(name) ||
+                        (!name.Contains("GÂY NGHIỆN") && !name.Contains("HƯỚNG THẦN") &&
+                         !name.Contains("LAO") && !name.Contains("KHÁNG SINH")))
+                    {
+                        // Tìm phần tử trong listMedicineType có MEDICINE_GROUP_NAME = "PHIẾU LĨNH THUỐC THƯỜNG"
+                        var commonMedicineType = lstMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
+                        if (commonMedicineType != null)
+                        {
+                            // Gán MEDICINE_GROUP_ID từ commonMedicineType
+                            item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Không tìm thấy phần tử trong listMedicineType với MEDICINE_GROUP_NAME = 'PHIẾU LĨNH THUỐC THƯỜNG'");
+                        }
+                    }
+                    listAdoFilter.Add(item);
+                }
+                List<Mps000100ADO> listParentFilter = new List<Mps000100ADO>();
+                foreach (var item in lstMedicineParent)
+                {
+                    string name = item.MEDICINE_GROUP_NAME?.Trim().ToUpper();
+                    if (string.IsNullOrEmpty(name) ||
+                        (!name.Contains("GÂY NGHIỆN") && !name.Contains("HƯỚNG THẦN") &&
+                         !name.Contains("LAO") && !name.Contains("KHÁNG SINH")))
+                    {
+                        var commonMedicineType = lstMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
+                        if (commonMedicineType != null)
+                        {
+                            item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                        }
+                    }
+                    listParentFilter.Add(item);
+                }
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
-                objectTag.AddObjectData(store, "ImpMestAggregates", ImpMestManuMedicineSumForPrints.OrderBy(o=>o.MEDICINE_TYPE_NAME).ToList());
+                objectTag.AddObjectData(store, "ImpMestAggregates", listAdoFilter.OrderBy(o=>o.MEDICINE_TYPE_NAME).ToList());
                 objectTag.AddObjectData(store, "ImpMestAggregatesV2", ImpMestManuMedicineSumForPrintsV2);
                 objectTag.AddObjectData(store, "MedicineGroup", lstMedicineType);
-                objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent.OrderBy(o=>o.MEDICINE_PARENT_NAME).ToList());
+                objectTag.AddObjectData(store, "MedicineParent", listParentFilter.OrderBy(o=>o.MEDICINE_PARENT_NAME).ToList());
                 objectTag.AddObjectData(store, "OtherPaySource", listOtherPaySource);
 
                 if (rdo._ImpMestMedicines != null)
