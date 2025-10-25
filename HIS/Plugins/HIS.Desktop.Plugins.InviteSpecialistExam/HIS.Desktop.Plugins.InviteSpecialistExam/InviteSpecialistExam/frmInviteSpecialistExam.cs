@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
-{
+{    
     public partial class frmInviteSpecialistExam : HIS.Desktop.Utility.FormBase
     {
         Inventec.Desktop.Common.Modules.Module moduleData;
@@ -182,7 +182,10 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 if (USER != null && lstEmployee != null)
                 {
                     var selectedInviteDoctor = lstEmployee.FirstOrDefault(o => o.LOGINNAME == USER);
-                    cboBacSi.EditValue = selectedInviteDoctor.ID;
+                    if (selectedInviteDoctor != null)
+                    {
+                        cboBacSi.EditValue = selectedInviteDoctor.ID;
+                    }
                 }
                 if(bedRoom != null)
                 {
@@ -202,19 +205,29 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 }
                 else if(specialistExam != null)
                 {
-                    dteNgayMoi.DateTime = (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)specialistExam.INVITE_TIME);
-                    HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO
+                    HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO();
+                    if (specialistExam.ICD_CODE != null)
                     {
-                        ICD_CODE = specialistExam.ICD_CODE,
-                        ICD_NAME = specialistExam.ICD_NAME
-                    };
+                        ado.ICD_CODE = specialistExam.ICD_CODE;
+                    }
+                    if (specialistExam.ICD_NAME != null)
+                    {
+                        ado.ICD_NAME = specialistExam.ICD_NAME;
+                    }
+
                     ((UCIcd)this.ucIcd).Reload(ado);
 
-                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subAdo = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO
+                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subAdo = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO();
+                    if (specialistExam.ICD_SUB_CODE != null)
                     {
-                        ICD_SUB_CODE = specialistExam.ICD_SUB_CODE,
-                        ICD_TEXT = specialistExam.ICD_TEXT
-                    };
+                        subAdo.ICD_SUB_CODE = specialistExam.ICD_SUB_CODE;
+                    }
+
+                    if (specialistExam.ICD_TEXT != null)
+                    {
+                        subAdo.ICD_TEXT = specialistExam.ICD_TEXT;
+                    }
+
                     subIcdProcessor.Reload(ucSecondaryIcd, subAdo);
                     cboPhongKham.EditValue = specialistExam.EXAM_EXECUTE_DEPARMENT_ID;
                     memContent.Text = specialistExam.INVITE_CONTENT;

@@ -164,12 +164,13 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 {
                     string UserName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                     var m = result.Data.Where(x => x.ID == 536).ToList();
-                    var specialistExam = result.Data.Where(x => x.IS_DELETE != 1 &&
-                    (
-                    (x.EXAM_EXECUTE_LOGINNAME != null && x.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(UserName))
+
+
+                    var specialistExam = result.Data.Where(x => x.IS_ACTIVE == 1 && x.IS_DELETE != 1 && x.INVITE_TYPE == 1 &&
+                    ((x.EXAM_EXECUTE_LOGINNAME != null && x.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(UserName))
                     || (x.EXAM_EXECUTE_LOGINNAME == null && x.EXAM_EXECUTE_DEPARMENT_ID != null && x.EXAM_EXECUTE_DEPARMENT_ID == BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID)
                     || (x.INVITE_DEPARMENT_ID == BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID)
-                    || (x.INVITE_DOCTOR_LOGINNAME == UserName) )).ToList();
+                    || (x.INVITE_DOCTOR_LOGINNAME == UserName))).ToList();
 
                     if (specialistExam != null && specialistExam.Count > 0)
                     {
@@ -679,6 +680,17 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                         e.RepositoryItem = repositoryItemButtonEditDisable;
                     }
                 }
+                else if (e.Column.FieldName == "IS_PRINT")
+                {
+                    if (data.IS_APPROVAL == 1)
+                    {
+                        e.RepositoryItem = repositoryItemButtonEditPrint;
+                    }
+                    else
+                    {
+                        e.RepositoryItem = repositoryItemButtonEditPrintDisable;
+                    }          
+                }
 
             }
             catch (Exception ex)
@@ -760,7 +772,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             {
                 switch (printCode)
                 {
-                    case "Mps000500":
+                    case "MPS000500":
                         Mps000500(printCode, fileName, ref result);
                         break;
                     default:
@@ -785,7 +797,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     var treatment = this.GetTreatment(row);
                     Inventec.Common.SignLibrary.ADO.InputADO inputADO = new Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
                     MPS.Processor.Mps000500.PDO.Mps000500PDO pdo = new MPS.Processor.Mps000500.PDO.Mps000500PDO(row, treatment);
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "") { EmrInputADO = inputADO });
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "") { EmrInputADO = inputADO });   
                 }
             }
             catch (Exception ex)
