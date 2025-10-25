@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.panelSubIcd = new DevExpress.XtraEditors.PanelControl();
@@ -39,12 +38,10 @@
             this.memContent = new DevExpress.XtraEditors.MemoEdit();
             this.chkExamInBed = new DevExpress.XtraEditors.CheckEdit();
             this.dteNgayMoi = new DevExpress.XtraEditors.DateEdit();
-            this.cboBacSiKham = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
-            this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.cboPhongKham = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.cboDepartment = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnThem = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnSua = new DevExpress.XtraBars.BarButtonItem();
@@ -57,6 +54,8 @@
             this.customGridLookUpEditWithFilterMultiColumn1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.cboBacSiMoi = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn3 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.cboBacSiKham = new Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus();
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -79,8 +78,8 @@
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -91,8 +90,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.chkExamInBed.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteNgayMoi.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteNgayMoi.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboBacSiKham.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPhongKham.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).BeginInit();
@@ -100,6 +97,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBacSiMoi.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBacSiKham.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
@@ -147,10 +146,10 @@
             this.layoutControl2.Controls.Add(this.memContent);
             this.layoutControl2.Controls.Add(this.chkExamInBed);
             this.layoutControl2.Controls.Add(this.dteNgayMoi);
-            this.layoutControl2.Controls.Add(this.cboBacSiKham);
             this.layoutControl2.Controls.Add(this.cboPhongKham);
             this.layoutControl2.Controls.Add(this.cboDepartment);
             this.layoutControl2.Controls.Add(this.cboBacSiMoi);
+            this.layoutControl2.Controls.Add(this.cboBacSiKham);
             this.layoutControl2.Location = new System.Drawing.Point(2, 2);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
@@ -233,27 +232,6 @@
             this.dteNgayMoi.Size = new System.Drawing.Size(274, 20);
             this.dteNgayMoi.StyleController = this.layoutControl2;
             this.dteNgayMoi.TabIndex = 4;
-            // 
-            // cboBacSiKham
-            // 
-            this.cboBacSiKham.Location = new System.Drawing.Point(127, 98);
-            this.cboBacSiKham.Name = "cboBacSiKham";
-            this.cboBacSiKham.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboBacSiKham.Properties.NullText = "";
-            this.cboBacSiKham.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboBacSiKham.Properties.View = this.customGridViewWithFilterMultiColumn1;
-            this.cboBacSiKham.Size = new System.Drawing.Size(274, 20);
-            this.cboBacSiKham.StyleController = this.layoutControl2;
-            this.cboBacSiKham.TabIndex = 7;
-            this.cboBacSiKham.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboBacSiKham_CustomDisplayText);
-            // 
-            // customGridViewWithFilterMultiColumn1
-            // 
-            this.customGridViewWithFilterMultiColumn1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.customGridViewWithFilterMultiColumn1.Name = "customGridViewWithFilterMultiColumn1";
-            this.customGridViewWithFilterMultiColumn1.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.customGridViewWithFilterMultiColumn1.OptionsView.ShowGroupPanel = false;
             // 
             // cboPhongKham
             // 
@@ -412,6 +390,27 @@
             this.customGridViewWithFilterMultiColumn3.Name = "customGridViewWithFilterMultiColumn3";
             this.customGridViewWithFilterMultiColumn3.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.customGridViewWithFilterMultiColumn3.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboBacSiKham
+            // 
+            this.cboBacSiKham.Location = new System.Drawing.Point(127, 98);
+            this.cboBacSiKham.Name = "cboBacSiKham";
+            this.cboBacSiKham.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBacSiKham.Properties.NullText = "";
+            this.cboBacSiKham.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboBacSiKham.Properties.View = this.customGridLookUpEditWithFilterMultiColumnNoFocus1View;
+            this.cboBacSiKham.Size = new System.Drawing.Size(274, 20);
+            this.cboBacSiKham.StyleController = this.layoutControl2;
+            this.cboBacSiKham.TabIndex = 7;
+            this.cboBacSiKham.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboBacSiKham_CustomDisplayText);
+            // 
+            // customGridLookUpEditWithFilterMultiColumnNoFocus1View
+            // 
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.Name = "customGridLookUpEditWithFilterMultiColumnNoFocus1View";
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsView.ShowGroupPanel = false;
             // 
             // Root
             // 
@@ -686,8 +685,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.chkExamInBed.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteNgayMoi.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteNgayMoi.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboBacSiKham.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPhongKham.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).EndInit();
@@ -695,6 +692,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBacSiMoi.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBacSiKham.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
@@ -761,8 +760,6 @@
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
-        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboBacSiKham;
-        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn1;
         private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboPhongKham;
         private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
@@ -778,5 +775,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboBacSiMoi;
         private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn3;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus cboBacSiKham;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus customGridLookUpEditWithFilterMultiColumnNoFocus1View;
     }
 }
