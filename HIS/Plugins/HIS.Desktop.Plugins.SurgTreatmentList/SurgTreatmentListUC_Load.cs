@@ -343,6 +343,16 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                 {
                     filter.TDL_EXECUTE_ROOM_ID = Inventec.Common.TypeConvert.Parse.ToInt64(CboExecuteRoom.EditValue.ToString());
                 }
+                // trang thai
+                var serviceReqStt = new List<long>();
+                if (chkPending.Checked)
+                    serviceReqStt.Add(1);
+                if (chkInProgress.Checked)
+                    serviceReqStt.Add(2);
+                if (chkCompleted.Checked)
+                    serviceReqStt.Add(3);
+                if (serviceReqStt.Count > 0)
+                    filter.SERVICE_REQ_STT_IDs = serviceReqStt;
             }
             catch (Exception ex)
             {
@@ -479,13 +489,14 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             return result;
         }
 
-        private void UpdateRowData(ADO.SereServADO row, bool isFee)
+        private bool UpdateRowData(ADO.SereServADO row, bool isFee)
         {
+            bool success = false;
             try
             {
                 if (row != null)
                 {
-                    bool success = false;
+                    
                     CommonParam param = new CommonParam();
                     //goi api update IS_NOT_GATHER_DATA, IS_NOT_FEE
                     if (isFee)
@@ -499,6 +510,10 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                         {
                             success = true;
                         }
+                        else
+                        {
+                            success = false;
+                        }
                     }
                     else
                     {
@@ -510,6 +525,10 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                         if (apiResult != null)
                         {
                             success = true;
+                        }
+                        else
+                        {
+                            success = false;
                         }
                     }
 
@@ -551,7 +570,9 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                success = false;
             }
+            return success;
         }
 
         private void InitCboExecuteRoom()
