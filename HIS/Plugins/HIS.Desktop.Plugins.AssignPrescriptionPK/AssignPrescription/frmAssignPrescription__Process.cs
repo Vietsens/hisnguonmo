@@ -4622,9 +4622,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         }
                     }
                     if (HisConfigCFG.TutorialFormat == 6)
-                    {
+                   {
 
-                        huongDan = new StringBuilder();
+                       huongDan = new StringBuilder();
 
                         if (HisConfigCFG.TutorialFormatDay == 1)
                         {
@@ -4674,16 +4674,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                         else
                                             huongDan.Append(string.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName));
                                     }
-                                }
+                                }                               
                             }
                             else if (spinSoLuongNgay.Value > 0)
                             {
                                 if (tongCong == 0)
-                                    huongDan.Append(String.Format("{0} {1}", ConvertNumber.ConvertDecToFracByConfig(valuePerTime, 4), serviceUnitName));
-
-                                huongDan.Append(" * " + (((int)spinSoLuongNgay.Value >= 1 && (int)spinSoLuongNgay.Value < 10)
+                                    huongDan.Append(string.Format("{0} {1}/lần", ConvertNumber.ConvertDecToFracByConfig(valuePerTime, 4), serviceUnitName));
+                                bool khongChonBuoiNao = (sang == 0 && trua == 0 && chieu == 0 && toi == 0);
+                                if (khongChonBuoiNao)
+                                {
+                                    huongDan.Append(" * 1 lần/ngày");
+                                }
+                                string soNgay = ((int)spinSoLuongNgay.Value >= 1 && (int)spinSoLuongNgay.Value < 10)
                                     ? "0" + ((int)spinSoLuongNgay.Value).ToString()
-                                    : ((int)spinSoLuongNgay.Value).ToString()) + " ngày");
+                                    : ((int)spinSoLuongNgay.Value).ToString();
+
+                                huongDan.Append(string.Format(" * {0} ngày", soNgay));
+
+                               
 
                                 if (tongCong > 0)
                                 {
