@@ -110,20 +110,59 @@ namespace MPS.Processor.Mps000049
                 GetMedicineParent();
                 GetOtherPaySourceGroup();
                 objectTag.AddObjectData(store, "OtherPaySourceGroup", listOtherPaySource);
-                objectTag.AddObjectData(store, "ExpMestAggregates", rdo.listAdo.OrderBy(o => o.MEDICINE_TYPE_NAME).ToList());
+                List<Mps000049ADO> listAdoFilter = new List<Mps000049ADO>();
+                foreach (var item in rdo.listAdo)
+                {
+                    // Kiểm tra nếu MEDICINE_GROUP_NAME là null hoặc không chứa các từ khóa cụ thể
+                    string name = item.MEDICINE_GROUP_NAME?.Trim().ToUpper();
+                    if (string.IsNullOrEmpty(name) ||
+                        (!name.Contains("GÂY NGHIỆN") && !name.Contains("HƯỚNG THẦN") &&
+                         !name.Contains("LAO") && !name.Contains("KHÁNG SINH")))
+                    {
+                        // Tìm phần tử trong listMedicineType có MEDICINE_GROUP_NAME = "PHIẾU LĨNH THUỐC THƯỜNG"
+                        var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
+                        if (commonMedicineType != null)
+                        {
+                            // Gán MEDICINE_GROUP_ID từ commonMedicineType
+                            item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Không tìm thấy phần tử trong listMedicineType với MEDICINE_GROUP_NAME = 'PHIẾU LĨNH THUỐC THƯỜNG'");
+                        }
+                    }
+                    listAdoFilter.Add(item);
+                }
+                List<ExpMestADO> listParentFilter = new List<ExpMestADO>();
+                foreach (var item in listMedicineParent)
+                {
+                    string name = item.MEDICINE_GROUP_NAME?.Trim().ToUpper();
+                    if (string.IsNullOrEmpty(name) ||
+                        (!name.Contains("GÂY NGHIỆN") && !name.Contains("HƯỚNG THẦN") &&
+                         !name.Contains("LAO") && !name.Contains("KHÁNG SINH")))
+                    {
+                        var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
+                        if (commonMedicineType != null)
+                        {
+                            item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                        }
+                    }
+                    listParentFilter.Add(item);
+                }
+                objectTag.AddObjectData(store, "ExpMestAggregates", listAdoFilter.OrderBy(o => o.MEDICINE_TYPE_NAME).ToList());
                 objectTag.AddObjectData(store, "ExpMests", this.ExpMestADOs);
                 //Bổ sung key gom theo lô
                 objectTag.AddObjectData(store, "ExpMestsSplit", this.ExpMestADOsSplit);
                 objectTag.AddObjectData(store, "MedicineUseForms", medicineUseForms);
                 objectTag.AddObjectData(store, "MedicineGroup", listMedicineType);
-                objectTag.AddObjectData(store, "MedicineParent", listMedicineParent);
+                objectTag.AddObjectData(store, "MedicineParent", listParentFilter);
 
                 objectTag.AddRelationship(store, "ExpMestAggregates", "ExpMests", new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" }, new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" });
 
                 objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMestsSplit", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
                 objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMestAggregates", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
                 objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMests", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
-
+                objectTag.AddRelationship(store, "MedicineGroup", "MedicineParent", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
                 objectTag.AddRelationship(store, "MedicineUseForms", "ExpMests", "MEDICINE_USE_FORM_CODE", "MEDICINE_USE_FORM_CODE");
                 objectTag.AddRelationship(store, "MedicineUseForms", "ExpMestAggregates", "MEDICINE_USE_FORM_CODE", "MEDICINE_USE_FORM_CODE");
                 objectTag.AddRelationship(store, "MedicineGroup", "ExpMestAggregates", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
