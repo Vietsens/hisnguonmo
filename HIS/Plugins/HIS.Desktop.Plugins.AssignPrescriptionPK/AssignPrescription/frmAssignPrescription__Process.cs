@@ -4625,9 +4625,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
 
                         huongDan = new StringBuilder();
+
                         if (HisConfigCFG.TutorialFormatDay == 1)
                         {
                             double valuePerTime = (double)this.GetValueSpin(this.spinAmount.Text) / (int)spinSoLuongNgay.Value;
+
                             if (sang > 0)
                                 huongDan.Append(String.Format(format__Sang, ConvertNumber.ConvertDecToFracByConfig(sang, 4), serviceUnitName));
                             if (trua > 0)
@@ -4636,25 +4638,65 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 huongDan.Append((huongDan.Length > 0 ? strSeperator : "") + String.Format(format__Chieu, ConvertNumber.ConvertDecToFracByConfig(chieu, 4), serviceUnitName));
                             if (toi > 0)
                                 huongDan.Append((huongDan.Length > 0 ? strSeperator : "") + String.Format(format__Toi, ConvertNumber.ConvertDecToFracByConfig(toi, 4), serviceUnitName));
-                            if (spinSoLuongNgay.Value > 0)
+
+                            if (new List<double> { sang, trua, chieu, toi }.Where(o => o > 0).Distinct().Count() == 1)
+                            {
+                                List<double> lst = new List<double>() { sang, trua, chieu, toi };
+                                lst = lst.Where(o => o > 0).Distinct().ToList();
+
+                                if (lst.Count == 1)
+                                {
+                                    solan = 0;
+                                    if (sang > 0) solan++;
+                                    if (trua > 0) solan++;
+                                    if (chieu > 0) solan++;
+                                    if (toi > 0) solan++;
+
+                                    if (solan > 0)
+                                    {
+                                        huongDan.Clear();
+                                        huongDan.Append(
+                                            String.Format(
+                                                "{0} {1}/lần * {2} lần/ngày * {3} ngày",
+                                                Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)lst[0], 2),
+                                                serviceUnitName,
+                                                solan,
+                                                ((int)spinSoLuongNgay.Value >= 1 && (int)spinSoLuongNgay.Value < 10)
+                                                    ? "0" + ((int)spinSoLuongNgay.Value).ToString()
+                                                    : ((int)spinSoLuongNgay.Value).ToString()
+                                            )
+                                        );
+
+                                        tongCong = lst[0] * solan;
+
+                                        if ((int)tongCong == tongCong)
+                                            huongDan.Append(string.Format(" [{0} {1}/ngày]", (int)tongCong, serviceUnitName));
+                                        else
+                                            huongDan.Append(string.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName));
+                                    }
+                                }
+                            }
+                            else if (spinSoLuongNgay.Value > 0)
                             {
                                 if (tongCong == 0)
                                     huongDan.Append(String.Format("{0} {1}", ConvertNumber.ConvertDecToFracByConfig(valuePerTime, 4), serviceUnitName));
-                                huongDan.Append(" * " + (((int)spinSoLuongNgay.Value >= 1 && (int)spinSoLuongNgay.Value < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) + " ngày");
+
+                                huongDan.Append(" * " + (((int)spinSoLuongNgay.Value >= 1 && (int)spinSoLuongNgay.Value < 10)
+                                    ? "0" + ((int)spinSoLuongNgay.Value).ToString()
+                                    : ((int)spinSoLuongNgay.Value).ToString()) + " ngày");
 
                                 if (tongCong > 0)
                                 {
                                     if ((int)tongCong == tongCong)
-                                        huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? string.Format(" [{0} {1}/ngày]", (int)tongCong, serviceUnitName) : "");
+                                        huongDan.Append(string.Format(" [{0} {1}/ngày]", (int)tongCong, serviceUnitName));
                                     else
-                                        huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? String.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName) : "");
+                                        huongDan.Append(string.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig(tongCong, 4), serviceUnitName));
                                 }
                                 else if (valuePerTime > 0)
                                 {
-                                    huongDan.Append(valuePerTime > 0 ? string.Format(" [{0} {1}/ngày]", valuePerTime, serviceUnitName) : "");
+                                    huongDan.Append(string.Format(" [{0} {1}/ngày]", valuePerTime, serviceUnitName));
                                 }
                             }
-
                         }
                         else
                         {

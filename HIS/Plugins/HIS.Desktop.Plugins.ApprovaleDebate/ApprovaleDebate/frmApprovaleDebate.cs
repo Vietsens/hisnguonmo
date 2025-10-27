@@ -1,7 +1,30 @@
-﻿using HIS.Desktop.LocalStorage.BackendData;
+﻿using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraTab;
+using EMR.EFMODEL.DataModels;
+using EMR.SDO;
+using HIS.Desktop.ADO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.IsAdmin;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.ApprovaleDebate.ADO;
+using HIS.Desktop.Plugins.ApprovaleDebate.Resources;
+using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,25 +35,6 @@ using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.Plugins.ApprovaleDebate.ADO;
-using MOS.SDO;
-using Inventec.Core;
-using MOS.Filter;
-using Inventec.Desktop.Common.Message;
-using Inventec.Common.Adapter;
-using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.IsAdmin;
-using HIS.Desktop.LocalStorage.HisConfig;
-using EMR.SDO;
-using HIS.Desktop.ADO;
-using EMR.EFMODEL.DataModels;
-using HIS.Desktop.Controls.Session;
-using DevExpress.XtraTab;
-using DevExpress.XtraEditors;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using HIS.Desktop.Plugins.ApprovaleDebate.Resources;
-using DevExpress.XtraEditors.ViewInfo;
 
 namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
 {
@@ -102,11 +106,18 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 this.SetCaptionByLanguageKey();
                 this.AddUc();
                 this.InitComboEmployee();
+                this.InitComboICD_YHCT();
                 this.ValidControl();
                 if (this.currentHisSpecialistExam != null)
                 {
                     this.txtYKienBacSi.Text = this.currentHisSpecialistExam.EXAM_EXECUTE_CONTENT;
                     this.cboEmployee.EditValue = this.currentHisSpecialistExam.EXAM_EXECUTE_LOGINNAME;
+                    this.cboICD_YHCT.EditValue = this.currentHisSpecialistExam.ICD_CODE;
+                    this.txtICDsub.Text = this.currentHisSpecialistExam.ICD_SUB_CODE;
+                    this.txtICDsubName.Text = this.currentHisSpecialistExam.ICD_TEXT;
+                    LogSystem.Debug("IS_APPROVAL: " + currentHisSpecialistExam.IS_APPROVAL);
+                    btnSave.Enabled = (currentHisSpecialistExam.IS_APPROVAL == null || currentHisSpecialistExam.IS_APPROVAL == 2);
+                    this.ProcessSelectEmployee();
                     //
                     this.LoadDataSereServByTreatmentId(this.currentHisSpecialistExam);
                 }
@@ -164,28 +175,28 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 cboEmployee.EditValue = null;
         }
 
-        private void InitComboEmployee()
-        {
-            try
-            {
-                var data = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => 
-                                o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE 
-                                && o.IS_DOCTOR == 1
-                                && o.DEPARTMENT_ID == this.currentHisSpecialistExam.EXAM_EXECUTE_DEPARMENT_ID
-                                ).ToList();
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 150, 1));
-                columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Họ và tên", 250, 1));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("TDL_USERNAME", "LOGINNAME", columnInfos, false, 400);
-                ControlEditorLoader.Load(cboEmployee, data, controlEditorADO);
-                cboEmployee.Properties.ImmediatePopup = true;
-                cboEmployee.Properties.PopupFormMinSize = new Size(400, cboEmployee.Properties.PopupFormMinSize.Height);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+        //private void InitComboEmployee()
+        //{
+        //    try
+        //    {
+        //        var data = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => 
+        //                        o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE 
+        //                        && o.IS_DOCTOR == 1
+        //                        && o.DEPARTMENT_ID == this.currentHisSpecialistExam.EXAM_EXECUTE_DEPARMENT_ID
+        //                        ).ToList();
+        //        List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+        //        columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 150, 1));
+        //        columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Họ và tên", 250, 1));
+        //        ControlEditorADO controlEditorADO = new ControlEditorADO("TDL_USERNAME", "LOGINNAME", columnInfos, false, 400);
+        //        ControlEditorLoader.Load(cboEmployee, data, controlEditorADO);
+        //        cboEmployee.Properties.ImmediatePopup = true;
+        //        cboEmployee.Properties.PopupFormMinSize = new Size(400, cboEmployee.Properties.PopupFormMinSize.Height);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
 
         private void LoadDataSereServByTreatmentId(V_HIS_SPECIALIST_EXAM currentHisServiceReq)
         {
@@ -351,7 +362,11 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                                                                       SERVICE_REQ_CODE = ab?.SERVICE_REQ_CODE,
                                                                       AMOUNT = ab?.AMOUNT,
                                                                       SERVICE_UNIT_NAME = ab?.SERVICE_UNIT_NAME,
-                                                                  })
+                                                                      ICD_CODE = a.ICD_CODE,
+                                                                      ICD_NAME = a.ICD_NAME,
+                                                                      ICD_SUB_CODE = a.ICD_SUB_CODE,
+                                                                      ICD_TEXT = a.ICD_TEXT,
+                                                                   })
                                                                   .GroupBy(g => g.TRACKING_ID)
                                                                   .Select((s, i) =>
                                                                   {
@@ -363,11 +378,16 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                                                                                         .Replace(" ", Environment.NewLine),
                                                                           USER_NAME = ret.USER_NAME + " - " + ret.DIPLOMA,
                                                                           CONTENT = ret.CONTENT,
+                                                                          ICD_CODE = ret.ICD_CODE,
+                                                                          ICD_NAME = ret.ICD_NAME,
+                                                                          ICD_SUB_CODE = ret.ICD_SUB_CODE,
+                                                                          ICD_TEXT = ret.ICD_TEXT,
                                                                           SERVICE = string.Join(Environment.NewLine, s.Where(w => !string.IsNullOrEmpty(w.SERVICE_NAME))
                                                                           .Select(ss => ss.SERVICE_REQ_CODE + " - " + ss.SERVICE_NAME + " x " + ss.AMOUNT + " " + ss.SERVICE_UNIT_NAME))
                                                                       };
                                                                   })
                                                                   .ToList();
+                            Inventec.Common.Logging.LogSystem.Info("listTracking12: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listTracking), listTracking));
                             tabToDieuTri.PageVisible = true;
                             ucAll.ReLoad(treeView_Click, listTracking, currentHisSpecialistExam);
                         }
@@ -540,7 +560,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         {
             try
             {
-                SetMaxlength(txtYKienBacSi, 4000, true);
+                SetMaxlength(txtYKienBacSi, 4000, false);
                 ValidContent();
             }
             catch (Exception ex)
@@ -569,6 +589,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         {
             var spin = new LookupEditWithTextEditValidationRule();
             spin.editor = cboEmployee;
+            spin.GetSelectedEmployees = () => this.EmployeeSelecteds; 
             this.dxValidationProvider1.SetValidationRule(cboEmployee, spin);
         }
 
@@ -593,15 +614,25 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     Inventec.Common.Logging.LogSystem.Info("dxValidationProvider1.Validate");
                     return;
                 }
+
                 positionHandleControl = -1;
                 CommonParam param = new CommonParam();
                 HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, currentHisSpecialistExam);
-                datamapper.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue != null ? cboEmployee.EditValue.ToString() : null;
-                datamapper.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue != null ? cboEmployee.Text.ToString() : null;
+                //datamapper.EXAM_EXECUTE_LOGINNAME = cboEmployee.EditValue != null ? cboEmployee.EditValue.ToString() : null;
+                //datamapper.EXAM_EXECUTE_USERNAME = cboEmployee.EditValue != null ? cboEmployee.Text.ToString() : null;
+                if (this.EmployeeSelecteds != null && this.EmployeeSelecteds.Count > 0)
+                {
+                    datamapper.EXAM_EXECUTE_LOGINNAME = string.Join(", ",this.EmployeeSelecteds.Select(o => o.LOGINNAME.ToString()).ToList());
+                    datamapper.EXAM_EXECUTE_USERNAME = string.Join(", ", this.EmployeeSelecteds.Select(o => o.TDL_USERNAME.ToString()).ToList());
+                }
                 datamapper.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
                 datamapper.REJECT_APPROVAL_REASON = null;
                 datamapper.IS_APPROVAL = 1;
+                datamapper.ICD_CODE = cboICD_YHCT.EditValue != null? cboICD_YHCT.EditValue.ToString(): null;
+                datamapper.ICD_NAME = cboICD_YHCT.Text;
+                datamapper.ICD_SUB_CODE= txtICDsub.Text.Trim();
+                datamapper.ICD_TEXT = txtICDsubName.Text.Trim();
                 //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => datamapper), datamapper));
                 var rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, datamapper, param);
                 if (rs != null && this.delegateRefresh != null)
@@ -611,6 +642,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     currentHisSpecialistExam.EXAM_EXECUTE_CONTENT = datamapper.EXAM_EXECUTE_CONTENT;
                     currentHisSpecialistExam.IS_APPROVAL = datamapper.IS_APPROVAL;
                     currentHisSpecialistExam.REJECT_APPROVAL_REASON = datamapper.REJECT_APPROVAL_REASON;
+                    currentHisSpecialistExam.ICD_CODE = datamapper.ICD_CODE;
+                    currentHisSpecialistExam.ICD_NAME = datamapper.ICD_NAME;
+                    currentHisSpecialistExam.ICD_SUB_CODE = datamapper.ICD_SUB_CODE;
+                    currentHisSpecialistExam.ICD_TEXT = datamapper.ICD_TEXT;
                     this.delegateRefresh();
                 }
                 MessageManager.Show(this, param, rs != null);
@@ -623,6 +658,534 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        List<HIS_EMPLOYEE> EmployeeSelecteds;
+        List<HIS_EMPLOYEE> EmployeesDataSource;
+        private void InitComboEmployee()
+        {
+            this.EmployeesDataSource = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(o =>
+                                o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                && o.IS_DOCTOR == 1
+                                && o.DEPARTMENT_ID == this.currentHisSpecialistExam.EXAM_EXECUTE_DEPARMENT_ID
+                                ).ToList();
+            this.InitCombo(cboEmployee,
+                EmployeesDataSource,
+                 "TDL_USERNAME",
+                 "LOGINNAME",
+                cboEmployee_MarksSelection,
+                cboEmployee_CustomDisplayText
+                );
+        }
+        private void InitCombo(
+            GridLookUpEdit cbo,
+            object data,
+            string displayMember,
+            string valueMember,
+            GridCheckMarksSelection.SelectionChangedEventHandler eventHandlerMarksSelection,
+            DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler eventHandlerCustomDisplayText
+            )
+        {
+            try
+            {
+                // Marks selection
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cbo.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(eventHandlerMarksSelection);
+                cbo.Properties.Tag = gridCheck;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+                //
+                cbo.Properties.View.ColumnFilterChanged += (s, e) =>
+                {
+                    var view = s as DevExpress.XtraGrid.Views.Grid.GridView;
+                    if (view == null) return;
+
+                    // Lấy filter text của cột đầu tiên có filter (hoặc tuỳ ý)
+                    string filterText = null;
+                    foreach (var col in view.Columns)
+                    {
+                        var column = col as DevExpress.XtraGrid.Columns.GridColumn;
+                        if (column != null && !string.IsNullOrEmpty(column.FilterInfo?.Value as string))
+                        {
+                            filterText = column.FilterInfo.Value as string;
+                            break;
+                        }
+                    }
+                    // Gán filterText cho FindPanelText để highlight
+                    view.ApplyFindFilter(!string.IsNullOrEmpty(filterText) ? $"\"{filterText}\"" : string.Empty);
+                };
+                // Combo properties
+                cbo.Properties.Closed += (s, e) =>
+                {
+                    GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                    cbo.Properties.Buttons[1].Visible = gridCheckMark != null && gridCheckMark.Selection.Count > 0;
+                    var view = cbo.Properties.View;
+                    if (view != null)
+                    {
+                        view.ClearColumnsFilter();
+                        view.ApplyFindFilter(string.Empty);
+                    }
+                };
+                cbo.Properties.View.CustomDrawCell += View_CustomDrawCell_ShowPlaceholder;
+                cbo.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(eventHandlerCustomDisplayText);
+                cbo.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboProperties_ButtonClick);
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = displayMember;
+                cbo.Properties.ValueMember = valueMember;
+                if (cbo.Properties.View.Columns.Count > 0)
+                {
+                    var checkCol = cbo.Properties.View.Columns[0];
+                    checkCol.Width = 30;
+                    checkCol.MinWidth = 30;
+                    checkCol.MaxWidth = 30;
+                    checkCol.OptionsColumn.FixedWidth = true;
+                }
+                DevExpress.XtraGrid.Columns.GridColumn column1 = cbo.Properties.View.Columns.AddField(valueMember);
+                column1.VisibleIndex = 1;
+                column1.Width = 100;
+                column1.Caption = "Mã";
+
+                DevExpress.XtraGrid.Columns.GridColumn col2 = cbo.Properties.View.Columns.AddField(displayMember);
+                col2.VisibleIndex = 2;
+                col2.Width = 325;
+                col2.Caption = "Tên";
+                col2.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                cbo.Properties.PopupFormWidth = 350;
+                cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+                //cbo.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                cbo.Properties.View.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+                cbo.Properties.View.BestFitColumns();
+                // Clear selection
+                this.cboClearSelection(cbo);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        void View_CustomDrawCell_ShowPlaceholder(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
+        {
+            var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+            if (view == null) return;
+            if (e.RowHandle == DevExpress.XtraGrid.GridControl.AutoFilterRowHandle)
+            {
+                var filterValue = view.GetRowCellValue(e.RowHandle, e.Column);
+                if (filterValue == null || string.IsNullOrEmpty(filterValue.ToString()))
+                {
+                    e.DisplayText = "Từ khóa tìm kiếm ...";
+                    e.Appearance.ForeColor = System.Drawing.Color.Gray;
+                }
+            }
+        }
+
+        private void cboClearSelection(GridLookUpEdit gridLookUpEdit)
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheckMark = gridLookUpEdit.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(gridLookUpEdit.Properties.View);
+                }
+                if (gridLookUpEdit.Properties.Buttons.Count > 0)
+                {
+                    foreach (EditorButton item in gridLookUpEdit.Properties.Buttons)
+                    {
+                        if (item != null && item.Kind == ButtonPredefines.Delete)
+                        {
+                            item.Visible = false;
+                        }
+                    }
+                }
+                gridLookUpEdit.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboProperties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    var cbo = sender as DevExpress.XtraEditors.GridLookUpEdit;
+                    this.cboClearSelection(cbo);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboEmployee_MarksSelection(object sender, EventArgs e)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    List<HIS_EMPLOYEE> sgSelectedNews = new List<HIS_EMPLOYEE>();
+                    foreach (HIS_EMPLOYEE rv in (gridCheckMark).Selection)
+                    {
+                        if (rv != null)
+                        {
+                            if (sb.ToString().Length > 0) { sb.Append(", "); }
+                            sb.Append(rv.LOGINNAME.ToString());
+                            sgSelectedNews.Add(rv);
+                        }
+                    }
+                    this.EmployeeSelecteds = new List<HIS_EMPLOYEE>();
+                    this.EmployeeSelecteds.AddRange(sgSelectedNews);
+                    this.cboEmployee.Text = sb.ToString();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        protected void cboEmployee_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender is GridLookUpEdit ? (sender as GridLookUpEdit).Properties.Tag as GridCheckMarksSelection : (sender as DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit).Tag as GridCheckMarksSelection;
+                if (gridCheckMark == null || gridCheckMark.Selection == null || gridCheckMark.Selection.Count == 0)
+                {
+                    e.DisplayText = "";
+                    return;
+                }
+                foreach (HIS_EMPLOYEE rv in gridCheckMark.Selection)
+                {
+                    if (sb.ToString().Length > 0) { sb.Append(", "); }
+
+                    sb.Append(rv.TDL_USERNAME.ToString());
+                    if (sb.ToString().Length > 100)
+                    {
+                        break;
+                    }
+                }
+                //if (EmployeeSelecteds != null && EmployeeSelecteds.Count == this.EmployeesDataSource.Count)
+                //{
+                //    sb = new StringBuilder("Tất cả");
+                //}
+                string text = sb.ToString();
+                if (text.Length > 100)
+                    text = text.Substring(0, 100) + "...";
+                e.DisplayText = text;
+                var g = sender as DevExpress.XtraEditors.GridLookUpEdit;
+                g.Text = e.DisplayText;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ProcessSelectEmployee()
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheckMark = cboEmployee.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboEmployee.Properties.View);
+                }
+                if (cboEmployee.Properties.Tag != null)
+                {
+                    List<HIS_EMPLOYEE> ds = cboEmployee.Properties.DataSource as List<HIS_EMPLOYEE>;
+                    List<HIS_EMPLOYEE> selects = new List<HIS_EMPLOYEE>();
+                    
+                    foreach (HIS_EMPLOYEE item in ds.Where(w => this.currentHisSpecialistExam.EXAM_EXECUTE_LOGINNAME.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Any(a => a.ToLower() == w.LOGINNAME.ToLower())))
+                    {
+                        selects.Add(item);
+                    }
+                    gridCheckMark.SelectAll(selects);
+                }
+                if (gridCheckMark != null && cboEmployee.Properties.Buttons.Count > 1)
+                {
+                    cboEmployee.Properties.Buttons[1].Visible = gridCheckMark.Selection.Count > 0;
+                }
+                else
+                {
+                    this.cboClearSelection(cboEmployee);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        //icd -------------------
+        private void InitComboICD_YHCT()
+        {
+            try
+            {
+                var data = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == 1 && o.IS_TRADITIONAL != 1).ToList();
+
+                var cbo = this.cboICD_YHCT;
+
+                cboICD_YHCT.ProcessNewValue -= cboICD_YHCT_ProcessNewValue;
+                cboICD_YHCT.ProcessNewValue += cboICD_YHCT_ProcessNewValue;
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = nameof(HIS_ICD.ICD_NAME);
+                cbo.Properties.ValueMember = nameof(HIS_ICD.ICD_CODE);
+                cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cbo.Properties.ImmediatePopup = true;
+                cbo.Properties.View.OptionsView.RowAutoHeight = true;
+                cbo.ForceInitialize();
+                cbo.Properties.View.Columns.Clear();
+                cbo.Properties.PopupFormSize = new System.Drawing.Size(400, 250);
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cbo.Properties.View.Columns.AddField(nameof(HIS_ICD.ICD_CODE));
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 70;
+                aColumnCode.ColumnEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnName = cbo.Properties.View.Columns.AddField(nameof(HIS_ICD.ICD_NAME));
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 2;
+                aColumnName.Width = 300;
+                aColumnName.ColumnEdit = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+                cbo.Properties.View.OptionsView.ColumnAutoWidth = true;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+       
+        private void cboICD_YHCT_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cboICD_YHCT.Properties.Buttons[1].Visible = cboICD_YHCT.EditValue != null;
+                if (cboICD_YHCT.EditValue != null)
+                {
+                    txtICD_YHCT.Text = cboICD_YHCT.EditValue.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboICD_YHCT_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    if (!cboICD_YHCT.Properties.Buttons[1].Visible)
+                        return;
+                    cboICD_YHCT.EditValue = null;
+                    cboICD_YHCT.Properties.NullText = "";
+                    cboICD_YHCT.Text = "";
+                    txtICD_YHCT.Text = "";
+
+                    cboICD_YHCT.DoValidate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void cboICD_YHCT_ProcessNewValue(object sender, DevExpress.XtraEditors.Controls.ProcessNewValueEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(e.DisplayValue as string))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtICDsubName_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.F1)
+                {
+                    WaitingManager.Show();
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.SecondaryIcd").FirstOrDefault();
+                    if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.SecondaryIcd'");
+                    if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.SecondaryIcd' is not plugins");
+                    HIS.Desktop.ADO.SecondaryIcdADO secondaryIcdADO = new HIS.Desktop.ADO.SecondaryIcdADO(GetStringIcds, txtICDsub.Text, txtICDsubName.Text);
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(secondaryIcdADO);
+                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null"); WaitingManager.Hide();
+                    ((Form)extenceInstance).Show(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtICD_YHCT_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    bool showCbo = true;
+                    string code = txtICD_YHCT.Text.Trim();
+                    if (!string.IsNullOrEmpty(code))
+                    {
+                        var listData = BackendDataWorker.Get<HIS_ICD>()
+                            .Where(o => o.IS_ACTIVE == 1 && o.IS_TRADITIONAL != 1 &&
+                                        (o.ICD_CODE.IndexOf(code, StringComparison.OrdinalIgnoreCase) >= 0)).ToList();
+
+                        var result = listData != null
+                            ? (listData.Count > 1
+                                ? listData.Where(o => o.ICD_CODE.Equals(code.Trim(), StringComparison.OrdinalIgnoreCase)).ToList()
+                                : listData)
+                            : null;
+
+                        if (result != null && result.Count > 0)
+                        {
+                            showCbo = false;
+                            var item = result.First();
+
+                            txtICD_YHCT.Text = item.ICD_CODE;
+                            cboICD_YHCT.EditValue = item.ICD_CODE;
+
+                            SendKeys.Send("{TAB}");
+                        }
+                        else
+                        {
+                            cboICD_YHCT.EditValue = null;
+                        }
+                    }
+
+
+                    // Nếu không tìm được thì show popup cho user chọn
+                    if (showCbo)
+                    {
+                        cboICD_YHCT.Focus();
+                        cboICD_YHCT.ShowPopup();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        //ICDsub---------------------------------
+
+        private void GetStringIcds(string delegateIcdCodes, string delegateIcdNames)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(delegateIcdNames))
+                {
+                    txtICDsubName.Text = delegateIcdNames;
+                }
+                if (!string.IsNullOrEmpty(delegateIcdCodes))
+                {
+                    txtICDsub.Text = delegateIcdCodes;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void txtCdPhu_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    string seperate = ";";
+                    string strIcdNames = "";
+                    string strWrongIcdCodes = "";
+                    string[] periodSeparators = new string[1];
+                    periodSeparators[0] = seperate;
+                    
+                    string[] arrIcdExtraCodes = txtICDsub.Text.Split(periodSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
+                    {
+                        var icdAlls = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_ICD>().Where(o => o.IS_ACTIVE == 1 && o.IS_TRADITIONAL != 1).ToList();
+                        foreach (var itemCode in arrIcdExtraCodes)
+                        {
+                            var icdByCode = icdAlls.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
+                            if (icdByCode != null && icdByCode.ID > 0)
+                            {
+                                strIcdNames += (seperate + icdByCode.ICD_NAME);
+                            }
+                            else
+                            {
+                                strWrongIcdCodes += (seperate + itemCode);
+                            }
+                        }
+                        strIcdNames += seperate;
+                        if (!String.IsNullOrEmpty(strWrongIcdCodes))
+                        {
+                            MessageManager.Show(String.Format("Không tìm thấy icd tương ứng với các mã sau: {0}", strWrongIcdCodes));
+                        }
+                    }
+                    txtICDsubName.Text = strIcdNames;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void cboCdPhu_Validating(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                string seperate = ";";
+                string strIcdNames = "";
+                string strWrongIcdCodes = "";
+                string[] periodSeparators = new string[1];
+                periodSeparators[0] = seperate;
+                string[] arrIcdExtraCodes = txtICDsub.Text.Split(periodSeparators, StringSplitOptions.RemoveEmptyEntries);
+                if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
+                {
+                    var icdAlls = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_ICD>().Where(o => o.IS_ACTIVE == 1 && o.IS_TRADITIONAL != 1).ToList();
+                    foreach (var itemCode in arrIcdExtraCodes)
+                    {
+                        var icdByCode = icdAlls.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
+                        if (icdByCode != null && icdByCode.ID > 0)
+                        {
+                            strIcdNames += (seperate + icdByCode.ICD_NAME);
+                        }
+                        else
+                        {
+                            strWrongIcdCodes += (seperate + itemCode);
+                        }
+                    }
+                    strIcdNames += seperate;
+                    if (!String.IsNullOrEmpty(strWrongIcdCodes))
+                    {
+                        MessageManager.Show(String.Format("Không tìm thấy icd tương ứng với các mã sau: {0}", strWrongIcdCodes));
+                    }
+                }
+                txtICDsubName.Text = strIcdNames;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

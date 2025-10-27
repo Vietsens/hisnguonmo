@@ -309,14 +309,77 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 
         private void btnSpecialty()
         {
-            frmSpecialty frmSpecialty = new frmSpecialty(treatmentBedRoomRow, currentModule);
-            frmSpecialty.ShowDialog();
+            try
+            {
+                if (treatmentBedRoomRow != null)
+                {
+                    var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.InviteSpecialistExam");
+                    if (moduleData == null)
+                    {
+                        MessageBox.Show("Chức năng đang phát triển.Vui lòng liên hệ quản trị. ", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = HIS.Desktop.Plugins.InviteSpecialistExam");
+                        return;
+                    }
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    { 
+                        var listArgs = new List<object>();
+                        listArgs.Add(treatmentBedRoomRow.ID);
+                        HIS_SPECIALIST_EXAM specialistExam = null;
+                        listArgs.Add(specialistExam);
+                        listArgs.Add(moduleData);
+                        bool isEdit = false;
+                        listArgs.Add(isEdit);
+                        var pluginInstance = PluginInstance.GetPluginInstance( PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
+
+                        if (pluginInstance == null)
+                            throw new ArgumentNullException("pluginInstance is null");
+
+                        ((Form)pluginInstance).ShowDialog();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void btnConsultation()
         {
-            frmConsultation frmConsultation = new frmConsultation(treatmentBedRoomRow, currentModule);
-            frmConsultation.ShowDialog();
+            try
+            {
+                if (treatmentBedRoomRow != null)
+                {
+                    var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.InviteConsultation");
+                    if (moduleData == null)
+                    {
+                        MessageBox.Show("Chức năng đang phát triển.Vui lòng liên hệ quản trị. ", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = HIS.Desktop.Plugins.InviteConsultation");
+                        return;
+                    }
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        var listArgs = new List<object>();
+                        listArgs.Add(treatmentBedRoomRow);
+                        HIS_SPECIALIST_EXAM specialistExam = null;
+                        listArgs.Add(specialistExam);
+                        listArgs.Add(moduleData);
+                        bool isEdit = false;
+                        listArgs.Add(isEdit);
+                        var pluginInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
+
+                        if (pluginInstance == null)
+                            throw new ArgumentNullException("pluginInstance is null");
+
+                        ((Form)pluginInstance).ShowDialog();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         public void RefreshData()

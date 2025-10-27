@@ -91,17 +91,21 @@ namespace MPS.Processor.Mps000215
                 GetMedicineGroup();
                 GetMedicineParent();
                 GetOtherPaySource();
+
+
+
+
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
-                objectTag.AddObjectData(store, "ListMediMate1", listAdoPrint);
+                objectTag.AddObjectData(store, "ListMediMate1", listAdoPrint.OrderBy(x => x.MEDI_MATE_TYPE_NAME).ToList());
                 objectTag.AddObjectData(store, "ListMediMate2", listAdoPrint);
                 objectTag.AddObjectData(store, "ListMediMate3", listAdoPrint);
                 objectTag.AddObjectData(store, "ListMediMateSplitedByPackage", listAdoPrintGroup);
                 objectTag.AddObjectData(store, "ListMediMate1Detail", listAdoPrintDetail);
                 objectTag.AddObjectData(store, "ListMediMate2Detail", listAdoPrintDetail);
                 objectTag.AddObjectData(store, "ListMediMate3Detail", listAdoPrintDetail);
-                objectTag.AddObjectData(store, "MedicineGroup", listMedicineType);
-                objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent);
+                objectTag.AddObjectData(store, "MedicineGroup", listMedicineType.OrderBy(x => x.MEDICINE_GROUP_NAME).ToList());
+                objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent.OrderBy(x => x.MEDICINE_PARENT_NAME).ToList());
                 objectTag.AddObjectData(store, "OtherPaySource", lstOtherPaySource);
 
                 objectTag.AddRelationship(store, "ListMediMate1", "ListMediMate1Detail", "KEY_GROUP", "KEY_GROUP");
@@ -717,6 +721,7 @@ namespace MPS.Processor.Mps000215
                     var group = listAdoPrint.GroupBy(o => new { o.MEDICINE_GROUP_ID, o.MEDICINE_GROUP_CODE, o.MEDICINE_GROUP_NAME });
                     foreach (var item in group)
                     {
+
                         listMedicineType.Add(item.ToList().First());
                     }
                 }
@@ -745,6 +750,7 @@ namespace MPS.Processor.Mps000215
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+       
     }
 
 

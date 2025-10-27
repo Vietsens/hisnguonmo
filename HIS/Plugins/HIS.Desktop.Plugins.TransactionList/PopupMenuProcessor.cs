@@ -138,8 +138,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                     }
                     //qtcode
                     if (String.IsNullOrWhiteSpace(this._Transaction.INVOICE_CODE)
-                         && this._Transaction.IS_CANCEL != 1
-                         && (this._Transaction.AMOUNT - (this._Transaction.EXEMPTION ?? 0) - (this._Transaction.TDL_BILL_FUND_AMOUNT ?? 0) > 0))
+                         && this._Transaction.IS_CANCEL != 1)
+                        // && (this._Transaction.AMOUNT - (this._Transaction.EXEMPTION ?? 0) - (this._Transaction.TDL_BILL_FUND_AMOUNT ?? 0) > 0))
                     {
                         //xuất hóa đơn điện tủ
                         BarButtonItem btnHoaDonDienTu = new BarButtonItem(this._BarManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_HOADONDIENTU", Base.ResourceLangManager.LanguageFrmTransactionList, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 5);
@@ -245,7 +245,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                     //có AMOUNT - EXEMPTION - TDL_BILL_FUND_AMOUNT >0
                     if (String.IsNullOrWhiteSpace(this._Transaction.INVOICE_CODE)
                         && this._Transaction.IS_CANCEL != 1
-                        && (this._Transaction.AMOUNT - (this._Transaction.EXEMPTION ?? 0) - (this._Transaction.TDL_BILL_FUND_AMOUNT ?? 0) > 0))
+                        //&& (this._Transaction.AMOUNT - (this._Transaction.EXEMPTION ?? 0) - (this._Transaction.TDL_BILL_FUND_AMOUNT ?? 0) > 0)
+                        )
                     {
                         //xuất hóa đơn điện tủ
                         BarButtonItem btnHoaDonDienTu = new BarButtonItem(this._BarManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_HOADONDIENTU", Base.ResourceLangManager.LanguageFrmTransactionList, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 5);
@@ -359,7 +360,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 }
 
 
-                 if (this._Transaction.TRANSACTION_TYPE_ID == 3 && this._Transaction.IS_CANCEL != 1 && this._Transaction.ORIGINAL_TRANSACTION_ID == null && this._Transaction.IS_ADJUSTMENT != 1 && frmTransactionList.controlAcs != null && frmTransactionList.controlAcs.Exists(o => o.CONTROL_CODE == "HIS000047"))
+                 if (this._Transaction.TRANSACTION_TYPE_ID == 3 && this._Transaction.IS_CANCEL != 1 && this._Transaction.ORIGINAL_TRANSACTION_ID == null && this._Transaction.INVOICE_CODE != null && this._Transaction.IS_ADJUSTMENT != 1 && frmTransactionList.controlAcs != null && frmTransactionList.controlAcs.Exists(o => o.CONTROL_CODE == "HIS000047"))
                 {
 
 

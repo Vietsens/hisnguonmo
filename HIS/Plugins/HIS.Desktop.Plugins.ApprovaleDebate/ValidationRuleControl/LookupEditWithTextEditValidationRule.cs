@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,9 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
 {
     class LookupEditWithTextEditValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
-        internal Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn editor;
+        internal DevExpress.XtraEditors.GridLookUpEdit editor;
+        internal Func<List<HIS_EMPLOYEE>> GetSelectedEmployees; 
+
         public override bool Validate(System.Windows.Forms.Control control, object value)
         {
             bool valid = false;
@@ -34,15 +37,19 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
             {
                 if (editor == null) return valid;
 
-                if (editor is Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn eee)
+                if (editor is DevExpress.XtraEditors.GridLookUpEdit eee)
                 {
-                    if (eee.EditValue == null)
+                    var employees = GetSelectedEmployees?.Invoke(); 
+
+                    if (employees == null || employees.Count == 0)
                     {
                         this.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                        this.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                        this.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                            Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
                         return valid;
                     }
                 }
+
                 valid = true;
             }
             catch (Exception ex)
@@ -52,4 +59,5 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
             return valid;
         }
     }
+
 }
