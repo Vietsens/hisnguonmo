@@ -91,12 +91,13 @@ namespace HIS.Desktop.Modules.WaitingForm
                 else if (fileDataResult.IsUpdate && (HasDeleteFiles(fileDataResult.FileDeletes) || !String.IsNullOrEmpty(fileDataResult.FileZipName) || !String.IsNullOrEmpty(fileDataResult.ZipFileUpdate)))
                 {
                     result = true;
+                    string aupBaseUri = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__RUN_AUP_BASE_URI);
                     string cmdLnUpdate = "";
                     if (!String.IsNullOrEmpty(fileDataResult.ZipFileUpdate))
                     {
                         cmdLnUpdate += "|downloadFile|" + fileDataResult.ZipFileUpdate;
                     } 
-                    cmdLnUpdate += "|URL|" + AupConstant.BASE_URI;
+                    cmdLnUpdate += "|URL|" + (!String.IsNullOrEmpty(aupBaseUri) ? aupBaseUri : AupConstant.BASE_URI);
                     cmdLnUpdate += ("|destinationFolder|" + "" + ProcessSpacePath(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory) + "\\");
                     cmdLnUpdate += "|processToEnd|" + processToEnd;
                     cmdLnUpdate += "|postProcess|" + ProcessSpacePath(postProcess);
