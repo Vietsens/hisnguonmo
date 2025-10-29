@@ -4368,6 +4368,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     if (!spinImpPrice1.Enabled || !spinImpPrice1.Visible)
                     {
                         spinImpPrice.Value = spinImpPriceVAT.Value / ((1 + spinImpVatRatio.Value / 100));
+                        this.currrentServiceAdo.IMP_PRICE = spinImpPrice.Value; 
                     }
                     IsEditImpPriceVAT = false;
                 }

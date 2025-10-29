@@ -64,6 +64,7 @@ namespace MPS.Processor.Mps000049
                     this.OTHER_PAY_SOURCE_ID = firstMedicine.OTHER_PAY_SOURCE_ID;
                     this.OTHER_PAY_SOURCE_CODE = firstMedicine.OTHER_PAY_SOURCE_CODE;
                     this.OTHER_PAY_SOURCE_NAME = firstMedicine.OTHER_PAY_SOURCE_NAME != null ? firstMedicine.OTHER_PAY_SOURCE_NAME.ToUpper() : null;
+                    
                 }
             }
         }

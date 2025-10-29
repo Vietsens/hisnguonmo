@@ -85,8 +85,18 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.navBarGroupControlContainer4 = new DevExpress.XtraNavBar.NavBarGroupControlContainer();
+            this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
+            this.chkCompleted = new DevExpress.XtraEditors.CheckEdit();
+            this.chkInProgress = new DevExpress.XtraEditors.CheckEdit();
+            this.chkPending = new DevExpress.XtraEditors.CheckEdit();
+            this.layoutControlGroup5 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.BarTreatmentType = new DevExpress.XtraNavBar.NavBarGroup();
             this.BarServiceType = new DevExpress.XtraNavBar.NavBarGroup();
+            this.navBarGroup1 = new DevExpress.XtraNavBar.NavBarGroup();
             this.BtnRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.BtnSearch = new DevExpress.XtraEditors.SimpleButton();
             this.GridControlSereServ = new DevExpress.XtraGrid.GridControl();
@@ -182,6 +192,16 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
+            this.navBarGroupControlContainer4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
+            this.layoutControl5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCompleted.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkInProgress.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPending.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridControlSereServ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridViewSereServ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkGatherData)).BeginInit();
@@ -293,10 +313,12 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer1);
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer2);
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer3);
+            this.navBarControl1.Controls.Add(this.navBarGroupControlContainer4);
             this.navBarControl1.Groups.AddRange(new DevExpress.XtraNavBar.NavBarGroup[] {
             this.BarIntructionTime,
             this.BarTreatmentType,
-            this.BarServiceType});
+            this.BarServiceType,
+            this.navBarGroup1});
             this.navBarControl1.Location = new System.Drawing.Point(2, 146);
             this.navBarControl1.Name = "navBarControl1";
             this.navBarControl1.OptionsNavPane.ExpandedWidth = 230;
@@ -308,7 +330,6 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // 
             this.BarIntructionTime.Caption = "Ngày thực hiện";
             this.BarIntructionTime.ControlContainer = this.navBarGroupControlContainer1;
-            this.BarIntructionTime.Expanded = true;
             this.BarIntructionTime.GroupClientHeight = 56;
             this.BarIntructionTime.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
             this.BarIntructionTime.Name = "BarIntructionTime";
@@ -682,11 +703,112 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem12.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem12.TextToControlDistance = 5;
             // 
+            // navBarGroupControlContainer4
+            // 
+            this.navBarGroupControlContainer4.Appearance.BackColor = System.Drawing.SystemColors.Control;
+            this.navBarGroupControlContainer4.Appearance.Options.UseBackColor = true;
+            this.navBarGroupControlContainer4.Controls.Add(this.layoutControl5);
+            this.navBarGroupControlContainer4.Name = "navBarGroupControlContainer4";
+            this.navBarGroupControlContainer4.Size = new System.Drawing.Size(222, 76);
+            this.navBarGroupControlContainer4.TabIndex = 3;
+            // 
+            // layoutControl5
+            // 
+            this.layoutControl5.Controls.Add(this.chkCompleted);
+            this.layoutControl5.Controls.Add(this.chkInProgress);
+            this.layoutControl5.Controls.Add(this.chkPending);
+            this.layoutControl5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControl5.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl5.Name = "layoutControl5";
+            this.layoutControl5.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(275, 324, 250, 350);
+            this.layoutControl5.Root = this.layoutControlGroup5;
+            this.layoutControl5.Size = new System.Drawing.Size(222, 76);
+            this.layoutControl5.TabIndex = 0;
+            this.layoutControl5.Text = "layoutControl5";
+            // 
+            // chkCompleted
+            // 
+            this.chkCompleted.Location = new System.Drawing.Point(97, 50);
+            this.chkCompleted.Name = "chkCompleted";
+            this.chkCompleted.Properties.Caption = "Đã kết thúc";
+            this.chkCompleted.Size = new System.Drawing.Size(123, 19);
+            this.chkCompleted.StyleController = this.layoutControl5;
+            this.chkCompleted.TabIndex = 6;
+            this.chkCompleted.CheckedChanged += new System.EventHandler(this.chkCompleted_CheckedChanged);
+            // 
+            // chkInProgress
+            // 
+            this.chkInProgress.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkInProgress.Location = new System.Drawing.Point(97, 26);
+            this.chkInProgress.Name = "chkInProgress";
+            this.chkInProgress.Properties.Caption = "Đang xử lý";
+            this.chkInProgress.Size = new System.Drawing.Size(123, 19);
+            this.chkInProgress.StyleController = this.layoutControl5;
+            this.chkInProgress.TabIndex = 5;
+            this.chkInProgress.CheckedChanged += new System.EventHandler(this.chkInProgress_CheckedChanged);
+            // 
+            // chkPending
+            // 
+            this.chkPending.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkPending.Location = new System.Drawing.Point(97, 2);
+            this.chkPending.Name = "chkPending";
+            this.chkPending.Properties.Caption = "Chưa xử lý";
+            this.chkPending.Size = new System.Drawing.Size(123, 19);
+            this.chkPending.StyleController = this.layoutControl5;
+            this.chkPending.TabIndex = 4;
+            this.chkPending.CheckedChanged += new System.EventHandler(this.chkPending_CheckedChanged);
+            // 
+            // layoutControlGroup5
+            // 
+            this.layoutControlGroup5.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroup5.GroupBordersVisible = false;
+            this.layoutControlGroup5.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem13,
+            this.layoutControlItem18,
+            this.layoutControlItem19});
+            this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup5.Name = "Root";
+            this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(222, 76);
+            this.layoutControlGroup5.TextVisible = false;
+            // 
+            // layoutControlItem13
+            // 
+            this.layoutControlItem13.Control = this.chkPending;
+            this.layoutControlItem13.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem13.Name = "layoutControlItem13";
+            this.layoutControlItem13.Size = new System.Drawing.Size(222, 24);
+            this.layoutControlItem13.Text = " ";
+            this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem13.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem13.TextToControlDistance = 5;
+            // 
+            // layoutControlItem18
+            // 
+            this.layoutControlItem18.Control = this.chkInProgress;
+            this.layoutControlItem18.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem18.Name = "layoutControlItem18";
+            this.layoutControlItem18.Size = new System.Drawing.Size(222, 24);
+            this.layoutControlItem18.Text = " ";
+            this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem18.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem18.TextToControlDistance = 5;
+            // 
+            // layoutControlItem19
+            // 
+            this.layoutControlItem19.Control = this.chkCompleted;
+            this.layoutControlItem19.Location = new System.Drawing.Point(0, 48);
+            this.layoutControlItem19.Name = "layoutControlItem19";
+            this.layoutControlItem19.Size = new System.Drawing.Size(222, 28);
+            this.layoutControlItem19.Text = " ";
+            this.layoutControlItem19.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem19.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem19.TextToControlDistance = 5;
+            // 
             // BarTreatmentType
             // 
             this.BarTreatmentType.Caption = "Đối tượng";
             this.BarTreatmentType.ControlContainer = this.navBarGroupControlContainer2;
-            this.BarTreatmentType.Expanded = true;
             this.BarTreatmentType.GroupClientHeight = 56;
             this.BarTreatmentType.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
             this.BarTreatmentType.Name = "BarTreatmentType";
@@ -699,6 +821,15 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.BarServiceType.GroupClientHeight = 180;
             this.BarServiceType.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
             this.BarServiceType.Name = "BarServiceType";
+            // 
+            // navBarGroup1
+            // 
+            this.navBarGroup1.Caption = "Trạng thái";
+            this.navBarGroup1.ControlContainer = this.navBarGroupControlContainer4;
+            this.navBarGroup1.Expanded = true;
+            this.navBarGroup1.GroupClientHeight = 80;
+            this.navBarGroup1.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
+            this.navBarGroup1.Name = "navBarGroup1";
             // 
             // BtnRefresh
             // 
@@ -734,6 +865,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GridControlSereServ.ToolTipController = this.toolTipController;
             this.GridControlSereServ.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.GridViewSereServ});
+            this.GridControlSereServ.Click += new System.EventHandler(this.GridControlSereServ_Click);
             // 
             // GridViewSereServ
             // 
@@ -1296,6 +1428,16 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
+            this.navBarGroupControlContainer4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).EndInit();
+            this.layoutControl5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkCompleted.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkInProgress.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPending.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridControlSereServ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridViewSereServ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkGatherData)).EndInit();
@@ -1416,5 +1558,15 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
         private DevExpress.XtraEditors.CheckEdit chkGPBL;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
+        private DevExpress.XtraNavBar.NavBarGroup navBarGroup1;
+        private DevExpress.XtraNavBar.NavBarGroupControlContainer navBarGroupControlContainer4;
+        private DevExpress.XtraLayout.LayoutControl layoutControl5;
+        private DevExpress.XtraEditors.CheckEdit chkPending;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
+        private DevExpress.XtraEditors.CheckEdit chkCompleted;
+        private DevExpress.XtraEditors.CheckEdit chkInProgress;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup5;
     }
 }

@@ -72,7 +72,6 @@ namespace HIS.Desktop.Plugins.Library.EmrGenerate
             inputADO.Treatment.TREATMENT_CODE = treatmentCode;
             inputADO.DocumentName = documentName;
             inputADO.DocumentCode = documentCode;
-            //qtcode
             inputADO.IsOutsideTreatment = (treatmentCode == documentCode) ? (short?)1 : (short?)0;
             inputADO.MediOrgCode = GetHeinMediOrgCode();
             inputADO.DTI = String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}", ConfigSystems.URI_API_ACS, ConfigSystems.URI_API_EMR, ConfigSystems.URI_API_FSS, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetTokenData().TokenCode, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName(), ConfigSystems.URI_API_HPS);
@@ -99,7 +98,7 @@ namespace HIS.Desktop.Plugins.Library.EmrGenerate
                 inputADO.SignType = Inventec.Common.SignLibrary.SignType.USB;
             }
             inputADO.DlgOpenModuleConfig = OpenEmrConfig;
-
+            inputADO.DelegateIssuanceCer = this.DelegateIssuanceCer;
             inputADO.DlgCloseAfterSign = ActCheckedChangedCloseAfterSign;
             inputADO.IsCloseAfterSign = GetCheckedStateCloseAfterSign();
 
@@ -107,6 +106,7 @@ namespace HIS.Desktop.Plugins.Library.EmrGenerate
             inputADO.ActChangeUsingSignPad = ActChangeUsingSignPad;
             inputADO.ActSelectDevice = ActSelectDevice;
             inputADO.DeviceSignPadName = GetDeviceSignPadName();
+
 
             var room = roomId > 0 ? BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().Where(o => o.ID == roomId).FirstOrDefault() : null;
             inputADO.RoomCode = room != null ? room.ROOM_CODE : (RichEditorConfig.WorkingRoom != null ? RichEditorConfig.WorkingRoom.ROOM_CODE : "");
@@ -119,6 +119,30 @@ namespace HIS.Desktop.Plugins.Library.EmrGenerate
 
             return inputADO;
         }
+
+        private void DelegateIssuanceCer()
+        {
+            try
+            {
+                var module = new Inventec.Desktop.Common.Modules.Module();
+                module.ModuleLink = "EMR.Desktop.Plugins.EmrPatientCertificateRegister";
+                module.ModuleTypeId = Inventec.Desktop.Common.Modules.Module.MODULE_TYPE_ID__FORM;
+
+                List<object> _listObj = new List<object>();
+
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    module.ModuleLink,
+                    module.RoomId,
+                    module.RoomTypeId,
+                    _listObj
+                );
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error("Lỗi mở module phát hành chứng thư", ex);
+            }
+        }
+
 
         public Inventec.Common.SignLibrary.ADO.InputADO GenerateInputADOWithPrintTypeCode(string treatmentCode, string printTypeCode)
         {
@@ -201,6 +225,8 @@ namespace HIS.Desktop.Plugins.Library.EmrGenerate
                 inputADO.SignType = Inventec.Common.SignLibrary.SignType.USB;
             }
             inputADO.DlgOpenModuleConfig = OpenEmrConfig;
+            inputADO.DelegateIssuanceCer = this.DelegateIssuanceCer;
+
             var room = (roomId.HasValue && roomId > 0) ? BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_ROOM>().Where(o => o.ID == roomId).FirstOrDefault() : null;
             inputADO.RoomCode = room != null ? room.ROOM_CODE : (RichEditorConfig.WorkingRoom != null ? RichEditorConfig.WorkingRoom.ROOM_CODE : "");
             inputADO.RoomName = room != null ? room.ROOM_NAME : (RichEditorConfig.WorkingRoom != null ? RichEditorConfig.WorkingRoom.ROOM_NAME : "");

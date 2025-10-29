@@ -150,7 +150,14 @@ namespace MPS.Processor.Mps000007
                     SetSingleKey((new KeyValue(Mps000007ExtendSingleKey.HEIN_CARD_TO_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.PatyAlter.HEIN_CARD_TO_TIME.ToString()))));
                     SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.HEIN_CARD_ADDRESS, rdo.PatyAlter.ADDRESS));
                 }
-
+                if (rdo.ExamServiceReq != null)
+                {
+                    SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.SERVICE_REQ__NOTE, rdo.ExamServiceReq.NOTE));
+                }
+                if (rdo._currentPatient != null)
+                {
+                    SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.PATIENT__NOTE, rdo._currentPatient.NOTE));
+                }
                 SetSingleKey((new KeyValue(Mps000007ExtendSingleKey.LOGIN_USER_NAME, rdo.SingleKeyValue.Username)));
                 SetSingleKey((new KeyValue(Mps000007ExtendSingleKey.LOGIN_NAME, rdo.SingleKeyValue.LoginName)));
 

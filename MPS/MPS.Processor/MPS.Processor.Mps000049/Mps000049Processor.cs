@@ -51,7 +51,7 @@ namespace MPS.Processor.Mps000049
         public void SetBarcodeKey()
         {
             try
-            { 
+            {
                 Inventec.Common.BarcodeLib.Barcode barcodePatientCode = new Inventec.Common.BarcodeLib.Barcode(rdo.AggrExpMest.EXP_MEST_CODE);
                 barcodePatientCode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
                 barcodePatientCode.IncludeLabel = false;
@@ -110,20 +110,59 @@ namespace MPS.Processor.Mps000049
                 GetMedicineParent();
                 GetOtherPaySourceGroup();
                 objectTag.AddObjectData(store, "OtherPaySourceGroup", listOtherPaySource);
-                objectTag.AddObjectData(store, "ExpMestAggregates", rdo.listAdo);
+                List<Mps000049ADO> listAdoFilter = new List<Mps000049ADO>();
+                foreach (var item in rdo.listAdo)
+                {
+                    // Kiểm tra nếu MEDICINE_GROUP_NAME là null hoặc không chứa các từ khóa cụ thể
+                    string name = item.MEDICINE_GROUP_NAME?.Trim().ToUpper();
+                    if (string.IsNullOrEmpty(name) ||
+                        (!name.Contains("GÂY NGHIỆN") && !name.Contains("HƯỚNG THẦN") &&
+                         !name.Contains("LAO") && !name.Contains("KHÁNG SINH")))
+                    {
+                        // Tìm phần tử trong listMedicineType có MEDICINE_GROUP_NAME = "PHIẾU LĨNH THUỐC THƯỜNG"
+                        var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
+                        if (commonMedicineType != null)
+                        {
+                            // Gán MEDICINE_GROUP_ID từ commonMedicineType
+                            item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Không tìm thấy phần tử trong listMedicineType với MEDICINE_GROUP_NAME = 'PHIẾU LĨNH THUỐC THƯỜNG'");
+                        }
+                    }
+                    listAdoFilter.Add(item);
+                }
+                List<ExpMestADO> listParentFilter = new List<ExpMestADO>();
+                foreach (var item in listMedicineParent)
+                {
+                    string name = item.MEDICINE_GROUP_NAME?.Trim().ToUpper();
+                    if (string.IsNullOrEmpty(name) ||
+                        (!name.Contains("GÂY NGHIỆN") && !name.Contains("HƯỚNG THẦN") &&
+                         !name.Contains("LAO") && !name.Contains("KHÁNG SINH")))
+                    {
+                        var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
+                        if (commonMedicineType != null)
+                        {
+                            item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                        }
+                    }
+                    listParentFilter.Add(item);
+                }
+                objectTag.AddObjectData(store, "ExpMestAggregates", listAdoFilter.OrderBy(o => o.MEDICINE_TYPE_NAME).ToList());
                 objectTag.AddObjectData(store, "ExpMests", this.ExpMestADOs);
                 //Bổ sung key gom theo lô
                 objectTag.AddObjectData(store, "ExpMestsSplit", this.ExpMestADOsSplit);
                 objectTag.AddObjectData(store, "MedicineUseForms", medicineUseForms);
                 objectTag.AddObjectData(store, "MedicineGroup", listMedicineType);
-                objectTag.AddObjectData(store, "MedicineParent", listMedicineParent);
+                objectTag.AddObjectData(store, "MedicineParent", listParentFilter);
 
                 objectTag.AddRelationship(store, "ExpMestAggregates", "ExpMests", new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" }, new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" });
 
                 objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMestsSplit", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
                 objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMestAggregates", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
                 objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMests", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
-
+                objectTag.AddRelationship(store, "MedicineGroup", "MedicineParent", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
                 objectTag.AddRelationship(store, "MedicineUseForms", "ExpMests", "MEDICINE_USE_FORM_CODE", "MEDICINE_USE_FORM_CODE");
                 objectTag.AddRelationship(store, "MedicineUseForms", "ExpMestAggregates", "MEDICINE_USE_FORM_CODE", "MEDICINE_USE_FORM_CODE");
                 objectTag.AddRelationship(store, "MedicineGroup", "ExpMestAggregates", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
@@ -182,7 +221,7 @@ namespace MPS.Processor.Mps000049
         {
             try
             {
-                
+
                 if (rdo._ExpMests_Print != null && rdo._ExpMests_Print.Count > 0)
                 {
                     var minTime = rdo._ExpMests_Print.Min(p => p.TDL_INTRUCTION_TIME ?? 0);
@@ -268,10 +307,42 @@ namespace MPS.Processor.Mps000049
             {
                 if (ExpMestADOs != null && ExpMestADOs.Count > 0)
                 {
-                    var group = ExpMestADOs.GroupBy(o => new { o.MEDICINE_GROUP_ID, o.MEDICINE_GROUP_CODE, o.MEDICINE_GROUP_NAME });
+                    var group = ExpMestADOs
+                        .GroupBy(o =>
+                        {
+                            string name = (o.MEDICINE_GROUP_NAME ?? "").Trim().ToUpper();
+                            if (name.Contains("GÂY NGHIỆN"))
+                            {
+                                if (name.Contains("CHỨA DƯỢC CHẤT GÂY NGHIỆN"))
+                                    return "PHIẾU LĨNH THUỐC GÂY NGHIỆN Ở DẠNG PHỐI HỢP";
+                                else
+                                    return "PHIẾU LĨNH THUỐC GÂY NGHIỆN";
+                            }
+                            else if (name.Contains("HƯỚNG THẦN"))
+                            {
+                                return "PHIẾU LĨNH THUỐC HƯỚNG THẦN";
+                            }
+                            else if (name.Contains("LAO"))
+                            {
+                                return "PHIẾU LĨNH THUỐC ĐIỀU TRỊ LAO";
+                            }
+                            else if (name.Contains("KHÁNG SINH"))
+                            {
+                                return "PHIẾU LĨNH THUỐC KHÁNG SINH";
+                            }
+                            else
+                            {
+                        // Gom tất cả thuốc còn lại vào 1 nhóm duy nhất
+                        return "PHIẾU LĨNH THUỐC THƯỜNG";
+                            }
+                        })
+                        .OrderBy(g => g.Key);
+
                     foreach (var item in group)
                     {
-                        listMedicineType.Add(item.ToList().First());
+                        var firstItem = item.First();
+                        firstItem.MEDICINE_GROUP_NAME = item.Key; // Gán lại tên nhóm cho đúng loại phiếu
+                        listMedicineType.Add(firstItem);
                     }
                 }
             }
@@ -280,14 +351,31 @@ namespace MPS.Processor.Mps000049
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private void GetOtherPaySourceGroup()
+        {
+            try
+            {
+                if (ExpMestADOs != null && ExpMestADOs.Count > 0)
+                {
+                    var group = ExpMestADOs.GroupBy(o => new { o.OTHER_PAY_SOURCE_ID, o.OTHER_PAY_SOURCE_CODE, o.OTHER_PAY_SOURCE_NAME });
+                    foreach (var item in group)
+                    {
+                        listOtherPaySource.Add(item.ToList().First());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void GetMedicineParent()
         {
             try
             {
                 if (ExpMestADOs != null && ExpMestADOs.Count > 0)
                 {
-                    var group = ExpMestADOs.GroupBy(o => new { o.MEDICINE_PARENT_ID });
+                    var group = ExpMestADOs.GroupBy(o => new { o.MEDICINE_PARENT_ID }).OrderBy(g => g.First().MEDICINE_PARENT_NAME);
                     foreach (var item in group)
                     {
                         listMedicineParent.Add(item.ToList().First());
@@ -296,9 +384,10 @@ namespace MPS.Processor.Mps000049
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);                
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         void ProcessListADO()
         {
@@ -341,7 +430,7 @@ namespace MPS.Processor.Mps000049
                                 var grexp = exp.GroupBy(g => g.TDL_PATIENT_ID).ToList();
                                 foreach (var item in grexp)
                                 {
-                                    var lst = gr .Where(o => item.Select(s => s.ID).Contains(o.EXP_MEST_ID ?? 0)).ToList();
+                                    var lst = gr.Where(o => item.Select(s => s.ID).Contains(o.EXP_MEST_ID ?? 0)).ToList();
 
                                     ExpMestADO ado = new ExpMestADO(rdo.AggrExpMest, lst, rdo._MedicineTypes, rdo.ConfigMps49._ExpMestSttId__Approved, rdo.ConfigMps49._ExpMestSttId__Exported, rdo.ConfigMps49.PatientTypeId__BHYT, item.First());
                                     ExpMestADOs.Add(ado);
@@ -396,9 +485,9 @@ namespace MPS.Processor.Mps000049
                                 break;
                             case 5:
                                 dataMedis = dataMedis
-                                    .OrderBy(p => p.MEDICINE_TYPE_NUM_ORDER == null ? 1 : 0) 
-                                    .ThenBy(p => p.MEDICINE_TYPE_NUM_ORDER)                  
-                                    .ThenBy(p => p.MEDICINE_TYPE_NAME)                       
+                                    .OrderBy(p => p.MEDICINE_TYPE_NUM_ORDER == null ? 1 : 0)
+                                    .ThenBy(p => p.MEDICINE_TYPE_NUM_ORDER)
+                                    .ThenBy(p => p.MEDICINE_TYPE_NAME)
                                     .ToList();
                                 break;
                         }
@@ -408,12 +497,12 @@ namespace MPS.Processor.Mps000049
                     #region Group Split
                     var GroupsSplit = query.GroupBy(g => new { g.MEDICINE_ID, g.CONCENTRA }).Select(p => p.ToList()).ToList();
                     ExpMestADOsSplit.AddRange(from r in GroupsSplit
-                                       select new Mps000049ADO(rdo.AggrExpMest,
-                                           r,
-                                           rdo._MedicineTypes,
-                                           rdo.ConfigMps49._ExpMestSttId__Approved,
-                                           rdo.ConfigMps49._ExpMestSttId__Exported,
-                                           rdo.ConfigMps49.PatientTypeId__BHYT));
+                                              select new Mps000049ADO(rdo.AggrExpMest,
+                                                  r,
+                                                  rdo._MedicineTypes,
+                                                  rdo.ConfigMps49._ExpMestSttId__Approved,
+                                                  rdo.ConfigMps49._ExpMestSttId__Exported,
+                                                  rdo.ConfigMps49.PatientTypeId__BHYT));
                     #endregion
                 }
 
@@ -594,24 +683,7 @@ namespace MPS.Processor.Mps000049
             }
             return result;
         }
-        private void GetOtherPaySourceGroup()
-        {
-            try
-            {
-                if (ExpMestADOs != null && ExpMestADOs.Count > 0)
-                {
-                    var group = ExpMestADOs.GroupBy(o => new { o.OTHER_PAY_SOURCE_ID, o.OTHER_PAY_SOURCE_CODE, o.OTHER_PAY_SOURCE_NAME });
-                    foreach (var item in group)
-                    {
-                        listOtherPaySource.Add(item.ToList().First());
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+
 
         public override string ProcessPrintLogData()
         {

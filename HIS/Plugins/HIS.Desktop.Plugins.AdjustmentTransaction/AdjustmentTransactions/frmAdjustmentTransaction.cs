@@ -524,7 +524,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 virEditAmountCol.VisibleIndex = 8;
                 virEditAmountCol.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Decimal;
                 virEditAmountCol.Format = new DevExpress.Utils.FormatInfo();
-                virEditAmountCol.Format.FormatString = "#,##0";
+                virEditAmountCol.Format.FormatString = "#,##0.00";
                 virEditAmountCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.SereServTreeColumns.Add(virEditAmountCol);
 

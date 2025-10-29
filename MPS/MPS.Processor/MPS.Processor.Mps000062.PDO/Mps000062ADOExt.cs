@@ -199,10 +199,13 @@ namespace MPS.Processor.Mps000062.PDO
         //New
         public string MATERIAL___DATA { get; set; }
         public string MATERIAL_HTU___DATA { get; set; }
+        public string MATERIAL_HTU_UNIT___DATA { get; set; }
         public string MATERIAL_DuTru___DATA { get; set; } // vật tư dự trù
         public string MATERIAL_DuTru_HTU___DATA { get; set; }
+        public string MATERIAL_DuTru_HTU_UNIT___DATA { get; set; }
         public string MATERIAL_THDT___DATA { get; set; } // vật tư thực hiện dự trù
         public string MATERIAL_THDT_HTU___DATA { get; set; } // vật tư thực hiện dự trù
+        public string MATERIAL_THDT_HTU_UNIT___DATA { get; set; } 
         /// <summary>
         /// Liều 1 thang x " + DAY_COUNT+ TUTORIAL_REMEDY
         /// </summary>
