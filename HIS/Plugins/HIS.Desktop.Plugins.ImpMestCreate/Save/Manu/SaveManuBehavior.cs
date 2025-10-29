@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraPrinting.Native;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Plugins.ImpMestCreate.ADO;
 using Inventec.Common.Adapter;
@@ -41,6 +42,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
         long DocumentDate { get; set; }
         bool IsShowMessDocument = false;
         bool IsAllowDuplicateDocument = false;
+        decimal HeinLimitPrice { get; set; }
         HIS_IMP_MEST _ImpMestUp { get; set; }
 
         internal SaveManuBehavior(CommonParam param,
@@ -58,6 +60,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
                 roomId,
                 resultADO)
         {
+            this.HeinLimitPrice = ucImpMestCreate.spinHeinLimitPrice.Value;
             this.Deliverer = ucImpMestCreate.txtDeliverer.Text;
             this.DocumentPrice = ucImpMestCreate.spinDocumentPrice.Value;
             this.DocumentNumber = ucImpMestCreate.txtDocumentNumber.Text;
@@ -83,6 +86,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
                 this.InitBase();
 
                 HisImpMestManuSDO inputImpMestSDO = new HisImpMestManuSDO();
+
                 inputImpMestSDO.ImpMest = this._ImpMestUp != null ? this._ImpMestUp : this.ImpMest;
                 inputImpMestSDO.ManuMaterials = this.MaterialWithPatySDOs;
                 inputImpMestSDO.ManuMedicines = this.MedicineWithPatySDOs;

@@ -69,12 +69,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.cboInformationBid = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.spinHeinLimitPrice = new DevExpress.XtraEditors.SpinEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.cboInformationBid = new DevExpress.XtraEditors.ComboBoxEdit();
             this.SpPricingMaxReuseCount = new DevExpress.XtraEditors.SpinEdit();
             this.spnTemperature = new DevExpress.XtraEditors.SpinEdit();
             this.checkInOutBid = new DevExpress.XtraEditors.CheckEdit();
@@ -173,6 +174,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
             this.txtDeliverer = new DevExpress.XtraEditors.TextEdit();
             this.txtDocumentNumber = new DevExpress.XtraEditors.TextEdit();
@@ -254,6 +256,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutCanImpAmount = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem36 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciGoiThau = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBidNumber = new DevExpress.XtraLayout.LayoutControlItem();
@@ -299,8 +302,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cboInformationBid.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinHeinLimitPrice.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboInformationBid.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpPricingMaxReuseCount.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spnTemperature.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkInOutBid.Properties)).BeginInit();
@@ -444,6 +448,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutCanImpAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGoiThau)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBidNumber)).BeginInit();
@@ -489,6 +494,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.spinHeinLimitPrice);
             this.layoutControl1.Controls.Add(this.cboInformationBid);
             this.layoutControl1.Controls.Add(this.SpPricingMaxReuseCount);
             this.layoutControl1.Controls.Add(this.spnTemperature);
@@ -573,25 +579,21 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // cboInformationBid
+            // spinHeinLimitPrice
             // 
-            this.cboInformationBid.Enabled = false;
-            this.cboInformationBid.Location = new System.Drawing.Point(537, 361);
-            this.cboInformationBid.MenuManager = this.barManager1;
-            this.cboInformationBid.Name = "cboInformationBid";
-            this.cboInformationBid.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboInformationBid.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.cboInformationBid.Properties.Items.AddRange(new object[] {
-            "VT thường",
-            "VT áp thầu",
-            "VT tự sản xuất",
-            "Vật tư trước ngày tt 14/2020"});
-            this.cboInformationBid.Size = new System.Drawing.Size(157, 20);
-            this.cboInformationBid.StyleController = this.layoutControl1;
-            this.cboInformationBid.TabIndex = 79;
-            this.cboInformationBid.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboInformationBid_ButtonClick);
+            this.spinHeinLimitPrice.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinHeinLimitPrice.Location = new System.Drawing.Point(352, 384);
+            this.spinHeinLimitPrice.MenuManager = this.barManager1;
+            this.spinHeinLimitPrice.Name = "spinHeinLimitPrice";
+            this.spinHeinLimitPrice.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinHeinLimitPrice.Size = new System.Drawing.Size(94, 20);
+            this.spinHeinLimitPrice.StyleController = this.layoutControl1;
+            this.spinHeinLimitPrice.TabIndex = 80;
             // 
             // barManager1
             // 
@@ -629,6 +631,26 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1320, 0);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 670);
+            // 
+            // cboInformationBid
+            // 
+            this.cboInformationBid.Enabled = false;
+            this.cboInformationBid.Location = new System.Drawing.Point(537, 361);
+            this.cboInformationBid.MenuManager = this.barManager1;
+            this.cboInformationBid.Name = "cboInformationBid";
+            this.cboInformationBid.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboInformationBid.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboInformationBid.Properties.Items.AddRange(new object[] {
+            "VT thường",
+            "VT áp thầu",
+            "VT tự sản xuất",
+            "Vật tư trước ngày tt 14/2020"});
+            this.cboInformationBid.Size = new System.Drawing.Size(157, 20);
+            this.cboInformationBid.StyleController = this.layoutControl1;
+            this.cboInformationBid.TabIndex = 79;
+            this.cboInformationBid.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboInformationBid_ButtonClick);
             // 
             // SpPricingMaxReuseCount
             // 
@@ -1603,7 +1625,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn6,
             this.gridColumn9,
             this.gridColumn11,
-            this.gridColumn12});
+            this.gridColumn12,
+            this.gridColumn14});
             this.gridViewImpMestDetail.GridControl = this.gridControlImpMestDetail;
             this.gridViewImpMestDetail.Name = "gridViewImpMestDetail";
             this.gridViewImpMestDetail.OptionsView.ColumnAutoWidth = false;
@@ -1795,7 +1818,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn_ImpMestDetail_ExpiredDate.Name = "gridColumn_ImpMestDetail_ExpiredDate";
             this.gridColumn_ImpMestDetail_ExpiredDate.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_ImpMestDetail_ExpiredDate.Visible = true;
-            this.gridColumn_ImpMestDetail_ExpiredDate.VisibleIndex = 10;
+            this.gridColumn_ImpMestDetail_ExpiredDate.VisibleIndex = 11;
             this.gridColumn_ImpMestDetail_ExpiredDate.Width = 64;
             // 
             // repositoryItemDtExpiredDate
@@ -1819,7 +1842,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 11;
+            this.gridColumn7.VisibleIndex = 12;
             // 
             // gridColumn13
             // 
@@ -1827,7 +1850,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn13.FieldName = "TT_THAU";
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 12;
+            this.gridColumn13.VisibleIndex = 13;
             this.gridColumn13.Width = 130;
             // 
             // gridColumn_ImpMestDetail_PackageNumber
@@ -1839,7 +1862,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn_ImpMestDetail_PackageNumber.FieldName = "PACKAGE_NUMBER";
             this.gridColumn_ImpMestDetail_PackageNumber.Name = "gridColumn_ImpMestDetail_PackageNumber";
             this.gridColumn_ImpMestDetail_PackageNumber.Visible = true;
-            this.gridColumn_ImpMestDetail_PackageNumber.VisibleIndex = 13;
+            this.gridColumn_ImpMestDetail_PackageNumber.VisibleIndex = 14;
             this.gridColumn_ImpMestDetail_PackageNumber.Width = 43;
             // 
             // repositoryItemTxtPackageNumber
@@ -1864,7 +1887,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 14;
+            this.gridColumn2.VisibleIndex = 15;
             this.gridColumn2.Width = 186;
             // 
             // gridColumn4
@@ -1874,7 +1897,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 15;
+            this.gridColumn4.VisibleIndex = 16;
             this.gridColumn4.Width = 80;
             // 
             // gridColumn5
@@ -1885,7 +1908,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 16;
+            this.gridColumn5.VisibleIndex = 17;
             this.gridColumn5.Width = 100;
             // 
             // gridColumn6
@@ -1895,7 +1918,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 17;
+            this.gridColumn6.VisibleIndex = 18;
             this.gridColumn6.Width = 80;
             // 
             // gridColumn9
@@ -1905,7 +1928,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.ToolTip = "Tên bảo hiểm y tế";
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 18;
+            this.gridColumn9.VisibleIndex = 19;
             this.gridColumn9.Width = 100;
             // 
             // gridColumn11
@@ -1916,7 +1939,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 19;
+            this.gridColumn11.VisibleIndex = 20;
             this.gridColumn11.Width = 100;
             // 
             // gridColumn12
@@ -1927,8 +1950,17 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 20;
+            this.gridColumn12.VisibleIndex = 21;
             this.gridColumn12.Width = 100;
+            // 
+            // gridColumn14
+            // 
+            this.gridColumn14.Caption = "Giá trần BHYT";
+            this.gridColumn14.FieldName = "HeinLimitPrice";
+            this.gridColumn14.Name = "gridColumn14";
+            this.gridColumn14.OptionsColumn.AllowEdit = false;
+            this.gridColumn14.Visible = true;
+            this.gridColumn14.VisibleIndex = 10;
             // 
             // repositoryItemMemoEdit1
             // 
@@ -2945,7 +2977,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.layoutImpPriceVat,
             this.layoutControlItem13,
             this.layoutCanImpAmount,
-            this.layoutControlItem32});
+            this.layoutControlItem32,
+            this.layoutControlItem36});
             this.layoutControlGroup3.Location = new System.Drawing.Point(244, 214);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -3047,7 +3080,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.layoutCanImpAmount.Name = "layoutCanImpAmount";
             this.layoutCanImpAmount.OptionsToolTip.ToolTip = "Số lượng khả nhập = Số lượng thầu - Tổng số lượng đã nhập trước đó + Số lượng điề" +
     "u tiết + Số lượng vượt thầu";
-            this.layoutCanImpAmount.Size = new System.Drawing.Size(203, 49);
+            this.layoutCanImpAmount.Size = new System.Drawing.Size(203, 24);
             this.layoutCanImpAmount.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutCanImpAmount.Text = "Khả nhập:";
             this.layoutCanImpAmount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -3069,6 +3102,20 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.layoutControlItem32.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem32.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem32.TextToControlDistance = 5;
+            // 
+            // layoutControlItem36
+            // 
+            this.layoutControlItem36.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem36.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem36.Control = this.spinHeinLimitPrice;
+            this.layoutControlItem36.Enabled = false;
+            this.layoutControlItem36.Location = new System.Drawing.Point(0, 167);
+            this.layoutControlItem36.Name = "layoutControlItem36";
+            this.layoutControlItem36.Size = new System.Drawing.Size(203, 25);
+            this.layoutControlItem36.Text = "Giá trần BHYT:";
+            this.layoutControlItem36.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem36.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem36.TextToControlDistance = 5;
             // 
             // layoutControlGroup4
             // 
@@ -3649,8 +3696,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.Load += new System.EventHandler(this.UCImpMestCreate_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.cboInformationBid.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinHeinLimitPrice.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboInformationBid.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpPricingMaxReuseCount.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spnTemperature.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkInOutBid.Properties)).EndInit();
@@ -3794,6 +3842,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutCanImpAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGoiThau)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBidNumber)).EndInit();
@@ -4071,5 +4120,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private CustomGridLookUpEditWithFilterMultiColumn cboDosageForm;
         private CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn2;
+        internal DevExpress.XtraEditors.SpinEdit spinHeinLimitPrice;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem36;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
     }
 }
