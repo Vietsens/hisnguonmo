@@ -21,7 +21,6 @@ namespace HIS.Desktop
     internal class HisConfigKeys
     {
         internal const string CONFIG_KEY__RUN_AUP_VERSION = "HIS.Desktop.AupVersion";
-        internal const string CONFIG_KEY__RUN_AUP_VERSION_NEW = "HIS.Aup.Version";
         internal const string CONFIG_KEY__RUN_AUP_BASE_URI = "HIS.Aup.BaseUri";
         internal const string KEY__MASTER_ADDRESS = "MOS.MASTER_ADDRESS";
         internal const string KEY__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";//Doi tuong BHYT
