@@ -24,8 +24,23 @@ using System.Threading.Tasks;
 
 namespace Inventec.Aup.Client.Base
 {
-    internal class ApiConsumerStore
+    public class ApiConsumerStore
     {
-        internal static Inventec.Common.WebApiClient.ApiConsumer AupConsumer { get { return new Inventec.Common.WebApiClient.ApiConsumer(AupConstant.BASE_URI, AupConstant.APP_CODE); } }
+        static Inventec.Common.WebApiClient.ApiConsumer aupConsumer;
+        public static Inventec.Common.WebApiClient.ApiConsumer AupConsumer
+        {
+            get
+            {
+                if (aupConsumer == null)
+                {
+                    aupConsumer = new Inventec.Common.WebApiClient.ApiConsumer(AupConstant.BASE_URI, AupConstant.APP_CODE);
+                }
+                return aupConsumer;
+            }
+            set
+            {
+                aupConsumer = value;
+            }
+        }
     }
 }
