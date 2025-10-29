@@ -533,14 +533,14 @@ namespace HIS.Desktop.Plugins.Register.Run
                     this.txtGenderCode.Text = genderDefault.GENDER_CODE;
                 }
                 var nationalDefault = HisConfigCFG.NationalBase;
-                if (nationalDefault != null)
+                if (nationalDefault != null && nationalDefault.IS_ACTIVE == 1)
                 {
                     this.cboNational.EditValue = nationalDefault.NATIONAL_NAME;
                     this.txtNationalCode.Text = nationalDefault.NATIONAL_CODE;
                     this.mpsNationalCode = nationalDefault.MPS_NATIONAL_CODE;
                 }
                 var ethnicDefault = HisConfigCFG.EthinicBase;
-                if (ethnicDefault != null)
+                if (ethnicDefault != null && ethnicDefault.IS_ACTIVE == 1)
                 {
                     this.cboEthnic.EditValue = ethnicDefault.ETHNIC_NAME;
                     this.txtEthnicCode.Text = ethnicDefault.ETHNIC_CODE;
@@ -2597,8 +2597,10 @@ namespace HIS.Desktop.Plugins.Register.Run
                     }
                     else
                     {
-                        var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().Where(o => o.NATIONAL_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
-                        var searchResult = (data != null && data.Count > 0) ? (data.Count == 1 ? data : data.Where(o => o.NATIONAL_CODE.ToUpper() == searchCode.ToUpper()).ToList()) : null;
+                        // Thêm điều kiện IS_ACTIVE == 1
+                        var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
+                            .Where(o => o.IS_ACTIVE == 1 && o.NATIONAL_CODE.ToLower().Contains(searchCode.ToLower()))
+                            .ToList(); var searchResult = (data != null && data.Count > 0) ? (data.Count == 1 ? data : data.Where(o => o.NATIONAL_CODE.ToUpper() == searchCode.ToUpper()).ToList()) : null;
                         if (searchResult != null && searchResult.Count == 1)
                         {
                             this.cboNational.EditValue = searchResult[0].NATIONAL_NAME;
@@ -2628,7 +2630,10 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     if (this.cboNational.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.SDA_NATIONAL ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().SingleOrDefault(o => o.NATIONAL_NAME == (this.cboNational.EditValue ?? "").ToString());
+                        // Thêm điều kiện IS_ACTIVE == 1
+                        SDA.EFMODEL.DataModels.SDA_NATIONAL ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
+                            .Where(o => o.IS_ACTIVE == 1)
+                            .SingleOrDefault(o => o.NATIONAL_NAME == (this.cboNational.EditValue ?? "").ToString());
                         if (ethnic != null)
                         {
                             this.txtNationalCode.Text = ethnic.NATIONAL_CODE;
@@ -2652,7 +2657,10 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     if (this.cboNational.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.SDA_NATIONAL data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().SingleOrDefault(o => o.NATIONAL_NAME == (this.cboNational.EditValue ?? "").ToString());
+                        // Thêm điều kiện IS_ACTIVE == 1
+                        SDA.EFMODEL.DataModels.SDA_NATIONAL data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
+                            .Where(o => o.IS_ACTIVE == 1)
+                            .SingleOrDefault(o => o.NATIONAL_NAME == (this.cboNational.EditValue ?? "").ToString());
                         if (data != null)
                         {
                             this.txtNationalCode.Text = data.NATIONAL_CODE;
@@ -2802,7 +2810,10 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     if (this.cboEthnic.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.SDA_ETHNIC ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().SingleOrDefault(o => o.ETHNIC_NAME == (this.cboEthnic.EditValue ?? "").ToString());
+                        // Thêm điều kiện IS_ACTIVE == 1
+                        SDA.EFMODEL.DataModels.SDA_ETHNIC ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>()
+                            .Where(o => o.IS_ACTIVE == 1)
+                            .SingleOrDefault(o => o.ETHNIC_NAME == (this.cboEthnic.EditValue ?? "").ToString());
                         if (ethnic != null)
                         {
                             this.txtEthnicCode.Text = ethnic.ETHNIC_CODE;
@@ -2831,7 +2842,10 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     if (this.cboEthnic.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.SDA_ETHNIC data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().SingleOrDefault(o => o.ETHNIC_NAME == (this.cboEthnic.EditValue ?? "").ToString());
+                        // Thêm điều kiện IS_ACTIVE == 1
+                        SDA.EFMODEL.DataModels.SDA_ETHNIC data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>()
+                            .Where(o => o.IS_ACTIVE == 1)
+                            .SingleOrDefault(o => o.ETHNIC_NAME == (this.cboEthnic.EditValue ?? "").ToString());
                         if (data != null)
                         {
                             this.txtEthnicCode.Text = data.ETHNIC_CODE;

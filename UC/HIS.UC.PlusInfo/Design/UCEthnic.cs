@@ -166,7 +166,7 @@ namespace HIS.UC.PlusInfo.Design
                     }
                     else
                     {
-                        var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).Where(o => o.ETHNIC_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
+                        var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1 && o.ETHNIC_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
                         var searchResult = (data != null && data.Count > 0) ? (data.Count == 1 ? data : data.Where(o => o.ETHNIC_CODE.ToUpper() == searchCode.ToUpper()).ToList()) : null;
                         if (searchResult != null && searchResult.Count == 1)
                         {
@@ -195,7 +195,7 @@ namespace HIS.UC.PlusInfo.Design
             {
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
-                    SDA.EFMODEL.DataModels.SDA_ETHNIC ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).SingleOrDefault(o => o.ETHNIC_NAME == (this.cboEthnic.EditValue ?? "").ToString());
+                    SDA.EFMODEL.DataModels.SDA_ETHNIC ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).SingleOrDefault(o => o.ETHNIC_NAME == (this.cboEthnic.EditValue ?? "").ToString());
                     if (ethnic != null)
                     {
                         this.txtEthnicCode.Text = ethnic.ETHNIC_CODE;
@@ -218,7 +218,7 @@ namespace HIS.UC.PlusInfo.Design
                 {
                     if (this.cboEthnic.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.SDA_ETHNIC data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).SingleOrDefault(o => o.ETHNIC_NAME == (this.cboEthnic.EditValue ?? "").ToString());
+                        SDA.EFMODEL.DataModels.SDA_ETHNIC data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).SingleOrDefault(o => o.ETHNIC_NAME == (this.cboEthnic.EditValue ?? "").ToString());
                         if (data != null)
                         {
                             this.txtEthnicCode.Text = data.ETHNIC_CODE;
