@@ -95,7 +95,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         Dictionary<string, V_HIS_MEDI_CONTRACT_METY> dicContractMety = new Dictionary<string, V_HIS_MEDI_CONTRACT_METY>();
         Dictionary<string, V_HIS_MEDI_CONTRACT_MATY> dicContractMaty = new Dictionary<string, V_HIS_MEDI_CONTRACT_MATY>();
 
-        V_HIS_MEDI_CONTRACT_METY MedicalContractMety = new V_HIS_MEDI_CONTRACT_METY();
+        V_HIS_MEDI_CONTRACT_METY MedicalContractMety = new V_HIS_MEDI_CONTRACT_METY();   
         V_HIS_MEDI_CONTRACT_MATY MedicalContractMaty = new V_HIS_MEDI_CONTRACT_MATY();
 
         List<V_HIS_MEDI_STOCK> listMediStock = new List<V_HIS_MEDI_STOCK>();
@@ -2251,6 +2251,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 {
                     this.currrentServiceAdo.medicineUseFormId = Inventec.Common.TypeConvert.Parse.ToInt64(this.cboMedicineUseForm.EditValue.ToString());
                 }
+                /// bổ sung  HEIN_LIMIT_PRICE 
+                this.currrentServiceAdo.HeinLimitPrice = spinHeinLimitPrice.Value;
 
                 this.currrentServiceAdo.CanImpAmount = spinCanImpAmount.Value;
                 this.currrentServiceAdo.IMP_AMOUNT = spinImpAmount.Value;
@@ -3711,7 +3713,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     }
                     else
                     {
-                        xtraTabControlMain.SelectedTabPage = xtraTabPageMaterial;
+                        xtraTabControlMain.SelectedTabPage = xtraTabPageMaterial;      
                     }
 
                     ChangeColorMedicine(this.currrentServiceAdo);
@@ -3737,7 +3739,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     this.txtSoDangKy.Enabled = true;
                                     this.SpMaxReuseCount.Enabled = false;
                                     this.spinImpPriceVAT.Enabled = false;
-
+                                    this.spinHeinLimitPrice.Value = currrentServiceAdo.HeinLimitPrice;
                                     if (currrentServiceAdo.ImpVatRatio > 0)
                                     {
                                         spinImpVatRatio.Enabled = false;
@@ -3781,6 +3783,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     this.txtSoDangKy.Enabled = true;
                                     this.SpMaxReuseCount.Enabled = false;
                                     this.spinImpPriceVAT.Enabled = false;
+                                    this.spinHeinLimitPrice.Value = currrentServiceAdo.HeinLimitPrice;
 
                                     if (currrentServiceAdo.ImpVatRatio > 0)
                                     {
@@ -3900,7 +3903,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     }
 
                                 }
-
                             }
                         }
                         else
@@ -3927,6 +3929,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         spnTemperature.Value = this.currrentServiceAdo.TEMPERATURE ?? 0;
                     else
                         spnTemperature.EditValue = null;
+
+                    spinHeinLimitPrice.Value = this.currrentServiceAdo.HeinLimitPrice;
                     spinImpAmount.Value = this.currrentServiceAdo.IMP_AMOUNT;
                     spinImpPrice1.Value = this.currrentServiceAdo.IMP_PRICE;
                     spinImpPrice.Value = this.currrentServiceAdo.IMP_PRICE;
