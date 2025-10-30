@@ -40,6 +40,8 @@ namespace MPS.Processor.Mps000234
         List<ExpMestsGroupADO> GroupByTypeStock = new List<ExpMestsGroupADO>();
         List<ExpMestsGroupADO> GroupByTypeStockRoom = new List<ExpMestsGroupADO>();
         List<ExpMestsGroupADO> GroupByTypeStockRoomDetail = new List<ExpMestsGroupADO>();
+
+        List<ExpMestsGroupADO> GroupByTypeStockReqRoom = new List<ExpMestsGroupADO>();
         Mps000234PDO rdo;
         public Mps000234Processor(CommonParam param, PrintData printData)
             : base(param, printData)
@@ -97,9 +99,12 @@ namespace MPS.Processor.Mps000234
                     objectTag.AddObjectData(store, "MediStockTypeRoomDetail", this.GroupByTypeStockRoomDetail);
                     objectTag.AddObjectData(store, "RequestRoom", this.GroupByTypeStockRoom);
                     objectTag.AddObjectData(store, "MediStockType", this.GroupByTypeStock);
+                    objectTag.AddObjectData(store, "MediStockTypeReqRoom", this.GroupByTypeStockReqRoom);
                     objectTag.AddRelationship(store, "MediStockType", "RequestRoom", "MEDI_STOCK_TYPE", "MEDI_STOCK_TYPE");
                     objectTag.AddRelationship(store, "MediStockType", "MediStockTypeRoomDetail", "MEDI_STOCK_TYPE", "MEDI_STOCK_TYPE");
                     objectTag.AddRelationship(store, "RequestRoom", "MediStockTypeRoomDetail", "REQUEST_ROOM_CODE", "REQUEST_ROOM_CODE");
+
+                    objectTag.AddRelationship(store, "MediStockTypeReqRoom", "expMestMedicineIncludeOutStock", new string[] { "REQUEST_ROOM_CODE", "ADVISE" }, new string[] { "REQUEST_ROOM_CODE", "ADVISE" });   
                     result = true;
                 }
             }
@@ -247,6 +252,7 @@ namespace MPS.Processor.Mps000234
                     foreach (var item in rdo.expMestMedicineIncludeOutStock)
                     {
                         ExpMestsGroupADO ado = new ExpMestsGroupADO(item);
+
                         ado.MEDI_STOCK_TYPE = ado.GetTypeGroup();
                         if (rdo.ListRoom != null && rdo.ListRoom.Count > 0)
                         {
@@ -266,6 +272,40 @@ namespace MPS.Processor.Mps000234
                             ado.MEDI_STOCK_NAME = stock.MEDI_STOCK_NAME;
                         }
 
+                        if (rdo.ListServiceReq != null && rdo.ListServiceReq.Count > 0)
+                        {
+                            var serviceReq = rdo.ListServiceReq.FirstOrDefault(o => o.ID == item.TDL_SERVICE_REQ_ID);
+                            if (serviceReq != null)
+                            {
+                                ado.REQUEST_LOGINNAME = serviceReq.REQUEST_LOGINNAME;
+                                ado.REQUEST_USER_TITLE = serviceReq.REQUEST_USER_TITLE;
+                                ado.REQUEST_USERNAME = serviceReq.REQUEST_USERNAME;
+                                ado.ICD_CODE = serviceReq.ICD_CODE ?? "";
+                                ado.ICD_NAME = serviceReq.ICD_NAME ?? "";
+                                ado.ADVISE = serviceReq.ADVISE ?? "";
+                                item.ADVISE = serviceReq.ADVISE ?? "";
+                                if (rdo.ListAcsUser != null && rdo.ListAcsUser.Count > 0)
+                                {
+                                    var user = rdo.ListAcsUser.FirstOrDefault(o => o.LOGINNAME == serviceReq.REQUEST_LOGINNAME);
+                                    if (user != null)
+                                    {
+                                        ado.MOBILE = user.MOBILE;
+                                    }
+                                }
+                                if (rdo.ListRoom != null && rdo.ListRoom.Count > 0)
+                                {
+                                    var room = rdo.ListRoom.FirstOrDefault(o => o.ID == serviceReq.REQUEST_ROOM_ID);
+                                    if (room != null)
+                                    {
+                                        ado.REQUEST_ROOM_CODE = room.ROOM_CODE;
+                                        ado.REQUEST_ROOM_NAME = room.ROOM_NAME;
+                                        item.REQUEST_ROOM_NAME = room.ROOM_NAME;
+                                        item.REQUEST_ROOM_CODE = room.ROOM_CODE;
+                                    }
+                                }
+                            }
+                        }
+
                         GroupByTypeStockRoomDetail.Add(ado);
                     }
 
@@ -273,7 +313,9 @@ namespace MPS.Processor.Mps000234
                     GroupByTypeStockRoom = GroupByTypeStockRoomDetail.GroupBy(o => new { o.MEDI_STOCK_TYPE, o.REQUEST_ROOM_CODE }).Select(s => s.First()).ToList();
 
                     // Gom theo loai kho
-                    GroupByTypeStock = GroupByTypeStockRoom.GroupBy(o => o.MEDI_STOCK_TYPE).Select(s => s.First()).ToList();
+                    GroupByTypeStock = GroupByTypeStockRoom.GroupBy(o => new { o.MEDI_STOCK_TYPE} ).Select(s => s.First()).ToList();
+
+                    GroupByTypeStockReqRoom = GroupByTypeStockRoomDetail.GroupBy(o => new { o.REQUEST_ROOM_CODE, o.ADVISE }).Select(s => s.First()).ToList();
                 }
             }
             catch (Exception ex)
