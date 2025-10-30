@@ -276,6 +276,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 this.txtConcentra.Text = medicine.CONCENTRA;
                 this.txtHeinServiceBHYTName.Text = medicine.HEIN_SERVICE_BHYT_NAME;
                 this.txtTenHoatChatBHYT.Text = medicine.ACTIVE_INGR_BHYT_NAME;
+                this.txtGiaTranBhyt.Text = medicine.HEIN_LIMIT_PRICE.ToString();
                 if (medicine.MEDICINE_IS_STAR_MARK == 1)
                 {
                     this.chkMedicineIsStarMark.CheckState = CheckState.Checked;
@@ -394,6 +395,9 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 result.CONCENTRA = txtConcentra.Text;
                 result.HEIN_SERVICE_BHYT_NAME = txtHeinServiceBHYTName.Text;
                 result.ACTIVE_INGR_BHYT_NAME = txtTenHoatChatBHYT.Text;
+                result.HEIN_LIMIT_PRICE = string.IsNullOrWhiteSpace(txtGiaTranBhyt.Text)
+                ? (decimal?)null
+                : Convert.ToDecimal(txtGiaTranBhyt.Text.Trim());
                 if (chkMedicineIsStarMark.CheckState == CheckState.Checked)
                 {
                     result.MEDICINE_IS_STAR_MARK = 1;

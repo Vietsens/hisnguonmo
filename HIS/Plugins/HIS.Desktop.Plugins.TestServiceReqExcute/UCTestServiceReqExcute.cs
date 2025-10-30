@@ -1255,6 +1255,8 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                 positionHandle = -1;
                 if (!dxValidationProvider1.Validate())
                     return;
+                if (!ValidateSampleTimeVsInstruction())
+                    return;
 
                 int length = Encoding.UTF8.GetByteCount(txtValueRangeIntoPopup.Text);
                 long configKey = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(AppConfigKeys.HIS_DESKTOP_PLUGINS_TEST_CHECKVALUEMAXLENGOPTION));
@@ -1699,6 +1701,38 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
             }
         }
 
+        private bool ValidateSampleTimeVsInstruction()
+        {
+            try
+            {
+                // Chỉ kiểm tra khi option = "1" (lấy mẫu)
+                if (AppConfigKeys.NgayThYlOption == "1")
+                {
+                    // dtTime là control nhập thời gian LẤY MẪU
+                    if (dtTime.EditValue != null)
+                    {
+                        var sampleDt = Convert.ToDateTime(dtTime.EditValue);
+                        long sampleTime = Inventec.Common.TypeConvert.Parse.ToInt64(sampleDt.ToString("yyyyMMddHHmmss"));
+                        long instructionTime = this.currentServiceReq?.INTRUCTION_TIME ?? 0;
+
+                        if (instructionTime > 0 && sampleTime < instructionTime)
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show(
+                                "Thời gian LẤY MẪU nhỏ hơn thời gian Y LỆNH. Vui lòng cập nhật lại.",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return false;
+                        }
+                    }
+                    // Nếu không nhập SampleTime thì vẫn cho lưu (để backend còn xử lý fallback)
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
+        }
+
         private void btnPrint_Click(object sender, EventArgs e)
         {
             try
@@ -1716,6 +1750,9 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
             try
             {
                 if (!CheckResultFinish())
+                    return;
+
+                if (!ValidateSampleTimeVsInstruction())
                     return;
 
                 if (!ValidTimeReturn())
@@ -1908,7 +1945,7 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
         }
 
         public void Print()
-        {
+        {           
             try
             {
                 btnPrint_Click(null, null);
@@ -3418,7 +3455,7 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
+        }                    
 
         private void repositoryItemGridLookUp_Machine_Closed(object sender, ClosedEventArgs e)
         {
