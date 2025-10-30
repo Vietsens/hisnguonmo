@@ -763,12 +763,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
             {
                 try
                 {
-                    if (HisConfigCFG.IsAutoCreateSaleExpMest
+                    if ((HisConfigCFG.IsAutoCreateSaleExpMest == "1" || HisConfigCFG.IsAutoCreateSaleExpMest == "2")
+                        && (!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet)
+                        && this.frmAssignPrescription.cboNhaThuoc.EditValue != null
+                        && this.IS_OUT_HOSPITAL == 1)
+                    {
+                        return true;
+                    }
+                    // Các trường hợp còn lại vẫn kiểm tra tồn như cũ
+                    if ((HisConfigCFG.IsAutoCreateSaleExpMest == "1" || HisConfigCFG.IsAutoCreateSaleExpMest == "2")
                         && (!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet)
                         && this.frmAssignPrescription.cboNhaThuoc.EditValue != null
                         && this.IS_OUT_HOSPITAL != 1)
                     {
-                        //Lay thuoc trong kho va kiem tra thuoc co con trong kho khong
                         decimal damount = AmountOutOfStock(this.ServiceId, (this.frmAssignPrescription.currentMedicineTypeADOForEdit.MEDI_STOCK_ID ?? 0));
                         if (damount <= 0)
                         {
@@ -779,13 +786,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.Amount), this.Amount)
                             + "__" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => amountAdded), amountAdded)
                             + "__" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => damount), damount)
-                             + "__" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => frmAssignPrescription.currentMedicineTypeADOForEdit.AMOUNT), frmAssignPrescription.currentMedicineTypeADOForEdit.AMOUNT)
-                            );
+                            + "__" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => frmAssignPrescription.currentMedicineTypeADOForEdit.AMOUNT), frmAssignPrescription.currentMedicineTypeADOForEdit.AMOUNT)
+                        );
                         Rectangle buttonBounds = new Rectangle(frmAssignPrescription.txtMediMatyForPrescription.Bounds.X, frmAssignPrescription.txtMediMatyForPrescription.Bounds.Y, frmAssignPrescription.txtMediMatyForPrescription.Bounds.Width, frmAssignPrescription.txtMediMatyForPrescription.Bounds.Height);
-                        if ((this.Amount *  (frmAssignPrescription.intructionTimeSelecteds != null && frmAssignPrescription.intructionTimeSelecteds.Count > 0 ?frmAssignPrescription.intructionTimeSelecteds.Count() : 1) + amountAdded) > (frmAssignPrescription.currentMedicineTypeADOForEdit.AMOUNT ?? 0))
+                        if ((this.Amount * (frmAssignPrescription.intructionTimeSelecteds != null && frmAssignPrescription.intructionTimeSelecteds.Count > 0 ? frmAssignPrescription.intructionTimeSelecteds.Count() : 1) + amountAdded) > (frmAssignPrescription.currentMedicineTypeADOForEdit.AMOUNT ?? 0))
                         {
                             MessageBox.Show("Thuốc vật tư trong kho không đủ khả dụng");
                             return false;
+                        }                       
+                        bool isExceed = this.Amount > frmAssignPrescription.currentMedicineTypeADOForEdit.BK_AMOUNT
+                                        && (this.Amount - frmAssignPrescription.currentMedicineTypeADOForEdit.BK_AMOUNT + amountAdded) > (frmAssignPrescription.currentMedicineTypeADOForEdit.AMOUNT ?? 0);
+                        if (isExceed)
+                        {
+                            if (HisConfigCFG.IsExceedAvailableOutStock)
+                            {
+                                MessageBox.Show("Thuốc vật tư trong kho không đủ khả dụng");
+                                return false;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Thuốc vật tư trong kho không đủ khả dụng. Bạn vẫn có thể kê đơn vượt tồn theo cấu hình.");
+                                return true;
+                            }
                         }
                     }
                 }
@@ -799,7 +821,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
                     valid = false;
                     Inventec.Common.Logging.LogSystem.Warn(ex);
                 }
-
                 if (!String.IsNullOrEmpty(paramWarn.GetMessage()))
                     MessageManager.Show(paramWarn.GetMessage());
             }
@@ -807,7 +828,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-
             return valid;
         }
 
