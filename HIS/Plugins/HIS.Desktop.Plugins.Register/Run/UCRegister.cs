@@ -2599,7 +2599,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     {
                         // Thêm điều kiện IS_ACTIVE == 1
                         var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
-                            .Where(o => o.IS_ACTIVE == 1 && o.NATIONAL_CODE.ToLower().Contains(searchCode.ToLower()))
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && o.NATIONAL_CODE.ToLower().Contains(searchCode.ToLower()))
                             .ToList(); var searchResult = (data != null && data.Count > 0) ? (data.Count == 1 ? data : data.Where(o => o.NATIONAL_CODE.ToUpper() == searchCode.ToUpper()).ToList()) : null;
                         if (searchResult != null && searchResult.Count == 1)
                         {
@@ -2632,7 +2632,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     {
                         // Thêm điều kiện IS_ACTIVE == 1
                         SDA.EFMODEL.DataModels.SDA_NATIONAL ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
-                            .Where(o => o.IS_ACTIVE == 1)
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
                             .SingleOrDefault(o => o.NATIONAL_NAME == (this.cboNational.EditValue ?? "").ToString());
                         if (ethnic != null)
                         {
@@ -2659,7 +2659,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     {
                         // Thêm điều kiện IS_ACTIVE == 1
                         SDA.EFMODEL.DataModels.SDA_NATIONAL data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
-                            .Where(o => o.IS_ACTIVE == 1)
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE)
                             .SingleOrDefault(o => o.NATIONAL_NAME == (this.cboNational.EditValue ?? "").ToString());
                         if (data != null)
                         {

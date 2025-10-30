@@ -201,7 +201,7 @@ namespace HIS.UC.PlusInfo.Design
                         var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
                             .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.NATIONAL_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
                         var searchResult = (data != null && data.Count > 0) ? (data.Count == 1 ? data : data.Where(o => o.NATIONAL_CODE.ToUpper() == searchCode.ToUpper()).ToList()) : null;
-                        if (searchResult != null && searchResult.Count == 1)
+                        if (searchResult != null && searchResult.Count == 1 && searchResult[0].IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                         {
                             this.cboNational.EditValue = searchResult[0].NATIONAL_NAME;
                             this.txtNationalCode.Text = searchResult[0].NATIONAL_CODE;
