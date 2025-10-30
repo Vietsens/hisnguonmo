@@ -33,10 +33,10 @@
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="ACS.EFMODEL">
-      <HintPath>..\..\..\..\His Test\histest\x64\ReferencedAssemblies\ACS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\ACS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="ACS.Filter">
-      <HintPath>..\..\..\..\His Test\histest\x64\ReferencedAssemblies\ACS.Filter.dll</HintPath>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\ACS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="ACS.SDO">
       <HintPath>..\..\..\lib\ACS\ACS.SDO.dll</HintPath>
@@ -61,13 +61,13 @@
     <Reference Include="DevExpress.XtraRichEdit.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="HID.EFMODEL">
-      <HintPath>..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HID.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HID.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="HID.Filter">
-      <HintPath>..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HID.Filter.dll</HintPath>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HID.Filter.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.LocalData">
-      <HintPath>..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -620,7 +620,9 @@
       <DependentUpon>UCPlusInfo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

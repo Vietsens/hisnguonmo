@@ -66,7 +66,8 @@ namespace HIS.Desktop.Modules.WaitingForm
                     File.Delete(System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, "AutoUpdater.config"));
                 }
 
-                if (!String.IsNullOrEmpty(Inventec.Aup.Utility.AupConstant.BASE_URI))
+                string aupBaseUri = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__RUN_AUP_BASE_URI);
+                if (!String.IsNullOrEmpty(Inventec.Aup.Utility.AupConstant.BASE_URI) || (!String.IsNullOrEmpty(aupBaseUri)))
                     RunAutoUpdate();
                 else
                 {
@@ -105,15 +106,17 @@ namespace HIS.Desktop.Modules.WaitingForm
             }
         }
 
-        void ProcessUpdateWithAUPv2()
+        private void ProcessUpdateWithAUPv2()
         {
             try
             {
+                string aupBaseUri = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__RUN_AUP_BASE_URI);
+                Inventec.Common.Logging.LogSystem.Info("Có cấu hinh địa chỉ aup trong cấu hình hệ thống, toàn viện sẽ dùng chung cấu hình này. CONFIG_KEY__RUN_AUP_BASE_URI:" + aupBaseUri + " | Cấu hình trong HIS.exe.config sẽ không được dùng: AupConstant.BASE_URI:" + AupConstant.BASE_URI);
                 string cmdLnUpdate = "";
 
                 cmdLnUpdate += "|exePath|" + (HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory);
                 cmdLnUpdate += "|cfgServerConfigUrl|" + "Upload/" + processToEnd + "/AutoupdateService.xml";
-                cmdLnUpdate += "|cfgAupUri|" + AupConstant.BASE_URI;
+                cmdLnUpdate += "|cfgAupUri|" + (!String.IsNullOrEmpty(aupBaseUri) ? aupBaseUri : AupConstant.BASE_URI);
                 cmdLnUpdate += "|preThreadName|" + processToEnd;
                 cmdLnUpdate += "|command|" + command;
 
@@ -122,9 +125,6 @@ namespace HIS.Desktop.Modules.WaitingForm
                 startInfo.FileName = updaterV2;
                 startInfo.Arguments = "\"" + cmdLnUpdate + "\"";
                 Process.Start(startInfo);
-
-                //Inventec.Common.Logging.LogSystem.Info("Application.Exit");
-                //Application.Exit();
             }
             catch (Exception ex)
             {

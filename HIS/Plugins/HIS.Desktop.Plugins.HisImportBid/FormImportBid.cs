@@ -674,6 +674,8 @@ namespace HIS.Desktop.Plugins.HisImportBid
                     {
                         medicineType.HOUR_LIFESPAN = null;
                     }
+                    medicineType.HEIN_LIMIT_PRICE = medicineTypeImport.HEIN_LIMIT_PRICE;
+                    medicineType.DOSAGE_FORM = medicineTypeImport.DOSAGE_FORM;
 
                     this.ListDataImport.Add(medicineType);
                 }
@@ -844,7 +846,8 @@ namespace HIS.Desktop.Plugins.HisImportBid
                     medicineType.MONTH_LIFESPAN_STR = materialTypeImport.MONTH_LIFESPAN_STR;
                     medicineType.DAY_LIFESPAN_STR = materialTypeImport.DAY_LIFESPAN_STR;
                     medicineType.HOUR_LIFESPAN_STR = materialTypeImport.HOUR_LIFESPAN_STR;
-
+                    medicineType.HEIN_LIMIT_PRICE = materialTypeImport.HEIN_LIMIT_PRICE;
+                    medicineType.DOSAGE_FORM = materialTypeImport.DOSAGE_FORM;
                     long month_lifespan = 0, day_lifespan = 0, hour_lifespan = 0;
 
                     if (long.TryParse(materialTypeImport.MONTH_LIFESPAN_STR, out month_lifespan) && !String.IsNullOrEmpty(materialTypeImport.MONTH_LIFESPAN_STR))
@@ -1366,7 +1369,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                                 bidMedicineType.DAY_LIFESPAN = item.DAY_LIFESPAN;
                                 bidMedicineType.HOUR_LIFESPAN = item.HOUR_LIFESPAN;
                                 bidMedicineType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
-
+                                bidMedicineType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE;
                                 bidModel.HIS_BID_MEDICINE_TYPE.Add(bidMedicineType);
                             }
                             else if (item.Type == VATTU)
@@ -1400,7 +1403,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                                 bidMaterialType.DAY_LIFESPAN = item.DAY_LIFESPAN;
                                 bidMaterialType.HOUR_LIFESPAN = item.HOUR_LIFESPAN;
                                 bidMaterialType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
-
+                                bidMaterialType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE;
                                 bidModel.HIS_BID_MATERIAL_TYPE.Add(bidMaterialType);
                             }
                             else if (item.Type == MAU)

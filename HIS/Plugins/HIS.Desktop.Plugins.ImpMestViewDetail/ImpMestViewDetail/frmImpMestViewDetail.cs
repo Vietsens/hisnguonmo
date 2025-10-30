@@ -642,6 +642,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                             impMestMedicine.PriceVP = datamedi.IMP_PRICE * (1 + datamedi.IMP_VAT_RATIO);
                         }
                     }
+                    impMestMedicine.HEIN_LIMIT_PRICE = datamedi?.HEIN_LIMIT_PRICE;
                     impMestMedicines.Add(impMestMedicine);
                 }
 
@@ -772,7 +773,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                             ImpMestMaterialSDODetail.PriceVP = dataMater.IMP_PRICE * (1 + dataMater.IMP_VAT_RATIO);
                         }
                     }
-
+                    ImpMestMaterialSDODetail.HEIN_LIMIT_PRICE = dataMater?.HEIN_LIMIT_PRICE;
                     impMestMaterials.Add(ImpMestMaterialSDODetail);
                 }
 

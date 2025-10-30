@@ -6326,17 +6326,36 @@ namespace MPS.Processor.Mps000062
                         int dem = 0;
                         foreach (var item1 in materials)
                         {
+                            var left = Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(item1.MATERIAL_TYPE_NAME, FontStyle.Bold);
+
+                            // Số lượng + đơn vị (zero-pad như thuốc)
+                            var amt = (item1.AMOUNT >= 1 && item1.AMOUNT < 10)
+                                ? "0" + Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.AMOUNT)
+                                : Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.AMOUNT) + "";
+                            var right = amt + " " + item1.SERVICE_UNIT_NAME;
+
+                            // Layout 2 cột như thuốc
+                            var row = string.Format(
+                                "<table><tr>" +
+                                "<td style=\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td>" +
+                                "<td style=\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td>" +
+                                "</tr></table>", left, right);
+
                             item.MATERIAL___DATA += item1.MATERIAL_TYPE_NAME + "  x " + Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.AMOUNT);
                             item.MATERIAL_HTU___DATA += item1.MATERIAL_TYPE_NAME + "  x " + Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.AMOUNT);
+                            item.MATERIAL_HTU_UNIT___DATA += row;
                             if (!string.IsNullOrEmpty(item1.HTU_TEXT))
                             {
                                 item.MATERIAL_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 item.MATERIAL_HTU___DATA += item1.HTU_TEXT;
+                                item.MATERIAL_HTU_UNIT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                item.MATERIAL_HTU_UNIT___DATA += item1.HTU_TEXT;
                             }
                             if (dem < materials.Count - 1)
                             {
                                 item.MATERIAL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 item.MATERIAL_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                item.MATERIAL_HTU_UNIT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                             }
                             dem++;
                         }
@@ -6355,22 +6374,36 @@ namespace MPS.Processor.Mps000062
                                 int dem = 0;
                                 foreach (var item1 in materialDuTrus)
                                 {
+
                                     if (dem == 0 && ReqDuTru.USE_TIME != null)
                                     {
                                         item.MATERIAL_DuTru___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Đơn vật tư dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(ReqDuTru.USE_TIME ?? 0), FontStyle.Bold);
                                         item.MATERIAL_DuTru___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
 
                                         item.MATERIAL_DuTru_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Đơn vật tư dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(ReqDuTru.USE_TIME ?? 0), FontStyle.Bold);
+                                        item.MATERIAL_DuTru_HTU_UNIT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Đơn vật tư dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(ReqDuTru.USE_TIME ?? 0), FontStyle.Bold);
                                         item.MATERIAL_DuTru_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                        item.MATERIAL_DuTru_HTU_UNIT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                     }
 
+                                    var left = Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(item1.MATERIAL_TYPE_NAME, FontStyle.Bold);
+                                    var amt = (item1.AMOUNT >= 1 && item1.AMOUNT < 10)
+                                        ? "0" + Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.AMOUNT)
+                                        : Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.AMOUNT) + "";
+                                    var right = amt + " " + item1.SERVICE_UNIT_NAME;
+
+                                    var row = string.Format(
+                                        "<table><tr>" +
+                                        "<td style=\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td>" +
+                                        "<td style=\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td>" +
+                                        "</tr></table>", left, right);
                                     item.MATERIAL_DuTru___DATA += item1.MATERIAL_TYPE_NAME + "  x " + Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.AMOUNT);
                                     //if (dem < materialDuTrus.Count - 1)
                                     //{
                                     item.MATERIAL_DuTru___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                     //}
-
                                     item.MATERIAL_DuTru_HTU___DATA += item1.MATERIAL_TYPE_NAME + "  x " + Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.AMOUNT);
+                                    item.MATERIAL_DuTru_HTU_UNIT___DATA += row;
                                     if (!string.IsNullOrEmpty(item1.HTU_TEXT))
                                     {
                                         item.MEDICINES_INFUSION_THDT_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
@@ -6379,6 +6412,7 @@ namespace MPS.Processor.Mps000062
                                     //if (dem < materialDuTrus.Count - 1)
                                     //{
                                     item.MATERIAL_DuTru_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                    item.MATERIAL_DuTru_HTU_UNIT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                     //}
                                     dem++;
                                 }
@@ -6407,9 +6441,21 @@ namespace MPS.Processor.Mps000062
                                         item.MATERIAL_THDT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
 
                                         item.MATERIAL_THDT_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Thực hiện đơn vật tư dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(ReqTHDT.USE_TIME ?? 0), FontStyle.Bold);
+                                        item.MATERIAL_THDT_HTU_UNIT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Thực hiện đơn vật tư dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(ReqTHDT.USE_TIME ?? 0), FontStyle.Bold);
                                         item.MATERIAL_THDT_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                        item.MATERIAL_THDT_HTU_UNIT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                     }
+                                    var left = Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(item1.MATERIAL_TYPE_NAME, FontStyle.Bold);
+                                    var amt = (item1.AMOUNT >= 1 && item1.AMOUNT < 10)
+                                        ? "0" + Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.AMOUNT)
+                                        : Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.AMOUNT) + "";  
+                                    var right = amt + " " + item1.SERVICE_UNIT_NAME;
 
+                                    var row = string.Format(
+                                        "<table><tr>" +
+                                        "<td style=\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td>" +
+                                        "<td style=\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td>" +
+                                        "</tr></table>", left, right);
                                     item.MATERIAL_THDT___DATA += item1.MATERIAL_TYPE_NAME + "  x " + Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.AMOUNT);
                                     //if (dem < materialTHDTs.Count - 1)
                                     //{
@@ -6419,14 +6465,18 @@ namespace MPS.Processor.Mps000062
 
 
                                     item.MATERIAL_THDT_HTU___DATA += item1.MATERIAL_TYPE_NAME + "  x " + Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.AMOUNT);
+                                    item.MATERIAL_THDT_HTU_UNIT___DATA += row;
                                     if (!string.IsNullOrEmpty(item1.HTU_TEXT))
                                     {
                                         item.MATERIAL_THDT_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                        item.MATERIAL_THDT_HTU_UNIT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                         item.MATERIAL_THDT_HTU___DATA += item1.HTU_TEXT;
+                                        item.MATERIAL_THDT_HTU_UNIT___DATA += item1.HTU_TEXT;
                                     }
                                     //if (dem < materialTHDTs.Count - 1)
                                     //{
                                     item.MATERIAL_THDT_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                    item.MATERIAL_THDT_HTU_UNIT___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                     //}
                                     dem++;
                                 }
@@ -6610,7 +6660,7 @@ namespace MPS.Processor.Mps000062
                                 finalText += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                             }
 
-                            item.SERVICE_RATION___DATA = finalText;
+                            item.SERVICE_RATION___DATA = finalText; 
                         }
                     }
 

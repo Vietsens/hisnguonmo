@@ -178,6 +178,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
 
                     medicineType.IMP_PRICE = Inventec.Common.TypeConvert.Parse.ToDecimal(medicineTypeImport.IMP_PRICE.ToString());
                     medicineType.AMOUNT = Inventec.Common.TypeConvert.Parse.ToDecimal(medicineTypeImport.AMOUNT.ToString());
+                    medicineType.HEIN_LIMIT_PRICE = medicineTypeImport.HEIN_LIMIT_PRICE;
+                    medicineType.DOSAGE_FORM = medicineTypeImport.DOSAGE_FORM;
                     if (!string.IsNullOrEmpty(medicineTypeImport.BATCH_DIVISION_CODE))
                     {
                         medicineType.BATCH_DIVISION_CODE = medicineTypeImport.BATCH_DIVISION_CODE;
@@ -433,7 +435,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     }
 
                     medicineType.EXPIRED_DATE = materialTypeImport.EXPIRED_DATE;
-
+                    medicineType.HEIN_LIMIT_PRICE = materialTypeImport.HEIN_LIMIT_PRICE;
+                    medicineType.DOSAGE_FORM = materialTypeImport.DOSAGE_FORM;
                     if (!String.IsNullOrWhiteSpace(materialTypeImport.SUPPLIER_CODE))
                     {
                         var supplier = Base.GlobalConfig.ListSupplier.FirstOrDefault(o => o.SUPPLIER_CODE == materialTypeImport.SUPPLIER_CODE);

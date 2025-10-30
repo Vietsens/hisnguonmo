@@ -294,6 +294,8 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 cbo.ForceInitialize();
                 cbo.Properties.View.Columns.Clear();
                 cbo.Properties.PopupFormSize = new Size(300, 250);
+                cbo.Properties.View.OptionsView.ColumnAutoWidth = false;
+
 
                 DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cbo.Properties.View.Columns.AddField("LOGINNAME");
                 aColumnCode.Caption = "Mã";
@@ -305,7 +307,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 aColumnName.Caption = "Tên";
                 aColumnName.Visible = true;
                 aColumnName.VisibleIndex = 2;
-                aColumnName.Width = 100;
+                aColumnName.Width = 200;
 
                 DevExpress.XtraGrid.Columns.GridColumn aColumnNameUnsign = cbo.Properties.View.Columns.AddField("EMPLOYEE_NAME_UNSIGN");
                 aColumnNameUnsign.Visible = true;
