@@ -410,12 +410,14 @@ namespace HIS.Desktop.Plugins.BidCreate
                     }
 
                     medicineType.CONCENTRA = medicineTypeImport.CONCENTRA;
+                    medicineType.HEIN_LIMIT_PRICE = medicineTypeImport.HEIN_LIMIT_PRICE;
+                    medicineType.DOSAGE_FORM = medicineTypeImport.DOSAGE_FORM;
                     //if (String.IsNullOrWhiteSpace(medicineType.CONCENTRA))
                     //{
                     //    medicineType.ErrorDescriptions.Add("Không có nồng độ/hàm lượng");
                     //}
                     //else 
-                        if (Encoding.UTF8.GetByteCount(medicineType.CONCENTRA) > 1000)
+                    if (Encoding.UTF8.GetByteCount(medicineType.CONCENTRA) > 1000)
                     {
                         medicineType.ErrorDescriptions.Add("Nồng độ/hàm lượng vượt quá độ dài cho phép (1000)");
                     }
@@ -676,7 +678,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     medicineType.Type = Base.GlobalConfig.VATTU;
                     medicineType.IdRow = setIdRow(this.ListMedicineTypeAdoProcess);
                     medicineType.BID_NUM_ORDER = materialTypeImport.BID_NUM_ORDER;
-
+                    medicineType.HEIN_LIMIT_PRICE = materialTypeImport.HEIN_LIMIT_PRICE;
                     if (String.IsNullOrWhiteSpace(medicineType.BID_NUM_ORDER))
                     {
                         medicineType.ErrorDescriptions.Add("Không có số thứ tự thầu");
