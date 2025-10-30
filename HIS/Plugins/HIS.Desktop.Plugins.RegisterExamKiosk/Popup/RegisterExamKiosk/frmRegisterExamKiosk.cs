@@ -648,7 +648,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
 
                     if (cboNational.EditValue == null || string.IsNullOrEmpty(cboNational.EditValue.ToString()))
                     {
-                        var nationalKey = BackendDataWorker.Get<SDA_NATIONAL>().FirstOrDefault(o => o.NATIONAL_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.NATIONAL_CODE__BASE));
+                        var nationalKey = BackendDataWorker.Get<SDA_NATIONAL>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.NATIONAL_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.NATIONAL_CODE__BASE));
                         if (nationalKey != null)
                             cboNational.EditValue = nationalKey.NATIONAL_NAME;
                     }
@@ -660,7 +660,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
 
                     if (cboEthenic.EditValue == null || string.IsNullOrEmpty(cboEthenic.EditValue.ToString()))
                     {
-                        var ethnicKey = BackendDataWorker.Get<SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.ETHNIC_CODE__BASE));
+                        var ethnicKey = BackendDataWorker.Get<SDA_ETHNIC>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.ETHNIC_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.ETHNIC_CODE__BASE));
                         if (ethnicKey != null)
                             cboEthenic.EditValue = ethnicKey.ETHNIC_CODE;
                     }
@@ -778,13 +778,13 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                 }
                 hisCardPatientSdo.CareerId = Int64.Parse(cboCareer.EditValue.ToString());
                 hisCardPatientSdo.NationalName = cboNational.EditValue.ToString();
-                var nal = BackendDataWorker.Get<SDA_NATIONAL>().FirstOrDefault(o => o.NATIONAL_NAME == cboNational.EditValue.ToString());
+                var nal = BackendDataWorker.Get<SDA_NATIONAL>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.NATIONAL_NAME == cboNational.EditValue.ToString());
                 hisCardPatientSdo.NationalCode = nal != null ? nal.NATIONAL_CODE : "";
                 hisCardPatientSdo.MpsNationalCode = nal != null ? nal.MPS_NATIONAL_CODE : "";
                 if (cboEthenic.EditValue != null)
                 {
                     hisCardPatientSdo.EthnicCode = cboEthenic.EditValue.ToString();
-                    var eth = BackendDataWorker.Get<SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_CODE == cboEthenic.EditValue.ToString());
+                    var eth = BackendDataWorker.Get<SDA_ETHNIC>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.ETHNIC_CODE == cboEthenic.EditValue.ToString());
                     hisCardPatientSdo.EthnicName = eth != null ? eth.ETHNIC_NAME : "";
                 }
                 PrimaryTypeId = -1;

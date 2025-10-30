@@ -77,6 +77,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.ADO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.ModuleExt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
@@ -90,14 +93,13 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig">
       <HintPath>..\HIS.Desktop.Plugins.Library.RegisterConfig\bin\Debug\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -113,7 +115,7 @@
     </Reference>
     <Reference Include="HIS.UC.AddressCombo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.AddressCombo.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.AddressCombo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.KskContract">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.KskContract\HIS.UC.KskContract.dll</HintPath>
@@ -136,32 +138,34 @@
     </Reference>
     <Reference Include="HIS.UC.UCHeniInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\UC\HIS.UC.UCHeniInfo\bin\Debug\HIS.UC.UCHeniInfo.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCHeniInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCImageInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCImageInfo\HIS.UC.UCImageInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCOtherServiceReqInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\UC\HIS.UC.UCOtherServiceReqInfo\bin\Debug\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCPatientRaw, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="HIS.UC.UCPatientRaw">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCRelativeInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.UC.UCRelativeInfo.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCRelativeInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCServiceRoomInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\UC\HIS.UC.UCServiceRoomInfo\bin\Debug\HIS.UC.UCServiceRoomInfo.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCServiceRoomInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCTransPati">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCTransPati\HIS.UC.UCTransPati.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.SDA_RS">
+      <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.SDA_RS\IMSys.DbConfig.SDA_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
@@ -264,7 +268,7 @@
       <HintPath>..\..\..\..\lib\WCF\Inventec.WCF\Service\.Net 4.5\Inventec.WCFService.ReadServiceCodeService\Inventec.WCFService.ReadServiceCodeService.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCalterBhyt\Microsoft.QualityTools.Testing.Fakes.dll</HintPath>
@@ -553,10 +557,6 @@
     <Compile Include="ValidationRule\PatientDob__ValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
-      <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
-      <Name>HIS.Desktop.ADO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
