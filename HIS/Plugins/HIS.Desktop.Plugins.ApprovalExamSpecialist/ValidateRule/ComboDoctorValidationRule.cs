@@ -15,32 +15,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using Inventec.Aup.Utility;
+using HIS.Desktop.LibraryMessage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventec.Aup.Client.Base
+namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.ValidateRule
 {
-    public class ApiConsumerStore
+    class ComboDoctorValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
-        static Inventec.Common.WebApiClient.ApiConsumer aupConsumer;
-        public static Inventec.Common.WebApiClient.ApiConsumer AupConsumer
+        internal DevExpress.XtraEditors.GridLookUpEdit cbo;
+
+        public override bool Validate(System.Windows.Forms.Control control, object value)
         {
-            get
+            bool valid = false;
+            try
             {
-                if (aupConsumer == null)
+                if (cbo == null) return valid;
+                if (cbo.EditValue == null || cbo.Text == "")
                 {
-                    aupConsumer = new Inventec.Common.WebApiClient.ApiConsumer(AupConstant.BASE_URI, AupConstant.APP_CODE);
+                    ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);;
+                    ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                    return valid;
                 }
-                return aupConsumer;
+              
+                valid = true;
             }
-            set
+            catch (Exception ex)
             {
-                aupConsumer = value;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            return valid;
         }
     }
 }

@@ -1,4 +1,7 @@
 ﻿using DevExpress.Entity.Model.Metadata;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraTab;
 using EMR.SDO;
 using HIS.Desktop.ApiConsumer;
@@ -27,7 +30,7 @@ using System.Linq;
 using System.Windows.Forms;
 namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
 {
-    public partial class frmApprovalExamSpecialist : FormBase
+    public partial class frmApprovalExamSpecialist : HIS.Desktop.Utility.FormBase
     {
         MOS.EFMODEL.DataModels.HIS_TRACKING currentVHisTracking = null;
         MOS.EFMODEL.DataModels.HIS_SPECIALIST_EXAM currentVHisSpecialist = null;
@@ -55,6 +58,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
 
         V_HIS_SPECIALIST_EXAM currentSpecialistExam;
         private Common.RefeshReference delegateRefresher;
+        List<HIS_ICD> currentIcds;
         public frmApprovalExamSpecialist()
             : base(null)
         {
@@ -87,6 +91,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 this.ActiveControl = gridControl1;
                 this.SetCaptionByLanguageKey();
                 this.InitComboDoctor();
+                this.LoadDataToCombo();
                 AddUc();
                 gridViewTreatment.FocusedRowHandle = -1;
                 SetDefaultValueControl();
@@ -94,6 +99,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 if (this.currentSpecialistExam != null)
                 {
                     LoadDataSereServByTreatmentId(this.currentSpecialistExam);
+                    ShowHideBtnSave(this.currentSpecialistExam.IS_APPROVAL);
                 }
 
 
@@ -125,8 +131,10 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 txtNoiDungKham.Text = currentSpecialistExam.EXAM_EXECUTE_CONTENT;
                 txtYLenhKham.Text = currentSpecialistExam.EXAM_EXCUTE;
                 this.cboDoctor.EditValue = this.currentSpecialistExam.EXAM_EXECUTE_LOGINNAME;
+                this.cboIcds.EditValue = this.currentSpecialistExam.ICD_CODE;
                 SetValidateNoiDungKham();
                 SetValidateYLenhKham();
+                LoadIcdCauseToControl(currentSpecialistExam.ICD_SUB_CODE, currentSpecialistExam.ICD_TEXT);
             }
             catch (Exception ex)
             {
@@ -435,14 +443,23 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
         {
             try
             {
+                ValidationControl();
                 SetValidateNoiDungKham();
                 SetValidateYLenhKham();
-
+                var a = cboDoctor.EditValue;
                 if (!dxValidationProviderEditorInfo.Validate())
                 {
-                    MessageBox.Show("Vui lòng kiểm tra lại nội dung khám và y lệnh khám.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                    if (dxValidationProviderEditorInfo.GetInvalidControls().Contains(cboDoctor))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Vui lòng kiểm tra lại nội dung khám và y lệnh khám.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
                 }
+
                 positionHandleControl = -1;
                 CommonParam param = new CommonParam();
                 HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();
@@ -454,12 +471,18 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 datamapper.EXAM_EXCUTE = txtYLenhKham.Text != null ? txtYLenhKham.Text.Trim() : string.Empty;
                 datamapper.IS_APPROVAL = 1;
                 datamapper.REJECT_APPROVAL_REASON = null;
+                datamapper.ICD_CODE = cboIcds.EditValue != null ? cboIcds.EditValue.ToString() : null;
+                datamapper.ICD_NAME = cboIcds.Text != null ? cboIcds.Text.Trim() : null;
+                datamapper.ICD_SUB_CODE = txtCdPhu.Text != null ? txtCdPhu.Text.Trim() : null;
+                datamapper.ICD_TEXT = cboCdPhu.Text != null ? cboCdPhu.Text.Trim() : null;
+                datamapper.ROOM_ID = this.wkRoomId;
 
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, datamapper, param);
-
+                Inventec.Common.Logging.LogSystem.Info("Body : " + Inventec.Common.Logging.LogUtil.TraceData("rs", rs));
                 if (rs != null && this.delegateRefresher != null)
                 {
                     this.delegateRefresher();
+                    this.ShowHideBtnSave(rs.IS_APPROVAL);
                 }
 
                 MessageManager.Show(this, param, rs != null);
@@ -716,6 +739,38 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void cboIcds_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind == ButtonPredefines.Delete)
+            {
+                cboIcds.EditValue = null;
+                txtIcd.Text = "";
+                cboIcds.Properties.Buttons[1].Visible = false;
+            }
+        }
+
+        private void cboIcds_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboIcds.EditValue != null)
+                {
+                    cboIcds.Properties.Buttons[1].Visible = true;
+                    txtIcd.Text = cboIcds.EditValue.ToString();
+                }
+                else
+                {
+                    cboIcds.Properties.Buttons[1].Visible = false;
+                    txtIcd.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         int positionHandleControl = -1;
 
         private void SetCaptionByLanguageKey()
@@ -742,5 +797,324 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             }
         }
 
+        private void LoadDataToCombo()
+        {
+            try
+            {
+                this.currentIcds = BackendDataWorker.Get<HIS_ICD>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && p.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
+                DataToComboChuanDoanTD(cboIcds, this.currentIcds);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void DataToComboChuanDoanTD(GridLookUpEdit cbo, List<HIS_ICD> data)
+        {
+            try
+            {
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = "ICD_NAME";
+                cbo.Properties.ValueMember = "ICD_CODE";
+                cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cbo.Properties.ImmediatePopup = true;
+                cbo.ForceInitialize();
+                cbo.Properties.View.Columns.Clear();
+                cbo.Properties.PopupFormSize = new System.Drawing.Size(300, 250);
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cbo.Properties.View.Columns.AddField("ICD_CODE");
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 60;
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnName = cbo.Properties.View.Columns.AddField("ICD_NAME");
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 2;
+                aColumnName.Width = 100;
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnNameUnsign = cbo.Properties.View.Columns.AddField("ICD_NAME_UNSIGN");
+                aColumnNameUnsign.Visible = true;
+                aColumnNameUnsign.VisibleIndex = -1;
+                aColumnNameUnsign.Width = 100;
+
+                cbo.Properties.View.Columns["ICD_NAME_UNSIGN"].Width = 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtCdPhu_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    string seperate = ";";
+                    string strIcdNames = "";
+                    string strWrongIcdCodes = "";
+                    string[] periodSeparators = new string[1];
+                    periodSeparators[0] = seperate;
+                    string[] arrIcdExtraCodes = txtCdPhu.Text.Split(periodSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
+                    {
+                        var icdAlls = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_ICD>();
+                        foreach (var itemCode in arrIcdExtraCodes)
+                        {
+                            var icdByCode = icdAlls.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
+                            if (icdByCode != null && icdByCode.ID > 0)
+                            {
+                                strIcdNames += (seperate + icdByCode.ICD_NAME);
+                            }
+                            else
+                            {
+                                strWrongIcdCodes += (seperate + itemCode);
+                            }
+                        }
+                        strIcdNames += seperate;
+                        if (!String.IsNullOrEmpty(strWrongIcdCodes))
+                        {
+                            MessageManager.Show(String.Format("Không tìm thấy icd tương ứng với các mã sau: {0}", strWrongIcdCodes));
+                        }
+                    }
+                    cboCdPhu.Text = strIcdNames;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtCdPhu_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                string seperate = ";";
+                string strIcdNames = "";
+                string strWrongIcdCodes = "";
+                string[] periodSeparators = new string[1];
+                periodSeparators[0] = seperate;
+                string[] arrIcdExtraCodes = txtCdPhu.Text.Split(periodSeparators, StringSplitOptions.RemoveEmptyEntries);
+                if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
+                {
+                    var icdAlls = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_ICD>();
+                    foreach (var itemCode in arrIcdExtraCodes)
+                    {
+                        var icdByCode = icdAlls.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
+                        if (icdByCode != null && icdByCode.ID > 0)
+                        {
+                            strIcdNames += (seperate + icdByCode.ICD_NAME);
+                        }
+                        else
+                        {
+                            strWrongIcdCodes += (seperate + itemCode);
+                        }
+                    }
+                    strIcdNames += seperate;
+                    if (!String.IsNullOrEmpty(strWrongIcdCodes))
+                    {
+                        MessageManager.Show(String.Format("Không tìm thấy icd tương ứng với các mã sau: {0}", strWrongIcdCodes));
+                    }
+                }
+                cboCdPhu.Text = strIcdNames;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboCdPhu_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.F1)
+                {
+
+                    WaitingManager.Show();
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.SecondaryIcd").FirstOrDefault();
+                    if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.SecondaryIcd'");
+                    if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.SecondaryIcd' is not plugins");
+                    HIS.Desktop.ADO.SecondaryIcdADO secondaryIcdADO = new HIS.Desktop.ADO.SecondaryIcdADO(GetStringIcds, txtCdPhu.Text, cboCdPhu.Text);
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(secondaryIcdADO);
+                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null"); WaitingManager.Hide();
+                    ((Form)extenceInstance).Show(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboCdPhu_KeyDown(object sender, KeyEventArgs e)
+        {
+            //try
+            //{
+            //    if (e.KeyCode == Keys.Enter)
+            //    {
+            //        cboAccidentHurtType.SelectAll();
+            //        cboAccidentHurtType.Focus();
+            //        cboAccidentHurtType.ShowPopup();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Warn(ex);
+            //}
+        }
+
+        private void cboCdPhu_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                string seperate = ";";
+                string strIcdNames = "";
+                string strWrongIcdCodes = "";
+                string[] periodSeparators = new string[1];
+                periodSeparators[0] = seperate;
+                string[] arrIcdExtraCodes = txtCdPhu.Text.Split(periodSeparators, StringSplitOptions.RemoveEmptyEntries);
+                if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
+                {
+                    var icdAlls = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_ICD>();
+                    foreach (var itemCode in arrIcdExtraCodes)
+                    {
+                        var icdByCode = icdAlls.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
+                        if (icdByCode != null && icdByCode.ID > 0)
+                        {
+                            strIcdNames += (seperate + icdByCode.ICD_NAME);
+                        }
+                        else
+                        {
+                            strWrongIcdCodes += (seperate + itemCode);
+                        }
+                    }
+                    strIcdNames += seperate;
+                    if (!String.IsNullOrEmpty(strWrongIcdCodes))
+                    {
+                        MessageManager.Show(String.Format("Không tìm thấy icd tương ứng với các mã sau: {0}", strWrongIcdCodes));
+                    }
+                }
+                cboCdPhu.Text = strIcdNames;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void DataToComboChuanDoanTDPhu(GridLookUpEdit cbo, List<HIS_ICD> data)
+        {
+            try
+            {
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = "ICD_TEXT";
+                cbo.Properties.ValueMember = "ID";
+                cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cbo.Properties.ImmediatePopup = true;
+                cbo.ForceInitialize();
+                cbo.Properties.View.Columns.Clear();
+                cbo.Properties.PopupFormSize = new System.Drawing.Size(300, 250);
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cbo.Properties.View.Columns.AddField("ICD_SUB_CODE");
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 60;
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnName = cbo.Properties.View.Columns.AddField("ICD_TEXT");
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 2;
+                aColumnName.Width = 100;
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnNameUnsign = cbo.Properties.View.Columns.AddField("ICD_NAME_UNSIGN");
+                aColumnNameUnsign.Visible = true;
+                aColumnNameUnsign.VisibleIndex = -1;
+                aColumnNameUnsign.Width = 100;
+
+                cbo.Properties.View.Columns["ICD_NAME_UNSIGN"].Width = 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidationCboDoctor()
+        {
+            try
+            {
+                ComboDoctorValidationRule codeRule = new ComboDoctorValidationRule();
+                codeRule.cbo = cboDoctor;
+                dxValidationProviderEditorInfo.SetValidationRule(cboDoctor, codeRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ShowHideBtnSave(short? isShow)
+        {
+            try
+            {
+                if (isShow == null || isShow == 2)
+                {
+                    btnSave.Enabled = true;
+                }
+                else
+                {                    
+                    btnSave.Enabled = false;
+                    btnSave.AppearanceDisabled.BackColor = Color.LightGreen;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadIcdCauseToControl(string icdCode, string icdName)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(icdCode))
+                {
+                    txtCdPhu.Text = icdCode;
+                    cboCdPhu.Text = icdName;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void GetStringIcds(string delegateIcdCodes, string delegateIcdNames)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(delegateIcdNames))
+                {
+                    cboCdPhu.Text = delegateIcdNames;
+                }
+                if (!string.IsNullOrEmpty(delegateIcdCodes))
+                {
+                    txtCdPhu.Text = delegateIcdCodes;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

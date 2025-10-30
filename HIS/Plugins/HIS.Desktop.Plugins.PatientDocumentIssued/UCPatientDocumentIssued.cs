@@ -25,6 +25,7 @@ using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Columns;
+using DevExpress.XtraTreeList.Nodes;
 using EMR.EFMODEL.DataModels;
 using EMR.Filter;
 using EMR.SDO;
@@ -94,7 +95,9 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
         //
         int numEmrDocumentSelecteds = 0;
         bool IsExpand;
+        bool IsImport;
         string outPdfFile;
+        
         Dictionary<long, string> DicoutPdfFile;
         /// <summary>
         V_EMR_DOCUMENT VEmrDocumentRightMouseClick = new V_EMR_DOCUMENT();
@@ -735,6 +738,7 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
             try
             {
                 btnCodeFind.Text = typeCodeFind_InDate;
+             
                 cboOutOfHospital.Text = typeCodeFind_OutDate;
                 this.typeCodeFind_InDate = "Trong ngày";
                 this.typeCodeFind__KeyWork_InDate = this.typeCodeFind_InDate;
@@ -1097,14 +1101,45 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
         {
             try
             {
-                var data = (V_EMR_DOCUMENT)treeEmrDocument.GetDataRecordByNode(e.Node);
-                if (data != null)
+                TreeClickData = (V_EMR_DOCUMENT)treeEmrDocument.GetDataRecordByNode(e.Node);
+                if (TreeClickData != null)
                 {
                     WaitingManager.Show();
-                    frmViewEmrDocument frmErrorForm = new frmViewEmrDocument(data, this.currentModule);
+                    frmViewEmrDocument frmErrorForm = new frmViewEmrDocument(TreeClickData, this.currentModule);
                     frmErrorForm.ShowDialog();
-                    FillDataToGrid();
+                    if (!IsImport)
+
+                        FillDataToGrid();
+                    else
+                        ReloadGridImport();
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);  
+            }
+        }
+
+        private void ReloadGridImport()
+        {
+            try {
+                CommonParam param = new CommonParam();
+                EmrDocumentViewFilter filter = new EmrDocumentViewFilter();
+                filter.ID = TreeClickData.ID;
+                var EmrrDocument = new BackendAdapter(param).Get<List<V_EMR_DOCUMENT>>(RequestUriStore.V_EMR_DOCUMENT_GET, ApiConsumers.EmrConsumer, filter, param).FirstOrDefault();
+
+                foreach (var item in _ImportAdos)
+                {
+                    if (item.ID == EmrrDocument.ID)
+                    {
+                        item.PATIENT_CODE = EmrrDocument.PATIENT_CODE;
+                        item.SIGNERS = EmrrDocument.SIGNERS;
+                        break;
+                    }
+                }
+                treeEmrDocument.DataSource = new BindingList<EmrDocumentADO>(_ImportAdos);
+                treeEmrDocument.ExpandAll();
+
             }
             catch (Exception ex)
             {
@@ -1224,6 +1259,7 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
             try
             {
                 WaitingManager.Show();
+                IsImport = false;
                 FillDataToGrid();
                 WaitingManager.Hide();
             }
@@ -1736,10 +1772,13 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                 if (numEmrDocumentSelecteds > 0)
                 {
                     btnPrintAllCheck.Enabled = true;
+                    btnDown.Enabled = true;
                 }
                 else
                 {
                     btnPrintAllCheck.Enabled = false;
+                    btnDown.Enabled = false;
+
                 }
 
             }
@@ -2010,7 +2049,7 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
             if (File.Exists(fileName))
             {
                 saveFileDialog.Title = "Save File";
-                saveFileDialog.FileName = "IMPORT_EMR_DOCUMENT_FILTER ";
+                saveFileDialog.FileName = "IMPORT_EMR_DOCUMENT_FILTER";
                 saveFileDialog.DefaultExt = "xlsx";
                 saveFileDialog.Filter = "Excel files (*.xlsx)|All files (*.*)";
                 saveFileDialog.FilterIndex = 2;
@@ -2032,6 +2071,7 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
         private void btnImport_Click(object sender, EventArgs e)
         {
             try
+
             {
                 OpenFileDialog ofd = new OpenFileDialog();
                 ofd.Multiselect = false;
@@ -2054,7 +2094,9 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                             if (this._CurrentAdos != null && this._CurrentAdos.Count > 0)
                             {
                                 this._ImportAdos = new List<ADO.EmrDocumentADO>();
-
+                                if (bwLoadDocument != null && bwLoadDocument.IsBusy)
+                                    return;
+                                IsImport = true;
                                 bwLoadDocument.RunWorkerAsync();
                             }
 
@@ -2118,10 +2160,13 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                 {
                     SavePath = openFolder.FileName;
                     loadDictionary(listEmrDocument);
-                    bwDownLoadFile.RunWorkerAsync();
+                   
+                    loadingDownloadFile();
+                    //bwDownLoadFile.RunWorkerAsync();
 
                 }
                 #region Hien thi message thong bao
+
                 // MessageManager.ShowAlert(this ResourceLanguageManager.ThongBao, ResourceLanguageManager.TaiVeThanhCong);
                 #endregion
             }
@@ -2130,28 +2175,7 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void MergePdfFiles(List<string> inputFiles, string outputFile)
-        {
-            using (FileStream stream = new FileStream(outputFile, FileMode.Create))
-            {
-                var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(stream);
-                foreach (var file in inputFiles)
-                {
-                    using (var reader = new iTextSharp.text.pdf.PdfReader(file))
-                    {
-                        pdfConcat.AddPages(reader);
-                    }
-                }
-                pdfConcat.Close();
-            }
-        }
-
-        private string SanitizeFileName(string name)
-        {
-            foreach (char c in System.IO.Path.GetInvalidFileNameChars())
-                name = name.Replace(c, '_');
-            return name.Trim();
-        }
+        
 
         private void treeEmrDocument_MouseUp(object sender, MouseEventArgs e)
         {
@@ -2168,18 +2192,30 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                     {
                         hit.Column.OptionsColumn.AllowSort = false;
                         EmbeddedCheckBoxChecked(tree);
+                        numEmrDocumentSelecteds = tree.GetAllCheckedNodes().Count;
+
+                      
+                        bool hasSelection = numEmrDocumentSelecteds > 0;
+                        btnPrintAllCheck.Enabled = hasSelection;
+                        btnDown.Enabled = hasSelection;
+
                     }
                     else
                     {
                         hit.Column.OptionsColumn.AllowSort = true;
+                        
                     }
+
                 }
+
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        
 
         private void bwLoadDocument_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -2225,10 +2261,12 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
             DevExpress.XtraEditors.XtraMessageBox.Show("Import thành công");
         }
 
-        private void bwDownLoadFile_DoWork(object sender, DoWorkEventArgs e)
+        private void loadingDownloadFile()
         {
-            try
-            {
+            try {
+
+
+                WaitingManager.Show();
                 int opt = 0;
                 int.TryParse(HIS.Desktop.LocalStorage.EmrConfig.EmrConfigs.Get<string>("EMR.DOCUMENT.PRINT_USING_WARTERMARK.OPTION"), out opt);
                 bool showWatermark = false;
@@ -2251,7 +2289,6 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                 #region File Attach
                 int totalList = listEmrDocument.Count;
                 string filePath = "";
-
                 long key = 0;
                 foreach (var item in this.listEmrDocument)
                 {
@@ -2289,6 +2326,7 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                     filterAttachment.ORDER_DIRECTION = "DESC";
                     filterAttachment.ORDER_FIELD = "ID";
                     var apiResultAttachmentTmp = new BackendAdapter(param1).Get<List<EMR_ATTACHMENT>>("api/EmrAttachment/Get", ApiConsumers.EmrConsumer, filterAttachment, param1);
+                   
                     if (apiResultAttachmentTmp != null && apiResultAttachmentTmp.Count > 0)
                     {
                         apiResultAttachment.AddRange(apiResultAttachmentTmp);
@@ -2385,19 +2423,22 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                                 }
                             }
 
+                            // Replace this block inside bwDownLoadFile_DoWork
                             Dictionary<long, string> lst = new Dictionary<long, string>();
                             int dem = 0;
                             foreach (var item in lstURL)
                             {
                                 if (dem != 0)
                                 {
-                                    if (lst.ContainsKey(item.Key) == false)
+                                    if (lst.ContainsKey(item.Key) == false && item.Value != null)
                                     {
                                         lst.Add(item.Key, item.Value);
                                     }
                                 }
                                 dem++;
                             }
+
+
                             if (lst != null && lst.Count > 0)
                             {
                                 InsertPage1(streamSource, streamSourceStr, lst, filePath);
@@ -2542,24 +2583,41 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void bwDownLoadFile_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            try
-            {
+                WaitingManager.Show();
+               WaitingManager.Hide();
                 DevExpress.XtraEditors.XtraMessageBox.Show("Tải file thành công");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+
         }
+
+        //private void bwDownLoadFile_DoWork(object sender, DoWorkEventArgs e)
+        //{
+        //    try
+        //    {
+               
+                
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
+
+        //private void bwDownLoadFile_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        DevExpress.XtraEditors.XtraMessageBox.Show("Tải file thành công");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+       // }
 
 
         /// <summary>

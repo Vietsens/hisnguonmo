@@ -338,6 +338,7 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
             // 
             // btnDown
             // 
+            this.btnDown.Enabled = false;
             this.btnDown.Location = new System.Drawing.Point(2, 552);
             this.btnDown.Name = "btnDown";
             this.btnDown.Size = new System.Drawing.Size(64, 22);
@@ -1451,8 +1452,8 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued
             // 
             this.bwDownLoadFile.WorkerReportsProgress = true;
             this.bwDownLoadFile.WorkerSupportsCancellation = true;
-            this.bwDownLoadFile.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwDownLoadFile_DoWork);
-            this.bwDownLoadFile.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwDownLoadFile_RunWorkerCompleted);
+            //this.bwDownLoadFile.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwDownLoadFile_DoWork);
+            //this.bwDownLoadFile.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwDownLoadFile_RunWorkerCompleted);
             // 
             // UCPatientDocumentIssued
             // 
