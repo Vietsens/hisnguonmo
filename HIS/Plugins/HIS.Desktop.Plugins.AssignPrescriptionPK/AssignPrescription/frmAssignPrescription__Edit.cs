@@ -168,7 +168,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     var mediStock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(o => o.ROOM_ID == this.oldServiceReq.EXECUTE_ROOM_ID).FirstOrDefault();
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HisConfigCFG.IsAutoCreateSaleExpMest), HisConfigCFG.IsAutoCreateSaleExpMest) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediStock), mediStock));
 
-                    if (HisConfigCFG.IsAutoCreateSaleExpMest && mediStock != null && mediStock.IS_BUSINESS == GlobalVariables.CommonNumberTrue)
+                    if ((HisConfigCFG.IsAutoCreateSaleExpMest == "1") && mediStock != null && mediStock.IS_BUSINESS == GlobalVariables.CommonNumberTrue)
                     {
                         if (rdOpionGroup.Properties.Items.Count > 1 && rdOpionGroup.Properties.Items[1].Enabled)
                         {

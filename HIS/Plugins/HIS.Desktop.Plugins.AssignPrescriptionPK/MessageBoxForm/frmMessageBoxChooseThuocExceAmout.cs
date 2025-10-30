@@ -69,7 +69,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
                     btnChonThuocCungHoatChat.Visible = false;
                 }
 
-                if (!HisConfigCFG.IsAutoCreateSaleExpMest && !HisConfigCFG.IsExceedAvailableOutStock)
+                if (!(HisConfigCFG.IsAutoCreateSaleExpMest == "1") && !HisConfigCFG.IsExceedAvailableOutStock)
                 {
                     btnGiuNguyen.Visible = true;
                 }

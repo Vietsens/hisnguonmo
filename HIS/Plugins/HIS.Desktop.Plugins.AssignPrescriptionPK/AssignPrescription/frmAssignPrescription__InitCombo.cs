@@ -103,7 +103,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 cboNhaThuoc.Enabled = true;
                 if (actionType == GlobalVariables.ActionAdd)
                 {
-                    if (HisConfigCFG.IsAutoCreateSaleExpMest || HisConfigCFG.IsDrugStoreComboboxOption)
+                    if (HisConfigCFG.IsAutoCreateSaleExpMest == "1" || HisConfigCFG.IsDrugStoreComboboxOption)
                     {
                         InitializeComboNhaThuocNoCheck(mediStockAllows);
                     }
@@ -115,7 +115,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 else if (actionType == GlobalVariables.ActionEdit)
                 {
                     InitializeComboNhaThuocNoCheck(mediStockAllows);
-                    if (HisConfigCFG.IsAutoCreateSaleExpMest || HisConfigCFG.IsDrugStoreComboboxOption)
+                    if (HisConfigCFG.IsAutoCreateSaleExpMest == "1" || HisConfigCFG.IsDrugStoreComboboxOption)
                         cboNhaThuoc.Enabled = false;
                 }
                 if (this.currentMediStockNhaThuocSelecteds != null && this.currentMediStockNhaThuocSelecteds.Count > 0)
