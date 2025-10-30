@@ -74,6 +74,7 @@ namespace HIS.UC.UCHeniInfo
         DelegateCheckSS dlgCheckSS;
         Action dlgProcessChangePatientDob;
         Action<string> dlgSetTreatmentTypeId;
+        Action<bool> dlgEnableSave; 
         //qtcode
         public bool isChooseCboPatientType = false;
         public ResultDataADO ResultDataADO { get; set; }
@@ -397,6 +398,18 @@ namespace HIS.UC.UCHeniInfo
             }
         }
         //qtcode
+        public void SetDelegateEnableButtonSave(Action<bool> _dlg)
+        {
+            try
+            {
+                if (_dlg != null)
+                    this.dlgEnableSave = _dlg;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void InitializeComboHeinPatientType()
         {
             try

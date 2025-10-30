@@ -63,8 +63,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\HIS\His.UC.LibraryMessage\His.UC.LibraryMessage.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCPatientRaw">
-      <HintPath>..\..\..\lib\HIS\HIS.UC.UCPatientRaw\HIS.UC.UCPatientRaw.dll</HintPath>
+    <Reference Include="HIS.UC.UCPatientRaw, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -123,6 +124,10 @@
     <Reference Include="Inventec.Desktop.Common.LanguageManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.LibraryMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.LibraryMessage.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Message">
       <HintPath>..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>

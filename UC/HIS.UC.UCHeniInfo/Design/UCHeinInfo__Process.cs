@@ -37,6 +37,7 @@ using HIS.UC.UCHeniInfo.CustomValidateRule;
 using DevExpress.Utils;
 using DevExpress.Utils.OAuth.Provider;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
+using Inventec.Desktop.Common.Message;
 
 namespace HIS.UC.UCHeniInfo
 {
@@ -429,11 +430,10 @@ namespace HIS.UC.UCHeniInfo
                 if (patientSDO == null) throw new ArgumentNullException("Du lieu dau vao khong hop le => patientSDO is null");
 
                 this.currentPatientSdo = patientSDO;
-
+                //PeriosTreatmentMessage();
                 //Call register module fill data to control
                 if (this.dlgfillDataPatientSDOToRegisterForm != null)
                     valid = this.dlgfillDataPatientSDOToRegisterForm(this.currentPatientSdo);
-
                 if (valid)
                     this.SetValue(this.currentPatientSdo);
             }
@@ -949,5 +949,134 @@ namespace HIS.UC.UCHeniInfo
             }
         }
         #endregion
+        private void PeriosTreatmentMessage()
+        {
+            try
+            {
+                //- Kiểm tra cấu hình trên CCC: MOS.HIS_TREATMENT.IS_CHECK_PREVIOUS_PRESCRIPTION
+                //1: Khi đăng ký tiếp đón, có kiểm tra xem đợt khám/điều trị trước đó của BN đã uống hết thuốc hay chưa 
+                //0: Không kiểm tra
+                LogSystem.Debug("Tiep don: Cau hinh co kiem tra dot dieu tri truoc cua BN con thuoc chua uong het hay khong: IsCheckPreviousPrescription = " + HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousPrescription);
+                string message = "";
+                List<string> lstSend = new List<string>();
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousPrescription)
+                {
+                    if (this.currentPatientSdo.PreviousPrescriptions != null
+                        && this.currentPatientSdo.PreviousPrescriptions.Count > 0)
+                    {
+                        LogSystem.Debug("Tiep don: Du lieu benh nhan cu: " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.currentPatientSdo), this.currentPatientSdo));
+                        string treatmentPrevis = this.currentPatientSdo.TreatmentCode;
+                        string pressMessages = "";
+                        if (this.currentPatientSdo.PreviousPrescriptions.Count == 1)
+                            //pressMessages += String.Format(HIS.UC.UCPatientRaw.Base.ResourceMessage.ThuocCoThoiSuDungDen,
+                            //    (" - " + this.currentPatientSDO.PreviousPrescriptions[i].REQUEST_ROOM_NAME + " ")
+                            //    , Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.currentPatientSDO.PreviousPrescriptions[i].USE_TIME_TO ?? 0) + "\r\n");
+                            pressMessages += String.Format("Hồ sơ {0} còn thuốc của {1} có thuốc kê sử dụng đến {2}",
+                                this.currentPatientSdo.PreviousPrescriptions[0].TREATMENT_CODE,
+                               this.currentPatientSdo.PreviousPrescriptions[0].REQUEST_ROOM_NAME
+                               , Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.currentPatientSdo.PreviousPrescriptions[0].USE_TIME_TO ?? 0));
+                        else
+                        {
+                            var dataGroups = this.currentPatientSdo.PreviousPrescriptions.GroupBy(p => p.TREATMENT_CODE).Select(p => p.ToList()).ToList();
+                            foreach (var itemGr in dataGroups)
+                            {
+                                pressMessages += string.Format(" Hồ sơ {0} còn thuốc của: \r\n", itemGr[0].TREATMENT_CODE);
+                                for (int i = 0; i < itemGr.Count; i++)
+                                {
+                                    pressMessages += String.Format(ResourceMessage.ThuocCoThoiSuDungDen,
+                               (" - " + this.currentPatientSdo.PreviousPrescriptions[i].REQUEST_ROOM_NAME + " ")
+                               , Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.currentPatientSdo.PreviousPrescriptions[i].USE_TIME_TO ?? 0) + "\r\n");
+                                }
+                            }
+                        }
+
+                        message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanCoThuocChuaUongHet, treatmentPrevis, "\r\n", pressMessages, "");
+                    }
+                }
+                LogSystem.Debug("Tiep don: Cau hinh co kiem tra dot dieu tri truoc cua BN con no tien vien phi hay khong: IsCheckPreviousDebt = " + HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.currentPatientSdo), this.currentPatientSdo));
+                var dtPatientType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Find(o => o.PATIENT_TYPE_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT"));
+                if (this.dlgEnableSave != null)
+                    this.dlgEnableSave(true);
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "1" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "3" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "5")
+                {
+                    if (this.currentPatientSdo.PreviousDebtTreatments != null
+                        && this.currentPatientSdo.PreviousDebtTreatments.Count > 0)
+                    {
+                        LogSystem.Debug("Tiep don: Du lieu benh nhan cu: " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.currentPatientSdo), this.currentPatientSdo));
+                        string treatmentPrevis = String.Join(",", this.currentPatientSdo.PreviousDebtTreatments.Distinct().ToList());
+                        if (!String.IsNullOrEmpty(message))
+                        {
+                            message += "\r\n";
+                        }
+                        if (HisConfigCFG.IsCheckPreviousDebt == "5")
+                        {
+                            message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân có số tiền phải trả lớn hơn 0 hoặc hồ sơ BHYT chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}.", treatmentPrevis);
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                            {
+                                return;
+                            }
+                        }
+                        if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4")
+                        {
+                            message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân có số tiền phải trả lớn hơn 0  hoặc chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}. Bạn có muốn đăng ký tiếp đón không?", treatmentPrevis);
+                        }
+                        else
+                        {
+                            if (HisConfigCFG.IsCheckPreviousDebt == "1")
+                            {
+                                message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanConNoTienVienPhi, treatmentPrevis);
+                            }
+                        }
+                    }
+                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "3" && this.currentPatientSdo.LastTreatmentFee != null)
+                    {
+                        if (this.currentPatientSdo.LastTreatmentFee.IS_ACTIVE == 1 || ((this.currentPatientSdo.LastTreatmentFee.TOTAL_PATIENT_PRICE ?? 0) - (this.currentPatientSdo.LastTreatmentFee.TOTAL_DEPOSIT_AMOUNT ?? 0) - (this.currentPatientSdo.LastTreatmentFee.TOTAL_BILL_AMOUNT ?? 0) + (this.currentPatientSdo.LastTreatmentFee.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) + (this.currentPatientSdo.LastTreatmentFee.TOTAL_REPAY_AMOUNT ?? 0)) > 0)
+                        {
+                            lstSend = new List<string>() { this.currentPatientSdo.LastTreatmentFee.TREATMENT_CODE };
+                            message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanConNoTienVienPhi, this.currentPatientSdo.LastTreatmentFee.TREATMENT_CODE);
+                        }
+                    }
+                }
+                else if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "2" 
+                    //&& !IsEmergency 
+                    && dtPatientType != null && this.currentPatientSdo.PreviousDebtTreatmentDetails != null
+                        && this.currentPatientSdo.PreviousDebtTreatmentDetails.Count > 0)
+                {
+                    var dtTreatmentDetails = this.currentPatientSdo.PreviousDebtTreatmentDetails.Where(o => o.PATIENT_TYPE_ID == dtPatientType.ID).ToList();
+                    if (dtTreatmentDetails != null && dtTreatmentDetails.Count > 0)
+                    {
+                        string treatmentPrevis = String.Join(",", dtTreatmentDetails.Select(o => o.TDL_TREATMENT_CODE).ToList());
+                        if (!String.IsNullOrEmpty(message))
+                        {
+                            message += "\r\n";
+                        }
+                        message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân còn nợ viện phí hoặc chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}. Không cho phép tiếp đón", treatmentPrevis);
+                        if (this.dlgEnableSave != null)
+                            this.dlgEnableSave(false);
+                    }
+                }
+                if (!String.IsNullOrEmpty(message))
+                {
+                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "3")
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(message, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        {
+                            if (this.dlgEnableSave != null)
+                                this.dlgEnableSave(false);
+                        }
+                    }
+                    else if (HisConfigCFG.IsCheckPreviousDebt != "5")
+                    {
+                        MessageManager.Show(message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
     }
 }
