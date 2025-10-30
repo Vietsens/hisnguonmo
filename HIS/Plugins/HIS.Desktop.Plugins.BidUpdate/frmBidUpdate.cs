@@ -1023,6 +1023,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 spinImpMoreRatio.EditValue = data.ImpMoreRatio;
                 txtBidNumOrder.Text = data.BID_NUM_ORDER;
                 txtBatchDivisionCode.Text = data.BATCH_DIVISION_CODE;
+                spinGiaTran.EditValue = data.HEIN_LIMIT_PRICE;
                 if (!string.IsNullOrEmpty(data.BID_GROUP_CODE))
                 {
                     txtBidGroupCode.Text = data.BID_GROUP_CODE;
@@ -1853,6 +1854,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             {
                 spinAmount.Value = 0;
                 spinImpVat.Value = 0;
+                spinGiaTran.Value = 0;
                 spinImpMoreRatio.Value = 0;
                 spinImpPrice.Value = 0;
                 txtBidNumOrder.Text = "";
@@ -2046,7 +2048,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.medicineType.BID_GROUP_CODE = txtBidGroupCode.Text;
                 this.medicineType.BID_PACKAGE_CODE = txtBidPackageCode.Text;
                 this.medicineType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
-
+                this.medicineType.HEIN_LIMIT_PRICE = spinGiaTran.Value;
                 this.medicineType.IdRow = setIdRow(this.ListMedicineTypeAdoProcess);
                 if (cboSupplier.EditValue != null)
                 {
@@ -2165,6 +2167,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.materialType.REGISTER_NUMBER = txtRegisterNumber.Text.Trim();
                 this.materialType.HEIN_SERVICE_BHYT_NAME = txtTenBHYT.Text.Trim();
                 this.materialType.PACKING_TYPE_NAME = txtPackingType.Text.Trim();
+                this.materialType.HEIN_LIMIT_PRICE = spinGiaTran.Value;
                 if (!string.IsNullOrEmpty(txtBatchDivisionCode.Text))
                 {
                     this.materialType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
@@ -2647,6 +2650,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidMedicineType.MEDICINE_TYPE_ID = item.ID;
                         bidMedicineType.BID_NUM_ORDER = item.BID_NUM_ORDER;
                         bidMedicineType.SUPPLIER_ID = (long)(item.SUPPLIER_ID ?? 0);
+                        bidMedicineType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE ?? 0;
                         if (!string.IsNullOrEmpty(item.BATCH_DIVISION_CODE))
                         {
                             bidMedicineType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
@@ -2688,6 +2692,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidMaterialType.ADJUST_AMOUNT = item.ADJUST_AMOUNT;
                         bidMaterialType.IMP_VAT_RATIO = item.IMP_VAT_RATIO;
                         bidMaterialType.IMP_MORE_RATIO = item.ImpMoreRatio != null ? item.ImpMoreRatio / 100 : null;
+                        bidMaterialType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE ?? 0;
                         if (!string.IsNullOrEmpty(item.BATCH_DIVISION_CODE))
                         {
                             bidMaterialType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;

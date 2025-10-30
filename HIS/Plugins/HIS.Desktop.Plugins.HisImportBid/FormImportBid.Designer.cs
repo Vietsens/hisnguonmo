@@ -120,6 +120,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.LblBtnExportError = new DevExpress.XtraLayout.LayoutControlItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -164,10 +165,6 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar2});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.BarButtonSave});
@@ -196,8 +193,8 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1327, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1327, 0);
             // 
             // barDockControlBottom
             // 
@@ -341,7 +338,8 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn8,
             this.gridColumn9,
             this.gridColumn10,
-            this.gridColumn11});
+            this.gridColumn11,
+            this.gridColumn14});
             this.GridViewBid.GridControl = this.GridControlBid;
             this.GridViewBid.Name = "GridViewBid";
             this.GridViewBid.OptionsView.ColumnAutoWidth = false;
@@ -493,7 +491,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 13;
+            this.gridColumn3.VisibleIndex = 14;
             // 
             // gridColumn4
             // 
@@ -502,7 +500,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 12;
+            this.gridColumn4.VisibleIndex = 13;
             this.gridColumn4.Width = 81;
             // 
             // gridColumn5
@@ -512,7 +510,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 11;
+            this.gridColumn5.VisibleIndex = 12;
             this.gridColumn5.Width = 92;
             // 
             // GcBid_SupplierName
@@ -522,7 +520,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_SupplierName.Name = "GcBid_SupplierName";
             this.GcBid_SupplierName.OptionsColumn.AllowEdit = false;
             this.GcBid_SupplierName.Visible = true;
-            this.GcBid_SupplierName.VisibleIndex = 14;
+            this.GcBid_SupplierName.VisibleIndex = 15;
             this.GcBid_SupplierName.Width = 120;
             // 
             // GcBid_BidName
@@ -532,7 +530,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidName.Name = "GcBid_BidName";
             this.GcBid_BidName.OptionsColumn.AllowEdit = false;
             this.GcBid_BidName.Visible = true;
-            this.GcBid_BidName.VisibleIndex = 15;
+            this.GcBid_BidName.VisibleIndex = 16;
             this.GcBid_BidName.Width = 121;
             // 
             // GcBid_BidCode
@@ -542,7 +540,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidCode.Name = "GcBid_BidCode";
             this.GcBid_BidCode.OptionsColumn.AllowEdit = false;
             this.GcBid_BidCode.Visible = true;
-            this.GcBid_BidCode.VisibleIndex = 16;
+            this.GcBid_BidCode.VisibleIndex = 17;
             // 
             // GcBid_BidNumber
             // 
@@ -551,7 +549,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidNumber.Name = "GcBid_BidNumber";
             this.GcBid_BidNumber.OptionsColumn.AllowEdit = false;
             this.GcBid_BidNumber.Visible = true;
-            this.GcBid_BidNumber.VisibleIndex = 17;
+            this.GcBid_BidNumber.VisibleIndex = 18;
             this.GcBid_BidNumber.Width = 111;
             // 
             // GcBid_BidNumOrder
@@ -561,7 +559,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidNumOrder.Name = "GcBid_BidNumOrder";
             this.GcBid_BidNumOrder.OptionsColumn.AllowEdit = false;
             this.GcBid_BidNumOrder.Visible = true;
-            this.GcBid_BidNumOrder.VisibleIndex = 18;
+            this.GcBid_BidNumOrder.VisibleIndex = 19;
             this.GcBid_BidNumOrder.Width = 61;
             // 
             // GcBid_BidPackageCode
@@ -571,7 +569,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidPackageCode.Name = "GcBid_BidPackageCode";
             this.GcBid_BidPackageCode.OptionsColumn.AllowEdit = false;
             this.GcBid_BidPackageCode.Visible = true;
-            this.GcBid_BidPackageCode.VisibleIndex = 19;
+            this.GcBid_BidPackageCode.VisibleIndex = 20;
             this.GcBid_BidPackageCode.Width = 52;
             // 
             // GcBid_BidGroupCode
@@ -581,7 +579,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidGroupCode.Name = "GcBid_BidGroupCode";
             this.GcBid_BidGroupCode.OptionsColumn.AllowEdit = false;
             this.GcBid_BidGroupCode.Visible = true;
-            this.GcBid_BidGroupCode.VisibleIndex = 20;
+            this.GcBid_BidGroupCode.VisibleIndex = 21;
             this.GcBid_BidGroupCode.Width = 61;
             // 
             // GcBid_BidYear
@@ -591,7 +589,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidYear.Name = "GcBid_BidYear";
             this.GcBid_BidYear.OptionsColumn.AllowEdit = false;
             this.GcBid_BidYear.Visible = true;
-            this.GcBid_BidYear.VisibleIndex = 21;
+            this.GcBid_BidYear.VisibleIndex = 22;
             this.GcBid_BidYear.Width = 87;
             // 
             // gridColumn13
@@ -600,7 +598,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn13.FieldName = "VALID_FROM_TIME";
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 22;
+            this.gridColumn13.VisibleIndex = 23;
             // 
             // gridColumn12
             // 
@@ -608,7 +606,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn12.FieldName = "VALID_TO_TIME";
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 23;
+            this.gridColumn12.VisibleIndex = 24;
             // 
             // gridColumn7
             // 
@@ -616,7 +614,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn7.FieldName = "BID_APTHAU_CODE";
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 24;
+            this.gridColumn7.VisibleIndex = 25;
             // 
             // GcBid_BidTypeCode
             // 
@@ -625,7 +623,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_BidTypeCode.Name = "GcBid_BidTypeCode";
             this.GcBid_BidTypeCode.OptionsColumn.AllowEdit = false;
             this.GcBid_BidTypeCode.Visible = true;
-            this.GcBid_BidTypeCode.VisibleIndex = 25;
+            this.GcBid_BidTypeCode.VisibleIndex = 26;
             this.GcBid_BidTypeCode.Width = 87;
             // 
             // GcBid_NationalName
@@ -635,7 +633,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_NationalName.Name = "GcBid_NationalName";
             this.GcBid_NationalName.OptionsColumn.AllowEdit = false;
             this.GcBid_NationalName.Visible = true;
-            this.GcBid_NationalName.VisibleIndex = 26;
+            this.GcBid_NationalName.VisibleIndex = 27;
             this.GcBid_NationalName.Width = 100;
             // 
             // GcBid_ManufactureName
@@ -645,7 +643,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_ManufactureName.Name = "GcBid_ManufactureName";
             this.GcBid_ManufactureName.OptionsColumn.AllowEdit = false;
             this.GcBid_ManufactureName.Visible = true;
-            this.GcBid_ManufactureName.VisibleIndex = 27;
+            this.GcBid_ManufactureName.VisibleIndex = 28;
             this.GcBid_ManufactureName.Width = 150;
             // 
             // GcBid_ActiveIngrBhytCode
@@ -655,7 +653,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_ActiveIngrBhytCode.Name = "GcBid_ActiveIngrBhytCode";
             this.GcBid_ActiveIngrBhytCode.OptionsColumn.AllowEdit = false;
             this.GcBid_ActiveIngrBhytCode.Visible = true;
-            this.GcBid_ActiveIngrBhytCode.VisibleIndex = 28;
+            this.GcBid_ActiveIngrBhytCode.VisibleIndex = 29;
             this.GcBid_ActiveIngrBhytCode.Width = 60;
             // 
             // GcBid_ActiveIngrBhytName
@@ -665,7 +663,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_ActiveIngrBhytName.Name = "GcBid_ActiveIngrBhytName";
             this.GcBid_ActiveIngrBhytName.OptionsColumn.AllowEdit = false;
             this.GcBid_ActiveIngrBhytName.Visible = true;
-            this.GcBid_ActiveIngrBhytName.VisibleIndex = 29;
+            this.GcBid_ActiveIngrBhytName.VisibleIndex = 30;
             this.GcBid_ActiveIngrBhytName.Width = 150;
             // 
             // GcBid_Concentra
@@ -675,7 +673,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_Concentra.Name = "GcBid_Concentra";
             this.GcBid_Concentra.OptionsColumn.AllowEdit = false;
             this.GcBid_Concentra.Visible = true;
-            this.GcBid_Concentra.VisibleIndex = 30;
+            this.GcBid_Concentra.VisibleIndex = 31;
             this.GcBid_Concentra.Width = 120;
             // 
             // GcBid_PackingTypeName
@@ -685,7 +683,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.GcBid_PackingTypeName.Name = "GcBid_PackingTypeName";
             this.GcBid_PackingTypeName.OptionsColumn.AllowEdit = false;
             this.GcBid_PackingTypeName.Visible = true;
-            this.GcBid_PackingTypeName.VisibleIndex = 31;
+            this.GcBid_PackingTypeName.VisibleIndex = 32;
             this.GcBid_PackingTypeName.Width = 150;
             // 
             // gc_MedicineUseFormCode
@@ -695,7 +693,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gc_MedicineUseFormCode.Name = "gc_MedicineUseFormCode";
             this.gc_MedicineUseFormCode.OptionsColumn.AllowEdit = false;
             this.gc_MedicineUseFormCode.Visible = true;
-            this.gc_MedicineUseFormCode.VisibleIndex = 32;
+            this.gc_MedicineUseFormCode.VisibleIndex = 33;
             this.gc_MedicineUseFormCode.Width = 90;
             // 
             // gridColumn6
@@ -705,7 +703,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 33;
+            this.gridColumn6.VisibleIndex = 34;
             // 
             // gridColumn8
             // 
@@ -714,7 +712,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 34;
+            this.gridColumn8.VisibleIndex = 35;
             // 
             // gridColumn9
             // 
@@ -723,7 +721,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 35;
+            this.gridColumn9.VisibleIndex = 36;
             this.gridColumn9.Width = 80;
             // 
             // gridColumn10
@@ -733,7 +731,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 36;
+            this.gridColumn10.VisibleIndex = 37;
             // 
             // gridColumn11
             // 
@@ -742,7 +740,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 37;
+            this.gridColumn11.VisibleIndex = 38;
             // 
             // RepositoryItemButtonError
             // 
@@ -842,6 +840,14 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // gridColumn14
+            // 
+            this.gridColumn14.Caption = "Giá trần BHYT";
+            this.gridColumn14.FieldName = "HEIN_LIMIT_PRICE";
+            this.gridColumn14.Name = "gridColumn14";
+            this.gridColumn14.Visible = true;
+            this.gridColumn14.VisibleIndex = 11;
             // 
             // FormImportBid
             // 
@@ -953,5 +959,6 @@ namespace HIS.Desktop.Plugins.HisImportBid
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
     }
 }

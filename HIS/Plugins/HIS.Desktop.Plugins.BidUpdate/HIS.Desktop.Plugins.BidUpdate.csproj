@@ -47,14 +47,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
+    <Reference Include="FlexCel">
+      <HintPath>..\..\..\..\lib\FlexCellReport\6.18.5\FlexCel.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
-      <HintPath>..\..\..\..\..\HISNGUONMO\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
+      <HintPath>..\..\HIS.Desktop.ModuleExt\bin\Debug\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print">
-      <HintPath>..\..\..\..\..\HISNGUONMO\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
+      <HintPath>..\..\HIS.Desktop.Print\bin\Debug\HIS.Desktop.Print.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\..\HISNGUONMO\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.BloodType">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.BloodType\HIS.UC.BloodType.dll</HintPath>
@@ -82,7 +85,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.ExcelImport\Inventec.Common.ExcelImport.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.FlexCelPrint">
-      <HintPath>..\..\..\..\..\HISNGUONMO\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
+      <HintPath>..\..\..\Common\Inventec.Common\Inventec.Common.FlexCelPrint\bin\Debug\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
@@ -131,15 +134,15 @@
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISNGUONMO\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISNGUONMO\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.UC.Login.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISNGUONMO\lib\Inventec.Common\Inventec.Common.FlexCelPrint\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
@@ -151,7 +154,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
-      <HintPath>..\..\..\..\LIB\MPS\MPS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
