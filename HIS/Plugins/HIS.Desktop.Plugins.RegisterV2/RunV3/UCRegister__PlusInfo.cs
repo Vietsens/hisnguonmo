@@ -43,7 +43,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 if (IsReadQr)
                 {
                     if (lstNational == null || lstNational.Count == 0)
-                        lstNational = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>();
+                        lstNational = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                     var data = lstNational.FirstOrDefault(o => o.NATIONAL_NAME.ToLower().Equals("việt nam"));
                     if (data != null)
                     {

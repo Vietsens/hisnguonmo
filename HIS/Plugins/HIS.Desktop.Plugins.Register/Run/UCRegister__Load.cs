@@ -339,7 +339,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     this.txtGenderCode.Text = gioitinh.GENDER_CODE;
                 }
                 this.txtAddress.Text = patientDTO.ADDRESS;
-                var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().FirstOrDefault(o => o.NATIONAL_NAME == patientDTO.NATIONAL_NAME);
+                var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.NATIONAL_NAME == patientDTO.NATIONAL_NAME);
                 if (national != null)
                 {
                     this.cboNational.EditValue = national.NATIONAL_NAME;

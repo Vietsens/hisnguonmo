@@ -93,13 +93,13 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.HisSyncToHid">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.HisSyncToHid.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.HisSyncToHid.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.RegisterConnectHrm">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConnectHrm.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConnectHrm.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
@@ -122,7 +122,7 @@
     </Reference>
     <Reference Include="His.UC.UCHein, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\UC\His.UC.UCHein\bin\Debug\His.UC.UCHein.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.UC.UCHein.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.WorkPlace, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

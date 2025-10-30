@@ -218,7 +218,7 @@ namespace HIS.Desktop.Plugins.Register.Config
             SDA.EFMODEL.DataModels.SDA_NATIONAL result = new SDA.EFMODEL.DataModels.SDA_NATIONAL();
             try
             {
-                result = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().FirstOrDefault(o => o.NATIONAL_CODE == code);
+                result = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.NATIONAL_CODE == code);
             }
             catch (Exception ex)
             {
