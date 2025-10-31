@@ -373,7 +373,7 @@ namespace HIS.UC.UCHeniInfo
                 || this.IsMediOrgRightRouteByCurrent(mediOrgCode)
                 || ((HisConfigCFG.IsNotRequiredRightTypeInCaseOfHavingAreaCode && (liveArea == MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaCode.K1 || liveArea == MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaCode.K2 || liveArea == MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaCode.K3)))
                 )))
-                    
+
                 {
                     EditorLoaderProcessor.InitComboCommon(this.cboHeinRightRoute, DataStore.HeinRightRouteTypes, "HeinRightRouteTypeCode", "HeinRightRouteTypeName", "HeinRightRouteTypeCode");
                     dataSourceCboHeinRightRouteTemp = DataStore.HeinRightRouteTypes;
@@ -428,9 +428,15 @@ namespace HIS.UC.UCHeniInfo
             try
             {
                 if (patientSDO == null) throw new ArgumentNullException("Du lieu dau vao khong hop le => patientSDO is null");
-
+                if (patientSDO.PreviousDebtTreatments != null && patientSDO.PreviousDebtTreatments.Any())
+                {
+                    patientSDO.PreviousDebtTreatments = patientSDO.PreviousDebtTreatments
+                        .Distinct()
+                        .ToList();
+                }
                 this.currentPatientSdo = patientSDO;
-                //PeriosTreatmentMessage();
+                if (HisConfigCFG.IsCheckPreviousDebt != "5")
+                    PeriosTreatmentMessage();
                 //Call register module fill data to control
                 if (this.dlgfillDataPatientSDOToRegisterForm != null)
                     valid = this.dlgfillDataPatientSDOToRegisterForm(this.currentPatientSdo);
@@ -459,7 +465,7 @@ namespace HIS.UC.UCHeniInfo
                 else
                     heinCardData.ToDate = "";
                 heinCardData.Gender = null;
-                if (ResultDataADO != null && (ResultDataADO.ResultHistoryLDO.maKetQua == "001" || ResultDataADO.ResultHistoryLDO.maKetQua == "002"|| ResultDataADO.ResultHistoryLDO.maKetQua == "050") && oldHeinCardNumber == heinCardData.HeinCardNumber)
+                if (ResultDataADO != null && (ResultDataADO.ResultHistoryLDO.maKetQua == "001" || ResultDataADO.ResultHistoryLDO.maKetQua == "002" || ResultDataADO.ResultHistoryLDO.maKetQua == "050") && oldHeinCardNumber == heinCardData.HeinCardNumber)
                 {
                     return;
                 }
@@ -770,53 +776,53 @@ namespace HIS.UC.UCHeniInfo
                         trường hợp hẹn khám thì hiển thị "Hẹn khám", không quan tâm trong giờ người giờ.
                      * */
 
-                   
-                        if (this.IsDungTuyenCapCuuByTime)
-                        {
-                         this.cboHeinRightRoute.EditValue = MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.EMERGENCY;
-                            this.cboHeinRightRoute.Properties.Buttons[1].Visible = true;
-                       
+
+                    if (this.IsDungTuyenCapCuuByTime)
+                    {
+                        this.cboHeinRightRoute.EditValue = MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.EMERGENCY;
+                        this.cboHeinRightRoute.Properties.Buttons[1].Visible = true;
+
                     }
-                        else if (!this.IsDungTuyenCapCuuByTime && this.currentPatientSdo != null
-                            && !String.IsNullOrEmpty(this.currentPatientSdo.AppointmentCode)
-                            && !HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.MEDI_ORG_VALUE__CURRENT.Equals(mediorg.MEDI_ORG_CODE))
-                        {
-                        
-                            this.cboHeinRightRoute.EditValue = MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT;
-                            this.cboHeinRightRoute.Properties.Buttons[1].Visible = true;                       
+                    else if (!this.IsDungTuyenCapCuuByTime && this.currentPatientSdo != null
+                        && !String.IsNullOrEmpty(this.currentPatientSdo.AppointmentCode)
+                        && !HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.MEDI_ORG_VALUE__CURRENT.Equals(mediorg.MEDI_ORG_CODE))
+                    {
+
+                        this.cboHeinRightRoute.EditValue = MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT;
+                        this.cboHeinRightRoute.Properties.Buttons[1].Visible = true;
                     }
-                        // Tu dong chon dung tuyen
-                        else if (
-                            HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.MEDI_ORG_VALUE__CURRENT == mediorg.MEDI_ORG_CODE
-                            || this.IsMediOrgRightRouteByCurrent(mediorg.MEDI_ORG_CODE)
-                            || (!String.IsNullOrWhiteSpace(HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.SYS_MEDI_ORG_CODE) && HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.SYS_MEDI_ORG_CODE.Contains(mediorg.MEDI_ORG_CODE))
-                        )
+                    // Tu dong chon dung tuyen
+                    else if (
+                        HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.MEDI_ORG_VALUE__CURRENT == mediorg.MEDI_ORG_CODE
+                        || this.IsMediOrgRightRouteByCurrent(mediorg.MEDI_ORG_CODE)
+                        || (!String.IsNullOrWhiteSpace(HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.SYS_MEDI_ORG_CODE) && HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.SYS_MEDI_ORG_CODE.Contains(mediorg.MEDI_ORG_CODE))
+                    )
+                    {
+                        this.cboHeinRightRoute.EditValue = MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE;
+                    }
+                    else
+                    {
+                        InitDefaultValidRightRouteType(isFocus, mediorg.MEDI_ORG_CODE);
+                        if (IsDefaultRightRouteType)
                         {
-                            this.cboHeinRightRoute.EditValue = MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE;
+                            this.cboHeinRightRoute.EditValue = MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.PRESENT;
                         }
                         else
                         {
-                            InitDefaultValidRightRouteType(isFocus, mediorg.MEDI_ORG_CODE);
-                            if (IsDefaultRightRouteType)
-                            {                             
-                                this.cboHeinRightRoute.EditValue = MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.PRESENT;            
+                            if (HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.MEDI_ORG_VALUE__CURRENT == mediorg.MEDI_ORG_CODE
+                                                       || MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.DISTRICT == HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT
+                                                       || MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.COMMUNE == HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT)
+                            {
+                                this.cboHeinRightRoute.EditValue = MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE;
                             }
                             else
                             {
-                                if (HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.MEDI_ORG_VALUE__CURRENT == mediorg.MEDI_ORG_CODE
-                                                           || MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.DISTRICT == HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT
-                                                           || MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.COMMUNE == HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT)
-                                {
-                                    this.cboHeinRightRoute.EditValue = MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE;
-                                }
-                                else
-                                {
-                                    this.cboHeinRightRoute.EditValue = null;
+                                this.cboHeinRightRoute.EditValue = null;
                                 Inventec.Common.Logging.LogSystem.Debug("MediOrgSelectRowChange. Truong hop khong set mac dinh cho combo truong hop");
-                                }
                             }
                         }
-					
+                    }
+
                     //xuandv6734
                     //Xử lý luôn luôn fix là đúng tuyến với các trường hợp cơ sở kcbbd là đúng tuyến/thông tuyến/tuyến dưới
                     this.ProcessCaseWrongRoute(mediorg.MEDI_ORG_CODE, liveArea);
@@ -990,7 +996,8 @@ namespace HIS.UC.UCHeniInfo
                             }
                         }
 
-                        message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanCoThuocChuaUongHet, treatmentPrevis, "\r\n", pressMessages, "");
+                        //message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanCoThuocChuaUongHet, treatmentPrevis, "\r\n", pressMessages, "");
+                        message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân có {1} {2} {3}chưa uống hết", treatmentPrevis, "\r\n", pressMessages, "");
                     }
                 }
                 LogSystem.Debug("Tiep don: Cau hinh co kiem tra dot dieu tri truoc cua BN con no tien vien phi hay khong: IsCheckPreviousDebt = " + HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt);
@@ -1011,11 +1018,11 @@ namespace HIS.UC.UCHeniInfo
                         }
                         if (HisConfigCFG.IsCheckPreviousDebt == "5")
                         {
-                            message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân có số tiền phải trả lớn hơn 0 hoặc hồ sơ BHYT chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}.", treatmentPrevis);
-                            if (DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
-                            {
-                                return;
-                            }
+                            //message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân có số tiền phải trả lớn hơn 0 hoặc hồ sơ BHYT chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}.", treatmentPrevis);
+                            //if (DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                            //{
+                            //    return;
+                            //}
                         }
                         if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4")
                         {
@@ -1025,7 +1032,8 @@ namespace HIS.UC.UCHeniInfo
                         {
                             if (HisConfigCFG.IsCheckPreviousDebt == "1")
                             {
-                                message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanConNoTienVienPhi, treatmentPrevis);
+                                //message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanConNoTienVienPhi, treatmentPrevis);
+                                message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân còn nợ tiền viện phí. Mã hồ sơ điều trị {0}", treatmentPrevis);
                             }
                         }
                     }
@@ -1034,11 +1042,11 @@ namespace HIS.UC.UCHeniInfo
                         if (this.currentPatientSdo.LastTreatmentFee.IS_ACTIVE == 1 || ((this.currentPatientSdo.LastTreatmentFee.TOTAL_PATIENT_PRICE ?? 0) - (this.currentPatientSdo.LastTreatmentFee.TOTAL_DEPOSIT_AMOUNT ?? 0) - (this.currentPatientSdo.LastTreatmentFee.TOTAL_BILL_AMOUNT ?? 0) + (this.currentPatientSdo.LastTreatmentFee.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) + (this.currentPatientSdo.LastTreatmentFee.TOTAL_REPAY_AMOUNT ?? 0)) > 0)
                         {
                             lstSend = new List<string>() { this.currentPatientSdo.LastTreatmentFee.TREATMENT_CODE };
-                            message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanConNoTienVienPhi, this.currentPatientSdo.LastTreatmentFee.TREATMENT_CODE);
+                            message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân còn nợ tiền viện phí. Mã hồ sơ điều trị {0}", this.currentPatientSdo.LastTreatmentFee.TREATMENT_CODE);
                         }
                     }
                 }
-                else if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "2" 
+                else if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "2"
                     //&& !IsEmergency 
                     && dtPatientType != null && this.currentPatientSdo.PreviousDebtTreatmentDetails != null
                         && this.currentPatientSdo.PreviousDebtTreatmentDetails.Count > 0)
@@ -1060,7 +1068,7 @@ namespace HIS.UC.UCHeniInfo
                 {
                     if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "3")
                     {
-                        if (DevExpress.XtraEditors.XtraMessageBox.Show(message, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
                         {
                             if (this.dlgEnableSave != null)
                                 this.dlgEnableSave(false);
