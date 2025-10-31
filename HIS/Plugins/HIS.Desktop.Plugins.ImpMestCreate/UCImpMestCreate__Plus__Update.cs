@@ -357,6 +357,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             ado.heinServiceBhytName = mate.BID_MATERIAL_TYPE_NAME;
                             ado.TAX_RATIO = mate.TAX_RATIO;
                             ado.REGISTER_NUMBER = mate.MATERIAL_REGISTER_NUMBER;
+                            ado.HeinLimitPrice = mate.HEIN_LIMIT_PRICE;
                             if (mate.MEDICAL_CONTRACT_ID.HasValue && this.TotalContractMatyForUpdate != null && this.TotalContractMatyForUpdate.Count > 0)
                             {
                                 var contractMaty = this.TotalContractMatyForUpdate.FirstOrDefault(o => o.BID_ID == mate.BID_ID && o.MATERIAL_TYPE_ID == mate.MATERIAL_TYPE_ID && o.MEDICAL_CONTRACT_ID == mate.MEDICAL_CONTRACT_ID);
@@ -570,6 +571,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             ado.HisMedicine.DOSAGE_FORM = medi.DOSAGE_FORM;
                             ado.medicineUseFormId = medi.MEDICINE_USE_FORM_ID;
                             ado.TAX_RATIO = medi.TAX_RATIO;
+                            ado.HeinLimitPrice = medi.HEIN_LIMIT_PRICE;
                           
                             if (medi.MEDICAL_CONTRACT_ID.HasValue && this.TotalContractMetyForUpdate != null && this.TotalContractMetyForUpdate.Count > 0)
                             {
