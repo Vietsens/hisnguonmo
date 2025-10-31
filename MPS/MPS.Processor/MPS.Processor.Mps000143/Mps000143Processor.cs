@@ -90,11 +90,11 @@ namespace MPS.Processor.Mps000143
                 //    rdo._ListAdo = rdo._ListAdo.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
                 //}
                 //objectTag.AddObjectData(store, "MediMaties1", rdo._ListAdo);
-                //objectTag.AddObjectData(store, "MediMaties2", rdo._ListAdo);
-                //objectTag.AddObjectData(store, "MediMaties3", rdo._ListAdo);
+                objectTag.AddObjectData(store, "MediMaties2", MediMaties1);
+                objectTag.AddObjectData(store, "MediMaties3", MediMaties1);
                 //result = true;
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 result = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);

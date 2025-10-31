@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MPS.Processor.Mps000143.PDO
+namespace MPS.Processor.Mps000143.PDO  
 {
     public partial class Mps000143PDO : RDOBase
     {
