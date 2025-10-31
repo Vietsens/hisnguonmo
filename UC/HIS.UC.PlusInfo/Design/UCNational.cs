@@ -372,7 +372,7 @@ namespace HIS.UC.PlusInfo.Design
             try
             {
                 var nationalBase = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.NationalBase;
-                if (nationalBase != null)
+                if (nationalBase != null && nationalBase.IS_ACTIVE == 1)
                 {
                     this.txtNationalCode.Text = nationalBase.NATIONAL_CODE;
                     this.cboNational.EditValue = nationalBase.NATIONAL_NAME;
