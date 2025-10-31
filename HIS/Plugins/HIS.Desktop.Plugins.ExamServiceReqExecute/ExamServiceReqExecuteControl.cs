@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using ACS.SDO;
 using DevExpress.Data;
 using DevExpress.Utils;
 using DevExpress.Utils.Menu;
@@ -2971,7 +2972,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     return;
                 }
                 isClickSaveFinish = false;
-
                 if (this.requiredControl != null && this.requiredControl == 1 && string.IsNullOrEmpty(this.txtPathologicalProcess.Text.Trim()))
                 {
                     MessageBox.Show("Quá trình bệnh lý bạn nhập không hợp lệ", ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -8674,6 +8674,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                if (data.START_TIME.HasValue)
+                {
+                    dtpStartTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.START_TIME.Value);
+                }
+                else
+                {
+                    dtpStartTime.EditValue = new BackendAdapter(new CommonParam()).Get<TimerSDO>(AcsRequestUriStore.ACS_TIMER__SYNC, ApiConsumers.AcsConsumer, 1, new CommonParam()).DateNow ;
+                }
                 spinNgayThuCuaBenh.EditValue = data.SICK_DAY;
                 cboPatientCase.EditValue = data.PATIENT_CASE_ID;
                 txtHospitalizationReason.Text = data.HOSPITALIZATION_REASON;

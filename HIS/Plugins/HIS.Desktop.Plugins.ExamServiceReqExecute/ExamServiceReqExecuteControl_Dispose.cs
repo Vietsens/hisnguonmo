@@ -756,6 +756,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 layoutControl2 = null;
                 layoutControl1 = null;
                 dxErrorProviderForSpinVat = null;
+                dtpStartTime = null;
 
             }
             catch (Exception ex)

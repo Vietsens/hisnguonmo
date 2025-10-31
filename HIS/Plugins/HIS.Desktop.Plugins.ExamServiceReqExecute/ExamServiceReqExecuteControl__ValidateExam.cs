@@ -34,6 +34,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                if (Config.HisConfigCFG.IsEnableEditStartTime)
+                {
+                    ValidateStartTime();
+                }
                 ValidBenhPhu();
                 ValiNhapQuaKyTu();
                 ValidationICD(20, 500, !this.isAllowNoIcd);
@@ -41,6 +45,20 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 ValidationSingleControlWithMaxLength(txtIcdMainTextCause, false, 500);
                 //ValidationICDCause(10, 500, isRequired);
                 UCNextTreatmentInstructionValid();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ValidateStartTime()
+        {
+            try
+            {
+                ValidateStartTime controlEdit = new ValidateStartTime();
+                controlEdit.dtpStartTime = dtpStartTime;
+                controlEdit.HisServiceReqView = HisServiceReqView;
+                this.dxValidationProviderForLeftPanel.SetValidationRule(dtpStartTime, controlEdit);
             }
             catch (Exception ex)
             {
