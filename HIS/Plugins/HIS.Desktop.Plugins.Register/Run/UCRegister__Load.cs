@@ -345,7 +345,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     this.cboNational.EditValue = national.NATIONAL_NAME;
                     this.txtNationalCode.Text = national.NATIONAL_CODE;
                 }
-                var ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_NAME == patientDTO.ETHNIC_NAME);
+                var ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).FirstOrDefault(o => o.ETHNIC_NAME == patientDTO.ETHNIC_NAME);
                 if (ethnic != null)
                 {
                     this.cboEthnic.EditValue = ethnic.ETHNIC_NAME;

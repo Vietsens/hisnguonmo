@@ -259,13 +259,13 @@ namespace HIS.UC.UCPatientRaw
 					{
 						if (!String.IsNullOrEmpty(dataSet.ETHNIC_CODE))
 						{
-							var ethnicData = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_CODE == dataSet.ETHNIC_CODE);
+							var ethnicData = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).FirstOrDefault(o => o.ETHNIC_CODE == dataSet.ETHNIC_CODE);
 							this.cboEthnic.EditValue = (ethnicData != null ? ethnicData.ETHNIC_CODE : null);
 							this.txtEthnicCode.Text = ethnicData != null ? ethnicData.ETHNIC_CODE : "";
 						}
 						else
 						{
-							var ethnicData = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_NAME == dataSet.ETHNIC_NAME);
+							var ethnicData = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).FirstOrDefault(o => o.ETHNIC_NAME == dataSet.ETHNIC_NAME);
 							this.cboEthnic.EditValue = (ethnicData != null ? ethnicData.ETHNIC_CODE : null);
 							this.txtEthnicCode.Text = ethnicData != null ? ethnicData.ETHNIC_CODE : "";
 						}

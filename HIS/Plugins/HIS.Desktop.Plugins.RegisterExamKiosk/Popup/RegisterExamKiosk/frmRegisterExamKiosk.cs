@@ -244,7 +244,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                 }
                 if (hisCardPatientSdo != null && (string.IsNullOrEmpty(hisCardPatientSdo.EthnicName) || string.IsNullOrEmpty(hisCardPatientSdo.EthnicCode)))
                 {
-                    var EthenicKey = BackendDataWorker.Get<SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.ETHNIC_CODE__BASE) && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                    var EthenicKey = BackendDataWorker.Get<SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.ETHNIC_CODE__BASE) && o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE);
                     if (EthenicKey != null) {
                         hisCardPatientSdo.EthnicName = EthenicKey.ETHNIC_NAME;
                         hisCardPatientSdo.EthnicCode = EthenicKey.ETHNIC_CODE;

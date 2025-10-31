@@ -1644,6 +1644,7 @@ namespace HIS.UC.UCPatientRaw
 
                         if (datas != null) BackendDataWorker.UpdateToRam(typeof(SDA.EFMODEL.DataModels.SDA_ETHNIC), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                     }
+                    datas = datas.Where(o => o.IS_ACTIVE == 1).ToList();
                     this.dataEthnic = datas;
                     this.InitComboCommon(this.cboEthnic, datas, "ETHNIC_CODE", "ETHNIC_NAME", "ETHNIC_CODE");
                     this.LoadEthnicBase();
@@ -1702,7 +1703,9 @@ namespace HIS.UC.UCPatientRaw
                     }
                     else
                     {
-                        var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.ETHNIC_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
+                        var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>()
+                            .Where(o => o.IS_ACTIVE == 1 && o.ETHNIC_CODE.ToLower().Contains(searchCode.ToLower()))
+                            .ToList();
                         var searchResult = (data != null && data.Count > 0) ? (data.Count == 1 ? data : data.Where(o => o.ETHNIC_CODE.ToUpper() == searchCode.ToUpper()).ToList()) : null;
                         if (searchResult != null && searchResult.Count == 1)
                         {
@@ -1734,7 +1737,7 @@ namespace HIS.UC.UCPatientRaw
             {
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
-                    SDA.EFMODEL.DataModels.SDA_ETHNIC ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().SingleOrDefault(o => o.ETHNIC_CODE == (this.cboEthnic.EditValue ?? "").ToString());
+                    SDA.EFMODEL.DataModels.SDA_ETHNIC ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).SingleOrDefault(o => o.ETHNIC_CODE == (this.cboEthnic.EditValue ?? "").ToString());
                     if (ethnic != null)
                     {
                         this.txtEthnicCode.Text = ethnic.ETHNIC_CODE;
@@ -1760,7 +1763,7 @@ namespace HIS.UC.UCPatientRaw
                 {
                     if (this.cboEthnic.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.SDA_ETHNIC data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().SingleOrDefault(o => o.ETHNIC_CODE == (this.cboEthnic.EditValue ?? "").ToString());
+                        SDA.EFMODEL.DataModels.SDA_ETHNIC data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).SingleOrDefault(o => o.ETHNIC_CODE == (this.cboEthnic.EditValue ?? "").ToString());
                         if (data != null)
                         {
                             this.txtEthnicCode.Text = data.ETHNIC_CODE;
