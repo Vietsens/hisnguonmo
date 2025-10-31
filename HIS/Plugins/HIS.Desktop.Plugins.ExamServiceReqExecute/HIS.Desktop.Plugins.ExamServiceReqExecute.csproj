@@ -176,7 +176,7 @@
     </Reference>
     <Reference Include="HIS.UC.Icd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His_Test_20250906143200\x64\ReferencedAssemblies\HIS.UC.Icd.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Ksk">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.Ksk\HIS.UC.Ksk.dll</HintPath>
@@ -619,6 +619,7 @@
     <Compile Include="Sda\SdaEventLogCreate.cs" />
     <Compile Include="Validate\ValidateRule\BenhPhuValidationRule.cs" />
     <Compile Include="Validate\ValidateRule\PortComValidationRule.cs" />
+    <Compile Include="Validate\ValidateRule\ValidateStartTime.cs" />
     <Compile Include="Validate\ValidateRule\ValidateMaxlength.cs" />
     <Compile Include="Validate\ValidateRule\IcdValidationRuleControl.cs" />
     <Compile Include="Validate\ValidateRule\NextTreatmentInstValidationRuleControl.cs" />
@@ -755,12 +756,9 @@ xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionNam
 xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
 
 if errorlevel 1 goto BuildEventFailed
-
 if errorlevel 1 goto BuildEventFailed
-
 REM Exit properly because the build will not fail
 REM unless the final step exits with an error code
-
 goto BuildEventOK
 :BuildEventFailed
 echo PREBUILDSTEP for $(ProjectName) FAILED
