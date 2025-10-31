@@ -15,10 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using ACS.SDO;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Plugins.ExamServiceReqExecute.ADO;
+using HIS.Desktop.Plugins.ExamServiceReqExecute.Config;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Core;
@@ -796,6 +798,22 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     //    txtHospitalizationReason.Text = this.treatment.HOSPITALIZATION_REASON;
                     //}
 
+                    if (HisServiceReqView.START_TIME.HasValue)
+                    {
+                        dtpStartTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(HisServiceReqView.START_TIME.Value);
+                    }    
+                    else
+                    {
+                        dtpStartTime.EditValue = new BackendAdapter(new CommonParam()).Get<TimerSDO>(AcsRequestUriStore.ACS_TIMER__SYNC, ApiConsumers.AcsConsumer, 1, new CommonParam()).DateNow;
+                    }
+                    if (HisConfigCFG.IsEnableEditStartTime)
+                    {
+                        dtpStartTime.Enabled = true;
+                    }
+                    else
+                    {
+                        dtpStartTime.Enabled = false;
+                    }
                     if (this.HisServiceReqView.SICK_DAY.HasValue)
                         spinNgayThuCuaBenh.EditValue = this.HisServiceReqView.SICK_DAY;//TODO
 

@@ -411,8 +411,9 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                 ado.MedicineTypeColumns.Add(medicineUseNameCol);
 
                 //Column nhóm cha
-                MedicineTypeColumn parentIDCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_PARENT_ID", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "PARENT_NAME", 140, false);
+                MedicineTypeColumn parentIDCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_PARENT_ID", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "PARENT_NAME_STR", 140, false);
                 parentIDCol.VisibleIndex = 10;
+                parentIDCol.UnboundColumnType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
                 ado.MedicineTypeColumns.Add(parentIDCol);
 
                 //Column nhóm thuốc
@@ -497,6 +498,8 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                 if (e.IsGetData)
                 {
                     HIS.UC.MedicineType.ADO.MedicineTypeADO data = e.Row as HIS.UC.MedicineType.ADO.MedicineTypeADO;
+                    Inventec.Common.Logging.LogSystem.Debug("column log: " + Inventec.Common.Logging.LogUtil.TraceData("column", data.PARENT_ID));
+
                     if (data != null)
                     {
                         if (e.Column.FieldName == "IMPORT_PRICE")
@@ -546,7 +549,7 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                                 e.Value = 0;
                             }
                         }
-                        if (e.Column.FieldName == "PARENT_NAME")
+                        if (e.Column.FieldName == "PARENT_NAME_STR")
                         {
                             if (data == null) return;
                             if (data.PARENT_ID.HasValue)

@@ -168,7 +168,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\SHAREUTIL\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.csproj">
+    <ProjectReference Include="..\..\..\..\common\SHAREUTIL\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.csproj">
       <Project>{c73196a6-e1cc-4d81-bcd5-a8e5c5ea74cb}</Project>
       <Name>Inventec.Common.SignLibrary</Name>
     </ProjectReference>

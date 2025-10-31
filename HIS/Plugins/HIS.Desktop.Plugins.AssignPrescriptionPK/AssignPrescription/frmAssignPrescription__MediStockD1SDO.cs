@@ -1764,7 +1764,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                             DMediStock1ADO m1 = null;
                             //if (!HisConfigCFG.IsAutoCreateSaleExpMest)
-                            if ((!HisConfigCFG.IsAutoCreateSaleExpMest) || (HisConfigCFG.OutStockListItemInCaseOfNoStockChosenOption == "2" && !(currentMediStockNhaThuocSelecteds != null && currentMediStockNhaThuocSelecteds.Count > 0)))
+                            if ((!(HisConfigCFG.IsAutoCreateSaleExpMest == "1")) || (HisConfigCFG.OutStockListItemInCaseOfNoStockChosenOption == "2" && !(currentMediStockNhaThuocSelecteds != null && currentMediStockNhaThuocSelecteds.Count > 0)))
                             {
                                 m1 = result.Where(o => o.ID == item.ID && o.SERVICE_TYPE_ID == item.SERVICE_TYPE_ID && o.EXP_PRICE_DISPLAY == (o.LAST_EXP_PRICE * (1 + o.LAST_EXP_VAT_RATIO))).FirstOrDefault();
                                 if (m1 != null)

@@ -591,13 +591,15 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                     txtGender.Text = gender.GENDER_CODE;
                 }
                 txtAddress.Text = patientDto.ADDRESS;
-                var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().FirstOrDefault(o => o.NATIONAL_NAME == patientDto.NATIONAL_NAME);
+                var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
+                    .Where(o => o.IS_ACTIVE == 1)
+                    .FirstOrDefault(o => o.NATIONAL_NAME == patientDto.NATIONAL_NAME);
                 if (national != null)
                 {
                     cboNation.EditValue = national.NATIONAL_CODE;
                     txtNation.Text = national.NATIONAL_CODE;
                 }
-                var ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_NAME == patientDto.ETHNIC_NAME);
+                var ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).FirstOrDefault(o => o.ETHNIC_NAME == patientDto.ETHNIC_NAME);
                 if (ethnic != null)
                 {
                     cboEthnic.EditValue = ethnic.ETHNIC_CODE;
@@ -967,7 +969,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 FillDataToGridLookupedit(this.cboHTProvinceName, "PROVINCE_NAME", "PROVINCE_CODE", "SEARCH_CODE", new List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>());
                 FillDataToGridLookupedit(this.cboCareer, "CAREER_NAME", "ID", "CAREER_CODE", BackendDataWorker.Get<HIS_CAREER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
                 FillDataToGridLookupedit(this.cboEthnic, "ETHNIC_NAME", "ETHNIC_CODE", "ETHNIC_CODE", BackendDataWorker.Get<SDA_ETHNIC>().Where(e=> e.IS_ACTIVE == 1).ToList());
-                FillDataToGridLookupedit(this.cboNation, "NATIONAL_NAME", "NATIONAL_CODE", "NATIONAL_CODE", BackendDataWorker.Get<SDA_NATIONAL>());
+                FillDataToGridLookupedit(this.cboNation, "NATIONAL_NAME", "NATIONAL_CODE", "NATIONAL_CODE", BackendDataWorker.Get<SDA_NATIONAL>().Where(o => o.IS_ACTIVE == 1).ToList());
                 FillDataToGridLookupedit(this.cboMilitaryRank, "MILITARY_RANK_NAME", "ID", "MILITARY_RANK_CODE", BackendDataWorker.Get<HIS_MILITARY_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
                 FillDataToLookupedit(this.cboBloodABOCode, "BLOOD_ABO_CODE", "BLOOD_ABO_CODE", BackendDataWorker.Get<HIS_BLOOD_ABO>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), 100);
                 FillDataToLookupedit(this.cboBloodRHCode, "BLOOD_RH_CODE", "BLOOD_RH_CODE", BackendDataWorker.Get<HIS_BLOOD_RH>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), 100);
@@ -1203,7 +1205,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
 
                 if (cboEthnic.EditValue != null)
                 {
-                    var ethnic = BackendDataWorker.Get<SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_CODE == cboEthnic.EditValue.ToString());
+                    var ethnic = BackendDataWorker.Get<SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).FirstOrDefault(o => o.ETHNIC_CODE == cboEthnic.EditValue.ToString());
                     if (ethnic != null)
                     {
                         patientDTO.ETHNIC_NAME = ethnic.ETHNIC_NAME;
@@ -1218,7 +1220,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
 
                 if (cboNation.EditValue != null)
                 {
-                    var nation = BackendDataWorker.Get<SDA_NATIONAL>().FirstOrDefault(o => o.NATIONAL_CODE == cboNation.EditValue.ToString());
+                    var nation = BackendDataWorker.Get<SDA_NATIONAL>().Where(o => o.IS_ACTIVE == 1).FirstOrDefault(o => o.NATIONAL_CODE == cboNation.EditValue.ToString());
                     if (nation != null)
                     {
                         patientDTO.NATIONAL_CODE = nation.NATIONAL_CODE;

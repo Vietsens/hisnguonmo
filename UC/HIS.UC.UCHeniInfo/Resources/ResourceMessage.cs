@@ -90,6 +90,22 @@ namespace HIS.UC.UCHeniInfo
             }
         }
 
+        internal static string ThuocCoThoiSuDungDen
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_ThuocCoThoiSuDungDen", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string ThoiDiemMienCungChiTraPhaiCungNamVoiNamHienTai
         {
             get
@@ -197,6 +213,52 @@ namespace HIS.UC.UCHeniInfo
                 catch (Exception ex)
                 {
                     Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+        internal static string DotKhamTruocCuaBenhNhanCoThuocChuaUongHet
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_DotKhamTruocCuaBenhNhanCoThuocChuaUongHet", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+        internal static string DotKhamTruocCuaBenhNhanConNoTienVienPhi
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_DotKhamTruocCuaBenhNhanConNoTienVienPhi", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string TieuDeCuaSoThongBaoLaThongBao
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_TieuDeCuaSoThongBaoLaThongBao", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
                 }
                 return "";
             }

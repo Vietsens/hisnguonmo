@@ -731,7 +731,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 {
                     if (cboEthnic.EditValue != null)
                     {
-                        SDA.EFMODEL.DataModels.SDA_ETHNIC ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_CODE == ((cboEthnic.EditValue ?? "").ToString()));
+                        SDA.EFMODEL.DataModels.SDA_ETHNIC ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).FirstOrDefault(o => o.ETHNIC_CODE == ((cboEthnic.EditValue ?? "").ToString()));
                         if (ethnic != null)
                         {
                             txtEthnic.Text = ethnic.ETHNIC_CODE;
