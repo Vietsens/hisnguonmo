@@ -42,7 +42,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
         long DocumentDate { get; set; }
         bool IsShowMessDocument = false;
         bool IsAllowDuplicateDocument = false;
-        decimal HeinLimitPrice { get; set; }
+        decimal? HeinLimitPrice { get; set; }
         HIS_IMP_MEST _ImpMestUp { get; set; }
 
         internal SaveManuBehavior(CommonParam param,

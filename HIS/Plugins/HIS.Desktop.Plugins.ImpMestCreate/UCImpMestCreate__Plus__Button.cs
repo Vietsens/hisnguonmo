@@ -761,7 +761,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                     if (ado != null)
                     {
-                        ado.HeinLimitPrice = item.HEIN_LIMIT_PRICE ?? 0;
+                        ado.HeinLimitPrice = item.HEIN_LIMIT_PRICE ?? null;
                         ado.Errors = errors;
                         ado.Warms = warms;
                         if (item.IMP_AMOUNT != null)
