@@ -492,7 +492,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 txtBidYear.Text = "";
                 txtBidNumber.Text = "";
                 spinCanImpAmount.Value = 0;
-                spinHeinLimitPrice.Value = 0;
+                spinHeinLimitPrice.EditValue = null;
                 chkImprice.Checked = false;
                 chkImprice.Enabled = true;
                 TxtSerialNumber.Text = "";
