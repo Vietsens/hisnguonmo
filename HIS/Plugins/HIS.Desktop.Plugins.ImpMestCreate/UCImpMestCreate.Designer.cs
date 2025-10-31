@@ -589,6 +589,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.spinHeinLimitPrice.Location = new System.Drawing.Point(352, 384);
             this.spinHeinLimitPrice.MenuManager = this.barManager1;
             this.spinHeinLimitPrice.Name = "spinHeinLimitPrice";
+            this.spinHeinLimitPrice.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinHeinLimitPrice.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spinHeinLimitPrice.Size = new System.Drawing.Size(94, 20);

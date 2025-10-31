@@ -1208,7 +1208,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     if (listServiceADO == null)
                         listServiceADO = new List<VHisServiceADO>();
 
-                    List<long> _serviceId = new List<long>();
+                    List<long> _serviceId = new List<long>();   
                     _serviceId.AddRange(_Medicines.Select(p => p.SERVICE_ID).Distinct().ToList());
                     _serviceId.AddRange(_Materials.Select(p => p.SERVICE_ID).Distinct().ToList());
                     List<V_HIS_SERVICE_PATY> dataServicePatys = BackendDataWorker.Get<V_HIS_SERVICE_PATY>().Where(p => _serviceId.Contains(p.SERVICE_ID)).ToList();
@@ -1255,6 +1255,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 ado.HisMedicine.EXPIRED_DATE = ado.EXPIRED_DATE;
                                 ado.HisMedicine.TAX_RATIO = ado.TAX_RATIO;
                                 ado.BidId = item.BID_ID;
+                                ado.HeinLimitPrice = mediType.HEIN_LIMIT_PRICE;
 
                                 var medicine = dataMedicines.FirstOrDefault(p => p.ID == item.MEDICINE_ID);
                                 if (medicine != null)
@@ -1425,6 +1426,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 ado.HisMaterial.EXPIRED_DATE = ado.EXPIRED_DATE;
                                 ado.HisMaterial.TAX_RATIO = ado.TAX_RATIO;
                                 ado.BidId = item.BID_ID;
+                                ado.HeinLimitPrice = mateType.HEIN_LIMIT_PRICE;
 
                                 var material = dataMaterials.FirstOrDefault(p => p.ID == item.MATERIAL_ID);
                                 if (material != null)
@@ -2252,9 +2254,17 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.currrentServiceAdo.medicineUseFormId = Inventec.Common.TypeConvert.Parse.ToInt64(this.cboMedicineUseForm.EditValue.ToString());
                 }
                 /// bổ sung  HEIN_LIMIT_PRICE 
-                this.currrentServiceAdo.HeinLimitPrice = spinHeinLimitPrice.Value;
+                if (spinHeinLimitPrice.EditValue == null)
+                {
+                    this.currrentServiceAdo.HeinLimitPrice = null;
+                }
+                else
+                {
+                    this.currrentServiceAdo.HeinLimitPrice = spinHeinLimitPrice.Value;   
+                }
 
-                this.currrentServiceAdo.CanImpAmount = spinCanImpAmount.Value;
+
+                    this.currrentServiceAdo.CanImpAmount = spinCanImpAmount.Value;
                 this.currrentServiceAdo.IMP_AMOUNT = spinImpAmount.Value;
                 this.currrentServiceAdo.GiaBan = GiaBan;
                 if (spinImpPrice1.Enabled && spinImpPrice1.Visible)
@@ -3739,7 +3749,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     this.txtSoDangKy.Enabled = true;
                                     this.SpMaxReuseCount.Enabled = false;
                                     this.spinImpPriceVAT.Enabled = false;
-                                    this.spinHeinLimitPrice.Value = currrentServiceAdo.HeinLimitPrice;
+                                    this.spinHeinLimitPrice.EditValue = currrentServiceAdo.HeinLimitPrice ?? null;
                                     if (currrentServiceAdo.ImpVatRatio > 0)
                                     {
                                         spinImpVatRatio.Enabled = false;
@@ -3783,7 +3793,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     this.txtSoDangKy.Enabled = true;
                                     this.SpMaxReuseCount.Enabled = false;
                                     this.spinImpPriceVAT.Enabled = false;
-                                    this.spinHeinLimitPrice.Value = currrentServiceAdo.HeinLimitPrice;
+                                    this.spinHeinLimitPrice.EditValue = currrentServiceAdo.HeinLimitPrice ?? null;
 
                                     if (currrentServiceAdo.ImpVatRatio > 0)
                                     {
@@ -3930,7 +3940,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     else
                         spnTemperature.EditValue = null;
 
-                    spinHeinLimitPrice.Value = this.currrentServiceAdo.HeinLimitPrice;
+
+                    spinHeinLimitPrice.EditValue = this.currrentServiceAdo.HeinLimitPrice ?? null;  
+                        
                     spinImpAmount.Value = this.currrentServiceAdo.IMP_AMOUNT;
                     spinImpPrice1.Value = this.currrentServiceAdo.IMP_PRICE;
                     spinImpPrice.Value = this.currrentServiceAdo.IMP_PRICE;

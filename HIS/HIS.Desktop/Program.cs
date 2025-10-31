@@ -75,7 +75,13 @@ using AutoMapper;using DevExpress.Skins;using DevExpress.UserSkins;using HIS.
 
 
 
-        /// <summary>        /// The main entry point for the application.        /// </summary>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 [STAThread]        [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.ControlAppDomain)]        static void Main()        {
+
+
+
+
+
+
+        /// <summary>        /// The main entry point for the application.        /// </summary>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    [STAThread]        [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.ControlAppDomain)]        static void Main()        {
             //Always at least try to let our application code handle the exception.
             //Setting this to "catch" means the Application.ThreadException event
             //will fire first, essentially causing the app to crash right away and shut down.
@@ -92,8 +98,8 @@ using AutoMapper;using DevExpress.Skins;using DevExpress.UserSkins;using HIS.
                     if (aupVersion == "v2")
                     {
                         // Đợi một chút để các tiến trình được kill hoàn toàn và giải phóng file handles
-                        LogSystem.Info("Đang chờ các tiến trình trước đó gọi dừng hoàn toàn...");
-                        WaitForProcessesToTerminate();
+                        LogSystem.Info("Đang chờ các tiến trình trước đó gọi dừng hoàn toàn, nếu còn sẽ gọi lệnh kill...");
+                        WaitForKillPeriousProcessesToTerminate();
                     }                    UnpackCommandline();                    if (!updatedForAUS && !updated)                        RunAutoUpdateAup();                    if (!updated)                        RunAutoUpdate();                }                else                {                    LogSystem.Info("Dang chay che do unit test hoac dia chi uri cua backend AUP khong duoc cau hinh____khong the kiem tra duoc phien ban moi____" + Inventec.Aup.Utility.AupConstant.BASE_URI);                }                LogSystem.Info("Application_Start. Time=" + DateTime.Now.ToString("yyyyMMddhhmmss"));                InitialExtAssemble();
                 // Add the event handler for handling UI thread exceptions to the event.
                 //Application.ThreadException += GlobalThreadExceptionHandler;
@@ -105,7 +111,7 @@ using AutoMapper;using DevExpress.Skins;using DevExpress.UserSkins;using HIS.
         {
             try
             {
-                dynamic response = ApiConsumerStore.AupConsumer.Get<object>("/api/AupVersion/GetApiVersion", null, null, 3);
+                dynamic response = ApiConsumerStore.AupConsumer.Get<object>("/api/AupVersion/GetApiVersion", null, null, 6);
                 LogSystem.Info("GetAupApiVersionAsync response: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => response), response));
 
                 if (response != null)
@@ -177,6 +183,82 @@ using AutoMapper;using DevExpress.Skins;using DevExpress.UserSkins;using HIS.
                         if (processes.Count > 0)
                         {
                             anyProcessStillRunning = true;
+                            LogSystem.Debug(string.Format("Still waiting for {0} processes to terminate (count: {1})", processName, processes.Count));
+                            break;
+                        }
+                    }
+
+                    if (!anyProcessStillRunning)
+                    {
+                        LogSystem.Info(string.Format("All processes terminated successfully after {0}ms", totalWaitTime));
+                        break;
+                    }
+
+                    System.Threading.Thread.Sleep(waitInterval);
+                    totalWaitTime += waitInterval;
+
+                    // Cập nhật status mỗi 2 giây
+                    if (totalWaitTime % 2000 == 0)
+                    {
+                        //UpdateStatus("Đang chờ tiến trình dừng", string.Format("Đã chờ {0} giây...", totalWaitTime / 1000));
+                    }
+                }
+
+                if (totalWaitTime >= maxWaitTime)
+                {
+                    LogSystem.Warn("Timeout waiting for processes to terminate. Proceeding with file copy anyway.");
+                }
+
+                // Thêm một khoảng delay cuối cùng để đảm bảo file handles được giải phóng hoàn toàn
+                LogSystem.Debug("Adding final delay to ensure file handles are released...");
+                System.Threading.Thread.Sleep(1000);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn("Error in WaitForProcessesToTerminate: " + ex.Message);
+                // Không throw exception, chỉ log và tiếp tục
+            }
+        }
+
+        private static void WaitForKillPeriousProcessesToTerminate()
+        {
+            try
+            {
+                LogSystem.Info("Waiting for processes to terminate completely...");
+
+                int maxWaitTime = 10000; // 10 seconds max
+                int waitInterval = 500; // Check every 500ms
+                int totalWaitTime = 0;
+
+                string[] processNames = { "Inventec.AutoUpdater", "Inventec.AUS" };
+
+                while (totalWaitTime < maxWaitTime)
+                {
+                    bool anyProcessStillRunning = false;
+
+                    // Kiểm tra xem có process nào vẫn còn chạy không
+                    foreach (string processName in processNames)
+                    {
+                        var processes = System.Diagnostics.Process.GetProcesses()
+                            .Where(p => p.ProcessName.Equals(processName, StringComparison.OrdinalIgnoreCase)
+                                     || p.ProcessName.Equals(processName + ".exe", StringComparison.OrdinalIgnoreCase)
+                                     || p.ProcessName.Contains(processName))
+                            .ToList();
+
+                        if (processes.Count > 0)
+                        {
+                            for (int i = 0; i < processes.Count(); i++)
+                            {
+                                try
+                                {
+                                    processes[i].Kill();
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogSystem.Debug(ex);
+                                }
+                            }
+
                             LogSystem.Debug(string.Format("Still waiting for {0} processes to terminate (count: {1})", processName, processes.Count));
                             break;
                         }

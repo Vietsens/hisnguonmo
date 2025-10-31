@@ -763,7 +763,22 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                         }
                     }
 
-                    SDO.PatientTypeAlter = this._PatientTypeAlter;
+                    if (this._TreatmentId != null && this._TreatmentId != 0 && this._HisTreatment != null)
+                    {
+                        SDO.TransferInFormId = this._HisTreatment.TRANSFER_IN_FORM_ID;
+                        SDO.TransferInIcdName = this._HisTreatment.TRANSFER_IN_ICD_NAME;
+                        SDO.TransferInIcdCode = this._HisTreatment.TRANSFER_IN_ICD_CODE;
+                        SDO.TransferInMediOrgCode = this._HisTreatment.TRANSFER_IN_MEDI_ORG_CODE;
+                        SDO.TransferInMediOrgName = this._HisTreatment.TRANSFER_IN_MEDI_ORG_NAME;
+                        SDO.TransferInReasonId = this._HisTreatment.TRANSFER_IN_REASON_ID;
+                        SDO.TransferInCmkt = this._HisTreatment.TRANSFER_IN_CMKT;
+                        SDO.TransferInCode = this._HisTreatment.TRANSFER_IN_CODE;
+                        SDO.TransferInTimeFrom = this._HisTreatment.TRANSFER_IN_TIME_FROM;
+                        SDO.TransferInTimeTo = this._HisTreatment.TRANSFER_IN_TIME_TO;
+                        SDO.HeinPatientTypeCode = this._HisTreatment.HEIN_PATIENT_TYPE_CODE;
+                    }
+
+                    SDO.PatientTypeAlter = _alter;
 
 
                     var resultPatientTypeAlter = new Inventec.Common.Adapter.BackendAdapter(param).Post<HisPatientTypeAlterAndTranPatiSDO>("api/HisPatientTypeAlter/Update", ApiConsumers.MosConsumer, SDO, param);
