@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -104,14 +105,14 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 LoadDataCboInformationBid();
                 //Load du lieu
                 FillData();
-
+                
                 //valid
-                ValidControls();
 
                 if (this.material != null)
                 {
                     EnableBBGN(this.material.ID);
                 }
+                ValidControls();
 
                 //Focus
                 spinImpPrice.Focus();
@@ -246,7 +247,47 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 this.txtTTThau.Text = material.TT_THAU;
                 this.cboImpSource.EditValue = material.IMP_SOURCE_ID;
                 this.cboInformationBid.EditValue = material.INFORMATION_BID;
-                this.txtGiaTranBhyt.Text = material.HEIN_LIMIT_PRICE.ToString();
+                this.txtGiaTranBhyt.EditValue = material.HEIN_LIMIT_PRICE;
+                var cul = (CultureInfo)(cultureLang ?? CultureInfo.CurrentCulture).Clone();
+                cul.NumberFormat.NumberDecimalSeparator = ",";
+                if (string.IsNullOrEmpty(cul.NumberFormat.NumberGroupSeparator) || cul.NumberFormat.NumberGroupSeparator == ",")
+                    cul.NumberFormat.NumberGroupSeparator = ".";
+
+                txtGiaTranBhyt.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None; 
+                txtGiaTranBhyt.Properties.NullText = string.Empty;
+                txtGiaTranBhyt.Properties.NullValuePrompt = ""; 
+                txtGiaTranBhyt.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+
+                if (material.HEIN_LIMIT_PRICE.HasValue)
+                    txtGiaTranBhyt.EditValue = material.HEIN_LIMIT_PRICE.Value.ToString("G29", cul);
+                else
+                    txtGiaTranBhyt.EditValue = null;
+
+                
+                txtGiaTranBhyt.KeyPress -= txtGiaTranBhyt_KeyPress; 
+                txtGiaTranBhyt.KeyPress += (s, e) =>
+                {
+                    if (char.IsControl(e.KeyChar)) return;
+                    if (char.IsDigit(e.KeyChar)) return;
+
+                    if (e.KeyChar == '.') { e.KeyChar = ','; } 
+
+                    if (e.KeyChar == ',')
+                    {
+                        
+                        if (txtGiaTranBhyt.Text.Contains(",")) { e.Handled = true; return; }
+                        return;
+                    }
+                    e.Handled = true;
+                };
+
+                
+                txtGiaTranBhyt.Leave += (s, e) =>
+                {
+                    var t = txtGiaTranBhyt.Text?.Trim();
+                    if (!string.IsNullOrEmpty(t) && t.EndsWith(",")) txtGiaTranBhyt.Text = t.TrimEnd(',');
+                };
+
                 if (material.IS_SALE_EQUAL_IMP_PRICE == 1)
                 {
                     this.chkBBGN.CheckState = CheckState.Checked;
@@ -426,7 +467,24 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 result.TDL_BID_YEAR = txtBidYear.Text;
                 result.TDL_BID_EXTRA_CODE = txtBidExtraCode.Text;
                 result.TT_THAU = txtTTThau.Text;
-                result.HEIN_LIMIT_PRICE = Convert.ToDecimal(txtGiaTranBhyt.Text);
+                var culSave = txtGiaTranBhyt.Properties.Mask.Culture ?? cultureLang ?? CultureInfo.CurrentCulture;
+
+                if (txtGiaTranBhyt.EditValue == null || string.IsNullOrWhiteSpace(txtGiaTranBhyt.Text))
+                {
+                    result.HEIN_LIMIT_PRICE = null;
+                }
+                else
+                {
+                    // Ưu tiên lấy trực tiếp số từ EditValue
+                    if (txtGiaTranBhyt.EditValue is decimal d1)
+                        result.HEIN_LIMIT_PRICE = d1;
+                    else if (txtGiaTranBhyt.EditValue is double d2)
+                        result.HEIN_LIMIT_PRICE = Convert.ToDecimal(d2);
+                    else if (decimal.TryParse(txtGiaTranBhyt.Text, NumberStyles.Number, culSave, out var d3))
+                        result.HEIN_LIMIT_PRICE = d3;
+                    else
+                        result.HEIN_LIMIT_PRICE = null;
+                }
                 if (cboImpSource.EditValue != null)
                     result.IMP_SOURCE_ID = (long)cboImpSource.EditValue;
                 else
@@ -1017,5 +1075,31 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             }
         }
 
+        private void txtGiaTranBhyt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsControl(e.KeyChar) || char.IsDigit(e.KeyChar)) return;
+
+            var cul = cultureLang ?? CultureInfo.CurrentCulture;
+            var groupSep = cul.NumberFormat.NumberGroupSeparator;      // vi-VN: "."
+            var decimalSep = cul.NumberFormat.NumberDecimalSeparator;  // vi-VN: ","
+
+            if (e.KeyChar == ',' || e.KeyChar == '.')
+            {
+                // Với n0: không thập phân -> xem như người dùng muốn gõ dấu phân tách nghìn
+                if (!string.IsNullOrEmpty(groupSep) && groupSep.Length == 1)
+                {
+                    e.KeyChar = groupSep[0]; // ví dụ vi-VN: '.' 
+                    e.Handled = false;       // cho mask xử lý bình thường (không beep)
+                }
+                else
+                {
+                    e.Handled = true;        // groupSep không phải 1 ký tự -> bỏ qua để tránh beep
+                }
+                return;
+            }
+
+            // Chặn các ký tự khác
+            e.Handled = true;
+        }
     }
 }
