@@ -280,36 +280,36 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 if (string.IsNullOrEmpty(cul.NumberFormat.NumberGroupSeparator) || cul.NumberFormat.NumberGroupSeparator == ",")
                     cul.NumberFormat.NumberGroupSeparator = ".";
 
-                txtGiaTranBhyt.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None; // <-- NHẬP THÔ
+                txtGiaTranBhyt.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None; 
                 txtGiaTranBhyt.Properties.NullText = string.Empty;
-                txtGiaTranBhyt.Properties.NullValuePrompt = ""; // không gợi ý
+                txtGiaTranBhyt.Properties.NullValuePrompt = ""; 
                 txtGiaTranBhyt.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
 
-                // Gán text theo dạng “thô” nếu có sẵn giá trị (không chèn nhóm nghìn, không ép số lẻ)
+               
                 if (medicine.HEIN_LIMIT_PRICE.HasValue)
                     txtGiaTranBhyt.EditValue = medicine.HEIN_LIMIT_PRICE.Value.ToString("G29", cul);
                 else
                     txtGiaTranBhyt.EditValue = null;
 
-                // ==== sự kiện nhập thô ====
-                txtGiaTranBhyt.KeyPress -= txtGiaTranBhyt_KeyPress; // nếu có cũ
+                
+                txtGiaTranBhyt.KeyPress -= txtGiaTranBhyt_KeyPress; 
                 txtGiaTranBhyt.KeyPress += (s, e) =>
                 {
                     if (char.IsControl(e.KeyChar)) return;
                     if (char.IsDigit(e.KeyChar)) return;
 
-                    if (e.KeyChar == '.') { e.KeyChar = ','; } // map '.' -> ','
+                    if (e.KeyChar == '.') { e.KeyChar = ','; } 
 
                     if (e.KeyChar == ',')
                     {
-                        // chỉ cho 1 dấu ','
+                        
                         if (txtGiaTranBhyt.Text.Contains(",")) { e.Handled = true; return; }
                         return;
                     }
-                    e.Handled = true; // chặn ký tự khác
+                    e.Handled = true; 
                 };
 
-                // Nếu user rời control với dấu ',' ở cuối -> bỏ
+                
                 txtGiaTranBhyt.Leave += (s, e) =>
                 {
                     var t = txtGiaTranBhyt.Text?.Trim();
@@ -441,7 +441,6 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 }
                 else
                 {
-                    // Ưu tiên lấy trực tiếp số từ EditValue
                     if (txtGiaTranBhyt.EditValue is decimal d1)
                         result.HEIN_LIMIT_PRICE = d1;
                     else if (txtGiaTranBhyt.EditValue is double d2)
