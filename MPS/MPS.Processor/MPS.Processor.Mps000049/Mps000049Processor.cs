@@ -301,6 +301,15 @@ namespace MPS.Processor.Mps000049
         }
 
         string totalReqRoomName = "";
+        private bool CheckSaperate(long medicineGroupId)
+        {
+            var medicineGroup = BackendDataWorker.Get<HIS_MEDICINE_GROUP>().Where(o => o.ID == medicineGroupId).FirstOrDefault();
+            if (medicineGroup.IS_SEPARATE_PRINTING == 1)
+            {
+                return true;
+            }
+            return false;
+        }
         private void GetMedicineGroup()
         {
             try
@@ -326,14 +335,14 @@ namespace MPS.Processor.Mps000049
                             {
                                 return "PHIẾU LĨNH THUỐC ĐIỀU TRỊ LAO";
                             }
-                            else if (name.Contains("KHÁNG SINH"))
+                            else if (name.Contains("KHÁNG SINH") && CheckSaperate(o.MEDICINE_GROUP_ID.Value))
                             {
                                 return "PHIẾU LĨNH THUỐC KHÁNG SINH";
                             }
                             else
                             {
-                        // Gom tất cả thuốc còn lại vào 1 nhóm duy nhất
-                        return "PHIẾU LĨNH THUỐC THƯỜNG";
+                                // Gom tất cả thuốc còn lại vào 1 nhóm duy nhất
+                                return "PHIẾU LĨNH THUỐC THƯỜNG";
                             }
                         })
                         .OrderBy(g => g.Key);
