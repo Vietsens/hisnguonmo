@@ -725,7 +725,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
             {
                 try
                 {
-                    if (HisConfigCFG.IsAutoCreateSaleExpMest
+                    if ((HisConfigCFG.IsAutoCreateSaleExpMest == "1" || HisConfigCFG.IsAutoCreateSaleExpMest == "2")
+                        && (!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet)
+                        && this.frmAssignPrescription.cboNhaThuoc.EditValue != null
+                        && this.IS_OUT_HOSPITAL == 1)
+                    {
+                        return true;
+                    }
+                    if ((HisConfigCFG.IsAutoCreateSaleExpMest == "1" || HisConfigCFG.IsAutoCreateSaleExpMest == "2")
                         && (!GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet)
                         && this.frmAssignPrescription.cboNhaThuoc.EditValue != null
                         && this.IS_OUT_HOSPITAL != 1)
@@ -744,6 +751,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
                              + "__" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => frmAssignPrescription.currentMedicineTypeADOForEdit.AMOUNT), frmAssignPrescription.currentMedicineTypeADOForEdit.AMOUNT)
                             );
                         Rectangle buttonBounds = new Rectangle(frmAssignPrescription.txtMediMatyForPrescription.Bounds.X, frmAssignPrescription.txtMediMatyForPrescription.Bounds.Y, frmAssignPrescription.txtMediMatyForPrescription.Bounds.Width, frmAssignPrescription.txtMediMatyForPrescription.Bounds.Height);
+                        
+                        bool isExceed = this.Amount > frmAssignPrescription.currentMedicineTypeADOForEdit.BK_AMOUNT
+                                        && (this.Amount - frmAssignPrescription.currentMedicineTypeADOForEdit.BK_AMOUNT + amountAdded) > (frmAssignPrescription.currentMedicineTypeADOForEdit.AMOUNT ?? 0);
+                        if (isExceed)
+                        {
+                            if (HisConfigCFG.IsExceedAvailableOutStock)
+                            {
+                                MessageBox.Show("Thuốc vật tư trong kho không đủ khả dụng");
+                                return false;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Thuốc vật tư trong kho không đủ khả dụng. Bạn vẫn có thể kê đơn vượt tồn theo cấu hình.");
+                                return true;
+                            }
+                        }
+
                         if (this.Amount > frmAssignPrescription.currentMedicineTypeADOForEdit.BK_AMOUNT && (this.Amount - frmAssignPrescription.currentMedicineTypeADOForEdit.BK_AMOUNT + amountAdded) > (frmAssignPrescription.currentMedicineTypeADOForEdit.AMOUNT ?? 0))
                         {
                             MessageBox.Show("Thuốc vật tư trong kho không đủ khả dụng");

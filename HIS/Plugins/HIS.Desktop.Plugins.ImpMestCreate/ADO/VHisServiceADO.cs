@@ -139,7 +139,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
         public long? DISCOUNT_TO_DATE { get; set; }
         public string TT_THAU { get; set; }
         public string INFORMATION_BID { get; set; }
-        public decimal HeinLimitPrice { get; set; }
+        public decimal? HeinLimitPrice { get; set; }
 
         public VHisServiceADO(V_HIS_MEDICINE_TYPE data)
         {
@@ -174,7 +174,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
                     this.packingTypeName = data.PACKING_TYPE_NAME;
                     this.heinServiceBhytName = data.HEIN_SERVICE_BHYT_NAME;
                     this.activeIngrBhytName = data.ACTIVE_INGR_BHYT_NAME;
-                    this.HeinLimitPrice = data.HEIN_LIMIT_PRICE ?? 0;
+                    this.HeinLimitPrice = data.HEIN_LIMIT_PRICE ?? null;
                     //this.dosageForm = data.DOSAGE_FORM;
                     this.medicineUseFormId = data.MEDICINE_USE_FORM_ID;
                     this.isFunctionalFood = data.IS_FUNCTIONAL_FOOD;
@@ -226,7 +226,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
                     this.PRICING_MAX_REUSE_COUNT = data.PRICING_MAX_REUSE_COUNT;
                     this.MAP_MEDI_MATE_ID = data.MATERIAL_TYPE_MAP_ID;
                     this.VS_PRICE = data.REUSE_FEE;
-                    this.HeinLimitPrice = data.HEIN_LIMIT_PRICE ?? 0;
+                    this.HeinLimitPrice = data.HEIN_LIMIT_PRICE ?? null;
                 }
             }
             catch (Exception ex)

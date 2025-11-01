@@ -1204,7 +1204,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         else
                             cboHangSX.EditValue = null;
 
-                        spinHeinLimitPrice.Value = bidMediType.HEIN_LIMIT_PRICE ?? 0;
+                        spinHeinLimitPrice.EditValue = bidMediType.HEIN_LIMIT_PRICE ?? null;
                         txtNognDoHL.Text = String.IsNullOrWhiteSpace(bidMediType.CONCENTRA) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.CONCENTRA : bidMediType.CONCENTRA;
                         txtSoDangKy.Text = String.IsNullOrWhiteSpace(bidMediType.MEDICINE_REGISTER_NUMBER) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.REGISTER_NUMBER : bidMediType.REGISTER_NUMBER;
                         txtPackingJoinBid.Text = String.IsNullOrWhiteSpace(bidMediType.PACKING_TYPE_NAME) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.packingTypeName : bidMediType.PACKING_TYPE_NAME;
@@ -1331,7 +1331,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         txtPackingJoinBid.Text = bidMateType.BID_MATERIAL_TYPE_CODE;
                         txtHeinServiceBidMateType.Text = bidMateType.BID_MATERIAL_TYPE_NAME;
 
-                        spinHeinLimitPrice.Value = bidMateType.HEIN_LIMIT_PRICE ?? 0;
+                        spinHeinLimitPrice.EditValue = bidMateType.HEIN_LIMIT_PRICE ?? null;
                         txtBidNumOrder.Text = bidMateType.BID_NUM_ORDER;
                         txtBidGroupCode.Text = bidMateType.BID_GROUP_CODE;
                         txtBidYear.Text = bidMateType.BID_YEAR;

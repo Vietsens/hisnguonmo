@@ -57,7 +57,7 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
             object result = null;
             try
             {
-                ImportEmrViewer.ImportEmrViewer behavior = ImportEmrViewer.ImportEmrViewerFactory.MakeImportEmrViewer(param, args);
+                ImportEmrViewer1.ImportEmrViewer1 behavior = ImportEmrViewer1.ImportEmrViewer1Factory.MakeImportEmrViewer(param, args);
                 result = behavior != null ? (behavior.Run()) : null;
             }
             catch (Exception ex)

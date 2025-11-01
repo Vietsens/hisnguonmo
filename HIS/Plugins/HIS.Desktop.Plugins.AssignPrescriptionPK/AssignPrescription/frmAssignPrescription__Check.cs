@@ -637,7 +637,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 }
                                 result = true;
                             }
-                           
+
                         }
                         sereServWithTreatment = sereServTemp;
                         serviceReqMetyInBatch = serviceReqMetyTemp;
@@ -1231,6 +1231,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 if (mediMaTy != null)
                 {
+
+                    if ((HisConfigCFG.IsAutoCreateSaleExpMest == "1" || HisConfigCFG.IsAutoCreateSaleExpMest == "2") && mediMaTy.IS_OUT_HOSPITAL == 1)
+                    {
+                        // Cho phép kê luôn, không kiểm tra tồn khả dụng
+                        return true;
+                    }
                     decimal? Amount = 0;
                     Amount = mediMaTy != null ? mediMaTy.AMOUNT : 0;
                     if (this.actionBosung == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
@@ -1254,7 +1260,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         {
                             var medicineTypeAcin__SameAcinBhyt = GetDataByActiveIngrBhyt();
 
-                            if (!HisConfigCFG.IsAutoCreateSaleExpMest || !String.IsNullOrEmpty(medicineTypeAcin__SameAcinBhyt))
+                            if (!(HisConfigCFG.IsAutoCreateSaleExpMest == "1") || !String.IsNullOrEmpty(medicineTypeAcin__SameAcinBhyt))
                             {
                                 Rectangle buttonBounds = new Rectangle(this.txtMediMatyForPrescription.Bounds.X, this.txtMediMatyForPrescription.Bounds.Y, this.txtMediMatyForPrescription.Bounds.Width, this.txtMediMatyForPrescription.Bounds.Height);
 
@@ -1293,7 +1299,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                         break;
                                 }
                             }
-                            else if (HisConfigCFG.IsAutoCreateSaleExpMest && String.IsNullOrEmpty(medicineTypeAcin__SameAcinBhyt))
+                            else if ((HisConfigCFG.IsAutoCreateSaleExpMest == "1") && String.IsNullOrEmpty(medicineTypeAcin__SameAcinBhyt))
                             {
                                 MessageBox.Show("Thuốc trong nhà thuốc không đủ khả dụng để kê.", HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 this.spinAmount.Focus();
@@ -1304,7 +1310,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         //else if (mediMaTy.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU || mediMaTy.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM || mediMaTy.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
                         else if (mediMaTy.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
                         {
-                            if (!HisConfigCFG.IsAutoCreateSaleExpMest)
+                            if (!(HisConfigCFG.IsAutoCreateSaleExpMest == "1"))
                             {
                                 if (MessageBox.Show("Vật tư trong nhà thuốc không đủ khả dụng để kê. Bạn có muốn tiếp tục?", HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
                                 {

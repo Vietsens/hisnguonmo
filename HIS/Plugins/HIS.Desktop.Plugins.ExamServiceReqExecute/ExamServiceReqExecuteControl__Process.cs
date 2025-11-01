@@ -1505,6 +1505,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 examServiceReqUpdateSDO.Id = this.HisServiceReqView.ID;
+                examServiceReqUpdateSDO.StartTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtpStartTime.DateTime);
                 examServiceReqUpdateSDO.Advise = this.HisServiceReqView.ADVISE;
                 examServiceReqUpdateSDO.Conclusion = this.HisServiceReqView.CONCLUSION;
                 examServiceReqUpdateSDO.SickDay = Inventec.Common.TypeConvert.Parse.ToInt64(spinNgayThuCuaBenh.Text ?? "0");

@@ -246,6 +246,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 this.txtTTThau.Text = material.TT_THAU;
                 this.cboImpSource.EditValue = material.IMP_SOURCE_ID;
                 this.cboInformationBid.EditValue = material.INFORMATION_BID;
+                this.txtGiaTranBhyt.Text = material.HEIN_LIMIT_PRICE.ToString();
                 if (material.IS_SALE_EQUAL_IMP_PRICE == 1)
                 {
                     this.chkBBGN.CheckState = CheckState.Checked;
@@ -425,6 +426,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 result.TDL_BID_YEAR = txtBidYear.Text;
                 result.TDL_BID_EXTRA_CODE = txtBidExtraCode.Text;
                 result.TT_THAU = txtTTThau.Text;
+                result.HEIN_LIMIT_PRICE = Convert.ToDecimal(txtGiaTranBhyt.Text);
                 if (cboImpSource.EditValue != null)
                     result.IMP_SOURCE_ID = (long)cboImpSource.EditValue;
                 else

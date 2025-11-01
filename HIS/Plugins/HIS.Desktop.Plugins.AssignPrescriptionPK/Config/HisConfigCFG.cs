@@ -247,7 +247,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static bool IsDontPresExpiredTime;
         internal static string DefaultDrugStoreCode;//Se bo sau
         internal static string IsUsingWarningHeinFee;
-        internal static bool IsAutoCreateSaleExpMest;
+        internal static string IsAutoCreateSaleExpMest;
         internal static bool IsAutoTickExpendWithAssignPresPTTT;
         internal static bool IsNotAllowingExpendWithoutHavingParent;
         public static int AmountDecimalNumber { get; set; }
@@ -538,7 +538,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 ManyDayPrescriptionOption = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(CONFIG_KEY__MOS_HIS_SERVICE_REQ_MANY_DAYS_PRESCRIPTION_OPTION));
                 IsAllowAssignPresByPackage = GetValue(CONFIG_KEY__IsAllowAssignPresByPackage) == GlobalVariables.CommonStringTrue;
                 IsloadIcdFromExamServiceExecute = GetValue(CONFIG_KEY__IsloadIcdFromExamServiceExecute) == GlobalVariables.CommonStringTrue;
-                IsAutoCreateSaleExpMest = GetValue(CONFIG_KEY__IS_AUTO_CREATE_SALE_EXP_MEST) == GlobalVariables.CommonStringTrue;
+                //IsAutoCreateSaleExpMest = GetValue(CONFIG_KEY__IS_AUTO_CREATE_SALE_EXP_MEST) == GlobalVariables.CommonStringTrue;
+                IsAutoCreateSaleExpMest = GetValue(CONFIG_KEY__IS_AUTO_CREATE_SALE_EXP_MEST);
                 IsAutoTickExpendWithAssignPresPTTT = GetValue(CONFIG_KEY__IsAutoTickExpendWithAssignPresPTTT) == GlobalVariables.CommonStringTrue;
                 icdServiceHasCheck = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(ICD_SERVICE__HAS_CHECK));
                 icdServiceHasRequireCheck = GetValue(ICD_SERVICE__HAS_REQUIRE_CHECK) == GlobalVariables.CommonStringTrue;

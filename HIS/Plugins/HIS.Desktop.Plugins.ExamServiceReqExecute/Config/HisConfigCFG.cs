@@ -28,6 +28,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
 {
     class HisConfigCFG
     {
+        public const string KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISENABLEEDITSTARTTIME  = "HIS.Desktop.Plugins.ExamServiceReqExecute.IsEnableEditStartTime";
+        public static bool IsEnableEditStartTime;
         public const string CONFIG_KEY_IsCheckServiceFollowWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
         internal static bool IsCheckServiceFollowWhenOut;
         public const string REQUIRED_PULSE_BLOOD_PRESSURE = "HIS.UC.DHST__REQUIRED_PULSE_BLOOD_PRESSURE";
@@ -141,6 +143,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 IsRequiredPathologicalProcessTransferPatientBHYT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsRequiredPathologicalProcessTransferPatientBHYT) == GlobalVariables.CommonStringTrue;
                 PathologicalProcessOption = int.Parse(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_PathologicalProcessOption) ?? "0");
                 AllowBhxhLeaveOver30days = GetValue(KEY_AllowBhxhLeaveOver30days);
+                IsEnableEditStartTime = GetValue(KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISENABLEEDITSTARTTIME) == GlobalVariables.CommonStringTrue;
             }
             catch (Exception ex)
             {
