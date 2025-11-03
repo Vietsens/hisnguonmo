@@ -1568,7 +1568,7 @@ namespace HIS.UC.UCPatientRaw
             try
             {
                 var ethnicDefault = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.EthinicBase;
-                if (ethnicDefault != null)
+                if (ethnicDefault != null && ethnicDefault.IS_ACTIVE == 1)
                 {
                     this.cboEthnic.EditValue = ethnicDefault.ETHNIC_CODE;
                     this.txtEthnicCode.Text = ethnicDefault.ETHNIC_CODE;
