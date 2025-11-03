@@ -15,25 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Plugins.MedicineUpdate.Validation;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Inventec.Desktop.Common.Message;
-using Inventec.Core;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.Plugins.MedicineUpdate.Validation;
-using DevExpress.XtraEditors.DXErrorProvider;
-using MOS.SDO;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.LocalStorage.BackendData;
-using DevExpress.XtraEditors.Controls;
 
 namespace HIS.Desktop.Plugins.MedicineUpdate
 {
@@ -105,15 +106,12 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 //Load du lieu
                 FillData();
 
-                chkUpdateCKVP.Checked = true;
-
                 if (this.medicine != null)
                 {
                     EnableBBGN(this.medicine.ID);
                 }
                 //valid
                 ValidControls();
-
                 //Focus
                 spinImpPrice.Focus();
                 spinImpPrice.SelectAll();
@@ -268,7 +266,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 this.txtPackgeNumber.Text = medicine.PACKAGE_NUMBER;
                 this.dtExpiredDate.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(medicine.EXPIRED_DATE ?? 0);
                 this.lblContractCode.Text = medicine.MEDICAL_CONTRACT_CODE;
-                this.lblContractName.Text = medicine.MEDICAL_CONTRACT_NAME;
+                //this.lblContractName.Text = medicine.MEDICAL_CONTRACT_NAME;
                 this.txtMedicineBytNumOrder.Text = medicine.MEDICINE_BYT_NUM_ORDER;
                 this.txtMedicineRegisterNumOrder.Text = medicine.MEDICINE_REGISTER_NUMBER;
                 this.txtMedicineTcyNumOrder.Text = medicine.MEDICINE_TCY_NUM_ORDER;
@@ -276,7 +274,47 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 this.txtConcentra.Text = medicine.CONCENTRA;
                 this.txtHeinServiceBHYTName.Text = medicine.HEIN_SERVICE_BHYT_NAME;
                 this.txtTenHoatChatBHYT.Text = medicine.ACTIVE_INGR_BHYT_NAME;
-                this.txtGiaTranBhyt.Text = medicine.HEIN_LIMIT_PRICE.ToString();
+                this.txtGiaTranBhyt.EditValue = medicine.HEIN_LIMIT_PRICE;
+                var cul = (CultureInfo)(cultureLang ?? CultureInfo.CurrentCulture).Clone();
+                cul.NumberFormat.NumberDecimalSeparator = ",";
+                if (string.IsNullOrEmpty(cul.NumberFormat.NumberGroupSeparator) || cul.NumberFormat.NumberGroupSeparator == ",")
+                    cul.NumberFormat.NumberGroupSeparator = ".";
+
+                txtGiaTranBhyt.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None; 
+                txtGiaTranBhyt.Properties.NullText = string.Empty;
+                txtGiaTranBhyt.Properties.NullValuePrompt = ""; 
+                txtGiaTranBhyt.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+
+               
+                if (medicine.HEIN_LIMIT_PRICE.HasValue)
+                    txtGiaTranBhyt.EditValue = medicine.HEIN_LIMIT_PRICE.Value.ToString("G29", cul);
+                else
+                    txtGiaTranBhyt.EditValue = null;
+
+                
+                txtGiaTranBhyt.KeyPress -= txtGiaTranBhyt_KeyPress; 
+                txtGiaTranBhyt.KeyPress += (s, e) =>
+                {
+                    if (char.IsControl(e.KeyChar)) return;
+                    if (char.IsDigit(e.KeyChar)) return;
+
+                    if (e.KeyChar == '.') { e.KeyChar = ','; } 
+
+                    if (e.KeyChar == ',')
+                    {
+                        
+                        if (txtGiaTranBhyt.Text.Contains(",")) { e.Handled = true; return; }
+                        return;
+                    }
+                    e.Handled = true; 
+                };
+
+                
+                txtGiaTranBhyt.Leave += (s, e) =>
+                {
+                    var t = txtGiaTranBhyt.Text?.Trim();
+                    if (!string.IsNullOrEmpty(t) && t.EndsWith(",")) txtGiaTranBhyt.Text = t.TrimEnd(',');
+                };
                 if (medicine.MEDICINE_IS_STAR_MARK == 1)
                 {
                     this.chkMedicineIsStarMark.CheckState = CheckState.Checked;
@@ -395,9 +433,23 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 result.CONCENTRA = txtConcentra.Text;
                 result.HEIN_SERVICE_BHYT_NAME = txtHeinServiceBHYTName.Text;
                 result.ACTIVE_INGR_BHYT_NAME = txtTenHoatChatBHYT.Text;
-                result.HEIN_LIMIT_PRICE = string.IsNullOrWhiteSpace(txtGiaTranBhyt.Text)
-                ? (decimal?)null
-                : Convert.ToDecimal(txtGiaTranBhyt.Text.Trim());
+                var culSave = txtGiaTranBhyt.Properties.Mask.Culture ?? cultureLang ?? CultureInfo.CurrentCulture;
+
+                if (txtGiaTranBhyt.EditValue == null || string.IsNullOrWhiteSpace(txtGiaTranBhyt.Text))
+                {
+                    result.HEIN_LIMIT_PRICE = null;
+                }
+                else
+                {
+                    if (txtGiaTranBhyt.EditValue is decimal d1)
+                        result.HEIN_LIMIT_PRICE = d1;
+                    else if (txtGiaTranBhyt.EditValue is double d2)
+                        result.HEIN_LIMIT_PRICE = Convert.ToDecimal(d2);
+                    else if (decimal.TryParse(txtGiaTranBhyt.Text, NumberStyles.Number, culSave, out var d3))
+                        result.HEIN_LIMIT_PRICE = d3;
+                    else
+                        result.HEIN_LIMIT_PRICE = null;
+                }
                 if (chkMedicineIsStarMark.CheckState == CheckState.Checked)
                 {
                     result.MEDICINE_IS_STAR_MARK = 1;
@@ -1082,6 +1134,33 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void txtGiaTranBhyt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsControl(e.KeyChar) || char.IsDigit(e.KeyChar)) return;
+
+            var cul = cultureLang ?? CultureInfo.CurrentCulture;
+            var groupSep = cul.NumberFormat.NumberGroupSeparator;      // vi-VN: "."
+            var decimalSep = cul.NumberFormat.NumberDecimalSeparator;  // vi-VN: ","
+
+            if (e.KeyChar == ',' || e.KeyChar == '.')
+            {
+                // Với n0: không thập phân -> xem như người dùng muốn gõ dấu phân tách nghìn
+                if (!string.IsNullOrEmpty(groupSep) && groupSep.Length == 1)
+                {
+                    e.KeyChar = groupSep[0]; // ví dụ vi-VN: '.' 
+                    e.Handled = false;       // cho mask xử lý bình thường (không beep)
+                }
+                else
+                {
+                    e.Handled = true;        // groupSep không phải 1 ký tự -> bỏ qua để tránh beep
+                }
+                return;
+            }
+
+            // Chặn các ký tự khác
+            e.Handled = true;
         }
     }
 }

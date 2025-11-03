@@ -46,10 +46,15 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
         private void InitializeComponent()
         {
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.chkPRIORITY = new DevExpress.XtraEditors.CheckEdit();
+            this.txtGiaTranBhyt = new DevExpress.XtraEditors.TextEdit();
             this.barManager = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonSave = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.chkPRIORITY = new DevExpress.XtraEditors.CheckEdit();
             this.txtTTThau = new DevExpress.XtraEditors.TextEdit();
             this.cboInformationBid = new DevExpress.XtraEditors.LookUpEdit();
             this.cboImpSource = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
@@ -94,17 +99,13 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             this.lciInformationBid = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.txtGiaTranBhyt = new DevExpress.XtraEditors.TextEdit();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkPRIORITY.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtGiaTranBhyt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPRIORITY.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTTThau.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboInformationBid.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboImpSource.Properties)).BeginInit();
@@ -147,9 +148,8 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             ((System.ComponentModel.ISupportInitialize)(this.lciInformationBid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtGiaTranBhyt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -185,21 +185,24 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // chkPRIORITY
+            // txtGiaTranBhyt
             // 
-            this.chkPRIORITY.Location = new System.Drawing.Point(377, 242);
-            this.chkPRIORITY.MenuManager = this.barManager;
-            this.chkPRIORITY.Name = "chkPRIORITY";
-            this.chkPRIORITY.Properties.Caption = "";
-            this.chkPRIORITY.Properties.FullFocusRect = true;
-            this.chkPRIORITY.Size = new System.Drawing.Size(61, 19);
-            this.chkPRIORITY.StyleController = this.layoutControl1;
-            this.chkPRIORITY.TabIndex = 31;
+            this.txtGiaTranBhyt.Location = new System.Drawing.Point(97, 242);
+            this.txtGiaTranBhyt.MenuManager = this.barManager;
+            this.txtGiaTranBhyt.Name = "txtGiaTranBhyt";
+            this.txtGiaTranBhyt.Size = new System.Drawing.Size(125, 20);
+            this.txtGiaTranBhyt.StyleController = this.layoutControl1;
+            this.txtGiaTranBhyt.TabIndex = 32;
+            this.txtGiaTranBhyt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtGiaTranBhyt_KeyPress);
             // 
             // barManager
             // 
             this.barManager.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager.DockControls.Add(this.barDockControlTop);
+            this.barManager.DockControls.Add(this.barDockControlBottom);
+            this.barManager.DockControls.Add(this.barDockControlLeft);
+            this.barManager.DockControls.Add(this.barDockControlRight);
             this.barManager.Form = this;
             this.barManager.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonSave});
@@ -223,6 +226,45 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             this.barButtonSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
             this.barButtonSave.Name = "barButtonSave";
             this.barButtonSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonSave_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(440, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 321);
+            this.barDockControlBottom.Size = new System.Drawing.Size(440, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 292);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(440, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 292);
+            // 
+            // chkPRIORITY
+            // 
+            this.chkPRIORITY.Location = new System.Drawing.Point(340, 242);
+            this.chkPRIORITY.MenuManager = this.barManager;
+            this.chkPRIORITY.Name = "chkPRIORITY";
+            this.chkPRIORITY.Properties.Caption = "";
+            this.chkPRIORITY.Properties.FullFocusRect = true;
+            this.chkPRIORITY.Size = new System.Drawing.Size(98, 19);
+            this.chkPRIORITY.StyleController = this.layoutControl1;
+            this.chkPRIORITY.TabIndex = 31;
             // 
             // txtTTThau
             // 
@@ -320,7 +362,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             this.labelContractName.Location = new System.Drawing.Point(241, 218);
             this.labelContractName.Margin = new System.Windows.Forms.Padding(2);
             this.labelContractName.Name = "labelContractName";
-            this.labelContractName.Size = new System.Drawing.Size(37, 20);
+            this.labelContractName.Size = new System.Drawing.Size(0, 20);
             this.labelContractName.StyleController = this.layoutControl1;
             this.labelContractName.TabIndex = 22;
             // 
@@ -346,12 +388,12 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             // 
             // chkBBGN
             // 
-            this.chkBBGN.Location = new System.Drawing.Point(377, 218);
+            this.chkBBGN.Location = new System.Drawing.Point(340, 218);
             this.chkBBGN.MenuManager = this.barManager;
             this.chkBBGN.Name = "chkBBGN";
             this.chkBBGN.Properties.Caption = "";
             this.chkBBGN.Properties.FullFocusRect = true;
-            this.chkBBGN.Size = new System.Drawing.Size(61, 19);
+            this.chkBBGN.Size = new System.Drawing.Size(98, 19);
             this.chkBBGN.StyleController = this.layoutControl1;
             this.chkBBGN.TabIndex = 15;
             this.chkBBGN.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkBBGN_PreviewKeyDown);
@@ -650,7 +692,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             this.layoutControlItem4.Control = this.labelContractName;
             this.layoutControlItem4.Location = new System.Drawing.Point(224, 216);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(56, 48);
+            this.layoutControlItem4.Size = new System.Drawing.Size(19, 48);
             this.layoutControlItem4.Text = " -";
             this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem4.TextSize = new System.Drawing.Size(10, 20);
@@ -728,9 +770,9 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             this.lciBBGN.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciBBGN.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBBGN.Control = this.chkBBGN;
-            this.lciBBGN.Location = new System.Drawing.Point(280, 216);
+            this.lciBBGN.Location = new System.Drawing.Point(243, 216);
             this.lciBBGN.Name = "lciBBGN";
-            this.lciBBGN.Size = new System.Drawing.Size(160, 24);
+            this.lciBBGN.Size = new System.Drawing.Size(197, 24);
             this.lciBBGN.Text = "BBGN:";
             this.lciBBGN.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBBGN.TextSize = new System.Drawing.Size(90, 20);
@@ -822,55 +864,14 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem11.Control = this.chkPRIORITY;
-            this.layoutControlItem11.Location = new System.Drawing.Point(280, 240);
+            this.layoutControlItem11.Location = new System.Drawing.Point(243, 240);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.OptionsToolTip.ToolTipTitle = "Ưu tiên hiển thị khi chọn vật tư để kê đơn";
-            this.layoutControlItem11.Size = new System.Drawing.Size(160, 24);
+            this.layoutControlItem11.Size = new System.Drawing.Size(197, 24);
             this.layoutControlItem11.Text = "Ưu tiên kê:";
             this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem11.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem11.TextToControlDistance = 5;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(440, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 321);
-            this.barDockControlBottom.Size = new System.Drawing.Size(440, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 292);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(440, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 292);
-            // 
-            // dxValidationProvider
-            // 
-            this.dxValidationProvider.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider_ValidationFailed);
-            // 
-            // txtGiaTranBhyt
-            // 
-            this.txtGiaTranBhyt.Location = new System.Drawing.Point(97, 242);
-            this.txtGiaTranBhyt.MenuManager = this.barManager;
-            this.txtGiaTranBhyt.Name = "txtGiaTranBhyt";
-            this.txtGiaTranBhyt.Size = new System.Drawing.Size(125, 20);
-            this.txtGiaTranBhyt.StyleController = this.layoutControl1;
-            this.txtGiaTranBhyt.TabIndex = 32;
             // 
             // layoutControlItem12
             // 
@@ -884,6 +885,10 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem12.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem12.TextToControlDistance = 5;
+            // 
+            // dxValidationProvider
+            // 
+            this.dxValidationProvider.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider_ValidationFailed);
             // 
             // FormMaterialUpdate
             // 
@@ -906,8 +911,9 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkPRIORITY.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtGiaTranBhyt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPRIORITY.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTTThau.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboInformationBid.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboImpSource.Properties)).EndInit();
@@ -950,9 +956,8 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             ((System.ComponentModel.ISupportInitialize)(this.lciInformationBid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtGiaTranBhyt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
