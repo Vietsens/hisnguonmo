@@ -32,6 +32,7 @@ using HIS.Desktop.Utility;
 using MOS.SDO;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
+using Inventec.Common.QrCodeBHYT;
 
 namespace HIS.UC.UCPatientRaw
 {
@@ -551,6 +552,13 @@ namespace HIS.UC.UCPatientRaw
 				dataResult.OldPatient = true;
 				this.dlgSearchPatient1(dataResult);
 				this.FillDataPatientToControl(patient, true);
+				if (!this.isAlertTreatmentEndInDay)//Them If de khi co thong bao da ra vien k muon update info
+				{
+					HeinCardData heinCardDataForCheckGOV = ConvertFromPatientData(patient);
+
+					if (this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw != null)
+						this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw(heinCardDataForCheckGOV);
+				}
 			}
 			catch (Exception ex)
 			{

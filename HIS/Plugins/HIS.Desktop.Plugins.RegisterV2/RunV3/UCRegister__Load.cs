@@ -47,6 +47,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
     public partial class UCRegister : UserControlBase
     {
         public List<string> lstPreviousDebtTreatmentsRegister = new List<string>();
+        List<string> lstSend = new List<string>();
         private void PeriosTreatmentMessage()
         {
             try
@@ -111,6 +112,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                 lstPreviousDebtTreatmentsRegister = this.currentPatientSDO.PreviousDebtTreatments;
                                 message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanConNoTienVienPhi3, this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE);
                             }
+                        }
+                    }
+                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "3" && this.currentPatientSDO.LastTreatmentFee != null)
+                    {
+                        if (this.currentPatientSDO.LastTreatmentFee.IS_ACTIVE == 1 || ((this.currentPatientSDO.LastTreatmentFee.TOTAL_PATIENT_PRICE ?? 0) - (this.currentPatientSDO.LastTreatmentFee.TOTAL_DEPOSIT_AMOUNT ?? 0) - (this.currentPatientSDO.LastTreatmentFee.TOTAL_BILL_AMOUNT ?? 0) + (this.currentPatientSDO.LastTreatmentFee.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) + (this.currentPatientSDO.LastTreatmentFee.TOTAL_REPAY_AMOUNT ?? 0)) > 0)
+                        {
+                            lstSend = new List<string>() { this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE };
+                            message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanConNoTienVienPhi, this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE);
                         }
                     }
                 }

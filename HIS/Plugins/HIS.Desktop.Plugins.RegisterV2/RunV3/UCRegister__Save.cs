@@ -98,6 +98,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     {
                         var serviceReqInfoValue = ucOtherServiceReqInfo1.GetValue();
                         lst = patientRawInfoValue.lstPreviousDebtTreatments;
+                        if(lst == null || lst.Count  < 1)
+                        {
+                            lst = lstSend; 
+                        }
                         EmergencyBol = serviceReqInfoValue.IsEmergency;
                         treatmentTypeID = serviceReqInfoValue.TreatmentType_ID;
                         if (!CheckPreviousDebtTreatment())

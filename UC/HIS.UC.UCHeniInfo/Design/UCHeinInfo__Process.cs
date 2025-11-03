@@ -428,15 +428,15 @@ namespace HIS.UC.UCHeniInfo
             try
             {
                 if (patientSDO == null) throw new ArgumentNullException("Du lieu dau vao khong hop le => patientSDO is null");
-                if (patientSDO.PreviousDebtTreatments != null && patientSDO.PreviousDebtTreatments.Any())
-                {
-                    patientSDO.PreviousDebtTreatments = patientSDO.PreviousDebtTreatments
-                        .Distinct()
-                        .ToList();
-                }
+                //if (patientSDO.PreviousDebtTreatments != null && patientSDO.PreviousDebtTreatments.Any())
+                //{
+                //    patientSDO.PreviousDebtTreatments = patientSDO.PreviousDebtTreatments
+                //        .Distinct()
+                //        .ToList();
+                //}
                 this.currentPatientSdo = patientSDO;
-                if (HisConfigCFG.IsCheckPreviousDebt != "5")
-                    PeriosTreatmentMessage();
+                //if (HisConfigCFG.IsCheckPreviousDebt != "5")
+                //    PeriosTreatmentMessage();
                 //Call register module fill data to control
                 if (this.dlgfillDataPatientSDOToRegisterForm != null)
                     valid = this.dlgfillDataPatientSDOToRegisterForm(this.currentPatientSdo);
@@ -465,7 +465,7 @@ namespace HIS.UC.UCHeniInfo
                 else
                     heinCardData.ToDate = "";
                 heinCardData.Gender = null;
-                if (ResultDataADO != null && (ResultDataADO.ResultHistoryLDO.maKetQua == "001" || ResultDataADO.ResultHistoryLDO.maKetQua == "002" || ResultDataADO.ResultHistoryLDO.maKetQua == "050") && oldHeinCardNumber == heinCardData.HeinCardNumber)
+                if (ResultDataADO != null && ResultDataADO.ResultHistoryLDO != null && (ResultDataADO.ResultHistoryLDO.maKetQua == "001" || ResultDataADO.ResultHistoryLDO.maKetQua == "002" || ResultDataADO.ResultHistoryLDO.maKetQua == "050") && oldHeinCardNumber == heinCardData.HeinCardNumber)
                 {
                     return;
                 }

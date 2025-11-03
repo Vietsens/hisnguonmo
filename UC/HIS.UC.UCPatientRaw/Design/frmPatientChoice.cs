@@ -302,6 +302,7 @@ namespace HIS.UC.UCPatientRaw
                 patient.PreviousPrescriptions = patientWarningSDO.PreviousPrescriptions;
                 patient.PreviousDebtTreatments = patientWarningSDO.PreviousDebtTreatments;
                 patient.TodayFinishTreatments = patientWarningSDO.TodayFinishTreatments;
+                patient.LastTreatmentFee = patientWarningSDO.LastTreatmentFee;
             }
             catch (Exception ex)
             {
