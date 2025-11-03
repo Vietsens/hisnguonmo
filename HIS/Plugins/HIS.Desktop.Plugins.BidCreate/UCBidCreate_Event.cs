@@ -381,7 +381,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidMedicineType.DOSAGE_FORM = item.DOSAGE_FORM;
                         bidMedicineType.MEDICINE_USE_FORM_ID = item.MEDICINE_USE_FORM_ID;
                         bidMedicineType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
-                        bidMedicineType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE;
+                        bidMedicineType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE ?? null;
 
                         this.bidModel.HIS_BID_MEDICINE_TYPE.Add(bidMedicineType);
 
@@ -422,7 +422,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidMaterialType.MONTH_LIFESPAN = item.MONTH_LIFESPAN;
                         bidMaterialType.INFORMATION_BID = item.INFORMATION_BID;
                         bidMaterialType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
-                        bidMaterialType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE;
+                        bidMaterialType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE ?? null;
 
                         this.bidModel.HIS_BID_MATERIAL_TYPE.Add(bidMaterialType);
                     }
@@ -741,7 +741,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     spinImpPrice.EditValue = row.IMP_PRICE;
                     spinImpVat.EditValue = row.IMP_VAT_RATIO * 100;
                     spinImpMoreRatio.EditValue = row.ImpMoreRatio;
-                    spinGiaTran.EditValue = row.HEIN_LIMIT_PRICE;
+                    spinGiaTran.EditValue = row.HEIN_LIMIT_PRICE ?? null;
                     txtBidNumOrder.Text = row.BID_NUM_ORDER;
                     txtBidGroupCode.Text = row.BID_GROUP_CODE;
                     txtBidPackageCode.Text = row.BID_PACKAGE_CODE;
@@ -1028,7 +1028,17 @@ namespace HIS.Desktop.Plugins.BidCreate
                 this.medicineType.PACKING_TYPE_NAME = txtQCĐG.Text.Trim();
                 this.medicineType.ACTIVE_INGR_BHYT_NAME = txtActiveBhyt.Text.Trim();
                 this.medicineType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text.Trim();
-                this.medicineType.HEIN_LIMIT_PRICE = spinGiaTran.Value;
+                if(spinGiaTran.EditValue != null)
+                {
+                    this.medicineType.HEIN_LIMIT_PRICE = spinGiaTran.Value;
+                }
+                else
+                {
+                    this.medicineType.HEIN_LIMIT_PRICE = null;
+                }
+
+
+
 
                 //this.medicineType.DOSAGE_FORM = txtDosageForm.Text.Trim();
                 if (cboMediUserForm.EditValue != null)
@@ -1147,7 +1157,15 @@ namespace HIS.Desktop.Plugins.BidCreate
                 this.materialType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.materialType.AMOUNT = spinAmount.Value;
                 this.materialType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
-                this.materialType.HEIN_LIMIT_PRICE = spinGiaTran.Value;
+                if (spinGiaTran.EditValue != null)
+                {
+                    this.materialType.HEIN_LIMIT_PRICE = spinGiaTran.Value;
+                }
+                else
+                {
+                    this.materialType.HEIN_LIMIT_PRICE = null;
+                }
+
                 ADO.MedicineTypeADO aMedicineSdo = new ADO.MedicineTypeADO();
                 AutoMapper.Mapper.CreateMap<ADO.MaterialTypeADO, ADO.MedicineTypeADO>();
                 aMedicineSdo = AutoMapper.Mapper.Map<ADO.MaterialTypeADO, ADO.MedicineTypeADO>(this.materialType);

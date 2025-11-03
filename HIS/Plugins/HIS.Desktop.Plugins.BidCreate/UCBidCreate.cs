@@ -162,6 +162,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 //print
                 SetPrintTypeToMps();
                 this.isInit = false;
+                spinGiaTran.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -499,7 +500,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 txtBidNumber.Text = "";
                 txtBidYear.Text = "";
                 txtBidApThauCode.Text = "";
-                spinGiaTran.Value = 0;
+                spinGiaTran.EditValue = null;
                 dtFromTime.EditValue = null;
                 dtToTime.EditValue = null;
                 txtNationalMainText.Visible = false;
@@ -578,8 +579,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 cboDosageForm.Text = "";
                 cboDosageForm.EditValue = null;
                 cboNational.Text = "";
-                cboNational.EditValue = null;
-                spinGiaTran.Value = 0;  
+                cboNational.EditValue = null;  
                 //cboNational.Properties.Buttons[1].Visible = false;
                 cboManufacture.Text = "";
                 cboManufacture.EditValue = null;
@@ -1206,7 +1206,6 @@ namespace HIS.Desktop.Plugins.BidCreate
                 spinImpVat.Value = 0;
                 spinImpMoreRatio.Value = 0;
                 spinImpPrice.Value = 0;
-                spinGiaTran.Value = 0;
                 txtBidNumOrder.Text = "";
                 txtBatchDivisionCode.Text = "";
                 this.DtExpiredDate.EditValue = null;
@@ -1679,7 +1678,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 txtNationalMainText.Text = "";
                 cboNational.EditValue = null;
                 cboManufacture.EditValue = null;
-                spinGiaTran.Value = 0;
+                spinGiaTran.EditValue = null;
                 txtRegisterNumber.Text = "";
                 txtMaTT.Text = "";
                 txtTenTT.Text = "";
