@@ -45,22 +45,20 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDepositService));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.btnQR = new DevExpress.XtraEditors.SimpleButton();
-            this.btnSavePrintAndTrans = new DevExpress.XtraEditors.SimpleButton();
-            this.txtLastDigitsOfBankCardCode = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.cboBank = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnNew = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnSaveAndPrint = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnSavePrintAndTrans = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.btnAddSign = new DevExpress.XtraEditors.SimpleButton();
+            this.btnQR = new DevExpress.XtraEditors.SimpleButton();
+            this.btnSavePrintAndTrans = new DevExpress.XtraEditors.SimpleButton();
+            this.txtLastDigitsOfBankCardCode = new DevExpress.XtraEditors.TextEdit();
             this.btnRefreshCardCode = new DevExpress.XtraEditors.SimpleButton();
             this.chkHidePatientPrice = new DevExpress.XtraEditors.CheckEdit();
             this.chkHideServiceBHYT = new DevExpress.XtraEditors.CheckEdit();
@@ -75,8 +73,6 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.dtTransactionTime = new DevExpress.XtraEditors.DateEdit();
             this.btnSaveAndPrint = new DevExpress.XtraEditors.SimpleButton();
             this.panelControlTreeSereServ = new DevExpress.XtraEditors.PanelControl();
-            this.cboPayForm = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboAccountBook = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
@@ -116,20 +112,27 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
-            this.timerInitForm = new System.Windows.Forms.Timer(this.components);
-            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.btnAddSign = new DevExpress.XtraEditors.SimpleButton();
-            this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.timerInitForm = new System.Windows.Forms.Timer();
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
+            this.cboPayForm = new DevExpress.XtraEditors.LookUpEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtLastDigitsOfBankCardCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBank.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLastDigitsOfBankCardCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkHidePatientPrice.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkHideServiceBHYT.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkHideServiceNoCost.Properties)).BeginInit();
@@ -141,8 +144,6 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             ((System.ComponentModel.ISupportInitialize)(this.dtTransactionTime.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtTransactionTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlTreeSereServ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboPayForm.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboAccountBook.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).BeginInit();
@@ -179,6 +180,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
@@ -186,11 +189,12 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboPayForm.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.cboBank);
             this.layoutControl1.Controls.Add(this.btnAddSign);
             this.layoutControl1.Controls.Add(this.btnQR);
             this.layoutControl1.Controls.Add(this.btnSavePrintAndTrans);
@@ -209,7 +213,6 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.layoutControl1.Controls.Add(this.dtTransactionTime);
             this.layoutControl1.Controls.Add(this.btnSaveAndPrint);
             this.layoutControl1.Controls.Add(this.panelControlTreeSereServ);
-            this.layoutControl1.Controls.Add(this.cboPayForm);
             this.layoutControl1.Controls.Add(this.cboAccountBook);
             this.layoutControl1.Controls.Add(this.btnAdd);
             this.layoutControl1.Controls.Add(this.btnSave);
@@ -218,6 +221,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.layoutControl1.Controls.Add(this.txtTransactionCode);
             this.layoutControl1.Controls.Add(this.txtAccountBookCode);
             this.layoutControl1.Controls.Add(this.spnAmountGiveByPatient);
+            this.layoutControl1.Controls.Add(this.cboPayForm);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
@@ -227,48 +231,24 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.layoutControl1.TabIndex = 22;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // btnQR
+            // cboBank
             // 
-            this.btnQR.Location = new System.Drawing.Point(464, 559);
-            this.btnQR.Name = "btnQR";
-            this.btnQR.Size = new System.Drawing.Size(61, 22);
-            this.btnQR.StyleController = this.layoutControl1;
-            this.btnQR.TabIndex = 55;
-            this.btnQR.Text = "QR";
-            this.btnQR.ToolTip = "Thanh toán bằng QR";
-            // 
-            // btnSavePrintAndTrans
-            // 
-            this.btnSavePrintAndTrans.Location = new System.Drawing.Point(765, 559);
-            this.btnSavePrintAndTrans.Name = "btnSavePrintAndTrans";
-            this.btnSavePrintAndTrans.Size = new System.Drawing.Size(150, 22);
-            this.btnSavePrintAndTrans.StyleController = this.layoutControl1;
-            this.btnSavePrintAndTrans.TabIndex = 54;
-            this.btnSavePrintAndTrans.Text = "Lưu In và Thanh toán (Ctrl T)";
-            this.btnSavePrintAndTrans.ToolTip = "Tự động mở chức năng Thanh toán sau khi Lưu, in phiếu tạm ứng theo dịch vụ";
-            this.btnSavePrintAndTrans.Click += new System.EventHandler(this.btnSavePrintAndTrans_Click);
-            // 
-            // txtLastDigitsOfBankCardCode
-            // 
-            this.txtLastDigitsOfBankCardCode.Location = new System.Drawing.Point(559, 509);
-            this.txtLastDigitsOfBankCardCode.MenuManager = this.barManager1;
-            this.txtLastDigitsOfBankCardCode.Name = "txtLastDigitsOfBankCardCode";
-            this.txtLastDigitsOfBankCardCode.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.txtLastDigitsOfBankCardCode.Properties.MaxLength = 4;
-            this.txtLastDigitsOfBankCardCode.Size = new System.Drawing.Size(76, 20);
-            this.txtLastDigitsOfBankCardCode.StyleController = this.layoutControl1;
-            this.txtLastDigitsOfBankCardCode.TabIndex = 53;
-            this.txtLastDigitsOfBankCardCode.EditValueChanged += new System.EventHandler(this.txtLastDigitsOfBankCardCode_EditValueChanged);
-            this.txtLastDigitsOfBankCardCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtLastDigitsOfBankCardCode_KeyPress);
+            this.cboBank.Location = new System.Drawing.Point(559, 485);
+            this.cboBank.MenuManager = this.barManager1;
+            this.cboBank.Name = "cboBank";
+            this.cboBank.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboBank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBank.Properties.NullText = "";
+            this.cboBank.Properties.View = this.gridView2;
+            this.cboBank.Size = new System.Drawing.Size(128, 20);
+            this.cboBank.StyleController = this.layoutControl1;
+            this.cboBank.TabIndex = 57;
             // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSave,
@@ -323,33 +303,56 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.bbtnSavePrintAndTrans.Name = "bbtnSavePrintAndTrans";
             this.bbtnSavePrintAndTrans.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnSavePrintAndTrans_ItemClick);
             // 
-            // barDockControlTop
+            // gridView2
             // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1100, 29);
+            this.gridView2.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView2.Name = "gridView2";
+            this.gridView2.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView2.OptionsView.ShowGroupPanel = false;
             // 
-            // barDockControlBottom
+            // btnAddSign
             // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 612);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1100, 0);
+            this.btnAddSign.Location = new System.Drawing.Point(529, 559);
+            this.btnAddSign.Name = "btnAddSign";
+            this.btnAddSign.Size = new System.Drawing.Size(76, 22);
+            this.btnAddSign.StyleController = this.layoutControl1;
+            this.btnAddSign.TabIndex = 56;
+            this.btnAddSign.Text = "Lưu ký";
+            this.btnAddSign.Click += new System.EventHandler(this.btnAddSign_Click);
             // 
-            // barDockControlLeft
+            // btnQR
             // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 583);
+            this.btnQR.Location = new System.Drawing.Point(464, 559);
+            this.btnQR.Name = "btnQR";
+            this.btnQR.Size = new System.Drawing.Size(61, 22);
+            this.btnQR.StyleController = this.layoutControl1;
+            this.btnQR.TabIndex = 55;
+            this.btnQR.Text = "QR";
+            this.btnQR.ToolTip = "Thanh toán bằng QR";
             // 
-            // barDockControlRight
+            // btnSavePrintAndTrans
             // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 583);
+            this.btnSavePrintAndTrans.Location = new System.Drawing.Point(765, 559);
+            this.btnSavePrintAndTrans.Name = "btnSavePrintAndTrans";
+            this.btnSavePrintAndTrans.Size = new System.Drawing.Size(150, 22);
+            this.btnSavePrintAndTrans.StyleController = this.layoutControl1;
+            this.btnSavePrintAndTrans.TabIndex = 54;
+            this.btnSavePrintAndTrans.Text = "Lưu In và Thanh toán (Ctrl T)";
+            this.btnSavePrintAndTrans.ToolTip = "Tự động mở chức năng Thanh toán sau khi Lưu, in phiếu tạm ứng theo dịch vụ";
+            this.btnSavePrintAndTrans.Click += new System.EventHandler(this.btnSavePrintAndTrans_Click);
+            // 
+            // txtLastDigitsOfBankCardCode
+            // 
+            this.txtLastDigitsOfBankCardCode.Location = new System.Drawing.Point(559, 509);
+            this.txtLastDigitsOfBankCardCode.MenuManager = this.barManager1;
+            this.txtLastDigitsOfBankCardCode.Name = "txtLastDigitsOfBankCardCode";
+            this.txtLastDigitsOfBankCardCode.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.txtLastDigitsOfBankCardCode.Properties.MaxLength = 4;
+            this.txtLastDigitsOfBankCardCode.Size = new System.Drawing.Size(76, 20);
+            this.txtLastDigitsOfBankCardCode.StyleController = this.layoutControl1;
+            this.txtLastDigitsOfBankCardCode.TabIndex = 53;
+            this.txtLastDigitsOfBankCardCode.EditValueChanged += new System.EventHandler(this.txtLastDigitsOfBankCardCode_EditValueChanged);
+            this.txtLastDigitsOfBankCardCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtLastDigitsOfBankCardCode_KeyPress);
             // 
             // btnRefreshCardCode
             // 
@@ -508,7 +511,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             // dtTransactionTime
             // 
             this.dtTransactionTime.EditValue = null;
-            this.dtTransactionTime.Location = new System.Drawing.Point(559, 485);
+            this.dtTransactionTime.Location = new System.Drawing.Point(786, 485);
             this.dtTransactionTime.MenuManager = this.barManager1;
             this.dtTransactionTime.Name = "dtTransactionTime";
             this.dtTransactionTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -521,7 +524,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.dtTransactionTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtTransactionTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
             this.dtTransactionTime.Properties.VistaCalendarViewStyle = DevExpress.XtraEditors.VistaCalendarViewStyle.MonthView;
-            this.dtTransactionTime.Size = new System.Drawing.Size(356, 20);
+            this.dtTransactionTime.Size = new System.Drawing.Size(129, 20);
             this.dtTransactionTime.StyleController = this.layoutControl1;
             this.dtTransactionTime.TabIndex = 7;
             this.dtTransactionTime.ToolTip = "Thời gian giao dịch";
@@ -545,27 +548,6 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.panelControlTreeSereServ.Name = "panelControlTreeSereServ";
             this.panelControlTreeSereServ.Size = new System.Drawing.Size(1096, 455);
             this.panelControlTreeSereServ.TabIndex = 40;
-            // 
-            // cboPayForm
-            // 
-            this.cboPayForm.Location = new System.Drawing.Point(358, 485);
-            this.cboPayForm.Name = "cboPayForm";
-            this.cboPayForm.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboPayForm.Properties.NullText = "";
-            this.cboPayForm.Properties.View = this.gridView1;
-            this.cboPayForm.Size = new System.Drawing.Size(102, 20);
-            this.cboPayForm.StyleController = this.layoutControl1;
-            this.cboPayForm.TabIndex = 6;
-            this.cboPayForm.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboPayForm_Closed);
-            this.cboPayForm.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboPayForm_KeyUp);
-            // 
-            // gridView1
-            // 
-            this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView1.Name = "gridView1";
-            this.gridView1.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView1.OptionsView.ShowGroupPanel = false;
             // 
             // cboAccountBook
             // 
@@ -709,7 +691,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.layoutControlItem17,
             this.layoutControlItem18,
             this.layoutControlItem19,
-            this.layoutControlItem20});
+            this.layoutControlItem20,
+            this.layoutControlItem21});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -834,10 +817,10 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.lciTransactionTime.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTransactionTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTransactionTime.Control = this.dtTransactionTime;
-            this.lciTransactionTime.Location = new System.Drawing.Point(462, 483);
+            this.lciTransactionTime.Location = new System.Drawing.Point(689, 483);
             this.lciTransactionTime.Name = "lciTransactionTime";
             this.lciTransactionTime.OptionsToolTip.ToolTip = "Thời gian giao dịch";
-            this.lciTransactionTime.Size = new System.Drawing.Size(455, 24);
+            this.lciTransactionTime.Size = new System.Drawing.Size(228, 24);
             this.lciTransactionTime.Text = "TG giao dịch:";
             this.lciTransactionTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTransactionTime.TextSize = new System.Drawing.Size(90, 20);
@@ -1077,6 +1060,56 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
             // 
+            // layoutControlItem20
+            // 
+            this.layoutControlItem20.Control = this.btnAddSign;
+            this.layoutControlItem20.Location = new System.Drawing.Point(527, 557);
+            this.layoutControlItem20.Name = "layoutControlItem20";
+            this.layoutControlItem20.Size = new System.Drawing.Size(80, 26);
+            this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem20.TextVisible = false;
+            // 
+            // layoutControlItem21
+            // 
+            this.layoutControlItem21.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem21.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem21.Control = this.cboBank;
+            this.layoutControlItem21.Location = new System.Drawing.Point(462, 483);
+            this.layoutControlItem21.Name = "layoutControlItem21";
+            this.layoutControlItem21.Size = new System.Drawing.Size(227, 24);
+            this.layoutControlItem21.Text = "Ngân hàng:";
+            this.layoutControlItem21.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem21.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem21.TextToControlDistance = 5;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1100, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 612);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1100, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 583);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 583);
+            // 
             // panelControl2
             // 
             this.panelControl2.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
@@ -1118,24 +1151,19 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.popupMenu1.Manager = this.barManager1;
             this.popupMenu1.Name = "popupMenu1";
             // 
-            // btnAddSign
+            // cboPayForm
             // 
-            this.btnAddSign.Location = new System.Drawing.Point(529, 559);
-            this.btnAddSign.Name = "btnAddSign";
-            this.btnAddSign.Size = new System.Drawing.Size(76, 22);
-            this.btnAddSign.StyleController = this.layoutControl1;
-            this.btnAddSign.TabIndex = 56;
-            this.btnAddSign.Text = "Lưu ký";
-            this.btnAddSign.Click += new System.EventHandler(this.btnAddSign_Click);
-            // 
-            // layoutControlItem20
-            // 
-            this.layoutControlItem20.Control = this.btnAddSign;
-            this.layoutControlItem20.Location = new System.Drawing.Point(527, 557);
-            this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(80, 26);
-            this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem20.TextVisible = false;
+            this.cboPayForm.Location = new System.Drawing.Point(358, 485);
+            this.cboPayForm.Name = "cboPayForm";
+            this.cboPayForm.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboPayForm.Properties.NullText = "";
+            this.cboPayForm.Size = new System.Drawing.Size(102, 20);
+            this.cboPayForm.StyleController = this.layoutControl1;
+            this.cboPayForm.TabIndex = 6;
+            this.cboPayForm.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboPayForm_Closed);
+            this.cboPayForm.EditValueChanged += new System.EventHandler(this.cboPayForm_EditValueChanged);
+            this.cboPayForm.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboPayForm_KeyUp);
             // 
             // frmDepositService
             // 
@@ -1159,8 +1187,10 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.Controls.SetChildIndex(this.panelControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtLastDigitsOfBankCardCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBank.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLastDigitsOfBankCardCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkHidePatientPrice.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkHideServiceBHYT.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkHideServiceNoCost.Properties)).EndInit();
@@ -1172,8 +1202,6 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             ((System.ComponentModel.ISupportInitialize)(this.dtTransactionTime.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtTransactionTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlTreeSereServ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboPayForm.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboAccountBook.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).EndInit();
@@ -1210,6 +1238,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
@@ -1217,7 +1247,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboPayForm.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1251,10 +1281,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         internal DevExpress.XtraEditors.SimpleButton btnSave;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         internal DevExpress.XtraEditors.GridLookUpEdit cboAccountBook;
-        internal DevExpress.XtraEditors.GridLookUpEdit cboPayForm;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
@@ -1308,5 +1336,9 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         private DevExpress.XtraBars.PopupMenu popupMenu1;
         private DevExpress.XtraEditors.SimpleButton btnAddSign;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
+        private DevExpress.XtraEditors.GridLookUpEdit cboBank;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
+        private DevExpress.XtraEditors.LookUpEdit cboPayForm;
     }
 }
