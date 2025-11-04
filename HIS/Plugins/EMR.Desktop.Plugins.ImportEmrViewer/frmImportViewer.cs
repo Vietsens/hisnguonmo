@@ -316,7 +316,7 @@ namespace EMR.Desktop.Plugins.ImportEmrViewer
                             
                     if (!string.IsNullOrEmpty(item.DEPARTMENT_CODE))
                     {
-                        if (item.DEPARTMENT_CODE.Length > 4)
+                        if (item.DEPARTMENT_CODE.Length > 20)
                         {
                             error += string.Format(Message.ResourceLanguageManager.Maxlength, item.DEPARTMENT_CODE);
                         }

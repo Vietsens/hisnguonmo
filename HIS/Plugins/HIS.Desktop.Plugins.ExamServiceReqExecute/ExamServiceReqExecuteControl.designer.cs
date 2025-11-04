@@ -7569,11 +7569,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtpStartTime.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtpStartTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtpStartTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
             this.dtpStartTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dtpStartTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtpStartTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
             this.dtpStartTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dtpStartTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.dtpStartTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
             this.dtpStartTime.Size = new System.Drawing.Size(321, 20);
             this.dtpStartTime.StyleController = this.layoutControl3;
             this.dtpStartTime.TabIndex = 72;
