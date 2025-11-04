@@ -384,11 +384,34 @@ namespace MPS.Processor.Mps000049
             {
                 if (ExpMestADOs != null && ExpMestADOs.Count > 0)
                 {
-                    var group = ExpMestADOs.GroupBy(o => new { o.MEDICINE_PARENT_ID }).OrderBy(g => g.First().MEDICINE_PARENT_NAME);
-                    foreach (var item in group)
+                    //var group = ExpMestADOs.GroupBy(o => new { o.MEDICINE_PARENT_ID }).OrderBy(g => g.First().MEDICINE_PARENT_NAME);
+                    var group = ExpMestADOs
+                    .GroupBy(o => new { o.MEDICINE_PARENT_ID })
+                    .OrderBy(g =>
                     {
-                        listMedicineParent.Add(item.ToList().First());
+                    var name = g.First().MEDICINE_PARENT_NAME?.Trim() ?? "";
+                    //Lấy phần số ở đầu chuỗi, VD: "10.2.Thuốc" -> "10.2"
+                    var match = System.Text.RegularExpressions.Regex.Match(name, @"^(\d+(\.\d+)*)");
+                    if (match.Success)
+                    {
+                        string value = match.Value;
+
+                        //Lấy phần trước dấu chấm cuối cùng, nếu có
+                        int lastDot = value.LastIndexOf('.');
+                        string prefix = lastDot > 0 ? value.Substring(0, lastDot) : value;
+
+                        //Chuyển thành số thực để so sánh
+                        if (decimal.TryParse(prefix, out var num))
+                            return num;
                     }
+                    // Không có số ở đầu → cho ra cuối danh sách
+                    return decimal.MaxValue;
+                    })
+                    .ThenBy(g => g.First().MEDICINE_PARENT_NAME); // nếu trùng số, sắp theo tên
+                        foreach (var item in group)
+                        {
+                            listMedicineParent.Add(item.ToList().First());
+                        }
                 }
             }
             catch (Exception ex)
@@ -396,8 +419,6 @@ namespace MPS.Processor.Mps000049
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
-
         void ProcessListADO()
         {
             try
