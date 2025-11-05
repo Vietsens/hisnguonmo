@@ -71,5 +71,6 @@ namespace MPS.Processor.Mps000468
 
         internal const string VACCINE_CODE = "VACCINE_CODE";
         internal const string VACCINE_NAME = "VACCINE_NAME";
+        internal const string PARENT_CODE = "PARENT_CODE";
     }
 }
