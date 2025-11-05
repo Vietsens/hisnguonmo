@@ -285,13 +285,13 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 txtGiaTranBhyt.Properties.NullValuePrompt = ""; 
                 txtGiaTranBhyt.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
 
-               
+
                 if (medicine.HEIN_LIMIT_PRICE.HasValue)
-                    txtGiaTranBhyt.EditValue = medicine.HEIN_LIMIT_PRICE.Value.ToString("G29", cul);
+                    txtGiaTranBhyt.EditValue = FormatDecimalKeepScale(medicine.HEIN_LIMIT_PRICE.Value, cul);
                 else
                     txtGiaTranBhyt.EditValue = null;
 
-                
+
                 txtGiaTranBhyt.KeyPress -= txtGiaTranBhyt_KeyPress; 
                 txtGiaTranBhyt.KeyPress += (s, e) =>
                 {
@@ -309,11 +309,26 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                     e.Handled = true; 
                 };
 
-                
+
                 txtGiaTranBhyt.Leave += (s, e) =>
                 {
                     var t = txtGiaTranBhyt.Text?.Trim();
-                    if (!string.IsNullOrEmpty(t) && t.EndsWith(",")) txtGiaTranBhyt.Text = t.TrimEnd(',');
+                    if (string.IsNullOrEmpty(t)) return;
+
+                    if (t.EndsWith(",")) { txtGiaTranBhyt.Text = t.TrimEnd(','); return; }
+
+                    var culLeave = (CultureInfo)(cultureLang ?? CultureInfo.CurrentCulture);
+
+                    culLeave = (CultureInfo)culLeave.Clone();
+                    culLeave.NumberFormat.NumberDecimalSeparator = ",";
+                    if (string.IsNullOrEmpty(culLeave.NumberFormat.NumberGroupSeparator) ||
+                        culLeave.NumberFormat.NumberGroupSeparator == ",")
+                        culLeave.NumberFormat.NumberGroupSeparator = ".";
+
+                    if (decimal.TryParse(txtGiaTranBhyt.Text, NumberStyles.Number, culLeave, out var dec))
+                    {
+                        txtGiaTranBhyt.Text = FormatDecimalKeepScale(dec, culLeave);
+                    }
                 };
                 if (medicine.MEDICINE_IS_STAR_MARK == 1)
                 {
@@ -1161,6 +1176,13 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
 
             // Chặn các ký tự khác
             e.Handled = true;
+        }
+        private static string FormatDecimalKeepScale(decimal value, CultureInfo cul)
+        {
+            int[] bits = decimal.GetBits(value);
+            int scale = (bits[3] >> 16) & 0x7F; // số chữ số thập phân
+            string fmt = scale > 0 ? ("N" + scale) : "N0"; // có group separator, đúng locale
+            return value.ToString(fmt, cul);
         }
     }
 }
