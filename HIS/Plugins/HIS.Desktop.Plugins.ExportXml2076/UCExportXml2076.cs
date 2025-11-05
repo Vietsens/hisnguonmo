@@ -1291,6 +1291,10 @@ namespace HIS.Desktop.Plugins.ExportXml2076
             }
         }
 
-      
+        private void gridViewTreatment_RowClick(object sender, RowClickEventArgs e)
+        {
+            currentTreatment = gridViewTreatment.GetRow(e.RowHandle) as V_HIS_TREATMENT_10;
+            FillDataByTreatmentSelect();
+        }
     }
 }
