@@ -5414,6 +5414,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         //    }
         //}
 
+        // CheckRequiredMachine
         private bool CheckRequiredMachine()
         {
             try
