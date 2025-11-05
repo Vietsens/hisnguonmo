@@ -718,6 +718,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 //valid = valid && dxValidationProvider1.Validate();
                 valid = valid && (this.sereServ != null);
                 valid = valid && ValidateHisService_MaxTotalProcessTime(notShowMess);
+                valid = valid && CheckSereServExt();
                 if (this.lciKetLuan.AppearanceItemCaption.ForeColor == Color.Maroon)
                 {
                     if (string.IsNullOrEmpty(txtConclude.Text))
@@ -5480,6 +5481,111 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return true;
+        }
+
+        private bool CheckSereServExt()
+        {
+            bool checkedExt = false;
+            try
+            {
+                var ext = grdControlService.DataSource as BindingSource;
+                var list = ext?.DataSource as List<V_HIS_SERE_SERV_5> ?? this.sereServbyServiceReqs;
+                if (list == null || list.Count == 0)
+                    return true;
+
+                long excludeId = (this.SereServExt != null && this.SereServExt.ID > 0) ? this.SereServExt.ID : 0;
+                var idsToCheck = list.Where(o => o.ID != excludeId).Select(o => o.ID).ToList();
+                if (idsToCheck == null || idsToCheck.Count == 0)
+                    return true;
+
+                var serviceCodeMap = list.Where(o => o.ID != excludeId).ToDictionary(o => o.ID, o => (o.TDL_SERVICE_CODE ?? o.TDL_SERVICE_CODE));
+
+                CommonParam param = new CommonParam();
+                HisSereServExtFilter filter = new HisSereServExtFilter();
+                filter.SERE_SERV_IDs = idsToCheck;
+
+                var rsApi = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumers.MosConsumer, filter, param);
+                if (rsApi == null || rsApi.Count == 0)
+                    return true;
+
+                DateTime? instructionTime = null;
+                try
+                {
+                    if (this.serviceReq != null && this.serviceReq.INTRUCTION_TIME > 0)
+                    {
+                        instructionTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.serviceReq.INTRUCTION_TIME);
+                    }
+                }
+                catch { instructionTime = null; }
+
+                var now = DateTime.Now;
+                List<string> invalids = new List<string>();
+
+                foreach (var item in rsApi)
+                {
+                    DateTime? begin = null;
+                    DateTime? end = null;
+                    try
+                    {
+                        if (item.BEGIN_TIME.HasValue && item.BEGIN_TIME.Value > 0)
+                            begin = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(item.BEGIN_TIME.Value);
+                    }
+                    catch { begin = null; }
+
+                    try
+                    {
+                        if (item.END_TIME.HasValue && item.END_TIME.Value > 0)
+                            end = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(item.END_TIME.Value);
+                    }
+                    catch { end = null; }
+
+                    string displayCode = null;
+                    try { if (item.SERE_SERV_ID != 0) serviceCodeMap.TryGetValue(item.SERE_SERV_ID, out displayCode); } catch { displayCode = null; }
+                    var display = !string.IsNullOrEmpty(displayCode) ? displayCode : (item.SERE_SERV_ID > 0 ? item.SERE_SERV_ID.ToString() : "UNKNOWN");
+
+                    if (!begin.HasValue || !end.HasValue)
+                    {
+                        invalids.Add(string.Format("{0} thiếu thời gian bắt đầu hoặc kết thúc", display));
+                        continue;
+                    }
+
+                    if (instructionTime.HasValue && begin.Value < instructionTime.Value)
+                    {
+                        invalids.Add(string.Format("{0} có thời gian bắt đầu nhỏ hơn thời gian y lệnh", display));
+                        continue;
+                    }
+
+                    if (end.Value < begin.Value)
+                    {
+                        invalids.Add(string.Format("{0} có thời gian kết thúc nhỏ hơn bắt đầu", display));
+                        continue;
+                    }
+
+                    if (begin.Value > now || end.Value > now)
+                    {
+                        invalids.Add(string.Format("{0} thời gian vượt quá thời điểm hiện tại", display));
+                        continue;
+                    }
+                }
+
+                if (invalids.Count > 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("CheckSereServExt - invalid times: " + string.Join(", ", invalids));
+                    try
+                    {
+                        XtraMessageBox.Show("Các dịch vụ:\n" + string.Join("\n", invalids), ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    catch { }
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
         }
     }
 }
