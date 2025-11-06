@@ -497,6 +497,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 cboBank.EditValue = null;
                 List<HIS_BANK> data = BackendDataWorker.Get<HIS_BANK>()
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .OrderBy(o => o.NUM_ORDER == null)
+                    .ThenBy(o => o.NUM_ORDER)
                     .ToList();
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
