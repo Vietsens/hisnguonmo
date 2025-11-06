@@ -1236,8 +1236,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             try
             {
                 cboBank.EditValue = null;
+
                 List<HIS_BANK> data = BackendDataWorker.Get<HIS_BANK>()
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .OrderBy(o => o.NUM_ORDER ?? int.MaxValue) // Sắp xếp theo NUM_ORDER tăng dần, null nằm cuối
                     .ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("BANK_CODE", "", 100, 1));
