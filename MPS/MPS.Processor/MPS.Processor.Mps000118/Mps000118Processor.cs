@@ -58,11 +58,12 @@ namespace MPS.Processor.Mps000118
 
                 ProcessBarcodeKey();
                 ProcessSingleKey();
+                MedicinesSort();
                 ProcessListData();
                 SetQrCode();
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
                 this.SetSignatureKeyImageByCFG();
-                MedicinesSort();
+                
                 if (store.ReadTemplate(System.IO.Path.GetFullPath(fileName)))
                 {
                     singleTag.ProcessData(store, singleValueDictionary);
@@ -508,6 +509,32 @@ namespace MPS.Processor.Mps000118
                     }
 
                     expMestMedicinesTYPE = expMestMedicinesTYPE.OrderBy(o => o.PATIENT_TYPE_ID).ToList();
+                }
+                if (expMestMedicines_Sort != null && expMestMedicines_Sort.Count > 0 && rdo.HisPrescription?.INTRUCTION_TIME > 0)
+                {
+                    long intructionTime = rdo.HisPrescription.INTRUCTION_TIME;
+                    foreach (var medi in expMestMedicines_Sort)
+                    {
+                        if (medi.USE_TIME_TO.HasValue && medi.USE_TIME_TO.Value > 0)
+                        {
+                            DateTime dtUseTo = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(medi.USE_TIME_TO.Value) ?? DateTime.MinValue;
+                            DateTime dtIntruction = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(intructionTime) ?? DateTime.MinValue;
+
+                            if (dtUseTo >= dtIntruction)
+                            {
+                                int days = (dtUseTo.Date - dtIntruction.Date).Days + 1;
+                                medi.USE_TIME_STR = days.ToString();
+                            }
+                            else
+                            {
+                                medi.USE_TIME_STR = "1";
+                            }
+                        }
+                        else
+                        {
+                            medi.USE_TIME_STR = "";
+                        }
+                    }
                 }
             }
             catch (Exception ex)

@@ -173,8 +173,10 @@ namespace MPS.Processor.Mps000044
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 SetSingleKey();
+                MedicinesSort();
                 ProcessListData();
                 SetQrCode();
+                
                 //ghi đè PrintLogData và UniqueCodeData
                 ProcessPrintLogData();
                 //lấy số lần in
@@ -182,7 +184,7 @@ namespace MPS.Processor.Mps000044
 
                 SetTreatmentQrCodeBase();
                 this.SetSignatureKeyImageByCFG();
-                MedicinesSort();
+                
 
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
@@ -286,6 +288,32 @@ namespace MPS.Processor.Mps000044
 
                     expMestMedicinesTYPE = expMestMedicinesTYPE.OrderBy(o => o.PATIENT_TYPE_ID).ToList();
                 }
+                if (expMestMedicines_Sort != null && expMestMedicines_Sort.Count > 0 && rdo.vHisPrescription5?.INTRUCTION_TIME > 0)
+                {
+                    long intructionTime = rdo.vHisPrescription5.INTRUCTION_TIME;
+                    foreach (var medi in expMestMedicines_Sort)
+                    {
+                        if (medi.USE_TIME_TO.HasValue && medi.USE_TIME_TO.Value > 0)
+                        {
+                            DateTime dtUseTo = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(medi.USE_TIME_TO.Value) ?? DateTime.MinValue;
+                            DateTime dtIntruction = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(intructionTime) ?? DateTime.MinValue;
+
+                            if (dtUseTo >= dtIntruction)
+                            {
+                                int days = (dtUseTo.Date - dtIntruction.Date).Days + 1;
+                                medi.USE_TIME_STR = days.ToString();
+                            }
+                            else
+                            {
+                                medi.USE_TIME_STR = "1"; 
+                            }
+                        }
+                        else
+                        {
+                            medi.USE_TIME_STR = ""; 
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -354,7 +382,32 @@ namespace MPS.Processor.Mps000044
                     {
                         useTimeTo = maxUseTimeTo.Max(m => m.USE_TIME_TO).Value;
                     }
+                    //else if (rdo.vHisPrescription5?.USE_TIME_TO.HasValue == true)
+                    //{
+                    //    useTimeTo = rdo.vHisPrescription5.USE_TIME_TO.Value;
+                    //}
 
+                    //long intructionTime = rdo.vHisPrescription5?.INTRUCTION_TIME ?? 0;
+
+                    //if (useTimeTo > 0 && intructionTime > 0)
+                    //{
+                    //    DateTime dtUseTimeTo = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(useTimeTo) ?? DateTime.MinValue;
+                    //    DateTime dtIntructionTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(intructionTime) ?? DateTime.MinValue;
+
+                    //    if (dtUseTimeTo >= dtIntructionTime)
+                    //    {
+                    //        int useDayCount = (dtUseTimeTo.Date - dtIntructionTime.Date).Days + 1;
+                    //        SetSingleKey(new KeyValue(Mps000044ExtendSingleKey.USE_DAY_STR, useDayCount.ToString()));
+                    //    }
+                    //    else
+                    //    {
+                    //        SetSingleKey(new KeyValue(Mps000044ExtendSingleKey.USE_DAY_STR, ""));
+                    //    }
+                    //}
+                    else
+                    {
+                        SetSingleKey(new KeyValue(Mps000044ExtendSingleKey.USE_DAY_STR, ""));
+                    }
                     if (!rdo.vHisPrescription5.USE_TIME_TO.HasValue && useTimeTo > 0)
                     {
                         SetSingleKey(new KeyValue(Mps000044ExtendSingleKey.USE_TIME_TO_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(useTimeTo)));
@@ -506,6 +559,7 @@ namespace MPS.Processor.Mps000044
                     SetSingleKey((new KeyValue(Mps000044ExtendSingleKey.PART_EXAM_HOLE_GLASS_LEFT_STR, ProcessDataEye(rdo.hisServiceReq_CurentExam.PART_EXAM_HOLE_GLASS_LEFT))));
                     SetSingleKey((new KeyValue(Mps000044ExtendSingleKey.PART_EXAM_HOLE_GLASS_RIGHT_STR, ProcessDataEye(rdo.hisServiceReq_CurentExam.PART_EXAM_HOLE_GLASS_RIGHT))));
                 }
+
             }
             catch (Exception ex)
             {

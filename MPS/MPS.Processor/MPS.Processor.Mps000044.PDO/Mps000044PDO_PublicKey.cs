@@ -67,5 +67,6 @@ namespace MPS.Processor.Mps000044.PDO
         public string MEDICINE_TYPE_DESCRIPTION { get; set; }
 
         public decimal? USING_COUNT_NUMBER { get; set; }
+        public string  USE_TIME_STR { get; set; }
     }
 }

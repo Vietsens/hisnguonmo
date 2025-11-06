@@ -61,6 +61,7 @@ namespace MPS.Processor.Mps000118.PDO
         public short? IS_ADDICTIVE { get; set; }
         public short? IS_NEUROLOGICAL { get; set; }
         public string MEDICINE_USE_FORM_NAME { get; set; }
+        public string USE_TIME_STR { get; set; }
         public int Type { get; set; }//1: thuoc // 2: vat tu, 3: thuoc trong kho, 4: thuoc ngoai kho, 5: tu tuc
         public decimal? PRES_AMOUNT { get; set; }
     }
