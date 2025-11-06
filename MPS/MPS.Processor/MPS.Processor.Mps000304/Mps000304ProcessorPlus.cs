@@ -234,8 +234,8 @@ namespace MPS.Processor.Mps000304
                                 goi.TOTAL_PRICE_HEIN_SERVICE_TYPE = heinServiceType.TOTAL_PRICE_HEIN_SERVICE_TYPE;
                                 goi.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = heinServiceType.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE;
                                 goi.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE;
-                                goi.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE_ROW_2 += heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE_ROW_2;
-                                goi.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE_ROW_2 += heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE_ROW_2;
+                                goi.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE_ROW_2 = heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE_ROW_2;
+                                goi.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE_ROW_2 = heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE_ROW_2;
                                 goi.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE = heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE;
                                 goi.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE = heinServiceType.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE;
                                 goi.OTHER_SOURCE_PRICE = heinServiceType.OTHER_SOURCE_PRICE;
@@ -261,7 +261,8 @@ namespace MPS.Processor.Mps000304
                             heinServiceType.TOTAL_BHYT_PRICE = heinServiceType.TOTAL_HEIN_PRICE + heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE;
                             heinServiceType.TOTAL_PATIENT_PRICE_SELF = sereServNoStent.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
                             heinServiceType.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = indexGoiVatTuYTe;
-
+                            heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE_ROW_2 = sereServNoStent.Sum(s => s.VIR_TOTAL_HEIN_PRICE_ROW_2);
+                            heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE_ROW_2 = sereServNoStent.Sum(s => s.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2);
                             HIS_SERE_SERV sereServParent = rdo.SereServs.FirstOrDefault(o => o.ID == sereServBHYT.HEIN_SERVICE_TYPE_ID.Value);
                             string heinServiceTypeName = String.Format("{0} {1}({2})", sereServBHYT.HEIN_SERVICE_TYPE_NAME, indexGoiVatTuYTe, sereServParent.TDL_HEIN_SERVICE_BHYT_NAME);
                             heinServiceType.ID = sereServBHYT.HEIN_SERVICE_TYPE_ID.Value;
