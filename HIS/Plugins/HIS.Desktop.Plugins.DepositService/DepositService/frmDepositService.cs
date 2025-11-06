@@ -95,7 +95,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         bool isSign = false;
         List<HIS_BANK> hisBankList = null;
         Inventec.Desktop.Common.Modules.Module moduleData;
-
+        private HIS_BANK _selectedBank = null;
         HIS.Desktop.Common.DelegateReturnSuccess returnData = null;
         bool? IsDepositAll = null;
 
@@ -1114,6 +1114,9 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         {
             try
             {
+                long payFormId = 0;
+                var payForm = this.payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue);
+                payFormId = payForm.ID;
                 if (transactionData == null)
                 {
                     transactionData = new HisTransactionDepositSDO();
@@ -1137,9 +1140,24 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         transactionData.Transaction.NUM_ORDER = (long)(spinTongTuDen.Value);
                     }
                 }
-                if (cboPayForm.EditValue != null)
+                if (this.hisBankList != null && this.hisBankList.Count > 0 && payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE)
                 {
-                    transactionData.Transaction.PAY_FORM_ID = (Inventec.Common.TypeConvert.Parse.ToInt64((cboPayForm.EditValue ?? "").ToString()));
+                    long? bankIdToSave = null;
+                    if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID.HasValue)
+                    {
+                        bankIdToSave = payForm.BANK_ID.Value;
+                    }
+                    else if (_selectedBank != null)
+                    {
+                        bankIdToSave = _selectedBank.ID;
+                    }
+                    transactionData.Transaction.PAY_FORM_ID = payFormId;
+                    transactionData.Transaction.BANK_ID = bankIdToSave;
+                }
+                else
+                {
+                    transactionData.Transaction.PAY_FORM_ID = payFormId;
+                    transactionData.Transaction.BANK_ID = cboBank.EditValue != null ? Convert.ToInt64(cboBank.EditValue) : (long?)null;
                 }
                 if (cboBank.EditValue != null)
                     transactionData.Transaction.BANK_ID = Convert.ToInt64(cboBank.EditValue);
