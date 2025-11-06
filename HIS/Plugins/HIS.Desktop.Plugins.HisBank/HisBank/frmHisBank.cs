@@ -556,6 +556,7 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
                 updateDTO.BANK_NAME = txtBankName.Text.Trim();
 
                 updateDTO.IS_CARD_PAYMENT_ACCEPTED = chkIsCardPayment.Checked ? (short)1 : (short?)null;
+                updateDTO.NUM_ORDER = (long?)spinNumOrder.EditValue;
 
             }
             catch (Exception ex)
@@ -711,6 +712,7 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
                     txtBankCode.Text = data.BANK_CODE;
                     txtBankName.Text = data.BANK_NAME;
                     chkIsCardPayment.Checked = data.IS_CARD_PAYMENT_ACCEPTED == 1 ? true : false;
+                    spinNumOrder.EditValue = data.NUM_ORDER;
                 }
             }
             catch (Exception ex)
