@@ -272,6 +272,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\PayFormADO.cs" />
     <Compile Include="ADO\SereServByTreatmentADO.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\MappingErrorTHE.cs" />
@@ -294,6 +295,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DepositService\PatientADO.cs" />
+    <Compile Include="DepositService\Validtion\BankRequiredValidationRule.cs" />
     <Compile Include="DepositService\Validtion\SpinTranferAmountValidationRule.cs" />
     <Compile Include="DepositService\Validtion\TransactionTimeValidationRule.cs" />
     <Compile Include="KeyboardWorker.cs" />
