@@ -718,7 +718,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 //valid = valid && dxValidationProvider1.Validate();
                 valid = valid && (this.sereServ != null);
                 valid = valid && ValidateHisService_MaxTotalProcessTime(notShowMess);
-                valid = valid && CheckSereServExt();
+               // valid = valid && CheckSereServExt();
                 if (this.lciKetLuan.AppearanceItemCaption.ForeColor == Color.Maroon)
                 {
                     if (string.IsNullOrEmpty(txtConclude.Text))
@@ -5489,7 +5489,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             try
             {
                 var ext = grdControlService.DataSource as BindingSource;
-                var list = ext?.DataSource as List<V_HIS_SERE_SERV_5> ?? this.sereServbyServiceReqs;
+                var list = ext?.DataSource as List<V_HIS_SERE_SERV_5> ?? this.sereServbyServiceReqs;  
                 if (list == null || list.Count == 0)
                     return true;
 
