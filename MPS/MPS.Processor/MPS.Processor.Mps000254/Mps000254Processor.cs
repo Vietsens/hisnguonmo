@@ -29,6 +29,7 @@ using FlexCel.Report;
 using MPS.ProcessorBase;
 using Inventec.Common.Logging;
 using FlexCel.Core;
+using HIS.Desktop.LocalStorage.BackendData;
 
 namespace MPS.Processor.Mps000254
 {
@@ -157,52 +158,123 @@ namespace MPS.Processor.Mps000254
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private bool CheckSaperate(long medicineGroupId)
+        {
+            var medicineGroup = BackendDataWorker.Get<HIS_MEDICINE_GROUP>().Where(o => o.ID == medicineGroupId).FirstOrDefault();
+            if (medicineGroup.IS_SEPARATE_PRINTING == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+        //private void GetMedicineGroup()
+        //{
+        //    try
+        //    {
+
+
+
+
+
+
+        //        if (listAdoPrint != null && listAdoPrint.Count > 0)
+        //        {
+        //            var group = listAdoPrint.GroupBy(o => new { o.MEDICINE_GROUP_ID, o.MEDICINE_GROUP_CODE, o.MEDICINE_GROUP_NAME });
+        //            listMedicineType = new List<Mps000254ADO>();
+        //            foreach (var item in group)
+        //            {
+        //                var firstItem = item.First();
+
+        //                string groupName = (firstItem.MEDICINE_GROUP_NAME ?? "").Trim().ToUpper();
+        //                string phieuBuThuoc = "";
+
+        //                if (groupName.Contains("GÂY NGHIỆN"))
+        //                {
+        //                    if (groupName.Contains("CHỨA DƯỢC CHẤT GÂY NGHIỆN") || groupName.Contains("PHỐI HỢP"))
+        //                        phieuBuThuoc = "PHIẾU BÙ THUỐC GÂY NGHIỆN Ở DẠNG PHỐI HỢP";
+        //                    else
+        //                        phieuBuThuoc = "PHIẾU BÙ THUỐC GÂY NGHIỆN";
+        //                }
+        //                else if (groupName.Contains("HƯỚNG THẦN"))
+        //                {
+        //                    phieuBuThuoc = "PHIẾU BÙ THUỐC HƯỚNG THẦN";
+        //                }
+        //                else if (groupName.Contains("LAO"))
+        //                {
+        //                    phieuBuThuoc = "PHIẾU BÙ THUỐC ĐIỀU TRỊ LAO";
+        //                }
+        //                else if (groupName.Contains("KHÁNG SINH") && CheckSaperate(o.MEDICINE_GROUP_ID.Value))
+        //                {
+        //                    phieuBuThuoc = "PHIẾU LĨNH THUỐC KHÁNG SINH";
+        //                }
+        //                else
+        //                {
+        //                    phieuBuThuoc = "PHIẾU BÙ THUỐC THƯỜNG";
+        //                }
+
+
+        //                firstItem.MEDICINE_GROUP_NAME = phieuBuThuoc.ToUpper();
+
+        //                listMedicineType.Add(firstItem);
+        //            }
+
+
+        //            listMedicineType = listMedicineType.OrderBy(o => o.MEDICINE_GROUP_NAME).ToList();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
+
         private void GetMedicineGroup()
         {
             try
             {
-                
-
-
                 if (listAdoPrint != null && listAdoPrint.Count > 0)
                 {
-                    var group = listAdoPrint.GroupBy(o => new { o.MEDICINE_GROUP_ID, o.MEDICINE_GROUP_CODE, o.MEDICINE_GROUP_NAME });
-                    listMedicineType = new List<Mps000254ADO>();
+                    var group = listAdoPrint
+                        .GroupBy(o =>
+                        {
+                            string name = (o.MEDICINE_GROUP_NAME ?? "").Trim().ToUpper();
+                            if (name.Contains("GÂY NGHIỆN"))
+                            {
+                                if (name.Contains("CHỨA DƯỢC CHẤT GÂY NGHIỆN"))
+                                    return "PHIẾU LĨNH THUỐC GÂY NGHIỆN Ở DẠNG PHỐI HỢP";
+                                else
+                                    return "PHIẾU LĨNH THUỐC GÂY NGHIỆN";
+                            }
+                            else if (name.Contains("HƯỚNG THẦN"))
+                            {
+                                return "PHIẾU LĨNH THUỐC HƯỚNG THẦN";
+                            }
+                            else if (name.Contains("LAO"))
+                            {
+                                return "PHIẾU LĨNH THUỐC ĐIỀU TRỊ LAO";
+                            }
+                            else if ((name.Contains("KHÁNG SINH")) && CheckSaperate(o.MEDICINE_GROUP_ID.Value))
+                            {
+                                return "PHIẾU LĨNH THUỐC KHÁNG SINH";
+                            }
+                            else if ((name.Contains("ĐỘC")) && CheckSaperate(o.MEDICINE_GROUP_ID.Value))
+                            {
+                                return "PHIẾU LĨNH THUỐC ĐỘC";
+                            }
+                            else
+                            {
+                               
+                                return "PHIẾU LĨNH THUỐC THƯỜNG";
+                            }
+                        })
+                        .OrderBy(g => g.Key);
+
                     foreach (var item in group)
                     {
                         var firstItem = item.First();
-
-                        string groupName = (firstItem.MEDICINE_GROUP_NAME ?? "").Trim().ToUpper();
-                        string phieuBuThuoc = "";
-
-                        if (groupName.Contains("GÂY NGHIỆN"))
-                        {
-                            if (groupName.Contains("CHỨA DƯỢC CHẤT GÂY NGHIỆN") || groupName.Contains("PHỐI HỢP"))
-                                phieuBuThuoc = "PHIẾU BÙ THUỐC GÂY NGHIỆN Ở DẠNG PHỐI HỢP";
-                            else
-                                phieuBuThuoc = "PHIẾU BÙ THUỐC GÂY NGHIỆN";
-                        }
-                        else if (groupName.Contains("HƯỚNG THẦN"))
-                        {
-                            phieuBuThuoc = "PHIẾU BÙ THUỐC HƯỚNG THẦN";
-                        }
-                        else if (groupName.Contains("LAO"))
-                        {
-                            phieuBuThuoc = "PHIẾU BÙ THUỐC ĐIỀU TRỊ LAO";
-                        }
-                        else
-                        {
-                            phieuBuThuoc = "PHIẾU BÙ THUỐC THƯỜNG";
-                        }
-
-                       
-                        firstItem.MEDICINE_GROUP_NAME = phieuBuThuoc.ToUpper();
-
+                        firstItem.MEDICINE_GROUP_NAME = item.Key; 
                         listMedicineType.Add(firstItem);
                     }
-
-
-                    listMedicineType = listMedicineType.OrderBy(o => o.MEDICINE_GROUP_NAME).ToList();
                 }
             }
             catch (Exception ex)
