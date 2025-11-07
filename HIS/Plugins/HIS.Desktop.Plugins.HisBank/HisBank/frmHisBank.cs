@@ -382,6 +382,7 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
                 txtKeyWord.Text = "";
                 txtBankCode.Text = "";
                 txtBankName.Text = "";
+                spinNumOrder.EditValue = null;
             }
             catch (Exception ex)
             {
