@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -66,7 +67,7 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.spinNumOrder = new DevExpress.XtraEditors.SpinEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
@@ -92,8 +93,8 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciNumOrder = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
@@ -127,8 +128,8 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -149,8 +150,8 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciNumOrder)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).BeginInit();
@@ -221,7 +222,7 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             0,
             0,
             0});
-            this.spinNumOrder.Location = new System.Drawing.Point(57, 50);
+            this.spinNumOrder.Location = new System.Drawing.Point(77, 50);
             this.spinNumOrder.MenuManager = this.barManager1;
             this.spinNumOrder.Name = "spinNumOrder";
             this.spinNumOrder.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -231,10 +232,12 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             this.spinNumOrder.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
             this.spinNumOrder.Properties.Mask.ShowPlaceHolders = false;
             this.spinNumOrder.Properties.Mask.UseMaskAsDisplayFormat = true;
-            this.spinNumOrder.Size = new System.Drawing.Size(222, 20);
+            this.spinNumOrder.Size = new System.Drawing.Size(202, 20);
             this.spinNumOrder.StyleController = this.layoutControl4;
             this.spinNumOrder.TabIndex = 10;
             this.spinNumOrder.ToolTip = "Số thứ tự";
+            this.spinNumOrder.EditValueChanged += new System.EventHandler(this.spinNumOrder_EditValueChanged);
+            this.spinNumOrder.Leave += new System.EventHandler(this.spinNumOrder_Leave);
             // 
             // barManager1
             // 
@@ -338,13 +341,13 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             // 
             // chkIsCardPayment
             // 
-            this.chkIsCardPayment.Location = new System.Drawing.Point(57, 84);
+            this.chkIsCardPayment.Location = new System.Drawing.Point(75, 74);
             this.chkIsCardPayment.MenuManager = this.barManager1;
             this.chkIsCardPayment.Name = "chkIsCardPayment";
             this.chkIsCardPayment.Properties.Caption = "Chấp nhận thanh toán thẻ";
             this.chkIsCardPayment.Properties.FullFocusRect = true;
             this.chkIsCardPayment.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkIsCardPayment.Size = new System.Drawing.Size(222, 19);
+            this.chkIsCardPayment.Size = new System.Drawing.Size(204, 19);
             this.chkIsCardPayment.StyleController = this.layoutControl4;
             this.chkIsCardPayment.TabIndex = 9;
             this.chkIsCardPayment.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkIsCardPayment_KeyDown);
@@ -381,18 +384,18 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             // 
             // txtBankName
             // 
-            this.txtBankName.Location = new System.Drawing.Point(57, 26);
+            this.txtBankName.Location = new System.Drawing.Point(77, 26);
             this.txtBankName.Name = "txtBankName";
-            this.txtBankName.Size = new System.Drawing.Size(222, 20);
+            this.txtBankName.Size = new System.Drawing.Size(202, 20);
             this.txtBankName.StyleController = this.layoutControl4;
             this.txtBankName.TabIndex = 5;
             this.txtBankName.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtBankName_PreviewKeyDown);
             // 
             // txtBankCode
             // 
-            this.txtBankCode.Location = new System.Drawing.Point(57, 2);
+            this.txtBankCode.Location = new System.Drawing.Point(77, 2);
             this.txtBankCode.Name = "txtBankCode";
-            this.txtBankCode.Size = new System.Drawing.Size(222, 20);
+            this.txtBankCode.Size = new System.Drawing.Size(202, 20);
             this.txtBankCode.StyleController = this.layoutControl4;
             this.txtBankCode.TabIndex = 4;
             this.txtBankCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtBankCode_PreviewKeyDown);
@@ -410,8 +413,8 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             this.emptySpaceItem1,
             this.layoutControlItem13,
             this.emptySpaceItem3,
-            this.emptySpaceItem4,
-            this.lciNumOrder});
+            this.lciNumOrder,
+            this.emptySpaceItem4});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Size = new System.Drawing.Size(281, 476);
@@ -429,7 +432,7 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             this.layoutControlItem6.Size = new System.Drawing.Size(281, 24);
             this.layoutControlItem6.Text = "Mã:";
             this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem6.TextSize = new System.Drawing.Size(50, 20);
+            this.layoutControlItem6.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem6.TextToControlDistance = 5;
             // 
             // layoutControlItem7
@@ -444,7 +447,7 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             this.layoutControlItem7.Size = new System.Drawing.Size(281, 24);
             this.layoutControlItem7.Text = "Tên:";
             this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem7.TextSize = new System.Drawing.Size(50, 20);
+            this.layoutControlItem7.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem7.TextToControlDistance = 5;
             // 
             // layoutControlItem9
@@ -485,12 +488,12 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.chkIsCardPayment;
-            this.layoutControlItem13.Location = new System.Drawing.Point(0, 82);
+            this.layoutControlItem13.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.Size = new System.Drawing.Size(281, 24);
             this.layoutControlItem13.Text = " ";
             this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem13.TextSize = new System.Drawing.Size(50, 20);
+            this.layoutControlItem13.TextSize = new System.Drawing.Size(68, 20);
             this.layoutControlItem13.TextToControlDistance = 5;
             // 
             // emptySpaceItem3
@@ -500,14 +503,6 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             this.emptySpaceItem3.Name = "emptySpaceItem3";
             this.emptySpaceItem3.Size = new System.Drawing.Size(281, 20);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
-            // 
-            // emptySpaceItem4
-            // 
-            this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 72);
-            this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(281, 10);
-            this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciNumOrder
             // 
@@ -519,8 +514,16 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             this.lciNumOrder.Size = new System.Drawing.Size(281, 24);
             this.lciNumOrder.Text = "Số thứ tự:";
             this.lciNumOrder.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciNumOrder.TextSize = new System.Drawing.Size(50, 20);
+            this.lciNumOrder.TextSize = new System.Drawing.Size(70, 20);
             this.lciNumOrder.TextToControlDistance = 5;
+            // 
+            // emptySpaceItem4
+            // 
+            this.emptySpaceItem4.AllowHotTrack = false;
+            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 96);
+            this.emptySpaceItem4.Name = "emptySpaceItem4";
+            this.emptySpaceItem4.Size = new System.Drawing.Size(281, 10);
+            this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControl3
             // 
@@ -929,8 +932,8 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciNumOrder)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).EndInit();
