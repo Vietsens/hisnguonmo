@@ -50,6 +50,8 @@ namespace MPS.Processor.Mps000026.PDO
         public decimal ratio { get; set; }
         public long PatientTypeId__Bhyt { get; set; }
         public string PARENT_NAME { get; set; }
+        public string PARENT_CODE { get; set; }
+        
         public long? CURRENT_EXECUTE_ROOM_NUM_ORDER { get; set; }
         public string REQUEST_USER_MOBILE { get; set; }
     }
