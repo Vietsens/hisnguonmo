@@ -33,10 +33,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.MaterialUpdate
@@ -161,7 +158,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 this.lciPackBid.Text = Inventec.Common.Resource.Get.Value(
                     "IVT_LANGUAGE_KEY__FORM_MATERIAL_UPDATE__LCI_BID_PACKAGE_CODE",
                     Resources.ResourceLanguageManager.LanguageFormMaterialUpdate,
-                    cultureLang);
+                    cultureLang); 
                 this.lciBBGN.Text = Inventec.Common.Resource.Get.Value(
                     "IVT_LANGUAGE_KEY__FORM_MATERIAL_UPDATE__LCI_BBGN",
                     Resources.ResourceLanguageManager.LanguageFormMaterialUpdate,
@@ -247,62 +244,9 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 this.txtTTThau.Text = material.TT_THAU;
                 this.cboImpSource.EditValue = material.IMP_SOURCE_ID;
                 this.cboInformationBid.EditValue = material.INFORMATION_BID;
-                this.txtGiaTranBhyt.EditValue = material.HEIN_LIMIT_PRICE;
-                var cul = (CultureInfo)(cultureLang ?? CultureInfo.CurrentCulture).Clone();
-                cul.NumberFormat.NumberDecimalSeparator = ",";
-                if (string.IsNullOrEmpty(cul.NumberFormat.NumberGroupSeparator) || cul.NumberFormat.NumberGroupSeparator == ",")
-                    cul.NumberFormat.NumberGroupSeparator = ".";
-
-                txtGiaTranBhyt.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None; 
-                txtGiaTranBhyt.Properties.NullText = string.Empty;
-                txtGiaTranBhyt.Properties.NullValuePrompt = ""; 
-                txtGiaTranBhyt.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-
-                if (material.HEIN_LIMIT_PRICE.HasValue)
-                    txtGiaTranBhyt.EditValue = FormatDecimalKeepScale(material.HEIN_LIMIT_PRICE.Value, cul);
-                else
-                    txtGiaTranBhyt.EditValue = null;
-
-
-                txtGiaTranBhyt.KeyPress -= txtGiaTranBhyt_KeyPress; 
-                txtGiaTranBhyt.KeyPress += (s, e) =>
-                {
-                    if (char.IsControl(e.KeyChar)) return;
-                    if (char.IsDigit(e.KeyChar)) return;
-
-                    if (e.KeyChar == '.') { e.KeyChar = ','; } 
-
-                    if (e.KeyChar == ',')
-                    {
-                        
-                        if (txtGiaTranBhyt.Text.Contains(",")) { e.Handled = true; return; }
-                        return;
-                    }
-                    e.Handled = true;
-                };
-
-
-                txtGiaTranBhyt.Leave += (s, e) =>
-                {
-                    var t = txtGiaTranBhyt.Text?.Trim();
-                    if (string.IsNullOrEmpty(t)) return;
-
-                    // nếu người dùng kết thúc bằng dấu phẩy thì bỏ bớt
-                    if (t.EndsWith(",")) { txtGiaTranBhyt.Text = t.TrimEnd(','); return; }
-
-                    var culLeave = (CultureInfo)(cultureLang ?? CultureInfo.CurrentCulture);
-                    // đảm bảo đúng ký tự phân tách theo vi-VN
-                    culLeave = (CultureInfo)culLeave.Clone();
-                    culLeave.NumberFormat.NumberDecimalSeparator = ",";
-                    if (string.IsNullOrEmpty(culLeave.NumberFormat.NumberGroupSeparator) ||
-                        culLeave.NumberFormat.NumberGroupSeparator == ",")
-                        culLeave.NumberFormat.NumberGroupSeparator = ".";
-
-                    if (decimal.TryParse(txtGiaTranBhyt.Text, NumberStyles.Number, culLeave, out var dec))
-                    {
-                        txtGiaTranBhyt.Text = FormatDecimalKeepScale(dec, culLeave);
-                    }
-                };
+                this.spinGiaTran.EditValue = (material.HEIN_LIMIT_PRICE.HasValue && material.HEIN_LIMIT_PRICE.Value != 0m)
+                ? material.HEIN_LIMIT_PRICE
+                : null;
 
                 if (material.IS_SALE_EQUAL_IMP_PRICE == 1)
                 {
@@ -483,23 +427,14 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 result.TDL_BID_YEAR = txtBidYear.Text;
                 result.TDL_BID_EXTRA_CODE = txtBidExtraCode.Text;
                 result.TT_THAU = txtTTThau.Text;
-                var culSave = txtGiaTranBhyt.Properties.Mask.Culture ?? cultureLang ?? CultureInfo.CurrentCulture;
-
-                if (txtGiaTranBhyt.EditValue == null || string.IsNullOrWhiteSpace(txtGiaTranBhyt.Text))
+                if (spinGiaTran.EditValue == null)
                 {
                     result.HEIN_LIMIT_PRICE = null;
                 }
                 else
                 {
-                    // Ưu tiên lấy trực tiếp số từ EditValue
-                    if (txtGiaTranBhyt.EditValue is decimal d1)
-                        result.HEIN_LIMIT_PRICE = d1;
-                    else if (txtGiaTranBhyt.EditValue is double d2)
-                        result.HEIN_LIMIT_PRICE = Convert.ToDecimal(d2);
-                    else if (decimal.TryParse(txtGiaTranBhyt.Text, NumberStyles.Number, culSave, out var d3))
-                        result.HEIN_LIMIT_PRICE = d3;
-                    else
-                        result.HEIN_LIMIT_PRICE = null;
+                    var v = spinGiaTran.Value;
+                    result.HEIN_LIMIT_PRICE = (v == 0m) ? (decimal?)null : v;
                 }
                 if (cboImpSource.EditValue != null)
                     result.IMP_SOURCE_ID = (long)cboImpSource.EditValue;
@@ -1089,40 +1024,6 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
-
-        private void txtGiaTranBhyt_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsControl(e.KeyChar) || char.IsDigit(e.KeyChar)) return;
-
-            var cul = cultureLang ?? CultureInfo.CurrentCulture;
-            var groupSep = cul.NumberFormat.NumberGroupSeparator;      // vi-VN: "."
-            var decimalSep = cul.NumberFormat.NumberDecimalSeparator;  // vi-VN: ","
-
-            if (e.KeyChar == ',' || e.KeyChar == '.')
-            {
-                // Với n0: không thập phân -> xem như người dùng muốn gõ dấu phân tách nghìn
-                if (!string.IsNullOrEmpty(groupSep) && groupSep.Length == 1)
-                {
-                    e.KeyChar = groupSep[0]; // ví dụ vi-VN: '.' 
-                    e.Handled = false;       // cho mask xử lý bình thường (không beep)
-                }
-                else
-                {
-                    e.Handled = true;        // groupSep không phải 1 ký tự -> bỏ qua để tránh beep
-                }
-                return;
-            }
-
-            // Chặn các ký tự khác
-            e.Handled = true;
-        }
-        private static string FormatDecimalKeepScale(decimal value, CultureInfo cul)
-        {
-            int[] bits = decimal.GetBits(value);
-            int scale = (bits[3] >> 16) & 0x7F; // số chữ số thập phân
-            string fmt = scale > 0 ? ("N" + scale) : "N0"; // có group separator, đúng locale
-            return value.ToString(fmt, cul);
         }
     }
 }
