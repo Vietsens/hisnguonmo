@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -590,10 +590,19 @@ namespace HIS.UC.ListDepositRequest
             {
                 var data = (V_HIS_DEPOSIT_REQ)gridViewDepositRequest.GetFocusedRow();
 
-                if (data != null)
+                if (data == null)
                 {
-                    this.btnQR_Click(data);
+                    Inventec.Common.Logging.LogSystem.Warn("btnQR_E_ButtonClick: FocusedRow null.");
+                    return;
                 }
+
+                if (this.btnQR_Click == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("btnQR_E_ButtonClick: btnQR_Click handler is null.");
+                    return;
+                }
+
+                this.btnQR_Click(data);
             }
             catch (Exception ex)
             {
