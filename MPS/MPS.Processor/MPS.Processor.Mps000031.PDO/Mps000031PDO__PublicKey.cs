@@ -35,7 +35,7 @@ namespace MPS.Processor.Mps000031.PDO
         public V_HIS_BED_LOG BedLog { get; set; }
         public HIS_DHST _HIS_DHST { get; set; }
         public HIS_WORK_PLACE _HIS_WORK_PLACE { get; set; }
-    }
+    } 
 
     public class Mps000031ADO
     {
@@ -43,6 +43,7 @@ namespace MPS.Processor.Mps000031.PDO
         public string firstExamRoomName { get; set; }
         public decimal ratio { get; set; }
         public long PatientTypeId__Bhyt { get; set; }
+        public string PARENT_CODE { get; set; }
         public string PARENT_NAME { get; set; }
         public long? CURRENT_EXECUTE_ROOM_NUM_ORDER { get; set; }
         public string REQUEST_USER_MOBILE { get; set; }
