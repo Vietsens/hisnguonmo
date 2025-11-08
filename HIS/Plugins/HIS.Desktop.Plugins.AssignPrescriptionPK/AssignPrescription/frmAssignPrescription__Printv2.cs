@@ -580,7 +580,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
                 }
                 else
-                {
+                {   
                     this.lstMatePrintMps494 = new List<HIS_EXP_MEST_MATERIAL>();
                     HIS.Desktop.Plugins.Library.PrintPrescription.PrintPrescriptionProcessor printPrescriptionProcessor;
                     List<OutPatientPresResultSDO> OutPatientPresResultSDOForPrints = new List<OutPatientPresResultSDO>();
@@ -592,6 +592,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     List<HIS_EXP_MEST_MATERIAL> expMestMaterialPrintPlus = new List<HIS_EXP_MEST_MATERIAL>();
 
                     var hisConfigCFGprintTypeCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.SAVE_PRINT_MPS_DEFAULT);
+                    Inventec.Common.Logging.LogSystem.Info("GlobalStore.IsTreatmentIn " + GlobalStore.IsTreatmentIn + " !GlobalStore.IsCabinet " + !GlobalStore.IsCabinet);     
                     if (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
                     {
                         //List<InPatientPresResultSDO> InPatientPresResultSDOForPrints = new List<InPatientPresResultSDO>();
@@ -660,7 +661,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
                     else
                     {
-                        if (hisConfigCFGprintTypeCode == "Mps000234" && printTypeCode == "Mps000234" && !GlobalStore.IsCabinet)
+                        if (hisConfigCFGprintTypeCode == "Mps000234" && !GlobalStore.IsCabinet)
                         {
                             CommonParam param = new CommonParam();
 
@@ -732,7 +733,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             OutPatientPresResultSDO.ServiceReqMaties = matyTask.Result;
 
                             OutPatientPresResultSDOForPrints.Add(OutPatientPresResultSDO);
-
                             // 6. In ấn
                             printPrescriptionProcessor = new Library.PrintPrescription.PrintPrescriptionProcessor(
                                 OutPatientPresResultSDOForPrints, IsNotShow, this.currentModule, true);

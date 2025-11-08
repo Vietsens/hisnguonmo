@@ -2883,7 +2883,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                     else
                     {
-                        e.RepositoryItem = repositoryItemMachineId;
                     }
                 }
             }
