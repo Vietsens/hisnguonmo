@@ -499,6 +499,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     .OrderBy(o => o.NUM_ORDER == null)
                     .ThenBy(o => o.NUM_ORDER)
+                    .ThenBy(o => o.BANK_NAME)
                     .ToList();
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();

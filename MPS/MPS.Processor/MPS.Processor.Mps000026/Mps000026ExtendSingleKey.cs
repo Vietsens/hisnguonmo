@@ -98,6 +98,7 @@ namespace MPS.Processor.Mps000026
         internal const string WP_WORK_PLACE_NAME = "WP_WORK_PLACE_NAME";
 
         internal const string PARENT_NAME = "PARENT_NAME";
+        internal const string PARENT_CODE = "PARENT_CODE";
 
         internal const string LOGIN_USER_NAME = "LOGIN_USER_NAME";
         internal const string LOGIN_LOGIN_NAME = "LOGIN_LOGIN_NAME";

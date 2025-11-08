@@ -41,6 +41,8 @@ namespace MPS.Processor.Mps000113
         internal const string TRANSACTION_CODE_BAR = "TRANSACTION_CODE_BAR";
         internal const string TREATMENT_CODE_BAR = "TREATMENT_CODE_BAR";
 
+        internal const string TREATMENT_DEPOSIT_AMOUNT = "TREATMENT_DEPOSIT_AMOUNT";
+
         internal const string TOTAL_DIRECTLY_BILL_PRICE = "TOTAL_DIRECTLY_BILL_PRICE";
         internal const string BILL_NUM_ORDER = "BILL_NUM_ORDER";
         internal const string BILL_ACCOUNT_BOOK_CODE = "BILL_ACCOUNT_BOOK_CODE";

@@ -382,6 +382,7 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
                 txtKeyWord.Text = "";
                 txtBankCode.Text = "";
                 txtBankName.Text = "";
+                spinNumOrder.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -556,7 +557,7 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
                 updateDTO.BANK_NAME = txtBankName.Text.Trim();
 
                 updateDTO.IS_CARD_PAYMENT_ACCEPTED = chkIsCardPayment.Checked ? (short)1 : (short?)null;
-                updateDTO.NUM_ORDER = (long?)spinNumOrder.EditValue;
+                updateDTO.NUM_ORDER = spinNumOrder.EditValue == null ? (long?)null : System.Convert.ToInt64(spinNumOrder.EditValue);
 
             }
             catch (Exception ex)
@@ -1001,5 +1002,20 @@ namespace HIS.Desktop.Plugins.HisBank.HisBank
             }
         }
 
+        private void spinNumOrder_EditValueChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(spinNumOrder.Text))
+            {
+                spinNumOrder.EditValue = null;
+            }
+        }
+
+        private void spinNumOrder_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(spinNumOrder.Text))
+            {
+                spinNumOrder.EditValue = null;
+            }
+        }
     }
 }
