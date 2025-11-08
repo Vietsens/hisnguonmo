@@ -1741,6 +1741,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         if (isFromTypeTT.HasValue)
                         {
+                            Inventec.Common.Logging.LogSystem.Info("có vào đây ko : " + isFromTypeTT.Value);
                             GlobalStore.IsCabinet = isFromTypeTT.Value;
                         }
                     }

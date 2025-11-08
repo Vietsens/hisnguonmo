@@ -53,6 +53,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 		{
 			try
             {
+                LogSystem.Info("AssignPrescriptionADO: " + LogUtil.TraceData("AssignPrescriptionADO: ", data));
                 LogSystem.Debug("ReloadModuleByInputData Start___"+ IsUseApplyFormClosingOption);
                 this.IsUseApplyFormClosingOption = true;
                 var watch = System.Diagnostics.Stopwatch.StartNew();
