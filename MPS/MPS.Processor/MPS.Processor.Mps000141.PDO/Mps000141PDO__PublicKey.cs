@@ -128,21 +128,25 @@ namespace MPS.Processor.Mps000141.PDO
                         //this.VIR_PRICE = medicine.VIR_PRICE;
                         //this.MEDICINE_ID = medicine.MEDICINE_ID;
                         var medi = _medicines.FirstOrDefault((HIS_MEDICINE p) => p.ID == medicine.MEDICINE_ID);
-                        var mediType = medicineType.FirstOrDefault(o => o.ID == medi.MEDICINE_TYPE_ID);
-
-                        if (mediType != null)
+                        if (medicineType != null)
                         {
-                            this.PARENT_ID = mediType.PARENT_ID;
-                            this.PARENT_CODE = mediType.PARENT_CODE;
-                            this.PARENT_NAME = mediType.PARENT_NAME;
-                            this.MEDICINE_GROUP_ID = mediType.MEDICINE_GROUP_ID;
-                            this.MEDICINE_GROUP_CODE = mediType.MEDICINE_GROUP_CODE;
-                            this.MEDICINE_GROUP_NAME = mediType.MEDICINE_GROUP_NAME;
+                            var mediType = medicineType.FirstOrDefault(o => o.ID == medi.MEDICINE_TYPE_ID);
 
-                            this.GROUP_ID = mediType.MEDICINE_GROUP_ID;
-                            this.GROUP_CODE = mediType.MEDICINE_GROUP_CODE;
-                            this.GROUP_NAME = mediType.MEDICINE_GROUP_NAME;
+                            if (mediType != null)
+                            {
+                                this.PARENT_ID = mediType.PARENT_ID;
+                                this.PARENT_CODE = mediType.PARENT_CODE;
+                                this.PARENT_NAME = mediType.PARENT_NAME;
+                                this.MEDICINE_GROUP_ID = mediType.MEDICINE_GROUP_ID;
+                                this.MEDICINE_GROUP_CODE = mediType.MEDICINE_GROUP_CODE;
+                                this.MEDICINE_GROUP_NAME = mediType.MEDICINE_GROUP_NAME;
+
+                                this.GROUP_ID = mediType.MEDICINE_GROUP_ID;
+                                this.GROUP_CODE = mediType.MEDICINE_GROUP_CODE;
+                                this.GROUP_NAME = mediType.MEDICINE_GROUP_NAME;
+                            }
                         }
+
                         if (medi != null)
                         {
                             this.VIR_IMP_PRICE = medi.VIR_IMP_PRICE;
