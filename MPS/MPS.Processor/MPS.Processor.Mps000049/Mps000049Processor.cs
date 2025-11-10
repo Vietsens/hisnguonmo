@@ -117,19 +117,25 @@ namespace MPS.Processor.Mps000049
                     string name = item.MEDICINE_GROUP_NAME?.Trim().ToUpper();
                     if (string.IsNullOrEmpty(name) ||
                         (!name.Contains("GÂY NGHIỆN") && !name.Contains("HƯỚNG THẦN") &&
-                         !name.Contains("LAO") && !name.Contains("KHÁNG SINH")))
+                         !name.Contains("LAO")))
                     {
-                        // Tìm phần tử trong listMedicineType có MEDICINE_GROUP_NAME = "PHIẾU LĨNH THUỐC THƯỜNG"
-                        var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
-                        if (commonMedicineType != null)
+                        //bool needSeparate = item.MEDICINE_GROUP_ID.HasValue &&
+                        //   CheckSaperate(item.MEDICINE_GROUP_ID.Value);
+                        if (string.IsNullOrEmpty(name) || (!name.Contains("KHÁNG SINH") || (name.Contains("KHÁNG SINH") && !CheckSaperate(item.MEDICINE_GROUP_ID.Value))))
                         {
-                            // Gán MEDICINE_GROUP_ID từ commonMedicineType
-                            item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                            // Tìm phần tử trong listMedicineType có MEDICINE_GROUP_NAME = "PHIẾU LĨNH THUỐC THƯỜNG"
+                            var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
+                            if (commonMedicineType != null)
+                            {
+                                // Gán MEDICINE_GROUP_ID từ commonMedicineType
+                                item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                            }
+                            else
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn("Không tìm thấy phần tử trong listMedicineType với MEDICINE_GROUP_NAME = 'PHIẾU LĨNH THUỐC THƯỜNG'");
+                            }
                         }
-                        else
-                        {
-                            Inventec.Common.Logging.LogSystem.Warn("Không tìm thấy phần tử trong listMedicineType với MEDICINE_GROUP_NAME = 'PHIẾU LĨNH THUỐC THƯỜNG'");
-                        }
+
                     }
                     listAdoFilter.Add(item);
                 }
@@ -139,15 +145,40 @@ namespace MPS.Processor.Mps000049
                     string name = item.MEDICINE_GROUP_NAME?.Trim().ToUpper();
                     if (string.IsNullOrEmpty(name) ||
                         (!name.Contains("GÂY NGHIỆN") && !name.Contains("HƯỚNG THẦN") &&
-                         !name.Contains("LAO") && !name.Contains("KHÁNG SINH")))
+                         !name.Contains("LAO")))
                     {
-                        var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
-                        if (commonMedicineType != null)
+                        //bool needSeparate = item.MEDICINE_GROUP_ID.HasValue &&
+                        //   CheckSaperate(item.MEDICINE_GROUP_ID.Value);
+                        if (string.IsNullOrEmpty(name) || (!name.Contains("KHÁNG SINH") || (name.Contains("KHÁNG SINH") && !CheckSaperate(item.MEDICINE_GROUP_ID.Value))))
                         {
-                            item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                            var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
+                            if (commonMedicineType != null)
+                            {
+                                item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                            }
                         }
+
                     }
                     listParentFilter.Add(item);
+                    //string name = item.MEDICINE_GROUP_NAME?.Trim().ToUpper() ?? "";
+
+                    //// Chỉ gán nhóm "THƯỜNG" nếu:
+                    //// - Không phải nhóm đặc biệt (Gây nghiện, Hướng thần, Lao)
+                    //// - Và KHÔNG phải là kháng sinh cần in riêng (needSeparate == true)
+                    //bool isSpecialGroup = name.Contains("GÂY NGHIỆN") || name.Contains("HƯỚNG THẦN") || name.Contains("LAO");
+                    //bool isAntibiotic = name.Contains("KHÁNG SINH");
+                    //bool needSeparate = item.MEDICINE_GROUP_ID.HasValue && CheckSaperate(item.MEDICINE_GROUP_ID.Value);
+
+                    //if (!isSpecialGroup && !(isAntibiotic && needSeparate))
+                    //{
+                    //    var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
+                    //    if (commonMedicineType != null)
+                    //    {
+                    //        item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                    //    }
+                    //}
+
+                    //listParentFilter.Add(item);
                 }
                 objectTag.AddObjectData(store, "ExpMestAggregates", listAdoFilter.OrderBy(o => o.MEDICINE_TYPE_NAME).ToList());
                 objectTag.AddObjectData(store, "ExpMests", this.ExpMestADOs);
@@ -156,7 +187,9 @@ namespace MPS.Processor.Mps000049
                 objectTag.AddObjectData(store, "MedicineUseForms", medicineUseForms);
                 objectTag.AddObjectData(store, "MedicineGroup", listMedicineType);
                 objectTag.AddObjectData(store, "MedicineParent", listParentFilter);
-
+                Inventec.Common.Logging.LogSystem.Debug("listMedicineType: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", listMedicineType));
+                Inventec.Common.Logging.LogSystem.Debug("ExpMestAggregates: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", listAdoFilter.Select(o => o.MEDICINE_GROUP_ID)));
+                Inventec.Common.Logging.LogSystem.Debug("MedicineParent: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", listParentFilter.Select(o => o.MEDICINE_GROUP_ID)));
                 objectTag.AddRelationship(store, "ExpMestAggregates", "ExpMests", new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" }, new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" });
 
                 objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMestsSplit", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
@@ -335,7 +368,7 @@ namespace MPS.Processor.Mps000049
                             {
                                 return "PHIẾU LĨNH THUỐC ĐIỀU TRỊ LAO";
                             }
-                            else if (name.Contains("KHÁNG SINH") && CheckSaperate(o.MEDICINE_GROUP_ID.Value))
+                            else if (name.Contains("KHÁNG SINH") && CheckSaperate(o.MEDICINE_GROUP_ID.Value)) // những thuốc thuộc nhóm KS luôn có MEDICINE_GROUP_ID nên không cần check null
                             {
                                 return "PHIẾU LĨNH THUỐC KHÁNG SINH";
                             }
@@ -351,6 +384,8 @@ namespace MPS.Processor.Mps000049
                     {
                         var firstItem = item.First();
                         firstItem.MEDICINE_GROUP_NAME = item.Key; // Gán lại tên nhóm cho đúng loại phiếu
+                        //if (item.Key == "PHIẾU LĨNH THUỐC THƯỜNG")
+                        //    firstItem.MEDICINE_GROUP_ID = -1;
                         listMedicineType.Add(firstItem);
                     }
                 }
@@ -378,47 +413,101 @@ namespace MPS.Processor.Mps000049
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        //private void GetMedicineParent()
+        //{
+        //    try
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Debug("ExpMestADOs: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", ExpMestADOs.Count));
+
+        //        if (ExpMestADOs != null && ExpMestADOs.Count > 0)
+        //        {
+        //            //var group = ExpMestADOs.GroupBy(o => new { o.MEDICINE_PARENT_ID }).OrderBy(g => g.First().MEDICINE_PARENT_NAME);
+        //            //foreach (var item in group)
+        //            //{
+        //            //    listMedicineParent.Add(item.ToList().First());
+        //            //}
+        //            var group = ExpMestADOs
+        //            .GroupBy(o => new { o.MEDICINE_PARENT_ID })
+        //            .OrderBy(g =>
+        //            {
+        //                var name = g.First().MEDICINE_PARENT_NAME?.Trim() ?? "";
+        //                //Lấy phần số ở đầu chuỗi, VD: "10.2.Thuốc" => "10.2"
+        //                var match = System.Text.RegularExpressions.Regex.Match(name, @"^(\d+(\.\d+)*)");
+        //                if (match.Success)
+        //                {
+        //                    string value = match.Value;
+
+        //                    //Lấy phần trước dấu chấm cuối cùng, nếu có
+        //                    int lastDot = value.LastIndexOf('.');
+        //                    string prefix = lastDot > 0 ? value.Substring(0, lastDot) : value;
+
+        //                    //Chuyển thành số thực để so sánh
+        //                    if (decimal.TryParse(prefix, out var num))
+        //                        return num;
+        //                }
+        //                // Không có số ở đầu => cho ra cuối danh sách
+        //                return decimal.MaxValue;
+        //            })
+        //            .ThenBy(g => g.First().MEDICINE_PARENT_NAME); // nếu trùng số, sắp theo tên
+        //            foreach (var item in group)
+        //            {
+        //                listMedicineParent.Add(item.ToList().First());
+        //            }
+        //        }
+        //        Inventec.Common.Logging.LogSystem.Debug("listMedicineParent: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", listMedicineParent.Count));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
+
+
         private void GetMedicineParent()
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("ExpMestADOs: " +
+                    Inventec.Common.Logging.LogUtil.TraceData("DataA", ExpMestADOs?.Count));
+
                 if (ExpMestADOs != null && ExpMestADOs.Count > 0)
                 {
-                    //var group = ExpMestADOs.GroupBy(o => new { o.MEDICINE_PARENT_ID }).OrderBy(g => g.First().MEDICINE_PARENT_NAME);
                     var group = ExpMestADOs
-                    .GroupBy(o => new { o.MEDICINE_PARENT_ID })
-                    .OrderBy(g =>
-                    {
-                    var name = g.First().MEDICINE_PARENT_NAME?.Trim() ?? "";
-                    //Lấy phần số ở đầu chuỗi, VD: "10.2.Thuốc" -> "10.2"
-                    var match = System.Text.RegularExpressions.Regex.Match(name, @"^(\d+(\.\d+)*)");
-                    if (match.Success)
-                    {
-                        string value = match.Value;
-
-                        //Lấy phần trước dấu chấm cuối cùng, nếu có
-                        int lastDot = value.LastIndexOf('.');
-                        string prefix = lastDot > 0 ? value.Substring(0, lastDot) : value;
-
-                        //Chuyển thành số thực để so sánh
-                        if (decimal.TryParse(prefix, out var num))
-                            return num;
-                    }
-                    // Không có số ở đầu → cho ra cuối danh sách
-                    return decimal.MaxValue;
-                    })
-                    .ThenBy(g => g.First().MEDICINE_PARENT_NAME); // nếu trùng số, sắp theo tên
-                        foreach (var item in group)
+                        .GroupBy(o => o.MEDICINE_PARENT_ID)
+                        .OrderBy(g =>
                         {
-                            listMedicineParent.Add(item.ToList().First());
-                        }
+                            var name = g.FirstOrDefault()?.MEDICINE_PARENT_NAME?.Trim() ?? "";
+                            var match = System.Text.RegularExpressions.Regex.Match(name, @"^(\d+(\.\d+)*)");
+
+                            if (match.Success)
+                            {
+                        // Tách phần số: "6.2.1" => ["6", "2", "1"]
+                        string[] parts = match.Value.Split('.');
+
+                        // PadLeft để so sánh đúng theo số học
+                        return string.Join(".", parts.Select(p => p.PadLeft(5, '0')));
+                            }
+
+                    // Không có số ở đầu => cho ra cuối danh sách
+                    return "99999.99999.99999";
+                        })
+                        .ThenBy(g => g.FirstOrDefault()?.MEDICINE_PARENT_NAME);
+
+                    foreach (var item in group)
+                    {
+                        listMedicineParent.Add(item.First());
+                    }
                 }
+
+                Inventec.Common.Logging.LogSystem.Debug("listMedicineParent: " +
+                    Inventec.Common.Logging.LogUtil.TraceData("DataA", listMedicineParent.Select(o => o.MEDICINE_PARENT_NAME)));
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         void ProcessListADO()
         {
             try
