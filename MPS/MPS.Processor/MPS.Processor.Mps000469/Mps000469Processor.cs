@@ -228,8 +228,14 @@ namespace MPS.Processor.Mps000469
                 if (rdo.ServiceParent != null)
                 {
                     SetSingleKey(new KeyValue(Mps000469ExtendSingleKey.SERVICE_NAME_PARENT, rdo.ServiceParent.SERVICE_NAME));
+                    SetSingleKey(new KeyValue(Mps000469ExtendSingleKey.PARENT_CODE, rdo.ServiceParent.SERVICE_CODE));
                 }
 
+                if (ListServiceParent != null && ListServiceParent.Count > 0)
+                {
+                    SetSingleKey(new KeyValue(Mps000469ExtendSingleKey.PARENT_CODE, ListServiceParent[0].SERVICE_CODE));
+                }
+                //SetSingleKey(new KeyValue(Mps000469ExtendSingleKey.PARENT_CODE, this.ListServiceParent.Where(o=>o.ID ==2)));
                 SetSingleKey(new KeyValue(Mps000469ExtendSingleKey.LOGIN_USER_NAME, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName()));
 
                 AddObjectKeyIntoListkey<V_LIS_SAMPLE>(rdo.currentSample, false);
@@ -962,8 +968,9 @@ namespace MPS.Processor.Mps000469
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
 
-                this.SetSingleKey();
+                
                 this.SetListData2();
+                this.SetSingleKey();
                 //this.GetTestIndexRanges();
                 this.SetBarcodeKey();
                 SetTreatmentQrCodeBase();

@@ -132,6 +132,7 @@ namespace MPS.Processor.Mps000028.PDO
         public long PatientTypeId__Bhyt { get; set; }
         public string TITLE { get; set; }
         public string PARENT_NAME { get; set; }
+        public string PARENT_CODE { get; set; }
         public long? CURRENT_EXECUTE_ROOM_NUM_ORDER { get; set; }
         public string REQUEST_USER_MOBILE { get; set; }
     }
