@@ -198,7 +198,6 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     {
                         if (IsProcessOpen("Inventec.SignPadManager"))
                         {
-                            //Nothing...
                             Inventec.Common.Logging.LogSystem.Info("btnUploadImageUsingSigDevice_Click.1");
                         }
                         else
@@ -207,7 +206,6 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                             fileImage = Directory.GetFiles(dicInfo.FullName, "*");
                             if (fileImage != null && fileImage.Length > 0)
                             {
-                                //TODO
                                 picSignPatient.Image = Image.FromFile(fileImage[0]);
                                 Inventec.Common.Logging.LogSystem.Info("btnUploadImageUsingSigDevice_Click.3");
                                 break;
@@ -219,15 +217,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                             }
                         }
                     }
-                }
-
-                //Code cũ
-                //Inventec.SignViewLib.SignViewInputADO signViewInputADO = new Inventec.SignViewLib.SignViewInputADO();
-                //signViewInputADO.ActGetSignImageFile = GetSignImageFIle;
-                //signViewInputADO.ActSelectDevice = ActSelectDevice;
-                //signViewInputADO.DriverName = this.deviceName;
-                //Inventec.SignViewLib.MainWindow MainWindow = new Inventec.SignViewLib.MainWindow(signViewInputADO);
-                //MainWindow.ShowDialog();
+                }           
             }
             catch (Exception ex)
             {
@@ -304,33 +294,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
         private void FillImageFromModuleCamereToUC(object dataImage)
         {
             try
-            {
-                //if (dataImage != null)
-                //{
-                //    Inventec.Common.Logging.LogSystem.Info("dataImage: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataImage), dataImage));
-                //    picSignPatient.Image = (System.Drawing.Image)dataImage;
-                //    var check = this.ListfileNameAttack.OrderByDescending(o => o.Dem).FirstOrDefault();
-
-                //    Inventec.Common.Logging.LogSystem.Info("dem max: " + check);
-                //    int dem = 0;
-                //    if (check == null || check.Dem == 0)
-                //    {
-                //        dem = 1;
-                //    }
-                //    else
-                //    {
-                //        dem = check.Dem + 1;
-                //    }
-                //    fileNameAttack = new AttackADO();
-                //    this.fileNameAttack.FILE_NAME = "Ảnh chụp " + dem.ToString() + ".jpg";
-                //    this.fileNameAttack.FullName = "Ảnh chụp " + dem.ToString() + ".jpg";
-                //    this.fileNameAttack.image = (System.Drawing.Image)dataImage;
-                //    this.fileNameAttack.Dem = dem;
-
-                //    picSignPatient.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-                //    this.ListfileNameAttack.Add(this.fileNameAttack);
-                //    Inventec.Common.Logging.LogSystem.Info("dữ liệu ảnh chụp: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListfileNameAttack), this.ListfileNameAttack));
-                //}
+            {                
                 if (dataImage != null)
                 {
                     var originalImg = (System.Drawing.Image)dataImage;
@@ -541,27 +505,6 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
 
                 Image baseImage = null;
 
-                //if (isDefaultImageLoaded)
-                //{
-                //    Inventec.Common.Logging.LogSystem.Info("Ảnh hiện tại là ảnh mặc định → tạo ảnh trắng để vẽ.");
-
-                //    baseImage = new Bitmap(picSignPatient.Width, picSignPatient.Height);
-                //    using (Graphics g = Graphics.FromImage(baseImage))
-                //    {
-                //        g.Clear(Color.White);
-                //    }
-                //}
-                //else
-                //{
-                //    baseImage = picSignPatient.Image;
-                //    if (baseImage == null)
-                //    {
-                //        MessageBox.Show("Chưa có ảnh để vẽ. Vui lòng chọn hoặc chụp ảnh trước.",
-                //                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //        return;
-                //    }
-                //}
-
                 // Mở form vẽ
                 Inventec.DrawTools.frmDrawTools f = new Inventec.DrawTools.frmDrawTools(baseImage, SaveImageProcess);
                 f.StartPosition = FormStartPosition.CenterParent;
@@ -591,8 +534,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                         param
                     );
 
-                Inventec.Common.Logging.LogSystem.Info("Kết quả kiểm tra chứng thư CCCD: " +
-                    Inventec.Common.Logging.LogUtil.TraceData("certInfo", certInfo));
+                Inventec.Common.Logging.LogSystem.Info("Kết quả kiểm tra chứng thư CCCD: " + Inventec.Common.Logging.LogUtil.TraceData("certInfo", certInfo));
 
                 return certInfo;
             }
@@ -613,147 +555,114 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     var response = await client.GetAsync("http://localhost:7000/api/v1/verify");
                     if (!response.IsSuccessStatusCode)
                     {
-                        Inventec.Desktop.Common.Message.WaitingManager.Hide();
                         XtraMessageBox.Show("Không kết nối được thiết bị CCCD.", "Thông báo");
                         return;
                     }
 
                     var json = await response.Content.ReadAsStringAsync();
                     var root = JsonConvert.DeserializeObject<RootResponse>(json);
-                    Inventec.Common.Logging.LogSystem.Info("API CCCD trả về dữ liệu:\n" + json);
 
-                    if (root == null || root.success != true || root.result == null || root.result.data == null || root.result.data.isPass == false)
+                    if (root == null || root.success != true || root.result?.data == null)
                     {
-                        Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                        XtraMessageBox.Show("Không nhận được dữ liệu thẻ CCCD.", "Thông báo");
+                        return;
+                    }
+
+                    var info = root.result.data;
+                    if (info.isPass != true)
+                    {
                         XtraMessageBox.Show("CCCD không hợp lệ hoặc không xác thực được.", "Thông báo");
                         return;
                     }
-                    if (root == null || root.result.data.score < 60)
+                    if (info.score == null || info.score < 70)
                     {
-                        Inventec.Desktop.Common.Message.WaitingManager.Hide();
                         XtraMessageBox.Show("Không xác thực được khuôn mặt.", "Thông báo");
                         return;
-                    }    
+                    }
+                    if (string.IsNullOrWhiteSpace(info.identifyNumber) || string.IsNullOrWhiteSpace(info.name))
+                    {
+                        XtraMessageBox.Show("Thiếu thông tin số CCCD hoặc tên.", "Thông báo");
+                        return;
+                    }
 
-                    var info = root.result.data;
-
-                    // --- Gán thông tin cơ bản ---
-                    lblCCCD.Text = info.identifyNumber ?? "";
-                    lblPatientName.Text = info.name ?? "";
-                    lblDOB.Text = (info.dateOfBirth ?? "");
-                    lblGender.Text = info.sex ?? "";
-                    lblAdress.Text = (info.address ?? "");
-                    //lblAdress.Text = !string.IsNullOrWhiteSpace(info.address) ? info.address : (info.hometown ?? "");
-                    lblIssueDate.Text = (info.issueDate ?? "");
-                    lblExpiredDate.Text = (info.expiredDate ?? "");
-
-                    // --- Giải mã ảnh base64 (ưu tiên imageChip) ---
+                    // Giải mã ảnh
                     Image parsedImage = null;
-
+                    byte[] imgBytes = null;
                     Func<string, byte[]> TryDecodeBase64 = delegate (string b64)
                     {
-                        if (string.IsNullOrWhiteSpace(b64))
-                            return null;
-
+                        if (string.IsNullOrWhiteSpace(b64)) return null;
                         var s = b64.Trim();
                         int commaIndex = s.IndexOf(',');
                         if (commaIndex > 0 && s.StartsWith("data:", StringComparison.OrdinalIgnoreCase))
                             s = s.Substring(commaIndex + 1);
-
                         s = s.Replace("\r", "").Replace("\n", "").Replace(" ", "");
-
-                        try
-                        {
-                            return Convert.FromBase64String(s);
-                        }
-                        catch
-                        {
-                            return null;
-                        }
+                        try { return Convert.FromBase64String(s); } catch { return null; }
                     };
+                    imgBytes = TryDecodeBase64(info.imageChip)
+                        ?? TryDecodeBase64(info.imageFront)
+                        ?? TryDecodeBase64(info.imageCap)
+                        ?? TryDecodeBase64(info.dg2DataBase64)
+                        ?? TryDecodeBase64(info.dg13DataBase64)
+                        ?? TryDecodeBase64(info.dg14DataBase64)
+                        ?? TryDecodeBase64(info.dg1DataBase64);
 
-                    // ảnh CCCD chính là imageChip
-                    byte[] imgBytes = TryDecodeBase64(info.imageChip);
-
-                    // fallback nếu không có
-                    if (imgBytes == null) imgBytes = TryDecodeBase64(info.imageFront);
-                    if (imgBytes == null) imgBytes = TryDecodeBase64(info.imageCap);
-                    if (imgBytes == null) imgBytes = TryDecodeBase64(info.dg2DataBase64);
-                    if (imgBytes == null) imgBytes = TryDecodeBase64(info.dg13DataBase64);
-                    if (imgBytes == null) imgBytes = TryDecodeBase64(info.dg14DataBase64);
-                    if (imgBytes == null) imgBytes = TryDecodeBase64(info.dg1DataBase64);
-
-                    if (imgBytes != null && imgBytes.Length > 0)
+                    if (imgBytes == null || imgBytes.Length == 0)
                     {
-                        try
+                        XtraMessageBox.Show("Không lấy được ảnh CCCD.", "Thông báo");
+                        return;
+                    }
+                    try
+                    {
+                        using (var ms = new MemoryStream(imgBytes))
                         {
-                            using (var ms = new MemoryStream(imgBytes))
-                            {
-                                parsedImage = Image.FromStream(ms);
-                            }
-                        }
-                        catch (Exception exImg)
-                        {
-                            Inventec.Common.Logging.LogSystem.Warn("Không thể đọc ảnh CCCD: " + exImg.Message);
+                            parsedImage = Image.FromStream(ms);
                         }
                     }
+                    catch
+                    {
+                        XtraMessageBox.Show("Không thể đọc ảnh CCCD.", "Thông báo");
+                        return;
+                    }
+
+                    // Kiểm tra ngày hết hạn nếu có
+                    DateTime expiredDate;
+                    if (!string.IsNullOrWhiteSpace(info.expiredDate) &&
+                        DateTime.TryParse(info.expiredDate, out expiredDate) &&
+                        expiredDate < DateTime.Now)
+                    {
+                        XtraMessageBox.Show("Thẻ CCCD đã hết hạn.", "Thông báo");
+                        return;
+                    }
+
+                    // Nếu qua hết các điều kiện trên thì mới hiện thành công
                     picCCCD.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Zoom;
                     picCCCD.Image = parsedImage;
+                    lblCCCD.Text = info.identifyNumber ?? "";
+                    lblPatientName.Text = info.name ?? "";
+                    lblDOB.Text = info.dateOfBirth ?? "";
+                    lblGender.Text = info.sex ?? "";
+                    lblAdress.Text = info.address ?? "";
+                    lblIssueDate.Text = info.issueDate ?? "";
+                    lblExpiredDate.Text = info.expiredDate ?? "";
+                    lblMatch.Text = info.score?.ToString("0.##") + "/100";
+                    lblStatus.Text = info.isPass == true ? "Hợp lệ" : "Không hợp lệ";
+                    lblMatch.ForeColor = info.isPass == true ? Color.Green : Color.Red;
+                    lblStatus.ForeColor = info.isPass == true ? Color.Green : Color.Red;
 
-                    // --- Hiển thị kết quả xác thực ---
-                    double score = info.score.HasValue ? info.score.Value : 0;
-                    bool isPass = info.isPass.HasValue && info.isPass.Value;
-
-                    lblMatch.Text = score.ToString("0.##") + "/100";
-                    lblStatus.Text = isPass ? "Hợp lệ" : "Không hợp lệ";
-
-                    lblMatch.ForeColor = isPass ? Color.Green : Color.Red;
-                    lblStatus.ForeColor = isPass ? Color.Green : Color.Red;
-
-                    // --- Lưu dữ liệu CCCD hiện tại ---
                     this.currentCCCDInfo = info;
-                    var certInfo = CheckPatientCertificateByCCCD(info.identifyNumber);
+                    btnRelease.Enabled = true;
 
-                    if (certInfo != null && !string.IsNullOrEmpty(certInfo.SERIAL_NUMBER))
-                    {
-                        // Convert ngày hết hạn sang DateTime
-                        DateTime? expiredDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(certInfo.EXPIRED_DATE ?? 0);
-
-                        if (expiredDate > DateTime.Now)
-                        {
-                            XtraMessageBox.Show(
-                                "Bệnh nhân đã có chứng thư tương ứng với thẻ CCCD, không cần phát hành chứng thư mới.",
-                                "Thông báo",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information
-                            );
-                            btnRelease.Enabled = false;
-                        }
-                        else
-                        {
-                            XtraMessageBox.Show(
-                                "Chứng thư của bệnh nhân đã hết hạn. Vui lòng phát hành chứng thư mới.",
-                                "Thông báo",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning
-                            );
-                            btnRelease.Enabled = true;
-                        }
-                    }
-                    else
-                    {
-                        btnRelease.Enabled = true;
-                    }
+                    XtraMessageBox.Show("Đọc CCCD thành công!", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Information);                   
                 }
-
-                Inventec.Desktop.Common.Message.WaitingManager.Hide();
-                XtraMessageBox.Show("Đọc CCCD thành công!", "Thông báo");
             }
             catch (Exception ex)
             {
-                Inventec.Desktop.Common.Message.WaitingManager.Hide();
                 XtraMessageBox.Show("Có lỗi khi quét CCCD: " + ex.Message, "Thông báo");
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                Inventec.Desktop.Common.Message.WaitingManager.Hide();
             }
         }
         private void btnRelease_Click(object sender, EventArgs e)
@@ -847,7 +756,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     XtraMessageBox.Show("Phát hành chứng thư thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     WaitingManager.Hide();
                     btnRelease.Enabled = false;
-                    this.ParentForm?.Close();
+                    this.Close();
                 }
                 else
                 {

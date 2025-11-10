@@ -1080,6 +1080,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 cboBank.EditValue = null;
                 List<HIS_BANK> data = BackendDataWorker.Get<HIS_BANK>()
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .OrderBy(o => o.NUM_ORDER ?? int.MaxValue)
+                    .ThenBy(o => o.NUM_ORDER)
+                    .ThenBy(o => o.BANK_NAME)
                     .ToList();
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
