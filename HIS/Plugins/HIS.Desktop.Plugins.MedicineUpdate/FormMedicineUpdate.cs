@@ -27,13 +27,10 @@ using MOS.EFMODEL.DataModels;
 using MOS.SDO;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.MedicineUpdate
@@ -274,47 +271,9 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 this.txtConcentra.Text = medicine.CONCENTRA;
                 this.txtHeinServiceBHYTName.Text = medicine.HEIN_SERVICE_BHYT_NAME;
                 this.txtTenHoatChatBHYT.Text = medicine.ACTIVE_INGR_BHYT_NAME;
-                this.txtGiaTranBhyt.EditValue = medicine.HEIN_LIMIT_PRICE;
-                var cul = (CultureInfo)(cultureLang ?? CultureInfo.CurrentCulture).Clone();
-                cul.NumberFormat.NumberDecimalSeparator = ",";
-                if (string.IsNullOrEmpty(cul.NumberFormat.NumberGroupSeparator) || cul.NumberFormat.NumberGroupSeparator == ",")
-                    cul.NumberFormat.NumberGroupSeparator = ".";
-
-                txtGiaTranBhyt.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None; 
-                txtGiaTranBhyt.Properties.NullText = string.Empty;
-                txtGiaTranBhyt.Properties.NullValuePrompt = ""; 
-                txtGiaTranBhyt.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-
-               
-                if (medicine.HEIN_LIMIT_PRICE.HasValue)
-                    txtGiaTranBhyt.EditValue = medicine.HEIN_LIMIT_PRICE.Value.ToString("G29", cul);
-                else
-                    txtGiaTranBhyt.EditValue = null;
-
-                
-                txtGiaTranBhyt.KeyPress -= txtGiaTranBhyt_KeyPress; 
-                txtGiaTranBhyt.KeyPress += (s, e) =>
-                {
-                    if (char.IsControl(e.KeyChar)) return;
-                    if (char.IsDigit(e.KeyChar)) return;
-
-                    if (e.KeyChar == '.') { e.KeyChar = ','; } 
-
-                    if (e.KeyChar == ',')
-                    {
-                        
-                        if (txtGiaTranBhyt.Text.Contains(",")) { e.Handled = true; return; }
-                        return;
-                    }
-                    e.Handled = true; 
-                };
-
-                
-                txtGiaTranBhyt.Leave += (s, e) =>
-                {
-                    var t = txtGiaTranBhyt.Text?.Trim();
-                    if (!string.IsNullOrEmpty(t) && t.EndsWith(",")) txtGiaTranBhyt.Text = t.TrimEnd(',');
-                };
+                this.spinGiaTran.EditValue = (medicine.HEIN_LIMIT_PRICE.HasValue && medicine.HEIN_LIMIT_PRICE.Value != 0m)
+                ? medicine.HEIN_LIMIT_PRICE
+                : null;
                 if (medicine.MEDICINE_IS_STAR_MARK == 1)
                 {
                     this.chkMedicineIsStarMark.CheckState = CheckState.Checked;
@@ -433,22 +392,14 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 result.CONCENTRA = txtConcentra.Text;
                 result.HEIN_SERVICE_BHYT_NAME = txtHeinServiceBHYTName.Text;
                 result.ACTIVE_INGR_BHYT_NAME = txtTenHoatChatBHYT.Text;
-                var culSave = txtGiaTranBhyt.Properties.Mask.Culture ?? cultureLang ?? CultureInfo.CurrentCulture;
-
-                if (txtGiaTranBhyt.EditValue == null || string.IsNullOrWhiteSpace(txtGiaTranBhyt.Text))
+                if (spinGiaTran.EditValue == null)
                 {
                     result.HEIN_LIMIT_PRICE = null;
                 }
                 else
                 {
-                    if (txtGiaTranBhyt.EditValue is decimal d1)
-                        result.HEIN_LIMIT_PRICE = d1;
-                    else if (txtGiaTranBhyt.EditValue is double d2)
-                        result.HEIN_LIMIT_PRICE = Convert.ToDecimal(d2);
-                    else if (decimal.TryParse(txtGiaTranBhyt.Text, NumberStyles.Number, culSave, out var d3))
-                        result.HEIN_LIMIT_PRICE = d3;
-                    else
-                        result.HEIN_LIMIT_PRICE = null;
+                    var v = spinGiaTran.Value;
+                    result.HEIN_LIMIT_PRICE = (v == 0m) ? (decimal?)null : v;
                 }
                 if (chkMedicineIsStarMark.CheckState == CheckState.Checked)
                 {
@@ -1161,6 +1112,13 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
 
             // Chặn các ký tự khác
             e.Handled = true;
+        }
+        private static string FormatDecimalKeepScale(decimal value, CultureInfo cul)
+        {
+            int[] bits = decimal.GetBits(value);
+            int scale = (bits[3] >> 16) & 0x7F; // số chữ số thập phân
+            string fmt = scale > 0 ? ("N" + scale) : "N0"; // có group separator, đúng locale
+            return value.ToString(fmt, cul);
         }
     }
 }

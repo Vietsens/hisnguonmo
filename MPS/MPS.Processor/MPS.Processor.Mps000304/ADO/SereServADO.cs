@@ -293,7 +293,8 @@ namespace MPS.Processor.Mps000304.ADO
                 }
 
                 this.PRICE_BHYT = PriceBHYTProcess(this, materialTypes);
-                this.TOTAL_PRICE_BHYT = (this.PRICE_BHYT * this.AMOUNT) * ((this.BHYT_PAY_RATE ?? 0) / 100) * ((this.SERVICE_PAY_RATE ?? 0) / 100);
+                var priceBhytRow2 =  Math.Round(this.PRICE_BHYT * this.AMOUNT, 2, MidpointRounding.AwayFromZero);
+                this.TOTAL_PRICE_BHYT = priceBhytRow2 * ((this.BHYT_PAY_RATE ?? 0) / 100) * ((this.SERVICE_PAY_RATE ?? 0) / 100);
 
                 if (this.PRIMARY_PATIENT_TYPE_ID.HasValue)
                 {
@@ -325,18 +326,20 @@ namespace MPS.Processor.Mps000304.ADO
                 if (this.TOTAL_PATIENT_PRICE_LEFT < 0) this.TOTAL_PATIENT_PRICE_LEFT = 0;
 
                 this.PRICE_VP = this.VIR_PRICE ?? 0;
-                this.TOTAL_PRICE_VP = this.PRICE_VP * this.AMOUNT;
-                this.TOTAL_PATIENT_LEFT = (this.TOTAL_PRICE_VP) * ((this.SERVICE_PAY_RATE ?? 0) / 100) - (this.VIR_TOTAL_HEIN_PRICE ?? 0) - (this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0) - (this.OTHER_SOURCE_PRICE ?? 0);
 
-                if (this.TOTAL_PATIENT_LEFT < 0)
-                    this.TOTAL_PATIENT_LEFT = 0;
                 //Làm tròn giá trị 2 số, rồi lấy tổng tiền bhyt trừ đi dể tránh sai số
+                this.TOTAL_PRICE_VP = Math.Round(this.PRICE_VP * this.AMOUNT, 2, MidpointRounding.AwayFromZero);
                 this.VIR_TOTAL_HEIN_PRICE_ROW_2 = Math.Round(this.VIR_TOTAL_HEIN_PRICE ?? 0, 2, MidpointRounding.AwayFromZero);
                 this.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 = Math.Round(this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0, 2, MidpointRounding.AwayFromZero);
                 if (this.VIR_TOTAL_HEIN_PRICE_ROW_2 + this.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 > ((this.VIR_TOTAL_HEIN_PRICE ?? 0) + (this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0)))
                     this.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 = ((this.VIR_TOTAL_HEIN_PRICE ?? 0) + (this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0)) - this.VIR_TOTAL_HEIN_PRICE_ROW_2;
                 if (this.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 < 0)
                     this.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 = 0;
+
+                this.TOTAL_PATIENT_LEFT = (this.TOTAL_PRICE_VP) * ((this.SERVICE_PAY_RATE ?? 0) / 100) - (this.VIR_TOTAL_HEIN_PRICE_ROW_2 ?? 0) - (this.VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 ?? 0) - (this.OTHER_SOURCE_PRICE ?? 0);
+
+                if (this.TOTAL_PATIENT_LEFT < 0)
+                    this.TOTAL_PATIENT_LEFT = 0;
                 //có đơn vị quy đổi thì gán lại số lượng giá, đơn vị
                 //Nếu trường này khác 1 thì xử lý như hiện tại, tức là: nếu có đơn vị chuyển đổi thì hiển thị theo đơn vị chuyển đổi, nếu ko có đơn vị chuyển đổi thì hiển thị theo đơn vị tính gốc
                 var svUnit = hisServiceUnit.FirstOrDefault(o => o.ID == this.TDL_SERVICE_UNIT_ID);

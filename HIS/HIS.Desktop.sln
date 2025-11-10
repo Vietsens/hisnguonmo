@@ -1147,6 +1147,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "His.Bhyt.ExportXml.XML130",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMR.Desktop.Plugins.ImportEmrViewer", "Plugins\EMR.Desktop.Plugins.ImportEmrViewer\EMR.Desktop.Plugins.ImportEmrViewer.csproj", "{BFFB08C5-A093-417E-A148-92A4AE1F3A48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMR.Desktop.Plugins.EmrPatientCertificateRegister", "Plugins\EMR.Desktop.Plugins.EmrPatientCertificateRegister\EMR.Desktop.Plugins.EmrPatientCertificateRegister.csproj", "{1684479A-AB82-4872-8E64-1D71A257F222}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -4557,6 +4559,14 @@ Global
 		{BFFB08C5-A093-417E-A148-92A4AE1F3A48}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BFFB08C5-A093-417E-A148-92A4AE1F3A48}.Release|x86.ActiveCfg = Release|Any CPU
 		{BFFB08C5-A093-417E-A148-92A4AE1F3A48}.Release|x86.Build.0 = Release|Any CPU
+		{1684479A-AB82-4872-8E64-1D71A257F222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1684479A-AB82-4872-8E64-1D71A257F222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1684479A-AB82-4872-8E64-1D71A257F222}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1684479A-AB82-4872-8E64-1D71A257F222}.Debug|x86.Build.0 = Debug|Any CPU
+		{1684479A-AB82-4872-8E64-1D71A257F222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1684479A-AB82-4872-8E64-1D71A257F222}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1684479A-AB82-4872-8E64-1D71A257F222}.Release|x86.ActiveCfg = Release|Any CPU
+		{1684479A-AB82-4872-8E64-1D71A257F222}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -5122,6 +5132,7 @@ Global
 		{64AE963E-AE57-4C6D-95F4-F04A211CB013} = {9CA3460F-6F5C-4EAF-899E-163FB2ECB416}
 		{F7556EFA-9C3C-4D82-ACAA-42E4A78435DC} = {E0A1142A-55A1-4588-9479-3ED636571332}
 		{BFFB08C5-A093-417E-A148-92A4AE1F3A48} = {B1F30D7B-811A-4B5E-9FFE-5384B570E19E}
+		{1684479A-AB82-4872-8E64-1D71A257F222} = {B1F30D7B-811A-4B5E-9FFE-5384B570E19E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B8CBF9E-8615-4AF0-9894-C15CB4B6FC6B}

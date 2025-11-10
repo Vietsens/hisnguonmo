@@ -199,6 +199,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 ado.ListDepositReqGrid_CustomUnboundColumnData = depositReqGrid__CustomUnboundColumnData;
                 ado.ListDepositReqGrid_RowCellClick = Grid_RowCellClick;
                 ado.ListDepositReqGrid_RowCellStyle = gridView_RowCellStyle;
+                ado._btnQR_Click = Grid_QRClick;
 
                 //ado.ListDepositReqGrid_KeyUp = Grid_KeyUp;
                 ado.IsShowSearchPanel = false;

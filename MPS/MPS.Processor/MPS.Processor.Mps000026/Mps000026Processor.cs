@@ -29,7 +29,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-
+ 
 namespace MPS.Processor.Mps000026
 {
     public partial class Mps000026Processor : AbstractProcessor
@@ -555,6 +555,7 @@ namespace MPS.Processor.Mps000026
                     SetSingleKey(new KeyValue(Mps000026ExtendSingleKey.RATIO_STR, (rdo.Mps000026ADO.ratio * 100) + "%"));
                     SetSingleKey(new KeyValue(Mps000026ExtendSingleKey.BED_ROOM_NAME, rdo.Mps000026ADO.bebRoomName));
                     SetSingleKey(new KeyValue(Mps000026ExtendSingleKey.PARENT_NAME, rdo.Mps000026ADO.PARENT_NAME));
+                    SetSingleKey(new KeyValue(Mps000026ExtendSingleKey.PARENT_CODE, rdo.Mps000026ADO.PARENT_CODE));
                     AddObjectKeyIntoListkey<Mps000026ADO>(rdo.Mps000026ADO, false);
                 }
 

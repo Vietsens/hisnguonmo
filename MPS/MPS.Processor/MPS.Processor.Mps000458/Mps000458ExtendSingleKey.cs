@@ -68,5 +68,6 @@ namespace MPS.Processor.Mps000458
         internal const string HEIN_ADDRESS = "HEIN_ADDRESS";
         internal const string BAR_BARCODE_STR = "BAR_BARCODE";
         internal const string IMAGE_ISO_LOGO_STR = "IMAGE_ISO_LOGO";
+        internal const string PARENT_CODE = "PARENT_CODE";
     }
 }

@@ -629,6 +629,111 @@ namespace HIS.Desktop.Plugins.DepositRequest
         }
 
         private HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        class ConfigInfo
+        {
+            public string BANK { get; set; }
+            public string VALUE { get; set; }
+        }
+        void Grid_QRClick(V_HIS_DEPOSIT_REQ data)
+        {
+            try
+            {
+                if (data == null) return;
+
+                // Ưu tiên cấu hình QR theo phòng (QR_CONFIG_JSON)
+                var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>()
+                    .Where(s => s.ID == this.currentModule.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
+
+                if (currentRoom != null && currentRoom.Any())
+                {
+                    var cfg = Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigInfo>(currentRoom.First().QR_CONFIG_JSON);
+                    if (cfg == null || string.IsNullOrWhiteSpace(cfg.BANK))
+                    {
+                        XtraMessageBox.Show(this, "Cấu hình thiếu thông tin ngân hàng.", "Thông báo", MessageBoxButtons.OK);
+                        return;
+                    }
+
+                    var roomCfg = new HIS_CONFIG
+                    {
+                        KEY = $"HIS.Desktop.Plugins.PaymentQrCode.{cfg.BANK.Trim()}Info",
+                        VALUE = cfg.VALUE
+                    };
+
+                    var args = new List<object>();
+                    var adoqr = new TransReqQRADO
+                    {
+                        TreatmentId = data.TREATMENT_ID,
+                        ConfigValue = roomCfg,
+                        TransReqId = CreateReqType.Deposit,
+                        DepositReq = data
+                    };
+                    args.Add(adoqr);
+
+                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR (room QR)");
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                        "HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, args);
+                    return;
+                }
+
+                // Không có QR theo phòng → dùng listConfig (đa ngân hàng)
+                if (listConfig == null || listConfig.Count == 0)
+                {
+                    XtraMessageBox.Show(this, "Chưa cấu hình Payment QR Code.", "Thông báo", MessageBoxButtons.OK);
+                    return;
+                }
+
+                if (listConfig.Count > 1)
+                {
+                    popupMenu1.ClearLinks();
+                    foreach (var item in listConfig)
+                    {
+                        string bank = "";
+                        var idx = item.KEY.IndexOf("Info", StringComparison.OrdinalIgnoreCase);
+                        bank = (idx > 0 ? item.KEY.Substring(0, idx) : item.KEY).Split('.').Last();
+
+                        var btn = new DevExpress.XtraBars.BarButtonItem(null, bank);
+                        btn.ItemClick += (s, e) =>
+                        {
+                            var args = new List<object>();
+                            var adoqr = new TransReqQRADO
+                            {
+                                TreatmentId = data.TREATMENT_ID,
+                                ConfigValue = item,
+                                TransReqId = CreateReqType.Deposit,
+                                DepositReq = data
+                            };
+                            args.Add(adoqr);
+                            LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + item.KEY);
+                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                                "HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, args);
+                        };
+                        popupMenu1.AddItem(btn);
+                    }
+                    popupMenu1.Manager = barManager1;
+                    popupMenu1.ShowPopup(Control.MousePosition);
+                }
+                else
+                {
+                    var cfg = listConfig[0];
+                    var args = new List<object>();
+                    var adoqr = new TransReqQRADO
+                    {
+                        TreatmentId = data.TREATMENT_ID,
+                        ConfigValue = cfg,
+                        TransReqId = CreateReqType.Deposit,
+                        DepositReq = data
+                    };
+                    args.Add(adoqr);
+                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + cfg.KEY);
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                        "HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, args);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
         private void btnCreateQR_Click(object sender, EventArgs e)
         {
             try
@@ -703,6 +808,11 @@ namespace HIS.Desktop.Plugins.DepositRequest
             {
                 LogSystem.Error("Loi khi thuc hien thanh toan QR tam thu: " + ex);
             }
+        }
+
+        private void panelControl1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

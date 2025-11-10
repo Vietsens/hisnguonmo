@@ -223,6 +223,7 @@ namespace MPS.Processor.Mps000459
                 if (rdo.ServiceParent != null)
                 {
                     SetSingleKey(new KeyValue(Mps000459ExtendSingleKey.SERVICE_NAME_PARENT, rdo.ServiceParent.SERVICE_NAME));
+                    SetSingleKey(new KeyValue(Mps000459ExtendSingleKey.PARENT_CODE, rdo.ServiceParent.SERVICE_CODE));
                 }
 
                 SetSingleKey(new KeyValue(Mps000459ExtendSingleKey.LOGIN_USER_NAME, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName()));

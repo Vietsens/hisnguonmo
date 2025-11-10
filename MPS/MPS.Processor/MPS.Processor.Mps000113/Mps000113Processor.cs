@@ -84,6 +84,7 @@ namespace MPS.Processor.Mps000113
                     SetSingleKey(new KeyValue(Mps000113ExtendSingleKey.AGE_STR, AgeUtil.CalculateFullAge(rdo._Transaction.TDL_PATIENT_DOB ?? 0)));
                     SetSingleKey(new KeyValue(Mps000113ExtendSingleKey.AMOUNT_NUM, rdo._Transaction.AMOUNT));
                     SetSingleKey(new KeyValue(Mps000113ExtendSingleKey.AMOUNT, Inventec.Common.Number.Convert.NumberToString(rdo._Transaction.AMOUNT, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator)));
+                    SetSingleKey(new KeyValue(Mps000113ExtendSingleKey.TREATMENT_DEPOSIT_AMOUNT, Inventec.Common.Number.Convert.NumberToString(rdo._Transaction.TREATMENT_DEPOSIT_AMOUNT ?? 0, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator)));
                     string amountStr = string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(rdo._Transaction.AMOUNT));
                     string amountText = Inventec.Common.Number.Convert.NumberToStringRoundAuto(rdo._Transaction.AMOUNT, 4);
                     SetSingleKey(new KeyValue(Mps000113ExtendSingleKey.AMOUNT_TEXT, amountStr));

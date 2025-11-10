@@ -267,6 +267,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     _HanhChinhBenhNhan.SoNha = _Patient.ADDRESS;
                     _HanhChinhBenhNhan.ThonPho = "";
                     _HanhChinhBenhNhan.XaPhuong = _Patient.COMMUNE_NAME;
+                    _HanhChinhBenhNhan.MaXaPhuong = _Patient.COMMUNE_CODE;
                     _HanhChinhBenhNhan.HuyenQuan = _Patient.DISTRICT_NAME;
                     _HanhChinhBenhNhan.MaHuyenQuan = _Patient.DISTRICT_CODE;
                     _HanhChinhBenhNhan.TinhThanhPho = _Patient.PROVINCE_NAME;
@@ -1916,6 +1917,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
 
                 string cmdLn = EncodeData(_ERMADO);
                 LogSystem.Debug("LoadDataEmr. end");
+                LogSystem.Info(LogUtil.TraceData("_ERMADO:", _ERMADO));
                 System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
                 startInfo.FileName = Application.StartupPath + @"\Integrate\\EMR\\ConnectToEMR.exe";
                 startInfo.Arguments = cmdLn;
