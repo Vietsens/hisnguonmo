@@ -145,7 +145,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         List<long> lstSereServId = new List<long>();
         Timer timerClose = new Timer();
         bool PrintMps279 { get; set; }
-
+        private bool isSaveAndSignSuccess = false;
         private List<HIS_BILL_FUND> listBillFundPrint { get; set; }
         private List<HIS_SERE_SERV_BILL> hisSSBillsPrint { get; set; }
         private List<HIS_SERE_SERV> listSereServPrint { get; set; }
@@ -3893,14 +3893,18 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                 adoqr.TreatmentId = this.treatmentId ?? 0;
                                 adoqr.TransReqId = CreateReqType.Transaction;
                                 adoqr.ConfigValue = selectedConfig;
+                                adoqr.PrintInvoice = (chkPrintHddt != null && chkPrintHddt.Checked);
+                                adoqr.IssueInvoice = isSaveAndSignSuccess;
+                                adoqr.NotDisplayedInvoice = (chkHideHddt != null && chkHideHddt.Checked);
                                 HIS_TRANSACTION tran = new HIS_TRANSACTION();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, TransactionQr);
                                 adoqr.Transaction = tran;
+                                Inventec.Common.Logging.LogSystem.Info("adoqr26932: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => adoqr), adoqr));
                                 listArgs.Add(adoqr);
                                 LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
 
                                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
-
+                                isSaveAndSignSuccess = false;
                             };
                             popupMenu1.AddItem(btnOption);
                         }
@@ -3915,13 +3919,17 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         adoqr.TreatmentId = this.treatmentId ?? 0;
                         adoqr.TransReqId = CreateReqType.Transaction;
                         adoqr.ConfigValue = selectedConfig;
+                        adoqr.PrintInvoice = (chkPrintHddt != null && chkPrintHddt.Checked);
+                        adoqr.IssueInvoice = isSaveAndSignSuccess;
+                        adoqr.NotDisplayedInvoice = chkHideHddt.Checked;
                         HIS_TRANSACTION tran = new HIS_TRANSACTION();
                         Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, TransactionQr);
                         adoqr.Transaction = tran;
+                        Inventec.Common.Logging.LogSystem.Info("adoqr26932: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => adoqr), adoqr));
                         listArgs.Add(adoqr);
                         LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
                         HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
-
+                        isSaveAndSignSuccess = false;
                     }
 
                 }
