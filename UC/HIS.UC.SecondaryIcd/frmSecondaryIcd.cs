@@ -304,8 +304,8 @@ namespace HIS.UC.SecondaryIcd
         {
             try
             {
-                string icdNames = null;// = IcdUtil.seperator;
-                string icdCodes = null;// = IcdUtil.seperator;
+                //string icdNames = null;// = IcdUtil.seperator;
+                //string icdCodes = null;// = IcdUtil.seperator;
                 string icdName__Olds = txtIcdNames.Text;
                 
                 var checkList = icdAdoChecks.Where(o => o.IsChecked == true).Distinct().ToList();
@@ -318,8 +318,35 @@ namespace HIS.UC.SecondaryIcd
                     checkList.Last().IsChecked = false;
                 }
 
-                txtIcdNames.Text = string.Join(";",checkList.Where(s => s.IsChecked == true).Select(p=>p.ICD_NAME));
-                txtIcdCodes.Text = string.Join(";", checkList.Where(s => s.IsChecked == true).Select(p => p.ICD_CODE));
+                var row = (IcdADO)gridViewSecondaryDisease.GetFocusedRow();
+                if (row != null)
+                {
+                    var icdCodes= this.txtIcdCodes.Text.Trim(new char[] { ' ', ';' }).Split(';').ToList();
+                    var icdNames= this.txtIcdNames.Text.Trim(new char[] { ' ', ';' }).Split(';').ToList();
+                    while (icdNames.Count < icdCodes.Count)
+                    {
+                        icdNames.Add("");
+                    }
+                    if (row.IsChecked)
+                    {
+                        txtIcdCodes.Text += ";" + row.ICD_CODE;
+                        txtIcdNames.Text += ";" + row.ICD_NAME;
+                    }
+                    else
+                    {
+                        icdCodes.Reverse();
+                        icdNames.Reverse();
+                        var indexOfCode = icdCodes.IndexOf(row.ICD_CODE);
+                        icdCodes.RemoveAt(indexOfCode);
+                        icdNames.RemoveAt(indexOfCode);
+                        icdCodes.Reverse();
+                        icdNames.Reverse();
+                        txtIcdCodes.Text = string.Join(";", icdCodes);
+                        txtIcdNames.Text = string.Join(";", icdNames);
+                    }
+                }
+                //txtIcdNames.Text = string.Join(";",checkList.Where(s => s.IsChecked == true).Select(p=>p.ICD_NAME));
+                //txtIcdCodes.Text = string.Join(";", checkList.Where(s => s.IsChecked == true).Select(p => p.ICD_CODE));
 
             }
             catch (Exception ex)
