@@ -897,6 +897,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     if ((System.IO.Path.GetExtension(currentFileAttack.FullName) ?? "").ToLower() == ".pdf")
                     {
                         this.imageview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                        this.imageview2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         this.pdfview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 
                         pdfViewer1.LoadDocument(currentFileAttack.FullName);
@@ -907,6 +908,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     else
                     {
                         this.imageview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                        this.imageview2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         this.pdfview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         pteAnhChupFileDinhKem.Image = currentFileAttack.image;
                         pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
@@ -1040,23 +1042,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 //SetDeviceProperty(ref device, 3096,1);
                 WIA.Item items = device.Items[1];
                 //items.Properties["6146"].set_Value(2);
-                const int NEW_WIDTH = 2500;
-                const int NEW_HEIGHT = 3400;
-                const int DEFAULT_WIDTH = 1250;
-                const int DEFAULT_HEIGHT = 1700;
-
-                try
-                {
-                    AdjustScannerSettings(items, 150, 0, 0, NEW_WIDTH, NEW_HEIGHT, 0, 0, 1);
-                    Inventec.Common.Logging.LogSystem.Info(string.Format("Đã set khung scan mới: {0}x{1}", NEW_WIDTH, NEW_HEIGHT));
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn("Khung scan mới không hợp lệ, dùng lại khung cũ. " + ex.Message);
-                    AdjustScannerSettings(items, 150, 0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, 0, 0, 1);
-                }
-
-
+                AdjustScannerSettings(items, 150, 0, 0, 1250, 1700, 0, 0, 1);
 
                 ICommonDialog dlg = new WIA.CommonDialog();
                 while (true)
@@ -1098,20 +1084,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
 
                 var scannerItem = device.Items[1];
-                const int NEW_WIDTH = 2500;
-                const int NEW_HEIGHT = 3400;
-                const int DEFAULT_WIDTH = 1250;
-                const int DEFAULT_HEIGHT = 1700;
-                try
-                {
-                    AdjustScannerSettings(scannerItem, 150, 0, 0, NEW_WIDTH, NEW_HEIGHT, 0, 0, 1);
-                    Inventec.Common.Logging.LogSystem.Info(string.Format("Đã set khung scan mới: {0}x{1}", NEW_WIDTH, NEW_HEIGHT));
-                }
-                catch (Exception ex)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn("Khung scan mới không hợp lệ, dùng lại khung cũ. " + ex.Message);
-                    AdjustScannerSettings(scannerItem, 150, 0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, 0, 0, 1);
-                }
+                AdjustScannerSettings(scannerItem, 150, 0, 0, 1250, 1700, 0, 0, 1);
 
                 ICommonDialog dlg = new WIA.CommonDialog();
 
