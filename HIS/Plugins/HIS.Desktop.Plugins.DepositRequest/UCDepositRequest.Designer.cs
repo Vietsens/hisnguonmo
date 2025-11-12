@@ -110,8 +110,6 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
-            this.bar1 = new DevExpress.XtraBars.Bar();
-            this.bar2 = new DevExpress.XtraBars.Bar();
             this.bar3 = new DevExpress.XtraBars.Bar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -188,10 +186,10 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControl1.Controls.Add(this.layoutControl3);
             this.layoutControl1.Controls.Add(this.layoutControl2);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 49);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1366, 696);
+            this.layoutControl1.Size = new System.Drawing.Size(1366, 745);
             this.layoutControl1.TabIndex = 1;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -203,7 +201,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControl3.Location = new System.Drawing.Point(2, 2);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(924, 692);
+            this.layoutControl3.Size = new System.Drawing.Size(924, 741);
             this.layoutControl3.TabIndex = 5;
             this.layoutControl3.Text = "layoutControl3";
             // 
@@ -216,7 +214,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControl6.Location = new System.Drawing.Point(2, 2);
             this.layoutControl6.Name = "layoutControl6";
             this.layoutControl6.Root = this.layoutControlGroup5;
-            this.layoutControl6.Size = new System.Drawing.Size(920, 26);
+            this.layoutControl6.Size = new System.Drawing.Size(920, 28);
             this.layoutControl6.TabIndex = 8;
             this.layoutControl6.Text = "layoutControl6";
             // 
@@ -281,7 +279,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "layoutControlGroup5";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup5.Size = new System.Drawing.Size(920, 26);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(920, 28);
             this.layoutControlGroup5.TextVisible = false;
             // 
             // layoutControlItem7
@@ -289,7 +287,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlItem7.Control = this.txtReqCode;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(96, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(96, 28);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
@@ -298,7 +296,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlItem8.Control = this.txtKeyWord;
             this.layoutControlItem8.Location = new System.Drawing.Point(96, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(186, 26);
+            this.layoutControlItem8.Size = new System.Drawing.Size(186, 28);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
@@ -307,7 +305,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlItem9.Control = this.btnSearch;
             this.layoutControlItem9.Location = new System.Drawing.Point(383, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(96, 26);
+            this.layoutControlItem9.Size = new System.Drawing.Size(96, 28);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
@@ -316,7 +314,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(479, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(441, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(441, 28);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem4
@@ -324,17 +322,17 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlItem4.Control = this.cboStatus;
             this.layoutControlItem4.Location = new System.Drawing.Point(282, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(101, 26);
+            this.layoutControlItem4.Size = new System.Drawing.Size(101, 28);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControl4
             // 
             this.layoutControl4.Controls.Add(this.ucPaging1);
-            this.layoutControl4.Location = new System.Drawing.Point(0, 668);
+            this.layoutControl4.Location = new System.Drawing.Point(0, 716);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(924, 24);
+            this.layoutControl4.Size = new System.Drawing.Size(924, 25);
             this.layoutControl4.TabIndex = 7;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -342,7 +340,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             // 
             this.ucPaging1.Location = new System.Drawing.Point(2, 2);
             this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(920, 20);
+            this.ucPaging1.Size = new System.Drawing.Size(920, 21);
             this.ucPaging1.TabIndex = 4;
             // 
             // layoutControlGroup3
@@ -354,7 +352,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(924, 24);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(924, 25);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem6
@@ -362,16 +360,17 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlItem6.Control = this.ucPaging1;
             this.layoutControlItem6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(924, 24);
+            this.layoutControlItem6.Size = new System.Drawing.Size(924, 25);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // panelControl1
             // 
-            this.panelControl1.Location = new System.Drawing.Point(2, 32);
+            this.panelControl1.Location = new System.Drawing.Point(2, 34);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(920, 634);
+            this.panelControl1.Size = new System.Drawing.Size(920, 680);
             this.panelControl1.TabIndex = 6;
+            this.panelControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.panelControl1_Paint);
             // 
             // layoutControlGroup2
             // 
@@ -384,25 +383,25 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(924, 692);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(924, 741);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.panelControl1;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 30);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 32);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(924, 638);
+            this.layoutControlItem5.Size = new System.Drawing.Size(924, 684);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.layoutControl4;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 668);
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 716);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem3.Size = new System.Drawing.Size(924, 24);
+            this.layoutControlItem3.Size = new System.Drawing.Size(924, 25);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -411,7 +410,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlItem22.Control = this.layoutControl6;
             this.layoutControlItem22.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem22.Name = "layoutControlItem22";
-            this.layoutControlItem22.Size = new System.Drawing.Size(924, 30);
+            this.layoutControlItem22.Size = new System.Drawing.Size(924, 32);
             this.layoutControlItem22.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem22.TextVisible = false;
             // 
@@ -422,14 +421,14 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControl2.Location = new System.Drawing.Point(930, 2);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(434, 692);
+            this.layoutControl2.Size = new System.Drawing.Size(434, 741);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // dtTransactionTime
             // 
             this.dtTransactionTime.EditValue = null;
-            this.dtTransactionTime.Location = new System.Drawing.Point(97, 33);
+            this.dtTransactionTime.Location = new System.Drawing.Point(97, 35);
             this.dtTransactionTime.Name = "dtTransactionTime";
             this.dtTransactionTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -460,10 +459,10 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControl7.Controls.Add(this.txtPayFormCode);
             this.layoutControl7.Controls.Add(this.cboAccountBook);
             this.layoutControl7.Controls.Add(this.txtAccountBookCode);
-            this.layoutControl7.Location = new System.Drawing.Point(2, 57);
+            this.layoutControl7.Location = new System.Drawing.Point(2, 59);
             this.layoutControl7.Name = "layoutControl7";
             this.layoutControl7.Root = this.layoutControlGroup6;
-            this.layoutControl7.Size = new System.Drawing.Size(430, 146);
+            this.layoutControl7.Size = new System.Drawing.Size(430, 157);
             this.layoutControl7.TabIndex = 4;
             this.layoutControl7.Text = "layoutControl7";
             // 
@@ -624,7 +623,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup6.Name = "layoutControlGroup6";
             this.layoutControlGroup6.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup6.Size = new System.Drawing.Size(430, 146);
+            this.layoutControlGroup6.Size = new System.Drawing.Size(430, 152);
             this.layoutControlGroup6.TextVisible = false;
             // 
             // layoutControlItem12
@@ -718,7 +717,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlItem19.Control = this.btnPrint;
             this.layoutControlItem19.Location = new System.Drawing.Point(370, 120);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(60, 26);
+            this.layoutControlItem19.Size = new System.Drawing.Size(60, 37);
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
             // 
@@ -727,7 +726,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.emptySpaceItem4.AllowHotTrack = false;
             this.emptySpaceItem4.Location = new System.Drawing.Point(0, 120);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(145, 26);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(145, 32);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem20
@@ -735,7 +734,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlItem20.Control = this.btnSave;
             this.layoutControlItem20.Location = new System.Drawing.Point(302, 120);
             this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(68, 26);
+            this.layoutControlItem20.Size = new System.Drawing.Size(68, 37);
             this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem20.TextVisible = false;
             // 
@@ -744,7 +743,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlItem21.Control = this.btnSavePrint;
             this.layoutControlItem21.Location = new System.Drawing.Point(223, 120);
             this.layoutControlItem21.Name = "layoutControlItem21";
-            this.layoutControlItem21.Size = new System.Drawing.Size(79, 26);
+            this.layoutControlItem21.Size = new System.Drawing.Size(79, 37);
             this.layoutControlItem21.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem21.TextVisible = false;
             // 
@@ -792,7 +791,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutbtnQRCe.Control = this.btnCreateQR;
             this.layoutbtnQRCe.Location = new System.Drawing.Point(145, 120);
             this.layoutbtnQRCe.Name = "layoutbtnQRCe";
-            this.layoutbtnQRCe.Size = new System.Drawing.Size(78, 26);
+            this.layoutbtnQRCe.Size = new System.Drawing.Size(78, 37);
             this.layoutbtnQRCe.TextSize = new System.Drawing.Size(0, 0);
             this.layoutbtnQRCe.TextVisible = false;
             // 
@@ -808,24 +807,24 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(434, 692);
+            this.Root.Size = new System.Drawing.Size(434, 741);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.layoutControl7;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 55);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 57);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(434, 150);
+            this.layoutControlItem11.Size = new System.Drawing.Size(434, 161);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 205);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 212);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(434, 487);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(434, 509);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem3
@@ -833,7 +832,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.emptySpaceItem3.AllowHotTrack = false;
             this.emptySpaceItem3.Location = new System.Drawing.Point(0, 0);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(434, 31);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(434, 32);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciTransactionTime
@@ -843,7 +842,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.lciTransactionTime.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTransactionTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTransactionTime.Control = this.dtTransactionTime;
-            this.lciTransactionTime.Location = new System.Drawing.Point(0, 31);
+            this.lciTransactionTime.Location = new System.Drawing.Point(0, 33);
             this.lciTransactionTime.Name = "lciTransactionTime";
             this.lciTransactionTime.Size = new System.Drawing.Size(434, 24);
             this.lciTransactionTime.Text = "Thời gian:";
@@ -861,7 +860,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1366, 696);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1366, 745);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -869,7 +868,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlItem1.Control = this.layoutControl2;
             this.layoutControlItem1.Location = new System.Drawing.Point(928, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(438, 696);
+            this.layoutControlItem1.Size = new System.Drawing.Size(438, 745);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -878,7 +877,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.layoutControlItem2.Control = this.layoutControl3;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(928, 696);
+            this.layoutControlItem2.Size = new System.Drawing.Size(928, 745);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -894,35 +893,14 @@ namespace HIS.Desktop.Plugins.DepositRequest
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
-            this.bar1,
-            this.bar2,
             this.bar3});
             this.barManager1.DockControls.Add(this.barDockControlTop);
             this.barManager1.DockControls.Add(this.barDockControlBottom);
             this.barManager1.DockControls.Add(this.barDockControlLeft);
             this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
-            this.barManager1.MainMenu = this.bar2;
             this.barManager1.MaxItemId = 0;
             this.barManager1.StatusBar = this.bar3;
-            // 
-            // bar1
-            // 
-            this.bar1.BarName = "Tools";
-            this.bar1.DockCol = 0;
-            this.bar1.DockRow = 1;
-            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar1.Text = "Tools";
-            // 
-            // bar2
-            // 
-            this.bar2.BarName = "Main menu";
-            this.bar2.DockCol = 0;
-            this.bar2.DockRow = 0;
-            this.bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar2.OptionsBar.MultiLine = true;
-            this.bar2.OptionsBar.UseWholeRow = true;
-            this.bar2.Text = "Main menu";
             // 
             // bar3
             // 
@@ -941,7 +919,7 @@ namespace HIS.Desktop.Plugins.DepositRequest
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1366, 49);
+            this.barDockControlTop.Size = new System.Drawing.Size(1366, 0);
             // 
             // barDockControlBottom
             // 
@@ -954,15 +932,15 @@ namespace HIS.Desktop.Plugins.DepositRequest
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 49);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 696);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 745);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1366, 49);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 696);
+            this.barDockControlRight.Location = new System.Drawing.Point(1366, 0);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 745);
             // 
             // UCDepositRequest
             // 
@@ -1111,8 +1089,6 @@ namespace HIS.Desktop.Plugins.DepositRequest
         private DevExpress.XtraLayout.LayoutControlItem layoutbtnQRCe;
         private DevExpress.XtraBars.PopupMenu popupMenu1;
         private DevExpress.XtraBars.BarManager barManager1;
-        private DevExpress.XtraBars.Bar bar1;
-        private DevExpress.XtraBars.Bar bar2;
         private DevExpress.XtraBars.Bar bar3;
         private DevExpress.XtraBars.BarDockControl barDockControlTop;
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;

@@ -894,6 +894,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 this.ComboHisMachine();
                 this.LoadComboPtttTable(cboBanMo);
                 this.ComboPhuongPhapThucTe();
+                this.DisplaySubstituteSignerInfo();
                 LoadDefaultControl();
                 if (this.sereServPTTT != null && this.sereServPTTT.ID > 0)
                 {

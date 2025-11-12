@@ -41,7 +41,7 @@ namespace HIS.UC.UCHeniInfo
                 return "";
             }
         }
-        
+
         internal static string MaBenhKhongKhopVoiTenBenh
         {
             get
@@ -89,6 +89,8 @@ namespace HIS.UC.UCHeniInfo
                 return "";
             }
         }
+
+
 
         internal static string ThoiDiemMienCungChiTraPhaiCungNamVoiNamHienTai
         {
@@ -193,6 +195,68 @@ namespace HIS.UC.UCHeniInfo
                 try
                 {
                     return Inventec.Common.Resource.Get.Value("MaDangKyKCBBDKhacVoiCuaVien", languageMessage, LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string DotKhamTruocCuaBenhNhanConNoTienVienPhi
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("DotKhamTruocCuaBenhNhanConNoTienVienPhi", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string TieuDeCuaSoThongBaoLaThongBao
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_TieuDeCuaSoThongBaoLaThongBao", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+                return "";
+            }
+        }
+        internal static string ThuocCoThoiSuDungDen
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThuocCoThoiSuDungDen", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+        internal static string DotKhamTruocCuaBenhNhanCoThuocChuaUongHet
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("DotKhamTruocCuaBenhNhanCoThuocChuaUongHet", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 }
                 catch (Exception ex)
                 {

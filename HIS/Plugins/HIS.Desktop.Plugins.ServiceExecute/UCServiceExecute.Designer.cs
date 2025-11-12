@@ -232,6 +232,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.tileView1 = new DevExpress.XtraGrid.Views.Tile.TileView();
             this.tileViewIsChecked = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.repositoryItemChecked = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.imageListStt = new System.Windows.Forms.ImageList(this.components);
             this.cardView = new DevExpress.XtraGrid.Views.Card.CardView();
             this.Checked = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnImage = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -305,7 +306,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.timerLoadEkip = new System.Windows.Forms.Timer(this.components);
-            this.imageListStt = new System.Windows.Forms.ImageList(this.components);
             this.timerDoubleClick = new System.Windows.Forms.Timer(this.components);
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -1909,7 +1909,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.gridViewSereServ.OptionsView.ShowIndicator = false;
             this.gridViewSereServ.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridView_RowClick);
             this.gridViewSereServ.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gridViewSereServ_RowStyle);
-            this.gridViewSereServ.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridView_CustomRowCellEdit);
+            this.gridViewSereServ.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewEkip_CustomRowCellEdit);
             this.gridViewSereServ.PopupMenuShowing += new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.gridViewSereServ_PopupMenuShowing);
             this.gridViewSereServ.ShownEditor += new System.EventHandler(this.gridView_ShownEditor);
             this.gridViewSereServ.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewSereServ_CustomUnboundColumnData);
@@ -2276,6 +2276,17 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // 
             this.repositoryItemChecked.AutoHeight = false;
             this.repositoryItemChecked.Name = "repositoryItemChecked";
+            // 
+            // imageListStt
+            // 
+            this.imageListStt.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListStt.ImageStream")));
+            this.imageListStt.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListStt.Images.SetKeyName(0, "circle-white.png");
+            this.imageListStt.Images.SetKeyName(1, "circle-yellow.png");
+            this.imageListStt.Images.SetKeyName(2, "circleOrgan.png");
+            this.imageListStt.Images.SetKeyName(3, "circle-red.png");
+            this.imageListStt.Images.SetKeyName(4, "circle-black.png");
+            this.imageListStt.Images.SetKeyName(5, "circle-green.png");
             // 
             // cardView
             // 
@@ -3171,17 +3182,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // dxValidationProvider1
             // 
             this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
-            // 
-            // imageListStt
-            // 
-            this.imageListStt.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListStt.ImageStream")));
-            this.imageListStt.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListStt.Images.SetKeyName(0, "circle-white.png");
-            this.imageListStt.Images.SetKeyName(1, "circle-yellow.png");
-            this.imageListStt.Images.SetKeyName(2, "circleOrgan.png");
-            this.imageListStt.Images.SetKeyName(3, "circle-red.png");
-            this.imageListStt.Images.SetKeyName(4, "circle-black.png");
-            this.imageListStt.Images.SetKeyName(5, "circle-green.png");
             // 
             // timerDoubleClick
             // 

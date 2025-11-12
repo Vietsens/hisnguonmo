@@ -150,7 +150,20 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Trường dữ liệu bắt buộc</value>
   </data>
-	<data name="PhaiCoGiayChungNhanKhongCungChiTra" xml:space="preserve">
+  <data name="PhaiCoGiayChungNhanKhongCungChiTra" xml:space="preserve">
     <value>Bệnh nhân phải có giấy chứng nhận không cùng chi trả trong năm. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="DotKhamTruocCuaBenhNhanConNoTienVienPhi" xml:space="preserve">
+    <value>Đợt khám/điều trị trước đó của bệnh nhân còn nợ tiền viện phí. Mã hồ sơ điều trị {0}</value>
+  </data>
+  <data name="DotKhamTruocCuaBenhNhanCoThuocChuaUongHet" xml:space="preserve">
+    <value>Đợt khám/điều trị trước đó của bệnh nhân có {1} {2} {3}chưa uống hết</value>
+  </data>
+  <data name="ThuocCoThoiSuDungDen" xml:space="preserve">
+    <value>{0}
+{0} có thuốc kê sử dụng đến {1}</value>
+  </data>
+  <data name="TieuDeCuaSoThongBaoLaThongBao" xml:space="preserve">
+    <value>Thông báo</value>
   </data>
 </root>

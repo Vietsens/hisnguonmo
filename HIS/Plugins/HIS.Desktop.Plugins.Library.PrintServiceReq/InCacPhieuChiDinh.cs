@@ -1671,6 +1671,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
 
                             V_HIS_SERVICE serviceParent = ProcessDictionaryData.GetService(item.Key);
                             mps000031ADO.PARENT_NAME = serviceParent != null ? serviceParent.SERVICE_NAME : "";
+                            mps000031ADO.PARENT_CODE = serviceParent != null ? serviceParent.SERVICE_CODE : "";
 
                             var lstSereServ_31 = new List<MPS.Processor.Mps000031.PDO.Mps000031_ListSereServ>();
                             foreach (var sere in item.Value)
@@ -1810,6 +1811,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             {
                                 var serviceN = ProcessDictionaryData.GetService(_service.PARENT_ID.Value);
                                 mps000031ADO.PARENT_NAME = serviceN != null ? serviceN.SERVICE_NAME : "";
+                                mps000031ADO.PARENT_CODE = serviceN != null ? serviceN.SERVICE_CODE : "";
                             }
                         }
 
@@ -2440,7 +2442,8 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             var parent = ProcessDictionaryData.GetService(item.Key);
                             Mps000028ADO.TITLE = parent != null ? parent.SERVICE_NAME : "";
                             Mps000028ADO.PARENT_NAME = parent != null ? parent.SERVICE_NAME : "";
-
+                            //qtcode
+                            Mps000028ADO.PARENT_CODE = parent != null ? parent.SERVICE_CODE : "";
                             List<V_HIS_TRANSACTION> transaction = null;
                             if (chiDinhDichVuADO.ListTransaction != null && chiDinhDichVuADO.ListTransaction.Count > 0)
                             {
@@ -2536,6 +2539,8 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             {
                                 var serviceN = ProcessDictionaryData.GetService(_service.PARENT_ID.Value);
                                 Mps000028ADO.PARENT_NAME = serviceN != null ? serviceN.SERVICE_NAME : "";
+                                //qtcode
+                                Mps000028ADO.PARENT_CODE = serviceN != null ? serviceN.SERVICE_CODE : "";
                             }
                         }
 
@@ -2657,6 +2662,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
 
                             V_HIS_SERVICE serviceParent = ProcessDictionaryData.GetService(item.Key);
                             mps000026ADO.PARENT_NAME = serviceParent != null ? serviceParent.SERVICE_NAME : "";
+                            mps000026ADO.PARENT_CODE = serviceParent != null ? serviceParent.SERVICE_CODE : "";
 
                             var lstSereServ_26 = item.Value;
                             var lstSereServExt_26 = new List<HIS_SERE_SERV_EXT>();
@@ -2745,6 +2751,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             {
                                 var serviceN = ProcessDictionaryData.GetService(_service.PARENT_ID.Value);
                                 mps000026ADO.PARENT_NAME = serviceN != null ? serviceN.SERVICE_NAME : "";
+                                mps000026ADO.PARENT_CODE = serviceN != null ? serviceN.SERVICE_CODE : "";
                             }
                         }
 

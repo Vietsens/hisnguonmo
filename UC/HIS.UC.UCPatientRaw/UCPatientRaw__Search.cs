@@ -1124,7 +1124,7 @@ namespace HIS.UC.UCPatientRaw
                 var dtPatientType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Find(o => o.PATIENT_TYPE_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT"));
                 if (this.dlgEnableSave != null)
                     this.dlgEnableSave(true);
-                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "1" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "3" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4")
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "1" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "3" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "5")
                 {
                     if (this.currentPatientSDO.PreviousDebtTreatments != null
                         && this.currentPatientSDO.PreviousDebtTreatments.Count > 0)
@@ -1134,6 +1134,14 @@ namespace HIS.UC.UCPatientRaw
                         if (!String.IsNullOrEmpty(message))
                         {
                             message += "\r\n";
+                        }
+                        if (HisConfigCFG.IsCheckPreviousDebt == "5")
+                        {
+                            message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân có số tiền phải trả lớn hơn 0 hoặc hồ sơ BHYT chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}.", treatmentPrevis);
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                            {
+                                return;
+                            }
                         }
                         if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4")
                         {
@@ -1182,7 +1190,7 @@ namespace HIS.UC.UCPatientRaw
                                 this.dlgEnableSave(false);
                         }
                     }
-                    else
+                    else if (HisConfigCFG.IsCheckPreviousDebt != "5")
                     {
                         MessageManager.Show(message);
                     }

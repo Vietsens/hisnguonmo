@@ -1493,7 +1493,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     }
                     else
                     {
-                        //qtcode
                         var _vHisExecuteRooms = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(p => p.ROOM_ID == module.RoomId);
                         if (_vHisExecuteRooms != null && _vHisExecuteRooms.HOSP_SUBS_DIRECTOR_LOGINNAME != null)
                         {
@@ -1502,7 +1501,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         }
                         else
                         {
-                            var depar = hisDepartments.FirstOrDefault(s => s.HOSP_SUBS_DIRECTOR_LOGINNAME != null);
+                            var depar = hisDepartments.FirstOrDefault(s => s.HOSP_SUBS_DIRECTOR_LOGINNAME != null && s.ID == WorkPlace.GetDepartmentId());
                             if (depar != null)
                             {
                                 txtHospSubsDirector.Text = depar.HOSP_SUBS_DIRECTOR_LOGINNAME;

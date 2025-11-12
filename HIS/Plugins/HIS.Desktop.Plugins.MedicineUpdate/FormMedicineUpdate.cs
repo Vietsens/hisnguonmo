@@ -15,25 +15,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Plugins.MedicineUpdate.Validation;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Inventec.Desktop.Common.Message;
-using Inventec.Core;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.Plugins.MedicineUpdate.Validation;
-using DevExpress.XtraEditors.DXErrorProvider;
-using MOS.SDO;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.LocalStorage.BackendData;
-using DevExpress.XtraEditors.Controls;
 
 namespace HIS.Desktop.Plugins.MedicineUpdate
 {
@@ -105,15 +103,12 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 //Load du lieu
                 FillData();
 
-                chkUpdateCKVP.Checked = true;
-
                 if (this.medicine != null)
                 {
                     EnableBBGN(this.medicine.ID);
                 }
                 //valid
                 ValidControls();
-
                 //Focus
                 spinImpPrice.Focus();
                 spinImpPrice.SelectAll();
@@ -268,7 +263,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 this.txtPackgeNumber.Text = medicine.PACKAGE_NUMBER;
                 this.dtExpiredDate.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(medicine.EXPIRED_DATE ?? 0);
                 this.lblContractCode.Text = medicine.MEDICAL_CONTRACT_CODE;
-                this.lblContractName.Text = medicine.MEDICAL_CONTRACT_NAME;
+                //this.lblContractName.Text = medicine.MEDICAL_CONTRACT_NAME;
                 this.txtMedicineBytNumOrder.Text = medicine.MEDICINE_BYT_NUM_ORDER;
                 this.txtMedicineRegisterNumOrder.Text = medicine.MEDICINE_REGISTER_NUMBER;
                 this.txtMedicineTcyNumOrder.Text = medicine.MEDICINE_TCY_NUM_ORDER;
@@ -276,6 +271,9 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 this.txtConcentra.Text = medicine.CONCENTRA;
                 this.txtHeinServiceBHYTName.Text = medicine.HEIN_SERVICE_BHYT_NAME;
                 this.txtTenHoatChatBHYT.Text = medicine.ACTIVE_INGR_BHYT_NAME;
+                this.spinGiaTran.EditValue = (medicine.HEIN_LIMIT_PRICE.HasValue && medicine.HEIN_LIMIT_PRICE.Value != 0m)
+                ? medicine.HEIN_LIMIT_PRICE
+                : null;
                 if (medicine.MEDICINE_IS_STAR_MARK == 1)
                 {
                     this.chkMedicineIsStarMark.CheckState = CheckState.Checked;
@@ -394,6 +392,15 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 result.CONCENTRA = txtConcentra.Text;
                 result.HEIN_SERVICE_BHYT_NAME = txtHeinServiceBHYTName.Text;
                 result.ACTIVE_INGR_BHYT_NAME = txtTenHoatChatBHYT.Text;
+                if (spinGiaTran.EditValue == null)
+                {
+                    result.HEIN_LIMIT_PRICE = null;
+                }
+                else
+                {
+                    var v = spinGiaTran.Value;
+                    result.HEIN_LIMIT_PRICE = (v == 0m) ? (decimal?)null : v;
+                }
                 if (chkMedicineIsStarMark.CheckState == CheckState.Checked)
                 {
                     result.MEDICINE_IS_STAR_MARK = 1;
@@ -1078,6 +1085,40 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void txtGiaTranBhyt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsControl(e.KeyChar) || char.IsDigit(e.KeyChar)) return;
+
+            var cul = cultureLang ?? CultureInfo.CurrentCulture;
+            var groupSep = cul.NumberFormat.NumberGroupSeparator;      // vi-VN: "."
+            var decimalSep = cul.NumberFormat.NumberDecimalSeparator;  // vi-VN: ","
+
+            if (e.KeyChar == ',' || e.KeyChar == '.')
+            {
+                // Với n0: không thập phân -> xem như người dùng muốn gõ dấu phân tách nghìn
+                if (!string.IsNullOrEmpty(groupSep) && groupSep.Length == 1)
+                {
+                    e.KeyChar = groupSep[0]; // ví dụ vi-VN: '.' 
+                    e.Handled = false;       // cho mask xử lý bình thường (không beep)
+                }
+                else
+                {
+                    e.Handled = true;        // groupSep không phải 1 ký tự -> bỏ qua để tránh beep
+                }
+                return;
+            }
+
+            // Chặn các ký tự khác
+            e.Handled = true;
+        }
+        private static string FormatDecimalKeepScale(decimal value, CultureInfo cul)
+        {
+            int[] bits = decimal.GetBits(value);
+            int scale = (bits[3] >> 16) & 0x7F; // số chữ số thập phân
+            string fmt = scale > 0 ? ("N" + scale) : "N0"; // có group separator, đúng locale
+            return value.ToString(fmt, cul);
         }
     }
 }

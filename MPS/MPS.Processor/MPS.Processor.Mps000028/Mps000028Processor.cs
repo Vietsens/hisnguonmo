@@ -688,6 +688,7 @@ namespace MPS.Processor.Mps000028
                     SetSingleKey(new KeyValue(Mps000028ExtendSingleKey.FIRST_EXAM_ROOM_NAME, rdo.Mps000028ADO.firstExamRoomName));
                     SetSingleKey(new KeyValue(Mps000028ExtendSingleKey.BED_ROOM_NAME, rdo.Mps000028ADO.bebRoomName));
                     SetSingleKey(new KeyValue(Mps000028ExtendSingleKey.PARENT_NAME, rdo.Mps000028ADO.PARENT_NAME));
+                    SetSingleKey(new KeyValue(Mps000028ExtendSingleKey.PARENT_CODE, rdo.Mps000028ADO.PARENT_CODE));
 
                     AddObjectKeyIntoListkey<Mps000028ADO>(rdo.Mps000028ADO, false);
                 }

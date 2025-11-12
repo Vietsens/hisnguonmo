@@ -47,6 +47,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
     public partial class UCRegister : UserControlBase
     {
         public List<string> lstPreviousDebtTreatmentsRegister = new List<string>();
+        List<string> lstSend = new List<string>();
         private void PeriosTreatmentMessage()
         {
             try
@@ -77,7 +78,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 LogSystem.Debug("Tiep don: Cau hinh co kiem tra dot dieu tri truoc cua BN con no tien vien phi hay khong: IsCheckPreviousDebt = " + HisConfigCFG.IsCheckPreviousDebt);
                 var dtPatientType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Find(o => o.PATIENT_TYPE_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT"));
                 btnSave.Enabled = true;
-                if (HisConfigCFG.IsCheckPreviousDebt == "1" || HisConfigCFG.IsCheckPreviousDebt == "3" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4")
+                if (HisConfigCFG.IsCheckPreviousDebt == "1" || HisConfigCFG.IsCheckPreviousDebt == "3" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4" || HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "5")
                 {
                     if (this.currentPatientSDO.PreviousDebtTreatments != null
                         && this.currentPatientSDO.PreviousDebtTreatments.Count > 0)
@@ -87,6 +88,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         if (!String.IsNullOrEmpty(message))
                         {
                             message += "\r\n";
+                        }
+                        if (HisConfigCFG.IsCheckPreviousDebt == "5")
+                        {
+                            message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân có số tiền phải trả lớn hơn 0 hoặc hồ sơ BHYT chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}.", treatmentPrevis);
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                            {
+                                return;
+                            }
                         }
                         if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4")
                         {
@@ -103,6 +112,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                 lstPreviousDebtTreatmentsRegister = this.currentPatientSDO.PreviousDebtTreatments;
                                 message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanConNoTienVienPhi3, this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE);
                             }
+                        }
+                    }
+                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "3" && this.currentPatientSDO.LastTreatmentFee != null)
+                    {
+                        if (this.currentPatientSDO.LastTreatmentFee.IS_ACTIVE == 1 || ((this.currentPatientSDO.LastTreatmentFee.TOTAL_PATIENT_PRICE ?? 0) - (this.currentPatientSDO.LastTreatmentFee.TOTAL_DEPOSIT_AMOUNT ?? 0) - (this.currentPatientSDO.LastTreatmentFee.TOTAL_BILL_AMOUNT ?? 0) + (this.currentPatientSDO.LastTreatmentFee.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) + (this.currentPatientSDO.LastTreatmentFee.TOTAL_REPAY_AMOUNT ?? 0)) > 0)
+                        {
+                            lstSend = new List<string>() { this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE };
+                            message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanConNoTienVienPhi, this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE);
                         }
                     }
                 }
@@ -133,7 +150,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             btnSaveAndPrint.Enabled = false;
                         }
                     }
-                    else
+                    else if (HisConfigCFG.IsCheckPreviousDebt != "5")
                     {
                         MessageManager.Show(message);
                     }

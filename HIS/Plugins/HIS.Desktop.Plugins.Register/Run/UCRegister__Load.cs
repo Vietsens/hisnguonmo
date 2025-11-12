@@ -339,13 +339,13 @@ namespace HIS.Desktop.Plugins.Register.Run
                     this.txtGenderCode.Text = gioitinh.GENDER_CODE;
                 }
                 this.txtAddress.Text = patientDTO.ADDRESS;
-                var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().FirstOrDefault(o => o.NATIONAL_NAME == patientDTO.NATIONAL_NAME);
+                var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.NATIONAL_NAME == patientDTO.NATIONAL_NAME);
                 if (national != null)
                 {
                     this.cboNational.EditValue = national.NATIONAL_NAME;
                     this.txtNationalCode.Text = national.NATIONAL_CODE;
                 }
-                var ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_NAME == patientDTO.ETHNIC_NAME);
+                var ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).FirstOrDefault(o => o.ETHNIC_NAME == patientDTO.ETHNIC_NAME);
                 if (ethnic != null)
                 {
                     this.cboEthnic.EditValue = ethnic.ETHNIC_NAME;

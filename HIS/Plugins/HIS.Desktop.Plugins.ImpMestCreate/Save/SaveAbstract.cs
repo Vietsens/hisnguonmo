@@ -165,6 +165,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
                     if (ado.TEMPERATURE.HasValue)
                         mediSdo.Temperature = ado.TEMPERATURE;
                     mediSdo.MedicinePaties = ado.HisMedicinePatys;
+                    mediSdo.Medicine.HEIN_LIMIT_PRICE = ado.HeinLimitPrice;
                     MedicineWithPatySDOs.Add(mediSdo);
                 }
                 else
@@ -196,6 +197,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
                     //mateSdo.Material.HEIN_SERVICE_BHYT_NAME = ado.heinServiceBhytName;
                     mateSdo.Material.MATERIAL_REGISTER_NUMBER = ado.REGISTER_NUMBER;
                     mateSdo.SerialNumbers = ado.SerialNumbers;//xuandv
+                    mateSdo.Material.HEIN_LIMIT_PRICE = ado.HeinLimitPrice;
                     if (ado.VHisServicePatys != null && ado.VHisServicePatys.Count > 0)
                     {
                         var servicePaty = ado.VHisServicePatys.FirstOrDefault(o => o.PATIENT_TYPE_ID != Config.PatientTypeCFG.PATIENT_TYPE_ID__BHYT && o.PercentProfit > 0 && !o.IsNotSell);

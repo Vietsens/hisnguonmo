@@ -35,6 +35,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
     class PacsCFG
     {
         private const string PACS_ADDRESS_CFG = "MOS.PACS.ADDRESS";
+        private const string PACS_INTEGRATE_OPTION_CFG = "MOS.PACS.INTEGRATE_OPTION";
 
         internal static List<PacsAddress> PACS_ADDRESS
         {
@@ -43,7 +44,13 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 return GetAddress(PACS_ADDRESS_CFG); ;
             }
         }
-
+        internal static int PACS_INTEGRATE_OPTION
+        {
+            get
+            {
+                return GetIntegrateOption(PACS_INTEGRATE_OPTION_CFG);
+            }
+        }
         private static List<PacsAddress> GetAddress(string code)
         {
             List<PacsAddress> result = new List<PacsAddress>();
@@ -67,6 +74,28 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 result = new List<PacsAddress>();
             }
             return result;
+        }
+
+        private static int GetIntegrateOption(string code)
+        {
+            try
+            {
+                string value = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(code);
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    return 0; 
+                }
+
+                if (int.TryParse(value, out int option))
+                {
+                    return option;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return 0;
         }
     }
 }

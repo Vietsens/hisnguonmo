@@ -104,6 +104,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
         public string TDL_BID_EXTRA_CODE { get; set; }
         public string INFORMATION_BID { get; set; }
         public string TT_THAU { get; set; }
+        public decimal? HEIN_LIMIT_PRICE { get; set; }
 
     }
 }

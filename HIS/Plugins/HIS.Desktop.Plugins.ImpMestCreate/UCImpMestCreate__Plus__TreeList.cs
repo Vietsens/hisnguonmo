@@ -1204,6 +1204,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         else
                             cboHangSX.EditValue = null;
 
+                        spinHeinLimitPrice.EditValue = bidMediType.HEIN_LIMIT_PRICE ?? null;
                         txtNognDoHL.Text = String.IsNullOrWhiteSpace(bidMediType.CONCENTRA) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.CONCENTRA : bidMediType.CONCENTRA;
                         txtSoDangKy.Text = String.IsNullOrWhiteSpace(bidMediType.MEDICINE_REGISTER_NUMBER) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.REGISTER_NUMBER : bidMediType.REGISTER_NUMBER;
                         txtPackingJoinBid.Text = String.IsNullOrWhiteSpace(bidMediType.PACKING_TYPE_NAME) && this.IsSetBhytInfoFromTypeByDefault ? this.currrentServiceAdo.packingTypeName : bidMediType.PACKING_TYPE_NAME;
@@ -1250,6 +1251,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         }
 
                         spinCanImpAmount.Value = Math.Round(bidMediType.AMOUNT + (bidMediType.AMOUNT * bidMediType.IMP_MORE_RATIO ?? 0) - (bidMediType.IN_AMOUNT ?? 0) + (currrentServiceAdo.ADJUST_AMOUNT ?? 0), MidpointRounding.AwayFromZero);
+                        
                         this.currrentServiceAdo.BidImpPrice = bidMediType.IMP_PRICE;
                         this.currrentServiceAdo.BidImpVatRatio = bidMediType.IMP_VAT_RATIO;
                         if (bidMediType.IMP_PRICE.HasValue)
@@ -1329,6 +1331,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         txtPackingJoinBid.Text = bidMateType.BID_MATERIAL_TYPE_CODE;
                         txtHeinServiceBidMateType.Text = bidMateType.BID_MATERIAL_TYPE_NAME;
 
+                        spinHeinLimitPrice.EditValue = bidMateType.HEIN_LIMIT_PRICE ?? null;
                         txtBidNumOrder.Text = bidMateType.BID_NUM_ORDER;
                         txtBidGroupCode.Text = bidMateType.BID_GROUP_CODE;
                         txtBidYear.Text = bidMateType.BID_YEAR;

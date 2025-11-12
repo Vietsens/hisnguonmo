@@ -1217,7 +1217,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     .Post<MOS.SDO.HisSurgServiceReqUpdateSDO>("api/HisServiceReq/SurgUpdate", ApiConsumers.MosConsumer, hisSuimResultSDO, param);
                     Inventec.Common.Logging.LogSystem.Debug("SaveSurgServiceReq. 3");
                     WaitingManager.Hide();
-                    if (currentSurgResultSDO != null)
+                    if (currentSurgResultSDO != null && CheckSereServExt())
                     {
                         Inventec.Common.Logging.LogSystem.Debug("SaveSurgServiceReq. 4____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentSurgResultSDO), currentSurgResultSDO));
                         this.SereServExt = currentSurgResultSDO.SereServExt;
@@ -1263,12 +1263,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             PrintProcess(PrintTypeSurg.PHIEU_THU_THUAT_PHAU_THUAT);
                         }
 
+                        #region Show message
+                        if (!notShowMess)
+                            MessageManager.Show(this.ParentForm, param, success);
+                        #endregion
                     }
 
-                    #region Show message
-                    if (!notShowMess)
-                        MessageManager.Show(this.ParentForm, param, success);
-                    #endregion
+                    if (currentSurgResultSDO == null)
+                    {
+                        #region Show message
+                        if (!notShowMess)
+                            MessageManager.Show(this.ParentForm, param, success);
+                        #endregion
+                    }
+
 
                     #region Process has exception
                     SessionManager.ProcessTokenLost(param);

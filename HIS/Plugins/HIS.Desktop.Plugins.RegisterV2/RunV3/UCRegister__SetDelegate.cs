@@ -430,6 +430,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 			{
 				this.ucPatientRaw1.SetDelegateEnableButtonSave(EnableSave);
 				this.ucPatientRaw1.SetDelegateHeinEnableButtonSave(HeinEnableSave);
+				this.ucHeinInfo1.SetDelegateEnableButtonSave(EnableSave);
 			}
 			catch (Exception ex)
 			{

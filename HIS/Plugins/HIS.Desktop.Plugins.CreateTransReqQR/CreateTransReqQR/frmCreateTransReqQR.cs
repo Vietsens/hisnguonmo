@@ -940,7 +940,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                                         case IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT:
                                             if (transactionPrint.SALE_TYPE_ID == null)
                                             {
-                                                if (HisConfigCFG.TransactionBillSelect != "2")
+                                                if ((HisConfigCFG.TransactionBillSelect != "2") && lstLoaiPhieu.FirstOrDefault(o => o.ID == "Mps000111")?.Check == true)
                                                 {
                                                     onClickThanhToanDv(null, null);
                                                 }
@@ -1018,6 +1018,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                                     }
 
                                 }
+                                
                             }
                             else
                             {
@@ -2316,6 +2317,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 {
                     new LoaiPhieuInADO("Mps000102", "Phiếu thu phí dịch vụ",true),
                     new LoaiPhieuInADO("Mps000276", "Hướng dẫn bệnh nhân",true),
+                    new LoaiPhieuInADO("Mps000111", "Phiếu thu thanh toán",true),
                 };
 
                 gridView1.BeginUpdate();

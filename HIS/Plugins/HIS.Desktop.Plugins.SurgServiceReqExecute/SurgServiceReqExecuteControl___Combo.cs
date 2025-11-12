@@ -986,5 +986,88 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private async Task DisplaySubstituteSignerInfo()
+        {
+            try
+            {
+                string directorLoginName = null;
+
+
+                var executeRoom = BackendDataWorker.Get<HIS_EXECUTE_ROOM>()
+        .FirstOrDefault(r => r.ROOM_ID == this.Module.RoomId);
+
+                if (executeRoom != null && !string.IsNullOrEmpty(executeRoom.HOSP_SUBS_DIRECTOR_LOGINNAME))
+                {
+
+                    directorLoginName = executeRoom.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                }
+                else
+                {
+
+                    var room = BackendDataWorker.Get<V_HIS_ROOM>()
+                        .FirstOrDefault(o => o.ID == this.Module.RoomId);
+
+                    if (room != null)
+                    {
+                        var department = BackendDataWorker.Get<HIS_DEPARTMENT>()
+                            .FirstOrDefault(d => d.ID == room.DEPARTMENT_ID);
+
+                        if (department != null && !string.IsNullOrEmpty(department.HOSP_SUBS_DIRECTOR_LOGINNAME))
+                        {
+                            directorLoginName = department.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                        }
+                    }
+
+
+                }
+
+
+                if (!string.IsNullOrEmpty(directorLoginName))
+                {
+                    var user = lstReAcsUserADO?.FirstOrDefault(u => u.LOGINNAME == directorLoginName);
+
+                    if (user != null)
+                    {
+                        cboHospSubs.EditValue = directorLoginName;
+                    }
+                    else
+                    {
+                        cboHospSubs.EditValue = null;
+                    }
+                }
+                else
+                {
+                    cboHospSubs.EditValue = null;
+                }
+
+
+                var endDeptSubsHeadOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TreatmentFinish.EndDepartmentSubsHeadOption");
+
+                if (endDeptSubsHeadOption == "1")
+                {
+
+                    endDeptSubsHeadOption = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                }
+
+
+                if (!string.IsNullOrEmpty(endDeptSubsHeadOption))
+                {
+                    var user = lstReAcsUserADO?.FirstOrDefault(u => u.LOGINNAME == endDeptSubsHeadOption);
+                    cboEndDeptSubs.EditValue = endDeptSubsHeadOption;
+
+                }
+                else
+                {
+                    cboEndDeptSubs.EditValue = null;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
     }
 }

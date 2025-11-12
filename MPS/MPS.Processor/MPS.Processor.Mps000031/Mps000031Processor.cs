@@ -407,6 +407,7 @@ namespace MPS.Processor.Mps000031
                     SetSingleKey(new KeyValue(Mps000031ExtendSingleKey.RATIO, rdo.Mps000031ADO.ratio));
                     SetSingleKey(new KeyValue(Mps000031ExtendSingleKey.RATIO_STR, (rdo.Mps000031ADO.ratio * 100) + "%"));
                     SetSingleKey(new KeyValue(Mps000031ExtendSingleKey.PARENT_NAME, rdo.Mps000031ADO.PARENT_NAME));
+                    SetSingleKey(new KeyValue(Mps000031ExtendSingleKey.PARENT_CODE, rdo.Mps000031ADO.PARENT_CODE));
                     AddObjectKeyIntoListkey<Mps000031ADO>(rdo.Mps000031ADO, false);
                 }
 

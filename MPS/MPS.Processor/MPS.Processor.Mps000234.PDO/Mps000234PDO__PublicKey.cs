@@ -63,8 +63,10 @@ namespace MPS.Processor.Mps000234.PDO
         //public string MEDICINE_USE_FORM_NAME { get; set; }
         public int Type { get; set; }//1: thuoc // 2: vat tu, 3: thuoc trong kho, 4: thuoc ngoai kho, 5: tu tuc
         public string CREATOR_NAME { get; set; }
-        public decimal? PRES_AMOUNT { get; set; }
         public string MEDICINE_TYPE_DESCRIPTION { get; set; }
-        public decimal? USING_COUNT_NUMBER { get; set; }
+        public decimal? USING_COUNT_NUMBER { get; set; }//ADVISE
+        public string ADVISE { get; set; }
+        public string REQUEST_ROOM_NAME { get; set; }
+        public string REQUEST_ROOM_CODE{ get; set; }    
     }
 }

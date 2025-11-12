@@ -242,4 +242,4 @@ namespace MPS.Processor.Mps000096.PDO
             this.ListMlctado = lstMLCTADO;
         }
     }
-}
+} 

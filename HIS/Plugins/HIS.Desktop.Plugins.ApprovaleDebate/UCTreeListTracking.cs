@@ -741,6 +741,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
                 this.USER_NAME.Caption = Inventec.Common.Resource.Get.Value("UCTreeListTracking.USER_NAME.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking, LanguageManager.GetCulture());
                 this.SERVICE.Caption = Inventec.Common.Resource.Get.Value("UCTreeListTracking.SERVICE.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking, LanguageManager.GetCulture());
                 this.CONTENT.Caption = Inventec.Common.Resource.Get.Value("UCTreeListTracking.CONTENT.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking, LanguageManager.GetCulture());
+                this.ICD_CODE.Caption = Inventec.Common.Resource.Get.Value("UCTreeListTracking.ICD_CODE.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking, LanguageManager.GetCulture());
+                this.ICD_NAME.Caption = Inventec.Common.Resource.Get.Value("UCTreeListTracking.ICD_NAME.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking, LanguageManager.GetCulture());
+                this.ICD_SUB_CODE.Caption = Inventec.Common.Resource.Get.Value("UCTreeListTracking.ICD_SUB_CODE.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking, LanguageManager.GetCulture());
+                this.ICD_TEXT.Caption = Inventec.Common.Resource.Get.Value("UCTreeListTracking.ICD_TEXT.Caption", Resources.ResourceLanguageManager.LanguageResource__UCTreeListTracking, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
@@ -831,6 +835,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
                 treeSereServ = null;
                 layoutControlGroup1 = null;
                 layoutControl1 = null;
+                ICD_CODE = null;
+                ICD_NAME = null;
+                ICD_SUB_CODE = null;
+                ICD_TEXT = null;
             }
             catch (Exception ex)
             {

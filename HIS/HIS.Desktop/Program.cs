@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -15,12 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+
 using AutoMapper;
 using DevExpress.Skins;
 using DevExpress.UserSkins;
 using HIS.Desktop.ApplicationFont;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Modules.Login;
+using Inventec.Aup.Client.Base;
 using Inventec.Aup.Utility;
 using Inventec.Common.Logging;
 using Inventec.Desktop.Common.LanguageManager;
@@ -46,6 +49,85 @@ namespace HIS.Desktop
         static bool updated = false;
         static readonly bool IsRunUnitTest = ((ConfigurationManager.AppSettings["HIS.Desktop.IsRunUnitTest"] ?? "") == "1");
         static readonly string AupVersion = (ConfigurationManager.AppSettings["HIS.Desktop.AupVersion"] ?? "");
+        static string aupVersion = "v1";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// The main entry point for the application.
@@ -62,10 +144,10 @@ namespace HIS.Desktop
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             log4net.Config.DOMConfigurator.Configure();
-            
+
             try
             {
-                
+
                 CloseAllApp.CloseAllApps();
                 ApplicationFontWorker.ChangeFontSize(ApplicationFontWorker.GetFontSize());
                 Mapper.AssertConfigurationIsValid();//Check mapper
@@ -78,8 +160,15 @@ namespace HIS.Desktop
                 Inventec.Common.WebApiClient.IpAddressUtils.InitialIpAddressLocal();
                 frmLoadConfigSystem frm = new frmLoadConfigSystem();
                 frm.ShowDialog();
-                if (!IsRunUnitTest && !String.IsNullOrEmpty(Inventec.Aup.Utility.AupConstant.BASE_URI))
+
+                string aupBaseUri = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__RUN_AUP_BASE_URI);
+
+
+                if (!IsRunUnitTest && (!String.IsNullOrEmpty(Inventec.Aup.Utility.AupConstant.BASE_URI) || !String.IsNullOrEmpty(aupBaseUri)))
                 {
+                    ApiConsumerStore.AupConsumer = new Inventec.Common.WebApiClient.ApiConsumer((!String.IsNullOrEmpty(aupBaseUri) ? aupBaseUri : AupConstant.BASE_URI), AupConstant.APP_CODE);
+                    aupVersion = GetAupApiVersionAsync();
+
                     UnpackCommandline();
                     if (!updatedForAUS && !updated)
                         RunAutoUpdateAup();
@@ -117,11 +206,32 @@ namespace HIS.Desktop
             }
         }
 
+        private static string GetAupApiVersionAsync()
+        {
+            try
+            {
+                dynamic response = ApiConsumerStore.AupConsumer.Get<object>("/api/AupVersion/GetApiVersion", null, null, 6);
+                LogSystem.Info("GetAupApiVersionAsync response: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => response), response));
+
+                if (response != null)
+                {
+                    var data = response["data"]?["data"]?.ToString();
+                    return (!String.IsNullOrEmpty(data) ? "v2" : "v1");
+                }
+                return "v1"; // Default to v1 if error
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn("Error getting AUP API version: " + ex.Message);
+            }
+            return "v1"; // Default to v1 if error
+        }
+
         static void InitialExtAssemble()
         {
             try
             {
-                
+
             }
             catch (Exception ex)
             {
@@ -179,13 +289,28 @@ namespace HIS.Desktop
             try
             {
                 Inventec.Common.Logging.LogSystem.Info("RunAutoUpdateAup.1");
-                string aupVersion = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__RUN_AUP_VERSION);
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => aupVersion), aupVersion));
-                if (aupVersion == "v2" || AupVersion == "v2")
+                //string aupVersion = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__RUN_AUP_VERSION);
+                Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => aupVersion), aupVersion));
+                if (aupVersion == "v2")
                 {
-                    //TODO
-                    Inventec.Aup.Client.VersionV2_0 versionV2 = new Inventec.Aup.Client.VersionV2_0();
-                    versionV2.Update(AupConstant.BASE_URI, "Upload/" + processToEnd + "/AUPAutoupdateService.xml", "", System.IO.Path.Combine(System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory, "Integrate"), "Aup"));
+                    if (!CloseAllApp.IsProcessOpen("Inventec.AutoUpdater"))
+                    {
+                        string aupBaseUri = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__RUN_AUP_BASE_URI);
+                        Inventec.Common.Logging.LogSystem.Info("Có cấu hinh địa chỉ aup trong cấu hình hệ thống, toàn viện sẽ dùng chung cấu hình này. CONFIG_KEY__RUN_AUP_BASE_URI:" + aupBaseUri + " | Cấu hình trong HIS.exe.config sẽ không được dùng: AupConstant.BASE_URI:" + AupConstant.BASE_URI);
+                        string cmdLnUpdate = "";
+
+                        cmdLnUpdate += "|exePath|" + (HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory) + "\\Integrate\\Aup";
+                        cmdLnUpdate += "|cfgServerConfigUrl|" + "Upload/" + processToEnd + "/Integrate/Aup/AutoupdateService.xml";
+                        cmdLnUpdate += "|cfgAupUri|" + (!String.IsNullOrEmpty(aupBaseUri) ? aupBaseUri : AupConstant.BASE_URI);
+                        cmdLnUpdate += "|preThreadName|" + processToEnd;
+                        cmdLnUpdate += "|command|" + command;
+
+                        Inventec.Common.Logging.LogSystem.Info("Call exe execute updater for app: " + updaterV2 + "____cmdLnUpdate = " + cmdLnUpdate);
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.FileName = HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory + @"\\Integrate\\UpdateAup\\Inventec.AutoUpdater.exe";
+                        startInfo.Arguments = "\"" + cmdLnUpdate + "\"";
+                        Process.Start(startInfo);
+                    }
                 }
                 else
                 {
@@ -204,10 +329,14 @@ namespace HIS.Desktop
         {
             try
             {
+                // Đợi một chút để các tiến trình được kill hoàn toàn và giải phóng file handles
+                LogSystem.Info("Đang chờ các tiến trình dừng hoàn toàn...");
+                WaitForProcessesToTerminate();
+
                 Inventec.Common.Logging.LogSystem.Info("RunAutoUpdate.1");
-                string aupVersion = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__RUN_AUP_VERSION);
+                //string aupVersion = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__RUN_AUP_VERSION);
                 Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => aupVersion), aupVersion));
-                if (aupVersion == "v2" || AupVersion == "v2")
+                if (aupVersion == "v2")
                 {
                     ProcessUpdateWithAUPv2();
                 }
@@ -224,26 +353,95 @@ namespace HIS.Desktop
             }
         }
 
+        private static void WaitForProcessesToTerminate()
+        {
+            try
+            {
+                LogSystem.Info("Waiting for processes to terminate completely...");
+
+                int maxWaitTime = 10000; // 10 seconds max
+                int waitInterval = 500; // Check every 500ms
+                int totalWaitTime = 0;
+
+                string[] processNames = { "Inventec.AutoUpdater", "Inventec.AUS" };
+
+                while (totalWaitTime < maxWaitTime)
+                {
+                    bool anyProcessStillRunning = false;
+
+                    // Kiểm tra xem có process nào vẫn còn chạy không
+                    foreach (string processName in processNames)
+                    {
+                        var processes = System.Diagnostics.Process.GetProcesses()
+                            .Where(p => p.ProcessName.Equals(processName, StringComparison.OrdinalIgnoreCase)
+                                     || p.ProcessName.Equals(processName + ".exe", StringComparison.OrdinalIgnoreCase)
+                                     || p.ProcessName.Equals(processName + " (32 bit).exe", StringComparison.OrdinalIgnoreCase)
+                                     || p.ProcessName.Equals(processName + ".exe (32 bit)", StringComparison.OrdinalIgnoreCase)
+                                     || p.ProcessName.Contains(processName))
+                            .ToList();
+
+                        if (processes.Count > 0)
+                        {
+                            anyProcessStillRunning = true;
+                            LogSystem.Debug(string.Format("Still waiting for {0} processes to terminate (count: {1})", processName, processes.Count));
+                            break;
+                        }
+                    }
+
+                    if (!anyProcessStillRunning)
+                    {
+                        LogSystem.Info(string.Format("All processes terminated successfully after {0}ms", totalWaitTime));
+                        break;
+                    }
+
+                    System.Threading.Thread.Sleep(waitInterval);
+                    totalWaitTime += waitInterval;
+
+                    // Cập nhật status mỗi 2 giây
+                    if (totalWaitTime % 2000 == 0)
+                    {
+                        //UpdateStatus("Đang chờ tiến trình dừng", string.Format("Đã chờ {0} giây...", totalWaitTime / 1000));
+                    }
+                }
+
+                if (totalWaitTime >= maxWaitTime)
+                {
+                    LogSystem.Warn("Timeout waiting for processes to terminate. Proceeding with file copy anyway.");
+                }
+
+                // Thêm một khoảng delay cuối cùng để đảm bảo file handles được giải phóng hoàn toàn
+                LogSystem.Debug("Adding final delay to ensure file handles are released...");
+                System.Threading.Thread.Sleep(1000);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn("Error in WaitForProcessesToTerminate: " + ex.Message);
+                // Không throw exception, chỉ log và tiếp tục
+            }
+        }
+
         static void ProcessUpdateWithAUPv2()
         {
             try
             {
-                string cmdLnUpdate = "";
+                if (!CloseAllApp.IsProcessOpen("Inventec.AutoUpdater"))
+                {
+                    string aupBaseUri = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__RUN_AUP_BASE_URI);
+                    Inventec.Common.Logging.LogSystem.Info("Có cấu hinh địa chỉ aup trong cấu hình hệ thống, toàn viện sẽ dùng chung cấu hình này. CONFIG_KEY__RUN_AUP_BASE_URI:" + aupBaseUri + " | Cấu hình trong HIS.exe.config sẽ không được dùng: AupConstant.BASE_URI:" + AupConstant.BASE_URI);
+                    string cmdLnUpdate = "";
 
-                cmdLnUpdate += "|exePath|" + (HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory);
-                cmdLnUpdate += "|cfgServerConfigUrl|" + "Upload/" + processToEnd + "/AutoupdateService.xml";
-                cmdLnUpdate += "|cfgAupUri|" + AupConstant.BASE_URI;
-                cmdLnUpdate += "|preThreadName|" + processToEnd;
-                cmdLnUpdate += "|command|" + command;
+                    cmdLnUpdate += "|exePath|" + (HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory);
+                    cmdLnUpdate += "|cfgServerConfigUrl|" + "Upload/" + processToEnd + "/AutoupdateService.xml";
+                    cmdLnUpdate += "|cfgAupUri|" + (!String.IsNullOrEmpty(aupBaseUri) ? aupBaseUri : AupConstant.BASE_URI);
+                    cmdLnUpdate += "|preThreadName|" + processToEnd;
+                    cmdLnUpdate += "|command|" + command;
 
-                Inventec.Common.Logging.LogSystem.Info("Call exe execute updater for app: " + updaterV2 + "____cmdLnUpdate = " + cmdLnUpdate);
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = updaterV2;
-                startInfo.Arguments = "\"" + cmdLnUpdate + "\"";
-                Process.Start(startInfo);
-
-                //Inventec.Common.Logging.LogSystem.Info("Application.Exit");
-                //Application.Exit();
+                    Inventec.Common.Logging.LogSystem.Info("Call exe execute updater for app: " + updaterV2 + "____cmdLnUpdate = " + cmdLnUpdate);
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.FileName = updaterV2;
+                    startInfo.Arguments = "\"" + cmdLnUpdate + "\"";
+                    Process.Start(startInfo);
+                }
             }
             catch (Exception ex)
             {
@@ -298,6 +496,8 @@ namespace HIS.Desktop
         private static void OnPluginProgress(object sender, PluginLoadedEventArgs e)
         {
             Platform.CheckForNullReference(e, "e");
+
+
             //if (e != null && !String.IsNullOrEmpty(e.Message))
             //{
             //    Inventec.Common.Logging.LogSystem.Warn(e.Message);
@@ -309,7 +509,19 @@ namespace HIS.Desktop
             {
                 //SplashScreenManager.AddAssemblyIcon(e.PluginAssembly);
             }
+
+
+
+
+
+
+
+
+
+
+
 #endif
+
         }
     }
 }

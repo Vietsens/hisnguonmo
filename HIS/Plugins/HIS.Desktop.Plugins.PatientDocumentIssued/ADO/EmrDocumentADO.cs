@@ -29,10 +29,12 @@ namespace HIS.Desktop.Plugins.PatientDocumentIssued.ADO
     {
         public string CONCRETE_ID__IN_SETY { get; set; }
         public string PARENT_ID__IN_SETY { get; set; }
+        public long? CUSTOM_NUM_ORDER { get; set; }
         public string NOTE_ADO { get; set; }
         public string AMOUNT_SER { get; set; }
         public bool IS_PARENT { get; set; }
-
+        public bool SELECT_ALL { get; set; }   
+        public bool IS_CHECKED { get; set; }
         public EmrDocumentADO() { }
 
         public EmrDocumentADO(V_EMR_DOCUMENT data)

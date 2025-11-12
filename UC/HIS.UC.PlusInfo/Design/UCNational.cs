@@ -146,6 +146,7 @@ namespace HIS.UC.PlusInfo.Design
                 if (BackendDataWorker.IsExistsKey<SDA.EFMODEL.DataModels.SDA_NATIONAL>())
                 {
                     datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>();
+
                 }
                 else
                 {
@@ -155,7 +156,7 @@ namespace HIS.UC.PlusInfo.Design
 
                     if (datas != null) BackendDataWorker.UpdateToRam(typeof(SDA.EFMODEL.DataModels.SDA_NATIONAL), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                 }
-
+                datas = datas.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 _shareMethod.InitComboCommon(this.cboNational, datas, "NATIONAL_NAME", "NATIONAL_NAME", "NATIONAL_CODE");
 
                 this.LoadNationalBase();
@@ -197,9 +198,10 @@ namespace HIS.UC.PlusInfo.Design
                     }
                     else
                     {
-                        var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().Where(o => o.NATIONAL_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
+                        var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.NATIONAL_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
                         var searchResult = (data != null && data.Count > 0) ? (data.Count == 1 ? data : data.Where(o => o.NATIONAL_CODE.ToUpper() == searchCode.ToUpper()).ToList()) : null;
-                        if (searchResult != null && searchResult.Count == 1)
+                        if (searchResult != null && searchResult.Count == 1 && searchResult[0].IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                         {
                             this.cboNational.EditValue = searchResult[0].NATIONAL_NAME;
                             this.txtNationalCode.Text = searchResult[0].NATIONAL_CODE;
@@ -234,7 +236,9 @@ namespace HIS.UC.PlusInfo.Design
             {
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
-                    SDA.EFMODEL.DataModels.SDA_NATIONAL ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().SingleOrDefault(o => o.NATIONAL_NAME == (this.cboNational.EditValue ?? "").ToString());
+                    SDA.EFMODEL.DataModels.SDA_NATIONAL ethnic = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
+                        .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                        .SingleOrDefault(o => o.NATIONAL_NAME == (this.cboNational.EditValue ?? "").ToString());
                     if (ethnic != null)
                     {
                         this.txtNationalCode.Text = ethnic.NATIONAL_CODE;
@@ -262,7 +266,9 @@ namespace HIS.UC.PlusInfo.Design
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    SDA.EFMODEL.DataModels.SDA_NATIONAL data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().SingleOrDefault(o => o.NATIONAL_NAME == (this.cboNational.EditValue ?? "").ToString());
+                    SDA.EFMODEL.DataModels.SDA_NATIONAL data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
+                        .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                        .SingleOrDefault(o => o.NATIONAL_NAME == (this.cboNational.EditValue ?? "").ToString());
                     if (data != null)
                     {
                         this.txtNationalCode.Text = data.NATIONAL_CODE;
@@ -303,7 +309,9 @@ namespace HIS.UC.PlusInfo.Design
                 SDA.EFMODEL.DataModels.SDA_NATIONAL national = null;
                 if (!String.IsNullOrEmpty(dataSet.NATIONAL_CODE))
                 {
-                    national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().SingleOrDefault(o => o.NATIONAL_CODE == dataSet.NATIONAL_CODE);
+                    national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
+                        .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                        .SingleOrDefault(o => o.NATIONAL_CODE == dataSet.NATIONAL_CODE); 
                     if (national != null)
                     {
                         this.cboNational.EditValue = national.NATIONAL_NAME;
@@ -312,7 +320,9 @@ namespace HIS.UC.PlusInfo.Design
                 }
                 else if (!String.IsNullOrEmpty(dataSet.NATIONAL_NAME))
                 {
-                    national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().SingleOrDefault(o => o.NATIONAL_NAME == dataSet.NATIONAL_NAME);
+                    national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
+                        .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                        .SingleOrDefault(o => o.NATIONAL_NAME == dataSet.NATIONAL_NAME);
                     if (national != null)
                     {
                         this.cboNational.EditValue = national.NATIONAL_NAME;
@@ -339,8 +349,10 @@ namespace HIS.UC.PlusInfo.Design
                 if (this.cboNational.EditValue != null)
                 {
                     dataGet.NATIONAL_NAME = this.cboNational.Text;
-                    
-                    var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().FirstOrDefault(o => o.NATIONAL_NAME == cboNational.Text);
+
+                    var national = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>()
+                        .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                        .FirstOrDefault(o => o.NATIONAL_NAME == cboNational.Text);
                     if (national != null)
                     {
                         dataGet.MPS_NATIONAL_CODE = national.MPS_NATIONAL_CODE;
@@ -360,7 +372,7 @@ namespace HIS.UC.PlusInfo.Design
             try
             {
                 var nationalBase = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.NationalBase;
-                if (nationalBase != null)
+                if (nationalBase != null && nationalBase.IS_ACTIVE == 1)
                 {
                     this.txtNationalCode.Text = nationalBase.NATIONAL_CODE;
                     this.cboNational.EditValue = nationalBase.NATIONAL_NAME;

@@ -35,6 +35,8 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Repository;
 using MOS.EFMODEL.DataModels;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using Inventec.Desktop.Common.Message;
+using HIS.Desktop.Library.CacheClient;
 
 namespace HIS.Desktop.Plugins.SurgTreatmentList
 {
@@ -64,6 +66,11 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
         Dictionary<long, int> DicMapData = new Dictionary<long, int>();
         List<ADO.SearchADO> SelectedGatherdatas = new List<ADO.SearchADO>();
         List<ADO.SearchADO> SelectedFees = new List<ADO.SearchADO>();
+        private bool isNotLoadWhileChangeControlStateInFirst;
+        private List<ControlStateRDO> currentControlStateRDO;
+        private Inventec.Desktop.Common.Modules.Module ModuleData;
+        private ControlStateWorker controlStateWorker;
+        private bool isInternalChange = false;
         #endregion
         public SurgTreatmentListUC()
         {
@@ -84,6 +91,8 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             {
                 //Gan ngon ngu
                 LoadKeysFromlanguage();
+
+                InitControlState();
 
                 //danh sach phong
                 InitCboExecuteRoom();
@@ -391,6 +400,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
         {
             try
             {
+                if (isInternalChange) return;
                 var sereServADO = (ADO.SereServADO)GridViewSereServ.GetRow(e.RowHandle);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("sereServADO___:", sereServADO));
 
@@ -399,12 +409,28 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                     if (e.Column.FieldName == GvSS_GcFee.FieldName)
                     {
                         if (sereServADO.Fee && !CheckFeeAndGather(sereServADO, true)) return;
-                        UpdateRowData(sereServADO, true);
+                        
+                        bool success = UpdateRowData(sereServADO, true);
+                        if (!success)
+                        {
+                            isInternalChange = true;
+                            sereServADO.Fee = !sereServADO.Fee; 
+                            GridViewSereServ.SetRowCellValue(e.RowHandle, GvSS_GcFee, sereServADO.Fee);
+                            isInternalChange = false;
+                        }
                     }
                     else if (e.Column.FieldName == GvSS_GcGatherData.FieldName)
                     {
                         if (sereServADO.GatherData && !CheckFeeAndGather(sereServADO, false)) return;
-                        UpdateRowData(sereServADO, false);
+
+                        bool success = UpdateRowData(sereServADO, false);
+                        if (!success)
+                        {
+                            isInternalChange = true;
+                            sereServADO.GatherData = !sereServADO.GatherData;
+                            GridViewSereServ.SetRowCellValue(e.RowHandle, GvSS_GcGatherData, sereServADO.GatherData);
+                            isInternalChange = false;
+                        }
                     }
                     GridControlSereServ.RefreshDataSource();
                 }
@@ -754,6 +780,90 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void chkStatus_CheckedChanged()
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+
+                WaitingManager.Show();
+                ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkPending.Name && o.MODULE_LINK == moduleData.ModuleLink).FirstOrDefault() : null;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(new[] { chkPending.Checked, chkInProgress.Checked, chkCompleted.Checked });
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkPending.Name;
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(new[] { chkPending.Checked, chkInProgress.Checked, chkCompleted.Checked });
+                    csAddOrUpdate.MODULE_LINK = moduleData.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void InitControlState()
+        {
+            try
+            {
+                isNotLoadWhileChangeControlStateInFirst = true;
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(moduleData.ModuleLink);
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == chkPending.Name)
+                        {
+                            var check = Newtonsoft.Json.JsonConvert.DeserializeObject<bool[]>(item.VALUE);
+                            chkPending.Checked = check[0];
+                            chkInProgress.Checked = check[1];
+                            chkCompleted.Checked = check[2];
+                        }
+                    }
+                }
+                isNotLoadWhileChangeControlStateInFirst = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkPending_CheckedChanged(object sender, EventArgs e)
+        {
+            chkStatus_CheckedChanged();
+        }
+
+        private void chkInProgress_CheckedChanged(object sender, EventArgs e)
+        {
+            chkStatus_CheckedChanged();
+        }
+
+        private void chkCompleted_CheckedChanged(object sender, EventArgs e)
+        {
+            chkStatus_CheckedChanged();
+        }
+
+        private void GridControlSereServ_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

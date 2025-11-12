@@ -1741,6 +1741,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         if (isFromTypeTT.HasValue)
                         {
+                            Inventec.Common.Logging.LogSystem.Info("có vào đây ko : " + isFromTypeTT.Value);
                             GlobalStore.IsCabinet = isFromTypeTT.Value;
                         }
                     }
@@ -3919,7 +3920,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             {
                 GridLookUpEdit editor = sender as GridLookUpEdit;
                 editor.Properties.Buttons[1].Visible = (editor.EditValue != null);
-                if (HisConfigCFG.IsAutoCreateSaleExpMest || HisConfigCFG.IsDrugStoreComboboxOption)
+                if (HisConfigCFG.IsAutoCreateSaleExpMest == "1" || HisConfigCFG.IsDrugStoreComboboxOption)
                 {
                     if (editor.EditValue == null)
                     {

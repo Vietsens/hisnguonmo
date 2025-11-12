@@ -40,6 +40,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ADO
 
         public string PACKAGE_NUMBER_EDIT { get; set; }
         public long? EXPIRED_DATE_EDIT { get; set; }
+        public decimal? HEIN_LIMIT_PRICE { get; set; }
 
         public ImpMestMaterialSDODetail(V_HIS_IMP_MEST_MATERIAL _data)
         {

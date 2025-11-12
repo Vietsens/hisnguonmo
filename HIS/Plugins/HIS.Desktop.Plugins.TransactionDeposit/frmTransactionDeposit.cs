@@ -883,6 +883,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 payFormList = new List<PayFormADO>();
                 if (listPayForm != null && listPayForm.Count > 0)
                 {
+                    Inventec.Common.Logging.LogSystem.Debug("LoadDataToComboPayForm_1");
                     payFormList.AddRange(listPayForm.Select(item => new PayFormADO
                     {
                         ID = item.ID,
@@ -899,6 +900,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 if (hisBankList != null && hisBankList.Count > 0
                     && payFormList.Exists(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE))
                 {
+                    Inventec.Common.Logging.LogSystem.Debug("LoadDataToComboPayForm_2");
                     var payFormQuetThe = payFormList.First(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE);
                     payFormList.RemoveAll(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE);
 
@@ -920,7 +922,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 // Bind vào Combo
                 cboPayForm.Properties.DataSource = payFormList.Where(o => o.IS_ACTIVE == 1).ToList();
                 cboPayForm.Properties.DisplayMember = "PAY_FORM_NAME";
-                cboPayForm.Properties.ValueMember = "PayFormId"; // dùng PayFormId thay vì ID để hỗ trợ ngân hàng
+                cboPayForm.Properties.ValueMember = "PayFormId";
                 cboPayForm.Properties.ForceInitialize();
                 cboPayForm.Properties.Columns.Clear();
                 cboPayForm.Properties.Columns.Add(new LookUpColumnInfo("PAY_FORM_CODE", "", 50));
@@ -935,6 +937,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 if (payFormDefault != null)
                 {
                     cboPayForm.EditValue = payFormDefault.PayFormId;
+                    Inventec.Common.Logging.LogSystem.Debug("Pay form id" + payFormDefault.ID);
                     CheckPayFormTienMatChuyenKhoan(new HIS_PAY_FORM
                     {
                         ID = payFormDefault.ID,
@@ -1208,13 +1211,18 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 HandelPayFormChanged();
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
-                    HIS_PAY_FORM payForm = null;
-                    if (cboPayForm.EditValue != null)
+                    var editVal = cboPayForm.EditValue?.ToString();
+                    var pf = payFormList.FirstOrDefault(o => o.PayFormId == editVal);
+                    HIS_PAY_FORM payForm = pf == null ? null : new HIS_PAY_FORM
                     {
-                        payForm = BackendDataWorker.Get<HIS_PAY_FORM>().Where(o => o.ID == (long)cboPayForm.EditValue).FirstOrDefault();
-                        CheckPayFormTienMatChuyenKhoan(payForm);
-                        SendKeys.Send("{TAB}");
-                    }
+                        ID = pf.ID,
+                        PAY_FORM_CODE = pf.PAY_FORM_CODE,
+                        PAY_FORM_NAME = pf.PAY_FORM_NAME,
+                        IS_ACTIVE = pf.IS_ACTIVE,
+                        IS_REQUIRED_BANK = pf.IS_REQUIRED_BANK
+                    };
+                    CheckPayFormTienMatChuyenKhoan(payForm);
+
 
                 }
             }
@@ -1228,9 +1236,13 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             try
             {
                 cboBank.EditValue = null;
+
                 List<HIS_BANK> data = BackendDataWorker.Get<HIS_BANK>()
-                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                    .ToList();
+                 .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                 .OrderBy(o => o.NUM_ORDER.HasValue ? 0 : 1)   
+                 .ThenBy(o => o.NUM_ORDER)                     
+                 .ThenBy(o => o.BANK_NAME)                      
+                 .ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("BANK_CODE", "", 100, 1));
                 columnInfos.Add(new ColumnInfo("BANK_NAME", "", 250, 2));

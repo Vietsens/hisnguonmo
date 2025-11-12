@@ -32,6 +32,7 @@ using HIS.Desktop.Utility;
 using MOS.SDO;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
+using Inventec.Common.QrCodeBHYT;
 
 namespace HIS.UC.UCPatientRaw
 {
@@ -259,13 +260,13 @@ namespace HIS.UC.UCPatientRaw
 					{
 						if (!String.IsNullOrEmpty(dataSet.ETHNIC_CODE))
 						{
-							var ethnicData = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_CODE == dataSet.ETHNIC_CODE);
+							var ethnicData = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).FirstOrDefault(o => o.ETHNIC_CODE == dataSet.ETHNIC_CODE);
 							this.cboEthnic.EditValue = (ethnicData != null ? ethnicData.ETHNIC_CODE : null);
 							this.txtEthnicCode.Text = ethnicData != null ? ethnicData.ETHNIC_CODE : "";
 						}
 						else
 						{
-							var ethnicData = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_NAME == dataSet.ETHNIC_NAME);
+							var ethnicData = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1).FirstOrDefault(o => o.ETHNIC_NAME == dataSet.ETHNIC_NAME);
 							this.cboEthnic.EditValue = (ethnicData != null ? ethnicData.ETHNIC_CODE : null);
 							this.txtEthnicCode.Text = ethnicData != null ? ethnicData.ETHNIC_CODE : "";
 						}
@@ -551,6 +552,13 @@ namespace HIS.UC.UCPatientRaw
 				dataResult.OldPatient = true;
 				this.dlgSearchPatient1(dataResult);
 				this.FillDataPatientToControl(patient, true);
+				if (!this.isAlertTreatmentEndInDay)//Them If de khi co thong bao da ra vien k muon update info
+				{
+					HeinCardData heinCardDataForCheckGOV = ConvertFromPatientData(patient);
+
+					if (this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw != null)
+						this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw(heinCardDataForCheckGOV);
+				}
 			}
 			catch (Exception ex)
 			{

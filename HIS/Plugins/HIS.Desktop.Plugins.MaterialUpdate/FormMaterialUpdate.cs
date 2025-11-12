@@ -34,8 +34,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.MaterialUpdate
@@ -104,14 +102,14 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 LoadDataCboInformationBid();
                 //Load du lieu
                 FillData();
-
+                
                 //valid
-                ValidControls();
 
                 if (this.material != null)
                 {
                     EnableBBGN(this.material.ID);
                 }
+                ValidControls();
 
                 //Focus
                 spinImpPrice.Focus();
@@ -160,7 +158,7 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 this.lciPackBid.Text = Inventec.Common.Resource.Get.Value(
                     "IVT_LANGUAGE_KEY__FORM_MATERIAL_UPDATE__LCI_BID_PACKAGE_CODE",
                     Resources.ResourceLanguageManager.LanguageFormMaterialUpdate,
-                    cultureLang);
+                    cultureLang); 
                 this.lciBBGN.Text = Inventec.Common.Resource.Get.Value(
                     "IVT_LANGUAGE_KEY__FORM_MATERIAL_UPDATE__LCI_BBGN",
                     Resources.ResourceLanguageManager.LanguageFormMaterialUpdate,
@@ -246,6 +244,10 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 this.txtTTThau.Text = material.TT_THAU;
                 this.cboImpSource.EditValue = material.IMP_SOURCE_ID;
                 this.cboInformationBid.EditValue = material.INFORMATION_BID;
+                this.spinGiaTran.EditValue = (material.HEIN_LIMIT_PRICE.HasValue && material.HEIN_LIMIT_PRICE.Value != 0m)
+                ? material.HEIN_LIMIT_PRICE
+                : null;
+
                 if (material.IS_SALE_EQUAL_IMP_PRICE == 1)
                 {
                     this.chkBBGN.CheckState = CheckState.Checked;
@@ -425,6 +427,15 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 result.TDL_BID_YEAR = txtBidYear.Text;
                 result.TDL_BID_EXTRA_CODE = txtBidExtraCode.Text;
                 result.TT_THAU = txtTTThau.Text;
+                if (spinGiaTran.EditValue == null)
+                {
+                    result.HEIN_LIMIT_PRICE = null;
+                }
+                else
+                {
+                    var v = spinGiaTran.Value;
+                    result.HEIN_LIMIT_PRICE = (v == 0m) ? (decimal?)null : v;
+                }
                 if (cboImpSource.EditValue != null)
                     result.IMP_SOURCE_ID = (long)cboImpSource.EditValue;
                 else
@@ -1014,6 +1025,5 @@ namespace HIS.Desktop.Plugins.MaterialUpdate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
     }
 }

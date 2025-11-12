@@ -22,6 +22,10 @@ using HIS.Desktop.ApiConsumer;
 using DevExpress.XtraGrid.Views.Base;
 using System.Collections;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.Desktop.Print;
+using DevExpress.Office.Utils;
+using DevExpress.XtraExport;
 
 namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
 {
@@ -34,6 +38,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         long treatmentId = 0;
         int start = 0;
         V_HIS_SPECIALIST_EXAM curentSpecialistExam;
+        List<HIS_DEPARTMENT> lstDepartment = new List<HIS_DEPARTMENT>();
         #endregion
         private Inventec.Desktop.Common.Modules.Module currentModule;
         public frmExamSpecialist()
@@ -79,14 +84,14 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             CommonParam param = new CommonParam();
             HisDepartmentFilter filter = new HisDepartmentFilter();
             filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-            var data = new BackendAdapter(param).Get<List<HIS_DEPARTMENT>>("api/HisDepartment/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, null).ToList();
+            lstDepartment = new BackendAdapter(param).Get<List<HIS_DEPARTMENT>>("api/HisDepartment/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, null).ToList();
             //Inventec.Common.Logging.LogSystem.Debug("API Result ABOUT ROOM: " + Inventec.Common.Logging.LogUtil.TraceData("Data ROOM:", data));
             List<ColumnInfo> columnInfos = new List<ColumnInfo>();
             columnInfos.Add(new ColumnInfo("ID", "", 50, 1));
             columnInfos.Add(new ColumnInfo("DEPARTMENT_NAME", "", 150, 2));
             ControlEditorADO controlEditorADO = new ControlEditorADO("DEPARTMENT_NAME", "ID", columnInfos, false, 250);
-            ControlEditorLoader.Load(cboInviteDepartment, data, controlEditorADO);//truyền data vào cbo theo cấu hình controlEditorADO
-            ControlEditorLoader.Load(cboExamExcuteDepartment, data, controlEditorADO);
+            ControlEditorLoader.Load(cboInviteDepartment, lstDepartment, controlEditorADO);//truyền data vào cbo theo cấu hình controlEditorADO
+            ControlEditorLoader.Load(cboExamExcuteDepartment, lstDepartment, controlEditorADO);
         }
 
         private void SetDefaultValueControl()
@@ -157,9 +162,19 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_SPECIALIST_EXAM>>("api/HisSpecialistExam/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
                 if (result != null)
                 {
-                    if (result.Data != null && result.Data.Count > 0)
+                    string UserName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    var m = result.Data.Where(x => x.ID == 536).ToList();
+
+
+                    var specialistExam = result.Data.Where(x => x.IS_ACTIVE == 1 && x.IS_DELETE != 1 && x.INVITE_TYPE == 1 &&
+                    ((x.EXAM_EXECUTE_LOGINNAME != null && x.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(UserName))
+                    || (x.EXAM_EXECUTE_LOGINNAME == null && x.EXAM_EXECUTE_DEPARMENT_ID != null && x.EXAM_EXECUTE_DEPARMENT_ID == BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID)
+                    || (x.INVITE_DEPARMENT_ID == BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID)
+                    || (x.INVITE_DOCTOR_LOGINNAME == UserName))).ToList();
+
+                    if (specialistExam != null && specialistExam.Count > 0)
                     {
-                        listData = result.Data;
+                        listData = specialistExam;
                         rowCount = (listData == null ? 0 : listData.Count);
                         dataTotal = (listData == null ? 0 : listData.Count);
                         Inventec.Common.Logging.LogSystem.Debug("API Result with invite_type = 1: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", listData));
@@ -190,6 +205,8 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 filter.ORDER_FIELD = "MODIFY_TIME";
                 filter.ORDER_DIRECTION = "DESC";
                 filter.INVITE_TYPE = 1;
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+
                 if (!String.IsNullOrEmpty(txtTreatmentCode.Text))
                 {
                     string codeTreatment = txtTreatmentCode.Text.Trim();
@@ -201,7 +218,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     filter.TREATMENT_CODE = codeTreatment;
                 }
                 if (!String.IsNullOrEmpty(txtPatientCode.Text))
-                {
+                {    
                     string codePatient = txtPatientCode.Text;
                     if (codePatient.Length < 10 && checkDigit(codePatient))
                     {
@@ -215,17 +232,21 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     filter.KEY_WORD = txtSearch.Text.Trim();
                 }
 
-                if (cboInviteDepartment.EditValue != null && long.TryParse(cboInviteDepartment.EditValue.ToString(), out long inviteDeptId))
+                long inviteDeptId;
+                if (cboInviteDepartment.EditValue != null &&
+                    long.TryParse(cboInviteDepartment.EditValue.ToString(), out inviteDeptId))
                 {
                     filter.INVITE_DEPARMENT_ID = inviteDeptId;
                 }
+                long examDeptId;
                 // Xử lý khoa phòng khám
-                if (cboExamExcuteDepartment.EditValue != null && long.TryParse(cboExamExcuteDepartment.EditValue.ToString(), out long examDeptId))
+                if (cboExamExcuteDepartment.EditValue != null && long.TryParse(cboExamExcuteDepartment.EditValue.ToString(), out examDeptId))
                 {
                     filter.EXAM_EXECUTE_DEPARMENT_ID = examDeptId;
                 }
+                long approvalStatus;
                 // Xử lý trạng thái duyệt
-                if (cboExamSpecialistStt.EditValue != null && long.TryParse(cboExamSpecialistStt.EditValue.ToString(), out long approvalStatus))
+                if (cboExamSpecialistStt.EditValue != null && long.TryParse(cboExamSpecialistStt.EditValue.ToString(), out approvalStatus))
                 {
                     if (approvalStatus != 3)
                     {
@@ -311,6 +332,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                         .GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                     ((Form)extenceInstance).ShowDialog();
+                    FillDataToGrid();
                 }
             }
             catch (Exception ex)
@@ -417,6 +439,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, row);
                     frmReject form = new frmReject(datamapper, () => FillDataToGrid());
                     form.ShowDialog();
+                    FillDataToGrid();
                 }
             }
             catch (Exception ex)
@@ -486,6 +509,387 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 {
                     btnSearch_Click(null, null);
                     e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridView1_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                var data = (V_HIS_SPECIALIST_EXAM)view.GetRow(e.RowHandle);
+                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                long deprtmentId = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID;
+                bool isEnabled = false;
+                if (e.Column.FieldName == "APPROVAL_STR")
+                {
+                    isEnabled = false;
+                    if (data.IS_APPROVAL == null || data.IS_APPROVAL == 2)
+                    {
+                        if (data.EXAM_EXECUTE_DEPARMENT_ID == deprtmentId)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.EXAM_EXECUTE_LOGINNAME != null && data.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(loginName))
+                        {
+                            isEnabled = true;
+                        }
+                        if (isEnabled)
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditApprovalEnabled;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditApprovalDisable;
+                        }
+                    }
+                    else
+                    {
+                        e.RepositoryItem = repositoryItemButtonEditApprovalDisable;
+                    }
+                }
+                else if (e.Column.FieldName == "REJECT_APPROVAL_STR")
+                {
+                    isEnabled = false;
+                    if (data.IS_APPROVAL == null || data.IS_APPROVAL == 2)
+                    {
+                        if (data.EXAM_EXECUTE_DEPARMENT_ID == deprtmentId)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.EXAM_EXECUTE_LOGINNAME != null && data.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(loginName))
+                        {
+                            isEnabled = true;
+                        }
+                        if (isEnabled)
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditRejectApprovalEnabled;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditRejectApprovalDisable;
+                        }
+                    }
+                    else
+                    {
+                        e.RepositoryItem = repositoryItemButtonEditRejectApprovalDisable;
+                    }
+                }
+                else if (e.Column.FieldName == "IS_Delete_STR")
+                {
+                    isEnabled = false;
+                    if (data.IS_APPROVAL == null)
+                    {
+                        if (data.CREATOR == loginName)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.INVITE_DEPARMENT_ID == deprtmentId)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.INVITE_DOCTOR_LOGINNAME != null && data.INVITE_DOCTOR_LOGINNAME == loginName)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (isEnabled)
+                        {
+                            e.RepositoryItem = repositoryItemButtonDeleteEnabled;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = repositoryItemButtonDeleteDisable;
+                        }
+
+                    }
+                    else
+                    {
+                        e.RepositoryItem = repositoryItemButtonDeleteDisable;
+                    }
+                }
+                else if (e.Column.FieldName == "IS_APPROVAL")
+                {
+                    isEnabled = false;
+                    if (data.IS_APPROVAL == 1)
+                    {
+                        if (data.EXAM_EXECUTE_DEPARMENT_ID == deprtmentId)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.EXAM_EXECUTE_LOGINNAME != null && data.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(loginName))
+                        {
+                            isEnabled = true;
+                        }
+                        if (isEnabled)
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditIsApprovalEnableb;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditIsApprovalDisable;
+                        }
+                    }
+                    else
+                    {
+                        e.RepositoryItem = repositoryItemButtonEditIsApprovalDisable;
+                    }
+                }
+                else if (e.Column.FieldName == "IS_EDIT")
+                {
+                    isEnabled = false;
+                    if (data.IS_APPROVAL == null)
+                    {
+                        if (data.CREATOR == loginName)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.INVITE_DEPARMENT_ID == deprtmentId)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (data.INVITE_DOCTOR_LOGINNAME != null && data.INVITE_DOCTOR_LOGINNAME == loginName)
+                        {
+                            isEnabled = true;
+                        }
+
+                        if (isEnabled)
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditEnabled;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = repositoryItemButtonEditDisable;
+                        }
+
+                    }
+                    else
+                    {
+                        e.RepositoryItem = repositoryItemButtonEditDisable;
+                    }
+                }
+                else if (e.Column.FieldName == "IS_PRINT")
+                {
+                    if (data.IS_APPROVAL == 1)
+                    {
+                        e.RepositoryItem = repositoryItemButtonEditPrint;
+                    }
+                    else
+                    {
+                        e.RepositoryItem = repositoryItemButtonEditPrintDisable;
+                    }          
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemButtonEditDetails_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ApprovalExamSpecialist").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ApprovalExamSpecialist");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(row);
+                    listArgs.Add((HIS.Desktop.Common.RefeshReference)FillDataToGrid);
+                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance
+                        .GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+                    FillDataToGrid();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemButtonEditPrint_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                onClickPhieuKhamChuyenKhoa(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private HIS_TREATMENT GetTreatment(V_HIS_SPECIALIST_EXAM specialistExam)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisTreatmentFilter filter = new HisTreatmentFilter();
+                filter.ID = specialistExam.TREATMENT_ID;
+                List<HIS_TREATMENT> lstTreatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+
+                return lstTreatment.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+        private void onClickPhieuKhamChuyenKhoa(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate("MPS000500", DeletegatePrintTemplate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private bool DeletegatePrintTemplate(string printCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                switch (printCode)
+                {
+                    case "MPS000500":
+                        Mps000500(printCode, fileName, ref result);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return result = false;
+            }
+            return result;
+        }
+
+        private void Mps000500(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
+                if (row != null)
+                {
+                    var treatment = this.GetTreatment(row);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
+                    MPS.Processor.Mps000500.PDO.Mps000500PDO pdo = new MPS.Processor.Mps000500.PDO.Mps000500PDO(row, treatment);
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "") { EmrInputADO = inputADO });   
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemButtonDeleteEnabled_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
+
+                if (row != null)
+                {
+                    var result = false;
+                    CommonParam param = new CommonParam();
+                    result = new BackendAdapter(param).Post<bool>("api/HisSpecialistExam/Delete", ApiConsumers.MosConsumer, row.ID, param);
+                    if (result)
+                    {
+                        FillDataToGrid();
+                    }
+                    MessageManager.Show(this, param, result);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemButtonEditEnabled_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
+                HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, row);
+                var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.InviteSpecialistExam");
+
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = HIS.Desktop.Plugins.InviteSpecialistExam");
+                    return;
+                }
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)  
+                {
+
+                    List<object> listArgs = new List<object> { this.currentModule, null, datamapper, true,(HIS.Desktop.Common.RefeshReference)FillDataToGrid};
+
+
+                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId),listArgs);
+                    Form form = null;
+                    if (extenceInstance is Form)
+                    {
+                        form = (Form)extenceInstance;
+                        form.ShowDialog();
+                    } 
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Không thể khởi tạo form từ plugin.");
+                    }
+                    FillDataToGrid();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemButtonEditIsApproval_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
+
+                if (row != null)
+                {
+                    var result = false;
+                    CommonParam param = new CommonParam();
+                    HIS_SPECIALIST_EXAM specialist = new HIS_SPECIALIST_EXAM();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(specialist, row);
+                    specialist.IS_APPROVAL = null;
+                    var a = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/UnApproval", ApiConsumers.MosConsumer, specialist, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                    if (a != null)
+                    {
+                        result = true;
+                        FillDataToGrid();
+                    }
+                    MessageManager.Show(this, param, result);
                 }
             }
             catch (Exception ex)

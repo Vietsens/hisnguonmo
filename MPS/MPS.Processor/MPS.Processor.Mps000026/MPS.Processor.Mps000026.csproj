@@ -93,6 +93,10 @@
     <Reference Include="MOS.LibraryHein.Bhyt">
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000026.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MPS.Processor.Mps000026.PDO\bin\Debug\MPS.Processor.Mps000026.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -112,10 +116,6 @@
     <ProjectReference Include="..\..\MPS.ProcessorBase\MPS.ProcessorBase.csproj">
       <Project>{075d8b91-153f-4e19-a00a-77547e6f2bd0}</Project>
       <Name>MPS.ProcessorBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MPS.Processor.Mps000026.PDO\MPS.Processor.Mps000026.PDO.csproj">
-      <Project>{e0428041-83b0-490b-a1c0-c3d82caec5e9}</Project>
-      <Name>MPS.Processor.Mps000026.PDO</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

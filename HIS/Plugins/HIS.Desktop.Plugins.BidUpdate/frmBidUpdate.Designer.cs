@@ -45,9 +45,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtBidApthauCode = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
@@ -74,6 +75,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.txtBidYear = new DevExpress.XtraEditors.TextEdit();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
+            this.spinGiaTran = new DevExpress.XtraEditors.SpinEdit();
             this.txtBatchDivisionCode = new DevExpress.XtraEditors.TextEdit();
             this.cboInformationBid = new DevExpress.XtraEditors.ComboBoxEdit();
             this.spinImpMoreRatio = new DevExpress.XtraEditors.SpinEdit();
@@ -163,6 +165,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem29 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.txtBidName = new DevExpress.XtraEditors.TextEdit();
             this.txtBidNumber = new DevExpress.XtraEditors.TextEdit();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
@@ -190,8 +194,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProviderLeft = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxValidationProviderRight = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProviderLeft = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProviderRight = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -223,6 +227,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             ((System.ComponentModel.ISupportInitialize)(this.txtBidYear.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinGiaTran.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBatchDivisionCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboInformationBid.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinImpMoreRatio.Properties)).BeginInit();
@@ -311,6 +316,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBidName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBidNumber.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBidType.Properties)).BeginInit();
@@ -635,6 +642,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.spinGiaTran);
             this.layoutControl2.Controls.Add(this.txtBatchDivisionCode);
             this.layoutControl2.Controls.Add(this.cboInformationBid);
             this.layoutControl2.Controls.Add(this.spinImpMoreRatio);
@@ -679,6 +687,23 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControl2.Size = new System.Drawing.Size(655, 576);
             this.layoutControl2.TabIndex = 5;
             this.layoutControl2.Text = "layoutControl2";
+            // 
+            // spinGiaTran
+            // 
+            this.spinGiaTran.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinGiaTran.Location = new System.Drawing.Point(326, 528);
+            this.spinGiaTran.MenuManager = this.barManager1;
+            this.spinGiaTran.Name = "spinGiaTran";
+            this.spinGiaTran.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.spinGiaTran.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinGiaTran.Size = new System.Drawing.Size(113, 20);
+            this.spinGiaTran.StyleController = this.layoutControl2;
+            this.spinGiaTran.TabIndex = 47;
             // 
             // txtBatchDivisionCode
             // 
@@ -1379,7 +1404,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.lciImpMoreRatio,
             this.emptySpaceItem1,
             this.layoutControlItem26,
-            this.layoutControlItem28});
+            this.layoutControlItem28,
+            this.layoutControlItem29,
+            this.emptySpaceItem3});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "Root";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1635,7 +1662,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.lciLifeSpan.Location = new System.Drawing.Point(324, 502);
             this.lciLifeSpan.Name = "lciLifeSpan";
             this.lciLifeSpan.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.lciLifeSpan.Size = new System.Drawing.Size(117, 48);
+            this.lciLifeSpan.Size = new System.Drawing.Size(117, 24);
             this.lciLifeSpan.Text = "tháng";
             this.lciLifeSpan.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciLifeSpan.TextLocation = DevExpress.Utils.Locations.Right;
@@ -1647,7 +1674,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem19.Control = this.spinDayLifeSpan;
             this.layoutControlItem19.Location = new System.Drawing.Point(441, 502);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(109, 48);
+            this.layoutControlItem19.Size = new System.Drawing.Size(109, 24);
             this.layoutControlItem19.Text = "ngày";
             this.layoutControlItem19.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem19.TextLocation = DevExpress.Utils.Locations.Right;
@@ -1659,7 +1686,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem21.Control = this.spinHourLifeSpan;
             this.layoutControlItem21.Location = new System.Drawing.Point(550, 502);
             this.layoutControlItem21.Name = "layoutControlItem21";
-            this.layoutControlItem21.Size = new System.Drawing.Size(105, 48);
+            this.layoutControlItem21.Size = new System.Drawing.Size(105, 24);
             this.layoutControlItem21.Text = "giờ";
             this.layoutControlItem21.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem21.TextLocation = DevExpress.Utils.Locations.Right;
@@ -1675,7 +1702,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem18.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem18.MinSize = new System.Drawing.Size(85, 24);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(85, 48);
+            this.layoutControlItem18.Size = new System.Drawing.Size(85, 24);
             this.layoutControlItem18.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem18.Text = "Tuổi thọ:";
             this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1878,6 +1905,27 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem28.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem28.TextSize = new System.Drawing.Size(85, 20);
             this.layoutControlItem28.TextToControlDistance = 5;
+            // 
+            // layoutControlItem29
+            // 
+            this.layoutControlItem29.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem29.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem29.Control = this.spinGiaTran;
+            this.layoutControlItem29.Location = new System.Drawing.Point(239, 526);
+            this.layoutControlItem29.Name = "layoutControlItem29";
+            this.layoutControlItem29.Size = new System.Drawing.Size(202, 24);
+            this.layoutControlItem29.Text = "Giá trần BHYT:";
+            this.layoutControlItem29.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem29.TextSize = new System.Drawing.Size(80, 20);
+            this.layoutControlItem29.TextToControlDistance = 5;
+            // 
+            // emptySpaceItem3
+            // 
+            this.emptySpaceItem3.AllowHotTrack = false;
+            this.emptySpaceItem3.Location = new System.Drawing.Point(441, 526);
+            this.emptySpaceItem3.Name = "emptySpaceItem3";
+            this.emptySpaceItem3.Size = new System.Drawing.Size(214, 24);
+            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // txtBidName
             // 
@@ -2291,6 +2339,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             ((System.ComponentModel.ISupportInitialize)(this.txtBidYear.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spinGiaTran.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBatchDivisionCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboInformationBid.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinImpMoreRatio.Properties)).EndInit();
@@ -2379,6 +2428,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBidName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBidNumber.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBidType.Properties)).EndInit();
@@ -2560,5 +2611,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
         private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
         private DevExpress.XtraEditors.TextEdit txtBatchDivisionCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem28;
+        private DevExpress.XtraEditors.SpinEdit spinGiaTran;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem29;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
     }
 }

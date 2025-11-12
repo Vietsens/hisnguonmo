@@ -18,6 +18,7 @@
 using ACS.EFMODEL.DataModels;
 using ACS.SDO;
 using AutoMapper;
+using DevExpress.CodeParser;
 using DevExpress.Data;
 using DevExpress.Utils;
 using DevExpress.Utils.Menu;
@@ -5778,7 +5779,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         return;
                     }
 
-                };
+                }
+                ;
                 WaitingManager.Show();
                 bool success = false;
                 CommonParam param = new CommonParam();
@@ -6820,7 +6822,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             return;
                         }
 
-                    };
+                    }
+                    ;
                     WaitingManager.Show();
                     bool success = false;
                     CommonParam param = new CommonParam();
@@ -8268,23 +8271,45 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     }
                     if (lstResultMD != null && lstResultMD.Count > 0)
                     {
-                        MPS.Processor.Mps000458.PDO.Mps000458PDO mps000458RDO = new MPS.Processor.Mps000458.PDO.Mps000458PDO(
-                       null,
-                       null,
-                       samplePrint,
-                       null,
-                       currentTestIndexs.Where(o => lstResultVS.Select(p => p.SERVICE_CODE).Distinct().ToList().Contains(o.SERVICE_CODE)).ToList(),
-                       lstResultVS,
-                       BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
-                       genderId,
-                       BackendDataWorker.Get<V_HIS_SERVICE>());
-                        inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(curentSTT.TREATMENT_CODE, MPS.Processor.Mps000458.PDO.PrintTypeCode.Mps000458, this.currentModule.RoomId);
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000458.PDO.PrintTypeCode.Mps000458, dicSignApproveList[MPS.Processor.Mps000458.PDO.PrintTypeCode.Mps000458], mps000458RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                        SetUpSign(inputADO, PrintData, curentSTT, ref result, ref errorMessage);
+                        List<V_HIS_SERVICE> lstService = BackendDataWorker.Get<V_HIS_SERVICE>();
+                        lstResultMD = lstResultMD.OrderBy(o => o.ID).ThenBy(o => o.TEST_INDEX_NAME).ToList();
+
+                        var groupListResult = lstResultMD.GroupBy(o => new { o.SERVICE_CODE, o.MACHINE_ID }).ToList();
+                        foreach (var group in groupListResult)
+                        {
+                            V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == group.Key.SERVICE_CODE) : null;
+
+                            MPS.Processor.Mps000458.PDO.Mps000458PDO mps000458RDO = new MPS.Processor.Mps000458.PDO.Mps000458PDO(
+                               null,
+                               null,
+                               samplePrint,
+                               null,
+                               currentTestIndexs.Where(o => lstResultVS.Select(p => p.SERVICE_CODE).Distinct().ToList().Contains(o.SERVICE_CODE)).ToList(),
+                               lstResultVS,
+                               BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
+                               genderId,
+                               lstService,
+                               service);
+                            inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(curentSTT.TREATMENT_CODE, MPS.Processor.Mps000458.PDO.PrintTypeCode.Mps000458, this.currentModule.RoomId);
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000458.PDO.PrintTypeCode.Mps000458, dicSignApproveList[MPS.Processor.Mps000458.PDO.PrintTypeCode.Mps000458], mps000458RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
+                            SetUpSign(inputADO, PrintData, curentSTT, ref result, ref errorMessage);
+
+                        }
+
+
                     }
                     if (lstResultSH != null && lstResultSH.Count > 0)
                     {
-                        MPS.Processor.Mps000459.PDO.Mps000459PDO mps000459RDO = new MPS.Processor.Mps000459.PDO.Mps000459PDO(
+
+                        List<V_HIS_SERVICE> lstService = BackendDataWorker.Get<V_HIS_SERVICE>();
+                        lstResultSH = lstResultSH.OrderBy(o => o.ID).ThenBy(o => o.TEST_INDEX_NAME).ToList();
+
+                        var groupListResult = lstResultSH.GroupBy(o => new { o.SERVICE_CODE, o.MACHINE_ID }).ToList();
+                        foreach (var group in groupListResult)
+                        {
+                            V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == group.Key.SERVICE_CODE) : null;
+                            
+                            MPS.Processor.Mps000459.PDO.Mps000459PDO mps000459RDO = new MPS.Processor.Mps000459.PDO.Mps000459PDO(
                       null,
                       null,
                       samplePrint,
@@ -8293,11 +8318,12 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                       lstResultSH,
                       BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
                       genderId,
-                      BackendDataWorker.Get<V_HIS_SERVICE>());
-                        inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(curentSTT.TREATMENT_CODE, MPS.Processor.Mps000459.PDO.PrintTypeCode.Mps000459, this.currentModule.RoomId);
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000459.PDO.PrintTypeCode.Mps000459, dicSignApproveList[MPS.Processor.Mps000459.PDO.PrintTypeCode.Mps000459], mps000459RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
+                      lstService, service);
+                            inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(curentSTT.TREATMENT_CODE, MPS.Processor.Mps000459.PDO.PrintTypeCode.Mps000459, this.currentModule.RoomId);
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000459.PDO.PrintTypeCode.Mps000459, dicSignApproveList[MPS.Processor.Mps000459.PDO.PrintTypeCode.Mps000459], mps000459RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
 
-                        SetUpSign(inputADO, PrintData, curentSTT, ref result, ref errorMessage);
+                            SetUpSign(inputADO, PrintData, curentSTT, ref result, ref errorMessage);
+                        }
                     }
 
                 }

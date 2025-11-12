@@ -676,7 +676,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 InformationADO ado = new InformationADO();
                 IsLoadFromPin = false;
-                this.currentBySessionControlStateRDO = controlStateWorker.GetDataBySession(moduleLink);
+                //this.currentBySessionControlStateRDO = controlStateWorker.GetDataBySession(moduleLink);
                 if (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0)
                 {
 
@@ -2860,30 +2860,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         {
                             this.FillDataMachineCombo(data, repositoryItemMachineHideDelete.OwnerEdit);
                         }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void gridView_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
-        {
-            try
-            {
-                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-                if (e.Column.FieldName == "MACHINE_ID")
-                {
-                    long machineId = Inventec.Common.TypeConvert.Parse.ToInt64((view.GetRowCellValue(e.RowHandle, view.Columns["MACHINE_ID"]) ?? "").ToString());
-                    if (machineId == 0)
-                    {
-                        e.RepositoryItem = repositoryItemMachineHideDelete;
-                    }
-                    else
-                    {
-                        e.RepositoryItem = repositoryItemMachineId;
                     }
                 }
             }
@@ -7979,7 +7955,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
-        private void xtraTabControl1_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)
+        private void xtraTabControl1_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)   
         {
             try
             {
@@ -8014,6 +7990,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         this.currentControlStateRDO.Add(csAddOrUpdate);
                     }
                     this.controlStateWorker.SetData(this.currentControlStateRDO);
+                    this.currentBySessionControlStateRDO = this.currentControlStateRDO;
                 }
             }
             catch (Exception ex)

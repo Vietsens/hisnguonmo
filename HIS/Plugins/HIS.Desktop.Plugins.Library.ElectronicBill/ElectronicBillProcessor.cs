@@ -54,6 +54,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("_electronicBillDataInput: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", _electronicBillDataInput));
+
                 this.ElectronicBillDataInput = _electronicBillDataInput;
                 this.TempType = _templateType;
             }
@@ -100,7 +102,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
 
                 //Lấy dữ liệu Cấu hình
                 string serviceConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.ELECTRONIC_BILL__CONFIG);
+                //SAFECERT | https://cloud24.ts24.com.vn/cloudDB_API/POS/taoDanhSachDonHang?sKey=AxNC0xMC0wMyAxNzowODozN35fmZ1dkYyNktEcE15bnFBZUhUTHhZaE1VbzNMTT&tenDN=<ktpm.ts24@gmail.com;>&matKhau=<e8b3ed2f3daa040fd2189262135f2610;>&serviceID=DLTG_1&ProgramID=DLTG&MST=<#TAX_CODE;>|45eca311-546a-47d0-b15b-36ca926db06d
                 string accountConfig = ConfigApplicationWorker.Get<string>(SdaConfigKey.ACCOUNT_CONFIG_KEY);
+                Inventec.Common.Logging.LogSystem.Debug("ElectronicBillDataInput.EinvoiceTypeId: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", ElectronicBillDataInput.EinvoiceTypeId));
+
                 if (ElectronicBillDataInput.EinvoiceTypeId.HasValue)
                 {
                     switch (ElectronicBillDataInput.EinvoiceTypeId.Value)
@@ -153,6 +158,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                         case IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNINVOICE:
                             var vninvoice = BackendDataWorker.Get<HIS_EINVOICE_TYPE>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNINVOICE);
                             serviceConfig = string.Format("{0}|{1}", ProviderType.VNINVOICE, vninvoice != null ? vninvoice.VALUE : "");
+                            //VNINVOICE|https://invoice-mass-api.vnpaytest.vn/api
                             accountConfig = ConfigApplicationWorker.Get<string>(SdaConfigKey.ACCOUNT_CONFIG_KEY__VNINVOICE);
                             break;
                         default:

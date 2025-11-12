@@ -68,5 +68,8 @@ namespace MPS.Processor.Mps000007
         internal const string HOSPITALIZE_DEPARTMENT_CODE = "HOSPITALIZE_DEPARTMENT_CODE";
         internal const string HOSPITALIZE_DEPARTMENT_NAME = "HOSPITALIZE_DEPARTMENT_NAME";
         internal const string HEIN_CARD_ADDRESS = "HEIN_CARD_ADDRESS";
+        internal const string SERVICE_REQ__NOTE = "SERVICE_REQ__NOTE";
+        internal const string PATIENT__NOTE = "PATIENT__NOTE";
+
     }
 }

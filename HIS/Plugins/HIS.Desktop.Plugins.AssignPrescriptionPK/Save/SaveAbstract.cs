@@ -179,7 +179,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
             this.Advise = frmAssignPrescription.txtAdvise.Text;
             this.InteractionReason = frmAssignPrescription.txtInteractionReason.Text;
 
-            if (frmAssignPrescription.currentMediStockNhaThuocSelecteds != null && frmAssignPrescription.currentMediStockNhaThuocSelecteds.Count > 0 && frmAssignPrescription.GetSelectedOpionGroup() == 2 && (HisConfigCFG.IsAutoCreateSaleExpMest || HisConfigCFG.IsDrugStoreComboboxOption))
+            if (frmAssignPrescription.currentMediStockNhaThuocSelecteds != null && frmAssignPrescription.currentMediStockNhaThuocSelecteds.Count > 0 && frmAssignPrescription.GetSelectedOpionGroup() == 2 && (HisConfigCFG.IsAutoCreateSaleExpMest == "1" || HisConfigCFG.IsDrugStoreComboboxOption))
                 this.DrugStoreId = (long)frmAssignPrescription.currentMediStockNhaThuocSelecteds.FirstOrDefault().ID;
             this.ProvisionalDiagnosis = frmAssignPrescription.txtProvisionalDiagnosis.Text;
             this.RequestLoginname = frmAssignPrescription.txtLoginName.Text;
