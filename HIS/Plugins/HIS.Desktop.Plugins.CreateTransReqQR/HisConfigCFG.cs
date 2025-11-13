@@ -21,6 +21,7 @@ using Inventec.Common.Logging;
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,15 +44,28 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR
         private const string CONFIG_KEY__ShowServiceBhyt = "HIS.Desktop.Plugins.CreateTransReqQR.ShowServiceBhyt";
         private const string CONFIG_KEY__TransactionBillSelect = "HIS.Desktop.TransactionBillSelect";
         private const string CONFIG_KEY__BILL_TWO_BOOK = "MOS.HIS_TRANSACTION.BILL_TWO_BOOK.OPTION";
+        private const string AUTO_PRINT_TYPE = "HIS.Desktop.Plugins.TransactionBill.ElectronicBill.AutoPrintType";
+        private const string ELECTRONIC_BILL__PRINT_NUM_COPY = "CONFIG_KEY__HIS_DESKTOP__ELECTRONIC_BILL__PRINT_NUM_COPY";
+        private const string PlatformOptionCFG = "Inventec.Common.DocumentViewer.PlatformOption";
+        private const string ElectronicInvoicePublishingDelayTimeCFG = "HIS.Desktop.Plugins.TransactionBill.ElectronicInvoicePublishingDelayTime";
 
         internal static string TransactionBillSelect;
         internal static string BillTwoOption;
         internal static bool ShowServiceBhyt;
         internal static string ShowServiceByRoomOption;
+        internal static string autoPrintType;
+        internal static int E_BILL__PRINT_NUM_COPY;
+        internal static int PlatformOption;
+        internal static decimal ElectronicInvoicePublishingDelayTime;
         internal static void LoadConfig()
         {
             try
             {
+                PlatformOption = HisConfigs.Get<int>(PlatformOptionCFG);
+                E_BILL__PRINT_NUM_COPY = HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<int>(ELECTRONIC_BILL__PRINT_NUM_COPY);
+                string delayTime = HisConfigs.Get<string>(ElectronicInvoicePublishingDelayTimeCFG);
+                ElectronicInvoicePublishingDelayTime = Decimal.Parse(delayTime, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+                autoPrintType = HisConfigs.Get<string>(AUTO_PRINT_TYPE);
                 TransactionBillSelect = GetValue(CONFIG_KEY__TransactionBillSelect);
                 BillTwoOption = GetValue(CONFIG_KEY__BILL_TWO_BOOK);
                 ShowServiceBhyt = GetValue(CONFIG_KEY__ShowServiceBhyt) == "1";
