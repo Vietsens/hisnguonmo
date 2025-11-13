@@ -17,6 +17,7 @@
  */
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.LocalStorage.LocalData;
 using Inventec.Common.Logging;
 using MOS.EFMODEL.DataModels;
 using System;
@@ -29,6 +30,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 {
     internal class HisConfigCFG
     {
+        private const string CONFIG_KEY__ASSIGN_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION";
+        private const string CONFIG_KEY__ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
+        public const string KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISENABLEEDITSTARTTIME = "HIS.Desktop.Plugins.ExamServiceReqExecute.IsEnableEditStartTime";
         private const string IsNotBillString = "HIS.Desktop.Plugins.TransactionRepay.IsNotBill";
         private const string SendToExtWhenStartOption = "HIS.Desktop.Plugins.ExecuteRoom.SendToExtWhenStartOption";
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";
@@ -77,6 +81,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         internal static string PatientTypeOption;
         internal static string AutoDeleteEmrDocumentWhenEditReq;
         internal static string MustSignBeforeStart;
+        public static bool IsEnableEditStartTime;
+        internal static string ServiceSimultaneity;
+        internal static string Simultaneity;
 
         internal static string IsSplitTotalReceivePrice
         {
@@ -91,6 +98,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             try
             {
                 LogSystem.Debug("LoadConfig => 1");
+                Simultaneity = GetValue(CONFIG_KEY__ASSIGN_SIMULTANEITY_OPTION);
+                ServiceSimultaneity = GetValue(CONFIG_KEY__ASSIGN_SERVICE_SIMULTANEITY_OPTION);
+                IsEnableEditStartTime = GetValue(KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISENABLEEDITSTARTTIME) == GlobalVariables.CommonStringTrue;
                 IsCheckHeinCard = GetValue(KEY__IsCheckHeinCard) == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CommonStringTrue;
                 IsHasConnectionEmr = GetValue(IS_HAS_CONNECTION_EMR) == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CommonStringTrue;
                 IsShowResultWhenReqComplete = GetValue(IS_ShowResultWhenReqComplete);
