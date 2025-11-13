@@ -192,6 +192,9 @@
   <data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_MANUFACTURER_NAME" xml:space="preserve">
     <value>Hãng sản xuất</value>
   </data>
+	<data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_DESCRIPTION" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_MEDICINE_GROUP_CODE" xml:space="preserve">
     <value>Mã nhóm thuốc</value>
   </data>
@@ -233,6 +236,9 @@
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_REGISTER_NUMBER" xml:space="preserve">
     <value>Số đăng ký</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_DOSAGE_FORM" xml:space="preserve">
+    <value>Dạng bào chế</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_SERVICE_UNIT_NAME" xml:space="preserve">
     <value>Đơn vị tính</value>

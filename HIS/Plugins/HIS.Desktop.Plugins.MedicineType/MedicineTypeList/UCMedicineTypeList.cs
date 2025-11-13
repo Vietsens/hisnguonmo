@@ -134,7 +134,7 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                     "ACTIVE_INGR_BHYT_CODE", "CONCENTRA","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME" ,"REGISTER_NUMBER", "NATIONAL_NAME", "MANUFACTURER_NAME",
                     "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO", "LAST_EXP_PRICE", "LAST_EXP_VAT_RATIO", "PARENT_ID","MEDICINE_USE_FORM_CODE","MEDICINE_USE_FORM_NAME",
                     "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO",
-                    "IS_LEAF", "IS_ACTIVE" ,"IS_BUSINESS", "IS_DRUG_STORE","LOCKING_REASON", "ALERT_EXPIRED_DATE", "ALERT_MIN_IN_STOCK", "PACKING_TYPE_NAME", "MEDICINE_LINE_NAME"};
+                    "IS_LEAF", "IS_ACTIVE" ,"IS_BUSINESS", "IS_DRUG_STORE","LOCKING_REASON", "ALERT_EXPIRED_DATE", "ALERT_MIN_IN_STOCK", "PACKING_TYPE_NAME", "MEDICINE_LINE_NAME", "DOSAGE_FORM", "DESCRIPTION"};
                 filter.ColumnParams = ColnParams;
 
                 this.medicineTypes = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUri.HIS_MEDICINE_TYPE_GetViewDynamic, ApiConsumers.MosConsumer, filter, param);
@@ -181,7 +181,7 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                 List<string> colunmParam = new List<string> { "ID", "MEDICINE_TYPE_CODE", "MEDICINE_TYPE_NAME", "SERVICE_UNIT_NAME", "ACTIVE_INGR_BHYT_NAME",
                     "ACTIVE_INGR_BHYT_CODE", "CONCENTRA","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME" ,"REGISTER_NUMBER", "NATIONAL_NAME", "MANUFACTURER_NAME",
                     "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO", "LAST_EXP_PRICE", "LAST_EXP_VAT_RATIO", "PARENT_ID","MEDICINE_USE_FORM_CODE","MEDICINE_USE_FORM_NAME",
-                    "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO","IS_BUSINESS", "IS_DRUG_STORE",
+                    "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO","IS_BUSINESS", "IS_DRUG_STORE", "DOSAGE_FORM", "DESCRIPTION",
                     "IS_LEAF", "IS_ACTIVE" };
                 filter.ColumnParams = colunmParam;
                 var medicineTypes = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUri.HIS_MEDICINE_TYPE_GetViewDynamic, ApiConsumers.MosConsumer, filter, param);
@@ -447,29 +447,39 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                 registerNumberNameCol.VisibleIndex = 16;
                 ado.MedicineTypeColumns.Add(registerNumberNameCol);
 
+                //Column dạng bào chế
+                MedicineTypeColumn DosageForm = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_DOSAGE_FORM", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "DOSAGE_FORM", 120, false);
+                DosageForm.VisibleIndex = 17;
+                ado.MedicineTypeColumns.Add(DosageForm);
+
                 //Column quốc gia
                 MedicineTypeColumn nationalNameCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_NATIONAL_NAME", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "NATIONAL_NAME", 100, false);
-                nationalNameCol.VisibleIndex = 17;
+                nationalNameCol.VisibleIndex = 18;
                 ado.MedicineTypeColumns.Add(nationalNameCol);
 
                 //Column hãng sản xuất
                 MedicineTypeColumn manufacturerNameCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_MANUFACTURER_NAME", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "MANUFACTURER_NAME", 120, false);
-                manufacturerNameCol.VisibleIndex = 18;
+                manufacturerNameCol.VisibleIndex = 19;
                 ado.MedicineTypeColumns.Add(manufacturerNameCol);
+
+                //Column ghi chú
+                MedicineTypeColumn Description = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_DESCRIPTION", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "DESCRIPTION", 120, false);
+                Description.VisibleIndex = 20;
+                ado.MedicineTypeColumns.Add(Description);
 
                 //Column Lý do khóa
                 MedicineTypeColumn lockingReasonCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_LOOKINGREASON", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "LOCKING_REASON", 120, false);
-                lockingReasonCol.VisibleIndex = 19;
+                lockingReasonCol.VisibleIndex = 21;
                 ado.MedicineTypeColumns.Add(lockingReasonCol);
                 //Column giá nhập
 
                 MedicineTypeColumn importPrice = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_IMPORT_PRICE", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "IMPORT_PRICE", 100, false);
-                importPrice.VisibleIndex = 20;
+                importPrice.VisibleIndex = 22;
                 importPrice.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_TOOLTIP1", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 ado.MedicineTypeColumns.Add(importPrice);
                 //Column giá bán
                 MedicineTypeColumn exportPrice = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_EXPORT_PRICE", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "EXPORT_PRICE", 100, false);
-                exportPrice.VisibleIndex = 21;
+                exportPrice.VisibleIndex = 23;
                 exportPrice.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_TOOLTIP2", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 ado.MedicineTypeColumns.Add(exportPrice);
 

@@ -299,6 +299,13 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 registerNumberCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.MaterialTypeColumns.Add(registerNumberCol);
 
+                //Column Model
+                MaterialTypeColumn Model = new MaterialTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MATERIAL_TYPE__TREE_MATERIAL_TYPE__COLUMN_MODEL", ResourceLangManager.LanguageUCMaterialType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "MODEL_CODE", 120, false);
+                Model.VisibleIndex = 12;
+                Model.Format = new DevExpress.Utils.FormatInfo();
+                Model.Format.FormatType = DevExpress.Utils.FormatType.Custom;
+                ado.MaterialTypeColumns.Add(Model);
+
                 //Column Giá tiền
                 MaterialTypeColumn impPriceCol = new MaterialTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MATERIAL_TYPE__TREE_MATERIAL_TYPE__COLUMN_IMP_PRICE", ResourceLangManager.LanguageUCMaterialType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "IMP_PRICE", 120, false);
                 impPriceCol.VisibleIndex = -1;
@@ -686,7 +693,7 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 List<String> ColnParams = new List<string> { "ID", "MATERIAL_TYPE_CODE", "MATERIAL_TYPE_NAME", "SERVICE_UNIT_NAME", "CONCENTRA",
                     "NATIONAL_NAME", "MANUFACTURER_NAME", "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO",
                     "LAST_EXP_PRICE","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME", "LAST_EXP_VAT_RATIO", "IS_LEAF", "PARENT_ID", "IS_ACTIVE", "REGISTER_NUMBER",
-                    "IMP_VAT_RATIO","IMP_PRICE","PACKING_TYPE_NAME","IS_BUSINESS", "IS_DRUG_STORE", "LOCKING_REASON", "IS_REUSABLE"};
+                    "IMP_VAT_RATIO","IMP_PRICE","PACKING_TYPE_NAME","IS_BUSINESS", "IS_DRUG_STORE", "LOCKING_REASON", "IS_REUSABLE", "MODEL_CODE"};
                 filter.ColumnParams = ColnParams;
                 this.materialTypes = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_TYPE>>(HisRequestUri.HIS_MATERIAL_TYPE_GETVIEWDynamic, ApiConsumers.MosConsumer, filter, param);
                 if (currentMediStock != null && currentMediStock.IS_BUSINESS == 1 && currentMediStock.IS_SHOW_DRUG_STORE == 1)
