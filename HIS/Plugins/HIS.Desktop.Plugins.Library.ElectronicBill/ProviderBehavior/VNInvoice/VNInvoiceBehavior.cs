@@ -473,7 +473,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                     {
                         VNInvoiceDetail ddt = new VNInvoiceDetail();
                         ddt.index = count++;
-                        ddt.productType = 0;
+                        ddt.productType = 1;
                         //ddt.khuyenmai = 0;
                         ddt.productCode = item.ProdCode;
                         ddt.productName = item.ProdName;
