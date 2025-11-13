@@ -59,6 +59,7 @@ namespace HIS.UC.SecondaryIcd
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.grdColCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciGridControl = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -75,7 +76,6 @@ namespace HIS.UC.SecondaryIcd
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtIcdCodes.Properties)).BeginInit();
@@ -156,6 +156,7 @@ namespace HIS.UC.SecondaryIcd
             this.txtIcdNames.Size = new System.Drawing.Size(790, 20);
             this.txtIcdNames.StyleController = this.layoutControl1;
             this.txtIcdNames.TabIndex = 6;
+            this.txtIcdNames.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.txtIcdNames_EditValueChanging);
             // 
             // btnChoose
             // 
@@ -242,6 +243,15 @@ namespace HIS.UC.SecondaryIcd
             this.grdColName.Visible = true;
             this.grdColName.VisibleIndex = 2;
             this.grdColName.Width = 667;
+            // 
+            // gridColumn2
+            // 
+            this.gridColumn2.Caption = "Nhóm bệnh";
+            this.gridColumn2.FieldName = "ICD_GROUP_NAME";
+            this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.Visible = true;
+            this.gridColumn2.VisibleIndex = 3;
+            this.gridColumn2.Width = 102;
             // 
             // layoutControlGroup1
             // 
@@ -407,15 +417,6 @@ namespace HIS.UC.SecondaryIcd
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(894, 22);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 489);
-            // 
-            // gridColumn2
-            // 
-            this.gridColumn2.Caption = "Nhóm bệnh";
-            this.gridColumn2.FieldName = "ICD_GROUP_NAME";
-            this.gridColumn2.Name = "gridColumn2";
-            this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 3;
-            this.gridColumn2.Width = 102;
             // 
             // frmSecondaryIcd
             // 
