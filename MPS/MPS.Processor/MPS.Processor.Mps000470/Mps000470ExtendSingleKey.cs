@@ -51,6 +51,7 @@ namespace MPS.Processor.Mps000470
         internal const string IS_RIGHT_ROUTE = "IS_RIGHT_ROUTE";
         internal const string IS_NOT_RIGHT_ROUTE = "IS_NOT_RIGHT_ROUTE";
         internal const string SERVICE_NAME_PARENT = "SERVICE_NAME_PARENT";
+        internal const string SERVICE_CODE_PARENT = "PARENT_CODE";
 
         internal const string TDL_PATIENT_NAME = "TDL_PATIENT_NAME";
         internal const string PATIENT_CONDITION_CODE = "PATIENT_CONDITION_CODE";

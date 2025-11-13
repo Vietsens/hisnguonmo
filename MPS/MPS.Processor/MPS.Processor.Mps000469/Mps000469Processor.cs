@@ -231,11 +231,6 @@ namespace MPS.Processor.Mps000469
                     SetSingleKey(new KeyValue(Mps000469ExtendSingleKey.PARENT_CODE, rdo.ServiceParent.SERVICE_CODE));
                 }
 
-                if (ListServiceParent != null && ListServiceParent.Count > 0)
-                {
-                    SetSingleKey(new KeyValue(Mps000469ExtendSingleKey.PARENT_CODE, ListServiceParent[0].SERVICE_CODE));
-                }
-                //SetSingleKey(new KeyValue(Mps000469ExtendSingleKey.PARENT_CODE, this.ListServiceParent.Where(o=>o.ID ==2)));
                 SetSingleKey(new KeyValue(Mps000469ExtendSingleKey.LOGIN_USER_NAME, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName()));
 
                 AddObjectKeyIntoListkey<V_LIS_SAMPLE>(rdo.currentSample, false);
