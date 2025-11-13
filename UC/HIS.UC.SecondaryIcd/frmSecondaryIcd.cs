@@ -334,17 +334,15 @@ namespace HIS.UC.SecondaryIcd
                     }
                     else
                     {
-                        icdCodes.Reverse();
-                        icdNames.Reverse();
                         var indexOfCode = icdCodes.IndexOf(row.ICD_CODE);
                         icdCodes.RemoveAt(indexOfCode);
                         icdNames.RemoveAt(indexOfCode);
-                        icdCodes.Reverse();
-                        icdNames.Reverse();
                         txtIcdCodes.Text = string.Join(";", icdCodes);
                         txtIcdNames.Text = string.Join(";", icdNames);
                     }
                 }
+                txtIcdCodes.Text = txtIcdCodes.Text.Trim(';', ' ');
+                txtIcdNames.Text = txtIcdNames.Text.Trim(';', ' ');
                 //txtIcdNames.Text = string.Join(";",checkList.Where(s => s.IsChecked == true).Select(p=>p.ICD_NAME));
                 //txtIcdCodes.Text = string.Join(";", checkList.Where(s => s.IsChecked == true).Select(p => p.ICD_CODE));
 
@@ -512,6 +510,30 @@ namespace HIS.UC.SecondaryIcd
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtIcdNames_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            var editor = sender as DevExpress.XtraEditors.TextEdit;
+            if (editor.IsEditorActive)
+            {
+                //var ss = editor.SelectionStart;
+                //var ma = txtIcdCodes.Text.ToString().Trim(';', ' ').Split(';').Where(w => w.Trim() != "").ToArray();
+                //if (ma.Length != txtIcdCodes.Text.ToString().Split(';').Length)
+                //{
+                //    txtIcdCodes.Text = string.Join(";", ma);
+                //}
+                //var ten = e.NewValue.ToString().Trim(' ').Split(';');
+                //if (ten.Length > ma.Length)
+                //{
+                //    var newTen1 = string.Join(";", ten.Take(ma.Length));
+                //    var newTen2 = string.Join(";", ten.Skip(ma.Length));
+                //    e.NewValue = newTen1 + newTen2;
+                //    editor.BeginInvoke(new Action(() => {
+                //        editor.SelectionStart = ss;
+                //    }));
+                //}
             }
         }
     }
