@@ -50,7 +50,7 @@ namespace MPS.Processor.Mps000175
         internal const string TOTAL_REQ_ROOM_NAME_DISPLAY = "TOTAL_REQ_ROOM_NAME";
 
         internal const string TOTAL_PRICE = "TOTAL_PRICE";
-
+       
         internal const string TOTAL_PRICE_VAT = "TOTAL_PRICE_VAT";
 
         internal const string EXP_MEST_CODEs = "EXP_MEST_CODEs";

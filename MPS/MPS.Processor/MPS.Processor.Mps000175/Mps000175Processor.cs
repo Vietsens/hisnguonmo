@@ -189,8 +189,9 @@ namespace MPS.Processor.Mps000175
                 objectTag.AddObjectData(store, "ParentMaterialGroups", parentGroups);
                objectTag.AddRelationship(store, "ParentMaterialGroups", "ExpMestAggregates", "PARENT_ID", "PARENT_ID");
 
+                objectTag.AddObjectData(store,"SumExpMestAggregates", rdo.listSum);
+                objectTag.AddRelationship(store, "ParentMaterialGroups", "SumExpMestAggregates", "PARENT_ID", "PARENT_ID");  
 
-                
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
                 objectTag.SetUserFunction(store, "FuncMergeData12", new CalculateMergerData());
                 objectTag.SetUserFunction(store, "FuncMergeData13", new CalculateMergerData());
@@ -264,6 +265,19 @@ namespace MPS.Processor.Mps000175
                     rdo.listAdo = rdo.listAdo.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
                     SetSingleKey(new KeyValue(Mps000175ExtendSingleKey.TOTAL_PRICE, rdo.listAdo.Sum(o => o.PRICE ?? 0)));
                     SetSingleKey(new KeyValue(Mps000175ExtendSingleKey.TOTAL_PRICE_VAT, rdo.listAdo.Sum(o => (o.PRICE ?? 0) * (1 + (o.VAT_RATIO ?? 0)))));
+                    
+                  
+
+               
+                    rdo.listSum = rdo.listAdo
+                        .GroupBy(p => p.PARENT_ID)
+                        .Select(g => new Mps000175Sum
+                        {
+                            PARENT_ID = g.Key,
+                            SUM_AMOUNT_REQUEST = g.Sum(s => s.AMOUNT_REQUEST),
+                            SUM_AMOUNT_PRICE = g.Sum(s => (s.AMOUNT_REQUEST) * (s.PRICE ?? 0))
+                        })
+                        .ToList();
                 }
 
                 if (reqRoomIds.Count > 0)
