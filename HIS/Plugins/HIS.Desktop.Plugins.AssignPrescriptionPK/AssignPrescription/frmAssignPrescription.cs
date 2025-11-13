@@ -1022,7 +1022,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         #region Private method
         private void CheckAssignServiceSimultaneityOption()
         {
-
             try
             {
                 if (this.actionType == GlobalVariables.ActionAdd)
@@ -1038,29 +1037,78 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     this.btnSave.Enabled = this.btnAdd.Enabled = btnSaveAndPrint.Enabled = false;
                 }
+
                 isCheckAssignServiceSimultaneityOption = false;
-                if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "1" && HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "2") || cboUser.EditValue == null || intructionTimeSelecteds == null || intructionTimeSelecteds.Count == 0)
-                    return;
-                CommonParam param = new CommonParam();
-                HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
-                sdo.TreatmentId = treatmentId;
-                sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
-                sdo.SereTimes = intructionTimeSelecteds;
-                var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
-                if (!CheckSereTimes)
+
+                // ====================== CHECK 1: CheckSereTimes ======================
+                if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1" || HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
+                    && cboUser.EditValue != null && intructionTimeSelecteds != null && intructionTimeSelecteds.Count > 0)
                 {
-                    if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
+                    CommonParam param = new CommonParam();
+                    HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
+                    sdo.TreatmentId = treatmentId;
+                    sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
+                    sdo.SereTimes = intructionTimeSelecteds;
+
+                    var checkSereTimes = new BackendAdapter(param).Post<bool>(
+                        "api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
+
+                    if (!checkSereTimes)
                     {
-                        isCheckAssignServiceSimultaneityOption = true;
-                        btnSave.Enabled = btnSaveAndPrint.Enabled = false;
-                        MessageManager.Show(this, param, CheckSereTimes);
-                    }
-                    else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
-                    {
-                        if (XtraMessageBox.Show(param.GetMessage(), "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
                         {
                             isCheckAssignServiceSimultaneityOption = true;
                             btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                            MessageManager.Show(this, param, checkSereTimes);
+                            return;
+                        }
+                        else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
+                        {
+                            if (XtraMessageBox.Show(param.GetMessage(), "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                            {
+                                isCheckAssignServiceSimultaneityOption = true;
+                                btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                // ====================== CHECK 2: CheckAssignSimultaneity ======================
+                if ((HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1" || HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
+                    && cboUser.EditValue != null && intructionTimeSelecteds != null && intructionTimeSelecteds.Count > 0)
+                {
+                    CommonParam param = new CommonParam();
+                    HisServiceReqCheckAssignSimultaneitySDO sdo2 = new HisServiceReqCheckAssignSimultaneitySDO();
+                    sdo2.TreatmentId = treatmentId;
+                    sdo2.CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>
+                    {
+                        new HisServiceReqCheckAssignSimultaneityCheckInfosSDO
+                        {
+                            LoginName = cboUser.EditValue.ToString(),
+                            CheckTimes = intructionTimeSelecteds
+                        }
+                    };
+
+                    var checkAssign = new BackendAdapter(param).Post<bool>(
+                        "api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo2, ProcessLostToken, param);
+
+                    if (!checkAssign)
+                    {
+                        if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1")
+                        {
+                            isCheckAssignServiceSimultaneityOption = true;
+                            btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                            MessageManager.Show(this, param, checkAssign);
+                        }
+                        else if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
+                        {
+                            string msg = param.GetMessage();
+                            if (XtraMessageBox.Show(msg + ". Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                            {
+                                isCheckAssignServiceSimultaneityOption = true;
+                                btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                            }
                         }
                     }
                 }
@@ -1069,8 +1117,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-
         }
+
         private void SetDataText()
         {
             try
@@ -2163,7 +2211,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
         private void ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE sType)
         {
-            try    
+            try
             {
                 this.bIsSelectMultiPatientProcessing = false;
 
@@ -4459,7 +4507,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         }
 
         private void cboTemplate_Medicine_Closed(object sender, ClosedEventArgs e)
-        {    
+        {
             try
             {
                 if (e.CloseMode == PopupCloseMode.Normal)
@@ -9550,10 +9598,10 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     {
                         XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
                         if (CheckIcdManager.IcdCodeError.Equals(txtIcdCode.Text))
-                        {  
+                        {
                             txtIcdCode.Text = txtIcdMainText.Text = null;
                             cboIcds.EditValue = null;
-                        }   
+                        }
                         return;
                     }
                     if (icd.IS_LATENT_TUBERCULOSIS == 1)
@@ -13217,7 +13265,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         {
             if (e.RowHandle >= 0)
             {
-                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;        
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                 var rowData = view.GetRow(e.RowHandle) as DMediStock1ADO;
                 if (rowData != null && rowData.IS_PRIORITY == 1)
                 {
