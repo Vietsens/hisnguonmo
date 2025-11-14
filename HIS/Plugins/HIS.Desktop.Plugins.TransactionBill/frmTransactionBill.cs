@@ -174,6 +174,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     this.treatmentId = data.ID;
                     this.currentTreatment = data;
                 }
+                Inventec.Common.Logging.LogSystem.Info("currentTreatment1: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentTreatment), currentTreatment));
                 this.currentTransaction = tran;
                 if (this.currentModule != null && this.IsDirectlyBilling.HasValue && this.IsDirectlyBilling.Value)
                 {
@@ -4042,6 +4043,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 layoutControlItem59.Visibility = LayoutVisibility.Always;
                 layoutControlItem58.Visibility = LayoutVisibility.Always;
                 layoutControlItem60.Visibility = LayoutVisibility.Always;
+                layoutControlItem63.Visibility = LayoutVisibility.Always;
+
                 // Ẩn của Cơ quan
                 layoutControlItem44.Visibility = LayoutVisibility.Never;
                 layoutControlItem35.Visibility = LayoutVisibility.Never;
@@ -4078,7 +4081,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 layoutControlItem60.Visibility = LayoutVisibility.Never;
                 layoutControlItem61.Visibility = LayoutVisibility.Never;
                 layoutControlItem62.Visibility = LayoutVisibility.Never;
-
+                layoutControlItem63.Visibility = LayoutVisibility.Never;
             }
         }
 
