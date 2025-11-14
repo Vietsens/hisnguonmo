@@ -15,9 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraLayout;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
@@ -31,6 +34,7 @@ using HIS.Desktop.Utility;
 using HIS.UC.SereServTree;
 using Inventec.Common.Adapter;
 using Inventec.Common.Integrate.EditorLoader;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -44,18 +48,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WCF.Client;
 using WCF;
-using System.Diagnostics;
-using HIS.Desktop.ADO;
-using DevExpress.XtraBars;
-using Inventec.Common.Logging;
+using WCF.Client;
 
 namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 {
@@ -128,6 +129,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         WcfClient cll;
         string nameFile = "";
         string creator = "";
+
+        short? buyerIdentityType;
+        List<HIS_WORK_PLACE> dtWorkPlace = new List<HIS_WORK_PLACE>();
 
         //IS_DIRECTLY_BILLING
         private void SetCaptionByLanguageKey()
@@ -326,6 +330,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 UpdateFormatSpin();
                 InitControlProperties();
                 InitControlState();
+                InitComboBuyerOrganization();
                 this.InitElectrictBillConfig();
                 this.AutoCheckRepaySetDefault();
                 this.LoadCashierRoomAndBranch();
@@ -348,7 +353,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     this.txtSearch.DeselectAll();
 
                 }
-
+                layoutControlItem61.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem66.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 GetList();
                 
                 WaitingManager.Hide();
@@ -2066,7 +2072,26 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 txtDOB.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.TDL_PATIENT_DOB);
                 txtGender.Text = data.TDL_PATIENT_GENDER_NAME;
                 txtAddress.Text = data.TDL_PATIENT_ADDRESS;
-
+                if (!string.IsNullOrWhiteSpace(data.TDL_PATIENT_CCCD_NUMBER))
+                {
+                    txtCCCD.Text = data.TDL_PATIENT_CCCD_NUMBER;
+                    buyerIdentityType = 2;
+                }
+                else if (!string.IsNullOrWhiteSpace(data.TDL_PATIENT_CMND_NUMBER))
+                {
+                    txtCCCD.Text = data.TDL_PATIENT_CMND_NUMBER;
+                    buyerIdentityType = 1;
+                }
+                else if (!string.IsNullOrWhiteSpace(data.TDL_PATIENT_PASSPORT_NUMBER))
+                {
+                    txtCCCD.Text = data.TDL_PATIENT_PASSPORT_NUMBER;
+                    buyerIdentityType = 3;
+                }
+                else
+                {
+                    txtCCCD.Text = "";
+                    buyerIdentityType = null;
+                }
                 HisPatientFilter ft = new HisPatientFilter();
                 ft.ID = data.PATIENT_ID; 
                 var listPatient = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, ft, new CommonParam());
@@ -2090,13 +2115,41 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 
 
                 txtBuyerName.Text = data.TDL_PATIENT_NAME ?? "";
-                txtBuyerOrganization.Text = data.TDL_PATIENT_WORK_PLACE_NAME ?? data.TDL_PATIENT_WORK_PLACE ?? "";
-                txtBuyerTaxCode.Text = data.TDL_PATIENT_TAX_CODE ?? "";
+                //txtBuyerOrganization.Text = data.TDL_PATIENT_WORK_PLACE_NAME ?? data.TDL_PATIENT_WORK_PLACE ?? "";
+                //txtBuyerTaxCode.Text = data.TDL_PATIENT_TAX_CODE ?? "";
 
                 txtBuyerName2.Text = data.TDL_PATIENT_NAME ?? "";
                 txtBuyerAddress2.Text = data.WORK_PLACE_ADDRESS ?? "";
-                txtBuyerOrganization2.Text = data.TDL_PATIENT_WORK_PLACE_NAME ?? data.TDL_PATIENT_WORK_PLACE ?? "";
+                //txtBuyerOrganization2.Text = data.TDL_PATIENT_WORK_PLACE_NAME ?? data.TDL_PATIENT_WORK_PLACE ?? "";
                 txtBuyerTaxCode2.Text = data.WORK_PLACE_TAX_CODE ?? "";
+
+                var transaction = listTransaction.FirstOrDefault();
+                //Don vi
+                long? workPlaceId = null;
+                if (transaction != null && transaction.BUYER_WORK_PLACE_ID != null)
+                {
+                    workPlaceId = transaction.BUYER_WORK_PLACE_ID;
+                }else if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)
+                {
+                    workPlaceId = data.TDL_PATIENT_WORK_PLACE_ID;
+                }
+                if (workPlaceId.HasValue)
+                {
+                    cboBuyerOrganization.EditValue = workPlaceId;
+                    cboBuyerOrganization2.EditValue = workPlaceId;
+                    //var workPlace = BackendDataWorker.Get<HIS_WORK_PLACE>().FirstOrDefault(wp => wp.ID == workPlaceId);
+                    //txtBuyerOrganization.Text = workPlace != null ? workPlace.WORK_PLACE_NAME : string.Empty;
+                    //txtBuyerOrganization2.Text = workPlace != null ? workPlace.WORK_PLACE_NAME : string.Empty;
+                }
+                else
+                {
+                    cboBuyerOrganization.EditValue = null;
+                }
+                //Ma so thue
+                if (transaction != null && transaction.BUYER_TAX_CODE != null)
+                    txtBuyerTaxCode.Text = transaction.BUYER_TAX_CODE;
+                else if (data.TDL_PATIENT_TAX_CODE != null)
+                    txtBuyerTaxCode.Text = data.TDL_PATIENT_TAX_CODE;
 
                 HisPatientTypeAlterViewAppliedFilter filter = new HisPatientTypeAlterViewAppliedFilter();
                 filter.TreatmentId = treatment.ID;
@@ -2925,6 +2978,111 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             {
 
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void InitComboBuyerOrganization()
+        {
+            try
+            {
+                dtWorkPlace = BackendDataWorker.Get<HIS_WORK_PLACE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                this.InitComboCommon(this.cboBuyerOrganization, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
+                this.InitComboCommon(this.cboBuyerOrganization2, dtWorkPlace, "ID", "WORK_PLACE_NAME", "TAX_CODE");
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void InitComboCommon(Control cboEditor, object data, string valueMember, string displayMember, string displayMemberCode)
+        {
+            try
+            {
+                InitComboCommon(cboEditor, data, valueMember, displayMember, 0, displayMemberCode, 0);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void InitComboCommon(Control cboEditor, object data, string valueMember, string displayMember, int displayMemberWidth, string displayMemberCode, int displayMemberCodeWidth)
+        {
+            try
+            {
+                int popupWidth = 0;
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                if (!String.IsNullOrEmpty(displayMember))
+                {
+                    columnInfos.Add(new ColumnInfo(displayMember, "Tên", (displayMemberWidth > 0 ? displayMemberWidth : 250), 1));
+                    popupWidth += (displayMemberWidth > 0 ? displayMemberWidth : 350);
+                }
+                if (!String.IsNullOrEmpty(displayMemberCode))
+                {
+                    columnInfos.Add(new ColumnInfo(displayMemberCode, "Mã số thuế", (displayMemberCodeWidth > 0 ? displayMemberCodeWidth : 100), 2));
+                    popupWidth += (displayMemberCodeWidth > 0 ? displayMemberCodeWidth : 100);
+                }
+                ControlEditorADO controlEditorADO = new ControlEditorADO(displayMember, valueMember, columnInfos, true, popupWidth);
+                ControlEditorLoader.Load(cboEditor, data, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkOther_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkOther.Checked)
+                {
+                    layoutControlItem61.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutControlItem73.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+                else
+                {
+                    layoutControlItem61.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem73.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboBuyerOrganization_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var focus = (HIS_WORK_PLACE)cboBuyerOrganization.Properties.View.GetFocusedRow();
+                txtBuyerTaxCode.Text = focus.TAX_CODE;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkOther2_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkOther2.Checked)
+                {
+                    layoutControlItem66.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutControlItem75.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+                else
+                {
+                    layoutControlItem66.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem75.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }
