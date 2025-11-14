@@ -5555,15 +5555,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         continue;
                     }
 
-                    if (end.Value < begin.Value)
+                    if (instructionTime.HasValue && end.Value < instructionTime.Value)
                     {
-                        invalids.Add(string.Format("{0} có thời gian kết thúc nhỏ hơn bắt đầu", display));
-                        continue;
-                    }
-
-                    if (begin.Value > now || end.Value > now)
-                    {
-                        invalids.Add(string.Format("{0} thời gian vượt quá thời điểm hiện tại", display));
+                        invalids.Add(string.Format("{0} có thời gian kết thúc nhỏ hơn thời gian y lệnh", display));    
                         continue;
                     }
                 }

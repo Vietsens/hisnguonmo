@@ -28,6 +28,7 @@ namespace MPS.Processor.Mps000175.PDO
     public partial class Mps000175PDO : RDOBase
     {
         public List<Mps000175ADO> listAdo = new List<Mps000175ADO>();
+        public List<Mps000175Sum> listSum = new List<Mps000175Sum>();
         public List<V_HIS_EXP_MEST_MATERIAL> _ExpMestMaterials { get; set; }
         public List<HIS_EXP_MEST> _ExpMests_Print { get; set; }
         public keyTitles keyName;
@@ -45,6 +46,7 @@ namespace MPS.Processor.Mps000175.PDO
             List<long> serviceUnitIds,
             List<long> roomIds,
             keyTitles _key,
+
             Mps000175Config _configMps175,
             List<V_HIS_MATERIAL_TYPE> materialTypes
             )

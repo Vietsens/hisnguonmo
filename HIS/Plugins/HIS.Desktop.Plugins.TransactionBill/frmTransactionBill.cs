@@ -145,7 +145,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         List<long> lstSereServId = new List<long>();
         Timer timerClose = new Timer();
         bool PrintMps279 { get; set; }
-
+        private bool isSaveAndSignSuccess = false;
         private List<HIS_BILL_FUND> listBillFundPrint { get; set; }
         private List<HIS_SERE_SERV_BILL> hisSSBillsPrint { get; set; }
         private List<HIS_SERE_SERV> listSereServPrint { get; set; }
@@ -174,6 +174,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     this.treatmentId = data.ID;
                     this.currentTreatment = data;
                 }
+                Inventec.Common.Logging.LogSystem.Info("currentTreatment1: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentTreatment), currentTreatment));
                 this.currentTransaction = tran;
                 if (this.currentModule != null && this.IsDirectlyBilling.HasValue && this.IsDirectlyBilling.Value)
                 {
@@ -3893,6 +3894,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                 adoqr.TreatmentId = this.treatmentId ?? 0;
                                 adoqr.TransReqId = CreateReqType.Transaction;
                                 adoqr.ConfigValue = selectedConfig;
+                                adoqr.PrintInvoice = (chkPrintHddt != null && chkPrintHddt.Checked);
+                                adoqr.IssueInvoice = isSaveAndSignSuccess;
+                                adoqr.NotDisplayedInvoice = (chkHideHddt != null && chkHideHddt.Checked);
                                 HIS_TRANSACTION tran = new HIS_TRANSACTION();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, TransactionQr);
                                 adoqr.Transaction = tran;
@@ -3900,7 +3904,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                 LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
 
                                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
-
+                                isSaveAndSignSuccess = false;
                             };
                             popupMenu1.AddItem(btnOption);
                         }
@@ -3915,13 +3919,16 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         adoqr.TreatmentId = this.treatmentId ?? 0;
                         adoqr.TransReqId = CreateReqType.Transaction;
                         adoqr.ConfigValue = selectedConfig;
+                        adoqr.PrintInvoice = (chkPrintHddt != null && chkPrintHddt.Checked);
+                        adoqr.IssueInvoice = isSaveAndSignSuccess;
+                        adoqr.NotDisplayedInvoice = chkHideHddt.Checked;
                         HIS_TRANSACTION tran = new HIS_TRANSACTION();
                         Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, TransactionQr);
                         adoqr.Transaction = tran;
                         listArgs.Add(adoqr);
                         LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
                         HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
-
+                        isSaveAndSignSuccess = false;
                     }
 
                 }
@@ -4034,6 +4041,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 layoutControlItem59.Visibility = LayoutVisibility.Always;
                 layoutControlItem58.Visibility = LayoutVisibility.Always;
                 layoutControlItem60.Visibility = LayoutVisibility.Always;
+                layoutControlItem63.Visibility = LayoutVisibility.Always;
+
                 // Ẩn của Cơ quan
                 layoutControlItem44.Visibility = LayoutVisibility.Never;
                 layoutControlItem35.Visibility = LayoutVisibility.Never;
@@ -4070,7 +4079,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 layoutControlItem60.Visibility = LayoutVisibility.Never;
                 layoutControlItem61.Visibility = LayoutVisibility.Never;
                 layoutControlItem62.Visibility = LayoutVisibility.Never;
-
+                layoutControlItem63.Visibility = LayoutVisibility.Never;
             }
         }
 

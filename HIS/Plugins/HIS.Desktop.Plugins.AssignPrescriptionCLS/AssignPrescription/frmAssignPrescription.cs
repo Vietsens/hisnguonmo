@@ -3785,19 +3785,108 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        // this.txtIcdSubCode.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.txtIcdSubCode_EditValueChanging);
+        private void txtIcdSubCode_EditValueChanging(object sender, ChangingEventArgs e)
+        {
+            //var editor = sender as DevExpress.XtraEditors.TextEdit;
+            //if (editor.IsEditorActive && e.NewValue != null)
+            //{
+            //    var oldMa = e.OldValue.ToString().Split(';');
+            //    var newMa = e.NewValue.ToString().Split(';');
+            //    var tenList = txtIcdText.Text.Split(';').ToList();
+
+            //    // 
+            //    if (newMa.Length < oldMa.Length && tenList.Count >= oldMa.Length)
+            //    {
+            //        for (int i = 0; i < oldMa.Length; i++)
+            //        {
+            //            if ((i >= newMa.Length || newMa[i] != oldMa[i]))
+            //            {
+            //                if (i < tenList.Count)
+            //                    tenList.RemoveAt(i);
+            //                break;
+            //            }
+            //        }
+            //        txtIcdText.Text = string.Join(";", tenList);
+            //    }
+            //    // 
+            //    else if (newMa.Length > oldMa.Length)
+            //    {
+            //        // 
+            //        int insertIndex = -1;
+            //        int minLen = Math.Min(oldMa.Length, newMa.Length);
+            //        for (int i = 0; i < minLen; i++)
+            //        {
+            //            if (oldMa[i] != newMa[i])
+            //            {
+            //                insertIndex = i;
+            //                break;
+            //            }
+            //        }
+            //        if (insertIndex == -1)
+            //            insertIndex = newMa.Length - 1;
+
+            //        // 
+            //        if (insertIndex <= tenList.Count)
+            //            tenList.Insert(insertIndex, "");
+            //        else
+            //            tenList.Add("");
+
+            //        txtIcdText.Text = string.Join(";", tenList);
+            //    }
+            //    else if (newMa.Length == oldMa.Length && newMa.Length == 1 && newMa[0] == "")
+            //    {
+            //        txtIcdText.Text = "";
+            //    }
+            //}
+        }
+        // this.txtIcdText.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.txtIcdText_EditValueChanging);
+
+        private void txtIcdText_EditValueChanging(object sender, ChangingEventArgs e)
+        {
+            var editor = sender as DevExpress.XtraEditors.TextEdit;
+            if (editor.IsEditorActive)
+            {
+                //this.IcdSubName = e.NewValue.ToString().Trim(' ').Split(';').ToList();
+                LoadIcdSubToList();
+            }
+            //var editor = sender as DevExpress.XtraEditors.TextEdit;
+            //if (editor.IsEditorActive)
+            //{
+            //    var ss = editor.SelectionStart;
+            //    var ma = txtIcdSubCode.Text.ToString().Trim(';', ' ').Split(';').Where(w => w.Trim() != "").ToArray();
+            //    if (ma.Length != txtIcdSubCode.Text.ToString().Split(';').Length)
+            //    {
+            //        txtIcdSubCode.Text = string.Join(";", ma);
+            //    }
+            //    var ten = e.NewValue.ToString().Trim(' ').Split(';');
+            //    if (ten.Length > ma.Length)
+            //    {
+            //        var newTen1 = string.Join(";", ten.Take(ma.Length));
+            //        var newTen2 = string.Join(";", ten.Skip(ma.Length));
+            //        e.NewValue = newTen1 + newTen2;
+            //        editor.BeginInvoke(new Action(() =>
+            //        {
+            //            editor.SelectionStart = ss;
+            //        }));
+            //    }
+            //}
+
+        }
 
         private void stringIcds(string icdCode, string icdName)
         {
             try
             {
-                if (!string.IsNullOrEmpty(icdCode))
+                //if (!string.IsNullOrEmpty(icdCode))
                 {
-                    txtIcdSubCode.Text = icdCode;
+                    txtIcdSubCode.Text = icdCode??"";
                 }
-                if (!string.IsNullOrEmpty(icdName))
+                //if (!string.IsNullOrEmpty(icdName))
                 {
-                    txtIcdText.Text = icdName;
+                    txtIcdText.Text = icdName??"";
                 }
+                this.LoadIcdSubToList();
             }
             catch (Exception ex)
             {
@@ -3931,7 +4020,47 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     valid = false;
                     Inventec.Common.Logging.LogSystem.Debug("Ma icd nhap vao khong ton tai trong danh muc. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => strWrongIcdCodes), strWrongIcdCodes));
                 }
-                this.SetCheckedIcdsToControl(this.txtIcdSubCode.Text, strIcdNames);
+                //this.SetCheckedIcdsToControl(this.txtIcdSubCode.Text, strIcdNames);
+                // Chẩn đoán mới
+                var subCodeNew = this.txtIcdSubCode.Text.Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries).ToList();
+                if (strWrongIcdCodes != "")
+                {
+                    foreach (var item in strWrongIcdCodes.Trim(';', ' ').Split(';'))
+                    {
+                        var indexOfCode = subCodeNew.IndexOf(item);
+                        subCodeNew.RemoveAt(indexOfCode);
+                    }
+                }
+                var subNameNew = strIcdNames.Trim(';', ' ').Split(';').ToList();
+                while (subNameNew.Count < subCodeNew.Count)
+                {
+                    subNameNew.Add("");
+                }
+                // Cập nhật tên cho các mã icd đã có tên trống
+                foreach (var item in this.IcdSubCode.Select((s, i) => new { s, i }))
+                {
+                    if (this.IcdSubName[item.i] == "")
+                    {
+                        var indexOfCode = subCodeNew.IndexOf(item.s);
+                        this.IcdSubName[item.i] = subNameNew[indexOfCode];
+                    }
+                }
+                // Loại bỏ các mã icd đã có trong danh sách cũ
+                var intersectCode = (this.IcdSubCode.Intersect(subCodeNew)).Select(s => s).ToList();
+                foreach (var item in intersectCode)
+                {
+                    var indexOfCode = subCodeNew.IndexOf(item);
+                    subCodeNew.RemoveAt(indexOfCode);
+                    subNameNew.RemoveAt(indexOfCode);
+                }
+                // Chẩn đoán cũ
+                var subCodeOld = intersectCode;
+                var subNameOld = this.IcdSubName.Where((w, i) => intersectCode.Contains(this.IcdSubCode[i])).ToList();
+                // Hiển thị lên giao diện
+                this.txtIcdSubCode.Text = string.Join(IcdUtil.seperator, subCodeOld.Concat(subCodeNew));
+                this.txtIcdText.Text = string.Join(IcdUtil.seperator, subNameOld.Concat(subNameNew));
+                // Cập nhật lại danh sách
+                this.LoadIcdSubToList();
             }
             catch (Exception ex)
             {
@@ -4650,6 +4779,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         private void InitRadioGroupOption()
         {

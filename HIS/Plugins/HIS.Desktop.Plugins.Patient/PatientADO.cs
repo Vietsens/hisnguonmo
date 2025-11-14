@@ -28,5 +28,7 @@ namespace HIS.Desktop.Plugins.Patient
     {
         public string dobDateTime { get; set; }
         public string cmndDateTime { get; set; }
+        public string cccdDateTime { get; set; }
+        public string passportDateTime { get; set; }
     }
 }

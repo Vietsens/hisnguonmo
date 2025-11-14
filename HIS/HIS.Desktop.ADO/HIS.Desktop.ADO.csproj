@@ -94,7 +94,6 @@
     <Compile Include="EmrAttackFileADO.cs" />
     <Compile Include="ProductInfoADO.cs" />
     <Compile Include="SettingSignADO.cs" />
-    <Compile Include="TransReqQRADO.cs" />
     <Compile Include="EmrDocumentInfoADO.cs" />
     <Compile Include="ExpMestSaleTranADO.cs" />
     <Compile Include="HoldReturnADO.cs" />
@@ -106,6 +105,7 @@
     <Compile Include="PrintLogADO.cs" />
     <Compile Include="TestDeviceSampleADO.cs" />
     <Compile Include="TextLibraryInfoADO.cs" />
+    <Compile Include="TransReqQRADO.cs" />
     <Compile Include="TytNerverADO.cs" />
     <Compile Include="ServiceReqSessionDetailADO.cs" />
     <Compile Include="TrackingTempADO.cs" />

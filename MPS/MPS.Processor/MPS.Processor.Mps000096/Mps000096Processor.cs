@@ -234,7 +234,7 @@ namespace MPS.Processor.Mps000096
                     HIS_MEDICINE_TYPE vaccine = GetVaccineFromVaccineId(rdo.currentTreatment.VACCINE_ID);
                     SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.VACCINE_CODE, vaccine != null ? vaccine.MEDICINE_TYPE_CODE : null));
                     SetSingleKey(new KeyValue(Mps000096ExtendSingleKey.VACCINE_NAME, vaccine != null ? vaccine.MEDICINE_TYPE_NAME : null));
-                }
+                } 
 
                 if (rdo.ServiceParent != null)
                 {

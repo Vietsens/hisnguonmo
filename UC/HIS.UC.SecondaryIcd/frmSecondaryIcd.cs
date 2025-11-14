@@ -304,8 +304,8 @@ namespace HIS.UC.SecondaryIcd
         {
             try
             {
-                string icdNames = null;// = IcdUtil.seperator;
-                string icdCodes = null;// = IcdUtil.seperator;
+                //string icdNames = null;// = IcdUtil.seperator;
+                //string icdCodes = null;// = IcdUtil.seperator;
                 string icdName__Olds = txtIcdNames.Text;
                 
                 var checkList = icdAdoChecks.Where(o => o.IsChecked == true).Distinct().ToList();
@@ -318,8 +318,33 @@ namespace HIS.UC.SecondaryIcd
                     checkList.Last().IsChecked = false;
                 }
 
-                txtIcdNames.Text = string.Join(";",checkList.Where(s => s.IsChecked == true).Select(p=>p.ICD_NAME));
-                txtIcdCodes.Text = string.Join(";", checkList.Where(s => s.IsChecked == true).Select(p => p.ICD_CODE));
+                var row = (IcdADO)gridViewSecondaryDisease.GetFocusedRow();
+                if (row != null)
+                {
+                    var icdCodes= this.txtIcdCodes.Text.Trim(new char[] { ' ', ';' }).Split(';').ToList();
+                    var icdNames= this.txtIcdNames.Text.Trim(new char[] { ' ', ';' }).Split(';').ToList();
+                    while (icdNames.Count < icdCodes.Count)
+                    {
+                        icdNames.Add("");
+                    }
+                    if (row.IsChecked)
+                    {
+                        txtIcdCodes.Text += ";" + row.ICD_CODE;
+                        txtIcdNames.Text += ";" + row.ICD_NAME;
+                    }
+                    else
+                    {
+                        var indexOfCode = icdCodes.IndexOf(row.ICD_CODE);
+                        icdCodes.RemoveAt(indexOfCode);
+                        icdNames.RemoveAt(indexOfCode);
+                        txtIcdCodes.Text = string.Join(";", icdCodes);
+                        txtIcdNames.Text = string.Join(";", icdNames);
+                    }
+                }
+                txtIcdCodes.Text = txtIcdCodes.Text.Trim(';', ' ');
+                txtIcdNames.Text = txtIcdNames.Text.Trim(';', ' ');
+                //txtIcdNames.Text = string.Join(";",checkList.Where(s => s.IsChecked == true).Select(p=>p.ICD_NAME));
+                //txtIcdCodes.Text = string.Join(";", checkList.Where(s => s.IsChecked == true).Select(p => p.ICD_CODE));
 
             }
             catch (Exception ex)
@@ -485,6 +510,30 @@ namespace HIS.UC.SecondaryIcd
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtIcdNames_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            var editor = sender as DevExpress.XtraEditors.TextEdit;
+            if (editor.IsEditorActive)
+            {
+                //var ss = editor.SelectionStart;
+                //var ma = txtIcdCodes.Text.ToString().Trim(';', ' ').Split(';').Where(w => w.Trim() != "").ToArray();
+                //if (ma.Length != txtIcdCodes.Text.ToString().Split(';').Length)
+                //{
+                //    txtIcdCodes.Text = string.Join(";", ma);
+                //}
+                //var ten = e.NewValue.ToString().Trim(' ').Split(';');
+                //if (ten.Length > ma.Length)
+                //{
+                //    var newTen1 = string.Join(";", ten.Take(ma.Length));
+                //    var newTen2 = string.Join(";", ten.Skip(ma.Length));
+                //    e.NewValue = newTen1 + newTen2;
+                //    editor.BeginInvoke(new Action(() => {
+                //        editor.SelectionStart = ss;
+                //    }));
+                //}
             }
         }
     }
