@@ -29,7 +29,9 @@ namespace Inventec.Common.ElectronicBillViettel
         public string User { get; set; }
         public string Pass { get; set; }
         public string SupplierTaxCode { get; set; }
+        public bool IsTemp { get; set; }
         public Version Version { get; set; }
+
     }
 
     public enum Version

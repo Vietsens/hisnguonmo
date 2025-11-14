@@ -124,5 +124,6 @@ namespace Inventec.Common.ElectronicBillViettel.Model
         /// Maxlength: 15
         /// </summary>
         public string buyerBirthDay { get; set; }
+        public string buyerBudgetCode { get; set; }
     }
 }
