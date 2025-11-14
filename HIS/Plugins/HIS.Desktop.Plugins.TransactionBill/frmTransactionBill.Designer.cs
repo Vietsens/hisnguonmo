@@ -100,10 +100,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.bbtnRCSavePrint = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRCSaveSign = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.chkPrintTHPK = new DevExpress.XtraEditors.CheckEdit();
             this.btnAddSignEmr = new DevExpress.XtraEditors.SimpleButton();
@@ -334,6 +330,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.layoutControlItem51 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutBank = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutReason = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.timerInitForm = new System.Windows.Forms.Timer(this.components);
@@ -610,10 +610,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnRCSave,
@@ -677,34 +673,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.barButtonItem1.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F));
             this.barButtonItem1.Name = "barButtonItem1";
             this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1381, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 762);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1381, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 733);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1381, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 733);
             // 
             // gridView3
             // 
@@ -1018,7 +986,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtMaQH
             // 
-            this.txtMaQH.Location = new System.Drawing.Point(475, 41);
+            this.txtMaQH.Location = new System.Drawing.Point(709, 41);
             this.txtMaQH.MenuManager = this.barManager1;
             this.txtMaQH.Name = "txtMaQH";
             this.txtMaQH.Size = new System.Drawing.Size(208, 20);
@@ -1027,7 +995,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // checkEdit1
             // 
-            this.checkEdit1.Location = new System.Drawing.Point(75, 41);
+            this.checkEdit1.Location = new System.Drawing.Point(309, 41);
             this.checkEdit1.MenuManager = this.barManager1;
             this.checkEdit1.Name = "checkEdit1";
             this.checkEdit1.Properties.Caption = "Khác";
@@ -1038,7 +1006,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerOrganzation2
             // 
-            this.txtBuyerOrganzation2.Location = new System.Drawing.Point(-177, 65);
+            this.txtBuyerOrganzation2.Location = new System.Drawing.Point(57, 65);
             this.txtBuyerOrganzation2.MenuManager = this.barManager1;
             this.txtBuyerOrganzation2.Name = "txtBuyerOrganzation2";
             this.txtBuyerOrganzation2.Size = new System.Drawing.Size(248, 20);
@@ -1047,7 +1015,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerTaxCode2
             // 
-            this.txtBuyerTaxCode2.Location = new System.Drawing.Point(213, 41);
+            this.txtBuyerTaxCode2.Location = new System.Drawing.Point(447, 41);
             this.txtBuyerTaxCode2.MenuManager = this.barManager1;
             this.txtBuyerTaxCode2.Name = "txtBuyerTaxCode2";
             this.txtBuyerTaxCode2.Size = new System.Drawing.Size(213, 20);
@@ -1056,7 +1024,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // cboBuyerOrganzation2
             // 
-            this.cboBuyerOrganzation2.Location = new System.Drawing.Point(-177, 41);
+            this.cboBuyerOrganzation2.Location = new System.Drawing.Point(57, 41);
             this.cboBuyerOrganzation2.MenuManager = this.barManager1;
             this.cboBuyerOrganzation2.Name = "cboBuyerOrganzation2";
             this.cboBuyerOrganzation2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1079,7 +1047,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtSDT
             // 
-            this.txtSDT.Location = new System.Drawing.Point(617, -31);
+            this.txtSDT.Location = new System.Drawing.Point(851, -31);
             this.txtSDT.MenuManager = this.barManager1;
             this.txtSDT.Name = "txtSDT";
             this.txtSDT.Size = new System.Drawing.Size(66, 20);
@@ -1088,7 +1056,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // cboBuyerIdentity
             // 
-            this.cboBuyerIdentity.Location = new System.Drawing.Point(517, -31);
+            this.cboBuyerIdentity.Location = new System.Drawing.Point(751, -31);
             this.cboBuyerIdentity.MenuManager = this.barManager1;
             this.cboBuyerIdentity.Name = "cboBuyerIdentity";
             this.cboBuyerIdentity.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1103,7 +1071,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerIdentityNumber
             // 
-            this.txtBuyerIdentityNumber.Location = new System.Drawing.Point(253, -31);
+            this.txtBuyerIdentityNumber.Location = new System.Drawing.Point(487, -31);
             this.txtBuyerIdentityNumber.MenuManager = this.barManager1;
             this.txtBuyerIdentityNumber.Name = "txtBuyerIdentityNumber";
             this.txtBuyerIdentityNumber.Size = new System.Drawing.Size(11, 20);
@@ -1112,7 +1080,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // radioBuyerCompany
             // 
-            this.radioBuyerCompany.Location = new System.Drawing.Point(-46, -60);
+            this.radioBuyerCompany.Location = new System.Drawing.Point(188, -60);
             this.radioBuyerCompany.Name = "radioBuyerCompany";
             this.radioBuyerCompany.Size = new System.Drawing.Size(729, 25);
             this.radioBuyerCompany.TabIndex = 15;
@@ -1122,7 +1090,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // radioBuyerUser
             // 
-            this.radioBuyerUser.Location = new System.Drawing.Point(-232, -60);
+            this.radioBuyerUser.Location = new System.Drawing.Point(2, -60);
             this.radioBuyerUser.Name = "radioBuyerUser";
             this.radioBuyerUser.Size = new System.Drawing.Size(182, 25);
             this.radioBuyerUser.TabIndex = 14;
@@ -1132,7 +1100,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerEmail
             // 
-            this.txtBuyerEmail.Location = new System.Drawing.Point(475, 17);
+            this.txtBuyerEmail.Location = new System.Drawing.Point(709, 17);
             this.txtBuyerEmail.MenuManager = this.barManager1;
             this.txtBuyerEmail.Name = "txtBuyerEmail";
             this.txtBuyerEmail.Size = new System.Drawing.Size(208, 20);
@@ -1141,7 +1109,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // chkAddressBhyt
             // 
-            this.chkAddressBhyt.Location = new System.Drawing.Point(311, 17);
+            this.chkAddressBhyt.Location = new System.Drawing.Point(545, 17);
             this.chkAddressBhyt.MenuManager = this.barManager1;
             this.chkAddressBhyt.Name = "chkAddressBhyt";
             this.chkAddressBhyt.Properties.Caption = "ĐC BHYT";
@@ -1153,7 +1121,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // chkOther
             // 
-            this.chkOther.Location = new System.Drawing.Point(268, -31);
+            this.chkOther.Location = new System.Drawing.Point(502, -31);
             this.chkOther.MenuManager = this.barManager1;
             this.chkOther.Name = "chkOther";
             this.chkOther.Properties.Caption = "Khác";
@@ -1166,7 +1134,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             this.panelControl1.Controls.Add(this.cboBuyerOrganization);
             this.panelControl1.Controls.Add(this.txtBuyerOrganization);
-            this.panelControl1.Location = new System.Drawing.Point(-79, -33);
+            this.panelControl1.Location = new System.Drawing.Point(155, -33);
             this.panelControl1.Margin = new System.Windows.Forms.Padding(0);
             this.panelControl1.Name = "panelControl1";
             this.panelControl1.Size = new System.Drawing.Size(245, 48);
@@ -1211,7 +1179,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerAddress
             // 
-            this.txtBuyerAddress.Location = new System.Drawing.Point(-177, 17);
+            this.txtBuyerAddress.Location = new System.Drawing.Point(57, 17);
             this.txtBuyerAddress.MenuManager = this.barManager1;
             this.txtBuyerAddress.Name = "txtBuyerAddress";
             this.txtBuyerAddress.Size = new System.Drawing.Size(484, 20);
@@ -1220,7 +1188,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerAccountNumber
             // 
-            this.txtBuyerAccountNumber.Location = new System.Drawing.Point(647, -7);
+            this.txtBuyerAccountNumber.Location = new System.Drawing.Point(881, -7);
             this.txtBuyerAccountNumber.MenuManager = this.barManager1;
             this.txtBuyerAccountNumber.Name = "txtBuyerAccountNumber";
             this.txtBuyerAccountNumber.Size = new System.Drawing.Size(36, 20);
@@ -1230,7 +1198,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerTaxCode
             // 
-            this.txtBuyerTaxCode.Location = new System.Drawing.Point(392, -31);
+            this.txtBuyerTaxCode.Location = new System.Drawing.Point(626, -31);
             this.txtBuyerTaxCode.MenuManager = this.barManager1;
             this.txtBuyerTaxCode.Name = "txtBuyerTaxCode";
             this.txtBuyerTaxCode.Size = new System.Drawing.Size(121, 20);
@@ -1240,7 +1208,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerName
             // 
-            this.txtBuyerName.Location = new System.Drawing.Point(-177, -31);
+            this.txtBuyerName.Location = new System.Drawing.Point(57, -31);
             this.txtBuyerName.MenuManager = this.barManager1;
             this.txtBuyerName.Name = "txtBuyerName";
             this.txtBuyerName.Size = new System.Drawing.Size(41, 20);
@@ -1272,7 +1240,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.emptySpaceItem3,
             this.layoutControlItem62,
             this.layoutControlItem63});
-            this.layoutControlGroup3.Location = new System.Drawing.Point(-234, -62);
+            this.layoutControlGroup3.Location = new System.Drawing.Point(0, -62);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlGroup3.Size = new System.Drawing.Size(919, 149);
@@ -1468,7 +1436,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.layoutControlItem58.Location = new System.Drawing.Point(0, 101);
             this.layoutControlItem58.Name = "layoutControlItem58";
             this.layoutControlItem58.Size = new System.Drawing.Size(307, 24);
-            this.layoutControlItem58.Text = "Đơn vị:.";
+            this.layoutControlItem58.Text = "Đơn vị:";
             this.layoutControlItem58.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem58.TextSize = new System.Drawing.Size(50, 20);
             this.layoutControlItem58.TextToControlDistance = 5;
@@ -1482,7 +1450,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.layoutControlItem60.Location = new System.Drawing.Point(360, 101);
             this.layoutControlItem60.Name = "layoutControlItem60";
             this.layoutControlItem60.Size = new System.Drawing.Size(302, 48);
-            this.layoutControlItem60.Text = "Mã số thuế: .";
+            this.layoutControlItem60.Text = "Mã số thuế: ";
             this.layoutControlItem60.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem60.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem60.TextToControlDistance = 5;
@@ -3682,6 +3650,34 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.layoutReason.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutReason.TextSize = new System.Drawing.Size(90, 20);
             this.layoutReason.TextToControlDistance = 5;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1381, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 762);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1381, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 733);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1381, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 733);
             // 
             // dxValidationProvider1
             // 
