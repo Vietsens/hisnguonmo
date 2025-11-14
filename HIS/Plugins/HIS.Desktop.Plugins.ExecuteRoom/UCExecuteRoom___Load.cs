@@ -15,19 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
 using DevExpress.XtraTab;
@@ -58,6 +45,20 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static Aspose.Pdf.Operator;
 //using static Aspose.Pdf.Operator;
 
 namespace HIS.Desktop.Plugins.ExecuteRoom
@@ -2245,6 +2246,68 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                             }
                         }
                     }
+
+                    if (!HisConfigCFG.IsEnableEditStartTime && (HisConfigCFG.ServiceSimultaneity == "1" || HisConfigCFG.ServiceSimultaneity == "2"))
+                    {
+                        DateTime now = DateTime.Now;
+                        CommonParam param = new CommonParam();
+                        HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
+                        sdo.TreatmentId = treatmentId;
+                        sdo.Loginnames = new List<string> { Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() };
+                        sdo.SereTimes =  new List<long> { long.Parse(now.ToString("yyyyMMddHHmmss")) };
+                        var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, param);
+
+                        if (HisConfigCFG.ServiceSimultaneity == "1" && !CheckSereTimes)
+                        {
+                            MessageManager.Show(param, CheckSereTimes);
+                            return;
+                        }
+
+                        if (HisConfigCFG.ServiceSimultaneity == "2" && !CheckSereTimes)
+                        {
+                            if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                            {
+                                return;
+                            }
+                        }
+                    }
+
+                    if (HisConfigCFG.Simultaneity == "1" || HisConfigCFG.Simultaneity == "2")
+                    {
+                        var now = DateTime.Now;
+                        var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                        CommonParam param = new CommonParam();
+
+                        var sdo = new HisServiceReqCheckAssignSimultaneitySDO
+                        {
+                            TreatmentId = treatmentId,
+                            CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>
+                            {
+                                new HisServiceReqCheckAssignSimultaneityCheckInfosSDO
+                                {
+                                    LoginName = loginName,
+                                    CheckTimes = new List<long> { long.Parse(now.ToString("yyyyMMddHHmmss")) }
+                                }
+                            }
+                        };
+                        var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo, param);
+
+                        if (HisConfigCFG.Simultaneity == "1" && !CheckSereTimes)
+                        {
+                            MessageManager.Show(param, CheckSereTimes);
+                            return;
+                        }
+
+                        if (HisConfigCFG.Simultaneity == "2" && !CheckSereTimes)
+                        {
+                            if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                            {
+                                return;
+                            }
+                        }
+                    }
+
+
                     if (serviceReqInput.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
                     {
                         Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. 2");

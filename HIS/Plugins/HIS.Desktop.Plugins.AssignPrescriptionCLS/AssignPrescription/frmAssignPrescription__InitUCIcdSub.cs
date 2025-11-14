@@ -138,17 +138,39 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }
             return result;
         }
-
+        List<string> IcdSubCode = new List<string>();
+        List<string> IcdSubName = new List<string>();
         private void LoadDataToIcdSub(string icdSubCode, string icdText)
         {
             try
             {
-                this.txtIcdSubCode.Text = icdSubCode;
-                this.txtIcdText.Text = icdText;                    
+                this.txtIcdSubCode.Text = icdSubCode?.Trim(';', ' ');
+                this.txtIcdText.Text = icdText?.Trim(';', ' ');
+                this.LoadIcdSubToList();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void LoadIcdSubToList()
+        {
+            try
+            {
+                this.IcdSubCode = this.txtIcdSubCode.Text.Split(';').ToList();
+                this.IcdSubName = this.txtIcdText.Text.Split(';').ToList();
+                while (this.IcdSubName.Count < this.IcdSubCode.Count)
+                {
+                    this.IcdSubName.Add("");
+                }
+                while (this.IcdSubName.Count > this.IcdSubCode.Count)
+                {
+                    this.IcdSubCode.Add("");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

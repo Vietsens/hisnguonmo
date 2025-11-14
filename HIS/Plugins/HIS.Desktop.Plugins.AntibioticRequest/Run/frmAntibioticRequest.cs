@@ -262,6 +262,7 @@ namespace HIS.Desktop.Plugins.AntibioticRequest.Run
                             }
                         }
                         txtAllergy.Text = this.currentAntibioticRequest.AntibioticRequest.ALLERGY;
+                        chkEmergency.Checked = this.currentAntibioticRequest.AntibioticRequest.IS_EMERGENCY == 1;
                         chkInfectionShock.Checked = this.currentAntibioticRequest.AntibioticRequest.IS_INFECTION_SHOCK == 1;
                         chkCommunityPneumonia.Checked = this.currentAntibioticRequest.AntibioticRequest.IS_COMMUNITY_PNEUMONIA == 1;
                         chkHospitalPneumonia.Checked = this.currentAntibioticRequest.AntibioticRequest.IS_HOSPITAL_PNEUMONIA == 1;
@@ -793,6 +794,7 @@ namespace HIS.Desktop.Plugins.AntibioticRequest.Run
                     obj.ID = this.currentAntibiotiRequestView.ID;
                 obj.REQUEST_TIME = (dteTimeRequest.EditValue != null && dteTimeRequest.DateTime != DateTime.MinValue) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteTimeRequest.DateTime) ?? 0 : 0;
                 obj.ALLERGY = txtAllergy.Text;
+                obj.IS_EMERGENCY = chkEmergency.Checked ? (short?)1 : 0;
                 obj.IS_INFECTION_SHOCK = chkInfectionShock.Checked ? (short?)1 : 0;
                 obj.IS_COMMUNITY_PNEUMONIA = chkCommunityPneumonia.Checked ? (short?)1 : 0;
                 obj.IS_HOSPITAL_PNEUMONIA = chkHospitalPneumonia.Checked ? (short?)1 : 0;

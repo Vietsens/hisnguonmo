@@ -128,7 +128,6 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
         {
             ResultDataADO rsData = new ResultDataADO();
             try
-                //Tôi chịu  bị sao vậy a :v, đặt debug cũng sai chỗ thì code cũng sai nốt, tự sửa đi
             {
                 long keyCheck = AppConfigs.CheDoTuDongCheckThongTinTheBHYT;
                 if (keyCheck > 0)
@@ -249,7 +248,9 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                             {
                                 DateTime dtHanTheTuMoi = DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheTuMoi).Value;
                                 DateTime dtHanTheDenMoi = (DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheDenMoi) ?? DateTime.MinValue);
-                                if (dtHanTheTuMoi.Date <= dtIntructionTime.Date && (dtHanTheDenMoi == DateTime.MinValue || dtIntructionTime.Date <= dtHanTheDenMoi.Date))
+
+                                DateTime dtHanTheTuCu = DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheTu).Value;
+                                if ((dtHanTheTuMoi.Date <= dtIntructionTime.Date && (dtHanTheDenMoi == DateTime.MinValue || dtIntructionTime.Date <= dtHanTheDenMoi.Date)) || dtHanTheTuCu.Date <= dtIntructionTime.Date)
                                 {
                                     isShowQuestionUpdateFormData = true;
                                 }

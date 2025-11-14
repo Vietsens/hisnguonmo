@@ -34,7 +34,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                if (Config.HisConfigCFG.IsEnableEditStartTime)
+                if (Config.HisConfigCFG.IsEnableEditStartTime == "1")
                 {
                     ValidateStartTime();
                 }

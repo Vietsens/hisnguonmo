@@ -26,6 +26,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraGrid.Views.Tile;
 using DevExpress.XtraRichEdit.API.Native;
@@ -676,10 +677,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 InformationADO ado = new InformationADO();
                 IsLoadFromPin = false;
-                //this.currentBySessionControlStateRDO = controlStateWorker.GetDataBySession(moduleLink);
-                if (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0)
+                this.currentBySessionControlStateRDO = controlStateWorker.GetDataBySession(moduleLink);
+                SavePin();
+                if (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0)   
                 {
-
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentBySessionControlStateRDO), currentBySessionControlStateRDO));
                     foreach (var item in this.currentBySessionControlStateRDO)
                     {
@@ -715,6 +716,12 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             ekipUserAdos.Add(a);
                             gridControlEkip.DataSource = ekipUserAdos;
                         }
+                    }
+                    else
+                    {
+                        xtraTabControl1.CustomHeaderButtons[0].Visible = false;
+                        xtraTabControl1.CustomHeaderButtons[1].Visible = true;
+                        IsPin = false;
                     }
                 }
                 else
@@ -2101,6 +2108,21 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 columnInfos.Add(new ColumnInfo("MAX_SERVICE_PER_DAY", "Tối đa", 100, 4));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("MACHINE_NAME", "ID", columnInfos, true, 250);
                 ControlEditorLoader.Load(editor, dataCombo, controlEditorADO);
+
+                GridView view = editor.Properties.View;
+                view.OptionsView.ColumnAutoWidth = false;
+                view.BestFitMaxRowCount = -1;
+                view.BestFitColumns();
+                editor.Popup += delegate (object s, EventArgs e)
+                {
+                    GridView view2 = editor.Properties.View;
+                    view2.BestFitColumns();
+                    int num = (from GridColumn c in view2.Columns
+                               where c.Visible
+                               select c).Sum((GridColumn c) => c.Width);
+                    int width = Math.Min(num + 50, 1000);
+                    editor.Properties.PopupFormSize = new Size(width, editor.Properties.PopupFormSize.Height);
+                };
             }
             catch (Exception ex)
             {
@@ -2869,7 +2891,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
-        private void gridView_DoubleClick(object sender, EventArgs e)
+        private void gridView_DoubleClick(object sender, EventArgs e) 
         {
             try
             {

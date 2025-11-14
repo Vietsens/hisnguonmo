@@ -109,11 +109,28 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn34 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn35 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn31 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn41 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn42 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn43 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn40 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn44 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn39 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn30 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn29 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn25 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.btnListReq = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn26 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -123,21 +140,8 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn38 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn37 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn36 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn29 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -155,13 +159,14 @@ namespace HIS.Desktop.Plugins.Patient
             this.ucPaging = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
-            this.cboCSTheoDoi = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.txtCCCD = new DevExpress.XtraEditors.TextEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.imageCollection2 = new DevExpress.Utils.ImageCollection();
+            this.cboCSTheoDoi = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtPatientName = new DevExpress.XtraEditors.TextEdit();
             this.txtPatientCode = new DevExpress.XtraEditors.TextEdit();
@@ -191,6 +196,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lblCCCD = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -222,9 +228,10 @@ namespace HIS.Desktop.Plugins.Patient
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cboCSTheoDoi.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCCCD.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboCSTheoDoi.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientCode.Properties)).BeginInit();
@@ -255,6 +262,7 @@ namespace HIS.Desktop.Plugins.Patient
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lblCCCD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
@@ -266,11 +274,11 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControl1.Controls.Add(this.layoutControl2);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(279, 150, 312, 437);
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1365, 768);
+            this.layoutControl1.Size = new System.Drawing.Size(1024, 624);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -281,20 +289,19 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControl3.Controls.Add(this.btnSave);
             this.layoutControl3.Controls.Add(this.btnImportPatient);
             this.layoutControl3.Controls.Add(this.gridControlPatientList);
-            this.layoutControl3.Location = new System.Drawing.Point(224, 3);
-            this.layoutControl3.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.layoutControl3.Location = new System.Drawing.Point(168, 2);
+            this.layoutControl3.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(1138, 762);
+            this.layoutControl3.Size = new System.Drawing.Size(854, 620);
             this.layoutControl3.TabIndex = 5;
             this.layoutControl3.Text = "layoutControl3";
             // 
             // btnDownload
             // 
-            this.btnDownload.Location = new System.Drawing.Point(1034, 732);
-            this.btnDownload.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnDownload.Location = new System.Drawing.Point(776, 596);
             this.btnDownload.Name = "btnDownload";
-            this.btnDownload.Size = new System.Drawing.Size(101, 27);
+            this.btnDownload.Size = new System.Drawing.Size(76, 22);
             this.btnDownload.StyleController = this.layoutControl3;
             this.btnDownload.TabIndex = 10;
             this.btnDownload.Text = "Tải file mẫu";
@@ -302,18 +309,16 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             // ucPaging1
             // 
-            this.ucPaging1.Location = new System.Drawing.Point(3, 732);
-            this.ucPaging1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ucPaging1.Location = new System.Drawing.Point(2, 596);
             this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(800, 27);
+            this.ucPaging1.Size = new System.Drawing.Size(601, 22);
             this.ucPaging1.TabIndex = 8;
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(917, 732);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSave.Location = new System.Drawing.Point(688, 596);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(111, 27);
+            this.btnSave.Size = new System.Drawing.Size(84, 22);
             this.btnSave.StyleController = this.layoutControl3;
             this.btnSave.TabIndex = 7;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -321,10 +326,9 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             // btnImportPatient
             // 
-            this.btnImportPatient.Location = new System.Drawing.Point(809, 732);
-            this.btnImportPatient.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnImportPatient.Location = new System.Drawing.Point(607, 596);
             this.btnImportPatient.Name = "btnImportPatient";
-            this.btnImportPatient.Size = new System.Drawing.Size(102, 27);
+            this.btnImportPatient.Size = new System.Drawing.Size(77, 22);
             this.btnImportPatient.StyleController = this.layoutControl3;
             this.btnImportPatient.TabIndex = 6;
             this.btnImportPatient.Text = "Import (Ctr I)";
@@ -332,10 +336,10 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             // gridControlPatientList
             // 
-            this.gridControlPatientList.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gridControlPatientList.Location = new System.Drawing.Point(3, 3);
+            this.gridControlPatientList.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(2);
+            this.gridControlPatientList.Location = new System.Drawing.Point(2, 2);
             this.gridControlPatientList.MainView = this.gridViewPatientList;
-            this.gridControlPatientList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.gridControlPatientList.Margin = new System.Windows.Forms.Padding(2);
             this.gridControlPatientList.Name = "gridControlPatientList";
             this.gridControlPatientList.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.ButtonEditHeinCardInfo,
@@ -352,7 +356,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.repositoryItemButton_NoneCreateUUIDFail,
             this.repositoryItemButton_CheckUpdateUUIDFail,
             this.repositoryItemButton_NoneUpdateUUIDFail});
-            this.gridControlPatientList.Size = new System.Drawing.Size(1132, 723);
+            this.gridControlPatientList.Size = new System.Drawing.Size(850, 590);
             this.gridControlPatientList.TabIndex = 4;
             this.gridControlPatientList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewPatientList});
@@ -370,32 +374,36 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn34,
             this.gridColumn35,
             this.gridColumn3,
-            this.gridColumn4,
             this.gridColumn31,
+            this.gridColumn4,
+            this.gridColumn6,
+            this.gridColumn5,
+            this.gridColumn41,
+            this.gridColumn42,
+            this.gridColumn43,
+            this.gridColumn15,
             this.gridColumn40,
+            this.gridColumn44,
+            this.gridColumn13,
+            this.gridColumn14,
+            this.gridColumn10,
+            this.gridColumn9,
+            this.gridColumn7,
+            this.gridColumn11,
             this.gridColumn39,
             this.gridColumn30,
+            this.gridColumn16,
+            this.gridColumn17,
+            this.gridColumn29,
+            this.gridColumn18,
             this.gridColumn25,
             this.gridColumn26,
             this.gridColumn28,
             this.gridColumn38,
             this.gridColumn37,
             this.gridColumn36,
-            this.gridColumn5,
-            this.gridColumn6,
-            this.gridColumn7,
             this.gridColumn8,
-            this.gridColumn9,
-            this.gridColumn10,
-            this.gridColumn11,
             this.gridColumn12,
-            this.gridColumn13,
-            this.gridColumn14,
-            this.gridColumn15,
-            this.gridColumn16,
-            this.gridColumn17,
-            this.gridColumn29,
-            this.gridColumn18,
             this.gridColumn19,
             this.gridColumn20,
             this.gridColumn21,
@@ -590,17 +598,6 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn3.VisibleIndex = 9;
             this.gridColumn3.Width = 100;
             // 
-            // gridColumn4
-            // 
-            this.gridColumn4.Caption = "Tên bệnh nhân";
-            this.gridColumn4.FieldName = "VIR_PATIENT_NAME";
-            this.gridColumn4.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
-            this.gridColumn4.Name = "gridColumn4";
-            this.gridColumn4.OptionsColumn.ReadOnly = true;
-            this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 10;
-            this.gridColumn4.Width = 150;
-            // 
             // gridColumn31
             // 
             this.gridColumn31.Caption = "Số lưu trữ";
@@ -609,8 +606,82 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn31.Name = "gridColumn31";
             this.gridColumn31.OptionsColumn.AllowEdit = false;
             this.gridColumn31.Visible = true;
-            this.gridColumn31.VisibleIndex = 11;
+            this.gridColumn31.VisibleIndex = 10;
             this.gridColumn31.Width = 100;
+            // 
+            // gridColumn4
+            // 
+            this.gridColumn4.Caption = "Tên bệnh nhân";
+            this.gridColumn4.FieldName = "VIR_PATIENT_NAME";
+            this.gridColumn4.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn4.Name = "gridColumn4";
+            this.gridColumn4.OptionsColumn.ReadOnly = true;
+            this.gridColumn4.Visible = true;
+            this.gridColumn4.VisibleIndex = 11;
+            this.gridColumn4.Width = 150;
+            // 
+            // gridColumn6
+            // 
+            this.gridColumn6.Caption = "Giới tính";
+            this.gridColumn6.FieldName = "IS_MALE_DISPLAY1";
+            this.gridColumn6.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn6.Name = "gridColumn6";
+            this.gridColumn6.OptionsColumn.AllowEdit = false;
+            this.gridColumn6.Visible = true;
+            this.gridColumn6.VisibleIndex = 12;
+            this.gridColumn6.Width = 70;
+            // 
+            // gridColumn5
+            // 
+            this.gridColumn5.Caption = "Ngày sinh";
+            this.gridColumn5.FieldName = "DOB_DISPLAY";
+            this.gridColumn5.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn5.Name = "gridColumn5";
+            this.gridColumn5.OptionsColumn.AllowEdit = false;
+            this.gridColumn5.Visible = true;
+            this.gridColumn5.VisibleIndex = 13;
+            this.gridColumn5.Width = 80;
+            // 
+            // gridColumn41
+            // 
+            this.gridColumn41.Caption = "CCCD/CMND/ Hộ chiếu";
+            this.gridColumn41.FieldName = "CCCD_CMND_PASSPORT";
+            this.gridColumn41.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn41.Name = "gridColumn41";
+            this.gridColumn41.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.gridColumn41.Visible = true;
+            this.gridColumn41.VisibleIndex = 14;
+            // 
+            // gridColumn42
+            // 
+            this.gridColumn42.Caption = "Ngày cấp";
+            this.gridColumn42.FieldName = "CCCD_CMND_PASSPORT_DATE";
+            this.gridColumn42.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn42.Name = "gridColumn42";
+            this.gridColumn42.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.gridColumn42.Visible = true;
+            this.gridColumn42.VisibleIndex = 16;
+            // 
+            // gridColumn43
+            // 
+            this.gridColumn43.Caption = "Nơi cấp";
+            this.gridColumn43.FieldName = "CCCD_CMND_PASSPORT_PLACE";
+            this.gridColumn43.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn43.Name = "gridColumn43";
+            this.gridColumn43.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.gridColumn43.Visible = true;
+            this.gridColumn43.VisibleIndex = 17;
+            // 
+            // gridColumn15
+            // 
+            this.gridColumn15.Caption = "Điện thoại";
+            this.gridColumn15.FieldName = "PHONE";
+            this.gridColumn15.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn15.Name = "gridColumn15";
+            this.gridColumn15.OptionsColumn.AllowEdit = false;
+            this.gridColumn15.Visible = true;
+            this.gridColumn15.VisibleIndex = 18;
+            this.gridColumn15.Width = 80;
             // 
             // gridColumn40
             // 
@@ -620,8 +691,82 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn40.Name = "gridColumn40";
             this.gridColumn40.OptionsColumn.ReadOnly = true;
             this.gridColumn40.Visible = true;
-            this.gridColumn40.VisibleIndex = 12;
+            this.gridColumn40.VisibleIndex = 19;
             this.gridColumn40.Width = 120;
+            // 
+            // gridColumn44
+            // 
+            this.gridColumn44.Caption = "Mã đăng ký KCB ban đầu";
+            this.gridColumn44.FieldName = "TDL_HEIN_MEDI_ORG_CODE";
+            this.gridColumn44.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn44.Name = "gridColumn44";
+            this.gridColumn44.Visible = true;
+            this.gridColumn44.VisibleIndex = 20;
+            // 
+            // gridColumn13
+            // 
+            this.gridColumn13.Caption = "Nghề nghiệp";
+            this.gridColumn13.FieldName = "CAREER_NAME";
+            this.gridColumn13.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn13.Name = "gridColumn13";
+            this.gridColumn13.OptionsColumn.AllowEdit = false;
+            this.gridColumn13.Visible = true;
+            this.gridColumn13.VisibleIndex = 21;
+            this.gridColumn13.Width = 120;
+            // 
+            // gridColumn14
+            // 
+            this.gridColumn14.Caption = "Nơi làm việc";
+            this.gridColumn14.FieldName = "WORK_PLACE_NAME";
+            this.gridColumn14.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn14.Name = "gridColumn14";
+            this.gridColumn14.Visible = true;
+            this.gridColumn14.VisibleIndex = 22;
+            this.gridColumn14.Width = 100;
+            // 
+            // gridColumn10
+            // 
+            this.gridColumn10.Caption = "Địa chỉ";
+            this.gridColumn10.FieldName = "VIR_ADDRESS";
+            this.gridColumn10.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn10.Name = "gridColumn10";
+            this.gridColumn10.OptionsColumn.ReadOnly = true;
+            this.gridColumn10.Visible = true;
+            this.gridColumn10.VisibleIndex = 23;
+            this.gridColumn10.Width = 350;
+            // 
+            // gridColumn9
+            // 
+            this.gridColumn9.Caption = "Xã phường";
+            this.gridColumn9.FieldName = "COMMUNE_NAME";
+            this.gridColumn9.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn9.Name = "gridColumn9";
+            this.gridColumn9.OptionsColumn.AllowEdit = false;
+            this.gridColumn9.Visible = true;
+            this.gridColumn9.VisibleIndex = 24;
+            this.gridColumn9.Width = 150;
+            // 
+            // gridColumn7
+            // 
+            this.gridColumn7.Caption = "Tỉnh thành";
+            this.gridColumn7.FieldName = "PROVINCE_NAME";
+            this.gridColumn7.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn7.Name = "gridColumn7";
+            this.gridColumn7.OptionsColumn.AllowEdit = false;
+            this.gridColumn7.Visible = true;
+            this.gridColumn7.VisibleIndex = 25;
+            this.gridColumn7.Width = 100;
+            // 
+            // gridColumn11
+            // 
+            this.gridColumn11.Caption = "Quốc tịch";
+            this.gridColumn11.FieldName = "NATIONAL_NAME";
+            this.gridColumn11.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn11.Name = "gridColumn11";
+            this.gridColumn11.OptionsColumn.AllowEdit = false;
+            this.gridColumn11.Visible = true;
+            this.gridColumn11.VisibleIndex = 26;
+            this.gridColumn11.Width = 70;
             // 
             // gridColumn39
             // 
@@ -630,7 +775,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn39.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn39.Name = "gridColumn39";
             this.gridColumn39.Visible = true;
-            this.gridColumn39.VisibleIndex = 13;
+            this.gridColumn39.VisibleIndex = 27;
             this.gridColumn39.Width = 100;
             // 
             // gridColumn30
@@ -642,8 +787,49 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn30.OptionsColumn.AllowEdit = false;
             this.gridColumn30.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn30.Visible = true;
-            this.gridColumn30.VisibleIndex = 14;
+            this.gridColumn30.VisibleIndex = 28;
             this.gridColumn30.Width = 106;
+            // 
+            // gridColumn16
+            // 
+            this.gridColumn16.Caption = "Tên người thân";
+            this.gridColumn16.FieldName = "RELATIVE_NAME";
+            this.gridColumn16.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn16.Name = "gridColumn16";
+            this.gridColumn16.OptionsColumn.AllowEdit = false;
+            this.gridColumn16.Visible = true;
+            this.gridColumn16.VisibleIndex = 15;
+            this.gridColumn16.Width = 120;
+            // 
+            // gridColumn17
+            // 
+            this.gridColumn17.Caption = "Quan hệ";
+            this.gridColumn17.FieldName = "RELATIVE_TYPE";
+            this.gridColumn17.Name = "gridColumn17";
+            this.gridColumn17.OptionsColumn.AllowEdit = false;
+            this.gridColumn17.Visible = true;
+            this.gridColumn17.VisibleIndex = 29;
+            this.gridColumn17.Width = 80;
+            // 
+            // gridColumn29
+            // 
+            this.gridColumn29.Caption = "Số CMND người thân";
+            this.gridColumn29.FieldName = "RELATIVE_CMND_NUMBER";
+            this.gridColumn29.Name = "gridColumn29";
+            this.gridColumn29.OptionsColumn.AllowEdit = false;
+            this.gridColumn29.Visible = true;
+            this.gridColumn29.VisibleIndex = 30;
+            this.gridColumn29.Width = 120;
+            // 
+            // gridColumn18
+            // 
+            this.gridColumn18.Caption = "Địa chỉ người thân";
+            this.gridColumn18.FieldName = "RELATIVE_ADDRESS";
+            this.gridColumn18.Name = "gridColumn18";
+            this.gridColumn18.OptionsColumn.AllowEdit = false;
+            this.gridColumn18.Visible = true;
+            this.gridColumn18.VisibleIndex = 31;
+            this.gridColumn18.Width = 200;
             // 
             // gridColumn25
             // 
@@ -706,8 +892,6 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn38.FieldName = "UUID";
             this.gridColumn38.Name = "gridColumn38";
             this.gridColumn38.OptionsColumn.AllowEdit = false;
-            this.gridColumn38.Visible = true;
-            this.gridColumn38.VisibleIndex = 30;
             this.gridColumn38.Width = 250;
             // 
             // gridColumn37
@@ -716,8 +900,6 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn37.FieldName = "SYS_CODE";
             this.gridColumn37.Name = "gridColumn37";
             this.gridColumn37.OptionsColumn.AllowEdit = false;
-            this.gridColumn37.Visible = true;
-            this.gridColumn37.VisibleIndex = 31;
             this.gridColumn37.Width = 100;
             // 
             // gridColumn36
@@ -726,39 +908,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn36.FieldName = "UUID_BHYT_NUMBER";
             this.gridColumn36.Name = "gridColumn36";
             this.gridColumn36.OptionsColumn.AllowEdit = false;
-            this.gridColumn36.Visible = true;
-            this.gridColumn36.VisibleIndex = 32;
             this.gridColumn36.Width = 130;
-            // 
-            // gridColumn5
-            // 
-            this.gridColumn5.Caption = "Ngày sinh";
-            this.gridColumn5.FieldName = "DOB_DISPLAY";
-            this.gridColumn5.Name = "gridColumn5";
-            this.gridColumn5.OptionsColumn.AllowEdit = false;
-            this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 15;
-            this.gridColumn5.Width = 80;
-            // 
-            // gridColumn6
-            // 
-            this.gridColumn6.Caption = "Giới tính";
-            this.gridColumn6.FieldName = "IS_MALE_DISPLAY1";
-            this.gridColumn6.Name = "gridColumn6";
-            this.gridColumn6.OptionsColumn.AllowEdit = false;
-            this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 16;
-            this.gridColumn6.Width = 70;
-            // 
-            // gridColumn7
-            // 
-            this.gridColumn7.Caption = "Tỉnh thành";
-            this.gridColumn7.FieldName = "PROVINCE_NAME";
-            this.gridColumn7.Name = "gridColumn7";
-            this.gridColumn7.OptionsColumn.AllowEdit = false;
-            this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 17;
-            this.gridColumn7.Width = 100;
             // 
             // gridColumn8
             // 
@@ -766,39 +916,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn8.FieldName = "DISTRICT_NAME";
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
-            this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 18;
             this.gridColumn8.Width = 150;
-            // 
-            // gridColumn9
-            // 
-            this.gridColumn9.Caption = "Xã phường";
-            this.gridColumn9.FieldName = "COMMUNE_NAME";
-            this.gridColumn9.Name = "gridColumn9";
-            this.gridColumn9.OptionsColumn.AllowEdit = false;
-            this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 19;
-            this.gridColumn9.Width = 150;
-            // 
-            // gridColumn10
-            // 
-            this.gridColumn10.Caption = "Địa chỉ";
-            this.gridColumn10.FieldName = "VIR_ADDRESS";
-            this.gridColumn10.Name = "gridColumn10";
-            this.gridColumn10.OptionsColumn.ReadOnly = true;
-            this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 20;
-            this.gridColumn10.Width = 350;
-            // 
-            // gridColumn11
-            // 
-            this.gridColumn11.Caption = "Quốc tịch";
-            this.gridColumn11.FieldName = "NATIONAL_NAME";
-            this.gridColumn11.Name = "gridColumn11";
-            this.gridColumn11.OptionsColumn.AllowEdit = false;
-            this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 21;
-            this.gridColumn11.Width = 70;
             // 
             // gridColumn12
             // 
@@ -806,78 +924,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn12.FieldName = "ETHNIC_NAME";
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.OptionsColumn.AllowEdit = false;
-            this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 22;
             this.gridColumn12.Width = 120;
-            // 
-            // gridColumn13
-            // 
-            this.gridColumn13.Caption = "Nghề nghiệp";
-            this.gridColumn13.FieldName = "CAREER_NAME";
-            this.gridColumn13.Name = "gridColumn13";
-            this.gridColumn13.OptionsColumn.AllowEdit = false;
-            this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 23;
-            this.gridColumn13.Width = 120;
-            // 
-            // gridColumn14
-            // 
-            this.gridColumn14.Caption = "Nơi làm việc";
-            this.gridColumn14.FieldName = "WORK_PLACE_NAME";
-            this.gridColumn14.Name = "gridColumn14";
-            this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 24;
-            this.gridColumn14.Width = 100;
-            // 
-            // gridColumn15
-            // 
-            this.gridColumn15.Caption = "Điện thoại";
-            this.gridColumn15.FieldName = "PHONE";
-            this.gridColumn15.Name = "gridColumn15";
-            this.gridColumn15.OptionsColumn.AllowEdit = false;
-            this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 25;
-            this.gridColumn15.Width = 80;
-            // 
-            // gridColumn16
-            // 
-            this.gridColumn16.Caption = "Tên người thân";
-            this.gridColumn16.FieldName = "RELATIVE_NAME";
-            this.gridColumn16.Name = "gridColumn16";
-            this.gridColumn16.OptionsColumn.AllowEdit = false;
-            this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 26;
-            this.gridColumn16.Width = 120;
-            // 
-            // gridColumn17
-            // 
-            this.gridColumn17.Caption = "Quan hệ";
-            this.gridColumn17.FieldName = "RELATIVE_TYPE";
-            this.gridColumn17.Name = "gridColumn17";
-            this.gridColumn17.OptionsColumn.AllowEdit = false;
-            this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 27;
-            this.gridColumn17.Width = 80;
-            // 
-            // gridColumn29
-            // 
-            this.gridColumn29.Caption = "Số CMND người thân";
-            this.gridColumn29.FieldName = "RELATIVE_CMND_NUMBER";
-            this.gridColumn29.Name = "gridColumn29";
-            this.gridColumn29.OptionsColumn.AllowEdit = false;
-            this.gridColumn29.Visible = true;
-            this.gridColumn29.VisibleIndex = 28;
-            this.gridColumn29.Width = 120;
-            // 
-            // gridColumn18
-            // 
-            this.gridColumn18.Caption = "Địa chỉ người thân";
-            this.gridColumn18.FieldName = "RELATIVE_ADDRESS";
-            this.gridColumn18.Name = "gridColumn18";
-            this.gridColumn18.OptionsColumn.AllowEdit = false;
-            this.gridColumn18.Visible = true;
-            this.gridColumn18.VisibleIndex = 29;
-            this.gridColumn18.Width = 200;
             // 
             // gridColumn19
             // 
@@ -890,7 +937,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn19.Name = "gridColumn19";
             this.gridColumn19.OptionsColumn.AllowEdit = false;
             this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 33;
+            this.gridColumn19.VisibleIndex = 32;
             this.gridColumn19.Width = 120;
             // 
             // gridColumn20
@@ -900,7 +947,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn20.Name = "gridColumn20";
             this.gridColumn20.OptionsColumn.AllowEdit = false;
             this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 34;
+            this.gridColumn20.VisibleIndex = 33;
             this.gridColumn20.Width = 150;
             // 
             // gridColumn21
@@ -914,7 +961,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn21.Name = "gridColumn21";
             this.gridColumn21.OptionsColumn.AllowEdit = false;
             this.gridColumn21.Visible = true;
-            this.gridColumn21.VisibleIndex = 35;
+            this.gridColumn21.VisibleIndex = 34;
             this.gridColumn21.Width = 120;
             // 
             // gridColumn22
@@ -924,7 +971,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn22.Name = "gridColumn22";
             this.gridColumn22.OptionsColumn.AllowEdit = false;
             this.gridColumn22.Visible = true;
-            this.gridColumn22.VisibleIndex = 36;
+            this.gridColumn22.VisibleIndex = 35;
             this.gridColumn22.Width = 150;
             // 
             // repositoryItemButton__Follow
@@ -987,7 +1034,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.OptionsItemText.TextToControlDistance = 4;
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(1138, 762);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(854, 620);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem7
@@ -995,48 +1042,49 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlItem7.Control = this.gridControlPatientList;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(1138, 729);
+            this.layoutControlItem7.Size = new System.Drawing.Size(854, 594);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnImportPatient;
-            this.layoutControlItem9.Location = new System.Drawing.Point(806, 729);
+            this.layoutControlItem9.Location = new System.Drawing.Point(605, 594);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(108, 33);
+            this.layoutControlItem9.Size = new System.Drawing.Size(81, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnSave;
-            this.layoutControlItem10.Location = new System.Drawing.Point(914, 729);
+            this.layoutControlItem10.Location = new System.Drawing.Point(686, 594);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(117, 33);
+            this.layoutControlItem10.Size = new System.Drawing.Size(88, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
             // ucPaging
             // 
             this.ucPaging.Control = this.ucPaging1;
-            this.ucPaging.Location = new System.Drawing.Point(0, 729);
+            this.ucPaging.Location = new System.Drawing.Point(0, 594);
             this.ucPaging.Name = "ucPaging";
-            this.ucPaging.Size = new System.Drawing.Size(806, 33);
+            this.ucPaging.Size = new System.Drawing.Size(605, 26);
             this.ucPaging.TextSize = new System.Drawing.Size(0, 0);
             this.ucPaging.TextVisible = false;
             // 
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.btnDownload;
-            this.layoutControlItem12.Location = new System.Drawing.Point(1031, 729);
+            this.layoutControlItem12.Location = new System.Drawing.Point(774, 594);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(107, 33);
+            this.layoutControlItem12.Size = new System.Drawing.Size(80, 26);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.txtCCCD);
             this.layoutControl2.Controls.Add(this.cboCSTheoDoi);
             this.layoutControl2.Controls.Add(this.txtPatientName);
             this.layoutControl2.Controls.Add(this.txtPatientCode);
@@ -1051,26 +1099,22 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(651, 95, 298, 350);
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(221, 768);
+            this.layoutControl2.Size = new System.Drawing.Size(166, 624);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             // 
-            // cboCSTheoDoi
+            // txtCCCD
             // 
-            this.cboCSTheoDoi.Location = new System.Drawing.Point(98, 326);
-            this.cboCSTheoDoi.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.cboCSTheoDoi.MenuManager = this.barManager1;
-            this.cboCSTheoDoi.Name = "cboCSTheoDoi";
-            this.cboCSTheoDoi.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboCSTheoDoi.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.cboCSTheoDoi.Properties.NullText = "";
-            this.cboCSTheoDoi.Properties.View = this.gridView1;
-            this.cboCSTheoDoi.Size = new System.Drawing.Size(120, 22);
-            this.cboCSTheoDoi.StyleController = this.layoutControl2;
-            this.cboCSTheoDoi.TabIndex = 12;
-            this.cboCSTheoDoi.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboCSTheoDoi_ButtonClick);
+            this.txtCCCD.Location = new System.Drawing.Point(2, 98);
+            this.txtCCCD.MenuManager = this.barManager1;
+            this.txtCCCD.Name = "txtCCCD";
+            this.txtCCCD.Properties.NullValuePrompt = "Số CCCD/CMND/hộ chiếu";
+            this.txtCCCD.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtCCCD.Size = new System.Drawing.Size(162, 20);
+            this.txtCCCD.StyleController = this.layoutControl2;
+            this.txtCCCD.TabIndex = 13;
+            this.txtCCCD.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtCCCD_KeyDown);
+            this.txtCCCD.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCCCD_KeyUp);
             // 
             // barManager1
             // 
@@ -1087,32 +1131,28 @@ namespace HIS.Desktop.Plugins.Patient
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlTop.Size = new System.Drawing.Size(1365, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1024, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 768);
-            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1365, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 624);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1024, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 768);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 624);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1365, 0);
-            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 768);
+            this.barDockControlRight.Location = new System.Drawing.Point(1024, 0);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 624);
             // 
             // imageCollection2
             // 
@@ -1130,6 +1170,22 @@ namespace HIS.Desktop.Plugins.Patient
             this.imageCollection2.Images.SetKeyName(10, "SolidPurpleDataBar_16x16.png");
             this.imageCollection2.Images.SetKeyName(11, "SolidRedDataBar_16x16.png");
             // 
+            // cboCSTheoDoi
+            // 
+            this.cboCSTheoDoi.Location = new System.Drawing.Point(97, 286);
+            this.cboCSTheoDoi.MenuManager = this.barManager1;
+            this.cboCSTheoDoi.Name = "cboCSTheoDoi";
+            this.cboCSTheoDoi.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboCSTheoDoi.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboCSTheoDoi.Properties.NullText = "";
+            this.cboCSTheoDoi.Properties.View = this.gridView1;
+            this.cboCSTheoDoi.Size = new System.Drawing.Size(67, 20);
+            this.cboCSTheoDoi.StyleController = this.layoutControl2;
+            this.cboCSTheoDoi.TabIndex = 12;
+            this.cboCSTheoDoi.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboCSTheoDoi_ButtonClick);
+            // 
             // gridView1
             // 
             this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
@@ -1139,50 +1195,46 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             // txtPatientName
             // 
-            this.txtPatientName.Location = new System.Drawing.Point(3, 87);
-            this.txtPatientName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPatientName.Location = new System.Drawing.Point(2, 74);
             this.txtPatientName.MenuManager = this.barManager1;
             this.txtPatientName.Name = "txtPatientName";
             this.txtPatientName.Properties.NullValuePrompt = "Tên bệnh nhân";
             this.txtPatientName.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtPatientName.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtPatientName.Size = new System.Drawing.Size(215, 22);
+            this.txtPatientName.Size = new System.Drawing.Size(162, 20);
             this.txtPatientName.StyleController = this.layoutControl2;
             this.txtPatientName.TabIndex = 11;
             this.txtPatientName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtPatientName_KeyUp);
             // 
             // txtPatientCode
             // 
-            this.txtPatientCode.Location = new System.Drawing.Point(3, 31);
-            this.txtPatientCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPatientCode.Location = new System.Drawing.Point(2, 26);
             this.txtPatientCode.MenuManager = this.barManager1;
             this.txtPatientCode.Name = "txtPatientCode";
             this.txtPatientCode.Properties.NullValuePrompt = "Mã bệnh nhân";
             this.txtPatientCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtPatientCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtPatientCode.Size = new System.Drawing.Size(215, 22);
+            this.txtPatientCode.Size = new System.Drawing.Size(162, 20);
             this.txtPatientCode.StyleController = this.layoutControl2;
             this.txtPatientCode.TabIndex = 10;
             this.txtPatientCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPatientCode_KeyDown);
             // 
             // txtMaYTeCode
             // 
-            this.txtMaYTeCode.Location = new System.Drawing.Point(3, 59);
-            this.txtMaYTeCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMaYTeCode.Location = new System.Drawing.Point(2, 50);
             this.txtMaYTeCode.MenuManager = this.barManager1;
             this.txtMaYTeCode.Name = "txtMaYTeCode";
             this.txtMaYTeCode.Properties.NullValuePrompt = "Mã y tế";
             this.txtMaYTeCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtMaYTeCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtMaYTeCode.Size = new System.Drawing.Size(215, 22);
+            this.txtMaYTeCode.Size = new System.Drawing.Size(162, 20);
             this.txtMaYTeCode.StyleController = this.layoutControl2;
             this.txtMaYTeCode.TabIndex = 9;
             this.txtMaYTeCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMaYTeCode_KeyDown);
             // 
             // cboMaYTe
             // 
-            this.cboMaYTe.Location = new System.Drawing.Point(98, 298);
-            this.cboMaYTe.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboMaYTe.Location = new System.Drawing.Point(97, 262);
             this.cboMaYTe.MenuManager = this.barManager1;
             this.cboMaYTe.Name = "cboMaYTe";
             this.cboMaYTe.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1192,7 +1244,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.cboMaYTe.Properties.NullText = "";
             this.cboMaYTe.Properties.View = this.gridLookUpEdit1View;
             this.cboMaYTe.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboMaYTe_Properties_ButtonClick);
-            this.cboMaYTe.Size = new System.Drawing.Size(120, 22);
+            this.cboMaYTe.Size = new System.Drawing.Size(67, 20);
             this.cboMaYTe.StyleController = this.layoutControl2;
             this.cboMaYTe.TabIndex = 8;
             // 
@@ -1205,10 +1257,10 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             // btnRefesh
             // 
-            this.btnRefesh.Location = new System.Drawing.Point(113, 738);
-            this.btnRefesh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnRefesh.Location = new System.Drawing.Point(85, 600);
+            this.btnRefesh.Margin = new System.Windows.Forms.Padding(2);
             this.btnRefesh.Name = "btnRefesh";
-            this.btnRefesh.Size = new System.Drawing.Size(105, 27);
+            this.btnRefesh.Size = new System.Drawing.Size(79, 22);
             this.btnRefesh.StyleController = this.layoutControl2;
             this.btnRefesh.TabIndex = 7;
             this.btnRefesh.Text = "Làm lại (Ctrl R)";
@@ -1216,10 +1268,10 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(3, 738);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSearch.Location = new System.Drawing.Point(2, 600);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(104, 27);
+            this.btnSearch.Size = new System.Drawing.Size(79, 22);
             this.btnSearch.StyleController = this.layoutControl2;
             this.btnSearch.TabIndex = 6;
             this.btnSearch.Text = "Tìm (Ctr F)";
@@ -1232,11 +1284,11 @@ namespace HIS.Desktop.Plugins.Patient
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer1);
             this.navBarControl1.Groups.AddRange(new DevExpress.XtraNavBar.NavBarGroup[] {
             this.navBarGroup1});
-            this.navBarControl1.Location = new System.Drawing.Point(3, 115);
-            this.navBarControl1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.navBarControl1.Location = new System.Drawing.Point(2, 122);
+            this.navBarControl1.Margin = new System.Windows.Forms.Padding(4);
             this.navBarControl1.Name = "navBarControl1";
-            this.navBarControl1.OptionsNavPane.ExpandedWidth = 215;
-            this.navBarControl1.Size = new System.Drawing.Size(215, 177);
+            this.navBarControl1.OptionsNavPane.ExpandedWidth = 162;
+            this.navBarControl1.Size = new System.Drawing.Size(162, 136);
             this.navBarControl1.TabIndex = 5;
             this.navBarControl1.Text = "navBarControl1";
             // 
@@ -1245,7 +1297,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.navBarGroup1.Caption = "Ngày tạo";
             this.navBarGroup1.ControlContainer = this.navBarGroupControlContainer1;
             this.navBarGroup1.Expanded = true;
-            this.navBarGroup1.GroupClientHeight = 106;
+            this.navBarGroup1.GroupClientHeight = 86;
             this.navBarGroup1.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
             this.navBarGroup1.Name = "navBarGroup1";
             // 
@@ -1254,9 +1306,9 @@ namespace HIS.Desktop.Plugins.Patient
             this.navBarGroupControlContainer1.Appearance.BackColor = System.Drawing.SystemColors.Control;
             this.navBarGroupControlContainer1.Appearance.Options.UseBackColor = true;
             this.navBarGroupControlContainer1.Controls.Add(this.layoutControl5);
-            this.navBarGroupControlContainer1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.navBarGroupControlContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.navBarGroupControlContainer1.Name = "navBarGroupControlContainer1";
-            this.navBarGroupControlContainer1.Size = new System.Drawing.Size(205, 101);
+            this.navBarGroupControlContainer1.Size = new System.Drawing.Size(154, 82);
             this.navBarGroupControlContainer1.TabIndex = 0;
             // 
             // layoutControl5
@@ -1265,18 +1317,18 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControl5.Controls.Add(this.dtCreateTimeFrom);
             this.layoutControl5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl5.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.layoutControl5.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl5.Name = "layoutControl5";
             this.layoutControl5.Root = this.layoutControlGroup4;
-            this.layoutControl5.Size = new System.Drawing.Size(205, 101);
+            this.layoutControl5.Size = new System.Drawing.Size(154, 82);
             this.layoutControl5.TabIndex = 0;
             this.layoutControl5.Text = "layoutControl5";
             // 
             // dtCreateTimeTo
             // 
             this.dtCreateTimeTo.EditValue = null;
-            this.dtCreateTimeTo.Location = new System.Drawing.Point(100, 33);
-            this.dtCreateTimeTo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dtCreateTimeTo.Location = new System.Drawing.Point(99, 28);
+            this.dtCreateTimeTo.Margin = new System.Windows.Forms.Padding(2);
             this.dtCreateTimeTo.Name = "dtCreateTimeTo";
             this.dtCreateTimeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1286,15 +1338,15 @@ namespace HIS.Desktop.Plugins.Patient
             this.dtCreateTimeTo.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dtCreateTimeTo.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.dtCreateTimeTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dtCreateTimeTo.Size = new System.Drawing.Size(100, 22);
+            this.dtCreateTimeTo.Size = new System.Drawing.Size(51, 20);
             this.dtCreateTimeTo.StyleController = this.layoutControl5;
             this.dtCreateTimeTo.TabIndex = 1;
             // 
             // dtCreateTimeFrom
             // 
             this.dtCreateTimeFrom.EditValue = null;
-            this.dtCreateTimeFrom.Location = new System.Drawing.Point(100, 5);
-            this.dtCreateTimeFrom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dtCreateTimeFrom.Location = new System.Drawing.Point(99, 4);
+            this.dtCreateTimeFrom.Margin = new System.Windows.Forms.Padding(2);
             this.dtCreateTimeFrom.Name = "dtCreateTimeFrom";
             this.dtCreateTimeFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1304,7 +1356,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.dtCreateTimeFrom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dtCreateTimeFrom.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.dtCreateTimeFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dtCreateTimeFrom.Size = new System.Drawing.Size(100, 22);
+            this.dtCreateTimeFrom.Size = new System.Drawing.Size(51, 20);
             this.dtCreateTimeFrom.StyleController = this.layoutControl5;
             this.dtCreateTimeFrom.TabIndex = 0;
             // 
@@ -1319,7 +1371,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.OptionsItemText.TextToControlDistance = 4;
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.layoutControlGroup4.Size = new System.Drawing.Size(205, 101);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(154, 82);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // layoutControlItem17
@@ -1329,7 +1381,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlItem17.Control = this.dtCreateTimeFrom;
             this.layoutControlItem17.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(201, 28);
+            this.layoutControlItem17.Size = new System.Drawing.Size(150, 24);
             this.layoutControlItem17.Text = "Từ";
             this.layoutControlItem17.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem17.TextSize = new System.Drawing.Size(90, 20);
@@ -1340,9 +1392,9 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlItem18.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem18.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem18.Control = this.dtCreateTimeTo;
-            this.layoutControlItem18.Location = new System.Drawing.Point(0, 28);
+            this.layoutControlItem18.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(201, 69);
+            this.layoutControlItem18.Size = new System.Drawing.Size(150, 54);
             this.layoutControlItem18.Text = "Đến";
             this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem18.TextSize = new System.Drawing.Size(90, 20);
@@ -1350,12 +1402,12 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             // txtKeyWord
             // 
-            this.txtKeyWord.Location = new System.Drawing.Point(3, 3);
-            this.txtKeyWord.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.txtKeyWord.Location = new System.Drawing.Point(2, 2);
+            this.txtKeyWord.Margin = new System.Windows.Forms.Padding(4);
             this.txtKeyWord.Name = "txtKeyWord";
             this.txtKeyWord.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtKeyWord.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtKeyWord.Size = new System.Drawing.Size(215, 22);
+            this.txtKeyWord.Size = new System.Drawing.Size(162, 20);
             this.txtKeyWord.StyleController = this.layoutControl2;
             this.txtKeyWord.TabIndex = 4;
             this.txtKeyWord.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtKeyWord_KeyDown);
@@ -1375,12 +1427,13 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlItem13,
             this.layoutControlItem14,
             this.layoutControlItem11,
-            this.layoutControlItem15});
+            this.layoutControlItem15,
+            this.lblCCCD});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.OptionsItemText.TextToControlDistance = 4;
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(221, 768);
+            this.Root.Size = new System.Drawing.Size(166, 624);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem3
@@ -1388,43 +1441,43 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlItem3.Control = this.txtKeyWord;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(221, 28);
+            this.layoutControlItem3.Size = new System.Drawing.Size(166, 24);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.navBarControl1;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 112);
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 120);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(221, 183);
+            this.layoutControlItem4.Size = new System.Drawing.Size(166, 140);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.btnSearch;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 735);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 598);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(110, 33);
+            this.layoutControlItem5.Size = new System.Drawing.Size(83, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnRefesh;
-            this.layoutControlItem6.Location = new System.Drawing.Point(110, 735);
+            this.layoutControlItem6.Location = new System.Drawing.Point(83, 598);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(111, 33);
+            this.layoutControlItem6.Size = new System.Drawing.Size(83, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 351);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 308);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(221, 384);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(166, 290);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem8
@@ -1432,9 +1485,9 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem8.Control = this.cboMaYTe;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 295);
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 260);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(221, 28);
+            this.layoutControlItem8.Size = new System.Drawing.Size(166, 24);
             this.layoutControlItem8.Text = "Mã y tế:";
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(90, 20);
@@ -1443,18 +1496,18 @@ namespace HIS.Desktop.Plugins.Patient
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.txtMaYTeCode;
-            this.layoutControlItem13.Location = new System.Drawing.Point(0, 56);
+            this.layoutControlItem13.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(221, 28);
+            this.layoutControlItem13.Size = new System.Drawing.Size(166, 24);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.txtPatientCode;
-            this.layoutControlItem14.Location = new System.Drawing.Point(0, 28);
+            this.layoutControlItem14.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(221, 28);
+            this.layoutControlItem14.Size = new System.Drawing.Size(166, 24);
             this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextToControlDistance = 0;
@@ -1463,9 +1516,9 @@ namespace HIS.Desktop.Plugins.Patient
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.txtPatientName;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 84);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(221, 28);
+            this.layoutControlItem11.Size = new System.Drawing.Size(166, 24);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
@@ -1474,14 +1527,23 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlItem15.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem15.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem15.Control = this.cboCSTheoDoi;
-            this.layoutControlItem15.Location = new System.Drawing.Point(0, 323);
+            this.layoutControlItem15.Location = new System.Drawing.Point(0, 284);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.OptionsToolTip.ToolTip = "Cơ sở theo dõi";
-            this.layoutControlItem15.Size = new System.Drawing.Size(221, 28);
+            this.layoutControlItem15.Size = new System.Drawing.Size(166, 24);
             this.layoutControlItem15.Text = "CS theo dõi:";
             this.layoutControlItem15.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem15.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem15.TextToControlDistance = 5;
+            // 
+            // lblCCCD
+            // 
+            this.lblCCCD.Control = this.txtCCCD;
+            this.lblCCCD.Location = new System.Drawing.Point(0, 96);
+            this.lblCCCD.Name = "lblCCCD";
+            this.lblCCCD.Size = new System.Drawing.Size(166, 24);
+            this.lblCCCD.TextSize = new System.Drawing.Size(0, 0);
+            this.lblCCCD.TextVisible = false;
             // 
             // layoutControlGroup1
             // 
@@ -1494,7 +1556,7 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.OptionsItemText.TextToControlDistance = 4;
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1365, 768);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1024, 624);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -1503,31 +1565,31 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem1.Size = new System.Drawing.Size(221, 768);
+            this.layoutControlItem1.Size = new System.Drawing.Size(166, 624);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.layoutControl3;
-            this.layoutControlItem2.Location = new System.Drawing.Point(221, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(166, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(1144, 768);
+            this.layoutControlItem2.Size = new System.Drawing.Size(858, 624);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // UCListPatient
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "UCListPatient";
-            this.Size = new System.Drawing.Size(1365, 768);
+            this.Size = new System.Drawing.Size(1024, 624);
             this.Load += new System.EventHandler(this.UCListPatient_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
@@ -1557,9 +1619,10 @@ namespace HIS.Desktop.Plugins.Patient
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.cboCSTheoDoi.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCCCD.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboCSTheoDoi.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientCode.Properties)).EndInit();
@@ -1590,6 +1653,7 @@ namespace HIS.Desktop.Plugins.Patient
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lblCCCD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
@@ -1708,5 +1772,11 @@ namespace HIS.Desktop.Plugins.Patient
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButton_NoneUpdateUUIDFail;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn39;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn40;
+        private DevExpress.XtraEditors.TextEdit txtCCCD;
+        private DevExpress.XtraLayout.LayoutControlItem lblCCCD;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn41;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn42;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn43;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn44;
     }
 }

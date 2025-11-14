@@ -8161,24 +8161,90 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
                 if (!HisConfigCFG.PRINT_TEST_RESULT)
                 {
-                    MPS.Processor.Mps000096.PDO.Mps000096PDO mps000096RDO = new MPS.Processor.Mps000096.PDO.Mps000096PDO(
-                         null,
-                         null,
-                         samplePrint,
-                         null,
-                         currentTestIndexs,
-                         lstResultPrint,
-                         BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
-                         genderId,
-                         BackendDataWorker.Get<V_HIS_SERVICE>(),
-                         null,
-                         TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
-                         SereServList,
-                         listSampleType,
-                         listTestSampleType);
-                    inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(curentSTT.TREATMENT_CODE, MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, this.currentModule.RoomId);
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, dicSignApproveList[MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096], mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                    SetUpSign(inputADO, PrintData, curentSTT, ref result, ref errorMessage);
+                    // Lấy danh sách services
+                    List<V_HIS_SERVICE> allServices = BackendDataWorker.Get<V_HIS_SERVICE>();
+
+                    // Tạo dictionary SERVICE_CODE -> PARENT_ID để tra cứu O(1)
+                    var serviceDict = allServices.ToDictionary(s => s.SERVICE_CODE, s => s);
+
+                    // *** TỐI ƯU: Group lstResultPrint theo PARENT_ID TRỰC TIẾP ***
+                    // Thay vì group services rồi filter results, ta group results luôn theo parent
+                    var groupedByParent = lstResultPrint
+                        .GroupBy(r => {
+                            // Tra cứu parent của service này
+                            if (serviceDict.ContainsKey(r.SERVICE_CODE))
+                            {
+                                var service = serviceDict[r.SERVICE_CODE];
+                                return service.PARENT_ID ?? 0;
+                            }
+                            return 0L; // Không tìm thấy service
+                        })
+                        .ToDictionary(g => g.Key, g => g.ToList());
+
+                    // Tạo dictionary serviceCodes để filter test index nhanh
+                    var serviceCodesSet = new HashSet<string>(serviceCodes);
+
+                    // Duyệt qua từng nhóm parent
+                    foreach (var group in groupedByParent)
+                    {
+                        long parentId = group.Key;
+                        List<V_LIS_RESULT> groupResults = group.Value;
+
+                        // Lấy service parent (nếu có)
+                        V_HIS_SERVICE serviceParent = null;
+                        if (parentId != 0)
+                        {
+                            serviceParent = allServices.FirstOrDefault(s => s.ID == parentId);
+                        }
+
+                        // Lấy danh sách SERVICE_CODE thuộc nhóm này (từ results đã group)
+                        var groupServiceCodes = groupResults.Select(r => r.SERVICE_CODE).Distinct().ToList();
+
+                        // Lọc test index thuộc nhóm này - dùng HashSet để tra cứu nhanh O(1)
+                        var groupServiceCodesSet = new HashSet<string>(groupServiceCodes);
+                        var groupTestIndexs = currentTestIndexs.Where(ti => groupServiceCodesSet.Contains(ti.SERVICE_CODE)).ToList();
+
+                        // Sắp xếp results
+                        groupResults = groupResults.OrderBy(r => r.ID).ThenBy(r => r.TEST_INDEX_NAME).ToList();
+
+                        MPS.Processor.Mps000096.PDO.Mps000096PDO mps000096RDO = new MPS.Processor.Mps000096.PDO.Mps000096PDO(
+                            null,
+                            null,
+                            samplePrint,
+                            null,
+                            groupTestIndexs,
+                            groupResults,
+                            BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
+                            genderId,
+                            allServices,
+                            serviceParent,        // Parent của nhóm này
+                            TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
+                            SereServList,
+                            listSampleType,
+                            listTestSampleType
+                        );
+
+                        inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                            .GenerateInputADOWithPrintTypeCode(
+                                curentSTT.TREATMENT_CODE,
+                                MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096,
+                                this.currentModule.RoomId);
+
+                        PrintData = new MPS.ProcessorBase.Core.PrintData(
+                            MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096,
+                            dicSignApproveList[MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096],
+                            mps000096RDO,
+                            MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile,
+                            "");
+
+                        SetUpSign(inputADO, PrintData, curentSTT, ref result, ref errorMessage);
+
+                        // Nếu có lỗi hoặc cần dừng, break
+                        if (!result)
+                        {
+                            break;
+                        }
+                    }
                 }
                 else
                 {
@@ -8217,24 +8283,81 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     }
                     if (lstResultPrintTemp != null && lstResultPrintTemp.Count > 0)
                     {
-                        MPS.Processor.Mps000096.PDO.Mps000096PDO mps000096RDO = new MPS.Processor.Mps000096.PDO.Mps000096PDO(
-                        null,
-                        null,
-                        samplePrint,
-                        null,
-                        currentTestIndexs.Where(o => lstResultPrintTemp.Select(p => p.SERVICE_CODE).Distinct().ToList().Contains(o.SERVICE_CODE)).ToList(),
-                        lstResultPrintTemp,
-                        BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
-                        genderId,
-                        BackendDataWorker.Get<V_HIS_SERVICE>(),
-                         null,
-                         TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
-                         SereServList,
-                         listSampleType,
-                         listTestSampleType);
-                        inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(curentSTT.TREATMENT_CODE, MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, this.currentModule.RoomId);
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, dicSignApproveList[MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096], mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                        SetUpSign(inputADO, PrintData, curentSTT, ref result, ref errorMessage);
+                        // Lấy toàn bộ services
+                        List<V_HIS_SERVICE> allServices = BackendDataWorker.Get<V_HIS_SERVICE>();
+
+                        // Tạo dictionary để tra cứu nhanh O(1)
+                        var serviceDict = allServices.ToDictionary(s => s.SERVICE_CODE, s => s);
+
+                        // *** TỐI ƯU: Group lstResultPrintTemp theo PARENT_ID trực tiếp ***
+                        var groupedByParent = lstResultPrintTemp
+                            .Where(r => serviceDict.ContainsKey(r.SERVICE_CODE))
+                            .GroupBy(r => {
+                                var service = serviceDict[r.SERVICE_CODE];
+                                return service.PARENT_ID ?? 0;
+                            }).ToDictionary(g => g.Key, g => g.ToList());
+
+                        // Duyệt qua từng nhóm parent và in riêng
+                        foreach (var group in groupedByParent)
+                        {
+                            long parentId = group.Key;
+                            List<V_LIS_RESULT> groupResults = group.Value;
+
+                            // Lấy service parent (nếu có)
+                            V_HIS_SERVICE serviceParent = null;
+                            if (parentId != 0)
+                            {
+                                serviceParent = allServices.FirstOrDefault(s => s.ID == parentId);
+                            }
+
+                            // Lấy service codes của nhóm này
+                            var groupServiceCodes = groupResults.Select(r => r.SERVICE_CODE).Distinct().ToList();
+                            var groupServiceCodesSet = new HashSet<string>(groupServiceCodes);
+
+                            // Lọc test index cho nhóm này - dùng HashSet để tra cứu nhanh O(1)
+                            var filteredTestIndexs = currentTestIndexs.Where(ti => groupServiceCodesSet.Contains(ti.SERVICE_CODE)).ToList();
+
+                            // Sắp xếp results
+                            var sortedGroupResults = groupResults.OrderBy(r => r.ID).ThenBy(r => r.TEST_INDEX_NAME).ToList();
+
+                            MPS.Processor.Mps000096.PDO.Mps000096PDO mps000096RDO = new MPS.Processor.Mps000096.PDO.Mps000096PDO(
+                                null,
+                                null,
+                                samplePrint,
+                                null,
+                                filteredTestIndexs,
+                                sortedGroupResults,
+                                BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
+                                genderId,
+                                allServices,
+                                serviceParent,      // Truyền service parent của nhóm này
+                                TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
+                                SereServList,
+                                listSampleType,
+                                listTestSampleType
+                            );
+
+                            inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                                .GenerateInputADOWithPrintTypeCode(
+                                    curentSTT.TREATMENT_CODE,
+                                    MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096,
+                                    this.currentModule.RoomId);
+
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(
+                                MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096,
+                                dicSignApproveList[MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096],
+                                mps000096RDO,
+                                MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile,
+                                "");
+
+                            SetUpSign(inputADO, PrintData, curentSTT, ref result, ref errorMessage);
+
+                            // Nếu có lỗi, dừng lại
+                            if (!result)
+                            {
+                                break;
+                            }
+                        }
                     }
                     if (lstResultHH != null && lstResultHH.Count > 0)
                     {
@@ -8255,19 +8378,35 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     }
                     if (lstResultVS != null && lstResultVS.Count > 0)
                     {
-                        MPS.Processor.Mps000457.PDO.Mps000457PDO mps000457RDO = new MPS.Processor.Mps000457.PDO.Mps000457PDO(
-                        null,
-                        null,
-                        samplePrint,
-                        null,
-                        currentTestIndexs.Where(o => lstResultVS.Select(p => p.SERVICE_CODE).Distinct().ToList().Contains(o.SERVICE_CODE)).ToList(),
-                        lstResultVS,
-                        BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
-                        genderId,
-                        BackendDataWorker.Get<V_HIS_SERVICE>());
-                        inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(curentSTT.TREATMENT_CODE, MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457, this.currentModule.RoomId);
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457, dicSignApproveList[MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457], mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                        SetUpSign(inputADO, PrintData, curentSTT, ref result, ref errorMessage);
+
+                        List<V_HIS_SERVICE> lstService = BackendDataWorker.Get<V_HIS_SERVICE>();
+                        lstResultVS = lstResultVS.OrderBy(o => o.ID).ThenBy(o => o.TEST_INDEX_NAME).ToList();
+
+                        var groupListResult = lstResultVS.GroupBy(o => new { o.SERVICE_CODE, o.MACHINE_ID }).ToList();
+
+                        foreach (var item in groupListResult)
+                        {
+                            V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == item.Key.SERVICE_CODE) : null;
+                            var parent = lstService != null ? lstService.FirstOrDefault(o => o.ID == service.PARENT_ID) : null;
+
+                            MPS.Processor.Mps000457.PDO.Mps000457PDO mps000457RDO = new MPS.Processor.Mps000457.PDO.Mps000457PDO(
+                                null,
+                                null,
+                                samplePrint,
+                                null,
+                                currentTestIndexs.Where(o => lstResultVS.Select(p => p.SERVICE_CODE).Distinct().ToList().Contains(o.SERVICE_CODE)).ToList(),
+                                lstResultVS,
+                                BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
+                                genderId,
+                                lstService,
+                                parent);
+                            inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(curentSTT.TREATMENT_CODE, MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457, this.currentModule.RoomId);
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457, dicSignApproveList[MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457], mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
+                            SetUpSign(inputADO, PrintData, curentSTT, ref result, ref errorMessage);
+
+                        }
+
+                        
                     }
                     if (lstResultMD != null && lstResultMD.Count > 0)
                     {

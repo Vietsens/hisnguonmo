@@ -232,6 +232,40 @@ namespace HIS.Desktop.Plugins.AssignPaan
                         else btnSave.Enabled = btnSavePrint.Enabled = true;
                     }
                 }
+                config = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION").FirstOrDefault();
+                param = new CommonParam();
+                if (config != null)
+                {
+                    if (config.VALUE == "1" || config.VALUE == "2")
+                    {
+                        HisServiceReqCheckAssignSimultaneitySDO sdo = new HisServiceReqCheckAssignSimultaneitySDO();
+                        sdo.TreatmentId = this.treatmentId;
+                        var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && Convert.ToInt64(cboUsername.EditValue) == p.ID).FirstOrDefault().LOGINNAME;
+                        long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtInstructionTime.DateTime) ?? 0;
+                        sdo.CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>();
+                        sdo.CheckInfos.Add(new HisServiceReqCheckAssignSimultaneityCheckInfosSDO()
+                        {
+                            LoginName = username,
+                            CheckTimes = new List<long> { sereTime }
+                        });
+                        Inventec.Common.Logging.LogSystem.Debug("HisServiceReqCheckAssignSimultaneitySDO:" + LogUtil.TraceData("HisServiceReqCheckAssignSimultaneitySDO", sdo));
+                        bool rs = new BackendAdapter(param).Post<bool>("/api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo, param);
+                        if (!rs)
+                        {
+                            if (config.VALUE == "1")
+                            {
+                                MessageManager.Show(this, param, rs);
+                                btnSave.Enabled = btnSavePrint.Enabled = false;
+                            }
+                            else
+                            {
+                                btnSave.Enabled = btnSavePrint.Enabled = MessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
+
+                            }
+                        }
+                        else btnSave.Enabled = btnSavePrint.Enabled = true;
+                    }
+                }
             }
             catch (Exception ex)
             {
