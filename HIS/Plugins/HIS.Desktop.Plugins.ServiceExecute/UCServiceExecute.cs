@@ -671,14 +671,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
-        private void SetDataSourceEkipUser()
+        private void SetDataSourceEkipUser()   
         {
             try
             {
                 InformationADO ado = new InformationADO();
                 IsLoadFromPin = false;
                 this.currentBySessionControlStateRDO = controlStateWorker.GetDataBySession(moduleLink);
-                SavePin();
                 if (this.currentBySessionControlStateRDO != null && this.currentBySessionControlStateRDO.Count > 0)   
                 {
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentBySessionControlStateRDO), currentBySessionControlStateRDO));
