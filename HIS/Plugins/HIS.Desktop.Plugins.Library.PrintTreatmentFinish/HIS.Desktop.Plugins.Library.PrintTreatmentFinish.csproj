@@ -106,7 +106,7 @@
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000010.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000011.PDO">
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000011.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000011.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000174.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000174.PDO.dll</HintPath>

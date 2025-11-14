@@ -29,7 +29,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
     class HisConfigCFG
     {
         public const string KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISENABLEEDITSTARTTIME  = "HIS.Desktop.Plugins.ExamServiceReqExecute.IsEnableEditStartTime";
-        public static bool IsEnableEditStartTime;
+        public static string IsEnableEditStartTime;
         public const string CONFIG_KEY_IsCheckServiceFollowWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
         internal static bool IsCheckServiceFollowWhenOut;
         public const string REQUIRED_PULSE_BLOOD_PRESSURE = "HIS.UC.DHST__REQUIRED_PULSE_BLOOD_PRESSURE";
@@ -37,7 +37,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         private const string CONFIG_KEY__IsloadIcdFromExamServiceExecute = "HIS.Desktop.Plugins.IsloadIcdFromExamServiceExecute";
         internal static bool IsloadIcdFromExamServiceExecute;
         private const string CONFIG_KEY__ICD_GENERA_KEY = "HIS.Desktop.Plugins.AutoCheckIcd";
-        // tự động tắt màn hình xử lý khám sau khi kết thúc
+        // tự động tắt màn hình xử lý khám sau khi kết thúcASSIGN_SERVICE_SIMULTANEITY_OPTION
         private const string CONFIG_KEY_AutoExitAfterFinish = "HIS.Desktop.Plugins.ExamServiceReqExecute.AutoExitAfterFinish";
         internal static bool IsAutoExitAfterFinish;
 
@@ -78,6 +78,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
 
         private const string EXECUTE_ROOM_PAYMENT_OPTION = "MOS.EPAYMENT.EXECUTE_ROOM_PAYMENT_OPTION";
         internal static string executeRoomPaymentOption;
+        //huannh bo sung key
+        private const string ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
+        internal static string AssignServiceSimultaneityOption;
+        private const string ASSIGN_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION";
+        internal static string AssignSimultaneityOption;
 
         private const string TERMINAL_SYTEM_ADDRESS = "MOS.EPAYMENT.TERMINAL_SYTEM.ADDRESS";
         internal static string terminalSystemAddress;
@@ -136,6 +141,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 IsFormClosingOption = GetValue(CONFIG_KEY__FormClosingOption) == GlobalVariables.CommonStringTrue;
                 ModuleLinkApply = GetValue(CONFIG_KEY__ModuleLinkApply);
                 executeRoomPaymentOption = GetValue(EXECUTE_ROOM_PAYMENT_OPTION);
+                AssignServiceSimultaneityOption = GetValue(ASSIGN_SERVICE_SIMULTANEITY_OPTION);
+                AssignSimultaneityOption = GetValue(ASSIGN_SIMULTANEITY_OPTION);
                 terminalSystemAddress = GetValue(TERMINAL_SYTEM_ADDRESS);
                 terminalSystemSecureKey = GetValue(TERMINAL_SYTEM_SECURE_KEY);
                 RequiredTreatmentMethodOption = GetValue(CONFIG_KEY__IS_REQUIRED_TREATMENT_METHOD_OPTION);
@@ -143,7 +150,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 IsRequiredPathologicalProcessTransferPatientBHYT = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsRequiredPathologicalProcessTransferPatientBHYT) == GlobalVariables.CommonStringTrue;
                 PathologicalProcessOption = int.Parse(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_PathologicalProcessOption) ?? "0");
                 AllowBhxhLeaveOver30days = GetValue(KEY_AllowBhxhLeaveOver30days);
-                IsEnableEditStartTime = GetValue(KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISENABLEEDITSTARTTIME) == GlobalVariables.CommonStringTrue;
+                IsEnableEditStartTime = GetValue(KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISENABLEEDITSTARTTIME);
             }
             catch (Exception ex)
             {

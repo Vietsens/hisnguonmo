@@ -806,7 +806,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
                         dtpStartTime.EditValue = new BackendAdapter(new CommonParam()).Get<TimerSDO>(AcsRequestUriStore.ACS_TIMER__SYNC, ApiConsumers.AcsConsumer, 1, new CommonParam()).DateNow;
                     }
-                    if (HisConfigCFG.IsEnableEditStartTime)
+                    if (HisConfigCFG.IsEnableEditStartTime == "1")
                     {
                         dtpStartTime.Enabled = true;
                     }

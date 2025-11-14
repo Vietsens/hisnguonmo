@@ -511,7 +511,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         LIS.Filter.LisSampleServiceFilter filter = new LisSampleServiceFilter();
                         filter.SAMPLE_ID = rowSample.ID;
                         var result = new BackendAdapter(param).Get<List<LIS_SAMPLE_SERVICE>>("api/LisSampleService/Get", ApiConsumers.LisConsumer, filter, param);
-                        if(result != null && result.Count > 0)
+                        if (result != null && result.Count > 0)
                         {
                             var ServiceCodes = result.Select(s => s.SERVICE_CODE).ToList();
                             var services = BackendDataWorker.Get<V_HIS_SERVICE>().Where(w => ServiceCodes.Any(o => o == w.SERVICE_CODE));
@@ -1070,6 +1070,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
                 if (printTypeCode == "Mps000096")
                 {
+
                     #region Mps000096
                     List<LIS_SAMPLE_TYPE> listSampleType = new List<LIS_SAMPLE_TYPE>();
                     List<HIS_TEST_SAMPLE_TYPE> listTestSampleType = new List<HIS_TEST_SAMPLE_TYPE>();
@@ -1081,34 +1082,115 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         listTestSampleType = BackendDataWorker.Get<HIS_TEST_SAMPLE_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                     }
-                    MPS.Processor.Mps000096.PDO.Mps000096PDO mps000096RDO = new MPS.Processor.Mps000096.PDO.Mps000096PDO(
-                          currentPatientTypeAlter,
-                          currentTreatment,
-                          samplePrint,
-                          currentServiceReq,
-                          this.currentTestIndexs.Where(o => lstResultPrint.Select(p => p.SERVICE_CODE).Distinct().ToList().Contains(o.SERVICE_CODE)).ToList(),
-                          lstResultPrint,
-                          BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
-                          genderId,
-                          BackendDataWorker.Get<V_HIS_SERVICE>(),
-                          currentPatient,
-                         null,
-                         TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
-                         SereServList,
-                         listSampleType,
-                         listTestSampleType);
 
-                    mps000096RDO.mLCTADOs = mlctado;
+                    // Lấy danh sách dịch vụ cần in
+                    var serviceCodes = lstResultPrint.Select(o => o.SERVICE_CODE).Distinct().ToList();
+                    var lstService = BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => serviceCodes.Contains(o.SERVICE_CODE)).ToList();
 
-                    if (checkPrintNow.Checked)
+                    // Gom nhóm theo cha (PARENT_ID)
+                    var groupByParent = lstService.GroupBy(o => o.PARENT_ID).ToList();
+                    foreach (var group in groupByParent)
                     {
-                        if (chkSign.Checked)
+                        // Dịch vụ cha (có thể null nếu nhóm này không có cha)
+                        V_HIS_SERVICE parent = group.Key != null ? BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(x => x.ID == group.Key) : null;
+
+                        // Lấy danh sách SERVICE_CODE thuộc nhóm này
+                        var groupServiceCodes = group.Select(x => x.SERVICE_CODE).Distinct().ToList();
+
+                        // Lọc ra các kết quả tương ứng để in
+                        var groupResults = lstResultPrint.Where(r => groupServiceCodes.Contains(r.SERVICE_CODE)).OrderBy(r => r.ID).ThenBy(r => r.TEST_INDEX_NAME).ToList();
+
+                        MPS.Processor.Mps000096.PDO.Mps000096PDO mps000096RDO = new MPS.Processor.Mps000096.PDO.Mps000096PDO(
+                            currentPatientTypeAlter,
+                            currentTreatment,
+                            samplePrint,
+                            currentServiceReq,
+                            this.currentTestIndexs.Where(o => groupServiceCodes.Contains(o.SERVICE_CODE)).ToList(),
+                            groupResults,
+                            BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
+                            genderId,
+                            lstService,
+                            currentPatient,
+                            parent,
+                            TreatmentBedRoomList?.FirstOrDefault(),
+                            SereServList,
+                            listSampleType,
+                            listTestSampleType
+                        );
+
+                        mps000096RDO.mLCTADOs = mlctado;
+
+                        if (checkPrintNow.Checked)
+                        {
+                            if (chkSign.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                return;
+                            }
+                            else if (chkSignProcess.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                if (isPrint == 1)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                                else if (isPrint == 2)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                                else
+                                    return;
+                            }
+                            else
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                        }
+                        else if (chkPrintPreview.Checked)
+                        {
+                            if (chkSign.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                return;
+                            }
+                            else if (chkSignProcess.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                if (isPrint == 1)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                                else if (isPrint == 2)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                                else
+                                    return;
+                            }
+                            else
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                        }
+                        else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
                             Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                            SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
+                            SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
                             ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                             txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
                             return;
@@ -1118,7 +1200,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             LIS_SAMPLE sample = new LIS_SAMPLE();
                             Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
                             ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                             txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
@@ -1129,75 +1211,14 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             else
                                 return;
                         }
-                        else
+                        else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+                        {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                    }
-                    else if (chkPrintPreview.Checked)
-                    {
-                        if (chkSign.Checked)
-                        {
-                            LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                            string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                            SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
-                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                            return;
-                        }
-                        else if (chkSignProcess.Checked)
-                        {
-                            LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                            string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                            SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
-                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                            if (isPrint == 1)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                            else if (isPrint == 2)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
-                            else
-                                return;
                         }
                         else
+                        {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
-                    }
-                    else if (chkSign.Checked)
-                    {
-                        LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                        string errorMessage = "";
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                        SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
-                        ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                        txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                        return;
-                    }
-                    else if (chkSignProcess.Checked)
-                    {
-                        LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                        string errorMessage = "";
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                        SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
-                        ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                        txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                        if (isPrint == 1)
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                        else if (isPrint == 2)
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
-                        else
-                            return;
-                    }
-                    else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                        }
                     }
                     #endregion
                 }
@@ -1289,7 +1310,17 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 {
                     #region Mps000457
 
-                    MPS.Processor.Mps000457.PDO.Mps000457PDO mps000457RDO = new MPS.Processor.Mps000457.PDO.Mps000457PDO(
+                    List<V_HIS_SERVICE> lstService = BackendDataWorker.Get<V_HIS_SERVICE>();
+                    lstResultVS = lstResultVS.OrderBy(o => o.ID).ThenBy(o => o.TEST_INDEX_NAME).ToList();
+
+                    var groupListResult = lstResultVS.GroupBy(o => new { o.SERVICE_CODE, o.MACHINE_ID }).ToList();
+
+                    foreach (var item in groupListResult)
+                    {
+                        V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == item.Key.SERVICE_CODE) : null;
+                        var parent = lstService != null ? lstService.FirstOrDefault(o => o.ID == service.PARENT_ID) : null;
+
+                        MPS.Processor.Mps000457.PDO.Mps000457PDO mps000457RDO = new MPS.Processor.Mps000457.PDO.Mps000457PDO(
                           currentPatientTypeAlter,
                           currentTreatment,
                           rowSample,
@@ -1298,76 +1329,80 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                           lstResultVS,
                           BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
                           genderId,
-                          BackendDataWorker.Get<V_HIS_SERVICE>(),
-                          currentPatient);
+                          lstService,
+                          currentPatient,
+                          parent);
 
-                    if (checkPrintNow.Checked)
-                    {
-                        if (chkSign.Checked)
+                        if (checkPrintNow.Checked)
+                        {
+                            if (chkSign.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                return;
+                            }
+                            else
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                        }
+                        else if (chkPrintPreview.Checked)
+                        {
+                            if (chkSign.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                return;
+                            }
+                            else
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                        }
+                        else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
                             Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                            SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
+                            SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
                             ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                             txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
                             return;
                         }
-                        else
+                        else if (chkSignProcess.Checked)
+                        {
+                            LIS_SAMPLE sample = new LIS_SAMPLE();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                            string errorMessage = "";
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
+                            SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
+                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                            if (isPrint == 1)
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                            else if (isPrint == 2)
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                            else
+                                return;
+                        }
+                        else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+                        {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                    }
-                    else if (chkPrintPreview.Checked)
-                    {
-                        if (chkSign.Checked)
-                        {
-                            LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                            string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                            SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
-                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                            return;
                         }
                         else
+                        {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                        }
                     }
-                    else if (chkSign.Checked)
-                    {
-                        LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                        string errorMessage = "";
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                        SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
-                        ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                        txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                        return;
-                    }
-                    else if (chkSignProcess.Checked)
-                    {
-                        LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                        string errorMessage = "";
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                        SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
-                        ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                        txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                        if (isPrint == 1)
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                        else if (isPrint == 2)
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
-                        else
-                            return;
-                    }
-                    else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
-                    }
+
+                    
                     #endregion
                 }
                 else if (printTypeCode == "Mps000458")
@@ -1381,6 +1416,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     foreach (var item in groupListResult)
                     {
                         V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == item.Key.SERVICE_CODE) : null;
+                        var parent = lstService != null ? lstService.FirstOrDefault(o => o.ID == service.PARENT_ID) : null;
+
                         MPS.Processor.Mps000458.PDO.Mps000458PDO mps000458RDO = new MPS.Processor.Mps000458.PDO.Mps000458PDO(
                           currentPatientTypeAlter,
                           currentTreatment,
@@ -1392,7 +1429,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                           genderId,
                           lstService,
                           currentPatient,
-                          service);
+                          parent);
 
                         if (checkPrintNow.Checked)
                         {
@@ -1462,7 +1499,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000458RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
                         }
                     }
-                    
+
                     #endregion
                 }
                 else if (printTypeCode == "Mps000459")
@@ -1477,6 +1514,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     foreach (var item in groupListResult)
                     {
                         V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == item.Key.SERVICE_CODE) : null;
+                        var parent = lstService != null ? lstService.FirstOrDefault(o => o.ID == service.PARENT_ID) : null;
 
                         MPS.Processor.Mps000459.PDO.Mps000459PDO mps000459RDO = new MPS.Processor.Mps000459.PDO.Mps000459PDO(
                           currentPatientTypeAlter,
@@ -1489,7 +1527,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                           genderId,
                           lstService,
                           currentPatient,
-                          service);
+                          parent);
 
                         if (checkPrintNow.Checked)
                         {
@@ -1562,7 +1600,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
                     }
 
-                    
+
                     #endregion
                 }
                 else if (printTypeCode == "Mps000468")
@@ -1576,6 +1614,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     foreach (var item in groupListResult)
                     {
                         V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == item.Key.SERVICE_CODE) : null;
+                        var parent = lstService != null ? lstService.FirstOrDefault(o => o.ID == service.PARENT_ID) : null;
+
                         MPS.Processor.Mps000468.PDO.Mps000468PDO Mps000468RDO = new MPS.Processor.Mps000468.PDO.Mps000468PDO(
                          currentPatientTypeAlter,
                          currentTreatment,
@@ -1587,7 +1627,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                          genderId,
                          lstService,
                          currentPatient,
-                         service);
+                         parent);
 
                         if (checkPrintNow.Checked)
                         {
@@ -1694,7 +1734,18 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 else if (printTypeCode == "Mps000469")
                 {
                     #region Mps000469
-                    MPS.Processor.Mps000469.PDO.Mps000469PDO Mps000469RDO = new MPS.Processor.Mps000469.PDO.Mps000469PDO(
+
+                    List<V_HIS_SERVICE> lstService = BackendDataWorker.Get<V_HIS_SERVICE>();
+                    lstResultXNGPB = lstResultXNGPB.OrderBy(o => o.ID).ThenBy(o => o.TEST_INDEX_NAME).ToList();
+
+                    var groupListResult = lstResultXNGPB.GroupBy(o => new { o.SERVICE_CODE, o.MACHINE_ID }).ToList();
+
+                    foreach (var item in groupListResult)
+                    {
+                        V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == item.Key.SERVICE_CODE) : null;
+                        var parent = lstService != null ? lstService.FirstOrDefault(o => o.ID == service.PARENT_ID) : null;
+
+                        MPS.Processor.Mps000469.PDO.Mps000469PDO Mps000469RDO = new MPS.Processor.Mps000469.PDO.Mps000469PDO(
                           currentPatientTypeAlter,
                           currentTreatment,
                           rowSample,
@@ -1703,18 +1754,82 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                           lstResultXNGPB,
                           BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
                           genderId,
-                          BackendDataWorker.Get<V_HIS_SERVICE>(),
-                          currentPatient);
+                          lstService,
+                          currentPatient,
+                          parent);
 
-                    if (checkPrintNow.Checked)
-                    {
-                        if (chkSign.Checked)
+                        if (checkPrintNow.Checked)
+                        {
+                            if (chkSign.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                return;
+                            }
+                            else if (chkSignProcess.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                if (isPrint == 1)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                                else if (isPrint == 2)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                                else
+                                    return;
+
+                            }
+                            else
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                        }
+                        else if (chkPrintPreview.Checked)
+                        {
+                            if (chkSign.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                return;
+                            }
+                            else if (chkSignProcess.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                if (isPrint == 1)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                                else if (isPrint == 2)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                                else
+                                    return;
+                            }
+                            else
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                        }
+                        else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
                             Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                            SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
+                            SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
                             ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                             txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
                             return;
@@ -1724,7 +1839,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             LIS_SAMPLE sample = new LIS_SAMPLE();
                             Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
                             ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                             txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
@@ -1734,84 +1849,35 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
                             else
                                 return;
-
                         }
-                        else
+                        else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+                        {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                    }
-                    else if (chkPrintPreview.Checked)
-                    {
-                        if (chkSign.Checked)
-                        {
-                            LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                            string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                            SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
-                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                            return;
-                        }
-                        else if (chkSignProcess.Checked)
-                        {
-                            LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                            string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                            SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
-                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                            if (isPrint == 1)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                            else if (isPrint == 2)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
-                            else
-                                return;
                         }
                         else
+                        {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                        }
                     }
-                    else if (chkSign.Checked)
-                    {
-                        LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                        string errorMessage = "";
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                        SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
-                        ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                        txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                        return;
-                    }
-                    else if (chkSignProcess.Checked)
-                    {
-                        LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                        string errorMessage = "";
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                        SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
-                        ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                        txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                        if (isPrint == 1)
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                        else if (isPrint == 2)
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
-                        else
-                            return;
-                    }
-                    else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
-                    }
+
+
                     #endregion
                 }
                 else if (printTypeCode == "Mps000470")
                 {
                     #region Mps000470
-                    MPS.Processor.Mps000470.PDO.Mps000470PDO Mps000470RDO = new MPS.Processor.Mps000470.PDO.Mps000470PDO(
+
+                    List<V_HIS_SERVICE> lstService = BackendDataWorker.Get<V_HIS_SERVICE>();
+                    lstResultXNNT = lstResultXNNT.OrderBy(o => o.ID).ThenBy(o => o.TEST_INDEX_NAME).ToList();
+
+                    var groupListResult = lstResultXNNT.GroupBy(o => new { o.SERVICE_CODE, o.MACHINE_ID }).ToList();
+
+                    foreach (var item in groupListResult)
+                    {
+                        V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == item.Key.SERVICE_CODE) : null;
+                        var parent = lstService != null ? lstService.FirstOrDefault(o => o.ID == service.PARENT_ID) : null;
+
+                        MPS.Processor.Mps000470.PDO.Mps000470PDO Mps000470RDO = new MPS.Processor.Mps000470.PDO.Mps000470PDO(
                           currentPatientTypeAlter,
                           currentTreatment,
                           rowSample,
@@ -1820,18 +1886,81 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                           lstResultXNNT,
                           BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
                           genderId,
-                          BackendDataWorker.Get<V_HIS_SERVICE>(),
-                          currentPatient);
+                          lstService,
+                          currentPatient,
+                          parent);
 
-                    if (checkPrintNow.Checked)
-                    {
-                        if (chkSign.Checked)
+                        if (checkPrintNow.Checked)
+                        {
+                            if (chkSign.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                return;
+                            }
+                            else if (chkSignProcess.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                if (isPrint == 1)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                                else if (isPrint == 2)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                                else
+                                    return;
+                            }
+                            else
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                        }
+                        else if (chkPrintPreview.Checked)
+                        {
+                            if (chkSign.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                return;
+                            }
+                            else if (chkSignProcess.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                if (isPrint == 1)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                                else if (isPrint == 2)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                                else
+                                    return;
+                            }
+                            else
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                        }
+                        else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
                             Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                            SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
+                            SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
                             ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                             txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
                             return;
@@ -1841,7 +1970,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             LIS_SAMPLE sample = new LIS_SAMPLE();
                             Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                             string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
                             ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                             txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
@@ -1852,81 +1981,22 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             else
                                 return;
                         }
-                        else
+                        else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+                        {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                    }
-                    else if (chkPrintPreview.Checked)
-                    {
-                        if (chkSign.Checked)
-                        {
-                            LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                            string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                            SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
-                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                            return;
-                        }
-                        else if (chkSignProcess.Checked)
-                        {
-                            LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                            string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                            SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
-                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                            if (isPrint == 1)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                            else if (isPrint == 2)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
-                            else
-                                return;
                         }
                         else
+                        {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                        }
                     }
-                    else if (chkSign.Checked)
-                    {
-                        LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                        string errorMessage = "";
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                        SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
-                        ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                        txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                        return;
-                    }
-                    else if (chkSignProcess.Checked)
-                    {
-                        LIS_SAMPLE sample = new LIS_SAMPLE();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                        string errorMessage = "";
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                        SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
-                        ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                        txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                        if (isPrint == 1)
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                        else if (isPrint == 2)
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
-                        else
-                            return;
-                    }
-                    else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                    }
-                    else
-                    {
-                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000470RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
-                    }
+
+
                     #endregion
                 }
 
                 PrintData.ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog;
-                PrintData.EmrInputADO = inputADO; 
+                PrintData.EmrInputADO = inputADO;
                 PrintData.eventPrint = CallApiCountPrint;
                 result = MPS.MpsPrinter.Run(PrintData);
                 if (result != null && (PrintData.previewType == MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow || PrintData.previewType == MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow || isPrint > 0))
@@ -1939,55 +2009,96 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             {
                 if (printTypeCode == "Mps000096")
                 {
-                    #region
+                    #region Mps000096
                     List<V_HIS_SERVICE> services = BackendDataWorker.Get<V_HIS_SERVICE>();
                     if (services == null)
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay danh sach dich vu");
                         return;
                     }
+
                     List<LIS_SAMPLE_TYPE> listSampleType = new List<LIS_SAMPLE_TYPE>();
                     List<HIS_TEST_SAMPLE_TYPE> listTestSampleType = new List<HIS_TEST_SAMPLE_TYPE>();
-                    if ((PacsCFG.MosLisInterGrationVersion == "1" && PacsCFG.MosLisInterGrationOption == "1") || (PacsCFG.MosLisInterGrationVersion == "2" && PacsCFG.MosLisInterGrationType == "1"))
+
+                    if ((PacsCFG.MosLisInterGrationVersion == "1" && PacsCFG.MosLisInterGrationOption == "1") ||
+                        (PacsCFG.MosLisInterGrationVersion == "2" && PacsCFG.MosLisInterGrationType == "1"))
                     {
-                        listSampleType = BackendDataWorker.Get<LIS_SAMPLE_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                        listSampleType = BackendDataWorker.Get<LIS_SAMPLE_TYPE>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                            .ToList();
                     }
                     else
                     {
-                        listTestSampleType = BackendDataWorker.Get<HIS_TEST_SAMPLE_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                        listTestSampleType = BackendDataWorker.Get<HIS_TEST_SAMPLE_TYPE>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                            .ToList();
                     }
+
+                    // Tạo dictionary để tra cứu nhanh _LisResults theo SERVICE_CODE
+                    var lisResultsByServiceCode = _LisResults
+                        .GroupBy(r => r.SERVICE_CODE)
+                        .ToDictionary(g => g.Key, g => g.ToList());
+
+                    // Lấy tất cả service codes từ dicServiceTest
+                    var allServiceCodes = new HashSet<string>(dicServiceTest.Values.SelectMany(v => v.Select(s => s.SERVICE_CODE)).Distinct()); // HashSet để tra cứu O(1)
+
+                    // Lọc _LisResults một lần duy nhất cho tất cả các nhóm
+                    var relevantLisResults = _LisResults
+                        .Where(r => allServiceCodes.Contains(r.SERVICE_CODE))
+                        .ToList();
+
+                    // Tạo dictionary để nhóm results theo service code
+                    var groupedLisResults = relevantLisResults
+                        .GroupBy(r => r.SERVICE_CODE)
+                        .ToDictionary(g => g.Key, g => g.ToList());
+
+                    // Xử lý từng nhóm service
                     foreach (var item in dicServiceTest)
                     {
-                        inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((currentTreatment != null ? currentTreatment.TREATMENT_CODE : ""), printTypeCode, this.currentModule.RoomId);
+                        inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                            .GenerateInputADOWithPrintTypeCode(
+                                (currentTreatment != null ? currentTreatment.TREATMENT_CODE : ""),
+                                printTypeCode,
+                                this.currentModule.RoomId);
+
                         V_HIS_SERVICE service = services.FirstOrDefault(o => o.ID == item.Key);
+
+                        // Lấy kết quả test cho nhóm này - tra cứu nhanh từ dictionary
                         List<V_LIS_RESULT> testLisResults = new List<V_LIS_RESULT>();
                         if (item.Value != null && item.Value.Count > 0)
                         {
-                            testLisResults = _LisResults.Where(o => item.Value.Select(p => p.SERVICE_CODE).Contains(o.SERVICE_CODE)).ToList();
+                            var serviceCodes = item.Value.Select(p => p.SERVICE_CODE).ToList();
+
+                            // Tra cứu từ dictionary thay vì filter toàn bộ _LisResults
+                            testLisResults = serviceCodes
+                                .Where(sc => groupedLisResults.ContainsKey(sc))
+                                .SelectMany(sc => groupedLisResults[sc])
+                                .ToList();
                         }
 
                         MPS.ProcessorBase.Core.PrintData PrintData = null;
 
                         MPS.Processor.Mps000096.PDO.Mps000096PDO mps000096RDO = new MPS.Processor.Mps000096.PDO.Mps000096PDO(
-                           currentPatientTypeAlter,
-                           currentTreatment,
-                           samplePrint,
-                           currentServiceReq,
-                           this.currentTestIndexs,
-                           testLisResults,
-                           BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
-                           genderId,
-                           BackendDataWorker.Get<V_HIS_SERVICE>(),
-                           currentPatient,
-                         null,
-                         TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
-                         SereServList,
-                         listSampleType,
-                         listTestSampleType
-                           );
+                            currentPatientTypeAlter,
+                            currentTreatment,
+                            samplePrint,
+                            currentServiceReq,
+                            this.currentTestIndexs,
+                            testLisResults,
+                            BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
+                            genderId,
+                            services,
+                            currentPatient,
+                            service, // Truyền service parent
+                            TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
+                            SereServList,
+                            listSampleType,
+                            listTestSampleType
+                        );
 
                         mps000096RDO.mLCTADOs = mlctado;
 
+                        // Xử lý các tùy chọn in và ký
                         if (checkPrintNow.Checked)
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
@@ -2006,6 +2117,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
                             ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                             txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+
                             if (isPrint == 1)
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
                             else if (isPrint == 2)
@@ -2116,7 +2228,24 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (printTypeCode == "Mps000096")
                     {
                         #region Mps000096
-                        MPS.Processor.Mps000096.PDO.Mps000096PDO mps000096RDO = new MPS.Processor.Mps000096.PDO.Mps000096PDO(
+
+                        var serviceCodes = lstResultPrint.Select(o => o.SERVICE_CODE).Distinct().ToList();
+                        var lstService = BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => serviceCodes.Contains(o.SERVICE_CODE)).ToList();
+
+                        // Gom nhóm theo cha (PARENT_ID)
+                        var groupByParent = lstService.GroupBy(o => o.PARENT_ID).ToList();
+                        foreach (var group in groupByParent)
+                        {
+                            // Dịch vụ cha (có thể null nếu nhóm này không có cha)
+                            V_HIS_SERVICE parent = group.Key != null ? BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(x => x.ID == group.Key) : null;
+
+                            // Lấy danh sách SERVICE_CODE thuộc nhóm này
+                            var groupServiceCodes = group.Select(x => x.SERVICE_CODE).Distinct().ToList();
+
+                            // Lọc ra các kết quả tương ứng để in
+                            var groupResults = lstResultPrint.Where(r => groupServiceCodes.Contains(r.SERVICE_CODE)).OrderBy(r => r.ID).ThenBy(r => r.TEST_INDEX_NAME).ToList();
+
+                            MPS.Processor.Mps000096.PDO.Mps000096PDO mps000096RDO = new MPS.Processor.Mps000096.PDO.Mps000096PDO(
                                    null,
                                    null,
                                    samplePrint,
@@ -2125,22 +2254,84 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                    lstResultPrint,
                                    BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
                                    genderId,
-                                   BackendDataWorker.Get<V_HIS_SERVICE>(),
-                         null,
-                         TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
-                         SereServList,
-                         listSampleType,
-                         listTestSampleType);
+                                   lstService,
+                                   parent,
+                                   TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
+                                   SereServList,
+                                   listSampleType,
+                                   listTestSampleType);
 
-                        if (checkPrintNow.Checked)
-                        {
-                            if (chkSign.Checked)
+                            if (checkPrintNow.Checked)
+                            {
+                                if (chkSign.Checked)
+                                {
+                                    LIS_SAMPLE sample = new LIS_SAMPLE();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                    string errorMessage = "";
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                    SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                    ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                    txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                    return;
+                                }
+                                else if (chkSignProcess.Checked)
+                                {
+                                    LIS_SAMPLE sample = new LIS_SAMPLE();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                    string errorMessage = "";
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                    SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
+                                    ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                    txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                    if (isPrint == 1)
+                                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                                    else if (isPrint == 2)
+                                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                                    else
+                                        return;
+                                }
+                                else
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                            }
+                            else if (chkPrintPreview.Checked)
+                            {
+                                if (chkSign.Checked)
+                                {
+                                    LIS_SAMPLE sample = new LIS_SAMPLE();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                    string errorMessage = "";
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                    SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                    ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                    txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                    return;
+                                }
+                                else if (chkSignProcess.Checked)
+                                {
+                                    LIS_SAMPLE sample = new LIS_SAMPLE();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                    string errorMessage = "";
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                    SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
+                                    ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                    txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                    if (isPrint == 1)
+                                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                                    else if (isPrint == 2)
+                                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                                    else
+                                        return;
+                                }
+                                else
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                            }
+                            else if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                                SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
+                                SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
                                 ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                                 txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
                                 return;
@@ -2150,7 +2341,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                                 SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
                                 ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                                 txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
@@ -2161,75 +2352,14 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 else
                                     return;
                             }
-                            else
+                            else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+                            {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                        }
-                        else if (chkPrintPreview.Checked)
-                        {
-                            if (chkSign.Checked)
-                            {
-                                LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                                string errorMessage = "";
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                                SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
-                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                                return;
-                            }
-                            else if (chkSignProcess.Checked)
-                            {
-                                LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                                string errorMessage = "";
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                                SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
-                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                                if (isPrint == 1)
-                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                                else if (isPrint == 2)
-                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
-                                else
-                                    return;
                             }
                             else
+                            {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
-                        }
-                        else if (chkSign.Checked)
-                        {
-                            LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                            string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                            SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
-                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                            return;
-                        }
-                        else if (chkSignProcess.Checked)
-                        {
-                            LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                            string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                            SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
-                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                            if (isPrint == 1)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                            else if (isPrint == 2)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
-                            else
-                                return;
-                        }
-                        else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                            }
                         }
                         #endregion
                     }
@@ -2321,7 +2451,17 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         #region Mps000457
 
-                        MPS.Processor.Mps000457.PDO.Mps000457PDO mps000457RDO = new MPS.Processor.Mps000457.PDO.Mps000457PDO(
+                        List<V_HIS_SERVICE> lstService = BackendDataWorker.Get<V_HIS_SERVICE>();
+                        lstResultVS = lstResultVS.OrderBy(o => o.ID).ThenBy(o => o.TEST_INDEX_NAME).ToList();
+
+                        var groupListResult = lstResultVS.GroupBy(o => new { o.SERVICE_CODE, o.MACHINE_ID }).ToList();
+
+                        foreach (var item in groupListResult)
+                        {
+                            V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == item.Key.SERVICE_CODE) : null;
+                            var parent = lstService != null ? lstService.FirstOrDefault(o => o.ID == service.PARENT_ID) : null;
+
+                            MPS.Processor.Mps000457.PDO.Mps000457PDO mps000457RDO = new MPS.Processor.Mps000457.PDO.Mps000457PDO(
                               null,
                               null,
                               rowSample,
@@ -2330,76 +2470,80 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                               lstResultVS,
                               BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
                               genderId,
-                              BackendDataWorker.Get<V_HIS_SERVICE>(),
-                              currentPatient);
+                              lstService,
+                              currentPatient,
+                              parent);
 
-                        if (checkPrintNow.Checked)
-                        {
-                            if (chkSign.Checked)
+                            if (checkPrintNow.Checked)
+                            {
+                                if (chkSign.Checked)
+                                {
+                                    LIS_SAMPLE sample = new LIS_SAMPLE();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                    string errorMessage = "";
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                    SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                    ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                    txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                    return;
+                                }
+                                else
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                            }
+                            else if (chkPrintPreview.Checked)
+                            {
+                                if (chkSign.Checked)
+                                {
+                                    LIS_SAMPLE sample = new LIS_SAMPLE();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                    string errorMessage = "";
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                    SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                    ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                    txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                    return;
+                                }
+                                else
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                            }
+                            else if (chkSign.Checked)
+                            {
+                                LIS_SAMPLE sample = new LIS_SAMPLE();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                string errorMessage = "";
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
+                                SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                return;
+                            }
+                            else if (chkSignProcess.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                                SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
                                 ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                                 txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                                return;
+                                if (isPrint == 1)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                                else if (isPrint == 2)
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                                else
+                                    return;
                             }
-                            else
+                            else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+                            {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                        }
-                        else if (chkPrintPreview.Checked)
-                        {
-                            if (chkSign.Checked)
-                            {
-                                LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                                string errorMessage = "";
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                                SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
-                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                                return;
                             }
                             else
+                            {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                            }
                         }
-                        else if (chkSign.Checked)
-                        {
-                            LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                            string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000457.PDO.PrintTypeCode.Mps000457, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                            SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
-                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                            return;
-                        }
-                        else if (chkSignProcess.Checked)
-                        {
-                            LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                            string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                            SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
-                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                            if (isPrint == 1)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                            else if (isPrint == 2)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
-                            else
-                                return;
-                        }
-                        else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000457RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
-                        }
+
+                        
                         #endregion
                     }
                     else if (printTypeCode == "Mps000458")
@@ -2414,6 +2558,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         foreach (var item in groupListResult)
                         {
                             V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == item.Key.SERVICE_CODE) : null;
+                            var parent = lstService != null ? lstService.FirstOrDefault(o => o.ID == service.PARENT_ID) : null;
 
                             MPS.Processor.Mps000458.PDO.Mps000458PDO mps000458RDO = new MPS.Processor.Mps000458.PDO.Mps000458PDO(
                               null,
@@ -2426,7 +2571,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                               genderId,
                               lstService,
                               currentPatient,
-                              service);
+                              parent);
 
                             if (checkPrintNow.Checked)
                             {
@@ -2497,7 +2642,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             }
                         }
 
-                        
+
                         #endregion
                     }
                     else if (printTypeCode == "Mps000459")
@@ -2512,6 +2657,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         foreach (var item in groupListResult)
                         {
                             V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == item.Key.SERVICE_CODE) : null;
+                            var parent = lstService != null ? lstService.FirstOrDefault(o => o.ID == service.PARENT_ID) : null;
 
                             MPS.Processor.Mps000459.PDO.Mps000459PDO mps000459RDO = new MPS.Processor.Mps000459.PDO.Mps000459PDO(
                               null,
@@ -2524,7 +2670,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                               genderId,
                               lstService,
                               currentPatient,
-                              service);
+                              parent);
 
                             if (checkPrintNow.Checked)
                             {
@@ -2596,7 +2742,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
                         }
 
-                            
+
                         #endregion
                     }
                     if (printTypeCode == "Mps000468")
@@ -2611,6 +2757,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         foreach (var item in groupListResult)
                         {
                             V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == item.Key.SERVICE_CODE) : null;
+                            var parent = lstService != null ? lstService.FirstOrDefault(o => o.ID == service.PARENT_ID) : null;
 
                             MPS.Processor.Mps000468.PDO.Mps000468PDO Mps000468RDO = new MPS.Processor.Mps000468.PDO.Mps000468PDO(
                               currentPatientTypeAlter,
@@ -2623,7 +2770,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                               genderId,
                               lstService,
                               currentPatient,
-                              service);
+                              parent);
 
                             if (checkPrintNow.Checked)
                             {
@@ -2726,13 +2873,23 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             }
                         }
 
-                            
+
                         #endregion
                     }
                     if (printTypeCode == "Mps000469")
                     {
                         #region Mps000469
-                        MPS.Processor.Mps000469.PDO.Mps000469PDO Mps000469RDO = new MPS.Processor.Mps000469.PDO.Mps000469PDO(
+                        List<V_HIS_SERVICE> lstService = BackendDataWorker.Get<V_HIS_SERVICE>();
+                        lstResultXNGPB = lstResultXNGPB.OrderBy(o => o.ID).ThenBy(o => o.TEST_INDEX_NAME).ToList();
+
+                        var groupListResult = lstResultXNGPB.GroupBy(o => new { o.SERVICE_CODE, o.MACHINE_ID }).ToList();
+
+                        foreach (var item in groupListResult)
+                        {
+                            V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == item.Key.SERVICE_CODE) : null;
+                            var parent = lstService != null ? lstService.FirstOrDefault(o => o.ID == service.PARENT_ID) : null;
+
+                            MPS.Processor.Mps000469.PDO.Mps000469PDO Mps000469RDO = new MPS.Processor.Mps000469.PDO.Mps000469PDO(
                               currentPatientTypeAlter,
                               currentTreatment,
                               rowSample,
@@ -2741,18 +2898,81 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                               lstResultXNGPB,
                               BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
                               genderId,
-                              BackendDataWorker.Get<V_HIS_SERVICE>(),
-                              currentPatient);
+                              lstService,
+                              currentPatient,
+                              parent);
 
-                        if (checkPrintNow.Checked)
-                        {
-                            if (chkSign.Checked)
+                            if (checkPrintNow.Checked)
+                            {
+                                if (chkSign.Checked)
+                                {
+                                    LIS_SAMPLE sample = new LIS_SAMPLE();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                    string errorMessage = "";
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                    SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                    ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                    txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                    return;
+                                }
+                                else if (chkSignProcess.Checked)
+                                {
+                                    LIS_SAMPLE sample = new LIS_SAMPLE();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                    string errorMessage = "";
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                    SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
+                                    ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                    txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                    if (isPrint == 1)
+                                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                                    else if (isPrint == 2)
+                                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                                    else
+                                        return;
+                                }
+                                else
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                            }
+                            else if (chkPrintPreview.Checked)
+                            {
+                                if (chkSign.Checked)
+                                {
+                                    LIS_SAMPLE sample = new LIS_SAMPLE();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                    string errorMessage = "";
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                    SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                    ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                    txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                    return;
+                                }
+                                else if (chkSignProcess.Checked)
+                                {
+                                    LIS_SAMPLE sample = new LIS_SAMPLE();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                    string errorMessage = "";
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                    SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
+                                    ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
+                                    txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+                                    if (isPrint == 1)
+                                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                                    else if (isPrint == 2)
+                                        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                                    else
+                                        return;
+                                }
+                                else
+                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                            }
+                            else if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                                SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
+                                SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
                                 ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                                 txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
                                 return;
@@ -2762,7 +2982,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
                                 string errorMessage = "";
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                                 SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
                                 ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                                 txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
@@ -2773,76 +2993,17 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 else
                                     return;
                             }
-                            else
+                            else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+                            {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                        }
-                        else if (chkPrintPreview.Checked)
-                        {
-                            if (chkSign.Checked)
-                            {
-                                LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                                string errorMessage = "";
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                                SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
-                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                                return;
-                            }
-                            else if (chkSignProcess.Checked)
-                            {
-                                LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                                string errorMessage = "";
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
-                                SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
-                                ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                                txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                                if (isPrint == 1)
-                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                                else if (isPrint == 2)
-                                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
-                                else
-                                    return;
                             }
                             else
+                            {
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                            }
                         }
-                        else if (chkSign.Checked)
-                        {
-                            LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                            string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                            SetUpSign(inputADO, PrintData, sample, ref result, ref errorMessage);
-                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                            return;
-                        }
-                        else if (chkSignProcess.Checked)
-                        {
-                            LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
-                            string errorMessage = "";
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
-                            SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
-                            ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
-                            txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-                            if (isPrint == 1)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                            else if (isPrint == 2)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
-                            else
-                                return;
-                        }
-                        else if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                        }
-                        else
-                        {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, Mps000469RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
-                        }
+
+
                         #endregion
                     }
                     if (printTypeCode == "Mps000470")
@@ -2978,6 +3139,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         return;
                     }
 
+                    // Tạo dictionary để nhóm các service theo key (parent hoặc -1)
                     Dictionary<long, List<TestLisResultADO>> dicServiceTest = new Dictionary<long, List<TestLisResultADO>>();
                     foreach (var item in lstCheckPrint)
                     {
@@ -3000,34 +3162,70 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         dicServiceTest[key].Add(item);
                     }
 
+                    // *** BƯỚC TỐI ƯU: Pre-filter và group _LisResults một lần duy nhất ***
+
+                    // Lấy tất cả service codes cần in
+                    var allServiceCodes = new HashSet<string>(
+                        dicServiceTest.Values
+                            .SelectMany(v => v.Select(s => s.SERVICE_CODE))
+                            .Distinct()
+                    );
+
+                    // Filter _LisResults một lần duy nhất thay vì filter trong loop
+                    var relevantLisResults = _LisResults
+                        .Where(r => allServiceCodes.Contains(r.SERVICE_CODE))
+                        .ToList();
+
+                    // Group theo SERVICE_CODE để tra cứu nhanh O(1)
+                    var groupedLisResults = relevantLisResults
+                        .GroupBy(r => r.SERVICE_CODE)
+                        .ToDictionary(g => g.Key, g => g.ToList());
+
+                    // *** KẾT THÚC BƯỚC TỐI ƯU ***
+
+                    // Xử lý từng nhóm service
                     foreach (var item in dicServiceTest)
                     {
-                        inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((currentTreatment != null ? currentTreatment.TREATMENT_CODE : ""), printTypeCode, this.currentModule.RoomId);
+                        inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                            .GenerateInputADOWithPrintTypeCode(
+                                (currentTreatment != null ? currentTreatment.TREATMENT_CODE : ""),
+                                printTypeCode,
+                                this.currentModule.RoomId);
 
                         V_HIS_SERVICE service = services.FirstOrDefault(o => o.ID == item.Key);
+
+                        // Lấy kết quả test - tra cứu nhanh từ dictionary thay vì filter _LisResults
                         List<V_LIS_RESULT> testLisResults = new List<V_LIS_RESULT>();
                         if (item.Value != null && item.Value.Count > 0)
                         {
-                            testLisResults = _LisResults.Where(o => item.Value.Select(p => p.SERVICE_CODE).Contains(o.SERVICE_CODE)).ToList();
+                            var serviceCodes = item.Value.Select(p => p.SERVICE_CODE).ToList();
+
+                            // Tra cứu từ dictionary đã group sẵn - nhanh hơn rất nhiều
+                            testLisResults = serviceCodes
+                                .Where(sc => groupedLisResults.ContainsKey(sc))
+                                .SelectMany(sc => groupedLisResults[sc])
+                                .ToList();
                         }
 
                         MPS.Processor.Mps000096.PDO.Mps000096PDO mps000096RDO = new MPS.Processor.Mps000096.PDO.Mps000096PDO(
-                               null,
-                               null,
-                               samplePrint,
-                               null,
-                               this.currentTestIndexs,
-                               testLisResults,
-                               BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
-                               genderId,
-                               BackendDataWorker.Get<V_HIS_SERVICE>(),
-                         null,
-                         TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
-                         SereServList,
-                         listSampleType,
-                         listTestSampleType
-                               );
+                            null,
+                            null,
+                            samplePrint,
+                            null,
+                            this.currentTestIndexs,
+                            testLisResults,
+                            BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
+                            genderId,
+                            services, 
+                            service,   // serviceParent - truyền service tìm được theo key
+                            TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
+                            SereServList,
+                            listSampleType,
+                            listTestSampleType
+                        );
+
                         MPS.ProcessorBase.Core.PrintData PrintData = null;
+
                         if (checkPrintNow.Checked)
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
@@ -3046,6 +3244,13 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
                             ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                             txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
+
+                            if (isPrint == 1)
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                            else if (isPrint == 2)
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                            else
+                                continue; // Dùng continue thay vì return để xử lý tiếp các nhóm khác
                         }
                         else if (chkPrintPreview.Checked)
                         {

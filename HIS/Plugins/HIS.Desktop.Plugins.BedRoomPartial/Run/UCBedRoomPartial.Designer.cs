@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCBedRoomPartial));
             DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -116,12 +117,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.xtraTabDocumentResult = new DevExpress.XtraTab.XtraTabPage();
             this.ucViewEmrDocumentResult = new HIS.UC.ViewEmrDocument.UcEmrDocument.UcViewEmrDocument();
             this.cboFilterByDepartment = new DevExpress.XtraEditors.LookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
             this.layoutControlGroup6 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.LciGroupEmrDocument1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -278,12 +279,12 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem47 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
-            this.toolTipController2 = new DevExpress.Utils.ToolTipController();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon();
-            this.timer1 = new System.Windows.Forms.Timer();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.toolTipController2 = new DevExpress.Utils.ToolTipController(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -667,7 +668,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             // 
             this.xtraTabPage2.Controls.Add(this.panelControl2);
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(725, 423);
+            this.xtraTabPage2.Size = new System.Drawing.Size(369, 423);
             this.xtraTabPage2.Text = "CLS";
             // 
             // panelControl2
@@ -675,14 +676,14 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.panelControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControl2.Location = new System.Drawing.Point(0, 0);
             this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(725, 423);
+            this.panelControl2.Size = new System.Drawing.Size(369, 423);
             this.panelControl2.TabIndex = 0;
             // 
             // xtraTabPage3
             // 
             this.xtraTabPage3.Controls.Add(this.panelControl3);
             this.xtraTabPage3.Name = "xtraTabPage3";
-            this.xtraTabPage3.Size = new System.Drawing.Size(725, 423);
+            this.xtraTabPage3.Size = new System.Drawing.Size(369, 423);
             this.xtraTabPage3.Text = "Thuốc, vật tư, máu";
             // 
             // panelControl3
@@ -690,14 +691,14 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.panelControl3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControl3.Location = new System.Drawing.Point(0, 0);
             this.panelControl3.Name = "panelControl3";
-            this.panelControl3.Size = new System.Drawing.Size(725, 423);
+            this.panelControl3.Size = new System.Drawing.Size(369, 423);
             this.panelControl3.TabIndex = 0;
             // 
             // xtraTabPage4
             // 
             this.xtraTabPage4.Controls.Add(this.panelControl4);
             this.xtraTabPage4.Name = "xtraTabPage4";
-            this.xtraTabPage4.Size = new System.Drawing.Size(725, 423);
+            this.xtraTabPage4.Size = new System.Drawing.Size(369, 423);
             this.xtraTabPage4.Text = "Khác";
             // 
             // panelControl4
@@ -705,7 +706,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.panelControl4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControl4.Location = new System.Drawing.Point(0, 0);
             this.panelControl4.Name = "panelControl4";
-            this.panelControl4.Size = new System.Drawing.Size(725, 423);
+            this.panelControl4.Size = new System.Drawing.Size(369, 423);
             this.panelControl4.TabIndex = 0;
             // 
             // btnThuGon
@@ -750,7 +751,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             // 
             this.xtraTabDocumentResult.Controls.Add(this.ucViewEmrDocumentResult);
             this.xtraTabDocumentResult.Name = "xtraTabDocumentResult";
-            this.xtraTabDocumentResult.Size = new System.Drawing.Size(348, 444);
+            this.xtraTabDocumentResult.Size = new System.Drawing.Size(349, 444);
             this.xtraTabDocumentResult.Text = "Phiếu trả kết quả";
             // 
             // ucViewEmrDocumentResult
@@ -759,7 +760,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             this.ucViewEmrDocumentResult.Location = new System.Drawing.Point(0, 0);
             this.ucViewEmrDocumentResult.Margin = new System.Windows.Forms.Padding(4);
             this.ucViewEmrDocumentResult.Name = "ucViewEmrDocumentResult";
-            this.ucViewEmrDocumentResult.Size = new System.Drawing.Size(348, 444);
+            this.ucViewEmrDocumentResult.Size = new System.Drawing.Size(349, 444);
             this.ucViewEmrDocumentResult.TabIndex = 0;
             // 
             // cboFilterByDepartment
@@ -1037,6 +1038,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             // 
             // lblBloodType
             // 
+            this.lblBloodType.Appearance.BackColor = System.Drawing.Color.White;
+            this.lblBloodType.Appearance.ForeColor = System.Drawing.Color.Red;
             this.lblBloodType.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lblBloodType.Location = new System.Drawing.Point(667, 122);
             this.lblBloodType.Name = "lblBloodType";
@@ -1501,6 +1504,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             // 
             // layoutControlItem51
             // 
+            this.layoutControlItem51.AppearanceItemCaption.BackColor = System.Drawing.Color.White;
+            this.layoutControlItem51.AppearanceItemCaption.ForeColor = System.Drawing.Color.Red;
+            this.layoutControlItem51.AppearanceItemCaption.Options.UseBackColor = true;
+            this.layoutControlItem51.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutControlItem51.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem51.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem51.Control = this.lblBloodType;

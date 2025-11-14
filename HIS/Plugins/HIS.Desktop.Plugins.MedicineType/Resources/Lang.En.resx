@@ -234,7 +234,10 @@
   <data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_REGISTER_NUMBER" xml:space="preserve">
     <value>Registered number</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_SERVICE_UNIT_NAME" xml:space="preserve">
+	<data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_DOSAGE_FORM" xml:space="preserve">
+    <value>Dosage form</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_SERVICE_UNIT_NAME" xml:space="preserve">
     <value>Service unit</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_CODE_BHYT" xml:space="preserve">

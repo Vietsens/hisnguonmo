@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.Utils.Menu;
+using DevExpress.XtraBars.Docking2010.Views;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
@@ -34,12 +35,16 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.CreateTransReqQR.ADO;
+using HIS.Desktop.Plugins.Library.ElectronicBill;
+using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
 using HIS.Desktop.Print;
 using HIS.UC.SereServTree;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.DocumentViewer;
 using Inventec.Common.Logging;
 using Inventec.Common.QRCoder;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -114,6 +119,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 RegisterTimer(GetModuleLink(), "timerInitForm", timerInitForm.Interval, timerInitForm_Tick);
                 StartTimer(GetModuleLink(), "timerInitForm");
                 LoadPayForm();
+                InitInvoiceCheckStates();
             }
             catch (Exception ex)
             {
@@ -1018,7 +1024,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                                     }
 
                                 }
-                                
+                                ExportInvoiceIfNeeded();
                             }
                             else
                             {
@@ -1040,7 +1046,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         {
             try
             {
-                btnNew.Enabled = false;
+                btnNew.Enabled = false;              
                 CommonParam param = new CommonParam();
                 TransReqCreateSDO sdo = new TransReqCreateSDO();
                 if (this.inputTransReq.TreatmentId > 0)
@@ -1077,6 +1083,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     ShowQR();
                     SendData();
                     timerReloadTransReq.Start();
+                    ExportInvoiceIfNeeded();
                 }
             }
             catch (Exception ex)
@@ -2329,7 +2336,742 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void InitInvoiceCheckStates()
+        {
+            chkExportHDDT.Checked = inputTransReq.IssueInvoice;
+            chkExportHDDT.Enabled = false;
 
+            if (inputTransReq.Transaction != null &&
+                inputTransReq.Transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+            {
+                chkExportHDDT.Enabled = true;
+            }
+
+            chkPrintHDDT.Checked = inputTransReq.PrintInvoice;
+            chkPrintHDDT.Enabled = chkExportHDDT.Checked;
+
+            chkNotDisplayedHDDT.Checked = inputTransReq.NotDisplayedInvoice;
+            chkNotDisplayedHDDT.Enabled = chkExportHDDT.Checked;
+        }
+        private void ExportInvoiceIfNeeded() 
+        {
+            if (chkExportHDDT.Checked && transactionPrint != null)
+            {
+                // Chỉ xuất hóa đơn cho giao dịch thanh toán
+                if (transactionPrint.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+                {
+                    CommonParam param = new CommonParam();
+                    bool result = XuatHoaDonDienTu(transactionPrint, false, ref param);
+                    if (!result)
+                    {
+                        MessageBox.Show("Xuất hóa đơn điện tử không thành công: " + param.GetMessage(), "Thông báo");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Xuất hóa đơn điện tử thành công!", "Thông báo");
+
+                        if (chkPrintHDDT.Checked)
+                        {
+                            PrintEInvoice(); 
+                        }
+                        if (!chkNotDisplayedHDDT.Checked)
+                        {
+                            ShowEInvoiceView(); 
+                        }
+                    }
+                }
+            }
+        }
+        // Stub: Hàm in hóa đơn điện tử
+        private void PrintEInvoice()
+        {
+            try
+            {
+                ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
+                dataInput.PartnerInvoiceID = Inventec.Common.TypeConvert.Parse.ToInt64(this.transactionPrint.INVOICE_CODE);
+
+                dataInput.InvoiceCode = transactionPrint.INVOICE_CODE;
+                dataInput.NumOrder = transactionPrint.NUM_ORDER;
+                dataInput.SymbolCode = transactionPrint.SYMBOL_CODE;
+                dataInput.TemplateCode = transactionPrint.TEMPLATE_CODE;
+                dataInput.TransactionTime = transactionPrint.EINVOICE_TIME ?? transactionPrint.TRANSACTION_TIME;
+                dataInput.ENumOrder = transactionPrint.EINVOICE_NUM_ORDER;
+                dataInput.EinvoiceTypeId = transactionPrint.EINVOICE_TYPE_ID;
+
+                HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionPrint);
+                dataInput.Transaction = tran;
+                V_HIS_TREATMENT_FEE treatment2 = new V_HIS_TREATMENT_FEE();
+                if (transactionPrint.TREATMENT_ID.HasValue)
+                {
+                    MOS.Filter.HisTreatmentFeeViewFilter filter = new HisTreatmentFeeViewFilter();
+                    filter.ID = transactionPrint.TREATMENT_ID;
+                    treatment2 = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumer.ApiConsumers.MosConsumer, filter, null).FirstOrDefault();
+                }
+                else
+                {
+                    treatment2.TDL_PATIENT_ACCOUNT_NUMBER = transactionPrint.BUYER_ACCOUNT_NUMBER;
+                    treatment2.TDL_PATIENT_ADDRESS = transactionPrint.BUYER_ADDRESS;
+                    treatment2.TDL_PATIENT_PHONE = transactionPrint.BUYER_PHONE;
+                    treatment2.TDL_PATIENT_TAX_CODE = transactionPrint.BUYER_TAX_CODE;
+                    treatment2.TDL_PATIENT_WORK_PLACE = transactionPrint.BUYER_ORGANIZATION;
+                    treatment2.TDL_PATIENT_NAME = transactionPrint.BUYER_NAME;
+                    treatment2.ID = -1;//để các api trong thư viện không lấy được dữ liệu
+                    treatment2.PATIENT_ID = -1;
+                }
+
+                string serviceConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.DESKTOP.LIBRARY.ELECTRONIC_BILL.CONFIG");
+
+                if ((serviceConfig.Contains(ProviderType.VIETTEL) || transactionPrint.INVOICE_SYS == ProviderType.VIETTEL) &&
+                    HisConfigCFG.autoPrintType != "1")
+                {
+                    if (XtraMessageBox.Show("Bạn có muốn lấy thông tin người chuyển đổi theo thông tin người lưu ký không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        dataInput.Converter = transactionPrint.CASHIER_USERNAME;
+                    }
+                }
+
+                dataInput.Transaction = new HIS_TRANSACTION();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(dataInput.Transaction, transactionPrint);
+
+                dataInput.Treatment = treatment2;
+                dataInput.Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
+                ElectronicBillProcessor electronicBillProcessor = new ElectronicBillProcessor(dataInput);
+                ElectronicBillResult electronicBillResult = electronicBillProcessor.Run(ElectronicBillType.ENUM.GET_INVOICE_LINK);
+
+                if (electronicBillResult == null || String.IsNullOrEmpty(electronicBillResult.InvoiceLink))
+                {
+                    if (electronicBillResult != null && electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
+                    {
+                        MessageBox.Show("Tải hóa đơn điện tử thất bại. " + string.Join(". ", electronicBillResult.Messages));
+                    }
+                    else
+                        MessageBox.Show("Không tìm thấy link hóa đơn điện tử");
+                    return;
+                }
+
+                Inventec.Common.DocumentViewer.DocumentViewerManager viewManager = new Inventec.Common.DocumentViewer.DocumentViewerManager(Inventec.Common.DocumentViewer.ViewType.ENUM.Pdf);
+                Inventec.Common.DocumentViewer.InputADO ado = new Inventec.Common.DocumentViewer.InputADO();
+                ado.DeleteWhenClose = true;
+                ado.NumberOfCopy = HisConfigCFG.E_BILL__PRINT_NUM_COPY;
+                ado.PrintPageSize = transactionPrint.EINVOICE_PAGE_SIZE;
+                ado.URL = electronicBillResult.InvoiceLink;
+                Inventec.Common.DocumentViewer.ViewType.Platform type = Inventec.Common.DocumentViewer.ViewType.Platform.Telerik;
+                if (HisConfigCFG.PlatformOption > 0)
+                {
+                    type = (Inventec.Common.DocumentViewer.ViewType.Platform)(HisConfigCFG.PlatformOption - 1);
+                }
+
+                viewManager.Run(ado, type);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        // Stub: Hàm hiển thị hóa đơn điện tử
+        private void ShowEInvoiceView()
+        {
+            if (transactionPrint == null)
+            {
+                XtraMessageBox.Show("Không có thông tin hóa đơn để hiển thị.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                // Nếu hóa đơn chưa có thông tin điện tử, tạo mới
+                if (string.IsNullOrEmpty(transactionPrint.INVOICE_CODE) || string.IsNullOrEmpty(transactionPrint.INVOICE_SYS))
+                {
+                    ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(transactionPrint);
+                    if (electronicBillResult == null || !electronicBillResult.Success)
+                    {
+                        XtraMessageBox.Show("Tạo hóa đơn điện tử thất bại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Cập nhật vào hệ thống HIS
+                    CommonParam paramUpdate = new CommonParam();
+                    HisTransactionInvoiceInfoSDO sdo = new HisTransactionInvoiceInfoSDO
+                    {
+                        EinvoiceLoginname = electronicBillResult.InvoiceLoginname,
+                        InvoiceCode = electronicBillResult.InvoiceCode,
+                        InvoiceSys = electronicBillResult.InvoiceSys,
+                        EinvoiceNumOrder = electronicBillResult.InvoiceNumOrder,
+                        EInvoiceTime = electronicBillResult.InvoiceTime ?? (Inventec.Common.DateTime.Get.Now() ?? 0),
+                        Id = transactionPrint.ID,
+                        InvoiceLookupCode = electronicBillResult.InvoiceLookupCode
+                    };
+
+                    var apiResult = new BackendAdapter(paramUpdate)
+                        .Post<bool>("api/HisTransaction/UpdateInvoiceInfo", ApiConsumers.MosConsumer, sdo, paramUpdate);
+
+                    if (apiResult)
+                    {
+                        transactionPrint.INVOICE_CODE = electronicBillResult.InvoiceCode;
+                        transactionPrint.INVOICE_SYS = electronicBillResult.InvoiceSys;
+                        transactionPrint.EINVOICE_NUM_ORDER = electronicBillResult.InvoiceNumOrder;
+                        transactionPrint.EINVOICE_TIME = electronicBillResult.InvoiceTime;
+                        transactionPrint.EINVOICE_LOGINNAME = electronicBillResult.InvoiceLoginname;
+                    }
+                }
+
+                // Chỉ hiển thị view hóa đơn nếu checkbox Không hiển thị HDDT chưa được check
+                if (!chkNotDisplayedHDDT.Checked)
+                {
+                    this.onClickInHoaDonDienTu();
+                }
+
+                // Tự động in nếu cần
+                if (chkPrintHDDT.Checked)
+                {
+                    int sleepTime = (int)(HisConfigCFG.ElectronicInvoicePublishingDelayTime * 1000);
+                    System.Threading.Thread.Sleep(sleepTime);
+                    printPDFWithAcrobat();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                XtraMessageBox.Show("Lỗi khi hiển thị hóa đơn điện tử.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        public void printPDFWithAcrobat()
+        {
+            if (this.transactionPrint == null || String.IsNullOrEmpty(this.transactionPrint.INVOICE_CODE))
+            {
+                //MessageBox.Show("Hóa đơn chưa thanh toán hoặc chưa cấu hình hóa đơn điện tử.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
+            HIS_TRANSACTION tran = new HIS_TRANSACTION();
+            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionPrint);
+            dataInput.Transaction = tran;
+            V_HIS_TREATMENT_FEE treatmentFee = new V_HIS_TREATMENT_FEE();
+            if (transactionPrint.TREATMENT_ID.HasValue)
+            {
+                MOS.Filter.HisTreatmentFeeViewFilter filter = new HisTreatmentFeeViewFilter();
+                filter.ID = transactionPrint.TREATMENT_ID;
+                treatmentFee = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumer.ApiConsumers.MosConsumer, filter, null).FirstOrDefault();
+            }
+            dataInput.PartnerInvoiceID = Inventec.Common.TypeConvert.Parse.ToInt64(this.transactionPrint.INVOICE_CODE);
+            dataInput.InvoiceCode = this.transactionPrint.INVOICE_CODE;
+            dataInput.NumOrder = this.transactionPrint.NUM_ORDER;
+            dataInput.SymbolCode = this.transactionPrint.SYMBOL_CODE;
+            dataInput.TemplateCode = this.transactionPrint.TEMPLATE_CODE;
+            dataInput.TransactionTime = this.transactionPrint.EINVOICE_TIME ?? this.transactionPrint.TRANSACTION_TIME;
+            dataInput.ENumOrder = this.transactionPrint.EINVOICE_NUM_ORDER;
+            dataInput.EinvoiceTypeId = this.transactionPrint.EINVOICE_TYPE_ID;
+            dataInput.Treatment = treatmentFee;
+            dataInput.SereServs = new List<V_HIS_SERE_SERV_5>();
+            dataInput.Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
+            ElectronicBillProcessor electronicBillProcessor = new ElectronicBillProcessor(dataInput);
+            ElectronicBillResult electronicBillResult = null;
+
+            electronicBillResult = electronicBillProcessor.Run(ElectronicBillType.ENUM.GET_INVOICE_LINK);
+
+            if (electronicBillResult == null || String.IsNullOrEmpty(electronicBillResult.InvoiceLink))
+            {
+                MessageBox.Show("Không tìm thấy link hóa đơn điện tử");
+                return;
+            }
+
+            DocumentViewerManager viewManager = new DocumentViewerManager(Inventec.Common.DocumentViewer.ViewType.ENUM.Pdf);
+            Inventec.Common.DocumentViewer.InputADO ado = new Inventec.Common.DocumentViewer.InputADO();
+            ado.DeleteWhenClose = true;
+            ado.NumberOfCopy = HisConfigCFG.E_BILL__PRINT_NUM_COPY;
+            ado.URL = electronicBillResult.InvoiceLink;
+            ado.PrintPageSize = transactionPrint.EINVOICE_PAGE_SIZE;
+            Inventec.Common.DocumentViewer.ViewType.Platform type = Inventec.Common.DocumentViewer.ViewType.Platform.Telerik;
+            if (HisConfigCFG.PlatformOption > 0)
+            {
+                type = (Inventec.Common.DocumentViewer.ViewType.Platform)(HisConfigCFG.PlatformOption - 1);
+            }
+
+            viewManager.Print(ado, type);
+        }
+        private void onClickInHoaDonDienTu()
+        {
+            try
+            {
+                if (this.transactionPrint == null || String.IsNullOrEmpty(this.transactionPrint.INVOICE_CODE))
+                {
+                    return;
+                }
+
+                ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
+                HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionPrint);
+                dataInput.Transaction = tran;
+                V_HIS_TREATMENT_FEE treatmentFee = new V_HIS_TREATMENT_FEE();
+                if (transactionPrint.TREATMENT_ID.HasValue)
+                {
+                    MOS.Filter.HisTreatmentFeeViewFilter filter = new HisTreatmentFeeViewFilter();
+                    filter.ID = transactionPrint.TREATMENT_ID;
+                    treatmentFee = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumer.ApiConsumers.MosConsumer, filter, null).FirstOrDefault();
+                }
+                dataInput.PartnerInvoiceID = Inventec.Common.TypeConvert.Parse.ToInt64(this.transactionPrint.INVOICE_CODE);
+                dataInput.InvoiceCode = transactionPrint.INVOICE_CODE;
+                dataInput.NumOrder = transactionPrint.NUM_ORDER;
+                dataInput.SymbolCode = transactionPrint.SYMBOL_CODE;
+                dataInput.TemplateCode = transactionPrint.TEMPLATE_CODE;
+                dataInput.TransactionTime = transactionPrint.EINVOICE_TIME ?? transactionPrint.TRANSACTION_TIME;
+                dataInput.ENumOrder = transactionPrint.EINVOICE_NUM_ORDER;
+                dataInput.EinvoiceTypeId = transactionPrint.EINVOICE_TYPE_ID;
+                dataInput.Treatment = treatmentFee;
+                dataInput.Transaction = new HIS_TRANSACTION();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(dataInput.Transaction, transactionPrint);
+                dataInput.SereServs = new List<V_HIS_SERE_SERV_5>();
+                dataInput.Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
+                ElectronicBillProcessor electronicBillProcessor = new ElectronicBillProcessor(dataInput);
+                ElectronicBillResult electronicBillResult = null;
+
+                electronicBillResult = electronicBillProcessor.Run(ElectronicBillType.ENUM.GET_INVOICE_LINK);
+
+                if (electronicBillResult == null || String.IsNullOrEmpty(electronicBillResult.InvoiceLink))
+                {
+                    if (electronicBillResult != null && electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
+                    {
+                        MessageBox.Show("Tải hóa đơn điện tử thất bại. " + string.Join(". ", electronicBillResult.Messages));
+                    }
+                    else
+                        MessageBox.Show("Không tìm thấy link hóa đơn điện tử");
+                    return;
+                }
+
+                DocumentViewerManager viewManager = new DocumentViewerManager(Inventec.Common.DocumentViewer.ViewType.ENUM.Pdf);
+                Inventec.Common.DocumentViewer.InputADO ado = new Inventec.Common.DocumentViewer.InputADO();
+                ado.DeleteWhenClose = true;
+                ado.NumberOfCopy = HisConfigCFG.E_BILL__PRINT_NUM_COPY;
+                ado.PrintPageSize = transactionPrint.EINVOICE_PAGE_SIZE;
+                ado.URL = electronicBillResult.InvoiceLink;
+                Inventec.Common.DocumentViewer.ViewType.Platform type = Inventec.Common.DocumentViewer.ViewType.Platform.Telerik;
+                if (HisConfigCFG.PlatformOption > 0)
+                {
+                    type = (Inventec.Common.DocumentViewer.ViewType.Platform)(HisConfigCFG.PlatformOption - 1);
+                }
+
+                viewManager.Run(ado, type);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool XuatHoaDonDienTu(V_HIS_TRANSACTION transactionBill, bool isError, ref CommonParam param)
+        {
+            bool result = false;
+            try
+            {
+                if (transactionBill == null) return result;
+                if (transactionBill.TRANSACTION_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT || !String.IsNullOrWhiteSpace(transactionBill.INVOICE_CODE))
+                {
+                    return result;
+                }
+
+                if (param == null)
+                {
+                    param = new CommonParam();
+                }
+
+                ElectronicBillResult electronicBillResult = null;
+                if (isError)//nếu là lỗi thì lấy thông tin
+                {
+                    electronicBillResult = GetEbillInfo(transactionBill);
+                }
+
+                //Tao hoa don dien thu ben thu3 
+                if (electronicBillResult == null || !electronicBillResult.Success)
+                {
+                    electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(transactionBill);
+                }
+
+                if (electronicBillResult == null || !electronicBillResult.Success)
+                {
+                    param.Messages.Add("Tạo hóa đơn điện tử thất bại");
+                    if (electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
+                    {
+                        param.Messages.AddRange(electronicBillResult.Messages);
+                    }
+
+                    param.Messages = param.Messages.Distinct().ToList();
+                }
+                else
+                {
+                    //goi api update
+                    CommonParam paramUpdate = new CommonParam();
+                    HisTransactionInvoiceInfoSDO sdo = new HisTransactionInvoiceInfoSDO();
+                    sdo.EinvoiceLoginname = electronicBillResult.InvoiceLoginname;
+                    sdo.InvoiceCode = electronicBillResult.InvoiceCode;
+                    sdo.InvoiceSys = electronicBillResult.InvoiceSys;
+                    sdo.EinvoiceNumOrder = electronicBillResult.InvoiceNumOrder;
+                    sdo.EInvoiceTime = electronicBillResult.InvoiceTime ?? 0;
+                    sdo.Id = transactionBill.ID;
+                    sdo.InvoiceLookupCode = electronicBillResult.InvoiceLookupCode;
+                    var apiResult = new BackendAdapter(paramUpdate).Post<bool>("api/HisTransaction/UpdateInvoiceInfo", ApiConsumers.MosConsumer, sdo, paramUpdate);
+                    if (apiResult)
+                    {
+                        transactionBill.INVOICE_CODE = electronicBillResult.InvoiceCode;
+                        transactionBill.INVOICE_SYS = electronicBillResult.InvoiceSys;
+                        transactionBill.EINVOICE_NUM_ORDER = electronicBillResult.InvoiceNumOrder;
+                        transactionBill.EINVOICE_TIME = electronicBillResult.InvoiceTime;
+                        transactionBill.EINVOICE_LOGINNAME = electronicBillResult.InvoiceLoginname;
+                        transactionBill.INVOICE_LOOKUP_CODE = electronicBillResult.InvoiceLookupCode;
+                        result = true;
+                    }
+                }
+
+                //MessageManager.Show(this, param, success);
+                //MessageBox.Show(param.BugCodes.ToString());
+                //MessageBox.Show(param.Messages.ToString());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+        private ElectronicBillResult GetEbillInfo(V_HIS_TRANSACTION transaction)
+        {
+            ElectronicBillResult result = new ElectronicBillResult();
+            try
+            {
+                //WaitingManager.Show();
+                List<V_HIS_SERE_SERV_5> sereServ5s = null;
+
+                var param = new CommonParam();
+                HisSereServBillFilter ssbfilter = new HisSereServBillFilter();
+                ssbfilter.BILL_ID = transaction.ID;
+                var sereServBill = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_SERE_SERV_BILL>>("api/HisSereServBill/Get", ApiConsumers.MosConsumer, ssbfilter, param);
+                if (sereServBill == null || sereServBill.Count <= 0)
+                {
+                    if (transaction.SALE_TYPE_ID == 1)
+                    {
+                        sereServ5s = ProcessSereServByExpMestForEBill(transaction);
+                    }
+                    else
+                    {
+                        HisBillGoodsFilter bgfilter = new HisBillGoodsFilter();
+                        bgfilter.BILL_ID = transaction.ID;
+                        var billgoods = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_BILL_GOODS>>("api/HisBillGoods/Get", ApiConsumers.MosConsumer, ssbfilter, param);
+                        if (billgoods != null && billgoods.Count > 0)
+                        {
+                            sereServ5s = new List<V_HIS_SERE_SERV_5>();
+                            int dem = 0;
+                            foreach (var item in billgoods)
+                            {
+                                V_HIS_SERE_SERV_5 ssb = new V_HIS_SERE_SERV_5();
+
+                                ssb.SERVICE_ID = item.NONE_MEDI_SERVICE_ID ?? item.MATERIAL_TYPE_ID ?? item.MEDICINE_TYPE_ID ?? dem;
+                                ssb.MEDICINE_ID = item.MEDICINE_TYPE_ID;
+                                ssb.MATERIAL_ID = item.MATERIAL_TYPE_ID;
+                                ssb.OTHER_PAY_SOURCE_ID = item.NONE_MEDI_SERVICE_ID;
+
+                                ssb.AMOUNT = item.AMOUNT;
+                                ssb.VAT_RATIO = item.VAT_RATIO ?? 0;
+                                ssb.TDL_SERVICE_CODE = "";
+                                ssb.TDL_SERVICE_NAME = item.GOODS_NAME;
+                                ssb.SERVICE_UNIT_NAME = item.GOODS_UNIT_NAME;
+                                ssb.PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
+                                ssb.VIR_PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
+                                ssb.VIR_TOTAL_PATIENT_PRICE = ssb.VIR_PRICE * (1 + ssb.VAT_RATIO) * ssb.AMOUNT;
+                                sereServ5s.Add(ssb);
+                                dem++;
+                            }
+                        }
+                    }
+                }
+
+                V_HIS_TREATMENT_FEE currentTreatment = new V_HIS_TREATMENT_FEE();
+                if (transaction.TREATMENT_ID.HasValue)
+                {
+                    HisTreatmentFeeViewFilter filter = new HisTreatmentFeeViewFilter();
+                    filter.ID = transaction.TREATMENT_ID;
+                    var treatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumers.MosConsumer, filter, param);
+                    if (treatment != null && treatment.Count > 0)
+                    {
+                        currentTreatment = treatment.First();
+                    }
+                }
+                else
+                {
+                    currentTreatment.TDL_PATIENT_ACCOUNT_NUMBER = transaction.BUYER_ACCOUNT_NUMBER;
+                    currentTreatment.TDL_PATIENT_ADDRESS = String.IsNullOrWhiteSpace(transaction.BUYER_ADDRESS) ? transaction.TDL_PATIENT_ADDRESS : transaction.BUYER_ADDRESS;
+                    currentTreatment.TDL_PATIENT_PHONE = transaction.BUYER_PHONE;
+                    currentTreatment.TDL_PATIENT_TAX_CODE = transaction.BUYER_TAX_CODE;
+                    currentTreatment.TDL_PATIENT_WORK_PLACE = String.IsNullOrWhiteSpace(transaction.BUYER_ORGANIZATION) ? transaction.TDL_PATIENT_WORK_PLACE : transaction.BUYER_ORGANIZATION;
+                    currentTreatment.TDL_PATIENT_NAME = String.IsNullOrWhiteSpace(transaction.BUYER_NAME) ? transaction.TDL_PATIENT_NAME : transaction.BUYER_NAME;
+                    currentTreatment.TDL_PATIENT_CODE = transaction.TDL_PATIENT_CODE;
+                    currentTreatment.TDL_PATIENT_WORK_PLACE_NAME = transaction.TDL_PATIENT_WORK_PLACE_NAME;
+                    currentTreatment.ID = -1;//để các api trong thư viện không lấy được dữ liệu
+                    currentTreatment.PATIENT_ID = transaction.TDL_PATIENT_ID ?? -1;
+                }
+
+                ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
+                //lấy thông tin hóa đơn đã tạo thì sẽ chưa có INVOICE_CODE trong HIS_TRANSACTION. thông tin mã giao dịch đang sử dụng làm key để tạo hóa đơn.
+                dataInput.InvoiceCode = transaction.TRANSACTION_CODE;
+                dataInput.Amount = transaction.AMOUNT;
+                dataInput.Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
+                dataInput.Discount = transaction.EXEMPTION;
+                dataInput.DiscountRatio = Math.Round((transaction.EXEMPTION ?? 0) / transaction.AMOUNT, 2, MidpointRounding.AwayFromZero) * 100;
+                dataInput.PaymentMethod = transaction.PAY_FORM_NAME;
+                dataInput.SereServs = sereServ5s;
+                dataInput.SereServBill = sereServBill;
+                dataInput.Treatment = currentTreatment;
+                dataInput.Currency = "VND";
+                dataInput.SymbolCode = transaction.SYMBOL_CODE;
+                dataInput.TemplateCode = transaction.TEMPLATE_CODE;
+                dataInput.TransactionTime = transaction.EINVOICE_TIME ?? transaction.TRANSACTION_TIME;
+                dataInput.EinvoiceTypeId = transaction.EINVOICE_TYPE_ID;
+                dataInput.IsTransactionList = true;
+
+                HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transaction);
+
+                dataInput.Transaction = tran;
+
+                if (transaction.SALE_TYPE_ID == 1)
+                {
+                    ElectronicBillProcessor electronicBillProcessor = new ElectronicBillProcessor(dataInput, Library.ElectronicBill.Template.TemplateEnum.TYPE.TemplateNhaThuoc);
+                    result = electronicBillProcessor.Run(ElectronicBillType.ENUM.GET_INVOICE_INFO);
+                }
+                else
+                {
+                    ElectronicBillProcessor electronicBillProcessor = new ElectronicBillProcessor(dataInput);
+                    result = electronicBillProcessor.Run(ElectronicBillType.ENUM.GET_INVOICE_INFO);
+                }
+
+                if (result != null && result.Success && String.IsNullOrWhiteSpace(result.InvoiceCode))
+                {
+                    result.InvoiceCode = transaction.TRANSACTION_CODE;
+                }
+                //WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+        private List<V_HIS_SERE_SERV_5> ProcessSereServByExpMestForEBill(V_HIS_TRANSACTION transaction)
+        {
+            List<V_HIS_SERE_SERV_5> result = null;
+            try
+            {
+                string vatOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TransactionList.ElectronicBill.VatOption");
+                CommonParam param = new CommonParam();
+                HisExpMestFilter expfilter = new HisExpMestFilter();
+                expfilter.BILL_ID = transaction.ID;
+                var listExpMests = new BackendAdapter(param).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumers.MosConsumer, expfilter, param);
+                if (listExpMests != null && listExpMests.Count > 0)
+                {
+                    result = new List<V_HIS_SERE_SERV_5>();
+
+                    HisExpMestMedicineViewFilter mediFilter = new HisExpMestMedicineViewFilter();
+                    mediFilter.EXP_MEST_IDs = listExpMests.Select(s => s.ID).ToList();
+                    var listExpMestMedicines = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>("api/HisExpMestMedicine/GetView", ApiConsumers.MosConsumer, mediFilter, param);
+                    if (listExpMestMedicines != null && listExpMestMedicines.Count > 0)
+                    {
+                        foreach (var item in listExpMestMedicines)
+                        {
+                            V_HIS_SERE_SERV_5 sereServBill = new V_HIS_SERE_SERV_5();
+
+                            sereServBill.AMOUNT = item.AMOUNT;
+                            sereServBill.TDL_SERVICE_CODE = item.MEDICINE_TYPE_CODE;
+                            sereServBill.TDL_SERVICE_NAME = item.MEDICINE_TYPE_NAME;
+                            sereServBill.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
+                            sereServBill.DISCOUNT = item.DISCOUNT;
+                            sereServBill.MEDICINE_ID = item.MEDICINE_TYPE_ID;
+
+                            sereServBill.VAT_RATIO = item.VAT_RATIO ?? 0;
+                            if (vatOption == "1")
+                            {
+                                sereServBill.VAT_RATIO = item.IMP_VAT_RATIO;
+                            }
+                            else if (vatOption == "2")
+                            {
+                                sereServBill.VAT_RATIO = 0;
+                            }
+
+                            sereServBill.PRICE = (item.VIR_PRICE ?? 0) / (1 + sereServBill.VAT_RATIO);
+
+                            sereServBill.VIR_TOTAL_PATIENT_PRICE = sereServBill.PRICE * sereServBill.AMOUNT;
+                            var service = BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(o => o.ID == item.SERVICE_ID);
+                            if (service != null)
+                            {
+                                sereServBill.TDL_SERVICE_TAX_RATE_TYPE = service.TAX_RATE_TYPE;
+                            }
+
+                            result.Add(sereServBill);
+                        }
+                    }
+
+                    HisExpMestMaterialViewFilter mateFilter = new HisExpMestMaterialViewFilter();
+                    mateFilter.EXP_MEST_IDs = listExpMests.Select(s => s.ID).ToList();
+                    var listExpMestMaterials = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MATERIAL>>("api/HisExpMestMaterial/GetView", ApiConsumers.MosConsumer, mateFilter, param);
+                    if (listExpMestMaterials != null && listExpMestMaterials.Count > 0)
+                    {
+                        foreach (var item in listExpMestMaterials)
+                        {
+                            V_HIS_SERE_SERV_5 sereServBill = new V_HIS_SERE_SERV_5();
+
+                            sereServBill.AMOUNT = item.AMOUNT;
+                            sereServBill.TDL_SERVICE_CODE = item.MATERIAL_TYPE_CODE;
+                            sereServBill.TDL_SERVICE_NAME = item.MATERIAL_TYPE_NAME;
+                            sereServBill.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
+                            sereServBill.DISCOUNT = item.DISCOUNT;
+                            sereServBill.MATERIAL_ID = item.MATERIAL_TYPE_ID;
+
+                            sereServBill.VAT_RATIO = item.VAT_RATIO ?? 0;
+                            if (vatOption == "1")
+                            {
+                                sereServBill.VAT_RATIO = item.IMP_VAT_RATIO;
+                            }
+                            else if (vatOption == "2")
+                            {
+                                sereServBill.VAT_RATIO = 0;
+                            }
+
+                            sereServBill.PRICE = (item.VIR_PRICE ?? 0) / (1 + sereServBill.VAT_RATIO);
+
+                            sereServBill.VIR_TOTAL_PATIENT_PRICE = sereServBill.PRICE * sereServBill.AMOUNT;
+                            var service = BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(o => o.ID == item.SERVICE_ID);
+                            if (service != null)
+                            {
+                                sereServBill.TDL_SERVICE_TAX_RATE_TYPE = service.TAX_RATE_TYPE;
+                            }
+
+                            result.Add(sereServBill);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+        private ElectronicBillResult TaoHoaDonDienTuBenThu3CungCap(V_HIS_TRANSACTION transaction)
+        {
+            ElectronicBillResult result = new ElectronicBillResult();
+            try
+            {
+                //WaitingManager.Show();
+                List<V_HIS_SERE_SERV_5> sereServ5s = null;
+
+                var param = new CommonParam();
+                HisSereServBillFilter ssbfilter = new HisSereServBillFilter();
+                ssbfilter.BILL_ID = transaction.ID;
+                var sereServBill = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_SERE_SERV_BILL>>("api/HisSereServBill/Get", ApiConsumers.MosConsumer, ssbfilter, param);
+                if (sereServBill == null || sereServBill.Count <= 0)
+                {
+                    if (transaction.SALE_TYPE_ID == 1)
+                    {
+                        sereServ5s = ProcessSereServByExpMestForEBill(transaction);
+                    }
+                    else
+                    {
+                        HisBillGoodsFilter bgfilter = new HisBillGoodsFilter();
+                        bgfilter.BILL_ID = transaction.ID;
+                        var billgoods = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_BILL_GOODS>>("api/HisBillGoods/Get", ApiConsumers.MosConsumer, ssbfilter, param);
+                        if (billgoods != null && billgoods.Count > 0)
+                        {
+                            sereServ5s = new List<V_HIS_SERE_SERV_5>();
+                            int dem = 0;
+                            foreach (var item in billgoods)
+                            {
+                                V_HIS_SERE_SERV_5 ssb = new V_HIS_SERE_SERV_5();
+
+                                ssb.SERVICE_ID = item.NONE_MEDI_SERVICE_ID ?? item.MATERIAL_TYPE_ID ?? item.MEDICINE_TYPE_ID ?? dem;
+                                ssb.MEDICINE_ID = item.MEDICINE_TYPE_ID;
+                                ssb.MATERIAL_ID = item.MATERIAL_TYPE_ID;
+                                ssb.OTHER_PAY_SOURCE_ID = item.NONE_MEDI_SERVICE_ID;
+
+                                ssb.AMOUNT = item.AMOUNT;
+                                ssb.VAT_RATIO = item.VAT_RATIO ?? 0;
+                                ssb.TDL_SERVICE_CODE = "";
+                                ssb.TDL_SERVICE_NAME = item.GOODS_NAME;
+                                ssb.SERVICE_UNIT_NAME = item.GOODS_UNIT_NAME;
+                                ssb.PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
+                                ssb.VIR_PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
+                                ssb.VIR_TOTAL_PATIENT_PRICE = ssb.VIR_PRICE * (1 + ssb.VAT_RATIO) * ssb.AMOUNT;
+                                sereServ5s.Add(ssb);
+                                dem++;
+                            }
+                        }
+                    }
+                }
+
+                V_HIS_TREATMENT_FEE currentTreatment = new V_HIS_TREATMENT_FEE();
+                if (transaction.TREATMENT_ID.HasValue)
+                {
+                    HisTreatmentFeeViewFilter filter = new HisTreatmentFeeViewFilter();
+                    filter.ID = transaction.TREATMENT_ID;
+                    var treatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumers.MosConsumer, filter, param);
+                    if (treatment != null && treatment.Count > 0)
+                    {
+                        currentTreatment = treatment.First();
+                    }
+                }
+                else
+                {
+                    currentTreatment.TDL_PATIENT_ACCOUNT_NUMBER = transaction.BUYER_ACCOUNT_NUMBER;
+                    currentTreatment.TDL_PATIENT_ADDRESS = String.IsNullOrWhiteSpace(transaction.BUYER_ADDRESS) ? transaction.TDL_PATIENT_ADDRESS : transaction.BUYER_ADDRESS;
+                    currentTreatment.TDL_PATIENT_PHONE = transaction.BUYER_PHONE;
+                    currentTreatment.TDL_PATIENT_TAX_CODE = transaction.BUYER_TAX_CODE;
+                    currentTreatment.TDL_PATIENT_WORK_PLACE = String.IsNullOrWhiteSpace(transaction.BUYER_ORGANIZATION) ? transaction.TDL_PATIENT_WORK_PLACE : transaction.BUYER_ORGANIZATION;
+                    currentTreatment.TDL_PATIENT_NAME = String.IsNullOrWhiteSpace(transaction.BUYER_NAME) ? transaction.TDL_PATIENT_NAME : transaction.BUYER_NAME;
+                    currentTreatment.TDL_PATIENT_CODE = transaction.TDL_PATIENT_CODE;
+                    currentTreatment.TDL_PATIENT_WORK_PLACE_NAME = transaction.TDL_PATIENT_WORK_PLACE_NAME;
+                    currentTreatment.ID = -1;//để các api trong thư viện không lấy được dữ liệu
+                    currentTreatment.PATIENT_ID = transaction.TDL_PATIENT_ID ?? -1;
+                }
+
+                ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
+                dataInput.Amount = transaction.AMOUNT;
+                dataInput.Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
+                dataInput.Discount = transaction.EXEMPTION;
+                dataInput.DiscountRatio = Math.Round((transaction.EXEMPTION ?? 0) / transaction.AMOUNT, 2, MidpointRounding.AwayFromZero) * 100;
+                dataInput.PaymentMethod = transaction.PAY_FORM_NAME;
+                dataInput.SereServs = sereServ5s;
+                dataInput.SereServBill = sereServBill;
+                dataInput.Treatment = currentTreatment;
+                dataInput.Currency = "VND";
+                dataInput.SymbolCode = transaction.SYMBOL_CODE;
+                dataInput.TemplateCode = transaction.TEMPLATE_CODE;
+                dataInput.TransactionTime = transaction.EINVOICE_TIME ?? transaction.TRANSACTION_TIME;
+                dataInput.EinvoiceTypeId = transaction.EINVOICE_TYPE_ID;
+                dataInput.IsTransactionList = true;
+
+                HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transaction);
+
+                dataInput.Transaction = tran;
+
+                if (transaction.SALE_TYPE_ID == 1)
+                {
+                    ElectronicBillProcessor electronicBillProcessor = new ElectronicBillProcessor(dataInput, Library.ElectronicBill.Template.TemplateEnum.TYPE.TemplateNhaThuoc);
+                    result = electronicBillProcessor.Run(ElectronicBillType.ENUM.CREATE_INVOICE);
+                }
+                else
+                {
+                    ElectronicBillProcessor electronicBillProcessor = new ElectronicBillProcessor(dataInput);
+                    result = electronicBillProcessor.Run(ElectronicBillType.ENUM.CREATE_INVOICE);
+                }
+                //WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
         private void gridView1_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
             try

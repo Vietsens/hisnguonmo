@@ -122,23 +122,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintBordereau\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.PrintPrescription, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His_Test_20250906143200\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTestTotal">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintTestTotal\HIS.Desktop.Plugins.Library.PrintTestTotal.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentFinish">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Print, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His_Test_20250906143200\x64\ReferencedAssemblies\HIS.Desktop.Print.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -151,25 +140,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.DateEditor\HIS.UC.DateEditor.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.Icd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.Icd.dll</HintPath>
+    <Reference Include="HIS.UC.Icd">
+      <HintPath>..\..\..\..\LIB\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.MenuPrint">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.MenuPrint.dll</HintPath>
+    <Reference Include="HIS.UC.MenuPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.MenuPrint\HIS.UC.MenuPrint.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.PatientSelect">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.PatientSelect\HIS.UC.PatientSelect.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.PeriousExpMestList">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.PeriousExpMestList.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.UC.SecondaryIcd">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.UC.TreatmentFinish, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.TreatmentFinish.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.PeriousExpMestList\HIS.UC.PeriousExpMestList.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -189,9 +171,6 @@
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
-    </Reference>
-    <Reference Include="Inventec.Common.FlexCelPrint">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
@@ -287,9 +266,6 @@
     <Reference Include="Inventec.UC.Paging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
@@ -745,6 +721,18 @@
     <Compile Include="Worker\ValidAcinInteractiveWorker.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.csproj">
+      <Project>{a9e46128-5af1-4bbd-b318-854517fc26ab}</Project>
+      <Name>Inventec.Common.FlexCelPrint</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.csproj">
+      <Project>{04B2AB94-562D-4753-A158-1AAD3217408B}</Project>
+      <Name>HIS.UC.SecondaryIcd</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.TreatmentFinish\HIS.UC.TreatmentFinish.csproj">
+      <Project>{DDBFAF62-E27F-4B53-B4CA-1B160E2506A2}</Project>
+      <Name>HIS.UC.TreatmentFinish</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
@@ -793,9 +781,21 @@
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
+      <Project>{AEECA321-FD65-407A-8D70-BA5362883B87}</Project>
+      <Name>HIS.Desktop.Print</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintPrescription\HIS.Desktop.Plugins.Library.PrintPrescription.csproj">
+      <Project>{e34c646c-1959-4b1e-9ebd-6cc75a5470fa}</Project>
+      <Name>HIS.Desktop.Plugins.Library.PrintPrescription</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintTreatmentFinish\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.csproj">
+      <Project>{74a53da7-c004-4103-a72c-ca0b57798441}</Project>
+      <Name>HIS.Desktop.Plugins.Library.PrintTreatmentFinish</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

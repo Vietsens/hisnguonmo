@@ -31,6 +31,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR
     class CreateTransReqQRBehavior : BusinessBase, ICreateTransReqQR
     {
         object[] entity;
+        bool issueInvoice;
         internal CreateTransReqQRBehavior(CommonParam param, object[] filter)
             : base()
         {

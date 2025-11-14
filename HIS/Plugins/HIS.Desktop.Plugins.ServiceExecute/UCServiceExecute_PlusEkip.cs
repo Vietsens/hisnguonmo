@@ -294,6 +294,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 HisEkipUserADO ado = new HisEkipUserADO();
 
                 bool IsDataKey = false;
+                IsDataEkipUser = false;
                 if (this.sereServ != null)
                 {
                     CommonParam param = new CommonParam();

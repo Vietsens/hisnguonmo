@@ -1423,13 +1423,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                             AntibioticRequestADO ado = new AntibioticRequestADO();
 
-                            List<HIS_ANTIBIOTIC_NEW_REG> NewRegimen = new List<HIS_ANTIBIOTIC_NEW_REG>();
+                            
                             var acinIngredientID = acinIngredients.Select(o => o.ID).ToList();
                             var TypeAcinMedicineType = medicineTypeAcinByMety.Where(o => acinIngredientID.Contains(o.ACTIVE_INGREDIENT_ID)).Select(p => p.MEDICINE_TYPE_ID).ToList();
                             var medicineType = this.mediMatyTypeADOs.Where(o => TypeAcinMedicineType.Contains(o.ID)).ToList();
                             var ExpMestId = ListExpMestMedicineAntibioticRequired.Select(o => o.EXP_MEST_ID).Distinct().ToList();
                             foreach (var em in ExpMestId)
                             {
+                                List<HIS_ANTIBIOTIC_NEW_REG> NewRegimen = new List<HIS_ANTIBIOTIC_NEW_REG>();
                                 var medicineTypeExpMest = medicineType.Where(o => ListExpMestMedicineAntibioticRequired.Where(p => p.EXP_MEST_ID == em).ToList().Exists(p => p.TDL_MEDICINE_TYPE_ID == o.ID)).ToList();
                                 foreach (var item in medicineTypeExpMest)
                                 {
