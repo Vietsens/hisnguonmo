@@ -4370,7 +4370,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
             return lst;
         }
-        private void ProcessPrint(ref bool hasConfirmUser, ref bool resultConfirmUser, bool hiv)
+        private void ProcessPrint(ref bool hasConfirmUser, ref bool resultConfirmUser, bool hiv)  
         {
             try
             {
@@ -4384,7 +4384,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         SetDataToPrint(true);
 
-                        if (lstResultVS != null && lstResultVS.Count > 0)
+                        if (lstResultVS != null && lstResultVS.Count > 0)   
                         {
                             PrintProcess(PrintTypeKXN.IN_VI_SINH);
                         }
