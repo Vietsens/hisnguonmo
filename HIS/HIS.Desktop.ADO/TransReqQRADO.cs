@@ -38,8 +38,8 @@ namespace HIS.Desktop.ADO
         /// BIDV, VCB, Viettinbank, LPBank, PVCB
         /// </summary>
         public string BankName { get; set; }
-        public bool PrintInvoice { get; set; }
         public bool IssueInvoice { get; set; }
+        public bool PrintInvoice { get; set; }
         public bool NotDisplayedInvoice { get; set; }
     }
     public enum CreateReqType
