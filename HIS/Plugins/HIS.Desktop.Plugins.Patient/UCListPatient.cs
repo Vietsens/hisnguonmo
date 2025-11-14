@@ -550,17 +550,19 @@ namespace HIS.Desktop.Plugins.Patient
                     }
                     filter.PERSON_CODE__EXACT = code;
                 }
-                else if (!string.IsNullOrEmpty(txtCCCD.Text.Trim()))
-                {
-                    string code = txtCCCD.Text.Trim();
-
-                    filter.CCCD_CMND_PASSPORT = code;
-                }
                 else
                 {
                     filter.ORDER_FIELD = "MODIFY_TIME";
                     filter.ORDER_DIRECTION = "DESC";
                     filter.KEY_WORD = txtKeyWord.Text.Trim();
+
+                    if (!string.IsNullOrEmpty(txtCCCD.Text.Trim()))
+                    {
+                        string code = txtCCCD.Text.Trim();
+
+                        filter.CCCD_CMND_PASSPORT = code;
+                    }
+
                     if (cboMaYTe.EditValue != null)
                     {
                         if (Inventec.Common.TypeConvert.Parse.ToInt64(cboMaYTe.EditValue.ToString()) == 1)
@@ -1317,7 +1319,7 @@ namespace HIS.Desktop.Plugins.Patient
 
                     var data = apiResult.Data;
 
-                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "1")
+                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "1")  
                     {
                         if (string.IsNullOrWhiteSpace(patientImport.CCCD_NUMBER.Trim()))
                         {
@@ -1425,6 +1427,7 @@ namespace HIS.Desktop.Plugins.Patient
                     if (rs != null)
                     {
                         success = true;
+                        btnSave.Enabled = false;
                         FillDataToGrid();
                         WaitingManager.Hide();
                     }
