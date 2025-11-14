@@ -474,30 +474,116 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             try
             {
                 isCheckAssignServiceSimultaneityOption = false;
-                if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "1" && HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "2") || cboUser.EditValue == null || intructionTimeSelecteds == null || intructionTimeSelecteds.Count == 0)
+                //if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "1" && HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "2") || cboUser.EditValue == null || intructionTimeSelecteds == null || intructionTimeSelecteds.Count == 0)
+                //    return;
+                //CommonParam param = new CommonParam();
+                //HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
+                //sdo.TreatmentId = treatmentId;
+                //sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
+                //sdo.SereTimes = intructionTimeSelecteds;
+                //var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
+                //if (!CheckSereTimes)
+                //{
+                //    if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
+                //    {
+                //        isCheckAssignServiceSimultaneityOption = true;
+                //        btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
+                //        MessageManager.Show(this, param, CheckSereTimes);
+                //    }
+                //    else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
+                //    {
+                //        if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                //        {
+                //            isCheckAssignServiceSimultaneityOption = true;
+                //            btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
+                //        }
+                //    }
+                //}
+
+                if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "1" && HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "2") ||
+            cboUser.EditValue == null || intructionTimeSelecteds == null || intructionTimeSelecteds.Count == 0)
                     return;
+
                 CommonParam param = new CommonParam();
-                HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
-                sdo.TreatmentId = treatmentId;
-                sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
-                sdo.SereTimes = intructionTimeSelecteds;
-                var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
-                if (!CheckSereTimes)
+                bool hasError = false;
+
+                if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1" || HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
                 {
-                    if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
+                    HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
+                    sdo.TreatmentId = treatmentId;
+                    sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
+                    sdo.SereTimes = intructionTimeSelecteds;
+
+                    var checkSereTimes = new BackendAdapter(param)
+                        .Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
+
+                    if (!checkSereTimes)
                     {
-                        isCheckAssignServiceSimultaneityOption = true;
-                        btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
-                        MessageManager.Show(this, param, CheckSereTimes);
-                    }
-                    else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
-                    {
-                        if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        hasError = true;
+                        if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
                         {
                             isCheckAssignServiceSimultaneityOption = true;
                             btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
+                            MessageManager.Show(this, param, false);
+                            return; // Dừng lại nếu option 1 bị chặn
+                        }
+                        else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
+                        {
+                            if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                            {
+                                isCheckAssignServiceSimultaneityOption = true;
+                                btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
+                                return; // Dừng nếu người dùng chọn "Không"
+                            }
                         }
                     }
+                }
+
+                //2.CheckAssignSimultaneity (y lệnh của hồ sơ khác)
+                if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1" || HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
+                {
+                    var assignSdo = new HisServiceReqCheckAssignSimultaneitySDO();
+                    assignSdo.TreatmentId = treatmentId;
+                    assignSdo.CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>
+                                                {
+                                                    new HisServiceReqCheckAssignSimultaneityCheckInfosSDO
+                                                    {
+                                                        LoginName = cboUser.EditValue.ToString(),
+                                                        CheckTimes = intructionTimeSelecteds
+                                                    }
+                                                };
+                    var checkAssignResult = new BackendAdapter(param)
+                        .Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, assignSdo, ProcessLostToken, param);
+
+                    if (!checkAssignResult)
+                    {
+                        hasError = true;
+                        if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1")
+                        {
+                            isCheckAssignServiceSimultaneityOption = true;
+                            btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
+                            MessageManager.Show(this, param, false);
+                        }
+                        else if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
+                        {
+                            if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                            {
+                                isCheckAssignServiceSimultaneityOption = true;
+                                btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
+                            }
+                            else
+                            {
+                                isCheckAssignServiceSimultaneityOption = false;
+                                btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = true;
+                            }
+                        }
+                    }
+                }
+
+                if (!hasError)
+                {
+                    isCheckAssignServiceSimultaneityOption = false;
+                    btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = true;
                 }
             }
             catch (Exception ex)
@@ -6078,7 +6164,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     previewType = PreviewType.EmrSignAndPrintNow;
                 }
-                var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(this.serviceReqComboResultSDO.ServiceReqs, currentModule != null ? this.currentModule.RoomId : 0, previewType);      
+                var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(this.serviceReqComboResultSDO.ServiceReqs, currentModule != null ? this.currentModule.RoomId : 0, previewType);
                 LogTheadInSessionInfo(() => PrintServiceReqProcessor.Print("Mps000276", false), "btnPrintPhieuHuongDanBN_Click");
                 //PrintServiceReqProcessor.Print("Mps000276", false);
             }
@@ -8435,7 +8521,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             if (dichVu != null) dichVu.Check = false;
                         }
 
-                        gridView7.RefreshData(); 
+                        gridView7.RefreshData();
                     }
                 }
                 foreach (var item in lstLoaiPhieu)

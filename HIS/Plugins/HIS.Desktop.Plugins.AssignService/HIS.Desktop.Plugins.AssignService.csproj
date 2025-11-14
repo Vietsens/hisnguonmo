@@ -305,6 +305,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\AcsUserADO.cs" />
+    <Compile Include="ADO\CheckInfoAdo.cs" />
     <Compile Include="ADO\ChiDinhDichVuADO.cs" />
     <Compile Include="ADO\ContraindicatedADO.cs" />
     <Compile Include="ADO\HisBedADO.cs" />
@@ -545,6 +546,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AssignService\frmAssignService.resx">
       <DependentUpon>frmAssignService.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AssignService\frmAssignServiceHistory.resx">
       <DependentUpon>frmAssignServiceHistory.cs</DependentUpon>
@@ -583,6 +585,7 @@
     <EmbeddedResource Include="frmSettingAssignOld.resx">
       <DependentUpon>frmSettingAssignOld.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
