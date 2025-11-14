@@ -3900,7 +3900,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                 HIS_TRANSACTION tran = new HIS_TRANSACTION();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, TransactionQr);
                                 adoqr.Transaction = tran;
-                                Inventec.Common.Logging.LogSystem.Info("adoqr26932: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => adoqr), adoqr));
                                 listArgs.Add(adoqr);
                                 LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
 
@@ -3926,7 +3925,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         HIS_TRANSACTION tran = new HIS_TRANSACTION();
                         Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, TransactionQr);
                         adoqr.Transaction = tran;
-                        Inventec.Common.Logging.LogSystem.Info("adoqr26932: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => adoqr), adoqr));
                         listArgs.Add(adoqr);
                         LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
                         HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
