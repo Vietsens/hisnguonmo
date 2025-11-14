@@ -1212,7 +1212,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     string rh = data.TDL_PATIENT_BLOOD_RH_CODE ?? "";
                     if (!string.IsNullOrEmpty(abo)  && !string.IsNullOrEmpty(rh))
                     {
-                        lblBloodType.Text = (abo + " RH(" + rh + ")").Trim();
+                        lblBloodType.Text = (abo + "; RH(" + rh + ")").Trim();
                     }
                     else
                     {
