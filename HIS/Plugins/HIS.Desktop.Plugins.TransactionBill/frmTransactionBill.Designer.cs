@@ -986,7 +986,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtMaQH
             // 
-            this.txtMaQH.Location = new System.Drawing.Point(709, 41);
+            this.txtMaQH.Location = new System.Drawing.Point(709, 103);
             this.txtMaQH.MenuManager = this.barManager1;
             this.txtMaQH.Name = "txtMaQH";
             this.txtMaQH.Size = new System.Drawing.Size(208, 20);
@@ -995,7 +995,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // checkEdit1
             // 
-            this.checkEdit1.Location = new System.Drawing.Point(309, 41);
+            this.checkEdit1.Location = new System.Drawing.Point(309, 103);
             this.checkEdit1.MenuManager = this.barManager1;
             this.checkEdit1.Name = "checkEdit1";
             this.checkEdit1.Properties.Caption = "Khác";
@@ -1006,7 +1006,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerOrganzation2
             // 
-            this.txtBuyerOrganzation2.Location = new System.Drawing.Point(57, 65);
+            this.txtBuyerOrganzation2.Location = new System.Drawing.Point(57, 127);
             this.txtBuyerOrganzation2.MenuManager = this.barManager1;
             this.txtBuyerOrganzation2.Name = "txtBuyerOrganzation2";
             this.txtBuyerOrganzation2.Size = new System.Drawing.Size(248, 20);
@@ -1015,7 +1015,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerTaxCode2
             // 
-            this.txtBuyerTaxCode2.Location = new System.Drawing.Point(447, 41);
+            this.txtBuyerTaxCode2.Location = new System.Drawing.Point(447, 103);
             this.txtBuyerTaxCode2.MenuManager = this.barManager1;
             this.txtBuyerTaxCode2.Name = "txtBuyerTaxCode2";
             this.txtBuyerTaxCode2.Size = new System.Drawing.Size(213, 20);
@@ -1024,7 +1024,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // cboBuyerOrganzation2
             // 
-            this.cboBuyerOrganzation2.Location = new System.Drawing.Point(57, 41);
+            this.cboBuyerOrganzation2.Location = new System.Drawing.Point(57, 103);
             this.cboBuyerOrganzation2.MenuManager = this.barManager1;
             this.cboBuyerOrganzation2.Name = "cboBuyerOrganzation2";
             this.cboBuyerOrganzation2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1047,7 +1047,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtSDT
             // 
-            this.txtSDT.Location = new System.Drawing.Point(851, -31);
+            this.txtSDT.Location = new System.Drawing.Point(851, 31);
             this.txtSDT.MenuManager = this.barManager1;
             this.txtSDT.Name = "txtSDT";
             this.txtSDT.Size = new System.Drawing.Size(66, 20);
@@ -1056,7 +1056,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // cboBuyerIdentity
             // 
-            this.cboBuyerIdentity.Location = new System.Drawing.Point(751, -31);
+            this.cboBuyerIdentity.Location = new System.Drawing.Point(751, 31);
             this.cboBuyerIdentity.MenuManager = this.barManager1;
             this.cboBuyerIdentity.Name = "cboBuyerIdentity";
             this.cboBuyerIdentity.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1071,7 +1071,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerIdentityNumber
             // 
-            this.txtBuyerIdentityNumber.Location = new System.Drawing.Point(487, -31);
+            this.txtBuyerIdentityNumber.Location = new System.Drawing.Point(487, 31);
             this.txtBuyerIdentityNumber.MenuManager = this.barManager1;
             this.txtBuyerIdentityNumber.Name = "txtBuyerIdentityNumber";
             this.txtBuyerIdentityNumber.Size = new System.Drawing.Size(11, 20);
@@ -1080,7 +1080,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // radioBuyerCompany
             // 
-            this.radioBuyerCompany.Location = new System.Drawing.Point(188, -60);
+            this.radioBuyerCompany.Location = new System.Drawing.Point(188, 2);
             this.radioBuyerCompany.Name = "radioBuyerCompany";
             this.radioBuyerCompany.Size = new System.Drawing.Size(729, 25);
             this.radioBuyerCompany.TabIndex = 15;
@@ -1090,7 +1090,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // radioBuyerUser
             // 
-            this.radioBuyerUser.Location = new System.Drawing.Point(2, -60);
+            this.radioBuyerUser.Location = new System.Drawing.Point(2, 2);
             this.radioBuyerUser.Name = "radioBuyerUser";
             this.radioBuyerUser.Size = new System.Drawing.Size(182, 25);
             this.radioBuyerUser.TabIndex = 14;
@@ -1100,7 +1100,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerEmail
             // 
-            this.txtBuyerEmail.Location = new System.Drawing.Point(709, 17);
+            this.txtBuyerEmail.Location = new System.Drawing.Point(709, 79);
             this.txtBuyerEmail.MenuManager = this.barManager1;
             this.txtBuyerEmail.Name = "txtBuyerEmail";
             this.txtBuyerEmail.Size = new System.Drawing.Size(208, 20);
@@ -1109,7 +1109,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // chkAddressBhyt
             // 
-            this.chkAddressBhyt.Location = new System.Drawing.Point(545, 17);
+            this.chkAddressBhyt.Location = new System.Drawing.Point(545, 79);
             this.chkAddressBhyt.MenuManager = this.barManager1;
             this.chkAddressBhyt.Name = "chkAddressBhyt";
             this.chkAddressBhyt.Properties.Caption = "ĐC BHYT";
@@ -1121,7 +1121,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // chkOther
             // 
-            this.chkOther.Location = new System.Drawing.Point(502, -31);
+            this.chkOther.Location = new System.Drawing.Point(502, 31);
             this.chkOther.MenuManager = this.barManager1;
             this.chkOther.Name = "chkOther";
             this.chkOther.Properties.Caption = "Khác";
@@ -1134,7 +1134,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             this.panelControl1.Controls.Add(this.cboBuyerOrganization);
             this.panelControl1.Controls.Add(this.txtBuyerOrganization);
-            this.panelControl1.Location = new System.Drawing.Point(155, -33);
+            this.panelControl1.Location = new System.Drawing.Point(155, 29);
             this.panelControl1.Margin = new System.Windows.Forms.Padding(0);
             this.panelControl1.Name = "panelControl1";
             this.panelControl1.Size = new System.Drawing.Size(245, 48);
@@ -1179,7 +1179,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerAddress
             // 
-            this.txtBuyerAddress.Location = new System.Drawing.Point(57, 17);
+            this.txtBuyerAddress.Location = new System.Drawing.Point(57, 79);
             this.txtBuyerAddress.MenuManager = this.barManager1;
             this.txtBuyerAddress.Name = "txtBuyerAddress";
             this.txtBuyerAddress.Size = new System.Drawing.Size(484, 20);
@@ -1188,7 +1188,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerAccountNumber
             // 
-            this.txtBuyerAccountNumber.Location = new System.Drawing.Point(881, -7);
+            this.txtBuyerAccountNumber.Location = new System.Drawing.Point(881, 55);
             this.txtBuyerAccountNumber.MenuManager = this.barManager1;
             this.txtBuyerAccountNumber.Name = "txtBuyerAccountNumber";
             this.txtBuyerAccountNumber.Size = new System.Drawing.Size(36, 20);
@@ -1198,7 +1198,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerTaxCode
             // 
-            this.txtBuyerTaxCode.Location = new System.Drawing.Point(626, -31);
+            this.txtBuyerTaxCode.Location = new System.Drawing.Point(626, 31);
             this.txtBuyerTaxCode.MenuManager = this.barManager1;
             this.txtBuyerTaxCode.Name = "txtBuyerTaxCode";
             this.txtBuyerTaxCode.Size = new System.Drawing.Size(121, 20);
@@ -1208,7 +1208,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // txtBuyerName
             // 
-            this.txtBuyerName.Location = new System.Drawing.Point(57, -31);
+            this.txtBuyerName.Location = new System.Drawing.Point(57, 31);
             this.txtBuyerName.MenuManager = this.barManager1;
             this.txtBuyerName.Name = "txtBuyerName";
             this.txtBuyerName.Size = new System.Drawing.Size(41, 20);
@@ -1240,7 +1240,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.emptySpaceItem3,
             this.layoutControlItem62,
             this.layoutControlItem63});
-            this.layoutControlGroup3.Location = new System.Drawing.Point(0, -62);
+            this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlGroup3.Size = new System.Drawing.Size(919, 149);
