@@ -325,7 +325,7 @@ namespace HIS.UC.PatientSelect.Run
                     var Treatments = GetSelectedRows();
                     if (Treatments.Count > 0 && !Treatments.Exists(o=>o.ID == RowCellClickBedRoom.ID))
                     {
-                        if (XtraMessageBox.Show("Chọn nhiều bệnh nhân để cùng lúc có thể bị trùng thoi gian chỉ định. Bạn có muốn tiếp tục", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                        if (XtraMessageBox.Show("Chọn nhiều bệnh nhân để cùng lúc có thể bị trùng thời gian chỉ định. Bạn có muốn tiếp tục", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                             return;
                         gridViewTreatmentBedRoom.SelectRow(this.gridViewTreatmentBedRoom.FocusedRowHandle);
                     }
