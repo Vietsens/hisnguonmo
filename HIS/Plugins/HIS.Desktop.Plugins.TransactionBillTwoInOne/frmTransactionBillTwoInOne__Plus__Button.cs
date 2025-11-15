@@ -1902,7 +1902,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             {
                 if (!BtnSaveAndSign.Enabled)
                     return;
-                if ((long)cboPayForm.EditValue == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show(this,"Thanh toán QR chưa thể tự động tạo hóa đơn điện tử, bạn có muốn tiếp tục?","Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                if ((long)cboPayForm.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show(this,"Thanh toán QR chưa thể tự động tạo hóa đơn điện tử, bạn có muốn tiếp tục?","Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                 {
                     isCreateQRContinue = false;
                     return;

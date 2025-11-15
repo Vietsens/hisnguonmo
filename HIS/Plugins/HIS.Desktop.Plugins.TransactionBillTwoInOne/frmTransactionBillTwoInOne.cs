@@ -2123,13 +2123,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 //txtBuyerOrganization2.Text = data.TDL_PATIENT_WORK_PLACE_NAME ?? data.TDL_PATIENT_WORK_PLACE ?? "";
                 txtBuyerTaxCode2.Text = data.WORK_PLACE_TAX_CODE ?? "";
 
-                var transaction = listTransaction.FirstOrDefault();
+                //var transaction = listTransaction.FirstOrDefault();
                 //Don vi
                 long? workPlaceId = null;
-                if (transaction != null && transaction.BUYER_WORK_PLACE_ID != null)
-                {
-                    workPlaceId = transaction.BUYER_WORK_PLACE_ID;
-                }else if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)
+                //if (transaction != null && transaction.BUYER_WORK_PLACE_ID != null)
+                //{
+                //    workPlaceId = transaction.BUYER_WORK_PLACE_ID;
+                //}else 
+                if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)
                 {
                     workPlaceId = data.TDL_PATIENT_WORK_PLACE_ID;
                 }
@@ -2137,19 +2138,30 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     cboBuyerOrganization.EditValue = workPlaceId;
                     cboBuyerOrganization2.EditValue = workPlaceId;
-                    //var workPlace = BackendDataWorker.Get<HIS_WORK_PLACE>().FirstOrDefault(wp => wp.ID == workPlaceId);
-                    //txtBuyerOrganization.Text = workPlace != null ? workPlace.WORK_PLACE_NAME : string.Empty;
-                    //txtBuyerOrganization2.Text = workPlace != null ? workPlace.WORK_PLACE_NAME : string.Empty;
                 }
                 else
                 {
                     cboBuyerOrganization.EditValue = null;
                 }
                 //Ma so thue
-                if (transaction != null && transaction.BUYER_TAX_CODE != null)
-                    txtBuyerTaxCode.Text = transaction.BUYER_TAX_CODE;
-                else if (data.TDL_PATIENT_TAX_CODE != null)
+                //if (transaction != null && transaction.BUYER_TAX_CODE != null)
+                //    txtBuyerTaxCode.Text = transaction.BUYER_TAX_CODE;
+                //else 
+                if (data.TDL_PATIENT_TAX_CODE != null)
+                {
                     txtBuyerTaxCode.Text = data.TDL_PATIENT_TAX_CODE;
+                    txtBuyerTaxCode2.Text = data.TDL_PATIENT_TAX_CODE;
+                }
+                else if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)
+                {
+                    var focus = (HIS_WORK_PLACE)cboBuyerOrganization.Properties.View.GetFocusedRow();
+                    if (focus != null)
+                        txtBuyerTaxCode.Text = focus.TAX_CODE;
+
+                    var focus2 = (HIS_WORK_PLACE)cboBuyerOrganization2.Properties.View.GetFocusedRow();
+                    if (focus2 != null)
+                        txtBuyerTaxCode2.Text = focus.TAX_CODE;
+                }
 
                 HisPatientTypeAlterViewAppliedFilter filter = new HisPatientTypeAlterViewAppliedFilter();
                 filter.TreatmentId = treatment.ID;
@@ -2893,6 +2905,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
                     List<HIS_TRANSACTION> lstTran = AutoMapper.Mapper.Map<List<V_HIS_TRANSACTION>, List<HIS_TRANSACTION>>(data);
                     adoqr.Transactions = lstTran;
+                    if (isLuuKy)
+                        adoqr.IssueInvoice = true;
+                    if (chkHideHddt.Checked)
+                        adoqr.NotDisplayedInvoice = true; 
                     listArgs.Add(adoqr);
                     LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + LogUtil.TraceData("listArgs", listArgs));
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
@@ -2928,6 +2944,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 {
                                     key = item.KEY;
                                 }
+                                    
                                 BarButtonItem btnOption = new BarButtonItem(null, key);
                                 btnOption.ItemClick += (s, args) =>
                                 {
@@ -2941,6 +2958,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                     AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
                                     List<HIS_TRANSACTION> lstTran = AutoMapper.Mapper.Map<List<V_HIS_TRANSACTION>, List<HIS_TRANSACTION>>(data);
                                     adoqr.Transactions = lstTran;
+                                    if (isLuuKy)
+                                        adoqr.IssueInvoice = true;
+                                    if (chkHideHddt.Checked)
+                                        adoqr.NotDisplayedInvoice = true;
                                     listArgs.Add(adoqr);
                                     LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + LogUtil.TraceData("listArgs", listArgs));
                                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
@@ -2962,6 +2983,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
                             List<HIS_TRANSACTION> lstTran = AutoMapper.Mapper.Map<List<V_HIS_TRANSACTION>, List<HIS_TRANSACTION>>(data);
                             adoqr.Transactions = lstTran;
+                            if (isLuuKy)
+                                adoqr.IssueInvoice = true;
+                            if (chkHideHddt.Checked)
+                                adoqr.NotDisplayedInvoice = true;
                             listArgs.Add(adoqr);
                             LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + LogUtil.TraceData("listArgs", listArgs));
                             HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
@@ -3052,19 +3077,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
-        private void cboBuyerOrganization_EditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                var focus = (HIS_WORK_PLACE)cboBuyerOrganization.Properties.View.GetFocusedRow();
-                txtBuyerTaxCode.Text = focus.TAX_CODE;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         private void chkOther2_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -3079,6 +3091,34 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     layoutControlItem66.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem75.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboBuyerOrganization_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                var focus = (HIS_WORK_PLACE)cboBuyerOrganization.Properties.View.GetFocusedRow();
+                if (focus != null)
+                    txtBuyerTaxCode.Text = focus.TAX_CODE;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboBuyerOrganization2_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                var focus = (HIS_WORK_PLACE)cboBuyerOrganization2.Properties.View.GetFocusedRow();
+                if (focus != null)
+                    txtBuyerTaxCode2.Text = focus.TAX_CODE;
             }
             catch (Exception ex)
             {
