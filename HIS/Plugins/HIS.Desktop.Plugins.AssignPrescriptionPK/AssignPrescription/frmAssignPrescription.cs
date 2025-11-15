@@ -1049,10 +1049,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     sdo.TreatmentId = treatmentId;
                     sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
                     sdo.SereTimes = intructionTimeSelecteds;
+                    Inventec.Common.Logging.LogSystem.Debug("api/HisServiceReq/CheckSereTimes___" + 
+                        Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
 
                     var checkSereTimes = new BackendAdapter(param).Post<bool>(
                         "api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
 
+                    Inventec.Common.Logging.LogSystem.Debug(checkSereTimes+ "api/HisServiceReq/CheckSereTimes___" +
+                        Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
                     if (!checkSereTimes)
                     {
                         if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
@@ -1090,9 +1094,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         }
                     };
 
+                    Inventec.Common.Logging.LogSystem.Debug("api/HisServiceReq/CheckAssignSimultaneity___" +
+                        Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo2), sdo2));
                     var checkAssign = new BackendAdapter(param).Post<bool>(
                         "api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo2, ProcessLostToken, param);
 
+                    Inventec.Common.Logging.LogSystem.Debug(checkAssign + "api/HisServiceReq/CheckSereTimes___" +
+                        Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
                     if (!checkAssign)
                     {
                         if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1")
