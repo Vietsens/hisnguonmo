@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using ACS.SDO;
+using ACS.SDO; 
 using DevExpress.Data;
 using DevExpress.Utils;
 using DevExpress.Utils.Menu;
@@ -2939,6 +2939,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+
+
+                if (HisConfigCFG.IsEnableEditStartTime == "1")
+                {
+                    CheckAssignServiceSimultaneityOption();
+                    CheckAssignSimultaneityOption();
+
+                }
                 IsPrintExam = false;
                 IsSignExam = false;
                 isNotCheckValidateIcdUC = false;
@@ -3463,12 +3471,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
 
                 
-                if(HisConfigCFG.IsEnableEditStartTime == "1")
-                {
-                    CheckAssignServiceSimultaneityOption();
-                    CheckAssignSimultaneityOption();
-
-                }
+              
                     this.param = new CommonParam();
                 if (HisServiceReqView.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
                     return;
@@ -7637,10 +7640,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     return;
 
 
-                long treatmentId = this.HisServiceReqView?.TREATMENT_ID ?? this.treatmentId;
+                long treatmentId = this.treatment?.ID ?? this.treatmentId;
+              
                 string loginName = this.HisServiceReqView?.EXECUTE_LOGINNAME;
                 if (string.IsNullOrEmpty(loginName))
                     loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+              
 
                 long sereTime = 0;
                 if (dtpStartTime.EditValue != null)
@@ -7655,6 +7660,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber((DateTime)this.dtpStartTime.EditValue) ?? 0;
                 }
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("input api/HisServiceReq/CheckSereTimes: ", sereTime +" | "+ treatmentId +" | "+ loginName));
+
+                //long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
                 CommonParam param = new CommonParam();
                 HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
                 sdo.TreatmentId = treatmentId;
@@ -7662,8 +7670,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 sdo.SereTimes = new List<long> { sereTime };
 
                    var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
+                Inventec.Common.Logging.LogSystem.Debug(
+    Inventec.Common.Logging.LogUtil.TraceData("CheckSereTimes result:", CheckSereTimes)
+);
 
                
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData("CheckSereTimes SDO:", sdo)
+                );
+
                 if (!CheckSereTimes)
                 {
                     if (HisConfigCFG.AssignServiceSimultaneityOption == "1")
@@ -7729,6 +7744,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     CheckTimes = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber((DateTime)this.dtpStartTime.EditValue) ?? 0;
                 }
+                // long CheckTimes = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("input api/HisServiceReq/CheckSereTimes: ", CheckTimes + " | " + treatmentId + " | " + LoginName));
                 CommonParam param = new CommonParam();
                 HisServiceReqCheckAssignSimultaneitySDO sdo = new HisServiceReqCheckAssignSimultaneitySDO();
                
@@ -9048,12 +9065,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             //chkTreatmentFinish.Checked = false;
         }
 
-        private void dtpStartTime_EditValueChanged(object sender, EventArgs e)
+       
+
+        private void dtpStartTime_MouseLeave(object sender, EventArgs e)
         {
             if (HisConfigCFG.IsEnableEditStartTime == "1")
             {
                 CheckAssignServiceSimultaneityOption();
-                CheckAssignSimultaneityOption();
+                CheckAssignSimultaneityOption(); 
 
             }
         }
