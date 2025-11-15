@@ -1427,7 +1427,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             var acinIngredientID = acinIngredients.Select(o => o.ID).ToList();
                             var TypeAcinMedicineType = medicineTypeAcinByMety.Where(o => acinIngredientID.Contains(o.ACTIVE_INGREDIENT_ID)).Select(p => p.MEDICINE_TYPE_ID).ToList();
                             var medicineType = this.mediMatyTypeADOs.Where(o => TypeAcinMedicineType.Contains(o.ID)).ToList();
-                            var ExpMestId = ListExpMestMedicineAntibioticRequired.Select(o => o.EXP_MEST_ID).Distinct().ToList();
+                            var ExpMestId = ListExpMestMedicineAntibioticRequired.Where(o => TypeAcinMedicineType.Exists
+                                (p => p == o.TDL_MEDICINE_TYPE_ID)).Select(o => o.EXP_MEST_ID).Distinct().ToList();
                             foreach (var em in ExpMestId)
                             {
                                 List<HIS_ANTIBIOTIC_NEW_REG> NewRegimen = new List<HIS_ANTIBIOTIC_NEW_REG>();
