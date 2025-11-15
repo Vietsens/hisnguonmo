@@ -31,6 +31,7 @@ using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.Patient.Base;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
@@ -54,6 +55,8 @@ namespace HIS.Desktop.Plugins.Patient
     public partial class UCListPatient : UserControlBase
     {
         internal const string KeyHid = "CONFIG_KEY__IS_USE_HID_SYNC";
+        private const string CONFIG_KEY__CHECK_DUPLICATION = "MOS.HIS_PATIENT.CCCD_NUMBER.CHECK_DUPLICATION";
+        private const string HIS_MODEL = "HIS.Desktop.ApplyRestoreLayout.ModuleLinks";
         ApiResultObject<List<HIS.Desktop.Plugins.Patient.Base.ADO_V_HIS_PATIENT>> apiResult = null;
 
         V_HIS_PATIENT patient;
@@ -550,17 +553,19 @@ namespace HIS.Desktop.Plugins.Patient
                     }
                     filter.PERSON_CODE__EXACT = code;
                 }
-                else if (!string.IsNullOrEmpty(txtCCCD.Text.Trim()))
-                {
-                    string code = txtCCCD.Text.Trim();
-
-                    filter.CCCD_CMND_PASSPORT = code;
-                }
                 else
                 {
                     filter.ORDER_FIELD = "MODIFY_TIME";
                     filter.ORDER_DIRECTION = "DESC";
                     filter.KEY_WORD = txtKeyWord.Text.Trim();
+
+                    if (!string.IsNullOrEmpty(txtCCCD.Text.Trim()))
+                    {
+                        string code = txtCCCD.Text.Trim();
+
+                        filter.CCCD_CMND_PASSPORT = code;
+                    }
+
                     if (cboMaYTe.EditValue != null)
                     {
                         if (Inventec.Common.TypeConvert.Parse.ToInt64(cboMaYTe.EditValue.ToString()) == 1)
@@ -905,8 +910,8 @@ namespace HIS.Desktop.Plugins.Patient
                 Base.ResourceLangManager.InitResourceLanguageManager();
 
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.Patient").FirstOrDefault();
-                LogSystem.Info("log_____: " + HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS);
-                if (!string.IsNullOrWhiteSpace(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS) && moduleData != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS.Split(',').Contains(moduleData.ModuleLink))
+                var model = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HIS_MODEL);
+                if (!string.IsNullOrEmpty(model) && moduleData != null && HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HIS_MODEL).Split(',').Contains(moduleData.ModuleLink))
                 {
                     InitRestoreLayoutGridViewFromXml(gridViewPatientList);
                 }
@@ -1315,9 +1320,9 @@ namespace HIS.Desktop.Plugins.Patient
                             error.Add(string.Format("Dữ liệu nơi làm việc của bệnh nhân {0} độ dài vượt quá ký tự cho phép", patientImp.VIR_PATIENT_NAME));
                     }
 
-                    var data = apiResult.Data;
+                    
 
-                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "1")
+                    if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__CHECK_DUPLICATION) == "1")   
                     {
                         if (string.IsNullOrWhiteSpace(patientImport.CCCD_NUMBER.Trim()))
                         {
@@ -1329,44 +1334,56 @@ namespace HIS.Desktop.Plugins.Patient
                             return;
                         }
                     }
-                    else if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.CHECK_DUPLICATION == "2")
+                    else if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__CHECK_DUPLICATION) == "2")   
                     {
-                        if (!string.IsNullOrWhiteSpace(patientImport.CCCD_NUMBER.Trim()) && data.FirstOrDefault(o => o.CCCD_NUMBER == patientImport.CCCD_NUMBER.Trim()) != null)
+                        List<ADO_V_HIS_PATIENT> data = null;
+                        if (apiResult.Data != null && apiResult.Data.Count > 0)
                         {
-                            DialogResult result = XtraMessageBox.Show(
-                                "Số căn cước công dân của bệnh nhân bị trùng. Bạn có muốn tiếp tục không?", "Cảnh báo",
-                                MessageBoxButtons.YesNo,
-                                MessageBoxIcon.Warning
-                            );
-
-                            if (result == DialogResult.No)
+                            data = apiResult.Data;
+                            if (!string.IsNullOrWhiteSpace(patientImport.CCCD_NUMBER.Trim()) && data.Count > 0 && data.FirstOrDefault(o => o.CCCD_NUMBER == patientImport.CCCD_NUMBER.Trim()) != null)
                             {
-                                return;
+                                DialogResult result = XtraMessageBox.Show(
+                                    "Số căn cước công dân của bệnh nhân bị trùng. Bạn có muốn tiếp tục không?", "Cảnh báo",
+                                    MessageBoxButtons.YesNo,
+                                    MessageBoxIcon.Warning
+                                );
+
+                                if (result == DialogResult.No)
+                                {
+                                    return;
+                                }
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(patientImport.PASSPORT_NUMBER.Trim()) && data.Count > 0 && data.FirstOrDefault(o => o.PASSPORT_NUMBER == patientImport.PASSPORT_NUMBER.Trim()) != null)
+                            {
+                                DialogResult result = XtraMessageBox.Show(
+                                    "Số hộ chiếu của bệnh nhân bị trùng. Bạn có muốn tiếp tục không?", "Cảnh báo",
+                                    MessageBoxButtons.YesNo,
+                                    MessageBoxIcon.Warning
+                                );
+
+                                if (result == DialogResult.No)
+                                {
+                                    return;
+                                }
                             }
                         }
-
-                        if (!string.IsNullOrWhiteSpace(patientImport.PASSPORT_NUMBER.Trim()) && data.FirstOrDefault(o => o.PASSPORT_NUMBER == patientImport.PASSPORT_NUMBER.Trim()) != null)
-                        {
-                            DialogResult result = XtraMessageBox.Show(
-                                "Số hộ chiếu của bệnh nhân bị trùng. Bạn có muốn tiếp tục không?", "Cảnh báo",
-                                MessageBoxButtons.YesNo,
-                                MessageBoxIcon.Warning
-                            );
-
-                            if (result == DialogResult.No)
-                            {
-                                return;
-                            }
-                        }
+                        
 
                         patientImp.CCCD_NUMBER = patientImport.CCCD_NUMBER.Trim();
                         patientImp.PASSPORT_NUMBER = patientImport.PASSPORT_NUMBER.Trim();
 
-                        DateTime cccdDate = DateTime.ParseExact(patientImport.cccdDateTime.Trim(), "dd/MM/yyyy", null);
-                        patientImp.CCCD_DATE = long.Parse(cccdDate.ToString("yyyyMMdd") + "000000");
+                        if (!string.IsNullOrWhiteSpace(patientImport.cccdDateTime))
+                        {
+                            DateTime cccdDate = DateTime.ParseExact(patientImport.cccdDateTime.Trim(), "dd/MM/yyyy", null);
+                            patientImp.CCCD_DATE = long.Parse(cccdDate.ToString("yyyyMMdd") + "000000");
+                        }
 
-                        DateTime passportDateTime = DateTime.ParseExact(patientImport.passportDateTime.Trim(), "dd/MM/yyyy", null);
-                        patientImp.PASSPORT_DATE = long.Parse(passportDateTime.ToString("yyyyMMdd") + "000000");
+                        if (!string.IsNullOrWhiteSpace(patientImport.passportDateTime))
+                        {
+                            DateTime passportDateTime = DateTime.ParseExact(patientImport.passportDateTime.Trim(), "dd/MM/yyyy", null);
+                            patientImp.PASSPORT_DATE = long.Parse(passportDateTime.ToString("yyyyMMdd") + "000000");
+                        }
 
                         patientImp.CCCD_PLACE = patientImport.CCCD_PLACE;
                         patientImp.PASSPORT_PLACE = patientImport.PASSPORT_PLACE;
@@ -1425,6 +1442,7 @@ namespace HIS.Desktop.Plugins.Patient
                     if (rs != null)
                     {
                         success = true;
+                        btnSave.Enabled = false;
                         FillDataToGrid();
                         WaitingManager.Hide();
                     }
@@ -2170,9 +2188,8 @@ namespace HIS.Desktop.Plugins.Patient
                 }
 
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.Patient").FirstOrDefault();
-
-                //var allowedModules = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS.Split(',');
-                if (!string.IsNullOrWhiteSpace(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS) && moduleData != null && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.MODULELINKS.Split(',').Contains(moduleData.ModuleLink))
+                var model = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HIS_MODEL);
+                if (!string.IsNullOrEmpty(model) && moduleData != null && HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HIS_MODEL).Split(',').Contains(moduleData.ModuleLink))
                 {
                     gridViewPatientList.SaveLayoutToXml(this.fileName);
                     InitRestoreLayoutGridViewFromXml(gridViewPatientList);

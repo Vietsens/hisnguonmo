@@ -2247,14 +2247,16 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         }
                     }
 
-                    if (!HisConfigCFG.IsEnableEditStartTime && (HisConfigCFG.ServiceSimultaneity == "1" || HisConfigCFG.ServiceSimultaneity == "2"))
+                    if (!HisConfigCFG.IsEnableEditStartTime && (HisConfigCFG.ServiceSimultaneity == "1" || HisConfigCFG.ServiceSimultaneity == "2") && serviceReqInput.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)  
                     {
                         DateTime now = DateTime.Now;
                         CommonParam param = new CommonParam();
                         HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
-                        sdo.TreatmentId = treatmentId;
+                        sdo.TreatmentId = serviceReqInput.TREATMENT_ID;
                         sdo.Loginnames = new List<string> { Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() };
                         sdo.SereTimes =  new List<long> { long.Parse(now.ToString("yyyyMMddHHmmss")) };
+                        LogSystem.Info("HisServiceReqCheckSereTimesSDO: " + LogUtil.TraceData("input: ", sdo));
+
                         var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, param);
 
                         if (HisConfigCFG.ServiceSimultaneity == "1" && !CheckSereTimes)
@@ -2272,7 +2274,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         }
                     }
 
-                    if (HisConfigCFG.Simultaneity == "1" || HisConfigCFG.Simultaneity == "2")
+                    if (!HisConfigCFG.IsEnableEditStartTime && (HisConfigCFG.Simultaneity == "1" || HisConfigCFG.Simultaneity == "2") && serviceReqInput.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
                     {
                         var now = DateTime.Now;
                         var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
@@ -2280,7 +2282,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
                         var sdo = new HisServiceReqCheckAssignSimultaneitySDO
                         {
-                            TreatmentId = treatmentId,
+                            TreatmentId = serviceReqInput.TREATMENT_ID,
                             CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>
                             {
                                 new HisServiceReqCheckAssignSimultaneityCheckInfosSDO
@@ -2290,6 +2292,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                                 }
                             }
                         };
+
+                        LogSystem.Info("HisServiceReqCheckAssignSimultaneitySDO: " + LogUtil.TraceData("input: ", sdo));
                         var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo, param);
 
                         if (HisConfigCFG.Simultaneity == "1" && !CheckSereTimes)

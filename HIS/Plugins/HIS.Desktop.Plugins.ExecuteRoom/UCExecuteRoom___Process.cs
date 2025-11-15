@@ -229,10 +229,13 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         }
                     default:
                         {
+                            
                             if (!string.IsNullOrEmpty(HisConfigCFG.SendToExtWhenStart))
                             {
                                 var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.roomId);
-                                if (currentRoom != null && string.Equals(currentRoom.ROOM_CODE, HisConfigCFG.SendToExtWhenStart, StringComparison.OrdinalIgnoreCase))
+                                var allowedModules = HisConfigCFG.SendToExtWhenStart.Split('|');
+                                if (currentRoom != null
+                                    && allowedModules.Any(m => m.Equals(currentRoom.ROOM_CODE, StringComparison.OrdinalIgnoreCase)))
                                 {
                                     CreateThreadLoadDataDefault(serviceReqInput);
                                 }
