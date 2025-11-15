@@ -150,6 +150,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                 TxtKeyword.Focus();
                 //CboPtttPriorityName.EditValue = null;
                 //ListPtttPriority = new List<HIS_PTTT_PRIORITY>();
+                toggleChanged();
             }
             catch (Exception ex)
             {
