@@ -29,7 +29,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 {
     class HisConfigCFG
     {
-        private const string CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
+        private const string CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";      
         private const string CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT = "MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT";
         private const string CONFIG_KEY__HIS_ICD_SERVICE__HAS_REQUIRE__PATIENT_BHYT = "HIS.HIS_ICD_SERVICE.HAS_REQUIRE.PATIENT.BHYT";
         private const string CONFIG_KEY__IsCheckServiceFollwWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
