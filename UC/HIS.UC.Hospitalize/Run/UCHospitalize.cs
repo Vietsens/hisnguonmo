@@ -932,7 +932,11 @@ namespace HIS.UC.Hospitalize.Run
                 if (e.KeyCode == Keys.F1)
                 {
                     WaitingManager.Show();
-                    HIS.UC.ExamTreatmentFinish.frmSecondaryIcd FormSecondaryIcd = new HIS.UC.ExamTreatmentFinish.frmSecondaryIcd(stringTraditionalIcds, this.txtTraditionIcdSubCode.Text, this.txtTraditionIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize);
+                    //HIS.UC.SecondaryIcd.frmSecondaryIcd FormSecondaryIcd = new HIS.UC.SecondaryIcd.frmSecondaryIcd(stringTraditionalIcds, this.txtTraditionIcdSubCode.Text, this.txtTraditionIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize);
+                    //WaitingManager.Hide();
+                    //FormSecondaryIcd.ShowDialog();
+
+                    HIS.UC.SecondaryIcd.frmSecondaryIcd FormSecondaryIcd = new HIS.UC.SecondaryIcd.frmSecondaryIcd(stringTraditionalIcds, this.txtTraditionIcdSubCode.Text, this.txtTraditionIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, BackendDataWorker.Get<V_HIS_ICD>().Where(o => o.IS_TRADITIONAL == 1 && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
                     WaitingManager.Hide();
                     FormSecondaryIcd.ShowDialog();
                 }
