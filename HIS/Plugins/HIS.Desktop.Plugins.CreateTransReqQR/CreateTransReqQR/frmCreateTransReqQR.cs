@@ -2342,11 +2342,32 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             chkExportHDDT.Checked = inputTransReq.IssueInvoice;
             chkExportHDDT.Enabled = false;
 
-            if (inputTransReq.Transaction != null &&
-                inputTransReq.Transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+            //if (inputTransReq.Transaction != null &&
+            //    inputTransReq.Transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+            //{
+            //    chkExportHDDT.Enabled = true;
+            //}
+            bool isAllowExportInvoice = false;
+
+            if (inputTransReq.Transaction != null)
             {
-                chkExportHDDT.Enabled = true;
+                isAllowExportInvoice =
+                    inputTransReq.Transaction.TRANSACTION_TYPE_ID ==
+                    IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT;
             }
+            else if (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0)
+            {
+                foreach (var tran in inputTransReq.Transactions)
+                {
+                    if (tran.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+                    {
+                        isAllowExportInvoice = true;
+                    }
+                }
+            }
+
+            chkExportHDDT.Enabled = isAllowExportInvoice;
+
 
             // In hóa đơn điện tử
             chkPrintHDDT.Checked = inputTransReq.PrintInvoice; // tự động check nếu PrintInvoice = true
