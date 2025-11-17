@@ -52,6 +52,7 @@ using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraExport.Helpers;
 using static DevExpress.XtraPrinting.Native.PageSizeInfo;
 using DevExpress.XtraEditors;
+using System.Threading;
 
 namespace HIS.UC.PatientSelect.Run
 {
@@ -82,6 +83,7 @@ namespace HIS.UC.PatientSelect.Run
         MOS.Filter.HisTreatmentBedRoomLViewFilter treatmentBedRoomLViewFilterInput;
         List<long> treatmentId = new List<long>();
         string ASSIGN_SIMULTANEITY_OPTION = null;
+        System.Windows.Forms.Timer timerSelected = new System.Windows.Forms.Timer();
         #endregion
 
         #region Contructor
@@ -111,6 +113,8 @@ namespace HIS.UC.PatientSelect.Run
                 this.SetCaptionByLanguageKey();
                 this.gridControlTreatmentBedRoom.ToolTipController = this.toolTipController1;
                 this.ASSIGN_SIMULTANEITY_OPTION = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION");
+                timerSelected.Interval = 100;
+                timerSelected.Tick += TimerSelected_Tick;
             }
             catch (Exception ex)
             {
@@ -323,13 +327,14 @@ namespace HIS.UC.PatientSelect.Run
                 else if (!isSetSelectRowChanged && ASSIGN_SIMULTANEITY_OPTION == "2")
                 {
                     var Treatments = GetSelectedRows();
-                    if (Treatments.Count > 0 && !Treatments.Exists(o=>o.ID == RowCellClickBedRoom.ID))
+                    if (Treatments.Count > 0 && !Treatments.Exists(o => o.ID == RowCellClickBedRoom.ID))
                     {
                         if (XtraMessageBox.Show("Chọn nhiều bệnh nhân để cùng lúc có thể bị trùng thời gian chỉ định. Bạn có muốn tiếp tục", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                             return;
                         gridViewTreatmentBedRoom.SelectRow(this.gridViewTreatmentBedRoom.FocusedRowHandle);
                     }
                 }
+
                 if (isLoad)
                 {
                     WaitingManager.Show();
@@ -340,9 +345,8 @@ namespace HIS.UC.PatientSelect.Run
                         if (isSetSelectRowChanged)
                         {
                             int curentFocusedRowHandle = this.gridViewTreatmentBedRoom.FocusedRowHandle;
-
                             gridViewTreatmentBedRoom.ClearSelection();
-                            gridViewTreatmentBedRoom.SelectRow(curentFocusedRowHandle);
+                            timerSelected.Start();
                         }
                     }
                     WaitingManager.Hide();
@@ -353,7 +357,7 @@ namespace HIS.UC.PatientSelect.Run
                     if (isSetSelectRowChanged)
                     {
                         gridViewTreatmentBedRoom.ClearSelection();
-                        gridViewTreatmentBedRoom.SelectRow(rowIndexSelected);
+                        timerSelected.Start();
                     }
                 }
 
@@ -361,6 +365,25 @@ namespace HIS.UC.PatientSelect.Run
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void TimerSelected_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                timerSelected.Stop();
+                bool isLoad = true;
+                if (this.checkChangeSelectedPatientWhileHasPrescription != null)
+                    isLoad = this.checkChangeSelectedPatientWhileHasPrescription();
+                if (isLoad)
+                    gridViewTreatmentBedRoom.SelectRow(this.gridViewTreatmentBedRoom.FocusedRowHandle);
+                else
+                    gridViewTreatmentBedRoom.SelectRow(rowIndexSelected);
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -739,6 +762,48 @@ namespace HIS.UC.PatientSelect.Run
             {
                 this.GetPrescriptionPerious(true);
                 gridViewTreatmentBedRoom.GridControl.RefreshDataSource();
+            }
+        }
+
+        private void gridViewTreatmentBedRoom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if(ListTreatmentBedRooms.Count > 0 && gridViewTreatmentBedRoom.GetSelectedRows().Count() == ListTreatmentBedRooms.Count)
+                {
+                    if (ASSIGN_SIMULTANEITY_OPTION == "1")
+                    {
+                        this.RowCellClickBedRoom = (V_HIS_TREATMENT_BED_ROOM)this.gridViewTreatmentBedRoom.GetFocusedRow();
+                        gridViewTreatmentBedRoom.ClearSelection();
+                        this.selectSingleRow(this.RowCellClickBedRoom);
+                        gridViewTreatmentBedRoom.SelectRow(this.gridViewTreatmentBedRoom.FocusedRowHandle);
+                    }
+                    else if (ASSIGN_SIMULTANEITY_OPTION == "2")
+                    {
+                        if (XtraMessageBox.Show("Chọn nhiều bệnh nhân để cùng lúc có thể bị trùng thời gian chỉ định. Bạn có muốn tiếp tục", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                        {
+                            IsCheckAll = false;
+                            return;
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        bool IsCheckAll = false;
+        private void gridViewTreatmentBedRoom_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+               
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }
