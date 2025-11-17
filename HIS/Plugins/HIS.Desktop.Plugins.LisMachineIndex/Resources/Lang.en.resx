@@ -262,4 +262,7 @@
   <data name="frmLisMachineIndex.layoutControlItem10.Text" xml:space="preserve">
     <value>Machine type:</value>
   </data>
+  <data name="frmLisMachineIndex.grdColDifferenceValue.Caption" xml:space="preserve">
+    <value>Difference Value</value>
+  </data>
 </root>
