@@ -797,7 +797,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             if (suscess == false)
                             {
                                 message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckEx.GetMessage());
-                                if (MessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                if (XtraMessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                                 { return false; }
                             }
                         }
