@@ -111,6 +111,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         string trackingCreateOptionCFG = "";
         string StartTimeMustBeGreaterThanInstructionTime = "";
         string ASSIGN_SERVICE_SIMULTANEITY_OPTION = "";
+        string ASSIGN_SIMULTANEITY_OPTION = "";
         string IsCheckSubIcdExceedLimit = "";
         string IsReadOnlyCareInstruction = "";
         string ServiceReqIcdOption = "";
@@ -622,6 +623,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 this.trackingCreateOptionCFG = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CREATE_OPTION);
                 this.StartTimeMustBeGreaterThanInstructionTime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_StartTimeMustBeGreaterThanInstructionTime);
                 this.ASSIGN_SERVICE_SIMULTANEITY_OPTION = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_ASSIGN_SERVICE_SIMULTANEITY_OPTION);
+                this.ASSIGN_SIMULTANEITY_OPTION = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_ASSIGN_SIMULTANEITY_OPTION);
                 this.updateTreatmentIcd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CRETATE_UPDATE_TREATMENT_ICD);
                 this.IsReadOnlyCareInstruction = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CRETATE_IsReadOnlyCareInstruction);
                 this.IsCheckSubIcdExceedLimit = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_IsCheckSubIcdExceedLimit);
@@ -3849,6 +3851,56 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                             }
                         }
                     }
+                    if (result && ASSIGN_SIMULTANEITY_OPTION == "1" || ASSIGN_SIMULTANEITY_OPTION == "2")
+                    {
+                        List<HIS_SERVICE_REQ> lstServiceReq = new List<HIS_SERVICE_REQ>();
+                        if (trackingSDOs.ServiceReqs != null && trackingSDOs.ServiceReqs.Count > 0)
+                        {
+                            lstServiceReq.AddRange(rsServiceReq.Where(o => trackingSDOs.ServiceReqs.Exists(p => p.ServiceReqId == o.ID)));
+                        }
+                        if (trackingSDOs.UsedForServiceReqIds != null && trackingSDOs.UsedForServiceReqIds.Count > 0)
+                        {
+                            lstServiceReq.AddRange(rsServiceReqTab2.Where(o => trackingSDOs.UsedForServiceReqIds.Exists(p => p == o.ID)));
+                        }
+                        if (lstServiceReq != null && lstServiceReq.Count > 0)
+                        {
+                            CommonParam param = new CommonParam();
+                            HisServiceReqCheckAssignSimultaneitySDO sdo = new HisServiceReqCheckAssignSimultaneitySDO();
+                            sdo.TreatmentId = this.treatmentId;
+                            sdo.CheckInfos = lstServiceReq
+                                .Select(s => new HisServiceReqCheckAssignSimultaneityCheckInfosSDO()
+                                {
+                                    LoginName = s.REQUEST_LOGINNAME,
+                                    CheckTimes = new List<long> { trackingSDOs.Tracking.TRACKING_TIME }
+                                })
+                                .ToList();
+                            Inventec.Common.Logging.LogSystem.Debug("HisServiceReqCheckSereTimesSDO:" + LogUtil.TraceData("HisServiceReqCheckSereTimesSDO", sdo));
+                            bool rs = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo, param);
+                            if (!rs)
+                            {
+                                WaitingManager.Hide();
+                                if (ASSIGN_SIMULTANEITY_OPTION == "1")
+                                {
+
+                                    MessageManager.Show(this, param, rs);
+                                    dtTrackingTime.Focus();
+                                    return false;
+                                }
+                                else
+                                {
+                                    if (XtraMessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                                    { 
+                                        dtTrackingTime.Focus();
+                                        return false;
+                                    }
+
+                                }
+                            }
+                            else
+                                btnSave.Enabled = true;
+
+                        }
+                    }
                     if (result && ServiceReqIcdOption == "1")
                     {
                         WaitingManager.Hide();
@@ -3871,7 +3923,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
 
 
                     }
-                }
+                }              
             }
             catch (Exception ex)
             {
