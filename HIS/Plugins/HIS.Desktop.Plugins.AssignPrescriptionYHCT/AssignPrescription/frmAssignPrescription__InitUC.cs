@@ -186,10 +186,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 ado.LanguageInputADO.ThuocDaduocKeVaoDanhSachThuocChobenNhanBanCoMuonChuyenSangBNKhac = ResourceMessage.ThuocDaduocKeVaoDanhSachThuocChobenNhanBanCoMuonChuyenSangBNKhac;
                 ado.LanguageInputADO.CanhBaoBenhNhanDaKeThuocTrongNgay = ResourceMessage.CanhBaoBenhNhanDaKeThuocTrongNgay;
                 this.ucPatientSelect = (UserControl)this.patientSelectProcessor.Run(ado);
+
                 if (this.ucPatientSelect != null)
                 {
                     this.pnlUCPanelRightTop.Controls.Add(this.ucPatientSelect);
                     this.ucPatientSelect.Dock = DockStyle.Fill;
+                    if (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
+                    {
+                        if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1")
+                        {
+                            this.pnlUCPanelRightTop.Enabled = false;
+                        }
+                        else if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
+                        {
+                            // Đánh dấu trạng thái để bước lưu kiểm tra cảnh báo
+                            this.bIsSelectMultiPatientProcessing = true;
+                        }
+                    }
                 }
             }
             catch (Exception ex)

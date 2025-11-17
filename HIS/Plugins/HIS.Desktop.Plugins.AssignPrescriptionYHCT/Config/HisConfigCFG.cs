@@ -98,9 +98,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         private const string KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
         private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
         private const string CONFIG_KEY__IS_CHECK_SERVICE_FOLLOW_WHEN_OUT = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
+        private const string KEY_ASSIGN_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION";
         internal static string IsCheckServiceFollowWhenOut;
         internal static string IsCheckSubIcdExceedLimit;
         internal static string ASSIGN_SERVICE_SIMULTANEITY_OPTION;
+        internal static string ASSIGN_SIMULTANEITY_OPTION;
         internal static string InstructionTimeServiceMustBeGreaterThanStartTimeExam;
         internal static string RequiredTreatmentMethodOption;
         internal static string AtcCodeOverlarWarningOption;
@@ -246,6 +248,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
                 AllowSignaturePrintModules = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);
                 IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);
                 ASSIGN_SERVICE_SIMULTANEITY_OPTION = GetValue(KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION);
+                ASSIGN_SIMULTANEITY_OPTION = GetValue(KEY_ASSIGN_SIMULTANEITY_OPTION);
                 InstructionTimeServiceMustBeGreaterThanStartTimeExam = GetValue(KEY__InstructionTimeServiceMustBeGreaterThanStartTimeExam);
                 RequiredTreatmentMethodOption = GetValue(KEY__RequiredTreatmentMethodOption);
                 AtcCodeOverlarWarningOption = GetValue(CONFIG_KEY__PRESCRIPTION_ATC_CODE_OVERLAP_WARNING_OPTION);
