@@ -220,12 +220,12 @@ namespace HIS.Desktop.Plugins.AssignPaan
                         {
                             if (config.VALUE == "1")
                             {
-                                MessageManager.Show(this, param, rs);
+                                DevExpress.XtraEditors.XtraMessageBox.Show(this, param.GetMessage());
                                 btnSave.Enabled = btnSavePrint.Enabled = false;
                             }
                             else
                             {
-                                btnSave.Enabled = btnSavePrint.Enabled = MessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
+                                btnSave.Enabled = btnSavePrint.Enabled = DevExpress.XtraEditors.XtraMessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
 
                             }
                         }
@@ -234,7 +234,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 }
                 config = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION").FirstOrDefault();
                 param = new CommonParam();
-                if (config != null)
+                if (config != null && btnSave.Enabled)
                 {
                     if (config.VALUE == "1" || config.VALUE == "2")
                     {
@@ -254,12 +254,12 @@ namespace HIS.Desktop.Plugins.AssignPaan
                         {
                             if (config.VALUE == "1")
                             {
-                                MessageManager.Show(this, param, rs);
+                                DevExpress.XtraEditors.XtraMessageBox.Show(this, param.GetMessage());
                                 btnSave.Enabled = btnSavePrint.Enabled = false;
                             }
                             else
                             {
-                                btnSave.Enabled = btnSavePrint.Enabled = MessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
+                                btnSave.Enabled = btnSavePrint.Enabled = DevExpress.XtraEditors.XtraMessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
 
                             }
                         }

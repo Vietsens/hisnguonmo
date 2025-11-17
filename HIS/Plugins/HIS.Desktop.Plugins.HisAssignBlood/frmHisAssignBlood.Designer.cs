@@ -45,10 +45,6 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -65,9 +61,13 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisAssignBlood));
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
-            this.chkShowGroupBlood = new DevExpress.XtraEditors.CheckEdit();
+            this.cboBloodLevel = new DevExpress.XtraEditors.ComboBoxEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnCtrlK = new DevExpress.XtraBars.BarButtonItem();
@@ -75,6 +75,11 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.bbtnSaveAndPrint = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnNew = new DevExpress.XtraBars.BarButtonItem();
             this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.chkShowGroupBlood = new DevExpress.XtraEditors.CheckEdit();
             this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnClose = new DevExpress.XtraEditors.SimpleButton();
@@ -203,20 +208,16 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidProviderBoXung__MedicinePage = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxValidationProviderControl__MedicinePage = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.cboBloodLevel = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkShowGroupBlood.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodLevel.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkShowGroupBlood.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
             this.popupControlContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -298,11 +299,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidProviderBoXung__MedicinePage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl__MedicinePage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboBloodLevel.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             this.SuspendLayout();
             // 
             // lcEditorInfo
@@ -340,22 +340,30 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.lcEditorInfo.TabIndex = 0;
             this.lcEditorInfo.Text = "layoutControl6";
             // 
-            // chkShowGroupBlood
+            // cboBloodLevel
             // 
-            this.chkShowGroupBlood.Location = new System.Drawing.Point(340, 64);
-            this.chkShowGroupBlood.MenuManager = this.barManager1;
-            this.chkShowGroupBlood.Name = "chkShowGroupBlood";
-            this.chkShowGroupBlood.Properties.Caption = "Hiển thị nhóm máu, Rh";
-            this.chkShowGroupBlood.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkShowGroupBlood.Size = new System.Drawing.Size(146, 19);
-            this.chkShowGroupBlood.StyleController = this.lcEditorInfo;
-            this.chkShowGroupBlood.TabIndex = 92;
-            this.chkShowGroupBlood.CheckedChanged += new System.EventHandler(this.chkShowGroupBlood_CheckedChanged);
+            this.cboBloodLevel.Location = new System.Drawing.Point(555, 64);
+            this.cboBloodLevel.MenuManager = this.barManager1;
+            this.cboBloodLevel.Name = "cboBloodLevel";
+            this.cboBloodLevel.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBloodLevel.Properties.Items.AddRange(new object[] {
+            "Tối cấp",
+            "Cấp cứu",
+            "Thường quy"});
+            this.cboBloodLevel.Size = new System.Drawing.Size(94, 20);
+            this.cboBloodLevel.StyleController = this.lcEditorInfo;
+            this.cboBloodLevel.TabIndex = 93;
+            this.cboBloodLevel.SelectedIndexChanged += new System.EventHandler(this.cboBloodLevel_SelectedIndexChanged);
             // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Images = this.imageCollection1;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
@@ -438,6 +446,46 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.imageCollection1.Images.SetKeyName(10, "solidpurpledatabar_16x16.png");
             this.imageCollection1.InsertGalleryImage("solidreddatabar_16x16.png", "images/data%20bars/solidreddatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidreddatabar_16x16.png"), 11);
             this.imageCollection1.Images.SetKeyName(11, "solidreddatabar_16x16.png");
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1427, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 694);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1427, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 665);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1427, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 665);
+            // 
+            // chkShowGroupBlood
+            // 
+            this.chkShowGroupBlood.Location = new System.Drawing.Point(340, 64);
+            this.chkShowGroupBlood.MenuManager = this.barManager1;
+            this.chkShowGroupBlood.Name = "chkShowGroupBlood";
+            this.chkShowGroupBlood.Properties.Caption = "Hiển thị nhóm máu, Rh";
+            this.chkShowGroupBlood.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.chkShowGroupBlood.Size = new System.Drawing.Size(146, 19);
+            this.chkShowGroupBlood.StyleController = this.lcEditorInfo;
+            this.chkShowGroupBlood.TabIndex = 92;
+            this.chkShowGroupBlood.CheckedChanged += new System.EventHandler(this.chkShowGroupBlood_CheckedChanged);
             // 
             // popupControlContainer1
             // 
@@ -557,6 +605,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.cboUser.StyleController = this.lcEditorInfo;
             this.cboUser.TabIndex = 90;
             this.cboUser.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboUser_Closed);
+            this.cboUser.EditValueChanged += new System.EventHandler(this.cboUser_EditValueChanged);
             this.cboUser.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboUser_KeyUp);
             // 
             // gridView7
@@ -680,7 +729,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.cboBloodABO.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboBloodABO.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboBloodABO.Properties.NullText = "";
             this.cboBloodABO.Properties.View = this.gridView4;
             this.cboBloodABO.Size = new System.Drawing.Size(67, 20);
@@ -704,7 +753,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.cboBloodRH.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboBloodRH.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.cboBloodRH.Properties.NullText = "";
             this.cboBloodRH.Properties.View = this.gridView2;
             this.cboBloodRH.Size = new System.Drawing.Size(65, 20);
@@ -899,7 +948,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.cboExecuteGroup_TabBlood.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExecuteGroup_TabBlood.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.cboExecuteGroup_TabBlood.Properties.NullText = "";
             this.cboExecuteGroup_TabBlood.Properties.View = this.gridLookUpEdit1View;
             this.cboExecuteGroup_TabBlood.Size = new System.Drawing.Size(289, 20);
@@ -922,7 +971,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.cboMediStockExport_TabBlood.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboMediStockExport_TabBlood.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.cboMediStockExport_TabBlood.Properties.NullText = "";
             this.cboMediStockExport_TabBlood.Properties.View = this.gridView3;
             this.cboMediStockExport_TabBlood.Size = new System.Drawing.Size(228, 20);
@@ -1489,7 +1538,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             this.repositoryItemcboPatientType_TabBlood_Disable.AutoHeight = false;
             this.repositoryItemcboPatientType_TabBlood_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Đối tượng thanh toán", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Đối tượng thanh toán", null, null, true)});
             this.repositoryItemcboPatientType_TabBlood_Disable.Name = "repositoryItemcboPatientType_TabBlood_Disable";
             this.repositoryItemcboPatientType_TabBlood_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1895,62 +1944,6 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.emptySpaceItem3.Size = new System.Drawing.Size(1427, 14);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1427, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 694);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1427, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 665);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1427, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 665);
-            // 
-            // dxValidProviderBoXung__MedicinePage
-            // 
-            this.dxValidProviderBoXung__MedicinePage.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidProviderBoXung__MedicinePage_ValidationFailed);
-            // 
-            // dxValidationProviderControl__MedicinePage
-            // 
-            this.dxValidationProviderControl__MedicinePage.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderControl__MedicinePage_ValidationFailed);
-            // 
-            // dxErrorProvider1
-            // 
-            this.dxErrorProvider1.ContainerControl = this;
-            // 
-            // cboBloodLevel
-            // 
-            this.cboBloodLevel.Location = new System.Drawing.Point(555, 64);
-            this.cboBloodLevel.MenuManager = this.barManager1;
-            this.cboBloodLevel.Name = "cboBloodLevel";
-            this.cboBloodLevel.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboBloodLevel.Properties.Items.AddRange(new object[] {
-            "Tối cấp",
-            "Cấp cứu",
-            "Thường quy"});
-            this.cboBloodLevel.Size = new System.Drawing.Size(94, 20);
-            this.cboBloodLevel.StyleController = this.lcEditorInfo;
-            this.cboBloodLevel.TabIndex = 93;
-            this.cboBloodLevel.SelectedIndexChanged += new System.EventHandler(this.cboBloodLevel_SelectedIndexChanged);
-            // 
             // layoutControlItem18
             // 
             this.layoutControlItem18.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -1964,6 +1957,18 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem18.TextSize = new System.Drawing.Size(60, 20);
             this.layoutControlItem18.TextToControlDistance = 5;
+            // 
+            // dxValidProviderBoXung__MedicinePage
+            // 
+            this.dxValidProviderBoXung__MedicinePage.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidProviderBoXung__MedicinePage_ValidationFailed);
+            // 
+            // dxValidationProviderControl__MedicinePage
+            // 
+            this.dxValidationProviderControl__MedicinePage.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderControl__MedicinePage_ValidationFailed);
+            // 
+            // dxErrorProvider1
+            // 
+            this.dxErrorProvider1.ContainerControl = this;
             // 
             // frmHisAssignBlood
             // 
@@ -1989,9 +1994,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.Controls.SetChildIndex(this.lcEditorInfo, 0);
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).EndInit();
             this.lcEditorInfo.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkShowGroupBlood.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBloodLevel.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkShowGroupBlood.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).EndInit();
             this.popupControlContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
@@ -2073,11 +2079,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidProviderBoXung__MedicinePage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl__MedicinePage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboBloodLevel.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -37,5 +37,7 @@ namespace HIS.Desktop.Plugins.BedHistory
         internal const string CONFIG_KEY__MOS__HIS_SERE_SERV__IS__USING_BED_TEMP = "MOS.HIS_SERE_SERV.IS_USING_BED_TEMP";
         internal const string CONFIG_KEY__WarningOverTotalPatientPrice__IsCheck = "HIS.Desktop.WarningOverTotalPatientPrice__IsCheck";
         internal const string CONFIG_KEY__IsShareBedFeeOffAllPatients = "HIS.Desktop.Plugins.BedHistory.IsShareBedFeeOffAllPatients";
+        internal const string CONFIG_KEY__SerivceSimultaneity = ("MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION");
+        internal const string CONFIG_KEY__Simultaneity = ("MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION");
     }
 }

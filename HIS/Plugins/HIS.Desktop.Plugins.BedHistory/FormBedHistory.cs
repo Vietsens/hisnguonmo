@@ -53,6 +53,7 @@ using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using DevExpress.XtraPrinting.Native;
 using static DevExpress.Data.Helpers.ExpressiveSortInfo;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.BedHistory
 {
@@ -99,11 +100,16 @@ namespace HIS.Desktop.Plugins.BedHistory
         HIS_SERE_SERV currentBedServiceReq;
         List<HIS_SERE_SERV> currentBedSereServs { get; set; }
         private List<V_HIS_BED_LOG> listCurrentBedLog { get; set; }
+        List<string> listUser;
+        List<long> listSereTime;
+
 
         long BhytExceedDayAllowForInPatient = Convert.ToInt16(HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__BHYT__EXCEED_DAY_ALLOW_FOR_IN_PATIENT));
         string IsUsingBedTemp = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__MOS__HIS_SERE_SERV__IS__USING_BED_TEMP);
         string IsShareBed = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__IsShareBedFeeOffAllPatients);
         string WarningOverTotalPatientPrice__IsCheck = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__WarningOverTotalPatientPrice__IsCheck);
+        string KeyhasService = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__SerivceSimultaneity);
+        string keyNoService = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__Simultaneity);
         RefeshReference refesh;
         Dictionary<long, List<V_HIS_BED_LOG>> dicBedLog = new Dictionary<long, List<V_HIS_BED_LOG>>();
         Dictionary<long, List<long>> dicTreatmentBedRoom = new Dictionary<long, List<long>>();
@@ -4371,8 +4377,11 @@ namespace HIS.Desktop.Plugins.BedHistory
             try
             {
                 CommonParam param = new CommonParam();
+                CommonParam paramCanhBao = new CommonParam();
                 bool success = false;
+
                 //Review
+
                 if (!btnAssigns.Enabled) return;
                 if (CurrentTreatment.TDL_TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
                 {
@@ -4386,11 +4395,107 @@ namespace HIS.Desktop.Plugins.BedHistory
                         XtraMessageBox.Show("Không cho phép chỉ định giường đối với bệnh nhân không phải điều trị nội trú", "Thông báo"); return;
                     }
                 }
-                WaitingManager.Show();
                 var dataBedServiceTypeForSave = gridViewBedServiceType.DataSource as List<ADO.HisBedServiceTypeADO>;
+                if (KeyhasService == "1" || KeyhasService == "2")
+                {
+                    HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
+                    sdo.TreatmentId = CurrentTreatment.ID;
+                    listUser = new List<string>();
+                    listSereTime = new List<long>();
+                    foreach (var item in dataBedServiceTypeForSave)
+                    {
+                        listUser.Add(item.REQUEST_LOGINNAME);
+                        listSereTime.Add(item.START_TIME);
+                    }
+                    sdo.SereTimes = listSereTime;
+                    sdo.Loginnames = listUser;
+                    LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisServiceReqCheckAssignSimultaneitySDO", sdo));
+
+                    var CheckSereTimes = new BackendAdapter(paramCanhBao).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, paramCanhBao);
+                    LogSystem.Debug("Giá trj api trả về: " +  CheckSereTimes);
+                    LogSystem.Debug("Giá trj key: " + KeyhasService);
+
+                    if (KeyhasService == "1" && !CheckSereTimes)
+                    {
+                        //MessageManager.Show(this, param, CheckSereTimes);
+                        XtraMessageBox.Show(paramCanhBao.GetMessage(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        BtnSaveBedLog.Enabled = false;
+                        return;
+                    }
+                    if (KeyhasService == "2" && !CheckSereTimes)
+                    {
+                        string message = paramCanhBao.GetMessage() + " Bạn có muốn tiếp tục?";
+                        DialogResult result = XtraMessageBox.Show(message,
+                                                              "Xác nhận",
+                                                              MessageBoxButtons.YesNo,
+                                                              MessageBoxIcon.Question);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            BtnSaveBedLog.Enabled = true;
+                        }
+                        else
+                        {
+                            BtnSaveBedLog.Enabled = false;
+                            return;
+                        }
+                    }
+                }
+
+                if (keyNoService == "1" || keyNoService == "2")
+                {
+                    HisServiceReqCheckAssignSimultaneitySDO sdo = new HisServiceReqCheckAssignSimultaneitySDO();
+                    sdo.TreatmentId = CurrentTreatment.ID;
+
+                    // Danh sách CheckInfos
+                    var checkInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>();
+                    listUser = new List<string>();
+                    listSereTime = new List<long>();
+                    foreach (var item in dataBedServiceTypeForSave)
+                    {
+                        var info = new HisServiceReqCheckAssignSimultaneityCheckInfosSDO();
+                        info.LoginName = item.REQUEST_LOGINNAME;
+                        info.CheckTimes = new List<long> { item.START_TIME };
+                        checkInfos.Add(info);
+                    }
+
+                    sdo.CheckInfos = checkInfos;
+                    LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisServiceReqCheckAssignSimultaneitySDO", sdo));
+
+                    var CheckSereTimes = new BackendAdapter(paramCanhBao).Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo, paramCanhBao);
+                    LogSystem.Debug("Giá trj api trả về: " +  CheckSereTimes);
+                    LogSystem.Debug("Giá trj key: " + keyNoService);
+
+                    if (keyNoService == "1" && !CheckSereTimes)
+                    {
+                        //MessageManager.Show(this, param, CheckSereTimes);
+                        XtraMessageBox.Show(paramCanhBao.GetMessage(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        BtnSaveBedLog.Enabled = false;
+                        return;
+                    }
+                    if (keyNoService == "2" && !CheckSereTimes)
+                    {
+                        string message = paramCanhBao.GetMessage() + " Bạn có muốn tiếp tục?";
+                        DialogResult result = MessageBox.Show(message,
+                                                              "Xác nhận",
+                                                              MessageBoxButtons.YesNo,
+                                                              MessageBoxIcon.Question);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            BtnSaveBedLog.Enabled = true;
+                        }
+                        else
+                        {
+                            BtnSaveBedLog.Enabled = false;
+                            return;
+                        }
+                    }
+                }
                 bool valid = true;
                 valid = valid && CheckValidPatientTypeGridService(dataBedServiceTypeForSave, param);
 
+                WaitingManager.Show();
                 if (valid && !String.IsNullOrWhiteSpace(LblTreatmentDayCount.Text))
                 {
                     decimal amountBed = 0;
