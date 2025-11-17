@@ -3093,11 +3093,17 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                             {
                                 MessageManager.Show(this, param, rs);
                                 btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                                return;
                             }
                             else
                             {
-                                btnSave.Enabled = btnSaveAndPrint.Enabled = MessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
-
+                                var result = MessageBox.Show(this,param.GetMessage() + "Bạn có muốn tiếp tục?","Thông Báo", MessageBoxButtons.YesNo);
+                                if (result == DialogResult.No)
+                                {
+                                    return; 
+                                }
+                                btnSave.Enabled = true;
+                                btnSaveAndPrint.Enabled = true;
                             }
                         }
                         else btnSave.Enabled = btnSaveAndPrint.Enabled = true;
@@ -3127,7 +3133,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                             if (config.VALUE == "1")
                             {
                                 btnSave.Enabled = btnSaveAndPrint.Enabled = false;
-                                MessageManager.Show(this, param, false);
+                                XtraMessageBox.Show(param.GetMessage(), "Thông báo"); 
                             }
                             else if (config.VALUE == "2")
                             {

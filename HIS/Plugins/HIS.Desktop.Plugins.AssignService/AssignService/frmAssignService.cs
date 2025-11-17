@@ -540,7 +540,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
                 }
                 //qtcode
-                //2.CheckAssignSimultaneity (y lệnh của hồ sơ khác)
+                //2.CheckAssignSimultaneity
                 if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1" || HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
                 {
                     var assignSdo = new HisServiceReqCheckAssignSimultaneitySDO();
@@ -553,9 +553,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                                         CheckTimes = intructionTimeSelecteds
                                                     }
                                                 };
+                    Inventec.Common.Logging.LogSystem.Debug("Input api: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", assignSdo));
                     var checkAssignResult = new BackendAdapter(param)
                         .Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, assignSdo, ProcessLostToken, param);
-
+                    Inventec.Common.Logging.LogSystem.Debug("Kết quả gọi api: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", checkAssignResult));
                     if (!checkAssignResult)
                     {
                         hasError = true;
@@ -563,7 +564,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         {
                             isCheckAssignServiceSimultaneityOption = true;
                             btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
-                            MessageManager.Show(this, param, false);
+                            XtraMessageBox.Show(param.GetMessage(), "Thông báo"); 
+                            Inventec.Common.Logging.LogSystem.Debug("param: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", param));
                         }
                         else if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
                         {
