@@ -150,7 +150,12 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                 TxtKeyword.Focus();
                 //CboPtttPriorityName.EditValue = null;
                 //ListPtttPriority = new List<HIS_PTTT_PRIORITY>();
-                toggleChanged();
+                toggleTooltip();
+                if (!toggleSwitch1.IsOn)
+                {
+                    this.GvSS_GcGatherData.Image = null;
+                    this.GvSS_GcFee.Image = null; 
+                }
             }
             catch (Exception ex)
             {
@@ -179,6 +184,12 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                 param.Count = dataTotal;
                 ucPaging.Init(GridPaging, param, pagingSize, this.GridControlSereServ);
                 WaitingManager.Hide();
+                if (toggleSwitch1.IsOn)
+                {
+                    toggleOnGatherData();
+                    toggleOnFee(); 
+                }
+                //toggleChanged();
             }
             catch (Exception ex)
             {

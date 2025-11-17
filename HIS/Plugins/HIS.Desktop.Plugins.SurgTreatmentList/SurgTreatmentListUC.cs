@@ -1007,8 +1007,8 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                 UnFees = unFees
             };
 
-            var apiResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SERE_SERV_EXT>("api/HisSereServExt/SetFeeAndGatherData", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
-            if (apiResult != null)
+            var apiResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/SetFeeAndGatherData", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
+            if (apiResult != null && apiResult.Count > 0)
             {
                 success = true;
             }
@@ -1020,22 +1020,28 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
         }
         private void toggleChanged()
         {
+            toggleTooltip();
             if (toggleSwitch1.IsOn)
             {
-                toggleSwitch1.ToolTip = "Cập nhật nhiều dịch vụ";
                 btnSave.Enabled = true;
                 toggleOnGatherData();
                 toggleOnFee();
             }
             else
             {
-                toggleSwitch1.ToolTip = "Cập nhật từng dịch vụ";
                 this.GvSS_GcGatherData.Image = null;
                 this.GvSS_GcFee.Image = null;
                 btnSave.Enabled = false;
                 btnSave.AppearanceDisabled.BackColor = Color.LightGray;
                 FillDataToCotrol();
             }
+        }
+        private void toggleTooltip()
+        {
+            if (toggleSwitch1.IsOn)
+                toggleSwitch1.ToolTip = "Cập nhật nhiều dịch vụ";
+            else
+                toggleSwitch1.ToolTip = "Cập nhật từng dịch vụ";
         }
         private void toggleOnFee()
         {
