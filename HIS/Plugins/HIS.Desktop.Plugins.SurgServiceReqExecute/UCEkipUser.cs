@@ -382,9 +382,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     CommonParam paramCommon = new CommonParam();
                     dynamic filter = new System.Dynamic.ExpandoObject();
-                    datas = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<HIS_EXECUTE_ROLE>>("api/HisExecuteRole/Get", ApiConsumers.MosConsumer, filter, paramCommon);
-                    if (datas != null) BackendDataWorker.UpdateToRam(typeof(HIS_EXECUTE_ROLE), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
-                }
+                        datas = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<HIS_EXECUTE_ROLE>>("api/HisExecuteRole/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                        if (datas != null) BackendDataWorker.UpdateToRam(typeof(HIS_EXECUTE_ROLE), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                    }
 
                 if (datas != null && datas.Count > 0)
                 {
@@ -723,10 +723,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 CommonParam paramCommon = new CommonParam();
                 dynamic filter = new System.Dynamic.ExpandoObject();
                 //datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>();
-                datas = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<ACS.EFMODEL.DataModels.ACS_USER>>("api/AcsUser/Get", ApiConsumers.AcsConsumer, filter, paramCommon);
-                if (datas != null) BackendDataWorker.UpdateToRam(typeof(ACS.EFMODEL.DataModels.ACS_USER), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
-                employeeList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>>("api/HisEmployee/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
-                if (employeeList != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE), employeeList, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                    datas = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<ACS.EFMODEL.DataModels.ACS_USER>>("api/AcsUser/Get", ApiConsumers.AcsConsumer, filter, paramCommon);
+                    if (datas != null) BackendDataWorker.UpdateToRam(typeof(ACS.EFMODEL.DataModels.ACS_USER), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                    employeeList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>>("api/HisEmployee/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+                    if (employeeList != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE), employeeList, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
 
                 var departmentList = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1 && o.IS_CLINICAL == 1).ToList();
                 AcsUserADOList = new List<AcsUserADO>();
@@ -749,7 +749,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     if (check != null)
                     {
                         user.IS_ACTIVE = check.IS_ACTIVE;
-                        user.DOB = Inventec.Common.DateTime.Convert.TimeNumberToDateString(check.DOB ?? 0);
+                        user.DOB_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(check.DOB ?? 0);
 
                         user.DIPLOMA = check.DIPLOMA;
                         var checkDepartment = departmentList.FirstOrDefault(o => o.ID == check.DEPARTMENT_ID);

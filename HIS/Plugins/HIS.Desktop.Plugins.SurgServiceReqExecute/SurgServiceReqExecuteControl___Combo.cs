@@ -404,7 +404,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 foreach (var item in acsUser)
                 {
                     AcsUserADO ado = new AcsUserADO(item);
-                    ado.DOB = (item.DOB ?? 0).ToString();
+                    ado.DOB_STR = (item.DOB ?? 0).ToString();
                     ado.DOB_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(item.DOB ?? 0);
                     ado.DIPLOMA = item.DIPLOMA;
                     ado.DEPARTMENT_CODE = item.DEPARTMENT_CODE;
@@ -551,47 +551,41 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             List<AcsUserADO> AcsUserADOList = null;
             try
             {
-                List<ACS.EFMODEL.DataModels.ACS_USER> datas = null;
-                List<V_HIS_EMPLOYEE> employeeList = null;
-                CommonParam paramCommon = new CommonParam();
-                dynamic filter = new System.Dynamic.ExpandoObject();
-                datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>();
-                if (datas != null) BackendDataWorker.UpdateToRam(typeof(ACS.EFMODEL.DataModels.ACS_USER), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
-                employeeList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>>("api/HisEmployee/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
-                if (employeeList != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE), employeeList, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
-
-                var departmentList = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1 && o.IS_CLINICAL == 1).ToList();
-                AcsUserADOList = new List<AcsUserADO>();
-
-                foreach (var item in datas)
+                // Lấy dữ liệu ACS_USER từ RAM
+                var datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>();
+                // Lấy dữ liệu EMPLOYEE từ RAM, nếu chưa có thì mới gọi API
+                var employeeList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>();
+                if (employeeList == null || employeeList.Count == 0)
                 {
-                    AcsUserADO user = new AcsUserADO();
-                    user.ID = item.ID;
-                    user.LOGINNAME = item.LOGINNAME;
-                    user.USERNAME = item.USERNAME;
-                    user.MOBILE = item.MOBILE;
-                    user.PASSWORD = item.PASSWORD;
-                    user.IS_ACTIVE = item.IS_ACTIVE;
-
-                    var check = employeeList.FirstOrDefault(o => o.LOGINNAME == item.LOGINNAME);
-                    if (check != null)
-                    {
-
-                        user.DOB = Inventec.Common.DateTime.Convert.TimeNumberToDateString(check.DOB ?? 0);
-
-                        user.DIPLOMA = check.DIPLOMA;
-                        var checkDepartment = departmentList.FirstOrDefault(o => o.ID == check.DEPARTMENT_ID);
-
-                        if (checkDepartment != null)
-                        {
-                            user.DEPARTMENT_NAME = checkDepartment.DEPARTMENT_NAME;
-
-                        }
-                    }
-                    AcsUserADOList.Add(user);
+                    CommonParam paramCommon = new CommonParam();
+                    dynamic filter = new System.Dynamic.ExpandoObject();
+                    employeeList = new Inventec.Common.Adapter.BackendAdapter(paramCommon)
+                        .Get<List<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>>("api/HisEmployee/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+                    if (employeeList != null)
+                        BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE), employeeList, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                 }
 
-                AcsUserADOList = AcsUserADOList.OrderBy(o => o.USERNAME).ToList();
+                // Lấy danh sách khoa phòng
+                var departmentList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_DEPARTMENT>()
+                    .Where(o => o.IS_ACTIVE == 1 && o.IS_CLINICAL == 1).ToList();
+
+                // Join dữ liệu
+                AcsUserADOList = (from user in datas
+                                  join emp in employeeList on user.LOGINNAME equals emp.LOGINNAME into empJoin
+                                  from emp in empJoin.DefaultIfEmpty()
+                                  let dept = emp != null ? departmentList.FirstOrDefault(d => d.ID == emp.DEPARTMENT_ID) : null
+                                  select new AcsUserADO
+                                  {
+                                      ID = user.ID,
+                                      LOGINNAME = user.LOGINNAME,
+                                      USERNAME = user.USERNAME,
+                                      MOBILE = user.MOBILE,
+                                      PASSWORD = user.PASSWORD,
+                                      IS_ACTIVE = user.IS_ACTIVE,
+                                      DOB_STR = emp != null ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(emp.DOB ?? 0) : null,
+                                      DIPLOMA = emp != null ? emp.DIPLOMA : null,
+                                      DEPARTMENT_NAME = dept != null ? dept.DEPARTMENT_NAME : null
+                                  }).OrderBy(o => o.USERNAME).ToList();
             }
             catch (Exception ex)
             {

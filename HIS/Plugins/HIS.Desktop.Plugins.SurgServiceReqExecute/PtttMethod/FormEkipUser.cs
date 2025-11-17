@@ -144,7 +144,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttMethod
                     if (check != null)
                     {
 
-                        user.DOB = Inventec.Common.DateTime.Convert.TimeNumberToDateString(check.DOB ?? 0);
+                        user.DOB_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(check.DOB ?? 0);
 
                         user.DIPLOMA = check.DIPLOMA;
                         var checkDepartment = departmentList.FirstOrDefault(o => o.ID == check.DEPARTMENT_ID);

@@ -26,7 +26,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Base
     public class AcsUserADO : ACS.EFMODEL.DataModels.ACS_USER
     {
         public string DEPARTMENT_NAME { get; set; }
-        public string DOB { get; set; }
         public string DIPLOMA { get; set; }
         public string DOB_STR { get; set; }
         public string DEPARTMENT_CODE { get; set; }
