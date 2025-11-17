@@ -358,6 +358,47 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void AttachTimeChangedEvent(Control parent)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                if (c is DevExpress.XtraEditors.TimeEdit timeEdit)
+                {
+                    // Khi gõ tay hoặc Enter
+                    //timeEdit.EditValueChanged += (s, e) => ProcessTimeEdit(timeEdit);
+
+                    // Khi chọn giờ bằng popup (click nút tam giác)
+                    timeEdit.EditValueChanged += (s, e) =>
+                    {
+                        timeEdit.BeginInvoke(new Action(() => ProcessTimeEdit(timeEdit)));
+                    };
+                }
+                //if (c is DevExpress.XtraEditors.TimeEdit timeEdit)
+                //{
+                //    // Chỉ cần dùng EditValueChanged, không cần CloseUp
+                //    timeEdit.EditValueChanged += (s, e) => ProcessTimeEdit(timeEdit);
+                //}
+                if (c.HasChildren)
+                    AttachTimeChangedEvent(c);
+            }
+        }
+
+        private void ProcessTimeEdit(DevExpress.XtraEditors.TimeEdit timeEdit)
+        {
+            try
+            {
+                var dates = this.ucDateProcessor.GetValue(this.ucDate);
+                if (dates != null && dates.Count > 0)
+                {
+                    DateTime date = new DateTime(dates.First()).Date;
+                    DateTime time = (DateTime)timeEdit.EditValue;
+                    DateTime full = date.Add(time.TimeOfDay);
+
+                    ChangeIntructionTime(full);
+                }
+            }
+            catch { }
+        }
 
         private void InitUcDate()
         {
@@ -383,7 +424,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 ado.LanguageInputADO.FormMultiChooseDate__CaptionBtnChoose = Inventec.Common.Resource.Get.Value("FormMultiChooseDate__CaptionBtnChoose", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
 
                 ucDate = (UserControl)ucDateProcessor.Run(ado);
-
+                AttachTimeChangedEvent(ucDate);
                 if (ucDate != null)
                 {
                     ucDate.Enabled = HisConfigCFG.IsUsingServerTime != commonString__true;
@@ -955,6 +996,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 LogSystem.Debug("ChangeIntructionTime => LoadServicePaty...");
                 this.InitComboRepositoryPatientType(this.currentPatientTypeWithPatientTypeAlter);
                 this.LoadTreatmentInfo__PatientType();
+
+                CheckTimeSereServ();
             }
             catch (Exception ex)
             {
@@ -2955,6 +2998,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
 
         private void cboUser_Closed(object sender, ClosedEventArgs e)
         {
+            LogSystem.Debug("cboUser_Closed Start");
             try
             {
                 if (e.CloseMode == PopupCloseMode.Normal)
@@ -3261,6 +3305,156 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+        private void CheckTimeSereServ()
+        {
+            LogSystem.Debug("CheckTimeSereServ Start");
+            try
+            {
+                LogSystem.Debug("txtLoginName.Text1"+ txtLoginName.Text);
+                if (txtLoginName.Text == null) return;
+                List<long> intructionTimeSelecteds = this.ucDateProcessor.GetValue(this.ucDate);
+                LogSystem.Debug("intructionTimeSelecteds1" + intructionTimeSelecteds);
+
+                string username = txtLoginName.Text;
+
+                if (string.IsNullOrEmpty(username)) return;
+
+                #region --- 1. Kiểm tra MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION ---
+                var configSere = BackendDataWorker.Get<HIS_CONFIG>()
+                                .FirstOrDefault(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION");
+                LogSystem.Debug("configSere.VALUE:" + configSere.VALUE);
+                if (configSere != null && (configSere.VALUE == "1" || configSere.VALUE == "2"))
+                {
+                    var param = new CommonParam();
+
+                    HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO()
+                    {
+                        TreatmentId = this.treatmentId,
+                        Loginnames = new List<string> { username },
+                        SereTimes = intructionTimeSelecteds.ToList()
+                    };
+                    Inventec.Common.Logging.LogSystem.Info("HisServiceReqCheckSereTimesSDO1: " 
+                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+                    bool rs = new BackendAdapter(param).Post<bool>(
+                        "/api/HisServiceReq/CheckSereTimes",
+                        ApiConsumers.MosConsumer, sdo, param);
+                    LogSystem.Debug("rs123:" + rs);
+                    if (!rs)
+                    {
+                        // Giá trị = 1 → cứng không cho lưu
+                        if (configSere.VALUE == "1")
+                        {
+                            MessageManager.Show(this, param, rs);
+                            btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                        }
+                        else // Giá trị = 2 → hỏi tiếp tục hay không (Sử dụng XtraMessageBox)
+                        {
+                            string error = param.GetMessage();
+
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show(error + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                            {
+                                btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                                return; // Dừng hàm ngay lập tức
+                            }
+                            else
+                            {
+                                // Nếu chọn Yes
+                                btnSave.Enabled = btnSaveAndPrint.Enabled = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        btnSave.Enabled = btnSaveAndPrint.Enabled = true;
+                    }
+                }
+                #endregion
+
+                #region --- 2. Kiểm tra MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION ---
+                var configAssign = BackendDataWorker.Get<HIS_CONFIG>()
+                                .FirstOrDefault(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION");
+
+                if (configAssign != null && (configAssign.VALUE == "1" || configAssign.VALUE == "2"))
+                {
+                    var param = new CommonParam();
+
+                    HisServiceReqCheckAssignSimultaneitySDO sdo = new HisServiceReqCheckAssignSimultaneitySDO()
+                    {
+                        TreatmentId = this.treatmentId,
+                        CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>()
+                    {
+                        new HisServiceReqCheckAssignSimultaneityCheckInfosSDO()
+                        {
+                            LoginName = username,
+                            CheckTimes = intructionTimeSelecteds
+                        }
+                    }
+                        };
+
+                    bool rs = new BackendAdapter(param).Post<bool>(
+                        "/api/HisServiceReq/CheckAssignSimultaneity",
+                        ApiConsumers.MosConsumer, sdo, param);
+
+                    if (!rs)
+                    {
+                        // Giá trị = 1 → cấm hoàn toàn
+                        if (configAssign.VALUE == "1")
+                        {
+                            MessageManager.Show(this, param, rs);
+                            btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                        }
+                        else // Giá trị = 2 → hỏi tiếp (Sử dụng DevExpress.XtraMessageBox theo mẫu)
+                        {
+                            // Lấy thông điệp lỗi/cảnh báo từ param
+                            string error = param.GetMessage();
+
+                            // Hiển thị XtraMessageBox và kiểm tra kết quả
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show(error + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                            {
+                                // Nếu người dùng chọn 'No', thì dừng (return) và vô hiệu hóa nút
+                                btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                                return;
+                            }
+                            else
+                            {
+                                // Nếu người dùng chọn 'Yes', thì cho phép tiếp tục (enable nút)
+                                btnSave.Enabled = btnSaveAndPrint.Enabled = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        btnSave.Enabled = btnSaveAndPrint.Enabled = true;
+                    }
+                }
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboUser_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                LogSystem.Debug("cboUser_EditValueChanged Start");
+                if (this.cboUser.EditValue != null)
+                    {
+                        ACS.EFMODEL.DataModels.ACS_USER data = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.LOGINNAME == ((this.cboUser.EditValue ?? "").ToString()));
+                        if (data != null)
+                        {
+                            this.txtLoginName.Text = data.LOGINNAME;
+                        }
+                        CheckTimeSereServ();
+                    }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
     }
 }
