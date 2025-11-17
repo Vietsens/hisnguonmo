@@ -504,11 +504,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             cboUser.EditValue == null || intructionTimeSelecteds == null || intructionTimeSelecteds.Count == 0)
                     return;
 
-                CommonParam param = new CommonParam();
+                
                 bool hasError = false;
 
                 if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1" || HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
                 {
+                    CommonParam param = new CommonParam();
                     HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
                     sdo.TreatmentId = treatmentId;
                     sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
@@ -543,6 +544,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 //2.CheckAssignSimultaneity
                 if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1" || HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
                 {
+                    CommonParam param2 = new CommonParam();
                     var assignSdo = new HisServiceReqCheckAssignSimultaneitySDO();
                     assignSdo.TreatmentId = treatmentId;
                     assignSdo.CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>
@@ -554,8 +556,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                                     }
                                                 };
                     Inventec.Common.Logging.LogSystem.Debug("Input api: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", assignSdo));
-                    var checkAssignResult = new BackendAdapter(param)
-                        .Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, assignSdo, ProcessLostToken, param);
+                    var checkAssignResult = new BackendAdapter(param2)
+                        .Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, assignSdo, ProcessLostToken, param2);
                     Inventec.Common.Logging.LogSystem.Debug("Kết quả gọi api: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", checkAssignResult));
                     if (!checkAssignResult)
                     {
@@ -564,12 +566,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         {
                             isCheckAssignServiceSimultaneityOption = true;
                             btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
-                            XtraMessageBox.Show(param.GetMessage(), "Thông báo"); 
-                            Inventec.Common.Logging.LogSystem.Debug("param: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", param));
+                            XtraMessageBox.Show(param2.GetMessage(), "Thông báo"); 
+                            Inventec.Common.Logging.LogSystem.Debug("param: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", param2));
                         }
                         else if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
                         {
-                            if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                            if (XtraMessageBox.Show(param2.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
                             {
                                 isCheckAssignServiceSimultaneityOption = true;
                                 btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;

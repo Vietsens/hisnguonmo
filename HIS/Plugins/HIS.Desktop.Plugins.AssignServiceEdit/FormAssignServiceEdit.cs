@@ -3073,12 +3073,13 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
             {
                 var config = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION").FirstOrDefault();
                 var config2 = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION").FirstOrDefault();
-                CommonParam param = new CommonParam();
+                
                 bool hasError = false;
                 if (config != null)
                 {
                     if (config.VALUE == "1" || config.VALUE == "2")
                     {
+                        CommonParam param = new CommonParam();
                         HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
                         sdo.TreatmentId = HisServiceReq.TREATMENT_ID;
                         var username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
@@ -3111,6 +3112,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 }
                 if (config2 != null)
                 {
+                    CommonParam param2 = new CommonParam();
                     if (config.VALUE == "1" || config.VALUE == "2")
                     {
                         var username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
@@ -3124,8 +3126,8 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                                                         CheckTimes = intructionTimeSelecteds
                                                     }
                                                 };
-                        var checkAssignResult = new BackendAdapter(param)
-                            .Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, assignSdo, ProcessLostToken, param);
+                        var checkAssignResult = new BackendAdapter(param2)
+                            .Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, assignSdo, ProcessLostToken, param2);
 
                         if (!checkAssignResult)
                         {
@@ -3133,11 +3135,11 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                             if (config.VALUE == "1")
                             {
                                 btnSave.Enabled = btnSaveAndPrint.Enabled = false;
-                                XtraMessageBox.Show(param.GetMessage(), "Thông báo"); 
+                                XtraMessageBox.Show(param2.GetMessage(), "Thông báo"); 
                             }
                             else if (config.VALUE == "2")
                             {
-                                if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                                if (XtraMessageBox.Show(param2.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
                                 {
 
                                     btnSave.Enabled = btnSaveAndPrint.Enabled = false;
