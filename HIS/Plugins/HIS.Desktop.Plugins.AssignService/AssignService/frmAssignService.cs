@@ -525,6 +525,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             isCheckAssignServiceSimultaneityOption = true;
                             btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
                             MessageManager.Show(this, param, false);
+                            Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA1 key ban đầu", param));
                             return; // Dừng lại nếu option 1 bị chặn
                         }
                         else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
@@ -533,7 +534,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             {
                                 isCheckAssignServiceSimultaneityOption = true;
                                 btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
-                                return; // Dừng nếu người dùng chọn "Không"
+                                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA2 key ban đầu", param));
                             }
                         }
                     }
