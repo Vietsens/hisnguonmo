@@ -425,6 +425,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                         || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
                                         || !string.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))
                                     {
+                                        apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.OTHERAPIEGW;
                                         rsIns2 = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
                                     }
                                     else
@@ -1265,6 +1266,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                         || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
                                         || !string.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))
                                     {
+                                        apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.OTHERAPIEGW;
                                         rsIns2 = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
                                     }
                                     else

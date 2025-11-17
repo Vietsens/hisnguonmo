@@ -1210,8 +1210,14 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 
                     string abo = data.TDL_PATIENT_BLOOD_ABO_CODE ?? "";
                     string rh = data.TDL_PATIENT_BLOOD_RH_CODE ?? "";
-
-                    lblBloodType.Text = (abo + rh).Trim();
+                    if (!string.IsNullOrEmpty(abo)  && !string.IsNullOrEmpty(rh))
+                    {
+                        lblBloodType.Text = (abo + "; RH(" + rh + ")").Trim();
+                    }
+                    else
+                    {
+                        lblBloodType.Text = null;
+                    }
                     lblTreatmentMethod.Text = data.TREATMENT_METHOD;
                     var treatmentEndType = BackendDataWorker.Get<HIS_TREATMENT_END_TYPE>().FirstOrDefault(o => o.ID == data.TREATMENT_END_TYPE_ID);
                     lblTreatmentEndType.Text = treatmentEndType != null ? treatmentEndType.TREATMENT_END_TYPE_NAME : "";

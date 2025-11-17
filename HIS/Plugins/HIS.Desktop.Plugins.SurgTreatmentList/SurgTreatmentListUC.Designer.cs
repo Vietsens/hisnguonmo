@@ -45,7 +45,10 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SurgTreatmentListUC));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.toggleSwitch1 = new DevExpress.XtraEditors.ToggleSwitch();
+            this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.txtServiceReqCode = new DevExpress.XtraEditors.TextEdit();
             this.CboPtttPriorityName = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -147,8 +150,14 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.lcIs_Gather_Data = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcIs_Fee = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.imageListCheck = new System.Windows.Forms.ImageList();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtServiceReqCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CboPtttPriorityName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -224,10 +233,16 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.lcIs_Gather_Data)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcIs_Fee)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.toggleSwitch1);
+            this.layoutControl1.Controls.Add(this.btnSave);
             this.layoutControl1.Controls.Add(this.txtServiceReqCode);
             this.layoutControl1.Controls.Add(this.CboPtttPriorityName);
             this.layoutControl1.Controls.Add(this.CboExecuteRoom);
@@ -242,16 +257,38 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
+            this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(600, 402, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
             this.layoutControl1.Size = new System.Drawing.Size(1320, 600);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // toggleSwitch1
+            // 
+            this.toggleSwitch1.Location = new System.Drawing.Point(32, 548);
+            this.toggleSwitch1.Name = "toggleSwitch1";
+            this.toggleSwitch1.Properties.OffText = "";
+            this.toggleSwitch1.Properties.OnText = "";
+            this.toggleSwitch1.Size = new System.Drawing.Size(84, 24);
+            this.toggleSwitch1.StyleController = this.layoutControl1;
+            this.toggleSwitch1.TabIndex = 17;
+            this.toggleSwitch1.Toggled += new System.EventHandler(this.toggleSwitch1_Toggled);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(120, 548);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(128, 22);
+            this.btnSave.StyleController = this.layoutControl1;
+            this.btnSave.TabIndex = 16;
+            this.btnSave.Text = "Lưu (Ctrl S)";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
             // txtServiceReqCode
             // 
             this.txtServiceReqCode.Location = new System.Drawing.Point(97, 26);
             this.txtServiceReqCode.Name = "txtServiceReqCode";
-            this.txtServiceReqCode.Size = new System.Drawing.Size(135, 20);
+            this.txtServiceReqCode.Size = new System.Drawing.Size(151, 20);
             this.txtServiceReqCode.StyleController = this.layoutControl1;
             this.txtServiceReqCode.TabIndex = 15;
             this.txtServiceReqCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtServiceReqCode_PreviewKeyDown);
@@ -265,7 +302,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.CboPtttPriorityName.Properties.NullText = "";
             this.CboPtttPriorityName.Properties.View = this.gridView1;
-            this.CboPtttPriorityName.Size = new System.Drawing.Size(135, 20);
+            this.CboPtttPriorityName.Size = new System.Drawing.Size(151, 20);
             this.CboPtttPriorityName.StyleController = this.layoutControl1;
             this.CboPtttPriorityName.TabIndex = 12;
             this.CboPtttPriorityName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.CboPtttPriorityName_Closed);
@@ -288,7 +325,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.CboExecuteRoom.Properties.NullText = "";
             this.CboExecuteRoom.Properties.View = this.gridLookUpEdit1View;
-            this.CboExecuteRoom.Size = new System.Drawing.Size(135, 20);
+            this.CboExecuteRoom.Size = new System.Drawing.Size(151, 20);
             this.CboExecuteRoom.StyleController = this.layoutControl1;
             this.CboExecuteRoom.TabIndex = 11;
             this.CboExecuteRoom.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.CboExecuteRoom_ButtonClick);
@@ -302,9 +339,9 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // 
             // ucPaging
             // 
-            this.ucPaging.Location = new System.Drawing.Point(236, 576);
+            this.ucPaging.Location = new System.Drawing.Point(252, 576);
             this.ucPaging.Name = "ucPaging";
-            this.ucPaging.Size = new System.Drawing.Size(1082, 22);
+            this.ucPaging.Size = new System.Drawing.Size(1066, 22);
             this.ucPaging.TabIndex = 10;
             // 
             // navBarControl1
@@ -321,8 +358,8 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.navBarGroup1});
             this.navBarControl1.Location = new System.Drawing.Point(2, 146);
             this.navBarControl1.Name = "navBarControl1";
-            this.navBarControl1.OptionsNavPane.ExpandedWidth = 230;
-            this.navBarControl1.Size = new System.Drawing.Size(230, 426);
+            this.navBarControl1.OptionsNavPane.ExpandedWidth = 246;
+            this.navBarControl1.Size = new System.Drawing.Size(246, 398);
             this.navBarControl1.TabIndex = 9;
             this.navBarControl1.Text = "navBarControl1";
             // 
@@ -709,7 +746,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.navBarGroupControlContainer4.Appearance.Options.UseBackColor = true;
             this.navBarGroupControlContainer4.Controls.Add(this.layoutControl5);
             this.navBarGroupControlContainer4.Name = "navBarGroupControlContainer4";
-            this.navBarGroupControlContainer4.Size = new System.Drawing.Size(222, 76);
+            this.navBarGroupControlContainer4.Size = new System.Drawing.Size(238, 76);
             this.navBarGroupControlContainer4.TabIndex = 3;
             // 
             // layoutControl5
@@ -722,7 +759,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControl5.Name = "layoutControl5";
             this.layoutControl5.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(275, 324, 250, 350);
             this.layoutControl5.Root = this.layoutControlGroup5;
-            this.layoutControl5.Size = new System.Drawing.Size(222, 76);
+            this.layoutControl5.Size = new System.Drawing.Size(238, 76);
             this.layoutControl5.TabIndex = 0;
             this.layoutControl5.Text = "layoutControl5";
             // 
@@ -731,7 +768,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.chkCompleted.Location = new System.Drawing.Point(97, 50);
             this.chkCompleted.Name = "chkCompleted";
             this.chkCompleted.Properties.Caption = "Đã kết thúc";
-            this.chkCompleted.Size = new System.Drawing.Size(123, 19);
+            this.chkCompleted.Size = new System.Drawing.Size(139, 19);
             this.chkCompleted.StyleController = this.layoutControl5;
             this.chkCompleted.TabIndex = 6;
             this.chkCompleted.CheckedChanged += new System.EventHandler(this.chkCompleted_CheckedChanged);
@@ -742,7 +779,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.chkInProgress.Location = new System.Drawing.Point(97, 26);
             this.chkInProgress.Name = "chkInProgress";
             this.chkInProgress.Properties.Caption = "Đang xử lý";
-            this.chkInProgress.Size = new System.Drawing.Size(123, 19);
+            this.chkInProgress.Size = new System.Drawing.Size(139, 19);
             this.chkInProgress.StyleController = this.layoutControl5;
             this.chkInProgress.TabIndex = 5;
             this.chkInProgress.CheckedChanged += new System.EventHandler(this.chkInProgress_CheckedChanged);
@@ -753,7 +790,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.chkPending.Location = new System.Drawing.Point(97, 2);
             this.chkPending.Name = "chkPending";
             this.chkPending.Properties.Caption = "Chưa xử lý";
-            this.chkPending.Size = new System.Drawing.Size(123, 19);
+            this.chkPending.Size = new System.Drawing.Size(139, 19);
             this.chkPending.StyleController = this.layoutControl5;
             this.chkPending.TabIndex = 4;
             this.chkPending.CheckedChanged += new System.EventHandler(this.chkPending_CheckedChanged);
@@ -769,7 +806,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "Root";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup5.Size = new System.Drawing.Size(222, 76);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(238, 76);
             this.layoutControlGroup5.TextVisible = false;
             // 
             // layoutControlItem13
@@ -777,7 +814,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem13.Control = this.chkPending;
             this.layoutControlItem13.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(222, 24);
+            this.layoutControlItem13.Size = new System.Drawing.Size(238, 24);
             this.layoutControlItem13.Text = " ";
             this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem13.TextSize = new System.Drawing.Size(90, 20);
@@ -788,7 +825,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem18.Control = this.chkInProgress;
             this.layoutControlItem18.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(222, 24);
+            this.layoutControlItem18.Size = new System.Drawing.Size(238, 24);
             this.layoutControlItem18.Text = " ";
             this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem18.TextSize = new System.Drawing.Size(90, 20);
@@ -799,7 +836,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem19.Control = this.chkCompleted;
             this.layoutControlItem19.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(222, 28);
+            this.layoutControlItem19.Size = new System.Drawing.Size(238, 28);
             this.layoutControlItem19.Text = " ";
             this.layoutControlItem19.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem19.TextSize = new System.Drawing.Size(90, 20);
@@ -817,7 +854,6 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // 
             this.BarServiceType.Caption = "Loại";
             this.BarServiceType.ControlContainer = this.navBarGroupControlContainer3;
-            this.BarServiceType.Expanded = true;
             this.BarServiceType.GroupClientHeight = 180;
             this.BarServiceType.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
             this.BarServiceType.Name = "BarServiceType";
@@ -833,9 +869,9 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // 
             // BtnRefresh
             // 
-            this.BtnRefresh.Location = new System.Drawing.Point(112, 576);
+            this.BtnRefresh.Location = new System.Drawing.Point(120, 576);
             this.BtnRefresh.Name = "BtnRefresh";
-            this.BtnRefresh.Size = new System.Drawing.Size(120, 22);
+            this.BtnRefresh.Size = new System.Drawing.Size(128, 22);
             this.BtnRefresh.StyleController = this.layoutControl1;
             this.BtnRefresh.TabIndex = 8;
             this.BtnRefresh.Text = "Làm lại (Ctrl R)";
@@ -845,7 +881,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // 
             this.BtnSearch.Location = new System.Drawing.Point(2, 576);
             this.BtnSearch.Name = "BtnSearch";
-            this.BtnSearch.Size = new System.Drawing.Size(106, 22);
+            this.BtnSearch.Size = new System.Drawing.Size(114, 22);
             this.BtnSearch.StyleController = this.layoutControl1;
             this.BtnSearch.TabIndex = 7;
             this.BtnSearch.Text = "Tìm (Ctrl F)";
@@ -853,14 +889,14 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // 
             // GridControlSereServ
             // 
-            this.GridControlSereServ.Location = new System.Drawing.Point(236, 2);
+            this.GridControlSereServ.Location = new System.Drawing.Point(252, 2);
             this.GridControlSereServ.MainView = this.GridViewSereServ;
             this.GridControlSereServ.Name = "GridControlSereServ";
             this.GridControlSereServ.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemChkFee,
             this.repositoryItemChkGatherData,
             this.repositoryItemChkDisable});
-            this.GridControlSereServ.Size = new System.Drawing.Size(1082, 570);
+            this.GridControlSereServ.Size = new System.Drawing.Size(1066, 570);
             this.GridControlSereServ.TabIndex = 5;
             this.GridControlSereServ.ToolTipController = this.toolTipController;
             this.GridControlSereServ.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -906,6 +942,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GridViewSereServ.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.GridViewSereServ_CustomRowCellEdit);
             this.GridViewSereServ.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.GridViewSereServ_CellValueChanged);
             this.GridViewSereServ.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.GridViewSereServ_CustomUnboundColumnData);
+            this.GridViewSereServ.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GridViewSereServ_MouseDown);
             // 
             // GvSS_GcStt
             // 
@@ -928,6 +965,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcGatherData.ColumnEdit = this.repositoryItemChkGatherData;
             this.GvSS_GcGatherData.FieldName = "GatherData";
             this.GvSS_GcGatherData.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.GvSS_GcGatherData.ImageAlignment = System.Drawing.StringAlignment.Center;
             this.GvSS_GcGatherData.Name = "GvSS_GcGatherData";
             this.GvSS_GcGatherData.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.GvSS_GcGatherData.OptionsColumn.ShowCaption = false;
@@ -948,13 +986,14 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcFee.ColumnEdit = this.repositoryItemChkFee;
             this.GvSS_GcFee.FieldName = "Fee";
             this.GvSS_GcFee.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.GvSS_GcFee.ImageAlignment = System.Drawing.StringAlignment.Center;
             this.GvSS_GcFee.Name = "GvSS_GcFee";
             this.GvSS_GcFee.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.GvSS_GcFee.OptionsColumn.ShowCaption = false;
             this.GvSS_GcFee.OptionsFilter.AllowFilter = false;
             this.GvSS_GcFee.Visible = true;
             this.GvSS_GcFee.VisibleIndex = 1;
-            this.GvSS_GcFee.Width = 25;
+            this.GvSS_GcFee.Width = 41;
             // 
             // repositoryItemChkFee
             // 
@@ -1181,7 +1220,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.TxtKeyword.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.TxtKeyword.Properties.NullValuePromptShowForEmptyValue = true;
             this.TxtKeyword.Properties.ShowNullValuePromptWhenFocused = true;
-            this.TxtKeyword.Size = new System.Drawing.Size(230, 20);
+            this.TxtKeyword.Size = new System.Drawing.Size(246, 20);
             this.TxtKeyword.StyleController = this.layoutControl1;
             this.TxtKeyword.TabIndex = 4;
             this.TxtKeyword.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.TxtKeyword_PreviewKeyDown);
@@ -1194,7 +1233,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboIs_Gather_Data.Properties.NullText = "";
             this.cboIs_Gather_Data.Properties.View = this.gridView2;
-            this.cboIs_Gather_Data.Size = new System.Drawing.Size(135, 20);
+            this.cboIs_Gather_Data.Size = new System.Drawing.Size(151, 20);
             this.cboIs_Gather_Data.StyleController = this.layoutControl1;
             this.cboIs_Gather_Data.TabIndex = 13;
             this.cboIs_Gather_Data.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboIs_Gather_Data_Closed);
@@ -1218,7 +1257,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboIs_Fee.Properties.NullText = "";
             this.cboIs_Fee.Properties.View = this.gridView3;
-            this.cboIs_Fee.Size = new System.Drawing.Size(135, 20);
+            this.cboIs_Fee.Size = new System.Drawing.Size(151, 20);
             this.cboIs_Fee.StyleController = this.layoutControl1;
             this.cboIs_Fee.TabIndex = 14;
             this.cboIs_Fee.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboIs_Fee_Closed);
@@ -1249,9 +1288,11 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.LciPtttPriorityName,
             this.lcIs_Gather_Data,
             this.lcIs_Fee,
-            this.layoutControlItem3});
+            this.layoutControlItem3,
+            this.layoutControlItem20,
+            this.layoutControlItem21});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlGroup1.Name = "layoutControlGroup1";
+            this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlGroup1.Size = new System.Drawing.Size(1320, 600);
             this.layoutControlGroup1.TextVisible = false;
@@ -1261,16 +1302,16 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem1.Control = this.TxtKeyword;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem1.Size = new System.Drawing.Size(250, 24);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.GridControlSereServ;
-            this.layoutControlItem2.Location = new System.Drawing.Point(234, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(250, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(1086, 574);
+            this.layoutControlItem2.Size = new System.Drawing.Size(1070, 574);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -1279,16 +1320,16 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem4.Control = this.BtnSearch;
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 574);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem4.Size = new System.Drawing.Size(118, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.BtnRefresh;
-            this.layoutControlItem5.Location = new System.Drawing.Point(110, 574);
+            this.layoutControlItem5.Location = new System.Drawing.Point(118, 574);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(124, 26);
+            this.layoutControlItem5.Size = new System.Drawing.Size(132, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -1297,16 +1338,16 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem6.Control = this.navBarControl1;
             this.layoutControlItem6.Location = new System.Drawing.Point(0, 144);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(234, 430);
+            this.layoutControlItem6.Size = new System.Drawing.Size(250, 402);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.ucPaging;
-            this.layoutControlItem14.Location = new System.Drawing.Point(234, 574);
+            this.layoutControlItem14.Location = new System.Drawing.Point(250, 574);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(1086, 26);
+            this.layoutControlItem14.Size = new System.Drawing.Size(1070, 26);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
@@ -1317,7 +1358,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.LciExecuteRoom.Control = this.CboExecuteRoom;
             this.LciExecuteRoom.Location = new System.Drawing.Point(0, 48);
             this.LciExecuteRoom.Name = "LciExecuteRoom";
-            this.LciExecuteRoom.Size = new System.Drawing.Size(234, 24);
+            this.LciExecuteRoom.Size = new System.Drawing.Size(250, 24);
             this.LciExecuteRoom.Text = "Phòng thực hiện:";
             this.LciExecuteRoom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.LciExecuteRoom.TextSize = new System.Drawing.Size(90, 20);
@@ -1330,7 +1371,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.LciPtttPriorityName.Control = this.CboPtttPriorityName;
             this.LciPtttPriorityName.Location = new System.Drawing.Point(0, 72);
             this.LciPtttPriorityName.Name = "LciPtttPriorityName";
-            this.LciPtttPriorityName.Size = new System.Drawing.Size(234, 24);
+            this.LciPtttPriorityName.Size = new System.Drawing.Size(250, 24);
             this.LciPtttPriorityName.Text = "Hình thức:";
             this.LciPtttPriorityName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.LciPtttPriorityName.TextSize = new System.Drawing.Size(90, 20);
@@ -1343,7 +1384,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.lcIs_Gather_Data.Control = this.cboIs_Gather_Data;
             this.lcIs_Gather_Data.Location = new System.Drawing.Point(0, 96);
             this.lcIs_Gather_Data.Name = "lcIs_Gather_Data";
-            this.lcIs_Gather_Data.Size = new System.Drawing.Size(234, 24);
+            this.lcIs_Gather_Data.Size = new System.Drawing.Size(250, 24);
             this.lcIs_Gather_Data.Text = "Lấy dữ liệu:";
             this.lcIs_Gather_Data.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcIs_Gather_Data.TextSize = new System.Drawing.Size(90, 20);
@@ -1356,7 +1397,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.lcIs_Fee.Control = this.cboIs_Fee;
             this.lcIs_Fee.Location = new System.Drawing.Point(0, 120);
             this.lcIs_Fee.Name = "lcIs_Fee";
-            this.lcIs_Fee.Size = new System.Drawing.Size(234, 24);
+            this.lcIs_Fee.Size = new System.Drawing.Size(250, 24);
             this.lcIs_Fee.Text = "Hưởng chi phí:";
             this.lcIs_Fee.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcIs_Fee.TextSize = new System.Drawing.Size(90, 20);
@@ -1369,11 +1410,57 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem3.Control = this.txtServiceReqCode;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(234, 24);
+            this.layoutControlItem3.Size = new System.Drawing.Size(250, 24);
             this.layoutControlItem3.Text = "Mã y lệnh:";
             this.layoutControlItem3.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem3.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem3.TextToControlDistance = 5;
+            // 
+            // layoutControlItem20
+            // 
+            this.layoutControlItem20.Control = this.btnSave;
+            this.layoutControlItem20.Location = new System.Drawing.Point(118, 546);
+            this.layoutControlItem20.Name = "layoutControlItem20";
+            this.layoutControlItem20.Size = new System.Drawing.Size(132, 28);
+            this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem20.TextVisible = false;
+            // 
+            // layoutControlItem21
+            // 
+            this.layoutControlItem21.Control = this.toggleSwitch1;
+            this.layoutControlItem21.Location = new System.Drawing.Point(0, 546);
+            this.layoutControlItem21.Name = "layoutControlItem21";
+            this.layoutControlItem21.Padding = new DevExpress.XtraLayout.Utils.Padding(32, 2, 2, 2);
+            this.layoutControlItem21.Size = new System.Drawing.Size(118, 28);
+            this.layoutControlItem21.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem21.TextVisible = false;
+            // 
+            // emptySpaceItem1
+            // 
+            this.emptySpaceItem1.AllowHotTrack = false;
+            this.emptySpaceItem1.Location = new System.Drawing.Point(250, 0);
+            this.emptySpaceItem1.Name = "emptySpaceItem1";
+            this.emptySpaceItem1.Size = new System.Drawing.Size(10, 600);
+            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // emptySpaceItem2
+            // 
+            this.emptySpaceItem2.AllowHotTrack = false;
+            this.emptySpaceItem2.Location = new System.Drawing.Point(250, 0);
+            this.emptySpaceItem2.Name = "emptySpaceItem2";
+            this.emptySpaceItem2.Size = new System.Drawing.Size(10, 600);
+            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // imageListCheck
+            // 
+            this.imageListCheck.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListCheck.ImageStream")));
+            this.imageListCheck.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListCheck.Images.SetKeyName(0, "check-box-empty.png");
+            this.imageListCheck.Images.SetKeyName(1, "checked-box.png");
+            this.imageListCheck.Images.SetKeyName(2, "selected-box.png");
+            this.imageListCheck.Images.SetKeyName(3, "check.png");
+            this.imageListCheck.Images.SetKeyName(4, "uncheck.png");
+            this.imageListCheck.Images.SetKeyName(5, "Select.png");
             // 
             // SurgTreatmentListUC
             // 
@@ -1385,6 +1472,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.Load += new System.EventHandler(this.SurgTreatmentListUC_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtServiceReqCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CboPtttPriorityName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
@@ -1460,6 +1548,10 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.lcIs_Gather_Data)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcIs_Fee)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1568,5 +1660,12 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup5;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
+        private DevExpress.XtraEditors.ToggleSwitch toggleSwitch1;
+        private DevExpress.XtraEditors.SimpleButton btnSave;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
+        private System.Windows.Forms.ImageList imageListCheck;
     }
 }

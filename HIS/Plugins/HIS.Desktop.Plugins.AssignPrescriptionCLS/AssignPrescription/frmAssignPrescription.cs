@@ -3878,13 +3878,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
-                if (!string.IsNullOrEmpty(icdCode))
+                //if (!string.IsNullOrEmpty(icdCode))
                 {
-                    txtIcdSubCode.Text = icdCode;
+                    txtIcdSubCode.Text = icdCode??"";
                 }
-                if (!string.IsNullOrEmpty(icdName))
+                //if (!string.IsNullOrEmpty(icdName))
                 {
-                    txtIcdText.Text = icdName;
+                    txtIcdText.Text = icdName??"";
                 }
                 this.LoadIcdSubToList();
             }

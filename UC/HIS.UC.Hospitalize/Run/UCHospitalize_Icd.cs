@@ -940,6 +940,57 @@ namespace HIS.UC.Hospitalize.Run
             return valid;
         }
 
+        //private bool CheckTraditionalIcdWrongCode(ref string strIcdNames, ref string strWrongIcdCodes)
+        //{
+        //    bool valid = true;
+        //    try
+        //    {
+        //        if (!String.IsNullOrEmpty(this.txtTraditionIcdSubCode.Text))
+        //        {
+        //            strWrongIcdCodes = "";
+        //            List<string> arrWrongCodes = new List<string>();
+        //            string[] arrIcdExtraCodes = this.txtTraditionIcdSubCode.Text.Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+        //            if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
+        //            {
+        //                foreach (var itemCode in arrIcdExtraCodes)
+        //                {
+        //                    var icdByCode = this.currentTraditionalIcds.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
+        //                    if (icdByCode != null && icdByCode.ID > 0)
+        //                    {
+        //                        strIcdNames += (IcdUtil.seperator + icdByCode.ICD_NAME);
+        //                    }
+        //                    else
+        //                    {
+        //                        arrWrongCodes.Add(itemCode);
+        //                        strWrongIcdCodes += (IcdUtil.seperator + itemCode);
+        //                    }
+        //                }
+        //                strIcdNames += IcdUtil.seperator;
+        //                if (!String.IsNullOrEmpty(strWrongIcdCodes))
+        //                {
+        //                    MessageManager.Show(String.Format("Không tìm thấy icd tương ứng với các mã sau: {0}", strWrongIcdCodes));
+        //                    int startPositionWarm = 0;
+        //                    int lenghtPositionWarm = this.txtTraditionIcdSubCode.Text.Length - 1;
+        //                    if (arrWrongCodes != null && arrWrongCodes.Count > 0)
+        //                    {
+        //                        startPositionWarm = this.txtTraditionIcdSubCode.Text.IndexOf(arrWrongCodes[0]);
+        //                        lenghtPositionWarm = arrWrongCodes[0].Length;
+        //                    }
+        //                    this.txtTraditionIcdSubCode.Focus();
+        //                    this.txtTraditionIcdSubCode.Select(startPositionWarm, lenghtPositionWarm);
+        //                    valid = false;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        valid = false;
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //    return valid;
+        //}
+
         private bool CheckTraditionalIcdWrongCode(ref string strIcdNames, ref string strWrongIcdCodes)
         {
             bool valid = true;
@@ -949,38 +1000,54 @@ namespace HIS.UC.Hospitalize.Run
                 {
                     strWrongIcdCodes = "";
                     List<string> arrWrongCodes = new List<string>();
-                    string[] arrIcdExtraCodes = this.txtTraditionIcdSubCode.Text.Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
-                    if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
+                    List<string> lstValidNames = new List<string>(); // ← Lưu tên hợp lệ
+
+                    var codes = this.txtTraditionIcdSubCode.Text
+                        .Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(c => c.Trim())
+                        .Where(c => !string.IsNullOrEmpty(c))
+                        .Distinct()
+                        .ToList();
+
+                    foreach (var code in codes)
                     {
-                        foreach (var itemCode in arrIcdExtraCodes)
+                        var icd = this.currentTraditionalIcds
+                            .FirstOrDefault(o => o.ICD_CODE.Equals(code, StringComparison.OrdinalIgnoreCase));
+
+                        if (icd != null && icd.ID > 0)
                         {
-                            var icdByCode = this.currentTraditionalIcds.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
-                            if (icdByCode != null && icdByCode.ID > 0)
-                            {
-                                strIcdNames += (IcdUtil.seperator + icdByCode.ICD_NAME);
-                            }
-                            else
-                            {
-                                arrWrongCodes.Add(itemCode);
-                                strWrongIcdCodes += (IcdUtil.seperator + itemCode);
-                            }
+                            lstValidNames.Add(icd.ICD_NAME); // ← Thu thập tên
                         }
-                        strIcdNames += IcdUtil.seperator;
-                        if (!String.IsNullOrEmpty(strWrongIcdCodes))
+                        else
                         {
-                            MessageManager.Show(String.Format("Không tìm thấy icd tương ứng với các mã sau: {0}", strWrongIcdCodes));
-                            int startPositionWarm = 0;
-                            int lenghtPositionWarm = this.txtTraditionIcdSubCode.Text.Length - 1;
-                            if (arrWrongCodes != null && arrWrongCodes.Count > 0)
-                            {
-                                startPositionWarm = this.txtTraditionIcdSubCode.Text.IndexOf(arrWrongCodes[0]);
-                                lenghtPositionWarm = arrWrongCodes[0].Length;
-                            }
-                            this.txtTraditionIcdSubCode.Focus();
-                            this.txtTraditionIcdSubCode.Select(startPositionWarm, lenghtPositionWarm);
-                            valid = false;
+                            arrWrongCodes.Add(code);
+                            strWrongIcdCodes += IcdUtil.seperator + code;
                         }
                     }
+
+                    // GHI ĐÈ strIcdNames
+                    strIcdNames = string.Join(IcdUtil.seperator, lstValidNames);
+                    if (lstValidNames.Count > 0)
+                        strIcdNames += IcdUtil.seperator;
+
+                    // ĐỒNG BỘ CONTROL TÊN (quan trọng!)
+                    if (this.txtTraditionIcdText != null) // ← Giả sử có control tên
+                    {
+                        this.txtTraditionIcdText.Text = string.Join(";", lstValidNames);
+                    }
+
+                    if (arrWrongCodes.Count > 0)
+                    {
+                        MessageManager.Show($"Không tìm thấy ICD: {string.Join(", ", arrWrongCodes)}");
+                        this.txtTraditionIcdSubCode.Focus();
+                        valid = false;
+                    }
+                }
+                else
+                {
+                    strIcdNames = "";
+                    if (this.txtTraditionIcdText != null)
+                        this.txtTraditionIcdText.Text = "";
                 }
             }
             catch (Exception ex)
@@ -991,7 +1058,7 @@ namespace HIS.UC.Hospitalize.Run
             return valid;
         }
 
-        private bool CheckIcdWrongCode(ref string strIcdNames, ref string strWrongIcdCodes)
+        private bool CheckIcdWrongCode(ref string strIcdNames, ref string strWrongIcdCodes) 
         {
             bool valid = true;
             try

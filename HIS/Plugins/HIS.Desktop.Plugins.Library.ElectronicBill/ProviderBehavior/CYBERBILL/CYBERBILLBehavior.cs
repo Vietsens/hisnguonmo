@@ -59,11 +59,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
             this.serviceConfig = serviceConfig;
             this.accountConfig = accountConfig;
         }
+        string apiConvertInvoice = ""; 
         public ElectronicBillResult Run(ElectronicBillType.ENUM electronicBillType, TemplateEnum.TYPE _templateType)
         {
             ElectronicBillResult result = new ElectronicBillResult();
             try
             {
+                bool hasConfigV2 = false;
+                string apiV2 = null; 
                 if (this.Check(electronicBillType, ref result))
                 {
                     this.TempType = _templateType;
@@ -74,6 +77,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay dia chi Webservice URL");
                         ElectronicBillResultUtil.Set(ref result, false, "Không tìm thấy địa chỉ Webservice URL");
                         return result;
+                    }
+                    if (configArr.Count() == 4)
+                    {
+                        apiV2 = configArr[3]; 
                     }
                     string[] accountConfigArr = accountConfig.Split('|');
                     adoLogin = new LoginDataCyberbill();
@@ -115,7 +122,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                             HuyHoaDon(ref result);
                             break;
                         case ElectronicBillType.ENUM.CONVERT_INVOICE:
-                            CyberbillChuyenDoiHoaDon(ref result);
+                            CyberbillChuyenDoiHoaDon(ref result, apiV2);
                             break;
                         case ElectronicBillType.ENUM.CREATE_INVOICE_DATA:
                             break;
@@ -172,6 +179,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
             hd.dnmua_email = inv.BuyerEmail;
             hd.dnmua_cccd = !String.IsNullOrWhiteSpace(inv.BuyerIdentityNumber) ? inv.BuyerIdentityNumber : inv.BuyerCCCD;
             hd.dnmua_mqhns = ElectronicBillDataInput.Transaction.BUYER_TYPE == 2 ? inv.BuyerTaxCode : "";
+            hd.dnmua_mqhns = (!string.IsNullOrWhiteSpace(ElectronicBillDataInput.Transaction.BUYER_SOCIAL_RELATIONS_CODE))? ElectronicBillDataInput.Transaction.BUYER_SOCIAL_RELATIONS_CODE: "";
             hd.thanhtoan_phuongthuc = 3;
             hd.thanhtoan_phuongthuc_ten = "Tiền mặt/Chuyển khoản";
             hd.thanhtoan_taikhoan = inv.BuyerAccountNumber;
@@ -579,7 +587,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
 
         }
 
-        private void CyberbillChuyenDoiHoaDon(ref ElectronicBillResult result)
+        private void CyberbillChuyenDoiHoaDon(ref ElectronicBillResult result, string apiV2)
         {
 
             try
@@ -587,7 +595,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                 if (ElectronicBillDataInput == null || string.IsNullOrEmpty(ElectronicBillDataInput.InvoiceCode))
                     return;
                 string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(ICoEBill());
-                OCoEBill = Base.ApiConsumerV2.CreateRequest<OutputConvertElectronicBill>(System.Net.WebRequestMethods.Http.Post, serviceUrl, Base.RequestUriStore.CyberbillChuyenDoiHoaDon, login.result.access_token, sendJsonData);
+                string apiCurrent = Base.RequestUriStore.CyberbillChuyenDoiHoaDon; 
+                if (!string.IsNullOrWhiteSpace(apiV2))
+                {
+                    apiCurrent = apiV2.Trim();
+                }
+                OCoEBill = Base.ApiConsumerV2.CreateRequest<OutputConvertElectronicBill>(System.Net.WebRequestMethods.Http.Post, serviceUrl, apiCurrent, login.result.access_token, sendJsonData);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"CyberbillChuyenDoiHoaDon", sendJsonData));
 
                 result.InvoiceSys = ProviderType.CYBERBILL;

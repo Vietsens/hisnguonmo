@@ -129,8 +129,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 this.positionHandleControl = -1;
                 if (!btnSaveAndSign.Enabled)
                     return;
-                if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show("Thanh toán QR chưa thể tự động tạo hóa đơn điện tử bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
-                    return;    
+                //if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show("Thanh toán QR chưa thể tự động tạo hóa đơn điện tử bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                //    return;
                 SetEnableButtonSave(false);
                 if (HisConfigCFG.AutoCreateDepositTransaction && decimal.Parse(lblReceiveAmount.Text) > 0 && cboDepositBook.Enabled && cboDepositBook.EditValue == null)
                 {
@@ -163,6 +163,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 WaitingManager.Hide();
                 if (success == true)
                 {
+                    isSaveAndSignSuccess = true;
                     if (chkPrintBKBHNT.Checked)
                     {
                         Task ts = Task.Factory.StartNew(() =>
@@ -189,14 +190,22 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                             HIS_TRANSACTION tranagain = new HIS_TRANSACTION();
                             Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tranagain, resultTranBill);
-
-                            ElectronicBillResult electronicBillResultagain = TaoHoaDonDienTuBenThu3CungCap(tranagain);
+                            ElectronicBillResult electronicBillResultagain = null;
+                            if (cboPayForm.EditValue != null&& Int64.Parse(cboPayForm.EditValue.ToString()) != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                            {
+                                electronicBillResultagain = TaoHoaDonDienTuBenThu3CungCap(tranagain);
+                            }
                             if (electronicBillResultagain == null || !electronicBillResultagain.Success)
                             {
-                                param.Messages.Add("Tạo hóa đơn điện tử thất bại");
-                                if (electronicBillResultagain.Messages != null && electronicBillResultagain.Messages.Count > 0)
+                                if (cboPayForm.EditValue != null
+                                    && Int64.Parse(cboPayForm.EditValue.ToString()) != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
                                 {
-                                    param.Messages.AddRange(electronicBillResultagain.Messages.Distinct().ToList());
+                                    param.Messages.Add("Tạo hóa đơn điện tử thất bại");
+
+                                    if (electronicBillResultagain != null && electronicBillResultagain.Messages != null && electronicBillResultagain.Messages.Count > 0)
+                                    {
+                                        param.Messages.AddRange(electronicBillResultagain.Messages.Distinct().ToList());
+                                    }
                                 }
                             }
                             else
@@ -228,7 +237,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         }
                     }
 
-                    if (!isnotPrintMPS000111)
+                    if (!isnotPrintMPS000111 )
                     {
                         //tự động in hóa đơn điện tử
                         if (chkPrintHddt.Checked)
@@ -261,8 +270,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         }
                     }
 
-                    if (showResult)
-                        MessageManager.Show(this, param, success);
+                   
 
 
                     if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
@@ -282,6 +290,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                 btnQr_Click(null, null);
                         }
                     }
+
+                    if (showResult)
+                        MessageManager.Show(this, param, success);
                     if (success == true && chkAutoClose.CheckState == CheckState.Checked)
                     {
                         if (!chkPrintBKBHNT.Checked)
@@ -996,7 +1007,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     // Cá nhân
                     data.Transaction.BUYER_TYPE = 1;
                     data.Transaction.BUYER_NAME = txtBuyerName.Text.Trim();
-                    data.Transaction.BUYER_IDENTITY_NUMBER = txtBuyerIdentityNumber.Text.Trim();                    
+                    data.Transaction.BUYER_IDENTITY_NUMBER = txtBuyerIdentityNumber.Text.Trim();
                     if (cboBuyerIdentity.EditValue == "CMND")
                     {
                         data.Transaction.BUYER_IDENTITY_TYPE = 1;
@@ -1029,6 +1040,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     data.Transaction.BUYER_PHONE = txtSDT.Text.Trim();
                     data.Transaction.BUYER_ADDRESS = txtBuyerAddress.Text.Trim();
                     data.Transaction.BUYER_EMAIL = txtBuyerEmail.Text.Trim();
+                    data.Transaction.BUYER_SOCIAL_RELATIONS_CODE= txtMaQH.Text.Trim();
                     data.Transaction.BUYER_ACCOUNT_NUMBER = null;
                 }
                 else if (radioBuyerCompany.Checked)
@@ -1051,6 +1063,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     data.Transaction.BUYER_PHONE = txtSDT.Text.Trim();
                     data.Transaction.BUYER_ADDRESS = txtBuyerAddress.Text.Trim();
                     data.Transaction.BUYER_EMAIL = txtBuyerEmail.Text.Trim();
+                    data.Transaction.BUYER_SOCIAL_RELATIONS_CODE = txtMaQH.Text.Trim();
                     data.Transaction.BUYER_NAME = null;
 
                     data.Transaction.BUYER_IDENTITY_NUMBER = null;
@@ -1064,6 +1077,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     data.Transaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountNumber.Text.Trim();
                     data.Transaction.BUYER_ADDRESS = txtBuyerAddress.Text.Trim();
                     data.Transaction.BUYER_EMAIL = txtBuyerEmail.Text.Trim();
+                    data.Transaction.BUYER_SOCIAL_RELATIONS_CODE = txtMaQH.Text.Trim();
                     data.Transaction.BUYER_PHONE = null;
                 }
 
@@ -1525,22 +1539,30 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, resultTranBill);
                                 //tran.HIS_BILL_FUND = data.Transaction.HIS_BILL_FUND;
                                 //Tao hoa don dien thu ben thu3 
-                                ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(tran);
+                                ElectronicBillResult electronicBillResult = null;
+
+                                if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                                {
+                                     electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(tran);
+                                }
                                 if (electronicBillResult == null || !electronicBillResult.Success)
                                 {
-                                    CreatAgain = true;
-
-                                    ErrorElectronicBill.Add("Tạo hóa đơn điện tử thất bại");
-                                    if (electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
+                                    if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
                                     {
-                                        ErrorElectronicBill.AddRange(electronicBillResult.Messages.Distinct().ToList());
+                                        CreatAgain = true;
+
+                                        ErrorElectronicBill.Add("Tạo hóa đơn điện tử thất bại");
+                                        if (electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
+                                        {
+                                            ErrorElectronicBill.AddRange(electronicBillResult.Messages.Distinct().ToList());
+                                        }
+
+                                        ErrorElectronicBill.Add("Bạn có muốn phát hành lại hóa đơn điện tử không?");
+
+                                        param.Messages.AddRange(ErrorElectronicBill);
+
+                                        //MessageManager.Show(this.ParentForm, param, success);
                                     }
-
-                                    ErrorElectronicBill.Add("Bạn có muốn phát hành lại hóa đơn điện tử không?");
-
-                                    param.Messages.AddRange(ErrorElectronicBill);
-
-                                    //MessageManager.Show(this.ParentForm, param, success);
                                 }
                                 else
                                 {

@@ -1049,10 +1049,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     sdo.TreatmentId = treatmentId;
                     sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
                     sdo.SereTimes = intructionTimeSelecteds;
+                    Inventec.Common.Logging.LogSystem.Debug("api/HisServiceReq/CheckSereTimes___" + 
+                        Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
 
                     var checkSereTimes = new BackendAdapter(param).Post<bool>(
                         "api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
 
+                    Inventec.Common.Logging.LogSystem.Debug(checkSereTimes+ "api/HisServiceReq/CheckSereTimes___" +
+                        Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
                     if (!checkSereTimes)
                     {
                         if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
@@ -1090,9 +1094,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         }
                     };
 
+                    Inventec.Common.Logging.LogSystem.Debug("api/HisServiceReq/CheckAssignSimultaneity___" +
+                        Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo2), sdo2));
                     var checkAssign = new BackendAdapter(param).Post<bool>(
                         "api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo2, ProcessLostToken, param);
 
+                    Inventec.Common.Logging.LogSystem.Debug(checkAssign + "api/HisServiceReq/CheckSereTimes___" +
+                        Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
                     if (!checkAssign)
                     {
                         if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1")
@@ -1104,7 +1112,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         else if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
                         {
                             string msg = param.GetMessage();
-                            if (XtraMessageBox.Show(msg + ". Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                            if (XtraMessageBox.Show(msg + "Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                             {
                                 isCheckAssignServiceSimultaneityOption = true;
                                 btnSave.Enabled = btnSaveAndPrint.Enabled = false;
@@ -9046,7 +9054,6 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
             return result;
         }
-
         private bool CheckIcdWrongCode(ref string strIcdNames, ref string strWrongIcdCodes)
         {
             bool valid = true;
@@ -9063,7 +9070,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     {
                         foreach (var itemCode in arrIcdExtraCodes)
                         {
-                            var icdByCode = this.currentIcds.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
+                            var icdByCode = this.currentIcds.Where(o => o.IS_TRADITIONAL != 1).ToList().FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
                             if (icdByCode != null && icdByCode.ID > 0)
                             {
                                 string messErr = null;
@@ -9087,11 +9094,26 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         if (lstIcdCodes != null && lstIcdCodes.Count > 0)
                         {
                             this.txtIcdSubCode.Text = String.Join(";", lstIcdCodes);
-                            this.txtIcdText.Text = String.Join(";", lstIcdSubName);
+                            var oldNames = txtIcdText.Text?
+                            .Split(';')
+                            .Select(x => x.Trim())
+                            .ToList() ?? new List<string>();
+                            List<string> finalNames = new List<string>();
+                            foreach (var item in lstIcdSubName)
+                            {
+                                var name = oldNames.LastOrDefault(o => o.StartsWith(item, StringComparison.OrdinalIgnoreCase));
+                                if (!string.IsNullOrEmpty(name))
+                                {
+                                    finalNames.Add(name);
+                                }
+                                else
+                                    finalNames.Add(item);
+                            }
+                            txtIcdText.Text = String.Join(";", finalNames);
+                            //this.txtIcdText.Text = String.Join(";", lstIcdSubName);
                         }
                         else
                         {
-
                             this.txtIcdSubCode.Text = null;
                             this.txtIcdText.Text = null;
                         }
@@ -9101,6 +9123,17 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                             this.SetCheckedIcdsToControl(this.txtIcdSubCode.Text, this.txtIcdText.Text);
                             XtraMessageBox.Show(String.Format(Resources.ResourceMessage.KhongTimThayIcdTuongUngVoiCacMaSau, string.Join(",", arrWrongCodes)), "Thông báo", MessageBoxButtons.OK);
                             ShowPopupIcdChoose();
+                            //MessageManager.Show(String.Format(Resources.ResourceMessage.KhongTimThayIcdTuongUngVoiCacMaSau, strWrongIcdCodes));
+                            //int startPositionWarm = 0;
+                            //int lenghtPositionWarm = this.txtIcdSubCode.Text.Length - 1;
+                            //if (arrWrongCodes != null && arrWrongCodes.Count > 0)
+                            //{
+                            //    startPositionWarm = this.txtIcdSubCode.Text.IndexOf(arrWrongCodes[0]);
+                            //    lenghtPositionWarm = arrWrongCodes[0].Length;
+                            //}
+                            //this.txtIcdSubCode.Focus();
+                            //this.txtIcdSubCode.Select(startPositionWarm, lenghtPositionWarm);
+                            //valid = false;
                         }
                         isNotProcessWhileChangedTextSubIcd = false;
                     }
@@ -9118,7 +9151,77 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
             return valid;
         }
+        //private bool CheckIcdWrongCode(ref string strIcdNames, ref string strWrongIcdCodes)
+        //{
+        //    bool valid = true;
+        //    try
+        //    {
+        //        if (!String.IsNullOrEmpty(this.txtIcdSubCode.Text))
+        //        {
+        //            strWrongIcdCodes = "";
+        //            List<string> arrWrongCodes = new List<string>();
+        //            List<string> lstIcdCodes = new List<string>();
+        //            List<string> lstIcdSubName = new List<string>();
+        //            List<string> arrIcdExtraCodes = this.txtIcdSubCode.Text.Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries).Where(o => !string.IsNullOrEmpty(o)).Select(o => o.Trim()).Distinct().Where(o => !string.IsNullOrEmpty(o)).ToList();
+        //            if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
+        //            {
+        //                foreach (var itemCode in arrIcdExtraCodes)
+        //                {
+        //                    var icdByCode = this.currentIcds.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
+        //                    if (icdByCode != null && icdByCode.ID > 0)
+        //                    {
+        //                        string messErr = null;
+        //                        if (!checkIcdManager.ProcessCheckIcd(null, icdByCode.ICD_CODE, ref messErr, false))
+        //                        {
+        //                            XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
+        //                            continue;
+        //                        }
+        //                        strIcdNames += (IcdUtil.seperator + icdByCode.ICD_NAME);
+        //                        lstIcdCodes.Add(icdByCode.ICD_CODE);
+        //                        lstIcdSubName.Add(icdByCode.ICD_NAME);
+        //                    }
+        //                    else
+        //                    {
+        //                        arrWrongCodes.Add(itemCode);
+        //                        strWrongIcdCodes += (IcdUtil.seperator + itemCode);
+        //                    }
+        //                }
+        //                strIcdNames += IcdUtil.seperator;
+        //                isNotProcessWhileChangedTextSubIcd = true;
+        //                if (lstIcdCodes != null && lstIcdCodes.Count > 0)
+        //                {
+        //                    this.txtIcdSubCode.Text = String.Join(";", lstIcdCodes);
+        //                    this.txtIcdText.Text = String.Join(";", lstIcdSubName);
+        //                }
+        //                else
+        //                {
 
+        //                    this.txtIcdSubCode.Text = null;
+        //                    this.txtIcdText.Text = null;
+        //                }
+        //                if (!String.IsNullOrEmpty(strWrongIcdCodes))
+        //                {
+        //                    valid = false;
+        //                    this.SetCheckedIcdsToControl(this.txtIcdSubCode.Text, this.txtIcdText.Text);
+        //                    XtraMessageBox.Show(String.Format(Resources.ResourceMessage.KhongTimThayIcdTuongUngVoiCacMaSau, string.Join(",", arrWrongCodes)), "Thông báo", MessageBoxButtons.OK);
+        //                    ShowPopupIcdChoose();
+        //                }
+        //                isNotProcessWhileChangedTextSubIcd = false;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            txtIcdText.Text = this.txtIcdSubCode.Text = null;
+        //            txtIcdText.Focus();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        valid = false;
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //    return valid;
+        //}
         private bool ProccessorByIcdCode(string currentValue)
         {
             bool valid = true;
@@ -9268,59 +9371,115 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
         }
 
+        //private void SetCheckedSubIcdsToControl()
+        //{
+        //    try
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Debug("SetCheckedSubIcdsToControl.1");
+        //        this.isNotProcessWhileChangedTextSubIcd = true;
+        //        string strIcdSubText = "";
+        //        if (txtIcdText.Text.LastIndexOf(";") > -1)
+        //        {
+        //            strIcdSubText = txtIcdText.Text.Substring(txtIcdText.Text.LastIndexOf(";")).Replace(";", "");
+        //        }
+        //        else
+        //            strIcdSubText = txtIcdText.Text;
+
+        //        string icdNames = null;// IcdUtil.seperator;
+        //        string icdCodes = null;// IcdUtil.seperator;
+        //        string icdName__Olds = txtIcdText.Text;
+        //        var checkList = this.icdSubcodeAdoChecks.Where(o => o.IsChecked == true).ToList();
+        //        int count = 0;
+        //        foreach (var item in checkList)
+        //        {
+        //            count++;
+        //            string messErr = null;
+        //            if (!checkIcdManager.ProcessCheckIcd(null, item.ICD_CODE, ref messErr, false))
+        //            {
+        //                XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
+        //                item.IsChecked = false;
+        //                continue;
+        //            }
+        //            if (count == checkList.Count)
+        //            {
+        //                icdCodes += item.ICD_CODE;
+        //                icdNames += item.ICD_NAME;
+        //            }
+        //            else
+        //            {
+        //                icdCodes += item.ICD_CODE + IcdUtil.seperator;
+        //                icdNames += item.ICD_NAME + IcdUtil.seperator;
+        //            }
+        //        }
+
+        //        string newtxtIcdText = ProcessIcdNameChanged(icdName__Olds, icdNames);
+
+        //        txtIcdText.Text = newtxtIcdText;
+        //        txtIcdSubCode.Text = icdCodes;
+        //        Inventec.Common.Logging.LogSystem.Debug("SetCheckedSubIcdsToControl.2");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
         private void SetCheckedSubIcdsToControl()
         {
             try
             {
-                Inventec.Common.Logging.LogSystem.Debug("SetCheckedSubIcdsToControl.1");
-                this.isNotProcessWhileChangedTextSubIcd = true;
-                string strIcdSubText = "";
-                if (txtIcdText.Text.LastIndexOf(";") > -1)
+                isNotProcessWhileChangedTextSubIcd = true;
+                // Tách danh sách hiện tại
+                List<string> oldCodes = txtIcdSubCode.Text?
+                    .Split(new[] { IcdUtil.seperator }, StringSplitOptions.RemoveEmptyEntries).ToList()
+                    ?? new List<string>();
+                List<string> oldNames = txtIcdText.Text?
+                    .Split(new[] { IcdUtil.seperator }, StringSplitOptions.RemoveEmptyEntries).ToList()
+                    ?? new List<string>();
+                // Duyệt qua danh sách hiển thị
+                foreach (var item in icdSubcodeAdoChecks)
                 {
-                    strIcdSubText = txtIcdText.Text.Substring(txtIcdText.Text.LastIndexOf(";")).Replace(";", "");
-                }
-                else
-                    strIcdSubText = txtIcdText.Text;
-
-                string icdNames = null;// IcdUtil.seperator;
-                string icdCodes = null;// IcdUtil.seperator;
-                string icdName__Olds = txtIcdText.Text;
-                var checkList = this.icdSubcodeAdoChecks.Where(o => o.IsChecked == true).ToList();
-                int count = 0;
-                foreach (var item in checkList)
-                {
-                    count++;
-                    string messErr = null;
-                    if (!checkIcdManager.ProcessCheckIcd(null, item.ICD_CODE, ref messErr, false))
+                    bool exists = oldCodes.Any(x => x.Equals(item.ICD_CODE, StringComparison.OrdinalIgnoreCase));
+                    if (item.IsChecked)
                     {
-                        XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
-                        item.IsChecked = false;
-                        continue;
-                    }
-                    if (count == checkList.Count)
-                    {
-                        icdCodes += item.ICD_CODE;
-                        icdNames += item.ICD_NAME;
+                        // Nếu tick → thêm vào cuối nếu chưa tồn tại
+                        if (!exists)
+                        {
+                            string messErr = null;
+                            if (!checkIcdManager.ProcessCheckIcd(null, item.ICD_CODE, ref messErr, false))
+                            {
+                                XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
+                                item.IsChecked = false;
+                                continue;
+                            }
+                            oldCodes.Add(item.ICD_CODE);
+                            oldNames.Add(item.ICD_NAME);
+                        }
                     }
                     else
                     {
-                        icdCodes += item.ICD_CODE + IcdUtil.seperator;
-                        icdNames += item.ICD_NAME + IcdUtil.seperator;
+                        // Nếu bỏ tick → xóa đúng index
+                        if (exists)
+                        {
+                            int idx = oldCodes.FindIndex(x =>
+                                x.Equals(item.ICD_CODE, StringComparison.OrdinalIgnoreCase));
+                            if (idx >= 0)
+                            {
+                                oldCodes.RemoveAt(idx);
+                                oldNames.RemoveAt(idx);
+                            }
+                        }
                     }
                 }
-
-                string newtxtIcdText = ProcessIcdNameChanged(icdName__Olds, icdNames);
-
-                txtIcdText.Text = newtxtIcdText;
-                txtIcdSubCode.Text = icdCodes;
-                Inventec.Common.Logging.LogSystem.Debug("SetCheckedSubIcdsToControl.2");
+                // Gán lại kết quả
+                txtIcdSubCode.Text = string.Join(IcdUtil.seperator, oldCodes);
+                txtIcdText.Text = string.Join(IcdUtil.seperator, oldNames);
+                isNotProcessWhileChangedTextSubIcd = false;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         private void customGridViewSubIcdName_KeyDown(object sender, KeyEventArgs e)
         {
             try

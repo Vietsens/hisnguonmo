@@ -1046,7 +1046,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         {
             try
             {
-                btnNew.Enabled = false;              
+                btnNew.Enabled = false;
                 CommonParam param = new CommonParam();
                 TransReqCreateSDO sdo = new TransReqCreateSDO();
                 if (this.inputTransReq.TreatmentId > 0)
@@ -2338,30 +2338,69 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         }
         private void InitInvoiceCheckStates()
         {
+            // Xuất hóa đơn điện tử
             chkExportHDDT.Checked = inputTransReq.IssueInvoice;
             chkExportHDDT.Enabled = false;
 
-            if (inputTransReq.Transaction != null &&
-                inputTransReq.Transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+            //if (inputTransReq.Transaction != null &&
+            //    inputTransReq.Transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+            //{
+            //    chkExportHDDT.Enabled = true;
+            //}
+            bool isAllowExportInvoice = false;
+
+            if (inputTransReq.Transaction != null)
             {
-                chkExportHDDT.Enabled = true;
+                isAllowExportInvoice =
+                    inputTransReq.Transaction.TRANSACTION_TYPE_ID ==
+                    IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT;
+            }
+            else if (inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0)
+            {
+                foreach (var tran in inputTransReq.Transactions)
+                {
+                    if (tran.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+                    {
+                        isAllowExportInvoice = true;
+                    }
+                }
             }
 
-            chkPrintHDDT.Checked = inputTransReq.PrintInvoice;
-            chkPrintHDDT.Enabled = chkExportHDDT.Checked;
+            chkExportHDDT.Enabled = isAllowExportInvoice;
 
-            chkNotDisplayedHDDT.Checked = inputTransReq.NotDisplayedInvoice;
-            chkNotDisplayedHDDT.Enabled = chkExportHDDT.Checked;
+
+            // In hóa đơn điện tử
+            chkPrintHDDT.Checked = inputTransReq.PrintInvoice; // tự động check nếu PrintInvoice = true
+            chkPrintHDDT.Enabled = chkExportHDDT.Checked; // enable nếu Xuất HĐĐT checked
+
+            // Không hiển thị hóa đơn
+            chkNotDisplayedHDDT.Checked = inputTransReq.NotDisplayedInvoice; // tự động check nếu NotDisplayedInvoice = true
+            chkNotDisplayedHDDT.Enabled = chkExportHDDT.Checked; // enable nếu Xuất HĐĐT checked
+
+            // Khi người dùng thay đổi trạng thái Xuất HĐĐT
+            chkExportHDDT.CheckedChanged += (s, e) =>
+            {
+                chkPrintHDDT.Enabled = chkExportHDDT.Checked;
+                chkNotDisplayedHDDT.Enabled = chkExportHDDT.Checked;
+
+                if (!chkExportHDDT.Checked)
+                {
+                    chkPrintHDDT.Checked = false;
+                    chkNotDisplayedHDDT.Checked = false;
+                }
+            };
         }
-        private void ExportInvoiceIfNeeded() 
+
+        private void ExportInvoiceIfNeeded()
         {
             if (chkExportHDDT.Checked && transactionPrint != null)
             {
+                //var trans = inputTransReq.Transactions.FirstOrDefault();
                 // Chỉ xuất hóa đơn cho giao dịch thanh toán
                 if (transactionPrint.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
                 {
                     CommonParam param = new CommonParam();
-                    bool result = XuatHoaDonDienTu(transactionPrint, false, ref param);
+                    bool result = XuatHoaDonDienTu(false, ref param);
                     if (!result)
                     {
                         MessageBox.Show("Xuất hóa đơn điện tử không thành công: " + param.GetMessage(), "Thông báo");
@@ -2372,11 +2411,11 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
 
                         if (chkPrintHDDT.Checked)
                         {
-                            PrintEInvoice(); 
+                            PrintEInvoice();
                         }
                         if (!chkNotDisplayedHDDT.Checked)
                         {
-                            ShowEInvoiceView(); 
+                            ShowEInvoiceView();
                         }
                     }
                 }
@@ -2483,7 +2522,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 // Nếu hóa đơn chưa có thông tin điện tử, tạo mới
                 if (string.IsNullOrEmpty(transactionPrint.INVOICE_CODE) || string.IsNullOrEmpty(transactionPrint.INVOICE_SYS))
                 {
-                    ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(transactionPrint);
+                    ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap();
                     if (electronicBillResult == null || !electronicBillResult.Success)
                     {
                         XtraMessageBox.Show("Tạo hóa đơn điện tử thất bại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -2660,13 +2699,18 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             }
         }
 
-        private bool XuatHoaDonDienTu(V_HIS_TRANSACTION transactionBill, bool isError, ref CommonParam param)
+        private bool XuatHoaDonDienTu(bool isError, ref CommonParam param)
         {
             bool result = false;
             try
             {
-                if (transactionBill == null) return result;
-                if (transactionBill.TRANSACTION_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT || !String.IsNullOrWhiteSpace(transactionBill.INVOICE_CODE))
+                // transactionPrint đã được lấy trước đó từ API
+                if (transactionPrint == null)
+                    return result;
+
+                // Chỉ xuất HĐĐT cho giao dịch thanh toán + chưa có INVOICE_CODE
+                if (transactionPrint.TRANSACTION_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT
+                    || !String.IsNullOrWhiteSpace(transactionPrint.INVOICE_CODE))
                 {
                     return result;
                 }
@@ -2677,21 +2721,27 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
 
                 ElectronicBillResult electronicBillResult = null;
-                if (isError)//nếu là lỗi thì lấy thông tin
+
+                // Nếu isError = true thì lấy lại thông tin hóa đơn
+                if (isError)
                 {
-                    electronicBillResult = GetEbillInfo(transactionBill);
+                    electronicBillResult = GetEbillInfo();
                 }
 
-                //Tao hoa don dien thu ben thu3 
+                // Nếu chưa có, hoặc lấy lỗi → tạo hóa đơn mới
                 if (electronicBillResult == null || !electronicBillResult.Success)
                 {
-                    electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(transactionBill);
+                    electronicBillResult = TaoHoaDonDienTuBenThu3CungCap();
                 }
 
+                // Nếu tạo thất bại thì hiển thị lỗi
                 if (electronicBillResult == null || !electronicBillResult.Success)
                 {
                     param.Messages.Add("Tạo hóa đơn điện tử thất bại");
-                    if (electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
+
+                    if (electronicBillResult != null
+                        && electronicBillResult.Messages != null
+                        && electronicBillResult.Messages.Count > 0)
                     {
                         param.Messages.AddRange(electronicBillResult.Messages);
                     }
@@ -2700,32 +2750,33 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
                 else
                 {
-                    //goi api update
                     CommonParam paramUpdate = new CommonParam();
                     HisTransactionInvoiceInfoSDO sdo = new HisTransactionInvoiceInfoSDO();
+
                     sdo.EinvoiceLoginname = electronicBillResult.InvoiceLoginname;
                     sdo.InvoiceCode = electronicBillResult.InvoiceCode;
                     sdo.InvoiceSys = electronicBillResult.InvoiceSys;
                     sdo.EinvoiceNumOrder = electronicBillResult.InvoiceNumOrder;
                     sdo.EInvoiceTime = electronicBillResult.InvoiceTime ?? 0;
-                    sdo.Id = transactionBill.ID;
+                    sdo.Id = transactionPrint.ID;
                     sdo.InvoiceLookupCode = electronicBillResult.InvoiceLookupCode;
-                    var apiResult = new BackendAdapter(paramUpdate).Post<bool>("api/HisTransaction/UpdateInvoiceInfo", ApiConsumers.MosConsumer, sdo, paramUpdate);
+
+                    var apiResult = new BackendAdapter(paramUpdate)
+                        .Post<bool>("api/HisTransaction/UpdateInvoiceInfo",
+                                    ApiConsumers.MosConsumer, sdo, paramUpdate);
+
                     if (apiResult)
                     {
-                        transactionBill.INVOICE_CODE = electronicBillResult.InvoiceCode;
-                        transactionBill.INVOICE_SYS = electronicBillResult.InvoiceSys;
-                        transactionBill.EINVOICE_NUM_ORDER = electronicBillResult.InvoiceNumOrder;
-                        transactionBill.EINVOICE_TIME = electronicBillResult.InvoiceTime;
-                        transactionBill.EINVOICE_LOGINNAME = electronicBillResult.InvoiceLoginname;
-                        transactionBill.INVOICE_LOOKUP_CODE = electronicBillResult.InvoiceLookupCode;
+                        transactionPrint.INVOICE_CODE = electronicBillResult.InvoiceCode;
+                        transactionPrint.INVOICE_SYS = electronicBillResult.InvoiceSys;
+                        transactionPrint.EINVOICE_NUM_ORDER = electronicBillResult.InvoiceNumOrder;
+                        transactionPrint.EINVOICE_TIME = electronicBillResult.InvoiceTime;
+                        transactionPrint.EINVOICE_LOGINNAME = electronicBillResult.InvoiceLoginname;
+                        transactionPrint.INVOICE_LOOKUP_CODE = electronicBillResult.InvoiceLookupCode;
+
                         result = true;
                     }
                 }
-
-                //MessageManager.Show(this, param, success);
-                //MessageBox.Show(param.BugCodes.ToString());
-                //MessageBox.Show(param.Messages.ToString());
             }
             catch (Exception ex)
             {
@@ -2733,29 +2784,31 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             }
             return result;
         }
-        private ElectronicBillResult GetEbillInfo(V_HIS_TRANSACTION transaction)
+        private ElectronicBillResult GetEbillInfo()
         {
             ElectronicBillResult result = new ElectronicBillResult();
             try
             {
+                if (transactionPrint == null)
+                    return result;
                 //WaitingManager.Show();
                 List<V_HIS_SERE_SERV_5> sereServ5s = null;
 
                 var param = new CommonParam();
                 HisSereServBillFilter ssbfilter = new HisSereServBillFilter();
-                ssbfilter.BILL_ID = transaction.ID;
+                ssbfilter.BILL_ID = transactionPrint.ID;
                 var sereServBill = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_SERE_SERV_BILL>>("api/HisSereServBill/Get", ApiConsumers.MosConsumer, ssbfilter, param);
                 if (sereServBill == null || sereServBill.Count <= 0)
                 {
-                    if (transaction.SALE_TYPE_ID == 1)
+                    if (transactionPrint.SALE_TYPE_ID == 1)
                     {
-                        sereServ5s = ProcessSereServByExpMestForEBill(transaction);
+                        sereServ5s = ProcessSereServByExpMestForEBill();
                     }
                     else
                     {
                         HisBillGoodsFilter bgfilter = new HisBillGoodsFilter();
-                        bgfilter.BILL_ID = transaction.ID;
-                        var billgoods = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_BILL_GOODS>>("api/HisBillGoods/Get", ApiConsumers.MosConsumer, ssbfilter, param);
+                        bgfilter.BILL_ID = transactionPrint.ID;
+                        var billgoods = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_BILL_GOODS>>("api/HisBillGoods/Get", ApiConsumers.MosConsumer, bgfilter, param);
                         if (billgoods != null && billgoods.Count > 0)
                         {
                             sereServ5s = new List<V_HIS_SERE_SERV_5>();
@@ -2785,10 +2838,10 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
 
                 V_HIS_TREATMENT_FEE currentTreatment = new V_HIS_TREATMENT_FEE();
-                if (transaction.TREATMENT_ID.HasValue)
+                if (transactionPrint.TREATMENT_ID.HasValue)
                 {
                     HisTreatmentFeeViewFilter filter = new HisTreatmentFeeViewFilter();
-                    filter.ID = transaction.TREATMENT_ID;
+                    filter.ID = transactionPrint.TREATMENT_ID;
                     var treatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumers.MosConsumer, filter, param);
                     if (treatment != null && treatment.Count > 0)
                     {
@@ -2797,42 +2850,43 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
                 else
                 {
-                    currentTreatment.TDL_PATIENT_ACCOUNT_NUMBER = transaction.BUYER_ACCOUNT_NUMBER;
-                    currentTreatment.TDL_PATIENT_ADDRESS = String.IsNullOrWhiteSpace(transaction.BUYER_ADDRESS) ? transaction.TDL_PATIENT_ADDRESS : transaction.BUYER_ADDRESS;
-                    currentTreatment.TDL_PATIENT_PHONE = transaction.BUYER_PHONE;
-                    currentTreatment.TDL_PATIENT_TAX_CODE = transaction.BUYER_TAX_CODE;
-                    currentTreatment.TDL_PATIENT_WORK_PLACE = String.IsNullOrWhiteSpace(transaction.BUYER_ORGANIZATION) ? transaction.TDL_PATIENT_WORK_PLACE : transaction.BUYER_ORGANIZATION;
-                    currentTreatment.TDL_PATIENT_NAME = String.IsNullOrWhiteSpace(transaction.BUYER_NAME) ? transaction.TDL_PATIENT_NAME : transaction.BUYER_NAME;
-                    currentTreatment.TDL_PATIENT_CODE = transaction.TDL_PATIENT_CODE;
-                    currentTreatment.TDL_PATIENT_WORK_PLACE_NAME = transaction.TDL_PATIENT_WORK_PLACE_NAME;
+                    currentTreatment.TDL_PATIENT_ACCOUNT_NUMBER = transactionPrint.BUYER_ACCOUNT_NUMBER;
+                    currentTreatment.TDL_PATIENT_ADDRESS = String.IsNullOrWhiteSpace(transactionPrint.BUYER_ADDRESS) ? transactionPrint.TDL_PATIENT_ADDRESS : transactionPrint.BUYER_ADDRESS;
+                    currentTreatment.TDL_PATIENT_PHONE = transactionPrint.BUYER_PHONE;
+                    currentTreatment.TDL_PATIENT_TAX_CODE = transactionPrint.BUYER_TAX_CODE;
+                    currentTreatment.TDL_PATIENT_WORK_PLACE = String.IsNullOrWhiteSpace(transactionPrint.BUYER_ORGANIZATION) ? transactionPrint.TDL_PATIENT_WORK_PLACE : transactionPrint.BUYER_ORGANIZATION;
+                    currentTreatment.TDL_PATIENT_NAME = String.IsNullOrWhiteSpace(transactionPrint.BUYER_NAME) ? transactionPrint.TDL_PATIENT_NAME : transactionPrint.BUYER_NAME;
+                    currentTreatment.TDL_PATIENT_CODE = transactionPrint.TDL_PATIENT_CODE;
+                    currentTreatment.TDL_PATIENT_WORK_PLACE_NAME = transactionPrint.TDL_PATIENT_WORK_PLACE_NAME;
                     currentTreatment.ID = -1;//để các api trong thư viện không lấy được dữ liệu
-                    currentTreatment.PATIENT_ID = transaction.TDL_PATIENT_ID ?? -1;
+                    currentTreatment.PATIENT_ID = transactionPrint.TDL_PATIENT_ID ?? -1;
                 }
 
                 ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
                 //lấy thông tin hóa đơn đã tạo thì sẽ chưa có INVOICE_CODE trong HIS_TRANSACTION. thông tin mã giao dịch đang sử dụng làm key để tạo hóa đơn.
-                dataInput.InvoiceCode = transaction.TRANSACTION_CODE;
-                dataInput.Amount = transaction.AMOUNT;
+                dataInput.InvoiceCode = transactionPrint.TRANSACTION_CODE;
+                dataInput.Amount = transactionPrint.AMOUNT;
                 dataInput.Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
-                dataInput.Discount = transaction.EXEMPTION;
-                dataInput.DiscountRatio = Math.Round((transaction.EXEMPTION ?? 0) / transaction.AMOUNT, 2, MidpointRounding.AwayFromZero) * 100;
-                dataInput.PaymentMethod = transaction.PAY_FORM_NAME;
+                dataInput.Discount = transactionPrint.EXEMPTION;
+                dataInput.DiscountRatio = (transactionPrint.AMOUNT > 0)
+                    ? Math.Round(((transactionPrint.EXEMPTION ?? 0) / transactionPrint.AMOUNT) * 100, 2, MidpointRounding.AwayFromZero) : 0;
+                dataInput.PaymentMethod = transactionPrint.PAY_FORM_NAME;
                 dataInput.SereServs = sereServ5s;
                 dataInput.SereServBill = sereServBill;
                 dataInput.Treatment = currentTreatment;
                 dataInput.Currency = "VND";
-                dataInput.SymbolCode = transaction.SYMBOL_CODE;
-                dataInput.TemplateCode = transaction.TEMPLATE_CODE;
-                dataInput.TransactionTime = transaction.EINVOICE_TIME ?? transaction.TRANSACTION_TIME;
-                dataInput.EinvoiceTypeId = transaction.EINVOICE_TYPE_ID;
+                dataInput.SymbolCode = transactionPrint.SYMBOL_CODE;
+                dataInput.TemplateCode = transactionPrint.TEMPLATE_CODE;
+                dataInput.TransactionTime = transactionPrint.EINVOICE_TIME ?? transactionPrint.TRANSACTION_TIME;
+                dataInput.EinvoiceTypeId = transactionPrint.EINVOICE_TYPE_ID;
                 dataInput.IsTransactionList = true;
 
                 HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transaction);
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionPrint);
 
                 dataInput.Transaction = tran;
 
-                if (transaction.SALE_TYPE_ID == 1)
+                if (transactionPrint.SALE_TYPE_ID == 1)
                 {
                     ElectronicBillProcessor electronicBillProcessor = new ElectronicBillProcessor(dataInput, Library.ElectronicBill.Template.TemplateEnum.TYPE.TemplateNhaThuoc);
                     result = electronicBillProcessor.Run(ElectronicBillType.ENUM.GET_INVOICE_INFO);
@@ -2845,7 +2899,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
 
                 if (result != null && result.Success && String.IsNullOrWhiteSpace(result.InvoiceCode))
                 {
-                    result.InvoiceCode = transaction.TRANSACTION_CODE;
+                    result.InvoiceCode = transactionPrint.TRANSACTION_CODE;
                 }
                 //WaitingManager.Hide();
             }
@@ -2856,7 +2910,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             }
             return result;
         }
-        private List<V_HIS_SERE_SERV_5> ProcessSereServByExpMestForEBill(V_HIS_TRANSACTION transaction)
+        private List<V_HIS_SERE_SERV_5> ProcessSereServByExpMestForEBill()
         {
             List<V_HIS_SERE_SERV_5> result = null;
             try
@@ -2864,7 +2918,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 string vatOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TransactionList.ElectronicBill.VatOption");
                 CommonParam param = new CommonParam();
                 HisExpMestFilter expfilter = new HisExpMestFilter();
-                expfilter.BILL_ID = transaction.ID;
+                expfilter.BILL_ID = transactionPrint.ID;
                 var listExpMests = new BackendAdapter(param).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumers.MosConsumer, expfilter, param);
                 if (listExpMests != null && listExpMests.Count > 0)
                 {
@@ -2956,28 +3010,27 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             }
             return result;
         }
-        private ElectronicBillResult TaoHoaDonDienTuBenThu3CungCap(V_HIS_TRANSACTION transaction)
+        private ElectronicBillResult TaoHoaDonDienTuBenThu3CungCap()
         {
             ElectronicBillResult result = new ElectronicBillResult();
             try
             {
                 //WaitingManager.Show();
                 List<V_HIS_SERE_SERV_5> sereServ5s = null;
-
                 var param = new CommonParam();
                 HisSereServBillFilter ssbfilter = new HisSereServBillFilter();
-                ssbfilter.BILL_ID = transaction.ID;
+                ssbfilter.BILL_ID = transactionPrint.ID;
                 var sereServBill = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_SERE_SERV_BILL>>("api/HisSereServBill/Get", ApiConsumers.MosConsumer, ssbfilter, param);
                 if (sereServBill == null || sereServBill.Count <= 0)
                 {
-                    if (transaction.SALE_TYPE_ID == 1)
+                    if (transactionPrint.SALE_TYPE_ID == 1)
                     {
-                        sereServ5s = ProcessSereServByExpMestForEBill(transaction);
+                        sereServ5s = ProcessSereServByExpMestForEBill();
                     }
                     else
                     {
                         HisBillGoodsFilter bgfilter = new HisBillGoodsFilter();
-                        bgfilter.BILL_ID = transaction.ID;
+                        bgfilter.BILL_ID = transactionPrint.ID;
                         var billgoods = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_BILL_GOODS>>("api/HisBillGoods/Get", ApiConsumers.MosConsumer, ssbfilter, param);
                         if (billgoods != null && billgoods.Count > 0)
                         {
@@ -3008,10 +3061,10 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
 
                 V_HIS_TREATMENT_FEE currentTreatment = new V_HIS_TREATMENT_FEE();
-                if (transaction.TREATMENT_ID.HasValue)
+                if (transactionPrint.TREATMENT_ID.HasValue)
                 {
                     HisTreatmentFeeViewFilter filter = new HisTreatmentFeeViewFilter();
-                    filter.ID = transaction.TREATMENT_ID;
+                    filter.ID = transactionPrint.TREATMENT_ID;
                     var treatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumers.MosConsumer, filter, param);
                     if (treatment != null && treatment.Count > 0)
                     {
@@ -3020,40 +3073,40 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
                 else
                 {
-                    currentTreatment.TDL_PATIENT_ACCOUNT_NUMBER = transaction.BUYER_ACCOUNT_NUMBER;
-                    currentTreatment.TDL_PATIENT_ADDRESS = String.IsNullOrWhiteSpace(transaction.BUYER_ADDRESS) ? transaction.TDL_PATIENT_ADDRESS : transaction.BUYER_ADDRESS;
-                    currentTreatment.TDL_PATIENT_PHONE = transaction.BUYER_PHONE;
-                    currentTreatment.TDL_PATIENT_TAX_CODE = transaction.BUYER_TAX_CODE;
-                    currentTreatment.TDL_PATIENT_WORK_PLACE = String.IsNullOrWhiteSpace(transaction.BUYER_ORGANIZATION) ? transaction.TDL_PATIENT_WORK_PLACE : transaction.BUYER_ORGANIZATION;
-                    currentTreatment.TDL_PATIENT_NAME = String.IsNullOrWhiteSpace(transaction.BUYER_NAME) ? transaction.TDL_PATIENT_NAME : transaction.BUYER_NAME;
-                    currentTreatment.TDL_PATIENT_CODE = transaction.TDL_PATIENT_CODE;
-                    currentTreatment.TDL_PATIENT_WORK_PLACE_NAME = transaction.TDL_PATIENT_WORK_PLACE_NAME;
+                    currentTreatment.TDL_PATIENT_ACCOUNT_NUMBER = transactionPrint.BUYER_ACCOUNT_NUMBER;
+                    currentTreatment.TDL_PATIENT_ADDRESS = String.IsNullOrWhiteSpace(transactionPrint.BUYER_ADDRESS) ? transactionPrint.TDL_PATIENT_ADDRESS : transactionPrint.BUYER_ADDRESS;
+                    currentTreatment.TDL_PATIENT_PHONE = transactionPrint.BUYER_PHONE;
+                    currentTreatment.TDL_PATIENT_TAX_CODE = transactionPrint.BUYER_TAX_CODE;
+                    currentTreatment.TDL_PATIENT_WORK_PLACE = String.IsNullOrWhiteSpace(transactionPrint.BUYER_ORGANIZATION) ? transactionPrint.TDL_PATIENT_WORK_PLACE : transactionPrint.BUYER_ORGANIZATION;
+                    currentTreatment.TDL_PATIENT_NAME = String.IsNullOrWhiteSpace(transactionPrint.BUYER_NAME) ? transactionPrint.TDL_PATIENT_NAME : transactionPrint.BUYER_NAME;
+                    currentTreatment.TDL_PATIENT_CODE = transactionPrint.TDL_PATIENT_CODE;
+                    currentTreatment.TDL_PATIENT_WORK_PLACE_NAME = transactionPrint.TDL_PATIENT_WORK_PLACE_NAME;
                     currentTreatment.ID = -1;//để các api trong thư viện không lấy được dữ liệu
-                    currentTreatment.PATIENT_ID = transaction.TDL_PATIENT_ID ?? -1;
+                    currentTreatment.PATIENT_ID = transactionPrint.TDL_PATIENT_ID ?? -1;
                 }
 
                 ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
-                dataInput.Amount = transaction.AMOUNT;
+                dataInput.Amount = transactionPrint.AMOUNT;
                 dataInput.Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
-                dataInput.Discount = transaction.EXEMPTION;
-                dataInput.DiscountRatio = Math.Round((transaction.EXEMPTION ?? 0) / transaction.AMOUNT, 2, MidpointRounding.AwayFromZero) * 100;
-                dataInput.PaymentMethod = transaction.PAY_FORM_NAME;
+                dataInput.Discount = transactionPrint.EXEMPTION;
+                dataInput.DiscountRatio = Math.Round((transactionPrint.EXEMPTION ?? 0) / transactionPrint.AMOUNT, 2, MidpointRounding.AwayFromZero) * 100;
+                dataInput.PaymentMethod = transactionPrint.PAY_FORM_NAME;
                 dataInput.SereServs = sereServ5s;
                 dataInput.SereServBill = sereServBill;
                 dataInput.Treatment = currentTreatment;
                 dataInput.Currency = "VND";
-                dataInput.SymbolCode = transaction.SYMBOL_CODE;
-                dataInput.TemplateCode = transaction.TEMPLATE_CODE;
-                dataInput.TransactionTime = transaction.EINVOICE_TIME ?? transaction.TRANSACTION_TIME;
-                dataInput.EinvoiceTypeId = transaction.EINVOICE_TYPE_ID;
+                dataInput.SymbolCode = transactionPrint.SYMBOL_CODE;
+                dataInput.TemplateCode = transactionPrint.TEMPLATE_CODE;
+                dataInput.TransactionTime = transactionPrint.EINVOICE_TIME ?? transactionPrint.TRANSACTION_TIME;
+                dataInput.EinvoiceTypeId = transactionPrint.EINVOICE_TYPE_ID;
                 dataInput.IsTransactionList = true;
 
                 HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transaction);
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionPrint);
 
                 dataInput.Transaction = tran;
 
-                if (transaction.SALE_TYPE_ID == 1)
+                if (transactionPrint.SALE_TYPE_ID == 1)
                 {
                     ElectronicBillProcessor electronicBillProcessor = new ElectronicBillProcessor(dataInput, Library.ElectronicBill.Template.TemplateEnum.TYPE.TemplateNhaThuoc);
                     result = electronicBillProcessor.Run(ElectronicBillType.ENUM.CREATE_INVOICE);

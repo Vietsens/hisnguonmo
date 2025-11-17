@@ -1,20 +1,3 @@
-/* IVT
- * @Project : hisnguonmo
- * Copyright (C) 2017 INVENTEC
- *  
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *  
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
- * GNU General Public License for more details.
- *  
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
@@ -51,6 +34,9 @@ namespace HIS.UC.SecondaryIcd
         int limit = 0;
         HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager checkIcd;
         HIS_TREATMENT treatment;
+
+        private Dictionary<string, string> codeToFullNameMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
         public frmSecondaryIcd(DelegateRefeshIcdChandoanphu delegateIcds, string icdCodes, string icdNames, int _limit, List<HIS_ICD> listIcd, HIS_TREATMENT hisTreatment = null)
         {
             InitializeComponent();
@@ -64,6 +50,8 @@ namespace HIS.UC.SecondaryIcd
                 icdAdoChecks = (from m in icds select new IcdADO(m, codes)).ToList();
                 limit = _limit;
                 treatment = hisTreatment;
+
+                InitializeMapping();
             }
             catch (Exception ex)
             {
@@ -83,6 +71,8 @@ namespace HIS.UC.SecondaryIcd
                 icdAdoChecks = (from m in listIcd select new IcdADO(m, codes)).ToList();
                 limit = _limit;
                 treatment = hisTreatment;
+
+                InitializeMapping();
             }
             catch (Exception ex)
             {
@@ -99,7 +89,7 @@ namespace HIS.UC.SecondaryIcd
                 Language_secondaryDisease();
                 dataTotal = (icdAdoChecks.Count);
                 FillDataToGrid();
-                if(treatment != null)
+                if (treatment != null)
                 {
                     checkIcd = new CheckIcdManager(delegateCheckIcd, treatment);
                 }
@@ -174,7 +164,6 @@ namespace HIS.UC.SecondaryIcd
         {
             try
             {
-                ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmSecondaryIcd.layoutControl1.Text", Resources.ResourceMessage.LanguagefrmSecondaryIcd, LanguageManager.GetCulture());
                 this.txtIcdCodes.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmSecondaryIcd.txtIcdCodes.Properties.NullValuePrompt", Resources.ResourceMessage.LanguagefrmSecondaryIcd, LanguageManager.GetCulture());
                 this.txtKeyword.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmSecondaryIcd.txtKeyword.Properties.NullValuePrompt", Resources.ResourceMessage.LanguagefrmSecondaryIcd, LanguageManager.GetCulture());
@@ -200,12 +189,9 @@ namespace HIS.UC.SecondaryIcd
         {
             try
             {
-
                 if (this.delegateIcds != null)
                     this.delegateIcds(txtIcdCodes.Text.Trim(), txtIcdNames.Text.Trim());
                 this.Close();
-
-                this.Hide();
             }
             catch (Exception ex)
             {
@@ -268,7 +254,7 @@ namespace HIS.UC.SecondaryIcd
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        List<IcdADO> selectedICD = new List<IcdADO>();
+
         private void gridViewSecondaryDisease_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
             try
@@ -277,19 +263,9 @@ namespace HIS.UC.SecondaryIcd
                 {
                     var row = (IcdADO)gridViewSecondaryDisease.GetFocusedRow();
                     var icd = icdAdoChecks.FirstOrDefault(s => s.ICD_CODE == row.ICD_CODE);
-                    icd.IsChecked = row.IsChecked;
-                    var checkListPre = icdAdoChecks.Where(o => o.IsChecked == true).ToList();
-                    if (checkListPre != null) selectedICD.AddRange(checkListPre);
-                    var exists = selectedICD.FirstOrDefault(s => s.ICD_CODE == row.ICD_CODE);
-                    if (exists != null)
+                    if (icd != null)
                     {
-                        // Update the existing item
-                        exists.IsChecked = icd.IsChecked;
-                    }
-                    else
-                    {
-                        // Add new item if it doesn't exist
-                        selectedICD.Add(icd);
+                        icd.IsChecked = row.IsChecked;
                     }
                     SetCheckedIcdsToControl();
                 }
@@ -304,48 +280,104 @@ namespace HIS.UC.SecondaryIcd
         {
             try
             {
-                //string icdNames = null;// = IcdUtil.seperator;
-                //string icdCodes = null;// = IcdUtil.seperator;
-                string icdName__Olds = txtIcdNames.Text;
-                
-                var checkList = icdAdoChecks.Where(o => o.IsChecked == true).Distinct().ToList();
-                int count = 0;
+                // BƯỚC 1: Cập nhật  với dữ liệu hiện tại
+                var currentCodes = this.txtIcdCodes.Text?.Trim(new char[] { ' ', ';' }).Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                                  .Select(s => s.Trim()).Where(s => !string.IsNullOrWhiteSpace(s)).ToList() ?? new List<string>();
 
-                string messErr = null;
-                if (checkIcd != null && !checkIcd.ProcessCheckIcd(null, string.Join(";",checkList.Select(s=>s.ICD_CODE)), ref messErr,false))
+                var currentNames = this.txtIcdNames.Text?.Trim(new char[] { ' ', ';' })
+                                  .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList() ?? new List<string>();
+
+                // Cập nhật mapping: mã -> tên đầy đủ (cả nội dung nhập thêm nếu có)
+                for (int i = 0; i < currentCodes.Count; i++)
                 {
-                    XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
-                    checkList.Last().IsChecked = false;
+                    string code = currentCodes[i];
+                    string fullName = i < currentNames.Count ? currentNames[i] : "";
+
+                    if (!string.IsNullOrWhiteSpace(code))
+                    {
+                        codeToFullNameMap[code] = fullName;
+                    }
                 }
 
-                var row = (IcdADO)gridViewSecondaryDisease.GetFocusedRow();
-                if (row != null)
+                // BƯỚC 2: Lấy danh sách mã đang được check
+                var currentlyChecked = icdAdoChecks.Where(o => o.IsChecked == true).GroupBy(x => x.ICD_CODE, StringComparer.OrdinalIgnoreCase).Select(g => g.First()).ToList();
+
+                // BƯỚC 3: Sắp xếp - ưu tiên giữ thứ tự cũ
+                var ordered = new List<IcdADO>();
+
+                // Giữ thứ tự cũ
+                foreach (var code in currentCodes)
                 {
-                    var icdCodes= this.txtIcdCodes.Text.Trim(new char[] { ' ', ';' }).Split(';').ToList();
-                    var icdNames= this.txtIcdNames.Text.Trim(new char[] { ' ', ';' }).Split(';').ToList();
-                    while (icdNames.Count < icdCodes.Count)
+                    var found = currentlyChecked.FirstOrDefault(c =>
+                        string.Equals(c.ICD_CODE, code, StringComparison.OrdinalIgnoreCase));
+                    if (found != null && !ordered.Any(o =>
+                        string.Equals(o.ICD_CODE, found.ICD_CODE, StringComparison.OrdinalIgnoreCase)))
                     {
-                        icdNames.Add("");
+                        ordered.Add(found);
                     }
-                    if (row.IsChecked)
+                }
+
+                // Thêm các mã mới được check (chưa có trong danh sách cũ)
+                foreach (var c in currentlyChecked)
+                {
+                    if (!ordered.Any(o => string.Equals(o.ICD_CODE, c.ICD_CODE, StringComparison.OrdinalIgnoreCase)))
                     {
-                        txtIcdCodes.Text += ";" + row.ICD_CODE;
-                        txtIcdNames.Text += ";" + row.ICD_NAME;
+                        ordered.Add(c);
+
+                        if (!codeToFullNameMap.ContainsKey(c.ICD_CODE))
+                        {
+                            codeToFullNameMap[c.ICD_CODE] = c.ICD_NAME ?? "";
+                        }
+                    }
+                }
+
+                // BƯỚC 4: Validate với checkIcd
+                string messErr = null;
+                if (checkIcd != null && ordered.Count > 0 && !checkIcd.ProcessCheckIcd(null,
+                    string.Join(";", ordered.Select(s => s.ICD_CODE)), ref messErr, false))
+                {
+                    XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
+
+                    if (ordered.Count > 0)
+                    {
+                        var last = ordered.Last();
+                        last.IsChecked = false;
+                        ordered.Remove(last);
+
+                        var icdToUncheck = icdAdoChecks.FirstOrDefault(s =>
+                            string.Equals(s.ICD_CODE, last.ICD_CODE, StringComparison.OrdinalIgnoreCase));
+                        if (icdToUncheck != null)
+                        {
+                            icdToUncheck.IsChecked = false;
+                        }
+                    }
+                }
+
+                // BƯỚC 5: Tạo danh sách mã và tên mới
+                var outCodes = ordered.Select(o => o.ICD_CODE).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+                var outNames = new List<string>();
+
+                foreach (var code in outCodes)
+                {
+                    // Ưu tiên lấy từ mapping (có nội dung nhập thêm)
+                    if (codeToFullNameMap.TryGetValue(code, out string fullName) && !string.IsNullOrWhiteSpace(fullName))
+                    {
+                        outNames.Add(fullName);
                     }
                     else
                     {
-                        var indexOfCode = icdCodes.IndexOf(row.ICD_CODE);
-                        icdCodes.RemoveAt(indexOfCode);
-                        icdNames.RemoveAt(indexOfCode);
-                        txtIcdCodes.Text = string.Join(";", icdCodes);
-                        txtIcdNames.Text = string.Join(";", icdNames);
+                        var icdItem = ordered.FirstOrDefault(x =>
+                            string.Equals(x.ICD_CODE, code, StringComparison.OrdinalIgnoreCase));
+                        string defaultName = icdItem?.ICD_NAME ?? "";
+                        outNames.Add(defaultName);
+
+                        codeToFullNameMap[code] = defaultName;
                     }
                 }
-                txtIcdCodes.Text = txtIcdCodes.Text.Trim(';', ' ');
-                txtIcdNames.Text = txtIcdNames.Text.Trim(';', ' ');
-                //txtIcdNames.Text = string.Join(";",checkList.Where(s => s.IsChecked == true).Select(p=>p.ICD_NAME));
-                //txtIcdCodes.Text = string.Join(";", checkList.Where(s => s.IsChecked == true).Select(p => p.ICD_CODE));
 
+                // BƯỚC 6: Cập nhật textboxes
+                txtIcdCodes.Text = string.Join(";", outCodes);
+                txtIcdNames.Text = string.Join(";", outNames);
             }
             catch (Exception ex)
             {
@@ -353,38 +385,26 @@ namespace HIS.UC.SecondaryIcd
             }
         }
 
-        string processIcdNameChanged(string oldIcdNames, string newIcdNames)
+        // Khởi tạo mapping ban đầu
+        private void InitializeMapping()
         {
-            //Thuat toan xu ly khi thay doi lai danh sach icd da chon
-            //1. Gan danh sach cac ten icd dang chon vao danh sach ket qua
-            //2. Tim kiem trong danh sach icd cu, neu ten icd do dang co trong danh sach moi thi bo qua, neu
-            //   Neu icd do khong xuat hien trogn danh sach dang chon & khong tim thay ten do trong danh sach icd hien thi ra
-            //   -> icd do da sua doi
-            //   -> cong vao chuoi ket qua
-            string result = "";
             try
             {
-                result = newIcdNames;
+                var codes = this.icdCodes?.Trim(new char[] { ' ', ';' }).Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                           .Select(s => s.Trim()).Where(s => !string.IsNullOrWhiteSpace(s)).ToList() ?? new List<string>();
 
-                if (!String.IsNullOrEmpty(oldIcdNames))
+                var names = this.icdNames?.Trim(new char[] { ' ', ';' })
+                           .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList() ?? new List<string>();
+
+                codeToFullNameMap.Clear();
+                for (int i = 0; i < codes.Count; i++)
                 {
-                    var arrNames = oldIcdNames.Split(new string[] { IcdUtil.seperator }, StringSplitOptions.RemoveEmptyEntries);
-                    if (arrNames != null && arrNames.Length > 0)
+                    string code = codes[i];
+                    string name = i < names.Count ? names[i] : "";
+
+                    if (!string.IsNullOrWhiteSpace(code))
                     {
-                        foreach (var item in arrNames)
-                        {
-                            if (!String.IsNullOrEmpty(item)
-                                && !newIcdNames.Contains(IcdUtil.AddSeperateToKey(item))
-                                )
-                            {
-                                var checkInList = icdAdoChecks.Where(o => o.IsChecked == false &&
-                                    IcdUtil.AddSeperateToKey(item).Equals(IcdUtil.AddSeperateToKey(o.ICD_NAME))).FirstOrDefault();
-                                if (checkInList == null || checkInList.ID == 0)
-                                {
-                                    result += item + IcdUtil.seperator;
-                                }
-                            }
-                        }
+                        codeToFullNameMap[code] = name;
                     }
                 }
             }
@@ -392,7 +412,6 @@ namespace HIS.UC.SecondaryIcd
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-            return result;
         }
 
         private void gridViewSecondaryDisease_MouseDown(object sender, MouseEventArgs e)
@@ -515,26 +534,6 @@ namespace HIS.UC.SecondaryIcd
 
         private void txtIcdNames_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
         {
-            var editor = sender as DevExpress.XtraEditors.TextEdit;
-            if (editor.IsEditorActive)
-            {
-                //var ss = editor.SelectionStart;
-                //var ma = txtIcdCodes.Text.ToString().Trim(';', ' ').Split(';').Where(w => w.Trim() != "").ToArray();
-                //if (ma.Length != txtIcdCodes.Text.ToString().Split(';').Length)
-                //{
-                //    txtIcdCodes.Text = string.Join(";", ma);
-                //}
-                //var ten = e.NewValue.ToString().Trim(' ').Split(';');
-                //if (ten.Length > ma.Length)
-                //{
-                //    var newTen1 = string.Join(";", ten.Take(ma.Length));
-                //    var newTen2 = string.Join(";", ten.Skip(ma.Length));
-                //    e.NewValue = newTen1 + newTen2;
-                //    editor.BeginInvoke(new Action(() => {
-                //        editor.SelectionStart = ss;
-                //    }));
-                //}
-            }
         }
     }
 }

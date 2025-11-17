@@ -126,6 +126,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.btnAssignService = new DevExpress.XtraEditors.SimpleButton();
             this.btnPrint_ExamService = new DevExpress.XtraEditors.DropDownButton();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.dtpStartTime = new DevExpress.XtraEditors.DateEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.lblARCPCR = new DevExpress.XtraEditors.LabelControl();
             this.panelControlUcSubIcdYHCT = new System.Windows.Forms.Panel();
             this.panelControlIcdYHCT = new System.Windows.Forms.Panel();
@@ -144,12 +151,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.layoutControlGroup22 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem103 = new DevExpress.XtraLayout.LayoutControlItem();
             this.popupControlContainer2 = new DevExpress.XtraBars.PopupControlContainer(this.components);
@@ -623,6 +624,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlItem158 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem15 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem16 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciStartTime = new DevExpress.XtraLayout.LayoutControlItem();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -648,8 +650,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.timerInitForm = new System.Windows.Forms.Timer(this.components);
-            this.dtpStartTime = new DevExpress.XtraEditors.DateEdit();
-            this.lciStartTime = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderForLeftPanel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderForSpinVat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -658,6 +658,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtpStartTime.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtpStartTime.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerSubIcdName)).BeginInit();
             this.popupControlContainerSubIcdName.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl21)).BeginInit();
@@ -665,8 +669,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.customGridControlSubIcdName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewSubIcdName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem103)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer2)).BeginInit();
@@ -1106,6 +1108,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem158)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem16)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciStartTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
@@ -1128,9 +1131,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtpStartTime.Properties.CalendarTimeProperties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtpStartTime.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciStartTime)).BeginInit();
             this.SuspendLayout();
             // 
             // dxValidationProviderForLeftPanel
@@ -1408,6 +1408,94 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
             // 
+            // dtpStartTime
+            // 
+            this.dtpStartTime.EditValue = null;
+            this.dtpStartTime.Enabled = false;
+            this.dtpStartTime.Location = new System.Drawing.Point(107, 2);
+            this.dtpStartTime.MenuManager = this.barManager1;
+            this.dtpStartTime.Name = "dtpStartTime";
+            this.dtpStartTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtpStartTime.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtpStartTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+            this.dtpStartTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtpStartTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+            this.dtpStartTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtpStartTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
+            this.dtpStartTime.Size = new System.Drawing.Size(321, 20);
+            this.dtpStartTime.StyleController = this.layoutControl3;
+            this.dtpStartTime.TabIndex = 72;
+            
+            this.dtpStartTime.MouseLeave += new System.EventHandler(this.dtpStartTime_MouseLeave);
+            // 
+            // barManager1
+            // 
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
+            this.barManager1.Form = this;
+            this.barManager1.Images = this.imageCollection1;
+            this.barManager1.MaxItemId = 0;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1368, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 672);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1368, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 672);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1368, 0);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 672);
+            // 
+            // imageCollection1
+            // 
+            this.imageCollection1.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imageCollection1.ImageStream")));
+            this.imageCollection1.InsertGalleryImage("gradientbluedatabar_16x16.png", "images/data%20bars/gradientbluedatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/gradientbluedatabar_16x16.png"), 0);
+            this.imageCollection1.Images.SetKeyName(0, "gradientbluedatabar_16x16.png");
+            this.imageCollection1.InsertGalleryImage("gradientgreendatabar_16x16.png", "images/data%20bars/gradientgreendatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/gradientgreendatabar_16x16.png"), 1);
+            this.imageCollection1.Images.SetKeyName(1, "gradientgreendatabar_16x16.png");
+            this.imageCollection1.InsertGalleryImage("gradientlightbluedatabar_16x16.png", "images/data%20bars/gradientlightbluedatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/gradientlightbluedatabar_16x16.png"), 2);
+            this.imageCollection1.Images.SetKeyName(2, "gradientlightbluedatabar_16x16.png");
+            this.imageCollection1.InsertGalleryImage("gradientorangedatabar_16x16.png", "images/data%20bars/gradientorangedatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/gradientorangedatabar_16x16.png"), 3);
+            this.imageCollection1.Images.SetKeyName(3, "gradientorangedatabar_16x16.png");
+            this.imageCollection1.InsertGalleryImage("gradientpurpledatabar_16x16.png", "images/data%20bars/gradientpurpledatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/gradientpurpledatabar_16x16.png"), 4);
+            this.imageCollection1.Images.SetKeyName(4, "gradientpurpledatabar_16x16.png");
+            this.imageCollection1.InsertGalleryImage("gradientreddatabar_16x16.png", "images/data%20bars/gradientreddatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/gradientreddatabar_16x16.png"), 5);
+            this.imageCollection1.Images.SetKeyName(5, "gradientreddatabar_16x16.png");
+            this.imageCollection1.InsertGalleryImage("solidbluedatabar_16x16.png", "images/data%20bars/solidbluedatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidbluedatabar_16x16.png"), 6);
+            this.imageCollection1.Images.SetKeyName(6, "solidbluedatabar_16x16.png");
+            this.imageCollection1.InsertGalleryImage("solidgreendatabar_16x16.png", "images/data%20bars/solidgreendatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidgreendatabar_16x16.png"), 7);
+            this.imageCollection1.Images.SetKeyName(7, "solidgreendatabar_16x16.png");
+            this.imageCollection1.InsertGalleryImage("solidlightbluedatabar_16x16.png", "images/data%20bars/solidlightbluedatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidlightbluedatabar_16x16.png"), 8);
+            this.imageCollection1.Images.SetKeyName(8, "solidlightbluedatabar_16x16.png");
+            this.imageCollection1.InsertGalleryImage("solidorangedatabar_16x16.png", "images/data%20bars/solidorangedatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidorangedatabar_16x16.png"), 9);
+            this.imageCollection1.Images.SetKeyName(9, "solidorangedatabar_16x16.png");
+            this.imageCollection1.InsertGalleryImage("solidpurpledatabar_16x16.png", "images/data%20bars/solidpurpledatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidpurpledatabar_16x16.png"), 10);
+            this.imageCollection1.Images.SetKeyName(10, "solidpurpledatabar_16x16.png");
+            this.imageCollection1.InsertGalleryImage("solidreddatabar_16x16.png", "images/data%20bars/solidreddatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidreddatabar_16x16.png"), 11);
+            this.imageCollection1.Images.SetKeyName(11, "solidreddatabar_16x16.png");
+            // 
             // lblARCPCR
             // 
             this.lblARCPCR.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
@@ -1611,72 +1699,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridColumn12.Visible = true;
             this.gridColumn12.VisibleIndex = 2;
             this.gridColumn12.Width = 147;
-            // 
-            // barManager1
-            // 
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
-            this.barManager1.Form = this;
-            this.barManager1.Images = this.imageCollection1;
-            this.barManager1.MaxItemId = 0;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1368, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 672);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1368, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 672);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1368, 0);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 672);
-            // 
-            // imageCollection1
-            // 
-            this.imageCollection1.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imageCollection1.ImageStream")));
-            this.imageCollection1.InsertGalleryImage("gradientbluedatabar_16x16.png", "images/data%20bars/gradientbluedatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/gradientbluedatabar_16x16.png"), 0);
-            this.imageCollection1.Images.SetKeyName(0, "gradientbluedatabar_16x16.png");
-            this.imageCollection1.InsertGalleryImage("gradientgreendatabar_16x16.png", "images/data%20bars/gradientgreendatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/gradientgreendatabar_16x16.png"), 1);
-            this.imageCollection1.Images.SetKeyName(1, "gradientgreendatabar_16x16.png");
-            this.imageCollection1.InsertGalleryImage("gradientlightbluedatabar_16x16.png", "images/data%20bars/gradientlightbluedatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/gradientlightbluedatabar_16x16.png"), 2);
-            this.imageCollection1.Images.SetKeyName(2, "gradientlightbluedatabar_16x16.png");
-            this.imageCollection1.InsertGalleryImage("gradientorangedatabar_16x16.png", "images/data%20bars/gradientorangedatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/gradientorangedatabar_16x16.png"), 3);
-            this.imageCollection1.Images.SetKeyName(3, "gradientorangedatabar_16x16.png");
-            this.imageCollection1.InsertGalleryImage("gradientpurpledatabar_16x16.png", "images/data%20bars/gradientpurpledatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/gradientpurpledatabar_16x16.png"), 4);
-            this.imageCollection1.Images.SetKeyName(4, "gradientpurpledatabar_16x16.png");
-            this.imageCollection1.InsertGalleryImage("gradientreddatabar_16x16.png", "images/data%20bars/gradientreddatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/gradientreddatabar_16x16.png"), 5);
-            this.imageCollection1.Images.SetKeyName(5, "gradientreddatabar_16x16.png");
-            this.imageCollection1.InsertGalleryImage("solidbluedatabar_16x16.png", "images/data%20bars/solidbluedatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidbluedatabar_16x16.png"), 6);
-            this.imageCollection1.Images.SetKeyName(6, "solidbluedatabar_16x16.png");
-            this.imageCollection1.InsertGalleryImage("solidgreendatabar_16x16.png", "images/data%20bars/solidgreendatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidgreendatabar_16x16.png"), 7);
-            this.imageCollection1.Images.SetKeyName(7, "solidgreendatabar_16x16.png");
-            this.imageCollection1.InsertGalleryImage("solidlightbluedatabar_16x16.png", "images/data%20bars/solidlightbluedatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidlightbluedatabar_16x16.png"), 8);
-            this.imageCollection1.Images.SetKeyName(8, "solidlightbluedatabar_16x16.png");
-            this.imageCollection1.InsertGalleryImage("solidorangedatabar_16x16.png", "images/data%20bars/solidorangedatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidorangedatabar_16x16.png"), 9);
-            this.imageCollection1.Images.SetKeyName(9, "solidorangedatabar_16x16.png");
-            this.imageCollection1.InsertGalleryImage("solidpurpledatabar_16x16.png", "images/data%20bars/solidpurpledatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidpurpledatabar_16x16.png"), 10);
-            this.imageCollection1.Images.SetKeyName(10, "solidpurpledatabar_16x16.png");
-            this.imageCollection1.InsertGalleryImage("solidreddatabar_16x16.png", "images/data%20bars/solidreddatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidreddatabar_16x16.png"), 11);
-            this.imageCollection1.Images.SetKeyName(11, "solidreddatabar_16x16.png");
             // 
             // layoutControlGroup22
             // 
@@ -7265,6 +7287,19 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.emptySpaceItem16.Size = new System.Drawing.Size(47, 30);
             this.emptySpaceItem16.TextSize = new System.Drawing.Size(0, 0);
             // 
+            // lciStartTime
+            // 
+            this.lciStartTime.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciStartTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciStartTime.Control = this.dtpStartTime;
+            this.lciStartTime.Location = new System.Drawing.Point(0, 0);
+            this.lciStartTime.Name = "lciStartTime";
+            this.lciStartTime.Size = new System.Drawing.Size(430, 24);
+            this.lciStartTime.Text = "Thời gian bắt đầu:";
+            this.lciStartTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciStartTime.TextSize = new System.Drawing.Size(100, 20);
+            this.lciStartTime.TextToControlDistance = 5;
+            // 
             // Root
             // 
             this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -7558,39 +7593,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // dtpStartTime
-            // 
-            this.dtpStartTime.EditValue = null;
-            this.dtpStartTime.Enabled = false;
-            this.dtpStartTime.Location = new System.Drawing.Point(107, 2);
-            this.dtpStartTime.MenuManager = this.barManager1;
-            this.dtpStartTime.Name = "dtpStartTime";
-            this.dtpStartTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtpStartTime.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtpStartTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
-            this.dtpStartTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dtpStartTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
-            this.dtpStartTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dtpStartTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
-            this.dtpStartTime.Size = new System.Drawing.Size(321, 20);
-            this.dtpStartTime.StyleController = this.layoutControl3;
-            this.dtpStartTime.TabIndex = 72;
-            // 
-            // lciStartTime
-            // 
-            this.lciStartTime.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciStartTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciStartTime.Control = this.dtpStartTime;
-            this.lciStartTime.Location = new System.Drawing.Point(0, 0);
-            this.lciStartTime.Name = "lciStartTime";
-            this.lciStartTime.Size = new System.Drawing.Size(430, 24);
-            this.lciStartTime.Text = "Thời gian bắt đầu:";
-            this.lciStartTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciStartTime.TextSize = new System.Drawing.Size(100, 20);
-            this.lciStartTime.TextToControlDistance = 5;
-            // 
             // ExamServiceReqExecuteControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -7612,6 +7614,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dtpStartTime.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtpStartTime.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerSubIcdName)).EndInit();
             this.popupControlContainerSubIcdName.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl21)).EndInit();
@@ -7619,8 +7625,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.customGridControlSubIcdName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewSubIcdName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup22)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem103)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer2)).EndInit();
@@ -8060,6 +8064,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem158)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem16)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciStartTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
@@ -8082,9 +8087,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtpStartTime.Properties.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtpStartTime.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciStartTime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

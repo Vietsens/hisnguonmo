@@ -1662,6 +1662,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 if (e.KeyCode == Keys.Enter)
                 {
                     LoadPayFormCombo(txtLoginname.Text);
+                    if (this.currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                        CheckTimeSereServ();
                 }
             }
             catch (Exception ex)
@@ -1685,6 +1687,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                             txtRequestUser.Focus();
                             txtRequestUser.SelectAll();
                         }
+                        if (this.currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                            CheckTimeSereServ();
                     }
                 }
             }
@@ -1725,6 +1729,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 if (e.KeyCode == Keys.Enter)
                 {
                     dtEndTime.Focus();
+                    if (this.currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                        CheckTimeSereServ();
                 }
             }
             catch (Exception ex)
@@ -1838,7 +1844,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 if (e.KeyCode == Keys.Enter)
                 {
                     LoadPayFormComboRequest(txtRequestUser.Text);
-                    CheckTimeSereServ();
+                    if (this.currentServiceReq.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                        CheckTimeSereServ();
                 }
             }
             catch (Exception ex)
@@ -1864,7 +1871,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
 
                     }
                 }
-                CheckTimeSereServ();
+                if (this.currentServiceReq.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                    CheckTimeSereServ();
             }
             catch (Exception ex)
             {
@@ -2243,7 +2251,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             {
                 if (isLoading)
                     return;
-                CheckTimeSereServ();
+                if (this.currentServiceReq.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                    CheckTimeSereServ();
             }
             catch (Exception ex)
             {
@@ -2256,34 +2265,140 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
 
             try
             {
-
                 if (dtTime.EditValue == null && cboRequestUser.EditValue == null || cboRequestUser.EditValue == null) return;
                 Inventec.Common.Logging.LogSystem.Debug("Check Sere Serv Time____Start");
                 var config = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION").FirstOrDefault();
+                var config2 = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION").FirstOrDefault();
+
                 CommonParam param = new CommonParam();
+                CommonParam paramCanhBao = new CommonParam();
                 if (config != null)
                 {
                     if (config.VALUE == "1" || config.VALUE == "2")
                     {
                         HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
                         sdo.TreatmentId = currentTreatment.ID;
-                        var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && cboRequestUser.EditValue.ToString() == p.LOGINNAME).FirstOrDefault();
-                        if (username != null) sdo.Loginnames = new List<string>() { username.LOGINNAME };
-                        long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTime.DateTime) ?? 0;
-                        sdo.SereTimes = new List<long> { sereTime };
+                        if (this.currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                        {
+                            var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && cboEndServiceReq.EditValue.ToString() == p.LOGINNAME).FirstOrDefault();
+                            if (username != null) sdo.Loginnames = new List<string>() { username.LOGINNAME };
+                            long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtStartTime.DateTime) ?? 0;
+                            sdo.SereTimes = new List<long> { sereTime };
+                        }
+                        else
+                        {
+                            var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && cboRequestUser.EditValue.ToString() == p.LOGINNAME).FirstOrDefault();
+                            if (username != null) sdo.Loginnames = new List<string>() { username.LOGINNAME };
+                            long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTime.DateTime) ?? 0;
+                            sdo.SereTimes = new List<long> { sereTime };
+                        }
                         Inventec.Common.Logging.LogSystem.Debug("HisServiceReqCheckSereTimesSDO:" + LogUtil.TraceData("HisServiceReqCheckSereTimesSDO", sdo));
-                        bool rs = new BackendAdapter(param).Post<bool>("/api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, param);
+                        bool rs = new BackendAdapter(paramCanhBao).Post<bool>("/api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, paramCanhBao);
+                        LogSystem.Debug("Giá trj api trả về: " + rs);
+
                         if (!rs)
                         {
                             if (config.VALUE == "1")
                             {
-                                MessageManager.Show(this, param, rs);
+                                //MessageManager.Show(this, param, rs);
+                                XtraMessageBox.Show(paramCanhBao.GetMessage(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 btnSave.Enabled = false;
                             }
                             else
                             {
-                                btnSave.Enabled = MessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) == DialogResult.Yes;
+                                DialogResult result = XtraMessageBox.Show(this, paramCanhBao.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo);
+                                if (result == DialogResult.Yes)
+                                {
+                                    btnSave.Enabled = true;
+                                }
+                                else
+                                {
+                                    btnSave.Enabled = false;
+                                    return;
+                                }
+                            }
+                        }
+                        else btnSave.Enabled = true;
+                    }
+                }
+                if (config2 != null)
+                {
+                    if (config2.VALUE == "1" || config2.VALUE == "2")
+                    {
+                        HisServiceReqCheckAssignSimultaneitySDO sdo = new HisServiceReqCheckAssignSimultaneitySDO();
+                        sdo.TreatmentId = currentTreatment.ID;
 
+                        if (this.currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                        {
+                            var checkInfoSdoList = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>();
+
+                            var checkInfoSdo = new HisServiceReqCheckAssignSimultaneityCheckInfosSDO();
+
+                            var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>()
+                                .Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                    && p.LOGINNAME == cboEndServiceReq.EditValue.ToString())
+                                .FirstOrDefault();
+
+                            if (username != null)
+                                checkInfoSdo.LoginName = username.LOGINNAME;
+
+                            // Lấy thời gian hiện tại hoặc từ control datetime
+                            long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtStartTime.DateTime) ?? 0;
+                            checkInfoSdo.CheckTimes = new List<long> { sereTime };
+
+                            // Thêm vào danh sách
+                            checkInfoSdoList.Add(checkInfoSdo);
+
+                            // Gán danh sách vào sdo
+                            sdo.CheckInfos = checkInfoSdoList;
+                        }
+
+                        else
+                        {
+                            var checkInfoSdoList = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>();
+
+                            var checkInfoSdo = new HisServiceReqCheckAssignSimultaneityCheckInfosSDO();
+
+                            var username = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>()
+                                .Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                    && p.LOGINNAME == cboRequestUser.EditValue.ToString())
+                                .FirstOrDefault();
+
+                            if (username != null)
+                                checkInfoSdo.LoginName = username.LOGINNAME;
+
+                            long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTime.DateTime) ?? 0;
+                            checkInfoSdo.CheckTimes = new List<long> { sereTime };
+
+                            checkInfoSdoList.Add(checkInfoSdo);
+
+                            sdo.CheckInfos = checkInfoSdoList;
+                        }
+                        LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisServiceReqCheckAssignSimultaneitySDO", sdo));
+                        bool rs = new BackendAdapter(paramCanhBao).Post<bool>("/api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo, paramCanhBao);
+                        LogSystem.Debug("Giá trj api trả về: " + rs);
+
+                        if (!rs)
+                        {
+                            if (config2.VALUE == "1")
+                            {
+                                //MessageManager.Show(this, param, rs);
+                                XtraMessageBox.Show(paramCanhBao.GetMessage(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                btnSave.Enabled = false;
+                                return;
+                            }
+                            else
+                            {
+                                DialogResult result = XtraMessageBox.Show(this, paramCanhBao.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo);
+                                if (result == DialogResult.Yes)
+                                {
+                                    btnSave.Enabled = true;
+                                }
+                                else
+                                {
+                                    btnSave.Enabled = false;
+                                    return;
+                                }
                             }
                         }
                         else btnSave.Enabled = true;
@@ -2294,6 +2409,22 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             {
 
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void dtStartTime_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isLoading)
+                    return;
+                if (this.currentServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                    CheckTimeSereServ();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+
             }
         }
     }

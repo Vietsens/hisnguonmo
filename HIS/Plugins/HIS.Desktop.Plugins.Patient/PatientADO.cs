@@ -26,6 +26,8 @@ namespace HIS.Desktop.Plugins.Patient
 {
     public class PatientADO : V_HIS_PATIENT
     {
+        public string CCCD { get; set; }
+        public string PASSPORT { get; set; }
         public string dobDateTime { get; set; }
         public string cmndDateTime { get; set; }
         public string cccdDateTime { get; set; }

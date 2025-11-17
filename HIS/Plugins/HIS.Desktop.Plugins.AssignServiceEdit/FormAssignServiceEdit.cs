@@ -777,7 +777,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                                 && basePatientTypeId(sereServ.PATIENT_TYPE_ID) != sereServ.BILL_PATIENT_TYPE_ID.Value
                                 && dataCombo.Exists(o => o.ID == sereServ.BILL_PATIENT_TYPE_ID.Value)
                                 && sereServ.IsContainAppliedPatientType
-                                &&sereServ.IsContainAppliedPatientClassifyType)
+                                && sereServ.IsContainAppliedPatientClassifyType)
                             {
                                 sereServ.IsNotChangePrimaryPaty = (sereServ.IS_NOT_CHANGE_BILL_PATY == (short)1);
 
@@ -1106,8 +1106,8 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                                 Inventec.Common.Logging.LogSystem.Debug("1.2_______Loai dich vụ mặc định với phòng không có cấu hình đối tượng thanh toán: " + this.currentWorkingRoom.DEFAULT_INSTR_PATIENT_TYPE_ID + " data: " + Inventec.Common.Logging.LogUtil.TraceData("_result", result));
                             }
                             Inventec.Common.Logging.LogSystem.Debug("1.3_______Loai dich vụ mặc định với phòng không có cấu hình đối tượng thanh toán: " + result.PATIENT_TYPE_NAME);
-                            
-                            
+
+
                             if (sereServADO.DEFAULT_PATIENT_TYPE_ID != null && dataCombo.FirstOrDefault(o => o.ID == sereServADO.DEFAULT_PATIENT_TYPE_ID.Value) != null && !sereServADO.IsNotLoadDefaultPatientType)
                             {
                                 result = dataCombo.FirstOrDefault(o => o.ID == sereServADO.DEFAULT_PATIENT_TYPE_ID.Value);
@@ -2178,7 +2178,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                     serviceReqUpdate.UseTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtUseTime.DateTime);
                 }
                 else
-                { 
+                {
                     serviceReqUpdate.UseTime = null;
                 }
                 foreach (var item in SereServAdditonSdos)
@@ -2844,7 +2844,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
 
                 WaitingManager.Hide();
 
-               
+
 
                 #region Process has exception
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
@@ -3025,10 +3025,10 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 var row = (ADO.HisSereServADO)GridViewService.GetFocusedRow();
                 if (row != null)
                 {
-                    if(e.Column.FieldName == this.gc_Check.FieldName)
+                    if (e.Column.FieldName == this.gc_Check.FieldName)
                     {
                         this.SetAssignNumOrder(row);
-                    }    
+                    }
                     if (e.Column.FieldName == this.gc_Check.FieldName
                         || e.Column.FieldName == this.Gc_PatientTypeName.FieldName
                         )
@@ -3060,7 +3060,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                     CheckTimeInDepartment(this.intructionTimeSelecteds);
                 }
                 if (dtInstructionTime.EditValue != null) CheckTimeSereSev();
-                
+
             }
             catch (Exception ex)
             {
@@ -3072,7 +3072,9 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
             try
             {
                 var config = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION").FirstOrDefault();
+                var config2 = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION").FirstOrDefault();
                 CommonParam param = new CommonParam();
+                bool hasError = false;
                 if (config != null)
                 {
                     if (config.VALUE == "1" || config.VALUE == "2")
@@ -3099,6 +3101,47 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                             }
                         }
                         else btnSave.Enabled = btnSaveAndPrint.Enabled = true;
+                    }
+                }
+                if (config2 != null)
+                {
+                    if (config.VALUE == "1" || config.VALUE == "2")
+                    {
+                        var username = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                        var assignSdo = new HisServiceReqCheckAssignSimultaneitySDO();
+                        assignSdo.TreatmentId = HisServiceReq.TREATMENT_ID;
+                        assignSdo.CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>
+                                                {
+                                                    new HisServiceReqCheckAssignSimultaneityCheckInfosSDO
+                                                    {
+                                                        LoginName = username,
+                                                        CheckTimes = intructionTimeSelecteds
+                                                    }
+                                                };
+                        var checkAssignResult = new BackendAdapter(param)
+                            .Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, assignSdo, ProcessLostToken, param);
+
+                        if (!checkAssignResult)
+                        {
+                            hasError = true;
+                            if (config.VALUE == "1")
+                            {
+                                btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                                MessageManager.Show(this, param, false);
+                            }
+                            else if (config.VALUE == "2")
+                            {
+                                if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                                {
+
+                                    btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                                }
+                                else
+                                {
+                                    btnSave.Enabled = btnSaveAndPrint.Enabled = true;
+                                }
+                            }
+                        }
                     }
                 }
             }

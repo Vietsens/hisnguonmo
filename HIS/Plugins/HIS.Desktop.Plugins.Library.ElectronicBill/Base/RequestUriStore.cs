@@ -44,6 +44,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
         internal const string CyberbillGuiHoadonGoc = "api/services/hddtws/GuiHoadon/GuiHoadonGoc";
         internal const string CyberbillKyHoaDonHSM = "api/services/hddtws/XuLyHoaDon/KyHoaDonHSM";
         internal const string CyberbillChuyenDoiHoaDon = "api/services/hddtws/QuanLyHoaDon/ChuyenDoiHoaDon"; //"api/services/hddtws/GuiHoaDon/ChuyenDoiHoaDon";
+        internal const string CyberbillChuyenDoiHoaDonV2 = "api/services/hddtws/GuiHoaDon/ChuyenDoiHoaDon"; //"api/services/hddtws/GuiHoaDon/ChuyenDoiHoaDon";
         internal const string CyberbillTaiHoaDon = "api/services/hddtws/GuiHoaDon/TaiHoaDonPDF";
         internal const string CyberbillHuyHoaDon = "api/services/hddtws/GuiHoaDon/GuiHoadonHuyBo";
         internal const string CyberbillGuiHoadonThayThe = "api/services/hddtws/GuiHoadon/GuiHoadonThayThe";

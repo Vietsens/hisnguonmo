@@ -15,28 +15,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Data;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using HIS.Desktop.Library.CacheClient;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Utilities.Extensions;
+using Inventec.Core;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.SDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.Data;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Utilities.Extensions;
-using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.Repository;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.Library.CacheClient;
+using static DevExpress.Data.Helpers.ExpressiveSortInfo;
 
 namespace HIS.Desktop.Plugins.SurgTreatmentList
 {
@@ -71,6 +74,8 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
         private Inventec.Desktop.Common.Modules.Module ModuleData;
         private ControlStateWorker controlStateWorker;
         private bool isInternalChange = false;
+        bool isCheckAllGatherData = true;
+        bool isCheckAllFee = true;
         #endregion
         public SurgTreatmentListUC()
         {
@@ -323,7 +328,15 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
 
                 if (row != null)
                 {
-                    GridViewSereServ.SetRowCellValue(GridViewSereServ.FocusedRowHandle, GvSS_GcFee, chk.Checked);
+                    if (toggleSwitch1.IsOn)
+                    {
+                        row.Fee = chk.Checked;
+                        toggleOnFee();
+                    }
+                    else
+                    {
+                        GridViewSereServ.SetRowCellValue(GridViewSereServ.FocusedRowHandle, GvSS_GcFee, chk.Checked);
+                    }
                 }
             }
             catch (Exception ex)
@@ -342,7 +355,15 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
 
                 if (row != null)
                 {
-                    GridViewSereServ.SetRowCellValue(GridViewSereServ.FocusedRowHandle, GvSS_GcGatherData, chk.Checked);
+                    if (toggleSwitch1.IsOn)
+                    {
+                        row.GatherData = chk.Checked;
+                        toggleOnGatherData();
+                    }
+                    else
+                    {
+                        GridViewSereServ.SetRowCellValue(GridViewSereServ.FocusedRowHandle, GvSS_GcGatherData, chk.Checked);
+                    }                        
                 }
             }
             catch (Exception ex)
@@ -836,6 +857,10 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                             chkInProgress.Checked = check[1];
                             chkCompleted.Checked = check[2];
                         }
+                        else if (item.KEY == toggleSwitch1.Name)
+                        {
+                            toggleSwitch1.IsOn = item.VALUE == "1";
+                        }
                     }
                 }
                 isNotLoadWhileChangeControlStateInFirst = false;
@@ -864,6 +889,227 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
         private void GridControlSereServ_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void GridViewSereServ_MouseDown(object sender, MouseEventArgs e)
+        {
+            DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+            GridHitInfo hi = view.CalcHitInfo(e.Location);
+            var listData = GridControlSereServ.DataSource as List<ADO.SereServADO>;
+            if (!toggleSwitch1.IsOn)
+            {
+                this.GvSS_GcGatherData.Image = null;
+                this.GvSS_GcFee.Image = null;
+                return;
+            }
+            if (hi.HitTest == GridHitTest.Column)
+            {
+                if (hi.Column.FieldName == GvSS_GcGatherData.FieldName)
+                {
+                    if (listData != null && listData.Count > 0)
+                    {
+                        GridViewSereServ.BeginUpdate();
+                        if (isCheckAllGatherData)
+                        {
+                            isCheckAllGatherData = false;
+                            foreach (var item in listData)
+                            {
+                                item.GatherData = true;
+                            }
+                            this.GvSS_GcGatherData.Image = this.imageListCheck.Images[3];
+                        }
+                        else
+                        {
+                            isCheckAllGatherData = true;
+                            foreach (var item in listData)
+                            {
+                                item.GatherData = false;
+                            }
+                            this.GvSS_GcGatherData.Image = this.imageListCheck.Images[4];
+                        }
+                        GridViewSereServ.EndUpdate();
+                    }
+                }else if (hi.Column.FieldName == GvSS_GcFee.FieldName)
+                {
+                    if (listData != null && listData.Count > 0)
+                    {
+                        GridViewSereServ.BeginUpdate();
+                        if (isCheckAllFee)
+                        {
+                            isCheckAllFee = false;
+                            foreach (var item in listData)
+                            {
+                                item.Fee = true;
+                            }
+                            this.GvSS_GcFee.Image = this.imageListCheck.Images[3];
+                        }
+                        else
+                        {
+                            isCheckAllFee = true;
+                            foreach (var item in listData)
+                            {
+                                item.Fee = false;
+                            }
+                            this.GvSS_GcFee.Image = this.imageListCheck.Images[4];
+                        }
+                        GridViewSereServ.EndUpdate();
+                    }
+                }
+            }
+        }
+
+        private void toggleSwitch1_Toggled(object sender, EventArgs e)
+        {
+            try
+            {
+                toggleChanged();
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == toggleSwitch1.Name && o.MODULE_LINK == moduleData.ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null) 
+                { 
+                    csAddOrUpdate.VALUE = (toggleSwitch1.IsOn ? "1" : "0");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.MODULE_LINK = moduleData.ModuleLink;
+                    csAddOrUpdate.KEY = toggleSwitch1.Name;
+                    csAddOrUpdate.VALUE = (toggleSwitch1.IsOn ? "1" : "");
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            bool success = false;
+            CommonParam param = new CommonParam();
+            //var listData = GridControlSereServ.DataSource as List<ADO.SereServADO>;
+            var gatherDatas = listData.Where(x => x.GatherData).Select(x => x.ID).ToList();
+            var unGatherDatas = listData.Where(x => !x.GatherData).Select(x => x.ID).ToList();
+            var fees = listData.Where(x => x.Fee).Select(x => x.ID).ToList();
+            var unFees = listData.Where(x => !x.Fee).Select(x => x.ID).ToList();
+
+            SetFeeAndGatherDataSDO sdo = new SetFeeAndGatherDataSDO
+            {
+                GatherDatas = gatherDatas,
+                Fees = fees,
+                UnGatherDatas = unGatherDatas,
+                UnFees = unFees
+            };
+
+            var apiResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SERE_SERV_EXT>("api/HisSereServExt/SetFeeAndGatherData", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
+            if (apiResult != null)
+            {
+                success = true;
+            }
+            else
+            {
+                success = false;
+            }
+            MessageManager.Show(this.ParentForm, param, success);
+        }
+        private void toggleChanged()
+        {
+            if (toggleSwitch1.IsOn)
+            {
+                toggleSwitch1.ToolTip = "Cập nhật nhiều dịch vụ";
+                btnSave.Enabled = true;
+                toggleOnGatherData();
+                toggleOnFee();
+            }
+            else
+            {
+                toggleSwitch1.ToolTip = "Cập nhật từng dịch vụ";
+                this.GvSS_GcGatherData.Image = null;
+                this.GvSS_GcFee.Image = null;
+                btnSave.Enabled = false;
+                btnSave.AppearanceDisabled.BackColor = Color.LightGray;
+                FillDataToCotrol();
+            }
+        }
+        private void toggleOnFee()
+        {
+            var listData = GridControlSereServ.DataSource as List<ADO.SereServADO>;
+            bool hasCheck = false;
+            bool isAll = false;
+
+            if (listData != null && listData.Count > 0)
+            {
+                var listCheck = listData.Where(o => o.Fee).ToList();
+                if (listCheck != null && listCheck.Count > 0)
+                {
+                    if (listCheck.Count == listData.Count)
+                    {
+                        isAll = true;
+                    }
+                    else
+                    {
+                        hasCheck = true;
+                    }
+                } 
+            }
+
+            if (isAll)
+            {
+                isCheckAllFee = false;
+                this.GvSS_GcFee.Image = this.imageListCheck.Images[3];
+            }
+            else if (hasCheck)
+            {
+                //this.GvSS_GcFee.Image = this.imageListCheck.Images[5];
+                this.GvSS_GcFee.Image = this.imageListCheck.Images[4];
+            }
+            else
+            {
+                isCheckAllFee = true;
+                this.GvSS_GcFee.Image = this.imageListCheck.Images[4];
+            }
+        }
+        private void toggleOnGatherData()
+        {
+            var listData = GridControlSereServ.DataSource as List<ADO.SereServADO>;
+            bool hasCheck = false;
+            bool isAll = false;
+            if (listData != null && listData.Count > 0)
+            {
+                var listCheck = listData.Where(o => o.GatherData).ToList();
+                if (listCheck != null && listCheck.Count > 0)
+                {
+                    if (listCheck.Count == listData.Count)
+                    {
+                        isAll = true;
+                    }
+                    else
+                    {
+                        hasCheck = true;
+                    }
+                }
+            }
+            if (isAll)
+            {
+                isCheckAllGatherData = false;
+                this.GvSS_GcGatherData.Image = this.imageListCheck.Images[3];
+            }
+            else if (hasCheck)
+            {
+                //this.GvSS_GcGatherData.Image = this.imageListCheck.Images[5];
+                this.GvSS_GcGatherData.Image = this.imageListCheck.Images[4];
+            }
+            else
+            {
+                isCheckAllGatherData = true;
+                this.GvSS_GcGatherData.Image = this.imageListCheck.Images[4];
+            }
         }
     }
 }

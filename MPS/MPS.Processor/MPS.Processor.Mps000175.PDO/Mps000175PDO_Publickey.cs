@@ -45,6 +45,15 @@ namespace MPS.Processor.Mps000175.PDO
         public long _ConfigKeyMERGER_DATA { get; set; }
         public long PatientTypeId__BHYT { get; set; }
     }
+    public class Mps000175Sum {
+
+        public long? PARENT_ID { get; set; }
+        public string PARENT_CODE { get; set; }
+        public string PARENT_NAME { get; set; }
+        public decimal? SUM_AMOUNT_REQUEST { get; set; }
+        public decimal? SUM_AMOUNT_PRICE { get; set; }
+        public decimal? PRICE { get; set; }
+    }
 
     public class Mps000175ADO
     {
@@ -127,7 +136,7 @@ namespace MPS.Processor.Mps000175.PDO
                     this.DESCRIPTION = _expMestMaterials[0].DESCRIPTION;
                     this.MEDI_MATE_NUM_ORDER = _expMestMaterials[0].MEDICINE_NUM_ORDER ?? 0;
                     this.NUM_ORDER = _expMestMaterials[0].NUM_ORDER;
-
+                  
                     this.MANUFACTURER_CODE = _expMestMaterials[0].MANUFACTURER_CODE;
                     this.MANUFACTURER_ID = _expMestMaterials[0].MANUFACTURER_ID;
                     this.MANUFACTURER_NAME = _expMestMaterials[0].MANUFACTURER_NAME;

@@ -323,7 +323,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                     { 
                         var listArgs = new List<object>();
-                        listArgs.Add(treatmentBedRoomRow.ID);
+                        listArgs.Add(treatmentBedRoomRow);
                         HIS_SPECIALIST_EXAM specialistExam = null;
                         listArgs.Add(specialistExam);
                         listArgs.Add(moduleData);

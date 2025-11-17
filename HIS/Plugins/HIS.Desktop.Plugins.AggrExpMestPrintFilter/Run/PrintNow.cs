@@ -37,6 +37,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
 {
     public class PrintNow
     {
+        string Config_AllowMps49GroupAllDrugs = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.AllowMps49GroupAllDrugs");
         Inventec.Desktop.Common.Modules.Module currentModule;
         long TimeFilterOption;
         public PrintNow(Inventec.Desktop.Common.Modules.Module _currentModule, long? chooseTimeType = null)
@@ -604,27 +605,28 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                         #region Tach Thuoc GN - HT - TT
                         ProcessorMedicneGNHT();
                         #endregion
-
-                        if (this._ExpMestMaterials != null && this._ExpMestMaterials.Count > 0)
+                        if (Config_AllowMps49GroupAllDrugs != "1")
                         {
-                            richEditorMain.RunPrintTemplate("Mps000175", DelegateRunMps);
-                        }
-                        IsPrintMps169 = false;
-                        if ((this._ExpMestMedi_GNs != null && this._ExpMestMedi_GNs.Count > 0) || (this._ExpMestMedi_HTs != null && this._ExpMestMedi_HTs.Count > 0) || (this._ExpMestMediHCGN.Count > 0 || this._ExpMestMediHCHT.Count > 0))
-                        {
-                            richEditorMain.RunPrintTemplate("Mps000169", DelegateRunMps);
-                        }
+                            if (this._ExpMestMaterials != null && this._ExpMestMaterials.Count > 0)
+                            {
+                                richEditorMain.RunPrintTemplate("Mps000175", DelegateRunMps);
+                            }
+                            IsPrintMps169 = false;
+                            if ((this._ExpMestMedi_GNs != null && this._ExpMestMedi_GNs.Count > 0) || (this._ExpMestMedi_HTs != null && this._ExpMestMedi_HTs.Count > 0) || (this._ExpMestMediHCGN.Count > 0 || this._ExpMestMediHCHT.Count > 0))
+                            {
+                                richEditorMain.RunPrintTemplate("Mps000169", DelegateRunMps);
+                            }
 
-                        if (this._ExpMestMedi_TDs != null && this._ExpMestMedi_TDs.Count > 0)
-                        {
-                            richEditorMain.RunPrintTemplate("Mps000236", DelegateRunMps);
-                        }
+                            if (this._ExpMestMedi_TDs != null && this._ExpMestMedi_TDs.Count > 0)
+                            {
+                                richEditorMain.RunPrintTemplate("Mps000236", DelegateRunMps);
+                            }
 
-                        if (this._ExpMestMedi_PXs != null && this._ExpMestMedi_PXs.Count > 0)
-                        {
-                            richEditorMain.RunPrintTemplate("Mps000239", DelegateRunMps);
+                            if (this._ExpMestMedi_PXs != null && this._ExpMestMedi_PXs.Count > 0)
+                            {
+                                richEditorMain.RunPrintTemplate("Mps000239", DelegateRunMps);
+                            }
                         }
-
                         if (this._ExpMestMedi_Other != null && this._ExpMestMedi_Other.Count > 0)
                         {
                             var groups = _ExpMestMedi_Other.GroupBy(o => o.MEDICINE_GROUP_ID).ToList();
@@ -695,7 +697,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                             null,
                             aggrExpMests,
                             this._ExpMests_Print,
-                            this._Department, 
+                            this._Department,
                             serviceUnitIds,
                             useFormIds,
                             reqRoomIds,
@@ -769,15 +771,22 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                          == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCGN && hcgn).ToList();
                     this._ExpMestMediHCHT = this._ExpMestMedicines.Where(p => p.MEDICINE_GROUP_ID
                          == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCHT && hcht).ToList();
+                    if (Config_AllowMps49GroupAllDrugs != "1")
+                    {
+                        this._ExpMestMedi_Other = this._ExpMestMedicines.Where(p => mediTs.Select(s => s.ID).Contains(p.MEDICINE_GROUP_ID ?? 0) &&
+                                                p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN
+                                            && p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT
+                                            && p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__DOC
+                                            && p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__PX
+                                            && p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCGN
+                                            && p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCHT
+                                            ).ToList();
+                    }
+                    else
+                    {
+                        this._ExpMestMedi_Other = this._ExpMestMedicines.Where(p => mediTs.Select(s => s.ID).Contains(p.MEDICINE_GROUP_ID ?? 0)).ToList(); 
+                    }
 
-                    this._ExpMestMedi_Other = this._ExpMestMedicines.Where(p => mediTs.Select(s => s.ID).Contains(p.MEDICINE_GROUP_ID ?? 0) &&
-                        p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN
-                    && p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT
-                    && p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__DOC
-                    && p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__PX
-                    && p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCGN
-                    && p.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCHT
-                    ).ToList();
                 }
             }
             catch (Exception ex)
@@ -912,7 +921,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                 if (keyPrintType == 1)
                 {
                     #region In Tat Ca GN,HT
-                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
                     List<V_HIS_EXP_MEST_MEDICINE> DataGroups = new List<V_HIS_EXP_MEST_MEDICINE>();
 
                     if (_ExpMestMedi_GNs.Count > 0 || _ExpMestMedi_HTs.Count() > 0)
@@ -2470,7 +2479,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                             //    medicineFilter.USE_TIME_TO_TO = IntructionTimeTo;
                             //}
                         }
-                       
+
 
 
                         var dataMedicines = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>(HisRequestUriStore.HIS_EXP_MEST_MEDICINE_GETVIEW, ApiConsumers.MosConsumer, medicineFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
@@ -2548,7 +2557,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                             //    materialFilter.USE_TIME_TO_TO = IntructionTimeTo;
                             //}
                         }
-                        
+
 
                         var dataMaterials = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MATERIAL>>(HisRequestUriStore.HIS_EXP_MEST_MATERIAL_GETVIEW, ApiConsumers.MosConsumer, materialFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
                         if (dataMaterials != null && dataMaterials.Count > 0)

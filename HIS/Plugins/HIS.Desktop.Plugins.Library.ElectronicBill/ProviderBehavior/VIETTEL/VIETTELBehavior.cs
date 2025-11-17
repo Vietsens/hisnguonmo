@@ -1602,14 +1602,39 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                 {
                     result.buyerIdType = adoInfo.BuyerIdentityType;
                 }
-                if (!String.IsNullOrWhiteSpace(adoInfo.BuyerCCCD) && String.IsNullOrWhiteSpace(adoInfo.BuyerIdentityNumber))
+                //if (!String.IsNullOrWhiteSpace(adoInfo.BuyerCCCD) && String.IsNullOrWhiteSpace(adoInfo.BuyerIdentityNumber))
+                //{
+                //    result.buyerIdType = "1";
+                //    result.buyerIdNo = adoInfo.BuyerCCCD;
+                //}
+
+                // Xử lý định danh cá nhân
+                //qtcode
+                if (!String.IsNullOrWhiteSpace(electronicBillDataInput.Transaction?.BUYER_IDENTITY_NUMBER))
                 {
+                    result.buyerIdNo = electronicBillDataInput.Transaction.BUYER_IDENTITY_NUMBER.Trim();
                     result.buyerIdType = "1";
-                    result.buyerIdNo = adoInfo.BuyerCCCD;
                 }
+                //else if (!String.IsNullOrWhiteSpace(adoInfo.BuyerIdentityNumber))
+                //{
+                //    result.buyerIdNo = adoInfo.BuyerIdentityNumber;
+                //    result.buyerIdType = adoInfo.BuyerIdentityType == "1" || adoInfo.BuyerIdentityType == "2" ? "1" : adoInfo.BuyerIdentityType;
+                //}
+                else if (!String.IsNullOrWhiteSpace(adoInfo.BuyerCCCD))
+                {
+                    result.buyerIdNo = adoInfo.BuyerCCCD;
+                    result.buyerIdType = "1";
+                }
+
+                if (!String.IsNullOrWhiteSpace(electronicBillDataInput.Transaction?.BUYER_SOCIAL_RELATIONS_CODE))
+                {
+                 result.buyerBudgetCode = electronicBillDataInput.Transaction.BUYER_SOCIAL_RELATIONS_CODE.Trim();
+                }
+
                 result.buyerAddressLine = !String.IsNullOrWhiteSpace(adoInfo.BuyerAddress) ? adoInfo.BuyerAddress : ".";
                 result.buyerPhoneNumber = adoInfo.BuyerPhone;
                 result.buyerEmail = adoInfo.BuyerEmail;
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("RESULT", result));
             }
             catch (Exception ex)
             {

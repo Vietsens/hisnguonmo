@@ -40,6 +40,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         public static string APIEGW;
         public static string OFFICERNAME;
         public static string CCCDOFFICER;
+        public static string OTHERAPIEGW;
         public static void LoadConfig()
         {
             try
@@ -51,6 +52,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
                 APIEGW = Get(HisConfigs.Get<string>(CONFIG_KEY_BHXH__API), 0, '|');
                 OFFICERNAME = Get(HisConfigs.Get<string>(CONFIG_KEY_BHXH__API), 1, '|');
                 CCCDOFFICER = Get(HisConfigs.Get<string>(CONFIG_KEY_BHXH__API), 2, '|');
+                OTHERAPIEGW = Get(HisConfigs.Get<string>(CONFIG_KEY_BHXH__API), 3, '|');
             }
             catch (Exception ex)
             {
