@@ -42,8 +42,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraEditors.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="His.Bhyt.InsuranceExpertise">
-      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.dll</HintPath>
+    <Reference Include="His.Bhyt.InsuranceExpertise, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\common\HISUTIL\His.Bhyt\His.Bhyt.InsuranceExpertise\bin\Debug\His.Bhyt.InsuranceExpertise.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
