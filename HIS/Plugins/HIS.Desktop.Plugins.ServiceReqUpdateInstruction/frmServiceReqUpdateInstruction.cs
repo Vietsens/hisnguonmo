@@ -2247,33 +2247,19 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
 
         private void dtTime_EditValueChanged(object sender, EventArgs e)
         {
-            try
-            {
-                if (isLoading)
-                    return;
-                if (this.currentServiceReq.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
-                    CheckTimeSereServ();
-            }
-            catch (Exception ex)
-            {
-
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+        
         }
         private void CheckTimeSereServ()
         {
-
             try
             {
                 if (dtTime.EditValue == null && cboRequestUser.EditValue == null || cboRequestUser.EditValue == null) return;
                 Inventec.Common.Logging.LogSystem.Debug("Check Sere Serv Time____Start");
                 var config = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION").FirstOrDefault();
                 var config2 = BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION").FirstOrDefault();
-
-                CommonParam param = new CommonParam();
-                CommonParam paramCanhBao = new CommonParam();
                 if (config != null)
                 {
+                    CommonParam param = new CommonParam();
                     if (config.VALUE == "1" || config.VALUE == "2")
                     {
                         HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
@@ -2293,7 +2279,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                             sdo.SereTimes = new List<long> { sereTime };
                         }
                         Inventec.Common.Logging.LogSystem.Debug("HisServiceReqCheckSereTimesSDO:" + LogUtil.TraceData("HisServiceReqCheckSereTimesSDO", sdo));
-                        bool rs = new BackendAdapter(paramCanhBao).Post<bool>("/api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, paramCanhBao);
+                        bool rs = new BackendAdapter(param).Post<bool>("/api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, param);
                         LogSystem.Debug("Giá trj api trả về: " + rs);
 
                         if (!rs)
@@ -2301,12 +2287,12 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                             if (config.VALUE == "1")
                             {
                                 //MessageManager.Show(this, param, rs);
-                                XtraMessageBox.Show(paramCanhBao.GetMessage(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                XtraMessageBox.Show(param.GetMessage(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 btnSave.Enabled = false;
                             }
                             else
                             {
-                                DialogResult result = XtraMessageBox.Show(this, paramCanhBao.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo);
+                                DialogResult result = XtraMessageBox.Show(this, param.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo);
                                 if (result == DialogResult.Yes)
                                 {
                                     btnSave.Enabled = true;
@@ -2323,6 +2309,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 }
                 if (config2 != null)
                 {
+                    CommonParam paramCanhBao = new CommonParam();
                     if (config2.VALUE == "1" || config2.VALUE == "2")
                     {
                         HisServiceReqCheckAssignSimultaneitySDO sdo = new HisServiceReqCheckAssignSimultaneitySDO();
@@ -2414,6 +2401,11 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
 
         private void dtStartTime_EditValueChanged(object sender, EventArgs e)
         {
+            
+        }
+
+        private void dtStartTime_Leave(object sender, EventArgs e)
+        {
             try
             {
                 if (isLoading)
@@ -2425,6 +2417,22 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
 
+            }
+        }
+
+        private void dtTime_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isLoading)
+                    return;
+                if (this.currentServiceReq.SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                    CheckTimeSereServ();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

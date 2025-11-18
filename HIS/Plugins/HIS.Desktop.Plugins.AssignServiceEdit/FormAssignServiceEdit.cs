@@ -3049,23 +3049,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
 
         private void dtInstructionTime_EditValueChanged(object sender, EventArgs e)
         {
-            try
-            {
-                if (!this.isNotLoadWhileChangeInstructionTimeInFirst)
-                {
-                    this.ChangeIntructionTimeEditor(this.dtInstructionTime.DateTime);
-                }
-                if (HisConfigCFG.IsCheckDepartmentInTimeWhenPresOrAssign)
-                {
-                    CheckTimeInDepartment(this.intructionTimeSelecteds);
-                }
-                if (dtInstructionTime.EditValue != null) CheckTimeSereSev();
-
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+           
         }
         private void CheckTimeSereSev()
         {
@@ -3098,7 +3082,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                             }
                             else
                             {
-                                var result = MessageBox.Show(this,param.GetMessage() + "Bạn có muốn tiếp tục?","Thông Báo", MessageBoxButtons.YesNo);
+                                var result = XtraMessageBox.Show(this,param.GetMessage() + "Bạn có muốn tiếp tục?","Thông Báo", MessageBoxButtons.YesNo);
                                 if (result == DialogResult.No)
                                 {
                                     return; 
@@ -3139,7 +3123,8 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                             }
                             else if (config.VALUE == "2")
                             {
-                                if (XtraMessageBox.Show(param2.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                                DialogResult result = XtraMessageBox.Show(this, param2.GetMessage() + "Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo);
+                                if (result != DialogResult.Yes)
                                 {
 
                                     btnSave.Enabled = btnSaveAndPrint.Enabled = false;
@@ -3375,6 +3360,27 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
         private void GridControlService_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void dtInstructionTime_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!this.isNotLoadWhileChangeInstructionTimeInFirst)
+                {
+                    this.ChangeIntructionTimeEditor(this.dtInstructionTime.DateTime);
+                }
+                if (HisConfigCFG.IsCheckDepartmentInTimeWhenPresOrAssign)
+                {
+                    CheckTimeInDepartment(this.intructionTimeSelecteds);
+                }
+                if (dtInstructionTime.EditValue != null) CheckTimeSereSev();
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
     }
 }
