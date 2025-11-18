@@ -25,13 +25,14 @@ using System.Collections.Generic;
 using HIS.Desktop.LocalStorage.BackendData;
 using System.Linq;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
+using Inventec.Common.Logging;
 
 
 namespace HIS.Desktop.Plugins.CheckInfoBHYT
 {
     public partial class frmCheckInfoBHYT : HIS.Desktop.Utility.FormBase
     {
-        private async Task CheckTTFull(V_HIS_PATIENT_TYPE_ALTER _patientTypeAlter, string nameCb, string cccdCb, string api)
+        private async Task CheckTTFull(V_HIS_PATIENT_TYPE_ALTER _patientTypeAlter, string nameCb, string cccdCb, string api, string newapi)
         {
             rsDataBHYT = new ResultDataADO();
             try
@@ -39,6 +40,8 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                 Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên cán bộ:{0}", nameCb));
                 Inventec.Common.Logging.LogSystem.Debug(String.Format("CCCD cán bộ:{0}", cccdCb));
                 Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên api:{0}", api));
+                Inventec.Common.Logging.LogSystem.Debug(String.Format("Tên api 2:{0}", newapi));
+
 
                 ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
                 apiInsuranceExpertise.ApiEgw = api;
@@ -53,6 +56,7 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                     || !string.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))
                 {
                     rsDataBHYT.ResultHistoryLDO = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsDataBHYT.ResultHistoryLDO), rsDataBHYT.ResultHistoryLDO));
                     if (HisConfigCFG.WarningInvalidCheckHistoryHeinCard
                         && rsDataBHYT.ResultHistoryLDO.dsLichSuKT2018 != null
                         && rsDataBHYT.ResultHistoryLDO.dsLichSuKT2018.Count > 0
@@ -158,6 +162,34 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                             return;
                         }
                     }
+                    if (rsDataBHYT.ResultHistoryLDO.dsLichSuKCB2018 == null)
+                    {
+                        LogSystem.Debug("Khong co lich su KCB 2018, kiem tra voi api moi");
+                        ResultHistoryLDO rsIns2 = new ResultHistoryLDO();
+                        if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
+                            || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
+                            || !string.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))
+                        {
+                            apiInsuranceExpertise.isNullLsKCB2018 = true;
+                            apiInsuranceExpertise.ApiEgw = newapi;
+                            rsIns2 = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsIns2), rsIns2));
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
+                            rsIns2 = null;
+                        }
+                        if (rsIns2 != null && rsIns2.dsLichSuKCB2025 != null && rsIns2.dsLichSuKCB2025.Count > 0 && rsIns2.success == true && String.IsNullOrEmpty(rsIns2.message))
+                        {
+                            rsDataBHYT.ResultHistoryLDO.dsLichSuKCB2018 = new List<ExamHistoryLDO>();
+                            foreach (var item in rsIns2.dsLichSuKCB2025)
+                            {
+                                rsDataBHYT.ResultHistoryLDO.dsLichSuKCB2018.Add(item);
+                            }
+                        }
+                    }
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsDataBHYT.ResultHistoryLDO), rsDataBHYT.ResultHistoryLDO));
                 }
                 else
                 {
