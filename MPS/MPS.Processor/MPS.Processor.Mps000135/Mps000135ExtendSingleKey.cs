@@ -35,5 +35,6 @@ namespace MPS.Processor.Mps000135
         internal static string EXP_TIME = "EXP_TIME_STR";
         internal static string EXP_LOGINNAME = "EXP_LOGINNAME";
         internal static string EXP_USERNAME = "EXP_USERNAME";
+        internal static string MEDICINE_PARENT_NAME = "MEDICINE_PARENT_NAME";
     }
 }

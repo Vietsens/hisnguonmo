@@ -68,7 +68,13 @@ namespace MPS.Processor.Mps000135
                 singleTag.ProcessData(store, singleValueDictionary);
                 objectTag.AddObjectData(store, "List", rdo.listAdo);
                 //                objectTag.AddObjectData(store, "List", rdo._BloodTypes ?? new List<V_HIS_BLOOD_TYPE>());
+
+                objectTag.AddObjectData(store, "MedicineParentGroup", GroupMedicineParentCode());
+
                 objectTag.AddObjectData(store, "ListMediMate1", rdo.listAdo);
+
+                objectTag.AddRelationship(store, "MedicineParentGroup", "ListMediMate1", "MEDICINE_PARENT_CODE", "MEDICINE_PARENT_CODE");
+
                 objectTag.AddObjectData(store, "ListMediMate2", rdo.listAdo);
                 objectTag.AddObjectData(store, "ListMediMate3", rdo.listAdo);
                 objectTag.AddObjectData(store, "MedicineGroup", lstMedicineType);
@@ -97,6 +103,29 @@ namespace MPS.Processor.Mps000135
             }
 
             return result;
+        }
+
+        private List<Mps000135ADO> GroupMedicineParentCode()
+        {
+            List<Mps000135ADO> lstResult = new List<Mps000135ADO>();
+            try
+            {
+                if (rdo.listAdo != null && rdo.listAdo.Count > 0)
+                {
+                    var group = rdo.listAdo.GroupBy(o => o.MEDICINE_PARENT_CODE);
+                    foreach (var item in group)
+                    {
+                        lstResult.Add(item.ToList().First());
+                    }
+                }
+
+                return lstResult;
+            }
+            catch (Exception ex)
+            {
+                return null;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void GetMedicineGroup()

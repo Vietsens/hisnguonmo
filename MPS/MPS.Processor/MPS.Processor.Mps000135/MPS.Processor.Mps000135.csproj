@@ -66,6 +66,10 @@
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000135.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Test_New\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000135.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -88,12 +92,6 @@
     <Compile Include="Mps000135ExtendSingleKey.cs" />
     <Compile Include="Mps000135Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MPS.Processor.Mps000135.PDO\MPS.Processor.Mps000135.PDO.csproj">
-      <Project>{121952ca-2781-45fe-b779-3c11dd41ebdf}</Project>
-      <Name>MPS.Processor.Mps000135.PDO</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

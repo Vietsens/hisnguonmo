@@ -295,14 +295,18 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                 bool IsDataKey = false;
                 IsDataEkipUser = false;
-                if (this.sereServ != null)
+                if (this.sereServ != null)  
                 {
                     CommonParam param = new CommonParam();
                     if (dicEkipUser.ContainsKey(this.sereServ.ID))
                     {
                         ekipUserAdos = new List<HisEkipUserADO>();
                         ekipUserAdos.AddRange(dicEkipUser[this.sereServ.ID]);
-                        IsDataEkipUser = true;
+                        ekipUserAdos.ForEach(o => o.Action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit);
+                        ekipUserAdos.First().Action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd;
+                        gridControlEkip.DataSource = null;
+                        gridControlEkip.DataSource = ekipUserAdos;
+                        return;
                     }
                     else if (this.sereServ.EKIP_ID.HasValue)
                     {

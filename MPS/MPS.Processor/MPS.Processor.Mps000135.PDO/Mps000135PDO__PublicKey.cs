@@ -376,7 +376,7 @@ namespace MPS.Processor.Mps000135.PDO
         }
 
         public Mps000135ADO(List<HIS_EXP_MEST_MATY_REQ> _expMestMatyReqs, List<V_HIS_MATERIAL_TYPE> _materialTypes, decimal REQ_AMOUNT, decimal DD_AMOUNT)
-        {
+        {  
             try
             {
                 if (_expMestMatyReqs != null && _expMestMatyReqs.Count > 0)
@@ -398,6 +398,9 @@ namespace MPS.Processor.Mps000135.PDO
                     this.DESCRIPTION = _expMestMatyReqs.First().DESCRIPTION;
                     this.REQ_AMOUNT = REQ_AMOUNT;
                     this.DD_AMOUNT = DD_AMOUNT;
+                    this.MEDICINE_PARENT_ID = data.PARENT_ID;
+                    this.MEDICINE_PARENT_CODE = data.PARENT_CODE;
+                    this.MEDICINE_PARENT_NAME = data.PARENT_NAME;
                 }
             }
             catch (Exception ex)
@@ -439,7 +442,7 @@ namespace MPS.Processor.Mps000135.PDO
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
+        } 
 
     }
 }
