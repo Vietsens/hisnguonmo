@@ -7978,7 +7978,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
         private void xtraTabControl1_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)   
         {
-            try
+            try  
             {
                 if (e.Button.Kind == ButtonPredefines.Glyph)
                 {
@@ -7994,6 +7994,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         xtraTabControl1.CustomHeaderButtons[1].Visible = false;
                         IsPin = true;
                     }
+                    SavePin();
                     xtraTabControl1.Update();
                     HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == xtraTabControl1.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
                     if (csAddOrUpdate != null)
