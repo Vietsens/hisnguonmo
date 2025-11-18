@@ -41,6 +41,8 @@ using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using Inventec.Desktop.Plugins.Patient.Patient;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -383,7 +385,7 @@ namespace HIS.Desktop.Plugins.Patient
                 gridViewPatientList.BeginUpdate();
 
                 gridViewPatientList.RefreshData();
-                Inventec.Common.Logging.LogSystem.Info("Log HisPatientViewFilter: " + LogUtil.TraceData("input: ", filter));
+
                 apiResult = new Inventec.Common.Adapter.BackendAdapter
                     (paramCommon).GetRO<List<HIS.Desktop.Plugins.Patient.Base.ADO_V_HIS_PATIENT>>
                     (ApiConsumer.HisRequestUriStore.HIS_PATIENT_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
@@ -1000,7 +1002,7 @@ namespace HIS.Desktop.Plugins.Patient
                                 if (allow != null && allow.Count > 0)
                                 {
                                     addPatientToProcessList(allow);   
-                                    //addPatientToProcessList(ImpPatientListProcessor);
+                                    //addPatientToProcessList(ImpPatientListProcessor);  
                                     if (error.Count == 0)
                                     {
                                         if (this.listPatientImp != null && this.listPatientImp.Count > 0)
@@ -1320,30 +1322,59 @@ namespace HIS.Desktop.Plugins.Patient
                             error.Add(string.Format("Dữ liệu nơi làm việc của bệnh nhân {0} độ dài vượt quá ký tự cho phép", patientImp.VIR_PATIENT_NAME));
                     }
 
-                    
-
-                    if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__CHECK_DUPLICATION) == "1")   
+                    if (patientImport.TDL_HEIN_MEDI_ORG_CODE != null)
                     {
-                        if (string.IsNullOrWhiteSpace(patientImport.CCCD_NUMBER.Trim()))
-                        {
-                            XtraMessageBox.Show(
-                                "Số căn cước công dân của bệnh nhân không được để trống!", "Thông báo",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning
-                            );
-                            return;
-                        }
+                        patientImp.TDL_HEIN_MEDI_ORG_CODE = patientImport.TDL_HEIN_MEDI_ORG_CODE;
                     }
-                    else if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__CHECK_DUPLICATION) == "2")   
+
+                    if (patientImport.TDL_HEIN_CARD_NUMBER != null)
                     {
-                        List<ADO_V_HIS_PATIENT> data = null;
-                        if (apiResult.Data != null && apiResult.Data.Count > 0)
+                        patientImp.TDL_HEIN_CARD_NUMBER = patientImport.TDL_HEIN_CARD_NUMBER;
+                    }
+
+                    if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__CHECK_DUPLICATION) == "1" || HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__CHECK_DUPLICATION) == "2")
+                    {
+                        CommonParam paramCommon = new CommonParam();
+                        HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
+                        if (!string.IsNullOrWhiteSpace(patientImport.CCCD_NUMBER.Trim()))
                         {
-                            data = apiResult.Data;
-                            if (!string.IsNullOrWhiteSpace(patientImport.CCCD_NUMBER.Trim()) && data.Count > 0 && data.FirstOrDefault(o => o.CCCD_NUMBER == patientImport.CCCD_NUMBER.Trim()) != null)
+                            filter.CCCD_NUMBER__EXACT = patientImport.CCCD_NUMBER.Trim();
+                        }
+
+                        var patients = (new BackendAdapter(paramCommon).Get<List<HisPatientSDO>>("api/HisPatient/GetSdoAdvance", ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon));
+
+                        //// c Hân bảo ko check hộ chiếu
+
+                        if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__CHECK_DUPLICATION) == "1")
+                        {
+                            if (string.IsNullOrWhiteSpace(patientImport.CCCD_NUMBER.Trim()))
+                            {
+                                XtraMessageBox.Show(
+                                    string.Format("Số căn cước công dân của bệnh nhân {0} không được được để trống", patientImport.VIR_PATIENT_NAME), "Thông báo",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning
+                                );
+                                return;
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(patientImport.CCCD_NUMBER.Trim()) 
+                                && patients.Count > 0 && patients.FirstOrDefault(o => o.CCCD_NUMBER == patientImport.CCCD_NUMBER.Trim()) != null)
+                            {
+                                XtraMessageBox.Show(
+                                    string.Format("Số căn cước công dân {1} của bệnh nhân {0} bị trùng với mã bệnh nhân {2}.", patientImport.VIR_PATIENT_NAME, patientImport.CCCD_NUMBER, patients.Select(o => o.PATIENT_CODE).FirstOrDefault()), "Cảnh báo",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning
+                                );
+                                return;
+                            }
+                        }
+
+                        if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__CHECK_DUPLICATION) == "2")
+                        {
+                            if (string.IsNullOrWhiteSpace(patientImport.CCCD_NUMBER.Trim()))
                             {
                                 DialogResult result = XtraMessageBox.Show(
-                                    "Số căn cước công dân của bệnh nhân bị trùng. Bạn có muốn tiếp tục không?", "Cảnh báo",
+                                    string.Format("Số căn cước công dân của bệnh nhân {0} đang được để trống. Bạn có muốn tiếp tục không?", patientImport.VIR_PATIENT_NAME), "Cảnh báo",
                                     MessageBoxButtons.YesNo,
                                     MessageBoxIcon.Warning
                                 );
@@ -1354,10 +1385,10 @@ namespace HIS.Desktop.Plugins.Patient
                                 }
                             }
 
-                            if (!string.IsNullOrWhiteSpace(patientImport.PASSPORT_NUMBER.Trim()) && data.Count > 0 && data.FirstOrDefault(o => o.PASSPORT_NUMBER == patientImport.PASSPORT_NUMBER.Trim()) != null)
+                            if (!string.IsNullOrWhiteSpace(patientImport.CCCD_NUMBER.Trim()) && patients.Count > 0 && patients.FirstOrDefault(o => o.CCCD_NUMBER == patientImport.CCCD_NUMBER.Trim()) != null)
                             {
                                 DialogResult result = XtraMessageBox.Show(
-                                    "Số hộ chiếu của bệnh nhân bị trùng. Bạn có muốn tiếp tục không?", "Cảnh báo",
+                                    string.Format("Số căn cước công dân {1} của bệnh nhân {0} bị trùng với mã bệnh nhân {2}. Bạn có muốn tiếp tục không?", patientImport.VIR_PATIENT_NAME, patientImport.CCCD_NUMBER, patients.Select(o => o.PATIENT_CODE).FirstOrDefault()), "Cảnh báo",
                                     MessageBoxButtons.YesNo,
                                     MessageBoxIcon.Warning
                                 );
@@ -1368,50 +1399,27 @@ namespace HIS.Desktop.Plugins.Patient
                                 }
                             }
                         }
-                        
-
-                        patientImp.CCCD_NUMBER = patientImport.CCCD_NUMBER.Trim();
-                        patientImp.PASSPORT_NUMBER = patientImport.PASSPORT_NUMBER.Trim();
-
-                        if (!string.IsNullOrWhiteSpace(patientImport.cccdDateTime))
-                        {
-                            DateTime cccdDate = DateTime.ParseExact(patientImport.cccdDateTime.Trim(), "dd/MM/yyyy", null);
-                            patientImp.CCCD_DATE = long.Parse(cccdDate.ToString("yyyyMMdd") + "000000");
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(patientImport.passportDateTime))
-                        {
-                            DateTime passportDateTime = DateTime.ParseExact(patientImport.passportDateTime.Trim(), "dd/MM/yyyy", null);
-                            patientImp.PASSPORT_DATE = long.Parse(passportDateTime.ToString("yyyyMMdd") + "000000");
-                        }
-
-                        patientImp.CCCD_PLACE = patientImport.CCCD_PLACE;
-                        patientImp.PASSPORT_PLACE = patientImport.PASSPORT_PLACE;
                     }
-                    else
+
+                    patientImp.CCCD_NUMBER = patientImport.CCCD_NUMBER ?? "";
+                    patientImp.PASSPORT_NUMBER = patientImport.PASSPORT_NUMBER ?? "";
+
+                    if (!string.IsNullOrWhiteSpace(patientImport.cccdDateTime))
                     {
-                        patientImp.CCCD_NUMBER = patientImport.CCCD_NUMBER ?? "";
-                        patientImp.PASSPORT_NUMBER = patientImport.PASSPORT_NUMBER ?? "";
-
-                        if (!string.IsNullOrWhiteSpace(patientImport.cccdDateTime))
-                        {
-                            DateTime cccdDate = DateTime.ParseExact(patientImport.cccdDateTime.Trim(), "dd/MM/yyyy", null);
-                            patientImp.CCCD_DATE = long.Parse(cccdDate.ToString("yyyyMMdd") + "000000");
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(patientImport.passportDateTime))
-                        {
-                            DateTime passportDateTime = DateTime.ParseExact(patientImport.passportDateTime.Trim(), "dd/MM/yyyy", null);
-                            patientImp.PASSPORT_DATE = long.Parse(passportDateTime.ToString("yyyyMMdd") + "000000");
-                        }
-
-                        patientImp.CCCD_PLACE = patientImport.CCCD_PLACE ?? "";
-                        patientImp.PASSPORT_PLACE = patientImport.PASSPORT_PLACE ?? "";
+                        DateTime cccdDate = DateTime.ParseExact(patientImport.cccdDateTime.Trim(), "dd/MM/yyyy", null);
+                        patientImp.CCCD_DATE = long.Parse(cccdDate.ToString("yyyyMMdd") + "000000");
                     }
+
+                    if (!string.IsNullOrWhiteSpace(patientImport.passportDateTime))
+                    {
+                        DateTime passportDateTime = DateTime.ParseExact(patientImport.passportDateTime.Trim(), "dd/MM/yyyy", null);
+                        patientImp.PASSPORT_DATE = long.Parse(passportDateTime.ToString("yyyyMMdd") + "000000");
+                    }
+
+                    patientImp.CCCD_PLACE = patientImport.CCCD_PLACE ?? "";
+                    patientImp.PASSPORT_PLACE = patientImport.PASSPORT_PLACE ?? "";
 
                     this.listPatientImp.Insert(0, patientImp);
-
-
                 }
             }
             catch (Exception ex)
