@@ -462,4 +462,10 @@
   <data name="UCHisImportMestMedicine.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Treatment code</value>
   </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem47.Text" xml:space="preserve">
+    <value>Tax amount vouchers:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem47.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tax amount of invoices and vouchers:</value>
+  </data>
 </root>

@@ -462,4 +462,10 @@
   <data name="UCHisImportMestMedicine.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Mã điều trị</value>
   </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem47.Text" xml:space="preserve">
+    <value>Số tiền thuế trên hóa đơn:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem47.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số tiền thuế trên hóa đơn chứng từ</value>
+  </data>
 </root>
