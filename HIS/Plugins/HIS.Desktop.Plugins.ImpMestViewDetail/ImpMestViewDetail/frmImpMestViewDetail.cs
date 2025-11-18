@@ -260,6 +260,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                 dtDocumentDate.Enabled = this.impMest.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC;
                 txtDescription.Enabled = this.impMest.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC;
                 SpDocumentPrice.Enabled = this.impMest.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC;
+                SpDocumentVatPrice.Enabled = this.impMest.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC;
                 TxtDeliverer.Enabled = this.impMest.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC;
                 SpDiscount.Enabled = this.impMest.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC;
                 SpDiscountRatio.Enabled = this.impMest.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC;
@@ -528,6 +529,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
 
                     TxtDocumentNumber.Text = impMest.DOCUMENT_NUMBER;
                     SpDocumentPrice.EditValue = impMest.DOCUMENT_PRICE;
+                    SpDocumentVatPrice.EditValue = impMest.DOCUMENT_VAT_PRICE; //DOCUMENT_VAT_PRICE 
                     TxtDeliverer.Text = impMest.DELIVERER;
                     txtDescription.Text = impMest.DESCRIPTION;
                     SpDiscount.EditValue = impMest.DISCOUNT;
@@ -543,6 +545,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                     lblImpMedistock.Text = "";
                     TxtDocumentNumber.Text = "";
                     SpDocumentPrice.EditValue = "";
+                    SpDocumentVatPrice.EditValue = "";
                     TxtDeliverer.Text = "";
                     txtDescription.Text = "";
                     SpDiscount.EditValue = null;
@@ -2142,6 +2145,11 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                                     hisImpMestUpdateDetailSDO.DocumentPrice = SpDocumentPrice.Value;
                                 }
 
+                                if (SpDocumentVatPrice.EditValue != null)
+                                {
+                                    hisImpMestUpdateDetailSDO.DocumentVatPrice = SpDocumentVatPrice.Value; // DocumentVatPrice
+                                }
+
                                 if ((hisImpMestUpdateDetailSDO.ImpMestBloods == null || hisImpMestUpdateDetailSDO.ImpMestBloods.Count() == 0)
                                     && (hisImpMestUpdateDetailSDO.ImpMestMaterials == null || hisImpMestUpdateDetailSDO.ImpMestMaterials.Count() == 0)
                                     && (hisImpMestUpdateDetailSDO.ImpMestMedicines == null || hisImpMestUpdateDetailSDO.ImpMestMedicines.Count() == 0)
@@ -2202,6 +2210,11 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                 if (SpDocumentPrice.EditValue != null)
                 {
                     hisImpMestUpdateDetailSDO.DocumentPrice = SpDocumentPrice.Value;
+                }
+
+                if (SpDocumentVatPrice.EditValue != null)
+                {
+                    hisImpMestUpdateDetailSDO.DocumentVatPrice = SpDocumentVatPrice.Value; // DocumentVatPrice
                 }
 
                 if ((hisImpMestUpdateDetailSDO.ImpMestBloods == null || hisImpMestUpdateDetailSDO.ImpMestBloods.Count() == 0)
