@@ -18,15 +18,10 @@
 using DevExpress.Data;
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraNavBar;
-using Inventec.Common.Adapter;
-using Inventec.Common.Controls.EditorLoader;
-using Inventec.Common.Logging;
-using Inventec.Core;
-using Inventec.Desktop.Common.Message;
-using Inventec.UC.Paging;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
@@ -35,18 +30,24 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Utilities;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using Inventec.UC.Paging;
 using LIS.EFMODEL.DataModels;
 using LIS.Filter;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
 using System.Drawing;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using DevExpress.XtraEditors.DXErrorProvider;
+using System.Globalization;
+using System.Linq;
 using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.LisMachineIndex
 {
@@ -152,6 +153,7 @@ namespace HIS.Desktop.Plugins.LisMachineIndex
                 this.bbtnReset.Caption = Inventec.Common.Resource.Get.Value("frmLisMachineIndex.bbtnReset.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnFocusDefault.Caption = Inventec.Common.Resource.Get.Value("frmLisMachineIndex.bbtnFocusDefault.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmLisMachineIndex.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColDifferenceValue.Caption = Inventec.Common.Resource.Get.Value("frmLisMachineIndex.grdColDifferenceValue.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 if (this.moduleData != null && !String.IsNullOrEmpty(this.moduleData.text))
                 {
                     this.Text = this.moduleData.text;
@@ -495,6 +497,25 @@ namespace HIS.Desktop.Plugins.LisMachineIndex
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
+                    else if (e.Column.FieldName == "DIFFERENCE_VALUE_STR")
+                    {
+                        try
+                        {
+                            if (pData.DIFFERENCE_VALUE != null)
+                            {
+
+                                e.Value = String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("en"), "{0:0.####}", pData.DIFFERENCE_VALUE ?? 0);
+                            }
+                            else
+                            {
+                                e.Value = "";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                    }    
                     else if (e.Column.FieldName == "CREATE_TIME_STR")
                     {
                         try
@@ -602,6 +623,17 @@ namespace HIS.Desktop.Plugins.LisMachineIndex
                     txtFomatValue.Text = data.FORMAT_VALUE;
                     txtIsoProcessCode.Text = data.ISO_PROCESS_CODE;
                     chkIsMeetIsoStandard.Checked = data.IS_MEET_ISO_STANDARD == (short)1;
+                    if (data.DIFFERENCE_VALUE != null)
+                    {
+                        string text = String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("en"), "{0:0.####}", data.RESULT_COEFFICIENT ?? 0);
+                        spDifferenceValue.Text = text.Replace(',', '.');
+                        spDifferenceValue.Value = data.DIFFERENCE_VALUE ?? 0;
+                    }
+                    else
+                    {
+                        spDifferenceValue.Text = null;
+                    } 
+                    
                     if (data.RESULT_COEFFICIENT != null)
                     {
                         string text = String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("en"), "{0:0.##}", data.RESULT_COEFFICIENT ?? 0);
@@ -919,6 +951,12 @@ namespace HIS.Desktop.Plugins.LisMachineIndex
                 currentDTO.MACHINE_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboMachine.EditValue.ToString() ?? "0");
                 currentDTO.FORMAT_VALUE = txtFomatValue.Text.Trim();
                 currentDTO.ISO_PROCESS_CODE = txtIsoProcessCode.Text;
+                if (spDifferenceValue.Text.Trim() != "")
+                {
+                    currentDTO.DIFFERENCE_VALUE = spDifferenceValue.Value;
+                }
+                else
+                    currentDTO.DIFFERENCE_VALUE = null;
                 if (chkIsMeetIsoStandard.Checked)
                 {
                     currentDTO.IS_MEET_ISO_STANDARD = (short)1;
@@ -948,7 +986,6 @@ namespace HIS.Desktop.Plugins.LisMachineIndex
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
         #endregion
 
         #region Validate

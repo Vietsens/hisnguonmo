@@ -118,7 +118,7 @@
     </Reference>
     <Reference Include="LIS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\LIS\LIS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\LIS\LIS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="LIS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

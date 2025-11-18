@@ -223,7 +223,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         long currentTime = 0;
         bool isTimeServer = false;
-
+        bool isLoadingSer = true;
         List<string> totalIcd = new List<string>(); // danh sách tổng hợp CD ICD chinh
         List<string> totalSubIcd = new List<string>(); // danh sách tổng hợp CD ICD phu
 
@@ -382,6 +382,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Black;
                     lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Black;
                 }
+                isLoadingSer = false;
 
             }
             catch (Exception ex)
@@ -2944,7 +2945,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (HisConfigCFG.IsEnableEditStartTime == "1")
                 {
                     CheckAssignServiceSimultaneityOption();
-                    CheckAssignSimultaneityOption();
+                    if(isCheckAssignServiceSimultaneityOption == false || isCheckAssignSimultaneityOption == false)
+                    {
+                        return;
+                    }
+                 
 
                 }
                 IsPrintExam = false;
@@ -7791,17 +7796,18 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                isCheckAssignServiceSimultaneityOption = false;
+
+                
                 if ((HisConfigCFG.AssignServiceSimultaneityOption != "1" && HisConfigCFG.AssignServiceSimultaneityOption != "2"))
                     return;
 
 
                 long treatmentId = this.treatment?.ID ?? this.treatmentId;
-              
+
                 string loginName = this.HisServiceReqView?.EXECUTE_LOGINNAME;
                 if (string.IsNullOrEmpty(loginName))
                     loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-              
+
 
                 long sereTime = 0;
                 if (dtpStartTime.EditValue != null)
@@ -7816,35 +7822,26 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber((DateTime)this.dtpStartTime.EditValue) ?? 0;
                 }
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("input api/HisServiceReq/CheckSereTimes: ", sereTime +" | "+ treatmentId +" | "+ loginName));
 
-                //long sereTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
                 CommonParam param = new CommonParam();
                 HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
                 sdo.TreatmentId = treatmentId;
                 sdo.Loginnames = new List<string> { loginName };
                 sdo.SereTimes = new List<long> { sereTime };
 
-                   var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
-                Inventec.Common.Logging.LogSystem.Debug(
-    Inventec.Common.Logging.LogUtil.TraceData("CheckSereTimes result:", CheckSereTimes)
-);
-
+                var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
                
-                Inventec.Common.Logging.LogSystem.Debug(
-                    Inventec.Common.Logging.LogUtil.TraceData("CheckSereTimes SDO:", sdo)
-                );
-
                 if (!CheckSereTimes)
                 {
                     if (HisConfigCFG.AssignServiceSimultaneityOption == "1")
                     {
 
-                      
-                        isCheckAssignServiceSimultaneityOption = true;
-                      
-                        MessageManager.Show(param, CheckSereTimes);
+
+                        isCheckAssignServiceSimultaneityOption = false;
+
+                        MessageManager.Show(param.GetMessage());
                         dtpStartTime.Focus();
+                        return;
                     }
                     else if (HisConfigCFG.AssignServiceSimultaneityOption == "2")
                     {
@@ -7853,36 +7850,24 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                         if (result == DialogResult.No)
                         {
-                           
+
                             if (dtpStartTime != null)
                             {
                                 dtpStartTime.Focus();
                             }
-
-                            return; 
+                            isCheckAssignServiceSimultaneityOption = false;
+                            return;
                         }
+                        isCheckAssignServiceSimultaneityOption = true;
 
-                      
                     }
+                   
                 }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-
-        }
-        private void CheckAssignSimultaneityOption()
-        {
-            try
-            {
                 var checkInfos = new List<object>();
                 isCheckAssignSimultaneityOption = false;
-                if ((HisConfigCFG.AssignSimultaneityOption != "1" && HisConfigCFG.AssignSimultaneityOption != "2"))
-                    return;
 
 
-                long treatmentId = this.HisServiceReqView?.TREATMENT_ID ?? this.treatmentId;
+                //   long treatmentId = this.HisServiceReqView?.TREATMENT_ID ?? this.treatmentId;
                 string LoginName = this.HisServiceReqView?.EXECUTE_LOGINNAME;
                 if (string.IsNullOrEmpty(LoginName))
                     LoginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
@@ -7902,12 +7887,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 }
                 // long CheckTimes = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("input api/HisServiceReq/CheckSereTimes: ", CheckTimes + " | " + treatmentId + " | " + LoginName));
-                CommonParam param = new CommonParam();
-                HisServiceReqCheckAssignSimultaneitySDO sdo = new HisServiceReqCheckAssignSimultaneitySDO();
-               
-                sdo.TreatmentId = treatmentId;
-               
-                sdo.CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>
+                CommonParam param2 = new CommonParam();
+                HisServiceReqCheckAssignSimultaneitySDO sdo2 = new HisServiceReqCheckAssignSimultaneitySDO();
+
+                sdo2.TreatmentId = treatmentId;
+
+                sdo2.CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>
                                                 {
                                                     new HisServiceReqCheckAssignSimultaneityCheckInfosSDO
                                                     {
@@ -7916,26 +7901,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                                     }
                                                 };
 
-                var CheckAssignSimu = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
+                var CheckAssignSimu = new BackendAdapter(param2).Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo2, ProcessLostToken, param2);
 
-
-                //if (!CheckAssignSimu)
-                //{
-                //    if (HisConfigCFG.AssignSimultaneityOption == "1")
-                //    {
-                //        isCheckAssignServiceSimultaneityOption = true;
-                //        btnSaveFinish.Enabled = false;
-                //        MessageManager.Show(param, CheckAssignSimu);
-                //    }
-                //    else if (HisConfigCFG.AssignSimultaneityOption == "2")
-                //    {
-                //        if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
-                //        {
-                //            isCheckAssignSimultaneityOption = true;
-                //            btnSaveFinish.Enabled = false;
-                //        }
-                //    }
-                //}
 
 
                 if (!CheckAssignSimu)
@@ -7944,20 +7911,20 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
 
 
-                        isCheckAssignServiceSimultaneityOption = true;
+                        isCheckAssignSimultaneityOption = false;
 
-                        MessageManager.Show(param, CheckAssignSimu);
+                        MessageManager.Show(param2.GetMessage());
                         dtpStartTime.Focus();
                     }
                     else if (HisConfigCFG.AssignSimultaneityOption == "2")
                     {
-                        string message = param.GetMessage() + "Bạn có muốn tiếp tục?";
+                        string message = param2.GetMessage() + "Bạn có muốn tiếp tục?";
                         var result = XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                         if (result == DialogResult.No)
                         {
-                            isCheckAssignServiceSimultaneityOption = true;
-                         
+                            isCheckAssignSimultaneityOption = false;
+
 
                             if (dtpStartTime != null)
                             {
@@ -7966,17 +7933,22 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                             return;
                         }
+                        isCheckAssignSimultaneityOption = true;
 
 
                     }
+
                 }
-
-
+                else
+                {
+                    isCheckAssignSimultaneityOption = true;
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+
         }
 
 
@@ -9223,12 +9195,21 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
        
 
-        private void dtpStartTime_MouseLeave(object sender, EventArgs e)
+        private DateTime? lastValue = null;
+        private void dtpStartTime_EditValueChanged(object sender, EventArgs e)
         {
+            if (isLoadingSer) return;
+            var newValue = dtpStartTime.EditValue as DateTime?;
+
+
+            if (newValue == lastValue)
+                return;
+
+            lastValue = newValue;
+
             if (HisConfigCFG.IsEnableEditStartTime == "1")
             {
                 CheckAssignServiceSimultaneityOption();
-                CheckAssignSimultaneityOption(); 
 
             }
         }

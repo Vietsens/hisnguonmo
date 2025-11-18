@@ -308,6 +308,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     this.btnSave.Enabled = this.btnAdd.Enabled = btnSaveAndPrint.Enabled = false;
                 }
                 isCheckAssignServiceSimultaneityOption = false;
+                if (cboUser.EditValue == null
+            || intructionTimeSelecteds == null
+            || intructionTimeSelecteds.Count == 0)
+                    return;
                 if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "1" && HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "2") || cboUser.EditValue == null || intructionTimeSelecteds == null || intructionTimeSelecteds.Count == 0)
                     return;
                 CommonParam param = new CommonParam();
@@ -326,10 +330,73 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     }
                     else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
                     {
-                        if (XtraMessageBox.Show(param.GetMessage(), "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        if (XtraMessageBox.Show(string.Format("{0} Bạn có muốn tiếp tục không?", param.GetMessage()), "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
                         {
                             isCheckAssignServiceSimultaneityOption = true;
                             btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                            return;
+                        }
+                    }
+                }
+                if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1"
+            || HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
+                {
+                    CommonParam paramAssign = new CommonParam();
+
+                    // SDO tên em đặt theo convention sẵn có (HisServiceReqCheckSereTimesSDO)
+                    // Nếu bên MOS.SDO đặt tên khác thì anh chỉ cần sửa lại tên class cho đúng.
+                    HisServiceReqCheckAssignSimultaneitySDO assignSDO = new HisServiceReqCheckAssignSimultaneitySDO();
+                    assignSDO.TreatmentId = treatmentId;
+                    assignSDO.CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>();
+
+                    if (cboUser.EditValue != null)
+                    {
+                        assignSDO.CheckInfos.Add(new HisServiceReqCheckAssignSimultaneityCheckInfosSDO
+                        {
+                            LoginName = cboUser.EditValue.ToString(),
+                            CheckTimes = intructionTimeSelecteds
+                        });
+                    }
+
+                    bool checkAssign = new BackendAdapter(paramAssign).Post<bool>(
+                        "api/HisServiceReq/CheckAssignSimultaneity",
+                        ApiConsumers.MosConsumer,
+                        assignSDO,
+                        ProcessLostToken,
+                        paramAssign
+                    );
+
+                    if (!checkAssign)
+                    {
+                        isCheckAssignServiceSimultaneityOption = true;
+
+                        string apiMessage = paramAssign.GetMessage();
+                        if (string.IsNullOrEmpty(apiMessage))
+                        {
+                            apiMessage = "Thời gian y lệnh trùng với hồ sơ khác.";
+                        }
+                        if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1")
+                        {
+                            btnSave.Enabled = false;
+                            btnSaveAndPrint.Enabled = false;
+
+                            XtraMessageBox.Show(apiMessage, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        else if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
+                        {
+                            DialogResult dr = XtraMessageBox.Show(
+                                string.Format("{0} Bạn có muốn tiếp tục không?", apiMessage),
+                                "Thông báo",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Question
+                            );
+
+                            if (dr == DialogResult.No)
+                            {
+                                btnSave.Enabled = false;
+                                btnSaveAndPrint.Enabled = false;
+
+                            }
                         }
                     }
                 }
@@ -339,6 +406,77 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+        private bool CheckMultiPatientAssignSimultaneity()
+        {
+            try
+            {
+                // Chỉ áp dụng cho cấu hình 2 + có UC + có thời gian chỉ định
+                if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION != "2"
+                    || this.ucPatientSelect == null
+                    || this.patientSelectProcessor == null
+                    || this.intructionTimeSelecteds == null
+                    || this.intructionTimeSelecteds.Count == 0)
+                    return true;
+
+                var selectedRows = this.patientSelectProcessor.GetSelectedRows(this.ucPatientSelect);
+                if (selectedRows == null || selectedRows.Count <= 1)
+                    return true;
+
+                // Ưu tiên tài khoản chỉ định trên form, nếu null thì fallback về login hiện tại
+                string loginName = cboUser.EditValue != null
+                    ? cboUser.EditValue.ToString()
+                    : Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+
+                foreach (var row in selectedRows)
+                {
+                    CommonParam param = new CommonParam();
+
+                    HisServiceReqCheckAssignSimultaneitySDO sdo = new HisServiceReqCheckAssignSimultaneitySDO
+                    {
+                        TreatmentId = row.TREATMENT_ID,
+                        CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>
+                {
+                    new HisServiceReqCheckAssignSimultaneityCheckInfosSDO
+                    {
+                        LoginName = loginName,
+                        CheckTimes = this.intructionTimeSelecteds
+                    }
+                }
+                    };
+
+                    bool accepted = new BackendAdapter(param).Post<bool>(
+                        "api/HisServiceReq/CheckAssignSimultaneity",
+                        ApiConsumers.MosConsumer,
+                        sdo,
+                        ProcessLostToken,
+                        param);
+
+                    if (!accepted)
+                    {
+                        string apiMsg = param.GetMessage();
+                        if (string.IsNullOrEmpty(apiMsg))
+                            apiMsg = "Thời gian chỉ định trùng với hồ sơ khác";
+
+                        var dr = XtraMessageBox.Show(
+                            apiMsg + ". Bạn có muốn tiếp tục?",
+                            "Thông báo",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Warning);
+
+                        if (dr == DialogResult.No)
+                            return false;   // Cancel toàn bộ lưu
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                // Không chặn nếu lỗi kỹ thuật (theo đúng logic cũ)
+                return true;
+            }
         }
         private void SetCaptionByLanguageKey()
         {
@@ -770,6 +908,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
+                if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1"
+            || HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
+                {
+                    if (!CheckMultiPatientAssignSimultaneity())
+                        return;
+                }
                 //this.ProcessSaveForListSelect(false);
                 LogTheadInSessionInfo(() => this.ProcessSaveForListSelect(false), "btnSave_Click");
                 //this.ProcessSaveData(false);
@@ -785,6 +929,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
+                if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1"
+            || HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
+                {
+                    if (!CheckMultiPatientAssignSimultaneity())
+                        return;
+                }
                 //this.ProcessSaveForListSelect(true);
                 LogTheadInSessionInfo(() => this.ProcessSaveForListSelect(true), "btnSaveAndPrint_Click");
                 //this.ProcessSaveData(true);
