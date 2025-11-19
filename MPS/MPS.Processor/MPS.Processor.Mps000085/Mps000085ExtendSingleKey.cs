@@ -26,6 +26,7 @@ namespace MPS.Processor.Mps000085
 {
     class Mps000085ExtendSingleKey : CommonKey
     {
+        internal static string DOCUMENT_VAT_PRICE = "DOCUMENT_VAT_PRICE";
         internal static string IMP_TIME_STR = "IMP_TIME_STR";
         internal static string DOCUMENT_DATE_STR = "DOCUMENT_DATE_STR";
         internal static string CREATE_TIME_STR = "CREATE_TIME_STR";
