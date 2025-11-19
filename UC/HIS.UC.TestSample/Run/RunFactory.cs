@@ -10,12 +10,12 @@ namespace HIS.UC.TestSample.Run
 {
     class RunFactory
     {
-        internal static IRun MakeIExpMestMedicineGrid(CommonParam param, object data)
+        internal static IRun MakeITestSampleGrid(CommonParam param, object data)
         {
             IRun result = null;
             try
             {
-                if (data is TestSampleADO)
+                if (data is TestSampleInitADO)
                 {
                     result = new RunBehavior(param, (TestSampleInitADO)data);
                 }
