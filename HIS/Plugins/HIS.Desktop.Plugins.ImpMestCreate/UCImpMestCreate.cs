@@ -3951,8 +3951,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     spinImpPrice.Value = this.currrentServiceAdo.IMP_PRICE;
                     spinImpVatRatio.Value = this.currrentServiceAdo.ImpVatRatio;
                     spinEditThueXuat.Value = this.currrentServiceAdo.TAX_RATIO * 100 ?? 0;
-                    spinEditTTCoVAT.Value = (long)Math.Round((this.currrentServiceAdo.IMP_AMOUNT * this.currrentServiceAdo.IMP_PRICE * (1 + this.currrentServiceAdo.ImpVatRatio / 100)), 0, MidpointRounding.AwayFromZero);
-
+                    spinEditTTCoVAT.Value = (long)Math.Round((this.currrentServiceAdo.IMP_AMOUNT * this.currrentServiceAdo.IMP_PRICE * (1 + this.currrentServiceAdo.ImpVatRatio / 100)), ConfigApplications.NumberSeperator, MidpointRounding.AwayFromZero);
                     txtBidGroupCode.Text = this.currrentServiceAdo.TDL_BID_GROUP_CODE;
                     txtBidNumOrder.Text = this.currrentServiceAdo.TDL_BID_NUM_ORDER;
                     txtBidYear.Text = this.currrentServiceAdo.TDL_BID_YEAR;
@@ -6150,14 +6149,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         {
             try
             {
-                if (e.NewValue != null)
+                if (e.NewValue != null && e.NewValue.ToString().Contains("-"))
                 {
-                    decimal value = Convert.ToDecimal(e.NewValue);
-                    if (value < 0)
-                    {
-                        e.NewValue = Math.Abs(value);
-                        e.Cancel = true;
-                    }
+                    e.Cancel = true;
                 }
             }
             catch (Exception ex)
