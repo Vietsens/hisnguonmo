@@ -140,7 +140,7 @@ namespace HIS.Desktop.Plugins.HisServiceTestSample
                 cboServiceType.ForceInitialize();
                 cboServiceType.Properties.View.Columns.Clear();
 
-                GridColumn aColumnCode = cboServiceType.Properties.View.Columns.AddField("SERVICE_TYPE_CODE");
+                GridColumn aColumnCode = cboServiceType.Properties.View.Columns.AddField("SERVICE_TYPE_CODE");  
                 aColumnCode.Caption = "Mã";
                 aColumnCode.Visible = true;
                 aColumnCode.VisibleIndex = 1;
@@ -165,7 +165,7 @@ namespace HIS.Desktop.Plugins.HisServiceTestSample
             {
                 List<Status> status = new List<Status>();
                 status.Add(new Status(1, "Dịch vụ"));
-                status.Add(new Status(2, "Nhóm loại báo cáo"));
+                status.Add(new Status(2, "Mẫu bệnh phẩm"));
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("statusName", "", 300, 2));
@@ -199,7 +199,7 @@ namespace HIS.Desktop.Plugins.HisServiceTestSample
 
                 ServiceColumn colCheck2 = new ServiceColumn("   ", "checkService", 30, true);
                 colCheck2.VisibleIndex = 1;
-                colCheck2.image = imageCollectionService.Images[0];
+                //colCheck2.image = imageCollectionService.Images[0];
                 colCheck2.Visible = false;
                 colCheck2.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
                 ado.ListServiceColumn.Add(colCheck2);
@@ -327,7 +327,6 @@ namespace HIS.Desktop.Plugins.HisServiceTestSample
                 MOS.Filter.HisServiceTesaFilter filter = new HisServiceTesaFilter();
                 filter.SERVICE_ID = data.ID;
                 ServiceIdCheckByService = data.ID;
-
                 ServiceTesa = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_SERVICE_TESA>>(
                                     "api/HisServiceTesa/Get",
                                 HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
@@ -561,16 +560,16 @@ namespace HIS.Desktop.Plugins.HisServiceTestSample
 
                 TestSampleColumn colCheck1 = new TestSampleColumn("   ", "check1", 30, true);
                 colCheck1.VisibleIndex = 1;
-                colCheck1.image = imageCollectionTestSample.Images[0];
+                //colCheck1.image = imageCollectionTestSample.Images[0];
                 colCheck1.Visible = false;
                 colCheck1.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
                 ado.ListTestSampleColumn.Add(colCheck1);
 
-                TestSampleColumn colMaMau = new TestSampleColumn("Mã mẫu", "TEST_SAMPLE_TYPE_CODE", 60, false);
+                TestSampleColumn colMaMau = new TestSampleColumn("Mã mẫu bệnh phẩm", "TEST_SAMPLE_TYPE_CODE", 60, false);
                 colMaMau.VisibleIndex = 2;
                 ado.ListTestSampleColumn.Add(colMaMau);
 
-                TestSampleColumn colTenMau = new TestSampleColumn("Tên mẫu", "TEST_SAMPLE_TYPE_NAME", 100, false);
+                TestSampleColumn colTenMau = new TestSampleColumn("Tên mẫu bệnh phẩm", "TEST_SAMPLE_TYPE_NAME", 100, false);
                 colTenMau.VisibleIndex = 3;
                 ado.ListTestSampleColumn.Add(colTenMau);
 
@@ -686,7 +685,7 @@ namespace HIS.Desktop.Plugins.HisServiceTestSample
                 CommonParam param = new CommonParam();
                 MOS.Filter.HisServiceTesaFilter filter = new HisServiceTesaFilter();
                 filter.TEST_SAME_TYPE_ID = data.ID;
-                TestSampleIdCheckByService = data.ID;
+                TestSampleIdCheckByTestSample = data.ID;
                 ServiceTesaViews = new BackendAdapter(param).Get<List<HIS_SERVICE_TESA>>(
                                          "api/HisServiceTesa/Get",
 

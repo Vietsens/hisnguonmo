@@ -31,7 +31,7 @@ namespace HIS.UC.TestSample
             uc = null;
             try
             {
-                IRun behavior = RunFactory.MakeIExpMestMedicineGrid(param, arg);
+                IRun behavior = RunFactory.MakeITestSampleGrid(param, arg);
                 uc = behavior != null ? (behavior.Run()) : null;
             }
             catch (Exception ex)
@@ -42,7 +42,7 @@ namespace HIS.UC.TestSample
             return uc;
         }
 
-        public void Reload(UserControl control, List<TestSampleADO> data)   
+        public void Reload(UserControl control, List<TestSampleADO> data)    
         {
             try
             {

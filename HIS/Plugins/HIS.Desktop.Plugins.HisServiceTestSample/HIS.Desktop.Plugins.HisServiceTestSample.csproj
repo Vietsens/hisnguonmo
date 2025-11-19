@@ -56,10 +56,12 @@
     <Reference Include="HIS.Desktop.Utility">
       <HintPath>..\..\..\..\..\Test_New\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.Service">
+    <Reference Include="HIS.UC.Service, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Test_New\histest\x64\ReferencedAssemblies\HIS.UC.Service.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.TestSample">
+    <Reference Include="HIS.UC.TestSample, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Test_New\histest\x64\ReferencedAssemblies\HIS.UC.TestSample.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
@@ -130,6 +132,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="UCServiceTestSample.resx">
       <DependentUpon>UCServiceTestSample.cs</DependentUpon>
     </EmbeddedResource>
