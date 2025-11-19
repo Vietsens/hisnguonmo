@@ -9038,14 +9038,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                if (data.START_TIME.HasValue)
-                {
-                    dtpStartTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.START_TIME.Value);
-                }
-                else
-                {
-                    dtpStartTime.EditValue = new BackendAdapter(new CommonParam()).Get<TimerSDO>(AcsRequestUriStore.ACS_TIMER__SYNC, ApiConsumers.AcsConsumer, 1, new CommonParam()).DateNow ;
-                }
+                //if (data.START_TIME.HasValue)
+                //{
+                //    dtpStartTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.START_TIME.Value);
+                //}
+                //else
+                //{
+                //    dtpStartTime.EditValue = new BackendAdapter(new CommonParam()).Get<TimerSDO>(AcsRequestUriStore.ACS_TIMER__SYNC, ApiConsumers.AcsConsumer, 1, new CommonParam()).DateNow ;
+                //}
                 spinNgayThuCuaBenh.EditValue = data.SICK_DAY;
                 cboPatientCase.EditValue = data.PATIENT_CASE_ID;
                 txtHospitalizationReason.Text = data.HOSPITALIZATION_REASON;
