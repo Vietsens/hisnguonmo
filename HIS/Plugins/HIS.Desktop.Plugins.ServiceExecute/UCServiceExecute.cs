@@ -26,6 +26,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraGrid.Views.Tile;
 using DevExpress.XtraRichEdit.API.Native;
@@ -2101,6 +2102,21 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 columnInfos.Add(new ColumnInfo("MAX_SERVICE_PER_DAY", "Tối đa", 100, 4));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("MACHINE_NAME", "ID", columnInfos, true, 250);
                 ControlEditorLoader.Load(editor, dataCombo, controlEditorADO);
+
+                GridView view = editor.Properties.View;
+                view.OptionsView.ColumnAutoWidth = false;
+                view.BestFitMaxRowCount = -1;
+                view.BestFitColumns();
+                editor.Popup += delegate (object s, EventArgs e)
+                {
+                    GridView view2 = editor.Properties.View;
+                    view2.BestFitColumns();
+                    int num = (from GridColumn c in view2.Columns
+                               where c.Visible
+                               select c).Sum((GridColumn c) => c.Width);
+                    int width = Math.Min(num + 50, 1000);
+                    editor.Properties.PopupFormSize = new Size(width, editor.Properties.PopupFormSize.Height);
+                };
             }
             catch (Exception ex)
             {
@@ -7997,6 +8013,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         xtraTabControl1.CustomHeaderButtons[1].Visible = false;
                         IsPin = true;
                     }
+                    SavePin();
                     xtraTabControl1.Update();
                     HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == xtraTabControl1.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
                     if (csAddOrUpdate != null)

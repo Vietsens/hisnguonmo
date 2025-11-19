@@ -294,6 +294,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 HisEkipUserADO ado = new HisEkipUserADO();
 
                 bool IsDataKey = false;
+                IsDataEkipUser = false;
                 if (this.sereServ != null)
                 {
                     CommonParam param = new CommonParam();
@@ -301,7 +302,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     {
                         ekipUserAdos = new List<HisEkipUserADO>();
                         ekipUserAdos.AddRange(dicEkipUser[this.sereServ.ID]);
-                        IsDataEkipUser = true;
+                        ekipUserAdos.ForEach(o => o.Action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit);
+                        ekipUserAdos.First().Action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd;
+                        gridControlEkip.DataSource = null;
+                        gridControlEkip.DataSource = ekipUserAdos;
+                        return;
                     }
                     else if (this.sereServ.EKIP_ID.HasValue)
                     {
