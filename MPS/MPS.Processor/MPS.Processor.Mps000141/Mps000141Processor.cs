@@ -173,6 +173,7 @@ namespace MPS.Processor.Mps000141
                 
                 if (rdo._ManuImpMest != null)
                 {
+                    SetSingleKey(new KeyValue(Mps000141ExtendSingleKey.DOCUMENT_VAT_PRICE, this.rdo._ManuImpMest.DOCUMENT_VAT_PRICE ?? 0));
                     SetSingleKey(new KeyValue(Mps000141ExtendSingleKey.IMP_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo._ManuImpMest.IMP_TIME ?? 0)));
                     SetSingleKey(new KeyValue(Mps000141ExtendSingleKey.DOCUMENT_DATE_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo._ManuImpMest.DOCUMENT_DATE ?? 0)));
                     SetSingleKey(new KeyValue(Mps000141ExtendSingleKey.CREATE_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo._ManuImpMest.CREATE_TIME ?? 0)));

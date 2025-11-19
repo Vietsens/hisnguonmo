@@ -365,6 +365,7 @@ namespace MPS.Processor.Mps000085
                     SetSingleKey(new KeyValue(Mps000085ExtendSingleKey.SUM_PRICE_AFTER_DISCOUNT_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(sumAfterDiscountString)));
                     string documentPriceSeparate = Inventec.Common.Number.Convert.NumberToString(this.rdo._ImpMest.DOCUMENT_PRICE ?? 0, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
                     SetSingleKey(new KeyValue(Mps000085ExtendSingleKey.DOCUMENT_PRICE, this.rdo._ImpMest.DOCUMENT_PRICE ?? 0));
+                    SetSingleKey(new KeyValue(Mps000085ExtendSingleKey.DOCUMENT_VAT_PRICE, this.rdo._ImpMest.DOCUMENT_VAT_PRICE ?? 0));
                     SetSingleKey(new KeyValue(Mps000085ExtendSingleKey.DOCUMENT_PRICE_SEPARATE, documentPriceSeparate));
                     string documentPriceString = String.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(this.rdo._ImpMest.DOCUMENT_PRICE ?? 0));
                     SetSingleKey(new KeyValue(Mps000085ExtendSingleKey.DOCUMENT_PRICE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(documentPriceString)));
