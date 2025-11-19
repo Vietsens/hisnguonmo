@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -192,6 +192,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     txtDocumentDate.Text = dtDocumentDate.Text;
                     txtkyHieuHoaDon.Text = this._currentImpMestUp.INVOICE_SYMBOL;
                     spinDocumentPrice.Value = this._currentImpMestUp.DOCUMENT_PRICE ?? 0;
+                    spinDocumentVatPrice.EditValue = this._currentImpMestUp.DOCUMENT_VAT_PRICE;
                     txtTaiKhoanNo.Text = this._currentImpMestUp.DEBIT_ACCOUNT;
                     txtTaiKhoanCo.Text = this._currentImpMestUp.CREDIT_ACCOUNT;
                     txtDescription.Text = this._currentImpMestUp.DESCRIPTION;

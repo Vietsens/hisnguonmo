@@ -95,7 +95,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         Dictionary<string, V_HIS_MEDI_CONTRACT_METY> dicContractMety = new Dictionary<string, V_HIS_MEDI_CONTRACT_METY>();
         Dictionary<string, V_HIS_MEDI_CONTRACT_MATY> dicContractMaty = new Dictionary<string, V_HIS_MEDI_CONTRACT_MATY>();
 
-        V_HIS_MEDI_CONTRACT_METY MedicalContractMety = new V_HIS_MEDI_CONTRACT_METY();   
+        V_HIS_MEDI_CONTRACT_METY MedicalContractMety = new V_HIS_MEDI_CONTRACT_METY();
         V_HIS_MEDI_CONTRACT_MATY MedicalContractMaty = new V_HIS_MEDI_CONTRACT_MATY();
 
         List<V_HIS_MEDI_STOCK> listMediStock = new List<V_HIS_MEDI_STOCK>();
@@ -1208,7 +1208,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     if (listServiceADO == null)
                         listServiceADO = new List<VHisServiceADO>();
 
-                    List<long> _serviceId = new List<long>();   
+                    List<long> _serviceId = new List<long>();
                     _serviceId.AddRange(_Medicines.Select(p => p.SERVICE_ID).Distinct().ToList());
                     _serviceId.AddRange(_Materials.Select(p => p.SERVICE_ID).Distinct().ToList());
                     List<V_HIS_SERVICE_PATY> dataServicePatys = BackendDataWorker.Get<V_HIS_SERVICE_PATY>().Where(p => _serviceId.Contains(p.SERVICE_ID)).ToList();
@@ -2260,11 +2260,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 }
                 else
                 {
-                    this.currrentServiceAdo.HeinLimitPrice = spinHeinLimitPrice.Value;   
+                    this.currrentServiceAdo.HeinLimitPrice = spinHeinLimitPrice.Value;
                 }
 
 
-                    this.currrentServiceAdo.CanImpAmount = spinCanImpAmount.Value;
+                this.currrentServiceAdo.CanImpAmount = spinCanImpAmount.Value;
                 this.currrentServiceAdo.IMP_AMOUNT = spinImpAmount.Value;
                 this.currrentServiceAdo.GiaBan = GiaBan;
                 if (spinImpPrice1.Enabled && spinImpPrice1.Visible)
@@ -2733,6 +2733,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 dxValidationProvider2.RemoveControlError(dtExpiredDate);
                 dxValidationProvider2.RemoveControlError(txtExpiredDate);
                 CalculTotalPrice();
+                CalculTotalVatPrice();
                 SetEnableControlCommonAdd();
                 ResetValueControlDetail(true);
                 SetEnableButton(false);
@@ -3656,6 +3657,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 gridControlImpMestDetail.DataSource = listServiceADO;
                 gridControlImpMestDetail.EndUpdate();
                 CalculTotalPrice();
+                CalculTotalVatPrice();
                 ResetValueControlDetail();
                 SetEnableButton(false);
                 SetFocuTreeMediMate();
@@ -3695,6 +3697,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 gridControlImpMestDetail.DataSource = listServiceADO;
                 gridControlImpMestDetail.EndUpdate();
                 CalculTotalPrice();
+                CalculTotalVatPrice();
                 SetEnableControlCommon();
                 if (listServiceADO.Count == 0)
                 {
@@ -3723,7 +3726,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     }
                     else
                     {
-                        xtraTabControlMain.SelectedTabPage = xtraTabPageMaterial;      
+                        xtraTabControlMain.SelectedTabPage = xtraTabPageMaterial;
                     }
 
                     ChangeColorMedicine(this.currrentServiceAdo);
@@ -3941,8 +3944,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         spnTemperature.EditValue = null;
 
 
-                    spinHeinLimitPrice.EditValue = this.currrentServiceAdo.HeinLimitPrice ?? null;  
-                        
+                    spinHeinLimitPrice.EditValue = this.currrentServiceAdo.HeinLimitPrice ?? null;
+
                     spinImpAmount.Value = this.currrentServiceAdo.IMP_AMOUNT;
                     spinImpPrice1.Value = this.currrentServiceAdo.IMP_PRICE;
                     spinImpPrice.Value = this.currrentServiceAdo.IMP_PRICE;
@@ -4384,7 +4387,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     if (!spinImpPrice1.Enabled || !spinImpPrice1.Visible)
                     {
                         spinImpPrice.Value = spinImpPriceVAT.Value / ((1 + spinImpVatRatio.Value / 100));
-                        this.currrentServiceAdo.IMP_PRICE = spinImpPrice.Value; 
+                        this.currrentServiceAdo.IMP_PRICE = spinImpPrice.Value;
                     }
                     IsEditImpPriceVAT = false;
                 }
@@ -5413,6 +5416,18 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 Inventec.Common.Logging.LogSystem.Error(ex);
                             }
                         }
+                        else if (e.Column.FieldName == "GiaVAT")
+                        {
+                            try
+                            {
+                                decimal tt = (data.IMP_PRICE * (1 + data.IMP_VAT_RATIO)) - data.IMP_PRICE;
+                                e.Value = Inventec.Common.Number.Convert.NumberToString(tt, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
                         else if (e.Column.FieldName == "PRICE_VAT_STR")
                         {
                             try
@@ -5469,12 +5484,14 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         }
 
                         CalculTotalPrice();
+                        CalculTotalVatPrice();
                     }
                     else if (e.Column.FieldName == "ImpVatRatio")
                     {
                         data.IMP_VAT_RATIO = data.ImpVatRatio / 100;
 
                         CalculTotalPrice();
+                        CalculTotalVatPrice();
                     }
                     else if (e.Column.FieldName == "EXPIRED_DATE_STR")
                     {
@@ -6127,6 +6144,34 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
         private void cboDosageForm_Validating(object sender, CancelEventArgs e)
         {
+        }
+
+        private void spinDocumentVatPrice_EditValueChanging(object sender, ChangingEventArgs e)
+        {
+            try
+            {
+                if (e.NewValue != null)
+                {
+                    decimal value = Convert.ToDecimal(e.NewValue);
+                    if (value < 0)
+                    {
+                        e.NewValue = Math.Abs(value);
+                        e.Cancel = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinDocumentVatPrice_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SendKeys.Send("{TAB}");
+            }
         }
 
         private void ValidatecboDosage(CustomGridLookUpEditWithFilterMultiColumn txt, int maxLength)
