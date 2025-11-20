@@ -52,6 +52,8 @@ using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
 using HIS.Desktop.Plugins.Library.ElectronicBill;
 using Inventec.Common.DocumentViewer;
 using System.Threading;
+using System.IO;
+using HIS.Desktop.LocalStorage.HisConfig;
 
 namespace HIS.Desktop.Plugins.TransactionBillOther
 {
@@ -2594,7 +2596,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     sereServBill.SERVICE_UNIT_NAME = item.GOODS_UNIT_NAME;
                     //sereServBill.PRICE = item.PRICE;
                     sereServBill.VIR_PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
-                    sereServBill.VIR_TOTAL_PATIENT_PRICE = sereServBill.VIR_PRICE * (1 + sereServBill.VAT_RATIO) * sereServBill.AMOUNT;
+                    //sereServBill.VIR_TOTAL_PATIENT_PRICE = sereServBill.VIR_PRICE * (1 + sereServBill.VAT_RATIO) * sereServBill.AMOUNT;
+                    sereServBill.VIR_TOTAL_PATIENT_PRICE = sereServBill.VIR_PRICE * (1 + sereServBill.VAT_RATIO / 100) * sereServBill.AMOUNT;
 
                     sereServBills.Add(sereServBill);
                 }
@@ -2711,7 +2714,20 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 }
 
                 Inventec.Common.DocumentViewer.DocumentViewerManager viewManager = new Inventec.Common.DocumentViewer.DocumentViewerManager(ViewType.ENUM.Pdf);
-                viewManager.Run(electronicBillResult.InvoiceLink);
+                //viewManager.Run(electronicBillResult.InvoiceLink);
+                //DocumentViewerManager viewManager = new DocumentViewerManager(ViewType.ENUM.Pdf);
+                InputADO ado = new InputADO();
+                ado.DeleteWhenClose = true;
+                ado.NumberOfCopy = HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<int>("CONFIG_KEY__HIS_DESKTOP__ELECTRONIC_BILL__PRINT_NUM_COPY");
+                ado.PrintPageSize = currentTransaction.EINVOICE_PAGE_SIZE;
+                ado.URL = electronicBillResult.InvoiceLink;
+                ViewType.Platform type = ViewType.Platform.Telerik;
+                if (HisConfigs.Get<int>("Inventec.Common.DocumentViewer.PlatformOption") > 0)
+                {
+                    type = (ViewType.Platform)(HisConfigs.Get<int>("Inventec.Common.DocumentViewer.PlatformOption") - 1);
+                }
+
+                viewManager.Run(ado, type);
             }
             catch (Exception ex)
             {
