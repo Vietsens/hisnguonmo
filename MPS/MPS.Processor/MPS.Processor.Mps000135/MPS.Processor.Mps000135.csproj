@@ -68,15 +68,15 @@
     </Reference>
     <Reference Include="MPS.Processor.Mps000135.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Test_New\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000135.PDO.dll</HintPath>
+      <HintPath>..\MPS.Processor.Mps000135.PDO\bin\Debug\MPS.Processor.Mps000135.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MPS\Lib\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

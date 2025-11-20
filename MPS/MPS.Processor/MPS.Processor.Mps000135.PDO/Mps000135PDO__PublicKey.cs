@@ -38,6 +38,7 @@ namespace MPS.Processor.Mps000135.PDO
         public keyTitles _Title;
 
         public List<Mps000135ADO> listAdo = new List<Mps000135ADO>();
+        public List<Mps000135ADO> listAdo1 = new List<Mps000135ADO>();
 
     }
 
