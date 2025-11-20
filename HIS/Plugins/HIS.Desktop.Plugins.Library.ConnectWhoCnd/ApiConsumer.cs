@@ -23,16 +23,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
 
                 HttpResponseMessage resp = null;
 
-                string fullrequestUri = requestUri;
-                int index = baseUri.IndexOf('/', baseUri.IndexOf("//") + 2);
-                if (index > 0)
-                {
-                    string extension = baseUri.Substring(index);
-                    if (!requestUri.Contains(extension))
-                    {
-                        fullrequestUri = extension + requestUri;
-                    }
-                }
+                string fullrequestUri = CombileUrl(baseUri, requestUri);
 
                 string sendJsonData = JsonConvert.SerializeObject(data);
 
@@ -65,6 +56,19 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 }
                 return result;
             }
+        }
+        static string CombileUrl(params string[] data)
+        {
+            string result = "";
+            List<string> pathUrl = new List<string>();
+            for (int i = 0; i < data.Length; i++)
+            {
+                pathUrl.Add(data[i].Trim('/'));
+            }
+
+            result = string.Join("/", pathUrl);
+
+            return result;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
     {
         public HIS_TREATMENT Treatment { get; set; }
         public HIS_DHST Dhst { get; set; }
-        public List<V_HIS_SERE_SERV> V_HIS_SERE_SERVs { get; set; }
+        public List<HIS_SERE_SERV> V_HIS_SERE_SERVs { get; set; }
         public List<HIS_SERE_SERV_TEIN> HIS_SERE_SERV_TEINs { get; set; }
     }
 }
