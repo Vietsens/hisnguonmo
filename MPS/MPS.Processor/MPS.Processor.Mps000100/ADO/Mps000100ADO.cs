@@ -120,6 +120,8 @@ namespace MPS.Processor.Mps000100.ADO
                         var firstMaterial = vHisMaterialTypes.First();
                         if (firstMaterial != null)
                         {
+                            this.MEDICINE_PARENT_CODE = firstMaterial.PARENT_CODE;
+                            this.MEDICINE_PARENT_NAME = firstMaterial.PARENT_NAME;
                             this.OTHER_PAY_SOURCE_ID = firstMaterial.OTHER_PAY_SOURCE_ID;
                             this.OTHER_PAY_SOURCE_CODE = firstMaterial.OTHER_PAY_SOURCE_CODE;
                             this.OTHER_PAY_SOURCE_NAME = firstMaterial.OTHER_PAY_SOURCE_NAME != null ? firstMaterial.OTHER_PAY_SOURCE_NAME.ToUpper() : null;

@@ -72,6 +72,7 @@ namespace MPS.Processor.Mps000135
                 objectTag.AddObjectData(store, "MedicineParentGroup", GroupMedicineParentCode());
 
                 objectTag.AddObjectData(store, "ListMediMate1", rdo.listAdo);
+                objectTag.AddObjectData(store, "ListMediMateNew", rdo.listAdo1);
 
                 objectTag.AddRelationship(store, "MedicineParentGroup", "ListMediMate1", "MEDICINE_PARENT_CODE", "MEDICINE_PARENT_CODE");
 
@@ -358,6 +359,50 @@ namespace MPS.Processor.Mps000135
                                     rdo.listAdo.Add(pdo);
                                 }
                             }
+                            var GroupMedi = rdo._ExpMestMedicines.GroupBy(g => g.MEDICINE_TYPE_ID).ToList();
+
+                            foreach (var group in GroupMedi)
+                            {
+                                dicExpiredMedi.Clear();
+                                var listByGroup = group.ToList();
+
+                                foreach (var item in listByGroup)
+                                {
+                                    string key = item.EXPIRED_DATE.HasValue
+                                        ? item.EXPIRED_DATE.Value.ToString("yyyyMMdd")
+                                        : "0";
+
+                                    if (!dicExpiredMedi.ContainsKey(key))
+                                        dicExpiredMedi[key] = new List<V_HIS_EXP_MEST_MEDICINE>();
+
+                                    dicExpiredMedi[key].Add(item);
+
+                                    totalPrice += (item.AMOUNT * item.IMP_PRICE * (1 + item.IMP_VAT_RATIO))
+                                                  - (item.DISCOUNT ?? 0);
+                                }
+
+                                foreach (var dic in dicExpiredMedi)
+                                {
+                                    var firstItem = dic.Value.First();
+
+                                    // Tổng yêu cầu theo loại thuốc
+                                    decimal REQ_AMOUNT = rdo._ExpMestMetyReqs
+                                        .Where(o => o.MEDICINE_TYPE_ID == firstItem.MEDICINE_TYPE_ID)
+                                        .Sum(o => o.AMOUNT);
+
+                                    // Tổng số lượng theo từng hạn dùng
+                                    decimal DD_AMOUNT = dic.Value.Sum(o => o.AMOUNT);
+
+                                    var pdo = new Mps000135ADO(dic.Value, rdo._MedicineTypes, REQ_AMOUNT, DD_AMOUNT);
+
+                                    // Total price: lấy giá theo firstItem
+                                    pdo.TOTAL_PRICE_AFTER_VAT =
+                                        dic.Value.Sum(s => s.AMOUNT * firstItem.IMP_PRICE * (1 + firstItem.IMP_VAT_RATIO));
+
+                                    rdo.listAdo1.Add(pdo);
+                                }
+                            }
+
                         }
                         if (rdo._ExpMestMaterials != null && rdo._ExpMestMaterials.Count > 0 && rdo._ExpMestMatyReqs != null && rdo._ExpMestMatyReqs.Count > 0)
                         {
@@ -380,10 +425,52 @@ namespace MPS.Processor.Mps000135
                                     decimal REQ_AMOUNT = rdo._ExpMestMatyReqs.Where(o => o.MATERIAL_TYPE_ID == dic.Value.First().MATERIAL_TYPE_ID).ToList().Sum(o => o.AMOUNT);
                                     decimal DD_AMOUNT = group.Sum(o => o.AMOUNT);
                                     var pdo = new Mps000135ADO(dic.Value, REQ_AMOUNT, DD_AMOUNT);
-                                    pdo.TOTAL_PRICE_AFTER_VAT = group.Sum(s => s.AMOUNT* s.IMP_PRICE * (1 + s.IMP_VAT_RATIO));
+                                    pdo.TOTAL_PRICE_AFTER_VAT = group.Sum(s => s.AMOUNT * s.IMP_PRICE * (1 + s.IMP_VAT_RATIO));
                                     rdo.listAdo.Add(pdo);
                                 }
                             }
+                            var GroupMate = rdo._ExpMestMaterials.GroupBy(g => g.MATERIAL_TYPE_ID).ToList();
+
+                            foreach (var group in GroupMate)
+                            {
+                                dicExpiredMate.Clear();
+                                var listByGroup = group.ToList();
+
+                                foreach (var item in listByGroup)
+                                {
+                                    string key = item.EXPIRED_DATE.HasValue
+                                        ? item.EXPIRED_DATE.Value.ToString("yyyyMMdd")
+                                        : "0";
+
+                                    if (!dicExpiredMate.ContainsKey(key))
+                                        dicExpiredMate[key] = new List<V_HIS_EXP_MEST_MATERIAL>();
+
+                                    dicExpiredMate[key].Add(item);
+
+                                    totalPrice += (item.AMOUNT * item.IMP_PRICE * (1 + item.IMP_VAT_RATIO)) - (item.DISCOUNT ?? 0);
+                                }
+
+                                foreach (var dic in dicExpiredMate)
+                                {
+                                    var firstItem = dic.Value.First();
+
+                                    decimal REQ_AMOUNT = rdo._ExpMestMatyReqs
+                                        .Where(o => o.MATERIAL_TYPE_ID == firstItem.MATERIAL_TYPE_ID)
+                                        .Sum(o => o.AMOUNT);
+
+                                    decimal DD_AMOUNT = dic.Value.Sum(o => o.AMOUNT);
+
+                                    var pdo = new Mps000135ADO(dic.Value, REQ_AMOUNT, DD_AMOUNT);
+
+                                    // lấy giá của thằng đầu tiên (firstItem)
+                                    pdo.TOTAL_PRICE_AFTER_VAT =
+                                        dic.Value.Sum(s => s.AMOUNT * firstItem.IMP_PRICE * (1 + firstItem.IMP_VAT_RATIO));
+
+                                    rdo.listAdo1.Add(pdo);
+                                }
+                            }
+
+
                         }
                         //if (rdo._ExpMestBloods != null && rdo._ExpMestBloods.Count > 0 && rdo._ExpMestBltyReqs != null && rdo._ExpMestBltyReqs.Count > 0)
                         //{
@@ -432,7 +519,7 @@ namespace MPS.Processor.Mps000135
                                     decimal REQ_AMOUNT = rdo._ExpMestBltyReqs.Where(o => o.BLOOD_TYPE_ID == dic.Value.First().BLOOD_TYPE_ID).ToList().Sum(o => o.AMOUNT);
                                     decimal DD_AMOUNT = group.Count();
                                     var pdo = new Mps000135ADO(dic.Value, REQ_AMOUNT, DD_AMOUNT);
-                                    pdo.TOTAL_PRICE_AFTER_VAT = group.Sum(s=>s.IMP_PRICE*(1+s.IMP_VAT_RATIO));
+                                    pdo.TOTAL_PRICE_AFTER_VAT = group.Sum(s => s.IMP_PRICE * (1 + s.IMP_VAT_RATIO));
                                     rdo.listAdo.Add(pdo);
                                 }
                             }
@@ -510,7 +597,7 @@ namespace MPS.Processor.Mps000135
                     if (rdo._ExpMestMetyReqs != null && rdo._ExpMestMetyReqs.Count > 0)
                     {
                         var ds = rdo._ExpMestMedicines.Select(o => o.MEDICINE_TYPE_ID).ToList();
-                        var Group = rdo._ExpMestMetyReqs.Where(o => !ds.Contains(o.MEDICINE_TYPE_ID)).GroupBy(g => new { g.MEDICINE_TYPE_ID}).Select(p => p.ToList()).ToList();
+                        var Group = rdo._ExpMestMetyReqs.Where(o => !ds.Contains(o.MEDICINE_TYPE_ID)).GroupBy(g => new { g.MEDICINE_TYPE_ID }).Select(p => p.ToList()).ToList();
                         foreach (var group in Group)
                         {
                             decimal REQ_AMOUNT = rdo._ExpMestMetyReqs.Where(o => o.MEDICINE_TYPE_ID == group.First().MEDICINE_TYPE_ID).ToList().Sum(o => o.AMOUNT);
@@ -529,7 +616,7 @@ namespace MPS.Processor.Mps000135
                         {
                             decimal REQ_AMOUNT = rdo._ExpMestMatyReqs.Where(o => o.MATERIAL_TYPE_ID == group.First().MATERIAL_TYPE_ID).ToList().Sum(o => o.AMOUNT);
                             decimal DD_AMOUNT = 0;
-                            Mps000135ADO ado = new Mps000135ADO(group, rdo._MaterialTypes,REQ_AMOUNT,DD_AMOUNT);
+                            Mps000135ADO ado = new Mps000135ADO(group, rdo._MaterialTypes, REQ_AMOUNT, DD_AMOUNT);
                             rdo.listAdo.Add(ado);
                         }
                     }
@@ -541,7 +628,7 @@ namespace MPS.Processor.Mps000135
                         {
                             decimal REQ_AMOUNT = rdo._ExpMestBltyReqs.Where(o => o.BLOOD_TYPE_ID == group.First().BLOOD_TYPE_ID).ToList().Sum(o => o.AMOUNT);
                             decimal DD_AMOUNT = 0;
-                            Mps000135ADO ado = new Mps000135ADO(group, rdo._BloodTypes,REQ_AMOUNT,DD_AMOUNT);
+                            Mps000135ADO ado = new Mps000135ADO(group, rdo._BloodTypes, REQ_AMOUNT, DD_AMOUNT);
                             rdo.listAdo.Add(ado);
                         }
                     }
