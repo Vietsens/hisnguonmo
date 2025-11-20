@@ -57,7 +57,7 @@ namespace HIS.Desktop.Plugins.HisServiceTestSample
         int dataTotal1 = 0;
         V_HIS_SERVICE currentService;
 
-        HIS.UC.Service.ServiceADO currentCopyServiceAdo { get; set; }
+        HIS.UC.Service.ServiceADO currentCopyServiceAdo { get; set; } 
 
         public UCServiceTestSample()
         {
@@ -112,6 +112,11 @@ namespace HIS.Desktop.Plugins.HisServiceTestSample
             {
                 CommonParam param = new CommonParam();
                 MOS.Filter.HisServiceTypeFilter ServiceTypeFilter = new HisServiceTypeFilter();
+                ServiceTypeFilter.IDs = new List<long>
+                {
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL
+                }; 
                 ServiceType = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_SERVICE_TYPE>>(
                              "api/HisServiceType/Get",
                     HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
@@ -774,7 +779,7 @@ namespace HIS.Desktop.Plugins.HisServiceTestSample
 
                     ServiceFillter.SERVICE_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboServiceType.EditValue ?? "0").ToString());
                 else
-                    ServiceFillter.SERVICE_TYPE_IDs = BackendDataWorker.Get<HIS_SERVICE_TYPE>().Where(o => o.ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && o.ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT && o.ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU).Select(o => o.ID).ToList();
+                    ServiceFillter.SERVICE_TYPE_IDs = BackendDataWorker.Get<HIS_SERVICE_TYPE>().Where(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN || o.ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL).Select(o => o.ID).ToList();
 
                 if ((long)cboChoose.EditValue == 1)
                 {
