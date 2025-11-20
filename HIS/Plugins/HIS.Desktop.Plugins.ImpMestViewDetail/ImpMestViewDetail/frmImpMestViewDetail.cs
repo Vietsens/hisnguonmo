@@ -2700,5 +2700,20 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void SpDocumentVatPrice_EditValueChanging(object sender, ChangingEventArgs e)
+        {
+            try
+            {
+                if (e.NewValue != null && e.NewValue.ToString().Contains("-"))
+                {
+                    e.Cancel = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

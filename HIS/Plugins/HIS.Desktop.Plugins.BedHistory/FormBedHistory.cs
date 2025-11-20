@@ -4376,8 +4376,6 @@ namespace HIS.Desktop.Plugins.BedHistory
         {
             try
             {
-                CommonParam param = new CommonParam();
-                CommonParam paramCanhBao = new CommonParam();
                 bool success = false;
 
                 //Review
@@ -4398,6 +4396,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                 var dataBedServiceTypeForSave = gridViewBedServiceType.DataSource as List<ADO.HisBedServiceTypeADO>;
                 if (KeyhasService == "1" || KeyhasService == "2")
                 {
+                    CommonParam paramCanhBao = new CommonParam();
                     HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
                     sdo.TreatmentId = CurrentTreatment.ID;
                     listUser = new List<string>();
@@ -4447,6 +4446,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                     HisServiceReqCheckAssignSimultaneitySDO sdo = new HisServiceReqCheckAssignSimultaneitySDO();
                     sdo.TreatmentId = CurrentTreatment.ID;
 
+                    CommonParam paramCanhBao2 = new CommonParam();
                     // Danh sách CheckInfos
                     var checkInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>();
                     listUser = new List<string>();
@@ -4462,20 +4462,20 @@ namespace HIS.Desktop.Plugins.BedHistory
                     sdo.CheckInfos = checkInfos;
                     LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisServiceReqCheckAssignSimultaneitySDO", sdo));
 
-                    var CheckSereTimes = new BackendAdapter(paramCanhBao).Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo, paramCanhBao);
+                    var CheckSereTimes = new BackendAdapter(paramCanhBao2).Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo, paramCanhBao2);
                     LogSystem.Debug("Giá trj api trả về: " +  CheckSereTimes);
                     LogSystem.Debug("Giá trj key: " + keyNoService);
 
                     if (keyNoService == "1" && !CheckSereTimes)
                     {
                         //MessageManager.Show(this, param, CheckSereTimes);
-                        XtraMessageBox.Show(paramCanhBao.GetMessage(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        XtraMessageBox.Show(paramCanhBao2.GetMessage(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         BtnSaveBedLog.Enabled = false;
                         return;
                     }
                     if (keyNoService == "2" && !CheckSereTimes)
                     {
-                        string message = paramCanhBao.GetMessage() + " Bạn có muốn tiếp tục?";
+                        string message = paramCanhBao2.GetMessage() + " Bạn có muốn tiếp tục?";
                         DialogResult result = MessageBox.Show(message,
                                                               "Xác nhận",
                                                               MessageBoxButtons.YesNo,
@@ -4493,6 +4493,8 @@ namespace HIS.Desktop.Plugins.BedHistory
                     }
                 }
                 bool valid = true;
+
+                CommonParam param = new CommonParam();
                 valid = valid && CheckValidPatientTypeGridService(dataBedServiceTypeForSave, param);
 
                 WaitingManager.Show();

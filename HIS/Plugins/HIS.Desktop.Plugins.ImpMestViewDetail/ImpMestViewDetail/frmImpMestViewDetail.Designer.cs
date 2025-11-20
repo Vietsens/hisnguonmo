@@ -45,10 +45,11 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmImpMestViewDetail));
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnNew = new DevExpress.XtraBars.BarButtonItem();
@@ -58,9 +59,9 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
@@ -69,6 +70,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.btnHoiDongKiemNhap = new DevExpress.XtraEditors.SimpleButton();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.SpDocumentVatPrice = new DevExpress.XtraEditors.SpinEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.txtDescription = new DevExpress.XtraEditors.TextEdit();
             this.SpDiscountRatio = new DevExpress.XtraEditors.SpinEdit();
@@ -90,12 +92,13 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.lciImpTime = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciDocumentNumber = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciDocumentPrice = new DevExpress.XtraLayout.LayoutControlItem();
-            this.LciDeliverer = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciDiscount = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciNote = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutDocumentDate = new DevExpress.XtraLayout.LayoutControlItem();
+            this.LciDeliverer = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.tabPageBlood = new DevExpress.XtraTab.XtraTabPage();
             this.gridControlBlood = new Inventec.Desktop.CustomControl.MyGridControl();
@@ -266,8 +269,6 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.LCGRoot = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.SpDocumentVatPrice = new DevExpress.XtraEditors.SpinEdit();
-            this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
@@ -281,6 +282,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SpDocumentVatPrice.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpDiscountRatio.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpDiscount.Properties)).BeginInit();
@@ -299,12 +301,13 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             ((System.ComponentModel.ISupportInitialize)(this.lciImpTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciDocumentNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciDocumentPrice)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.LciDeliverer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciDiscount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciNote)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutDocumentDate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LciDeliverer)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
             this.xtraTabControl1.SuspendLayout();
             this.tabPageBlood.SuspendLayout();
@@ -364,8 +367,6 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LCGRoot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SpDocumentVatPrice.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             this.SuspendLayout();
             // 
             // panelControl2
@@ -583,6 +584,24 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.layoutControl3.Size = new System.Drawing.Size(1092, 75);
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
+            // 
+            // SpDocumentVatPrice
+            // 
+            this.SpDocumentVatPrice.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.SpDocumentVatPrice.Location = new System.Drawing.Point(972, 26);
+            this.SpDocumentVatPrice.MenuManager = this.barManager1;
+            this.SpDocumentVatPrice.Name = "SpDocumentVatPrice";
+            this.SpDocumentVatPrice.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.SpDocumentVatPrice.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.SpDocumentVatPrice.Size = new System.Drawing.Size(118, 20);
+            this.SpDocumentVatPrice.StyleController = this.layoutControl3;
+            this.SpDocumentVatPrice.TabIndex = 17;
+            this.SpDocumentVatPrice.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.SpDocumentVatPrice_EditValueChanging);
             // 
             // labelControl1
             // 
@@ -873,19 +892,6 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.LciDocumentPrice.TextSize = new System.Drawing.Size(100, 20);
             this.LciDocumentPrice.TextToControlDistance = 5;
             // 
-            // LciDeliverer
-            // 
-            this.LciDeliverer.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.LciDeliverer.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.LciDeliverer.Control = this.TxtDeliverer;
-            this.LciDeliverer.Location = new System.Drawing.Point(297, 48);
-            this.LciDeliverer.Name = "LciDeliverer";
-            this.LciDeliverer.Size = new System.Drawing.Size(249, 27);
-            this.LciDeliverer.Text = "Người giao:";
-            this.LciDeliverer.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.LciDeliverer.TextSize = new System.Drawing.Size(65, 20);
-            this.LciDeliverer.TextToControlDistance = 5;
-            // 
             // LciDiscount
             // 
             this.LciDiscount.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -950,6 +956,32 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.layoutDocumentDate.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutDocumentDate.TextSize = new System.Drawing.Size(90, 20);
             this.layoutDocumentDate.TextToControlDistance = 5;
+            // 
+            // LciDeliverer
+            // 
+            this.LciDeliverer.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.LciDeliverer.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.LciDeliverer.Control = this.TxtDeliverer;
+            this.LciDeliverer.Location = new System.Drawing.Point(297, 48);
+            this.LciDeliverer.Name = "LciDeliverer";
+            this.LciDeliverer.Size = new System.Drawing.Size(249, 27);
+            this.LciDeliverer.Text = "Người giao:";
+            this.LciDeliverer.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.LciDeliverer.TextSize = new System.Drawing.Size(65, 20);
+            this.LciDeliverer.TextToControlDistance = 5;
+            // 
+            // layoutControlItem10
+            // 
+            this.layoutControlItem10.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem10.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem10.Control = this.SpDocumentVatPrice;
+            this.layoutControlItem10.Location = new System.Drawing.Point(825, 24);
+            this.layoutControlItem10.Name = "layoutControlItem10";
+            this.layoutControlItem10.Size = new System.Drawing.Size(267, 24);
+            this.layoutControlItem10.Text = "Số tiền thuế trên hóa đơn:";
+            this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem10.TextSize = new System.Drawing.Size(140, 20);
+            this.layoutControlItem10.TextToControlDistance = 5;
             // 
             // xtraTabControl1
             // 
@@ -2734,36 +2766,6 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
-            // SpDocumentVatPrice
-            // 
-            this.SpDocumentVatPrice.EditValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.SpDocumentVatPrice.Location = new System.Drawing.Point(972, 26);
-            this.SpDocumentVatPrice.MenuManager = this.barManager1;
-            this.SpDocumentVatPrice.Name = "SpDocumentVatPrice";
-            this.SpDocumentVatPrice.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.SpDocumentVatPrice.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.SpDocumentVatPrice.Size = new System.Drawing.Size(118, 20);
-            this.SpDocumentVatPrice.StyleController = this.layoutControl3;
-            this.SpDocumentVatPrice.TabIndex = 17;
-            // 
-            // layoutControlItem10
-            // 
-            this.layoutControlItem10.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem10.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem10.Control = this.SpDocumentVatPrice;
-            this.layoutControlItem10.Location = new System.Drawing.Point(825, 24);
-            this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(267, 24);
-            this.layoutControlItem10.Text = "Số tiền thuế trên hóa đơn:";
-            this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem10.TextSize = new System.Drawing.Size(140, 20);
-            this.layoutControlItem10.TextToControlDistance = 5;
-            // 
             // frmImpMestViewDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2797,6 +2799,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.groupControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.SpDocumentVatPrice.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpDiscountRatio.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpDiscount.Properties)).EndInit();
@@ -2815,12 +2818,13 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             ((System.ComponentModel.ISupportInitialize)(this.lciImpTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciDocumentNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciDocumentPrice)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.LciDeliverer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciDiscount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciNote)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutDocumentDate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LciDeliverer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
             this.xtraTabControl1.ResumeLayout(false);
             this.tabPageBlood.ResumeLayout(false);
@@ -2880,8 +2884,6 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LCGRoot)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SpDocumentVatPrice.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

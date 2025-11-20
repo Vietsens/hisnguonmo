@@ -317,8 +317,8 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                                 ado.AMOUT_EXP_MEDI_STOCK = mediInExpStock.AvailableAmount ?? null;
                             }
                         }
-                        //if (ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK < 1)
-                        if (ado.AMOUT_EXP_MEDI_STOCK == null || ado.AMOUT_EXP_MEDI_STOCK < 1)
+                        if (ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK < 1)
+                        //if (ado.AMOUT_EXP_MEDI_STOCK == null || ado.AMOUT_EXP_MEDI_STOCK < 1)
 
                             ado.TYPE = TYPE_KHA_DUNG;
                         else
