@@ -232,6 +232,7 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
         string api = "";
         string nameCb = "";
         string cccdCb = "";
+        string apiv2 = "";
         private void checkConfig()
         {
             try
@@ -244,6 +245,10 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                     api = connectInfors[0];
                     nameCb = connectInfors[1];
                     cccdCb = connectInfors[2];
+                    if (connectInfors.Count > 3)
+                    {
+                        apiv2 = connectInfors[3];
+                    }
                 }
             }
             catch (Exception ex)
@@ -321,7 +326,7 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                         foreach (var item in datas)
                         {
                             PatientTypeAlterADO ado = new PatientTypeAlterADO(item);
-                            await CheckTTFull(item, name, cccd,api);
+                            await CheckTTFull(item, name, cccd,api, apiv2);
 
                             if (rsDataBHYT != null)
                             {
@@ -341,7 +346,7 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                     V_HIS_PATIENT_TYPE_ALTER patientTypeAlert = new V_HIS_PATIENT_TYPE_ALTER();
                     patientTypeAlert.HEIN_CARD_NUMBER = this.checkInfoBhytADO.TDL_HEIN_CARD_NUMBER;
                     PatientTypeAlterADO ado = new PatientTypeAlterADO(patientTypeAlert);
-                    await CheckTTFull(patientTypeAlert, name, cccd,api);
+                    await CheckTTFull(patientTypeAlert, name, cccd,api, apiv2);
                     if (rsDataBHYT != null)
                     {
                         ado.ResultDataADO = rsDataBHYT;

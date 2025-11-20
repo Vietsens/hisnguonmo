@@ -138,7 +138,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 this.spinEditGiaVeSinh.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
                 this.spinDocumentPrice.Properties.DisplayFormat.FormatString = "#,##0." + AddStringByConfig(HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
                 this.spinDocumentPrice.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-
+                this.spinDocumentVatPrice.Properties.DisplayFormat.FormatString = "#,##0." + AddStringByConfig(HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
+                this.spinDocumentVatPrice.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
                 long tp = Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.AutoRoundExpPriceOption"));
                 long tp_ = Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.AmountDecimalNumber"));
                 if (tp == 1 || tp == 2 || tp == 3)
@@ -443,6 +444,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 spinImpVatRatio.Value = 0;
                 spinEditThueXuat.Value = 0;
                 spinDocumentPrice.Value = 0;
+                spinDocumentVatPrice.EditValue = null;
                 txtDocumentNumber.Text = "";
                 dtDocumentDate.EditValue = null;
                 txtDocumentDate.Text = "";
@@ -459,6 +461,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 spnTemperature.EditValue = null;
                 IsRequiedTemperature = false;
                 CalculTotalPrice();
+                CalculTotalVatPrice();
             }
             catch (Exception ex)
             {
@@ -778,6 +781,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         txtBidGroupCode.Text = "";
                         txtDescription.Enabled = true;
                         spinDocumentPrice.Enabled = true;
+                        spinDocumentVatPrice.Enabled = true;
                         txtImpMestCode.Enabled = false;
                         txtImpMestCode.Text = "";
                     }
@@ -1700,6 +1704,42 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 lblTotalPrice.Text = Inventec.Common.Number.Convert.NumberToString(totalprice, ConfigApplications.NumberSeperator);
                 lblTotalFeePrice.Text = Inventec.Common.Number.Convert.NumberToString(totalfeePrice, ConfigApplications.NumberSeperator);
                 lblTotalVatPrice.Text = Inventec.Common.Number.Convert.NumberToString(totalvatPrice, ConfigApplications.NumberSeperator);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void CalculTotalVatPrice()
+        {
+            if (isInit)
+            {
+                return;
+            }    
+            //Tổng giá gốc = Tổng của tất cả các thuốc vật tư(số lượng nhập * giá nhập)(IMP_AMOUNT * IMP_PRICE trong VHisServiceADO)
+            //Tổng giá có VAT = Tổng của tất cả các thuốc vật tư(số lượng nhập * giá nhập * (1 + VAT))(IMP_AMOUNT * IMP_PRICE * (1 + IMP_VAT_RATIO) trong VHisServiceADO)
+            //Tổng tiền thuế trên hóa đơn = Tổng giá có VAT - Tổng giá gốc
+            try
+            {
+                decimal tongGiaGoc = 0;
+                decimal tongGiaCoVat = 0;
+                foreach (var item in listServiceADO)
+                {
+                    decimal giaGoc = item.IMP_AMOUNT * item.IMP_PRICE;
+                    decimal giaCoVat = giaGoc * (1 + item.IMP_VAT_RATIO);
+                    tongGiaGoc += giaGoc;
+                    tongGiaCoVat += giaCoVat;
+                }
+                if (tongGiaCoVat - tongGiaGoc > 0)
+                {
+                    spinDocumentVatPrice.Value = tongGiaCoVat - tongGiaGoc;
+                }
+                else
+                {
+                    spinDocumentVatPrice.EditValue = null;
+                }
+                
             }
             catch (Exception ex)
             {

@@ -317,6 +317,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     }
                     manuSdo.ImpMest.DELIVERER = txtDeliverer.Text;
                     manuSdo.ImpMest.DOCUMENT_PRICE = spinDocumentPrice.Value;
+                    manuSdo.ImpMest.DOCUMENT_VAT_PRICE = spinDocumentVatPrice.EditValue != null ? spinDocumentVatPrice.Value : (decimal?)null;
                     //manuSdo.ImpMest.DOCUMENT_PRICE = (long)Math.Round(listServiceADO.Sum(o => (o.IMP_AMOUNT * o.IMP_PRICE*(1+o.IMP_VAT_RATIO))), 0, MidpointRounding.AwayFromZero);
                     var totalPrice = listServiceADO.Sum(o => (o.IMP_AMOUNT * o.IMP_PRICE));
 
@@ -1565,6 +1566,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 gridControlImpMestDetail.DataSource = listServiceADO;
                 gridControlImpMestDetail.EndUpdate();
                 CalculTotalPrice();
+                CalculTotalVatPrice();
 
                 if (chkWarningOldBid.Checked)
                 {

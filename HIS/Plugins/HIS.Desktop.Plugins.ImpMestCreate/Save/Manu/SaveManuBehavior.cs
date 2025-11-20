@@ -36,6 +36,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
     {
         string Deliverer { get; set; }
         decimal DocumentPrice { get; set; }
+        decimal? DocumentVatPrice { get; set; }
         decimal DiscountPrice { get; set; }
         decimal DiscountRatio { get; set; }
         string DocumentNumber { get; set; }
@@ -63,6 +64,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
             this.HeinLimitPrice = ucImpMestCreate.spinHeinLimitPrice.Value;
             this.Deliverer = ucImpMestCreate.txtDeliverer.Text;
             this.DocumentPrice = ucImpMestCreate.spinDocumentPrice.Value;
+            this.DocumentVatPrice = ucImpMestCreate.spinDocumentVatPrice.EditValue != null ? ucImpMestCreate.spinDocumentVatPrice.Value : (decimal?)null;
             this.DocumentNumber = ucImpMestCreate.txtDocumentNumber.Text;
 
             if (ucImpMestCreate.dtDocumentDate.EditValue != null && ucImpMestCreate.dtDocumentDate.DateTime != DateTime.MinValue)
@@ -97,6 +99,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
                 inputImpMestSDO.ImpMest.RECEIVER_USERNAME = this.UserName;
                 Inventec.Common.Logging.LogSystem.Debug(" this.LogginName " + this.LogginName);
                 inputImpMestSDO.ImpMest.DOCUMENT_PRICE = this.DocumentPrice;
+                inputImpMestSDO.ImpMest.DOCUMENT_VAT_PRICE = this.DocumentVatPrice;
                 var totalPrice = this.ServiceADOs.Sum(o => (o.IMP_AMOUNT * o.IMP_PRICE));
                 inputImpMestSDO.ImpMest.DISCOUNT = this.DiscountPrice;
                 if (totalPrice > 0)

@@ -262,6 +262,8 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 this.layoutControlItem39.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem39.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem40.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem40.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem40.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem40.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem47.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem47.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem47.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem47.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem41.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem41.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem42.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem42.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem44.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem44.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -1847,6 +1849,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 lblNgaySinh.Text = (data.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1 && data.TDL_PATIENT_DOB != null) ? data.TDL_PATIENT_DOB.ToString().Substring(0, 4) : Inventec.Common.DateTime.Convert.TimeNumberToDateString((data.TDL_PATIENT_DOB ?? 0));
                 lblSoChungTu.Text = data.DOCUMENT_NUMBER;
                 lblSoTienChungTu.Text = data.DOCUMENT_PRICE != null ? Inventec.Common.Number.Convert.NumberToString(data.DOCUMENT_PRICE ?? 0, ConfigApplications.NumberSeperator) : "";
+                lblSoTienThueChungTu.Text = data.DOCUMENT_VAT_PRICE != null ? Inventec.Common.Number.Convert.NumberToString(data.DOCUMENT_VAT_PRICE ?? 0, ConfigApplications.NumberSeperator) : "";
                 lblTenBenhNhan.Text = data.TDL_PATIENT_NAME;
 
                 toolTip.RemoveAll();
@@ -1876,6 +1879,8 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                     toolTip.SetToolTip(lblSoChungTu, lblSoChungTu.Text);
                 if (!string.IsNullOrEmpty(lblSoTienChungTu.Text))
                     toolTip.SetToolTip(lblSoTienChungTu, lblSoTienChungTu.Text);
+                if (!string.IsNullOrEmpty(lblSoTienThueChungTu.Text))
+                    toolTip.SetToolTip(lblSoTienThueChungTu, lblSoTienThueChungTu.Text);
                 if (!string.IsNullOrEmpty(lblTenBenhNhan.Text))
                     toolTip.SetToolTip(lblTenBenhNhan, lblTenBenhNhan.Text);
             }
