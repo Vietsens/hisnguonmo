@@ -82,7 +82,6 @@
     <Compile Include="Model\OLogin.cs" />
     <Compile Include="Model\DTD.cs" />
     <Compile Include="Model\DULIEU.cs" />
-    <Compile Include="Model\ProcessData.cs" />
     <Compile Include="Model\THA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />

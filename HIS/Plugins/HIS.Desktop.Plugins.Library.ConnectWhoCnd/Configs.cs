@@ -17,7 +17,6 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
         internal static List<string> SERVICE_CODE_DIABETES_MELLITUS = new List<string> { "23.0075.1494" };
         internal static List<string> SERVICE_CODE_DVHBA1C = new List<string> { "23.0075.1494" };
 
-        public static bool IS_CONNECT;
         public static string API_NCD;
         public static string PROGRAM;
         public static string USERNAME;
@@ -58,18 +57,24 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                     }
                 }
 
-                if (Utilities.NCDToken == null || Utilities.NCDToken.response == null)
-                {
-                    var acc = new { program = PROGRAM, username = USERNAME, password = PASSWORD };
-                    Utilities.NCDToken = ApiConsumers.CreateRequest<Model.OLogin>("POST", API_NCD, "/api/v1/auth", acc);
-                }
 
-                IS_CONNECT = Utilities.NCDToken != null && Utilities.NCDToken.response != null;
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        internal static bool CheckConnect()
+        {
+            if (Utilities.NCDToken == null || Utilities.NCDToken.response == null)
+            {
+                var acc = new { program = PROGRAM, username = USERNAME, password = PASSWORD };
+                Utilities.NCDToken = ApiConsumers.CreateRequest<Model.OLogin>("POST", API_NCD, "/api/v1/auth", acc);
+            }
+
+            return Utilities.NCDToken != null && Utilities.NCDToken.response != null;
         }
 
         private static string Get(string value, int index, char splitChar)
@@ -101,7 +106,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 int diff = base64EncodedData.Length % 4;
                 if (diff != 0)
                 {
-                    for (int i = 0; i < diff; i++)
+                    for (int i = 0; i < 4 - diff; i++)
                     {
                         base64EncodedData += "=";
                     }

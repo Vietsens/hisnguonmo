@@ -43,7 +43,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 Inventec.Common.Logging.LogSystem.Info("__________________api responseData: " + responseData);
                 try
                 {
-                    data = JsonConvert.DeserializeObject<T>(responseData);
+                    result = JsonConvert.DeserializeObject<T>(responseData);
                     if (data == null)
                     {
                         throw new Exception(string.Format("Loi khi goi API. Response {0}:", responseData));

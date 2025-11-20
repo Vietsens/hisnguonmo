@@ -10,7 +10,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
     {
         public credentials()
         {
-            program = "NCD";
+                
         }
         public string program { get; set; }
         public string token { get; set; }
@@ -31,6 +31,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
     {
         public credentials credentials { get; set; }
         public List<NcdData> ncdData { get; set; }
+        public List<NcdData> ncdDevData { get; set; }
     }
 
     internal class OImport
@@ -38,6 +39,6 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
         public string pID { get; set; }
         public string jobReference { get; set; }
         public DateTime createdAt { get; set; }
-        public string validate { get; set; }
+        public object validate { get; set; }
     }
 }
