@@ -38,6 +38,7 @@ namespace MPS.Processor.Mps000215
         List<Mps000215ADODetail> listAdoPrintDetail = new List<Mps000215ADODetail>();
         List<Mps000215ADO> listMedicineType = new List<Mps000215ADO>();
         List<Mps000215ADO> lstMedicineParent = new List<Mps000215ADO>();
+        List<Mps000215ADO> lstMedicineParent1 = new List<Mps000215ADO>();
         List<Mps000215ADO> lstOtherPaySource = new List<Mps000215ADO>();
         const int countMax = 1500;
         public Mps000215Processor(CommonParam param, PrintData printData)
@@ -91,9 +92,8 @@ namespace MPS.Processor.Mps000215
                 GetMedicineGroup();
                 GetMedicineParent();
                 GetOtherPaySource();
-
-
-
+                GetMedicineParent1();
+                Inventec.Common.Logging.LogSystem.Debug("lstMedicineParent1: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", lstMedicineParent1));
 
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
@@ -106,7 +106,9 @@ namespace MPS.Processor.Mps000215
                 objectTag.AddObjectData(store, "ListMediMate3Detail", listAdoPrintDetail);
                 objectTag.AddObjectData(store, "MedicineGroup", listMedicineType.OrderBy(x => x.MEDICINE_GROUP_NAME).ToList());
                 objectTag.AddObjectData(store, "MedicineParent", lstMedicineParent.OrderBy(x => x.MEDICINE_PARENT_NAME).ToList());
+                objectTag.AddObjectData(store, "MedicineParent1", lstMedicineParent1.OrderBy(x => x.MEDICINE_PARENT_NAME).ToList());
                 objectTag.AddObjectData(store, "OtherPaySource", lstOtherPaySource);
+
 
                 objectTag.AddRelationship(store, "ListMediMate1", "ListMediMate1Detail", "KEY_GROUP", "KEY_GROUP");
                 objectTag.AddRelationship(store, "OtherPaySource", "ListMediMate1", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
@@ -121,6 +123,7 @@ namespace MPS.Processor.Mps000215
                 objectTag.AddRelationship(store, "MedicineGroup", "ListMediMate3Detail", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
 
                 objectTag.AddRelationship(store, "MedicineParent", "ListMediMate1", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
+                objectTag.AddRelationship(store, "MedicineParent1", "ListMediMate1", "MEDICINE_PARENT_CODE", "MEDICINE_PARENT_CODE");
                 objectTag.AddRelationship(store, "MedicineParent", "ListMediMate2", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
                 objectTag.AddRelationship(store, "MedicineParent", "ListMediMate3", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
                 objectTag.AddRelationship(store, "MedicineParent", "ListMediMateSplitedByPackage", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
@@ -152,8 +155,8 @@ namespace MPS.Processor.Mps000215
                     var group = listAdoPrint
                         .GroupBy(o => new
                         {
-                            OTHER_PAY_SOURCE_ID = o.OTHER_PAY_SOURCE_ID ?? 0, 
-                            OTHER_PAY_SOURCE_CODE = o.OTHER_PAY_SOURCE_CODE ?? "", 
+                            OTHER_PAY_SOURCE_ID = o.OTHER_PAY_SOURCE_ID ?? 0,
+                            OTHER_PAY_SOURCE_CODE = o.OTHER_PAY_SOURCE_CODE ?? "",
                             OTHER_PAY_SOURCE_NAME = o.OTHER_PAY_SOURCE_NAME ?? ""
                         });
 
@@ -231,12 +234,12 @@ namespace MPS.Processor.Mps000215
                         if (approve != null && approve.Count > 0)
                         {
                             var dtGroup = approve.GroupBy(o => new { o.PACKAGE_NUMBER, o.EXPIRED_DATE }).ToList();
-                        foreach (var item in dtGroup)
-						{
-                            Mps000215ADO adoReqGroup = new Mps000215ADO(rdo._BcsExpMest, req.ToList(), rdo._MedicineTypes,item.ToList(), false,true);
-                            adoReqGroup.KEY_GROUP = parent;
-                            listAdoPrintGroup.Add(adoReqGroup);
-                        }
+                            foreach (var item in dtGroup)
+                            {
+                                Mps000215ADO adoReqGroup = new Mps000215ADO(rdo._BcsExpMest, req.ToList(), rdo._MedicineTypes, item.ToList(), false, true);
+                                adoReqGroup.KEY_GROUP = parent;
+                                listAdoPrintGroup.Add(adoReqGroup);
+                            }
                         }
                         else
                         {
@@ -281,7 +284,7 @@ namespace MPS.Processor.Mps000215
                             var dtGroupReplace = replaces.GroupBy(o => new { o.PACKAGE_NUMBER, o.EXPIRED_DATE }).ToList();
                             foreach (var item in dtGroupReplace)
                             {
-                                Mps000215ADO adoReqGroup = new Mps000215ADO(rdo._BcsExpMest, req.ToList(), rdo._MedicineTypes, item.ToList(), false,true);
+                                Mps000215ADO adoReqGroup = new Mps000215ADO(rdo._BcsExpMest, req.ToList(), rdo._MedicineTypes, item.ToList(), false, true);
                                 adoReqGroup.KEY_GROUP = parent;
                                 listAdoPrintGroup.Add(adoReqGroup);
                             }
@@ -326,13 +329,13 @@ namespace MPS.Processor.Mps000215
                             var dtGroup = approve.GroupBy(o => new { o.PACKAGE_NUMBER, o.EXPIRED_DATE }).ToList();
                             foreach (var item in dtGroup)
                             {
-                                Mps000215ADO adoReqGroup = new Mps000215ADO(rdo._BcsExpMest, req.ToList(), rdo._MaterialTypes, item.ToList(), false,true);
+                                Mps000215ADO adoReqGroup = new Mps000215ADO(rdo._BcsExpMest, req.ToList(), rdo._MaterialTypes, item.ToList(), false, true);
                                 adoReqGroup.KEY_GROUP = parent;
                                 listAdoPrintGroup.Add(adoReqGroup);
                             }
-						}
-						else
-						{
+                        }
+                        else
+                        {
                             listAdoPrintGroup.Add(adoReq);
 
                         }
@@ -375,7 +378,7 @@ namespace MPS.Processor.Mps000215
                             var dtGroupReplace = replaces.GroupBy(o => new { o.PACKAGE_NUMBER, o.EXPIRED_DATE }).ToList();
                             foreach (var item in dtGroupReplace)
                             {
-                                Mps000215ADO adoReqGroup = new Mps000215ADO(rdo._BcsExpMest, req.ToList(), rdo._MaterialTypes, item.ToList(), false,true);
+                                Mps000215ADO adoReqGroup = new Mps000215ADO(rdo._BcsExpMest, req.ToList(), rdo._MaterialTypes, item.ToList(), false, true);
                                 adoReqGroup.KEY_GROUP = parent;
                                 listAdoPrintGroup.Add(adoReqGroup);
                             }
@@ -750,7 +753,36 @@ namespace MPS.Processor.Mps000215
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-       
+
+
+        private void GetMedicineParent1()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("listAdoPrint: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", listAdoPrint));
+                var group = listAdoPrint.GroupBy(o => o.MEDICINE_PARENT_CODE).OrderBy(g => g.Key);
+                foreach (var item in group)
+                {
+                    var first = item.First();
+                    string parentName = (first.MEDICINE_PARENT_NAME ?? "").Trim();
+
+                    if (string.IsNullOrWhiteSpace(parentName))
+                        parentName = "PHIẾU BÙ VẬT TƯ";
+                    else
+                        parentName = "PHIẾU BÙ VẬT TƯ " + parentName.ToUpper();
+
+                    first.MEDICINE_PARENT_NAME = parentName;
+
+                    lstMedicineParent1.Add(first);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
     }
 
 

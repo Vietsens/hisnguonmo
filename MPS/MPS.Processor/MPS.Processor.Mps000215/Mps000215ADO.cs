@@ -254,6 +254,9 @@ namespace MPS.Processor.Mps000215
                     this.OTHER_PAY_SOURCE_ID = data.OTHER_PAY_SOURCE_ID;
                     this.OTHER_PAY_SOURCE_NAME = data.OTHER_PAY_SOURCE_NAME;
                     this.OTHER_PAY_SOURCE_CODE = data.OTHER_PAY_SOURCE_CODE;
+                    //qtcode
+                    this.MEDICINE_PARENT_CODE = data.PARENT_CODE;
+                    this.MEDICINE_PARENT_NAME = data.PARENT_NAME;
                 }
 
                 if (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
@@ -303,12 +306,18 @@ namespace MPS.Processor.Mps000215
                     this.OTHER_PAY_SOURCE_ID = replace.OTHER_PAY_SOURCE_ID;
                     this.OTHER_PAY_SOURCE_NAME = replace.OTHER_PAY_SOURCE_NAME;
                     this.OTHER_PAY_SOURCE_CODE = replace.OTHER_PAY_SOURCE_CODE;
+
+                    this.MEDICINE_PARENT_CODE = replace.PARENT_CODE;
+                    this.MEDICINE_PARENT_NAME = replace.PARENT_NAME;
                 }
                 var data = _materialTypes.FirstOrDefault(p => p.ID == req.First().MATERIAL_TYPE_ID);
                 if (data != null)
                 {
                     this.REPLACE_CODE = data.MATERIAL_TYPE_CODE;
                     this.REPLACE_NAME = data.MATERIAL_TYPE_NAME;
+
+                    this.MEDICINE_PARENT_CODE = data.PARENT_CODE;
+                    this.MEDICINE_PARENT_NAME = data.PARENT_NAME;
                 }
                 if (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
                 {
