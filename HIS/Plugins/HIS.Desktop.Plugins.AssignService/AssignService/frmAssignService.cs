@@ -1112,6 +1112,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             {
                 LogSystem.Debug("frmAssignService_Load => Starting...");
                 LoadHisServiceFromRam();
+                LoadServiceTesaCache();
                 this.IsFirstloadForm = true;
                 this.isInitTracking = true;
                 this.requestRoom = GetRequestRoom(this.currentModule.RoomId);
@@ -1658,47 +1659,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
-        private void txtKeyword_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Down)
-                {
-                    var rowCount = (this.gridViewServiceProcess.DataSource as List<SereServADO>).Count();
-                    if (rowCount == 1)
-                    {
-                        this.gridViewServiceProcess.Focus();
-                        this.gridViewServiceProcess.FocusedRowHandle = 0;
-                    }
-                    else if (rowCount > 1)
-                    {
-                        this.gridViewServiceProcess.Focus();
-                        this.gridViewServiceProcess.FocusedRowHandle = 1;
-                    }
-                    else
-                    {
-                        //Nothing
-                    }
-                }
-                else if (e.KeyCode == Keys.Enter)
-                {
-                    var rowCount = (this.gridViewServiceProcess.DataSource as List<SereServADO>).Count();
-                    if (rowCount > 0)
-                    {
-                        var rowUpdate = this.gridViewServiceProcess.GetFocusedRow() as SereServADO;
-                        rowUpdate.IsChecked = true;
-                    }
-                }
-                else
-                {
-                    this.LoadDataToGrid(false);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Warn(ex);
-            }
-        }
 
         private void btnUnExpendAll_Click(object sender, EventArgs e)
         {
@@ -2404,12 +2364,114 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        List<HIS_SERVICE_TESA> _cachedServiceTesa = null; 
+        void LoadServiceTesaCache()
+        {
 
+            try
+            {
+                if (_cachedServiceTesa == null || _cachedServiceTesa.Count == 0)
+                {
+                    CommonParam param = new CommonParam();
+                    HisServiceTesaFilter filter = new HisServiceTesaFilter();
+
+                    if (serviceIdClick > 0)
+                    {
+                        filter.SERVICE_ID = serviceIdClick;
+                    }
+                    else
+                    {
+                        filter.SERVICE_ID = null; 
+                    }
+
+                    //filter.TEST_SAME_TYPE_ID = testSampleTypeId;
+
+                    _cachedServiceTesa = new Inventec.Common.Adapter.BackendAdapter(param)
+                        .Get<List<HIS_SERVICE_TESA>>("api/HisServiceTesa/Get", ApiConsumers.MosConsumer, filter, param)
+                        ?? new List<HIS_SERVICE_TESA>();
+                }
+
+                // _cachedServiceTesa = BackendDataWorker.Get<HIS_SERVICE_TESA>().ToList(); 
+            }
+            catch (Exception ex)
+            {
+                _cachedServiceTesa = new List<HIS_SERVICE_TESA>();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private void UpdateTestSampleTypeCombo(SereServADO sereServ, ref long testSampleTypeId)
+        {
+            // Lấy danh sách loại mẫu bệnh phẩm is_active = 1; 
+            var allSampleTypes = BackendDataWorker.Get<HIS_TEST_SAMPLE_TYPE>()
+                .Where(x => x.IS_ACTIVE == 1)
+                .ToList();
+
+            //// Lấy thông tin dịch vụ được chọn
+            //var selectedService = BackendDataWorker.Get<HIS_SERVICE>()
+            //    .FirstOrDefault(x => x.ID == selectedServiceId);
+
+            // Lấy mapping dịch vụ - loại mẫu
+            var tesaMappings = _cachedServiceTesa
+                .Where(x => x.SERVICE_ID == sereServ.SERVICE_ID) // lấy ra những thằng trong tesa có service_id = id của dịch vụ được chọn 
+                .ToList();
+
+            List<HIS_TEST_SAMPLE_TYPE> filteredSampleTypes = null;
+
+            if (tesaMappings.Any())
+            {
+                // Chỉ hiển thị loại mẫu được mapping
+                var allowedSampleTypeIds = tesaMappings.Select(x => x.TEST_SAME_TYPE_ID).Distinct().ToList(); // từ tesa có service_id = dịch vụ được chọn lấy ra TEST_SAME_TYPE_ID
+                filteredSampleTypes = allSampleTypes
+                    .Where(x => allowedSampleTypeIds.Contains(x.ID)) // lấy những thằng his_test_sample_type có id nằm trong danh sách id tesa, mà tesa này có service_id trùng với id của dịch vụ được chọn
+                    .ToList();
+            }
+            else
+            {
+                // Nếu không có mapping thì hiển thị toàn bộ loại mẫu đang hoạt động
+                filteredSampleTypes = allSampleTypes;
+            }
+
+
+            // Xử lý chọn mặc định
+            object defaultValue = null;
+            if (tesaMappings.Any()) // nếu dịch vụ được thiết lập dịch vụ - loại mẫu (những thằng có service_id trừng với id dịch vụ được chọn) 
+            {
+                // Ưu tiên chọn loại mẫu có code trùng với SAMPLE_TYPE_CODE của dịch vụ được chọn  và ID =  TEST_SAME_TYPE_ID tring tesa
+                var defaultTesa = tesaMappings.FirstOrDefault(x =>   // với từng thằng trong tesaMappings, thằng nào làm any true thì được lấy ra 
+                    filteredSampleTypes.Any(st =>
+                        st.ID == x.TEST_SAME_TYPE_ID && 
+                        st.TEST_SAMPLE_TYPE_CODE == sereServ.TEST_SAMPLE_TYPE_CODE_DEFAULT
+        )
+                );
+                if (defaultTesa != null)
+                {
+                    defaultValue = defaultTesa.TEST_SAME_TYPE_ID;
+                }
+                else if (filteredSampleTypes.Count == 1)
+                {
+                    defaultValue = filteredSampleTypes[0].ID;
+                }
+            }
+            else
+            {
+                // Nếu không dịch vụ không được thiết lập, chọn loại mẫu có code trùng với SAMPLE_TYPE_CODE của dịch vụ
+                var defaultSampleType = filteredSampleTypes
+                    .FirstOrDefault(st => st.TEST_SAMPLE_TYPE_CODE == sereServ.TEST_SAMPLE_TYPE_CODE_DEFAULT);
+                if (defaultSampleType != null)
+                {
+                    defaultValue = defaultSampleType.ID;
+                }
+            }
+            testSampleTypeId = defaultValue != null ? (long)defaultValue : 0;
+        }
+        long serviceIdClick; 
         private void gridViewServiceProcess_CellValueChanged(object sender, CellValueChangedEventArgs e)
         {
             try
             {
                 var sereServADO = (SereServADO)this.gridViewServiceProcess.GetFocusedRow();
+                serviceIdClick = sereServADO.SERVICE_ID; 
                 if (sereServADO != null)
                 {
                     if (e.Column.FieldName == this.grcChecked_TabService.FieldName && sereServADO.IsChecked)
@@ -2425,8 +2487,24 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 MessageBox.Show(ResourceMessage.DichVuCLSCoGioiHanChiDinhThanhToanBHYT_DeNghiBSXemXetTruocKhiChiDinh, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                             ValidOnlyShowNoticeService(sereServADO);
+                            if (((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue != "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue != "1")) && sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
+                            {
+                                long testSampleTypeId = 0;
+                                UpdateTestSampleTypeCombo(sereServADO, ref testSampleTypeId);
+                                if (testSampleTypeId > 0)
+                                {
+                                    sereServADO.TEST_SAMPLE_TYPE_ID = testSampleTypeId; 
+                                    var sampleType = dataListTestSampleType.FirstOrDefault(o => o.ID == sereServADO.TEST_SAMPLE_TYPE_ID);
+                                    if (sampleType != null)
+                                    {
+                                        sereServADO.TEST_SAMPLE_TYPE_CODE = sampleType.TEST_SAMPLE_TYPE_CODE;
+                                        sereServADO.TEST_SAMPLE_TYPE_NAME = sampleType.TEST_SAMPLE_TYPE_NAME;
+                                    }
+                                }
+                            }
                         }
                     }
+                    //qtcode
                     if (e.Column.FieldName == this.grcSampleType.FieldName)
                     {
                         if (sereServADO.IsChecked && sereServADO.TEST_SAMPLE_TYPE_ID > 0)
