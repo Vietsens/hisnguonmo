@@ -290,7 +290,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 this.txtBidExtraCode.Text = medicine.TDL_BID_EXTRA_CODE;
                 this.cboImpSource.EditValue = medicine.IMP_SOURCE_ID;
                 this.txtTTThau.Text = medicine.TT_THAU;
-                this.txtDes.Text = medicine.DESCRIPTION; 
+                this.txtDes.Text = medicine.MEDICINE_DESCRIPTION; 
                 if (medicine.IS_SALE_EQUAL_IMP_PRICE == 1)
                 {
                     this.chkBBGN.CheckState = CheckState.Checked;
