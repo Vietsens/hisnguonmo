@@ -46,19 +46,42 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcEmrSignDocumentList));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.gridControlDocument = new DevExpress.XtraGrid.GridControl();
+            this.gridViewDocument = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.STT = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_View = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemBtnView = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.Gc_Sign = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_DocumentCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_DocumentName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_TreatmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_PatientCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_PatientName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_Dob = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_Gender = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_Department = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_RejectReason = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GC_StoreTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_Url = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_CreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_Creator = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_ModifyTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_Modifier = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemBtnSign = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemBtnSignDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnViewAndSign = new DevExpress.XtraEditors.SimpleButton();
             this.btnErrorSignDetail = new DevExpress.XtraEditors.SimpleButton();
             this.lblDocProcessErrorCount = new DevExpress.XtraEditors.LabelControl();
@@ -94,29 +117,6 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             this.NavBarStatus = new DevExpress.XtraNavBar.NavBarGroup();
             this.BtnRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.BtnSearch = new DevExpress.XtraEditors.SimpleButton();
-            this.gridControlDocument = new DevExpress.XtraGrid.GridControl();
-            this.gridViewDocument = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.STT = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_View = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemBtnView = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.Gc_Sign = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_DocumentCode = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_DocumentName = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_TreatmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_PatientCode = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_PatientName = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_Dob = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_Gender = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_Department = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_RejectReason = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.GC_StoreTime = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_Url = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_CreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_Creator = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_ModifyTime = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_Modifier = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemBtnSign = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.repositoryItemBtnSignDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.TxtKeyword = new DevExpress.XtraEditors.TextEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -132,6 +132,11 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlDocument)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewDocument)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnSign)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnSignDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.navBarControl1)).BeginInit();
             this.navBarControl1.SuspendLayout();
             this.navBarGroupControlContainer1.SuspendLayout();
@@ -162,11 +167,6 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlDocument)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewDocument)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnSign)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnSignDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TxtKeyword.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
@@ -202,6 +202,276 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             this.layoutControl1.Size = new System.Drawing.Size(1320, 600);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // gridControlDocument
+            // 
+            this.gridControlDocument.Location = new System.Drawing.Point(228, 2);
+            this.gridControlDocument.MainView = this.gridViewDocument;
+            this.gridControlDocument.Name = "gridControlDocument";
+            this.gridControlDocument.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemBtnSign,
+            this.repositoryItemBtnSignDisable,
+            this.repositoryItemBtnView});
+            this.gridControlDocument.Size = new System.Drawing.Size(1090, 572);
+            this.gridControlDocument.TabIndex = 5;
+            this.gridControlDocument.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewDocument});
+            // 
+            // gridViewDocument
+            // 
+            this.gridViewDocument.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.STT,
+            this.Gc_View,
+            this.Gc_Sign,
+            this.Gc_DocumentCode,
+            this.Gc_DocumentName,
+            this.Gc_TreatmentCode,
+            this.Gc_PatientCode,
+            this.Gc_PatientName,
+            this.Gc_Dob,
+            this.Gc_Gender,
+            this.Gc_Department,
+            this.Gc_RejectReason,
+            this.GC_StoreTime,
+            this.Gc_Url,
+            this.Gc_CreateTime,
+            this.Gc_Creator,
+            this.Gc_ModifyTime,
+            this.Gc_Modifier});
+            this.gridViewDocument.GridControl = this.gridControlDocument;
+            this.gridViewDocument.Name = "gridViewDocument";
+            this.gridViewDocument.OptionsSelection.CheckBoxSelectorColumnWidth = 30;
+            this.gridViewDocument.OptionsSelection.MultiSelect = true;
+            this.gridViewDocument.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
+            this.gridViewDocument.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.True;
+            this.gridViewDocument.OptionsView.ColumnAutoWidth = false;
+            this.gridViewDocument.OptionsView.ShowGroupPanel = false;
+            this.gridViewDocument.OptionsView.ShowIndicator = false;
+            this.gridViewDocument.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewDocument_RowCellStyle);
+            this.gridViewDocument.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewDocument_CustomRowCellEdit);
+            this.gridViewDocument.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.gridViewDocument_SelectionChanged);
+            this.gridViewDocument.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewDocument_CustomUnboundColumnData);
+            this.gridViewDocument.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridViewDocument_MouseDown);
+            // 
+            // STT
+            // 
+            this.STT.AppearanceCell.Options.UseTextOptions = true;
+            this.STT.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.STT.AppearanceHeader.Options.UseTextOptions = true;
+            this.STT.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.STT.Caption = "STT";
+            this.STT.FieldName = "STT";
+            this.STT.Name = "STT";
+            this.STT.OptionsColumn.AllowEdit = false;
+            this.STT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.STT.Visible = true;
+            this.STT.VisibleIndex = 1;
+            this.STT.Width = 40;
+            // 
+            // Gc_View
+            // 
+            this.Gc_View.Caption = "Xem";
+            this.Gc_View.ColumnEdit = this.repositoryItemBtnView;
+            this.Gc_View.FieldName = "DETAIL";
+            this.Gc_View.Name = "Gc_View";
+            this.Gc_View.OptionsColumn.ShowCaption = false;
+            this.Gc_View.OptionsFilter.AllowAutoFilter = false;
+            this.Gc_View.OptionsFilter.AllowFilter = false;
+            this.Gc_View.Visible = true;
+            this.Gc_View.VisibleIndex = 2;
+            this.Gc_View.Width = 25;
+            // 
+            // repositoryItemBtnView
+            // 
+            this.repositoryItemBtnView.AutoHeight = false;
+            this.repositoryItemBtnView.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnView.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Xem", null, null, true)});
+            this.repositoryItemBtnView.Name = "repositoryItemBtnView";
+            this.repositoryItemBtnView.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // Gc_Sign
+            // 
+            this.Gc_Sign.Caption = "Ký";
+            this.Gc_Sign.FieldName = "SIGN";
+            this.Gc_Sign.Name = "Gc_Sign";
+            this.Gc_Sign.OptionsColumn.ShowCaption = false;
+            this.Gc_Sign.Visible = true;
+            this.Gc_Sign.VisibleIndex = 3;
+            this.Gc_Sign.Width = 25;
+            // 
+            // Gc_DocumentCode
+            // 
+            this.Gc_DocumentCode.Caption = "Mã văn bản";
+            this.Gc_DocumentCode.FieldName = "DOCUMENT_CODE";
+            this.Gc_DocumentCode.Name = "Gc_DocumentCode";
+            this.Gc_DocumentCode.OptionsColumn.ReadOnly = true;
+            this.Gc_DocumentCode.Visible = true;
+            this.Gc_DocumentCode.VisibleIndex = 4;
+            this.Gc_DocumentCode.Width = 100;
+            // 
+            // Gc_DocumentName
+            // 
+            this.Gc_DocumentName.Caption = "Tên văn bản";
+            this.Gc_DocumentName.FieldName = "DOCUMENT_NAME";
+            this.Gc_DocumentName.Name = "Gc_DocumentName";
+            this.Gc_DocumentName.OptionsColumn.AllowEdit = false;
+            this.Gc_DocumentName.Visible = true;
+            this.Gc_DocumentName.VisibleIndex = 5;
+            this.Gc_DocumentName.Width = 200;
+            // 
+            // Gc_TreatmentCode
+            // 
+            this.Gc_TreatmentCode.Caption = "Mã điều trị";
+            this.Gc_TreatmentCode.FieldName = "TREATMENT_CODE";
+            this.Gc_TreatmentCode.Name = "Gc_TreatmentCode";
+            this.Gc_TreatmentCode.OptionsColumn.ReadOnly = true;
+            this.Gc_TreatmentCode.Visible = true;
+            this.Gc_TreatmentCode.VisibleIndex = 6;
+            this.Gc_TreatmentCode.Width = 90;
+            // 
+            // Gc_PatientCode
+            // 
+            this.Gc_PatientCode.Caption = "Mã bệnh nhân";
+            this.Gc_PatientCode.FieldName = "PATIENT_CODE";
+            this.Gc_PatientCode.Name = "Gc_PatientCode";
+            this.Gc_PatientCode.OptionsColumn.ReadOnly = true;
+            this.Gc_PatientCode.Visible = true;
+            this.Gc_PatientCode.VisibleIndex = 7;
+            this.Gc_PatientCode.Width = 90;
+            // 
+            // Gc_PatientName
+            // 
+            this.Gc_PatientName.Caption = "Họ tên";
+            this.Gc_PatientName.FieldName = "VIR_PATIENT_NAME";
+            this.Gc_PatientName.Name = "Gc_PatientName";
+            this.Gc_PatientName.OptionsColumn.AllowEdit = false;
+            this.Gc_PatientName.Visible = true;
+            this.Gc_PatientName.VisibleIndex = 8;
+            this.Gc_PatientName.Width = 120;
+            // 
+            // Gc_Dob
+            // 
+            this.Gc_Dob.Caption = "Ngày sinh";
+            this.Gc_Dob.FieldName = "DOB_STR";
+            this.Gc_Dob.Name = "Gc_Dob";
+            this.Gc_Dob.OptionsColumn.AllowEdit = false;
+            this.Gc_Dob.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.Gc_Dob.Visible = true;
+            this.Gc_Dob.VisibleIndex = 9;
+            this.Gc_Dob.Width = 120;
+            // 
+            // Gc_Gender
+            // 
+            this.Gc_Gender.Caption = "Giới tính";
+            this.Gc_Gender.FieldName = "GENDER_NAME";
+            this.Gc_Gender.Name = "Gc_Gender";
+            this.Gc_Gender.OptionsColumn.AllowEdit = false;
+            this.Gc_Gender.Visible = true;
+            this.Gc_Gender.VisibleIndex = 10;
+            this.Gc_Gender.Width = 80;
+            // 
+            // Gc_Department
+            // 
+            this.Gc_Department.Caption = "Khoa";
+            this.Gc_Department.FieldName = "CURRENT_DEPARTMENT_NAME";
+            this.Gc_Department.Name = "Gc_Department";
+            this.Gc_Department.OptionsColumn.AllowEdit = false;
+            this.Gc_Department.Visible = true;
+            this.Gc_Department.VisibleIndex = 11;
+            this.Gc_Department.Width = 120;
+            // 
+            // Gc_RejectReason
+            // 
+            this.Gc_RejectReason.Caption = "Lý do từ chối";
+            this.Gc_RejectReason.FieldName = "REJECT_REASON";
+            this.Gc_RejectReason.Name = "Gc_RejectReason";
+            this.Gc_RejectReason.OptionsColumn.AllowEdit = false;
+            this.Gc_RejectReason.Visible = true;
+            this.Gc_RejectReason.VisibleIndex = 12;
+            this.Gc_RejectReason.Width = 120;
+            // 
+            // GC_StoreTime
+            // 
+            this.GC_StoreTime.Caption = "Thời gian Lưu";
+            this.GC_StoreTime.FieldName = "STORE_TIME_STR";
+            this.GC_StoreTime.Name = "GC_StoreTime";
+            this.GC_StoreTime.OptionsColumn.AllowEdit = false;
+            this.GC_StoreTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.GC_StoreTime.Width = 120;
+            // 
+            // Gc_Url
+            // 
+            this.Gc_Url.Caption = "URL";
+            this.Gc_Url.FieldName = "URL";
+            this.Gc_Url.Name = "Gc_Url";
+            this.Gc_Url.OptionsColumn.ReadOnly = true;
+            this.Gc_Url.Width = 150;
+            // 
+            // Gc_CreateTime
+            // 
+            this.Gc_CreateTime.AppearanceCell.Options.UseTextOptions = true;
+            this.Gc_CreateTime.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_CreateTime.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_CreateTime.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_CreateTime.Caption = "Ngày tạo";
+            this.Gc_CreateTime.FieldName = "CREATE_TIME_DISPLAY";
+            this.Gc_CreateTime.Name = "Gc_CreateTime";
+            this.Gc_CreateTime.OptionsColumn.AllowEdit = false;
+            this.Gc_CreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.Gc_CreateTime.Visible = true;
+            this.Gc_CreateTime.VisibleIndex = 13;
+            this.Gc_CreateTime.Width = 120;
+            // 
+            // Gc_Creator
+            // 
+            this.Gc_Creator.Caption = "Người tạo";
+            this.Gc_Creator.FieldName = "CREATOR";
+            this.Gc_Creator.Name = "Gc_Creator";
+            this.Gc_Creator.OptionsColumn.AllowEdit = false;
+            this.Gc_Creator.Visible = true;
+            this.Gc_Creator.VisibleIndex = 14;
+            this.Gc_Creator.Width = 110;
+            // 
+            // Gc_ModifyTime
+            // 
+            this.Gc_ModifyTime.AppearanceCell.Options.UseTextOptions = true;
+            this.Gc_ModifyTime.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_ModifyTime.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_ModifyTime.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_ModifyTime.Caption = "Ngày sửa";
+            this.Gc_ModifyTime.FieldName = "MODIFY_TIME_DISPLAY";
+            this.Gc_ModifyTime.Name = "Gc_ModifyTime";
+            this.Gc_ModifyTime.OptionsColumn.AllowEdit = false;
+            this.Gc_ModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.Gc_ModifyTime.Visible = true;
+            this.Gc_ModifyTime.VisibleIndex = 15;
+            this.Gc_ModifyTime.Width = 120;
+            // 
+            // Gc_Modifier
+            // 
+            this.Gc_Modifier.Caption = "Người sửa";
+            this.Gc_Modifier.FieldName = "MODIFIER";
+            this.Gc_Modifier.Name = "Gc_Modifier";
+            this.Gc_Modifier.OptionsColumn.AllowEdit = false;
+            this.Gc_Modifier.Visible = true;
+            this.Gc_Modifier.VisibleIndex = 16;
+            this.Gc_Modifier.Width = 110;
+            // 
+            // repositoryItemBtnSign
+            // 
+            this.repositoryItemBtnSign.AutoHeight = false;
+            this.repositoryItemBtnSign.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnSign.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Ký", null, null, true)});
+            this.repositoryItemBtnSign.Name = "repositoryItemBtnSign";
+            this.repositoryItemBtnSign.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // repositoryItemBtnSignDisable
+            // 
+            this.repositoryItemBtnSignDisable.AutoHeight = false;
+            this.repositoryItemBtnSignDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnSignDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Ký", null, null, true)});
+            this.repositoryItemBtnSignDisable.Name = "repositoryItemBtnSignDisable";
+            this.repositoryItemBtnSignDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // btnViewAndSign
             // 
@@ -610,276 +880,6 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             this.BtnSearch.Text = "Tìm(Ctrl F)";
             this.BtnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
-            // gridControlDocument
-            // 
-            this.gridControlDocument.Location = new System.Drawing.Point(228, 2);
-            this.gridControlDocument.MainView = this.gridViewDocument;
-            this.gridControlDocument.Name = "gridControlDocument";
-            this.gridControlDocument.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repositoryItemBtnSign,
-            this.repositoryItemBtnSignDisable,
-            this.repositoryItemBtnView});
-            this.gridControlDocument.Size = new System.Drawing.Size(1090, 572);
-            this.gridControlDocument.TabIndex = 5;
-            this.gridControlDocument.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewDocument});
-            // 
-            // gridViewDocument
-            // 
-            this.gridViewDocument.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.STT,
-            this.Gc_View,
-            this.Gc_Sign,
-            this.Gc_DocumentCode,
-            this.Gc_DocumentName,
-            this.Gc_TreatmentCode,
-            this.Gc_PatientCode,
-            this.Gc_PatientName,
-            this.Gc_Dob,
-            this.Gc_Gender,
-            this.Gc_Department,
-            this.Gc_RejectReason,
-            this.GC_StoreTime,
-            this.Gc_Url,
-            this.Gc_CreateTime,
-            this.Gc_Creator,
-            this.Gc_ModifyTime,
-            this.Gc_Modifier});
-            this.gridViewDocument.GridControl = this.gridControlDocument;
-            this.gridViewDocument.Name = "gridViewDocument";
-            this.gridViewDocument.OptionsSelection.CheckBoxSelectorColumnWidth = 30;
-            this.gridViewDocument.OptionsSelection.MultiSelect = true;
-            this.gridViewDocument.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
-            this.gridViewDocument.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.True;
-            this.gridViewDocument.OptionsView.ColumnAutoWidth = false;
-            this.gridViewDocument.OptionsView.ShowGroupPanel = false;
-            this.gridViewDocument.OptionsView.ShowIndicator = false;
-            this.gridViewDocument.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewDocument_RowCellStyle);
-            this.gridViewDocument.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewDocument_CustomRowCellEdit);
-            this.gridViewDocument.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.gridViewDocument_SelectionChanged);
-            this.gridViewDocument.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewDocument_CustomUnboundColumnData);
-            this.gridViewDocument.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridViewDocument_MouseDown);
-            // 
-            // STT
-            // 
-            this.STT.AppearanceCell.Options.UseTextOptions = true;
-            this.STT.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.STT.AppearanceHeader.Options.UseTextOptions = true;
-            this.STT.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.STT.Caption = "STT";
-            this.STT.FieldName = "STT";
-            this.STT.Name = "STT";
-            this.STT.OptionsColumn.AllowEdit = false;
-            this.STT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.STT.Visible = true;
-            this.STT.VisibleIndex = 1;
-            this.STT.Width = 40;
-            // 
-            // Gc_View
-            // 
-            this.Gc_View.Caption = "Xem";
-            this.Gc_View.ColumnEdit = this.repositoryItemBtnView;
-            this.Gc_View.FieldName = "DETAIL";
-            this.Gc_View.Name = "Gc_View";
-            this.Gc_View.OptionsColumn.ShowCaption = false;
-            this.Gc_View.OptionsFilter.AllowAutoFilter = false;
-            this.Gc_View.OptionsFilter.AllowFilter = false;
-            this.Gc_View.Visible = true;
-            this.Gc_View.VisibleIndex = 2;
-            this.Gc_View.Width = 25;
-            // 
-            // repositoryItemBtnView
-            // 
-            this.repositoryItemBtnView.AutoHeight = false;
-            this.repositoryItemBtnView.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnView.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Xem", null, null, true)});
-            this.repositoryItemBtnView.Name = "repositoryItemBtnView";
-            this.repositoryItemBtnView.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            // 
-            // Gc_Sign
-            // 
-            this.Gc_Sign.Caption = "Ký";
-            this.Gc_Sign.FieldName = "SIGN";
-            this.Gc_Sign.Name = "Gc_Sign";
-            this.Gc_Sign.OptionsColumn.ShowCaption = false;
-            this.Gc_Sign.Visible = true;
-            this.Gc_Sign.VisibleIndex = 3;
-            this.Gc_Sign.Width = 25;
-            // 
-            // Gc_DocumentCode
-            // 
-            this.Gc_DocumentCode.Caption = "Mã văn bản";
-            this.Gc_DocumentCode.FieldName = "DOCUMENT_CODE";
-            this.Gc_DocumentCode.Name = "Gc_DocumentCode";
-            this.Gc_DocumentCode.OptionsColumn.ReadOnly = true;
-            this.Gc_DocumentCode.Visible = true;
-            this.Gc_DocumentCode.VisibleIndex = 4;
-            this.Gc_DocumentCode.Width = 100;
-            // 
-            // Gc_DocumentName
-            // 
-            this.Gc_DocumentName.Caption = "Tên văn bản";
-            this.Gc_DocumentName.FieldName = "DOCUMENT_NAME";
-            this.Gc_DocumentName.Name = "Gc_DocumentName";
-            this.Gc_DocumentName.OptionsColumn.AllowEdit = false;
-            this.Gc_DocumentName.Visible = true;
-            this.Gc_DocumentName.VisibleIndex = 5;
-            this.Gc_DocumentName.Width = 200;
-            // 
-            // Gc_TreatmentCode
-            // 
-            this.Gc_TreatmentCode.Caption = "Mã điều trị";
-            this.Gc_TreatmentCode.FieldName = "TREATMENT_CODE";
-            this.Gc_TreatmentCode.Name = "Gc_TreatmentCode";
-            this.Gc_TreatmentCode.OptionsColumn.ReadOnly = true;
-            this.Gc_TreatmentCode.Visible = true;
-            this.Gc_TreatmentCode.VisibleIndex = 6;
-            this.Gc_TreatmentCode.Width = 90;
-            // 
-            // Gc_PatientCode
-            // 
-            this.Gc_PatientCode.Caption = "Mã bệnh nhân";
-            this.Gc_PatientCode.FieldName = "PATIENT_CODE";
-            this.Gc_PatientCode.Name = "Gc_PatientCode";
-            this.Gc_PatientCode.OptionsColumn.ReadOnly = true;
-            this.Gc_PatientCode.Visible = true;
-            this.Gc_PatientCode.VisibleIndex = 7;
-            this.Gc_PatientCode.Width = 90;
-            // 
-            // Gc_PatientName
-            // 
-            this.Gc_PatientName.Caption = "Họ tên";
-            this.Gc_PatientName.FieldName = "VIR_PATIENT_NAME";
-            this.Gc_PatientName.Name = "Gc_PatientName";
-            this.Gc_PatientName.OptionsColumn.AllowEdit = false;
-            this.Gc_PatientName.Visible = true;
-            this.Gc_PatientName.VisibleIndex = 8;
-            this.Gc_PatientName.Width = 120;
-            // 
-            // Gc_Dob
-            // 
-            this.Gc_Dob.Caption = "Ngày sinh";
-            this.Gc_Dob.FieldName = "DOB_STR";
-            this.Gc_Dob.Name = "Gc_Dob";
-            this.Gc_Dob.OptionsColumn.AllowEdit = false;
-            this.Gc_Dob.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.Gc_Dob.Visible = true;
-            this.Gc_Dob.VisibleIndex = 9;
-            this.Gc_Dob.Width = 120;
-            // 
-            // Gc_Gender
-            // 
-            this.Gc_Gender.Caption = "Giới tính";
-            this.Gc_Gender.FieldName = "GENDER_NAME";
-            this.Gc_Gender.Name = "Gc_Gender";
-            this.Gc_Gender.OptionsColumn.AllowEdit = false;
-            this.Gc_Gender.Visible = true;
-            this.Gc_Gender.VisibleIndex = 10;
-            this.Gc_Gender.Width = 80;
-            // 
-            // Gc_Department
-            // 
-            this.Gc_Department.Caption = "Khoa";
-            this.Gc_Department.FieldName = "CURRENT_DEPARTMENT_NAME";
-            this.Gc_Department.Name = "Gc_Department";
-            this.Gc_Department.OptionsColumn.AllowEdit = false;
-            this.Gc_Department.Visible = true;
-            this.Gc_Department.VisibleIndex = 11;
-            this.Gc_Department.Width = 120;
-            // 
-            // Gc_RejectReason
-            // 
-            this.Gc_RejectReason.Caption = "Lý do từ chối";
-            this.Gc_RejectReason.FieldName = "REJECT_REASON";
-            this.Gc_RejectReason.Name = "Gc_RejectReason";
-            this.Gc_RejectReason.OptionsColumn.AllowEdit = false;
-            this.Gc_RejectReason.Visible = true;
-            this.Gc_RejectReason.VisibleIndex = 12;
-            this.Gc_RejectReason.Width = 120;
-            // 
-            // GC_StoreTime
-            // 
-            this.GC_StoreTime.Caption = "Thời gian Lưu";
-            this.GC_StoreTime.FieldName = "STORE_TIME_STR";
-            this.GC_StoreTime.Name = "GC_StoreTime";
-            this.GC_StoreTime.OptionsColumn.AllowEdit = false;
-            this.GC_StoreTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.GC_StoreTime.Width = 120;
-            // 
-            // Gc_Url
-            // 
-            this.Gc_Url.Caption = "URL";
-            this.Gc_Url.FieldName = "URL";
-            this.Gc_Url.Name = "Gc_Url";
-            this.Gc_Url.OptionsColumn.ReadOnly = true;
-            this.Gc_Url.Width = 150;
-            // 
-            // Gc_CreateTime
-            // 
-            this.Gc_CreateTime.AppearanceCell.Options.UseTextOptions = true;
-            this.Gc_CreateTime.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.Gc_CreateTime.AppearanceHeader.Options.UseTextOptions = true;
-            this.Gc_CreateTime.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.Gc_CreateTime.Caption = "Ngày tạo";
-            this.Gc_CreateTime.FieldName = "CREATE_TIME_DISPLAY";
-            this.Gc_CreateTime.Name = "Gc_CreateTime";
-            this.Gc_CreateTime.OptionsColumn.AllowEdit = false;
-            this.Gc_CreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.Gc_CreateTime.Visible = true;
-            this.Gc_CreateTime.VisibleIndex = 13;
-            this.Gc_CreateTime.Width = 120;
-            // 
-            // Gc_Creator
-            // 
-            this.Gc_Creator.Caption = "Người tạo";
-            this.Gc_Creator.FieldName = "CREATOR";
-            this.Gc_Creator.Name = "Gc_Creator";
-            this.Gc_Creator.OptionsColumn.AllowEdit = false;
-            this.Gc_Creator.Visible = true;
-            this.Gc_Creator.VisibleIndex = 14;
-            this.Gc_Creator.Width = 110;
-            // 
-            // Gc_ModifyTime
-            // 
-            this.Gc_ModifyTime.AppearanceCell.Options.UseTextOptions = true;
-            this.Gc_ModifyTime.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.Gc_ModifyTime.AppearanceHeader.Options.UseTextOptions = true;
-            this.Gc_ModifyTime.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.Gc_ModifyTime.Caption = "Ngày sửa";
-            this.Gc_ModifyTime.FieldName = "MODIFY_TIME_DISPLAY";
-            this.Gc_ModifyTime.Name = "Gc_ModifyTime";
-            this.Gc_ModifyTime.OptionsColumn.AllowEdit = false;
-            this.Gc_ModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.Gc_ModifyTime.Visible = true;
-            this.Gc_ModifyTime.VisibleIndex = 15;
-            this.Gc_ModifyTime.Width = 120;
-            // 
-            // Gc_Modifier
-            // 
-            this.Gc_Modifier.Caption = "Người sửa";
-            this.Gc_Modifier.FieldName = "MODIFIER";
-            this.Gc_Modifier.Name = "Gc_Modifier";
-            this.Gc_Modifier.OptionsColumn.AllowEdit = false;
-            this.Gc_Modifier.Visible = true;
-            this.Gc_Modifier.VisibleIndex = 16;
-            this.Gc_Modifier.Width = 110;
-            // 
-            // repositoryItemBtnSign
-            // 
-            this.repositoryItemBtnSign.AutoHeight = false;
-            this.repositoryItemBtnSign.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnSign.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Ký", null, null, true)});
-            this.repositoryItemBtnSign.Name = "repositoryItemBtnSign";
-            this.repositoryItemBtnSign.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            // 
-            // repositoryItemBtnSignDisable
-            // 
-            this.repositoryItemBtnSignDisable.AutoHeight = false;
-            this.repositoryItemBtnSignDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnSignDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Ký", null, null, true)});
-            this.repositoryItemBtnSignDisable.Name = "repositoryItemBtnSignDisable";
-            this.repositoryItemBtnSignDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            // 
             // TxtKeyword
             // 
             this.TxtKeyword.Location = new System.Drawing.Point(2, 2);
@@ -1031,6 +1031,11 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             this.Load += new System.EventHandler(this.UcEmrSignDocumentList_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlDocument)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewDocument)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnSign)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnSignDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.navBarControl1)).EndInit();
             this.navBarControl1.ResumeLayout(false);
             this.navBarGroupControlContainer1.ResumeLayout(false);
@@ -1061,11 +1066,6 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlDocument)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewDocument)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnSign)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnSignDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TxtKeyword.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
