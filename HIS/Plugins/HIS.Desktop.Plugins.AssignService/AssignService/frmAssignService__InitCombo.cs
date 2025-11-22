@@ -219,6 +219,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 columnInfos.Add(new ColumnInfo("TEST_SAMPLE_TYPE_CODE", "", 50, 1));
                 columnInfos.Add(new ColumnInfo("TEST_SAMPLE_TYPE_NAME", "", 200, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("TEST_SAMPLE_TYPE_NAME", "ID", columnInfos, false, 250);
+
                 ControlEditorLoader.Load(cbo, dataListTestSampleType, controlEditorADO);
             }
             catch (Exception ex)

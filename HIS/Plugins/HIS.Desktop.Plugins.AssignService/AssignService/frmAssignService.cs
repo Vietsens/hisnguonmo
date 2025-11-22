@@ -2400,16 +2400,15 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
 
         }
+        long testSampleTypeId; 
         private void UpdateTestSampleTypeCombo(SereServADO sereServ, ref long testSampleTypeId)
         {
+            this.testSampleTypeId = 0; 
             // Lấy danh sách loại mẫu bệnh phẩm is_active = 1; 
             var allSampleTypes = BackendDataWorker.Get<HIS_TEST_SAMPLE_TYPE>()
                 .Where(x => x.IS_ACTIVE == 1)
                 .ToList();
 
-            //// Lấy thông tin dịch vụ được chọn
-            //var selectedService = BackendDataWorker.Get<HIS_SERVICE>()
-            //    .FirstOrDefault(x => x.ID == selectedServiceId);
 
             // Lấy mapping dịch vụ - loại mẫu
             var tesaMappings = _cachedServiceTesa
@@ -2431,8 +2430,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 // Nếu không có mapping thì hiển thị toàn bộ loại mẫu đang hoạt động
                 filteredSampleTypes = allSampleTypes;
             }
-
-
+            //dataListTestSampleType
+            this.dataListTestSampleType = filteredSampleTypes; 
+            
             // Xử lý chọn mặc định
             object defaultValue = null;
             if (tesaMappings.Any()) // nếu dịch vụ được thiết lập dịch vụ - loại mẫu (những thằng có service_id trừng với id dịch vụ được chọn) 
@@ -2463,7 +2463,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     defaultValue = defaultSampleType.ID;
                 }
             }
-            testSampleTypeId = defaultValue != null ? (long)defaultValue : 0;
+            this.testSampleTypeId = defaultValue != null ? (long)defaultValue : 0;
         }
         long serviceIdClick; 
         private void gridViewServiceProcess_CellValueChanged(object sender, CellValueChangedEventArgs e)
@@ -2489,11 +2489,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             ValidOnlyShowNoticeService(sereServADO);
                             if (((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue != "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue != "1")) && sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
                             {
-                                long testSampleTypeId = 0;
-                                UpdateTestSampleTypeCombo(sereServADO, ref testSampleTypeId);
-                                if (testSampleTypeId > 0)
+                                
+                                
+                                if (this.testSampleTypeId > 0)
                                 {
-                                    sereServADO.TEST_SAMPLE_TYPE_ID = testSampleTypeId; 
+                                    sereServADO.TEST_SAMPLE_TYPE_ID = this.testSampleTypeId; 
                                     var sampleType = dataListTestSampleType.FirstOrDefault(o => o.ID == sereServADO.TEST_SAMPLE_TYPE_ID);
                                     if (sampleType != null)
                                     {
@@ -2731,6 +2731,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                             int rowHandle = gridViewServiceProcess.GetVisibleRowHandle(hi.RowHandle);
                             var dataRow = (SereServADO)gridViewServiceProcess.GetRow(rowHandle);
+                            UpdateTestSampleTypeCombo(dataRow, ref this.testSampleTypeId);
                             if (dataRow != null)
                             {
                                 //if (hi.Column.FieldName == "IsChecked" && (dataRow.IsAllowChecked == false))
@@ -3024,7 +3025,19 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private List<HIS_TEST_SAMPLE_TYPE> GetFilteredSampleTypes(SereServADO sereServ)
+        {
+            var all = BackendDataWorker.Get<HIS_TEST_SAMPLE_TYPE>().Where(o => o.IS_ACTIVE == 1).ToList();
 
+            var mappings = _cachedServiceTesa.Where(o => o.SERVICE_ID == sereServ.SERVICE_ID).ToList();
+
+            if (mappings.Any())
+            {
+                var allowedIds = mappings.Select(o => o.TEST_SAME_TYPE_ID).Distinct().ToList();
+                return all.Where(o => allowedIds.Contains(o.ID)).ToList();
+            }
+            return all;
+        }
         private void gridViewServiceProcess_CustomRowColumnError(object sender, Inventec.Desktop.CustomControl.RowColumnErrorEventArgs e)
         {
             try
@@ -3267,6 +3280,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     var sereServADO = (SereServADO)this.gridViewServiceProcess.GetRow(0);
                     if (sereServADO != null)
                     {
+                        //qtcode1
                         if (lstSereServExist != null && lstSereServExist.FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID) != null && DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Dịch vụ có thời gian chỉ định nằm trong khoảng thời gian thiết lập của phác đồ điều trị. Thời gian chỉ định {0} (mã y lệnh: {1}). Bạn có muốn tiếp tục?", Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(lstSereServExist.FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID).TDL_INTRUCTION_TIME), lstSereServExist.FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID).TDL_SERVICE_REQ_CODE), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) != DialogResult.Yes)
                         {
                             sereServADO.IsChecked = false;
@@ -3279,6 +3293,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             //Phân biệt giá trị TEST_SAMPLE_TYPE_CODE mặc định bởi TEST_SAMPLE_TYPE_ID = 0;
                             if (((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue != "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue != "1")) && sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
                             {
+                                long testSampleTypeId = 0;
+                                UpdateTestSampleTypeCombo(sereServADO, ref testSampleTypeId);
+                                if (testSampleTypeId > 0)
+                                {
+                                    sereServADO.TEST_SAMPLE_TYPE_ID = testSampleTypeId;
+                                }
                                 if (dataListTestSampleType != null && dataListTestSampleType.Count > 0 && sereServADO.TEST_SAMPLE_TYPE_ID == 0 && !string.IsNullOrEmpty(sereServADO.TEST_SAMPLE_TYPE_CODE_DEFAULT))
                                 {
                                     var sampleType = dataListTestSampleType.FirstOrDefault(o => o.TEST_SAMPLE_TYPE_CODE == sereServADO.TEST_SAMPLE_TYPE_CODE_DEFAULT);
