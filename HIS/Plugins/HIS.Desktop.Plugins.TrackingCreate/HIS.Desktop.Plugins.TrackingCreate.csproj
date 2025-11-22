@@ -353,6 +353,9 @@
     <EmbeddedResource Include="FormKetLuanHoiChan\frmKetLuanHoiChan.resx">
       <DependentUpon>frmKetLuanHoiChan.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmAttach.resx">
+      <DependentUpon>frmAttach.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmDisplay.resx">
       <DependentUpon>frmDisplay.cs</DependentUpon>
     </EmbeddedResource>
