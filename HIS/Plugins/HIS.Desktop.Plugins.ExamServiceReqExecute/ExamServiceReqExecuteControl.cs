@@ -2942,8 +2942,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-
-
+                if (!AllowManyTreatmentOpeningOption())
+                {
+                    return;
+                }
                 if (HisConfigCFG.IsEnableEditStartTime == "1")
                 {
                     CheckAssignServiceSimultaneityOption();
@@ -9242,6 +9244,47 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 CheckAssignServiceSimultaneityOption();
 
             }
+        }
+        bool AllowManyTreatmentOpeningOption()
+        {
+            try
+            {
+                if (chkHospitalize.Checked && HisConfigCFG.AllowManyTreatmentOpeningOption == "6")
+                {
+                    HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
+                    treatmentFilter.PATIENT_ID = this.treatment.PATIENT_ID;
+                    treatmentFilter.IS_PAUSE = false;
+                    treatmentFilter.TDL_TREATMENT_TYPE_IDs = new List<long>()
+                    {
+                        IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM,
+                        IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU,
+                        IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
+                    };
+                    treatmentFilter.ID__NOT_EQUAL = this.treatment.ID;
+                    var treatmentOlds = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, null);
+                    if (treatmentOlds != null && treatmentOlds.Any())
+                    {
+                        treatmentOlds = treatmentOlds.Where(a =>
+                            a.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU ||
+                            a.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY ||
+                            (a.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && a.IS_EMERGENCY != 1)
+                            ).ToList();
+                        if (treatmentOlds.Any())
+                        {
+                            if (XtraMessageBox.Show(string.Format("Tồn tại hồ sơ chưa được kết thúc điều trị (Hồ sơ đang mở: {0}). Bạn có muốn tiếp tục nhập viện?",
+                                String.Join(", ", treatmentOlds.Select(o => o.TREATMENT_CODE))), "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
         }
     }
 }
