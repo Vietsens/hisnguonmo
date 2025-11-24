@@ -286,7 +286,18 @@ namespace HIS.UC.UCPatientRaw
 			try
 			{
 				Inventec.Common.Logging.LogSystem.Debug("FillDataPatientToControl.1");
-				if (patientDTO.ID > 0 && isCheckPeriosTreatment && !AlertTreatmentInOutInDayForTreatmentMessage(patientDTO))
+    //            bool checkK = checkKey6(patientDTO.ID);
+    //            if (!checkK)
+				//{
+    //                if (this.dlgEnableSave != null)
+    //                    this.dlgEnableSave(false);
+    //            }
+				//else
+				//{
+    //                if (this.dlgEnableSave != null)
+    //                    this.dlgEnableSave(true);
+    //            }
+                if (patientDTO.ID > 0 && isCheckPeriosTreatment && !AlertTreatmentInOutInDayForTreatmentMessage(patientDTO))
 				{
 					Inventec.Common.Logging.LogSystem.Debug("FillDataPatientToControl.2");
 					this.currentPatientSDO = null;

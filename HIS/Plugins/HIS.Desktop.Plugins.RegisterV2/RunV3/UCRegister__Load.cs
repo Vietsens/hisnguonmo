@@ -262,6 +262,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             }
         }
 
+        
+
         private async void ProcessPatientCodeKeydown(object data)
         {
             try
@@ -286,6 +288,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             ResetPatientForm();
                             return;
                         }
+                        
 
                         //An hien cac button lam moi thong tin benh nhan
                         this.SetPatientSearchPanel(true);

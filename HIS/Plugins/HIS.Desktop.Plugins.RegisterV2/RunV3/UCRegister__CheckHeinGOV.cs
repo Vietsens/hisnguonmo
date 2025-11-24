@@ -39,6 +39,7 @@ using SDA.EFMODEL.DataModels;
 using HeinCardData = Inventec.Common.QrCodeBHYT.HeinCardData;
 using DevExpress.XtraEditors;
 using MOS.SDO;
+using MOS.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Run2
 {
@@ -204,6 +205,27 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                 dataAddressPatient.IsNoDistrict = data.IsNoDistrict;
                             }
                             dataAddressPatient.Address = this.ucPatientRaw1.ResultDataADO.ResultHistoryLDO.diaChi;
+                            this.ucAddressCombo1.SetValue(dataAddressPatient);
+                        }
+                        else if (HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
+                        {
+                            var latestTreatment = BackendDataWorker.Get<HIS_TREATMENT>()
+                                .Where(t => t.PATIENT_ID == currentPatientSDO.ID && !string.IsNullOrEmpty(t.TDL_PATIENT_ADDRESS))
+                                .OrderByDescending(t => t.IN_TIME)
+                                .FirstOrDefault();
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => latestTreatment), latestTreatment));
+                            if (latestTreatment != null)
+                            {
+                                dataAddressPatient.Province_Code = latestTreatment.TDL_PATIENT_PROVINCE_CODE;
+                                dataAddressPatient.Province_Name = latestTreatment.TDL_PATIENT_PROVINCE_NAME;
+                                dataAddressPatient.District_Code = latestTreatment.TDL_PATIENT_DISTRICT_CODE;
+                                dataAddressPatient.District_Name = latestTreatment.TDL_PATIENT_DISTRICT_NAME;
+                                dataAddressPatient.Commune_Code = latestTreatment.TDL_PATIENT_COMMUNE_CODE;
+                                dataAddressPatient.Commune_Name = latestTreatment.TDL_PATIENT_COMMUNE_NAME;
+                                //dataAddressPatient.IsNoDistrict = latestTreatment.;
+
+                                dataAddressPatient.Address = latestTreatment.TDL_PATIENT_ADDRESS;
+                            }
                             this.ucAddressCombo1.SetValue(dataAddressPatient);
                         }
                     }
