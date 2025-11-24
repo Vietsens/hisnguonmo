@@ -117,73 +117,130 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="UC_AllergyCard.layoutControl1.Text" xml:space="preserve">
-    <value />
+  <data name="frmAllergyCard.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmAllergyCard.Text" xml:space="preserve">
+    <value>frmAllergyCard</value>
   </data>
   <data name="UC_AllergyCard.btnCreate.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCard.gridColumn12.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCard.gridColumn12.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCard.gridColumn11.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCard.gridColumn11.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCard.gridColumn6.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCard.gridColumn6.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCard.gridColumn7.Caption" xml:space="preserve">
-    <value />
+    <value>Create tags</value>
   </data>
   <data name="UC_AllergyCard.gridColumn1.Caption" xml:space="preserve">
-    <value />
+    <value>Fix</value>
   </data>
   <data name="UC_AllergyCard.gridColumn1.ToolTip" xml:space="preserve">
-    <value />
+    <value>Fix</value>
   </data>
-  <data name="UC_AllergyCard.gridColumn5.Caption" xml:space="preserve">
-    <value />
+  <data name="UC_AllergyCard.gridColumn10.Caption" xml:space="preserve">
+    <value>Patient code</value>
   </data>
-  <data name="UC_AllergyCard.gridColumn5.ToolTip" xml:space="preserve">
-    <value />
+  <data name="UC_AllergyCard.gridColumn11.Caption" xml:space="preserve">
+    <value>Sure</value>
+  </data>
+  <data name="UC_AllergyCard.gridColumn11.ToolTip" xml:space="preserve">
+    <value>Is certain</value>
+  </data>
+  <data name="UC_AllergyCard.gridColumn12.Caption" xml:space="preserve">
+    <value>Suspect</value>
+  </data>
+  <data name="UC_AllergyCard.gridColumn12.ToolTip" xml:space="preserve">
+    <value>Is doubtful</value>
+  </data>
+  <data name="UC_AllergyCard.gridColumn13.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="UC_AllergyCard.gridColumn14.Caption" xml:space="preserve">
+    <value>Patient name</value>
+  </data>
+  <data name="UC_AllergyCard.gridColumn15.Caption" xml:space="preserve">
+    <value>Date of birth</value>
   </data>
   <data name="UC_AllergyCard.gridColumn2.Caption" xml:space="preserve">
-    <value />
+    <value>Date of issue</value>
   </data>
   <data name="UC_AllergyCard.gridColumn2.ToolTip" xml:space="preserve">
-    <value />
+    <value>Date of issue</value>
   </data>
   <data name="UC_AllergyCard.gridColumn3.Caption" xml:space="preserve">
-    <value />
+    <value>Doctor diagnoses</value>
   </data>
   <data name="UC_AllergyCard.gridColumn3.ToolTip" xml:space="preserve">
-    <value />
+    <value>Doctor diagnoses</value>
   </data>
   <data name="UC_AllergyCard.gridColumn4.Caption" xml:space="preserve">
-    <value />
+    <value>Phone number</value>
   </data>
   <data name="UC_AllergyCard.gridColumn4.ToolTip" xml:space="preserve">
-    <value />
+    <value>Phone number</value>
+  </data>
+  <data name="UC_AllergyCard.gridColumn5.Caption" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="UC_AllergyCard.gridColumn5.ToolTip" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="UC_AllergyCard.gridColumn6.Caption" xml:space="preserve">
+    <value>Allergens/Drugs/Active ingredients</value>
+  </data>
+  <data name="UC_AllergyCard.gridColumn6.ToolTip" xml:space="preserve">
+    <value>Allergens/Drugs</value>
+  </data>
+  <data name="UC_AllergyCard.gridColumn7.Caption" xml:space="preserve">
+    <value>Clinical manifestations</value>
+  </data>
+  <data name="UC_AllergyCard.gridColumn8.Caption" xml:space="preserve">
+    <value>Health insurance active ingredient code</value>
+  </data>
+  <data name="UC_AllergyCard.gridColumn9.Caption" xml:space="preserve">
+    <value>Name of active ingredient in health insurance</value>
+  </data>
+  <data name="UC_AllergyCard.groupBox1.Text" xml:space="preserve">
+    <value>Patient information</value>
+  </data>
+  <data name="UC_AllergyCard.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UC_AllergyCard.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
   </data>
   <data name="UC_AllergyCard.layoutControlItem1.Text" xml:space="preserve">
-    <value />
+    <value>Treatment code:</value>
+  </data>
+  <data name="UC_AllergyCard.layoutControlItem10.Text" xml:space="preserve">
+    <value>Sex:</value>
+  </data>
+  <data name="UC_AllergyCard.layoutControlItem11.Text" xml:space="preserve">
+    <value>Date of birth:</value>
+  </data>
+  <data name="UC_AllergyCard.layoutControlItem12.Text" xml:space="preserve">
+    <value>Address:</value>
   </data>
   <data name="UC_AllergyCard.layoutControlItem2.Text" xml:space="preserve">
-    <value />
+    <value>Full name:</value>
   </data>
   <data name="UC_AllergyCard.layoutControlItem5.Text" xml:space="preserve">
-    <value />
+    <value>Sex:</value>
   </data>
   <data name="UC_AllergyCard.layoutControlItem6.Text" xml:space="preserve">
-    <value />
+    <value>Date of birth:</value>
+  </data>
+  <data name="UC_AllergyCard.layoutControlItem8.Text" xml:space="preserve">
+    <value>Patient code:</value>
+  </data>
+  <data name="UC_AllergyCard.layoutControlItem9.Text" xml:space="preserve">
+    <value>Patient name:</value>
+  </data>
+  <data name="UC_AllergyCard.toggleSwitchGomNhom.Properties.OffText" xml:space="preserve">
+    <value>Gather groups</value>
+  </data>
+  <data name="UC_AllergyCard.toggleSwitchGomNhom.Properties.OnText" xml:space="preserve">
+    <value>Gather groups</value>
+  </data>
+  <data name="UC_AllergyCard.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keywords</value>
+  </data>
+  <data name="UC_AllergyCard.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Treatment code</value>
   </data>
 </root>

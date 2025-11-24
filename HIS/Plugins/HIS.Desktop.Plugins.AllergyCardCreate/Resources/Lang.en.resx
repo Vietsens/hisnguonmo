@@ -117,88 +117,118 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="UC_AllergyCardCreate.layoutControl1.Text" xml:space="preserve">
-    <value />
+  <data name="frmAllergyCardCreate.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmAllergyCardCreate.barButtonItem1.Caption" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="frmAllergyCardCreate.barButtonItem2.Caption" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="frmAllergyCardCreate.barButtonItem3.Caption" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="frmAllergyCardCreate.barButtonItem4.Caption" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="frmAllergyCardCreate.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmAllergyCardCreate.Text" xml:space="preserve">
+    <value>frmAllergyCardCreate</value>
+  </data>
+  <data name="UC_AllergyCardCreate.bar2.Text" xml:space="preserve">
+    <value>Main menu</value>
   </data>
   <data name="UC_AllergyCardCreate.btnAdd.Text" xml:space="preserve">
-    <value />
+    <value>Add (Ctrl A)</value>
   </data>
   <data name="UC_AllergyCardCreate.btnLamLai.Text" xml:space="preserve">
-    <value />
+    <value>Redo (Ctrl N)</value>
   </data>
   <data name="UC_AllergyCardCreate.btnPrint.Text" xml:space="preserve">
-    <value />
+    <value>Print (Ctrl P)</value>
   </data>
   <data name="UC_AllergyCardCreate.btnSave.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.gridColumn1.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.gridColumn2.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.gridColumn2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.gridColumn3.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.gridColumn3.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.gridColumn4.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.gridColumn4.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.gridColumn5.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.gridColumn5.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.chkChacChan.Properties.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.chkNghiNgo.Properties.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.cboThuoc.Properties.NullText" xml:space="preserve">
-    <value />
+    <value>Save (Ctrl S)</value>
   </data>
   <data name="UC_AllergyCardCreate.cboThuoc.Properties.NullValuePrompt" xml:space="preserve">
-    <value />
+    <value>Select...</value>
   </data>
-  <data name="UC_AllergyCardCreate.cboBacSi.Properties.NullText" xml:space="preserve">
-    <value />
+  <data name="UC_AllergyCardCreate.checkEdit1.Properties.Caption" xml:space="preserve">
+    <value>According to medicine</value>
+  </data>
+  <data name="UC_AllergyCardCreate.checkEdit2.Properties.Caption" xml:space="preserve">
+    <value>According to active ingredients</value>
+  </data>
+  <data name="UC_AllergyCardCreate.chkChacChan.Properties.Caption" xml:space="preserve">
+    <value>Sure</value>
+  </data>
+  <data name="UC_AllergyCardCreate.chkNghiNgo.Properties.Caption" xml:space="preserve">
+    <value>Suspect</value>
+  </data>
+  <data name="UC_AllergyCardCreate.gridColumn1.Caption" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="UC_AllergyCardCreate.gridColumn2.Caption" xml:space="preserve">
+    <value>Allergens/Drugs/Active ingredients</value>
+  </data>
+  <data name="UC_AllergyCardCreate.gridColumn2.ToolTip" xml:space="preserve">
+    <value>Allergens/drugs</value>
+  </data>
+  <data name="UC_AllergyCardCreate.gridColumn3.Caption" xml:space="preserve">
+    <value>Suspect</value>
+  </data>
+  <data name="UC_AllergyCardCreate.gridColumn3.ToolTip" xml:space="preserve">
+    <value>Suspect</value>
+  </data>
+  <data name="UC_AllergyCardCreate.gridColumn4.Caption" xml:space="preserve">
+    <value>Sure</value>
+  </data>
+  <data name="UC_AllergyCardCreate.gridColumn4.ToolTip" xml:space="preserve">
+    <value>Sure</value>
+  </data>
+  <data name="UC_AllergyCardCreate.gridColumn5.Caption" xml:space="preserve">
+    <value>Clinical manifestations</value>
+  </data>
+  <data name="UC_AllergyCardCreate.gridColumn5.ToolTip" xml:space="preserve">
+    <value>Clinical manifestations</value>
+  </data>
+  <data name="UC_AllergyCardCreate.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
   </data>
   <data name="UC_AllergyCardCreate.layoutControlItem1.Text" xml:space="preserve">
-    <value />
+    <value>Date of issue:</value>
   </data>
-  <data name="UC_AllergyCardCreate.layoutControlItem2.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.layoutControlItem3.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.layoutControlItem4.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.layoutControlItem6.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.layoutControlItem5.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.layoutControlItem8.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UC_AllergyCardCreate.layoutControlItem9.Text" xml:space="preserve">
-    <value />
+  <data name="UC_AllergyCardCreate.layoutControlItem12.Text" xml:space="preserve">
+    <value>Allergens/Active ingredients:</value>
   </data>
   <data name="UC_AllergyCardCreate.layoutControlItem17.Text" xml:space="preserve">
-    <value />
+    <value>B/clinical presentation:</value>
+  </data>
+  <data name="UC_AllergyCardCreate.layoutControlItem18.Text" xml:space="preserve">
+    <value>Allergens/medications:</value>
+  </data>
+  <data name="UC_AllergyCardCreate.layoutControlItem2.Text" xml:space="preserve">
+    <value>Treatment code:</value>
+  </data>
+  <data name="UC_AllergyCardCreate.layoutControlItem3.Text" xml:space="preserve">
+    <value>Full name:</value>
+  </data>
+  <data name="UC_AllergyCardCreate.layoutControlItem4.Text" xml:space="preserve">
+    <value>Date of birth:</value>
+  </data>
+  <data name="UC_AllergyCardCreate.layoutControlItem5.Text" xml:space="preserve">
+    <value>Sex:</value>
+  </data>
+  <data name="UC_AllergyCardCreate.layoutControlItem6.Text" xml:space="preserve">
+    <value>Doctor diagnoses:</value>
+  </data>
+  <data name="UC_AllergyCardCreate.layoutControlItem8.Text" xml:space="preserve">
+    <value>Phone number:</value>
+  </data>
+  <data name="UC_AllergyCardCreate.layoutControlItem9.Text" xml:space="preserve">
+    <value>Allergens/medications:</value>
   </data>
 </root>

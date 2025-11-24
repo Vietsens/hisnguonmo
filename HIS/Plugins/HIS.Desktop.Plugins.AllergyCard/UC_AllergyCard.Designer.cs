@@ -419,7 +419,7 @@ namespace HIS.Desktop.Plugins.AllergyCard
             // 
             // gridColumn6
             // 
-            this.gridColumn6.Caption = "Dị nguyên/Thuốc";
+            this.gridColumn6.Caption = "Dị nguyên/Thuốc/Hoạt chất";
             this.gridColumn6.FieldName = "ALLERGENIC_NAME";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
