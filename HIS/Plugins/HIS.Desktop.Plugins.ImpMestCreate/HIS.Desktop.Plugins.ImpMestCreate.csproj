@@ -416,19 +416,52 @@ if not exist "$(ProjectDir)bin\$(Configuration)\en" mkdir "$(ProjectDir)bin\$(Co
 xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
 xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
 
-if errorlevel 1 goto BuildEventFailed
+rem Histest
+@echo off
+for %25%25I in ("$(SolutionDir)\..\..") do set ParentDir=%25%25~fI
+rem
+set srcDirModule=$(TargetDir)$(TargetName).dll
+set srcDirVi=$(ProjectDir)bin\$(Configuration)\vi\$(TargetName).resources.dll
+set srcDirEn=$(ProjectDir)bin\$(Configuration)\en\$(TargetName).resources.dll
+set x64module=%25ParentDir%25\histest\x64\Plugins\Module
+set x64reference=%25ParentDir%25\histest\x64\ReferencedAssemblies
+set x64vi=%25ParentDir%25\histest\x64\vi
+set x64en=%25ParentDir%25\histest\x64\en
+rem
+if exist "%25x64vi%25" (
+	if exist "%25srcDirVi%25" xcopy "%25srcDirVi%25" "%25x64vi%25" /Y /I
+)
+if exist "%25x64en%25" (
+	if exist "%25srcDirEn%25" xcopy "%25srcDirEn%25" "%25x64en%25" /Y /I
+)
+set "found=0"
+if exist "%25x64module%25\$(TargetName).dll" (
+    set "found=1"
+)
+if exist "%25x64reference%25\$(TargetName).dll" (
+    set "found=1"
+)
+if "%25found%25"=="1" (
+    if exist "%25x64module%25\$(TargetName).dll" xcopy %25srcDirModule%25 "%25x64module%25" /Y /I
+	if exist "%25x64reference%25\$(TargetName).dll" xcopy %25srcDirModule%25 "%25x64reference%25" /Y /I
+)
+rem Histest
 
 if errorlevel 1 goto BuildEventFailed
-
+if errorlevel 1 goto BuildEventFailed
 REM Exit properly because the build will not fail
 REM unless the final step exits with an error code
-
 goto BuildEventOK
 :BuildEventFailed
 echo PREBUILDSTEP for $(ProjectName) FAILED
 exit 1
 :BuildEventOK
-echo PREBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
+echo PREBUILDSTEP for $(ProjectName) COMPLETED OK
+echo.
+echo.
+echo $(TargetDir)
+echo.
+echo.</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

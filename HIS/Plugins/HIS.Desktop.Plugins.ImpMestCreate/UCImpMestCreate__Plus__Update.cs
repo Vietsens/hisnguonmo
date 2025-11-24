@@ -568,6 +568,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             ado.CONTRACT_PRICE = medi.CONTRACT_PRICE;
                             ado.packingTypeName = medi.PACKING_TYPE_NAME;
                             ado.heinServiceBhytName = medi.HEIN_SERVICE_BHYT_NAME;
+                            ado.DescriptionMedicineType = medi.DESCRIPTION;
                             ado.activeIngrBhytName = medi.ACTIVE_INGR_BHYT_NAME;
                             ado.HisMedicine.DOSAGE_FORM = medi.DOSAGE_FORM;
                             ado.medicineUseFormId = medi.MEDICINE_USE_FORM_ID;

@@ -166,6 +166,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
                         mediSdo.Temperature = ado.TEMPERATURE;
                     mediSdo.MedicinePaties = ado.HisMedicinePatys;
                     mediSdo.Medicine.HEIN_LIMIT_PRICE = ado.HeinLimitPrice;
+                    mediSdo.Medicine.DESCRIPTION = ado.DescriptionMedicineType;
                     MedicineWithPatySDOs.Add(mediSdo);
                 }
                 else
@@ -206,7 +207,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
                             mateSdo.Material.PROFIT_RATIO = servicePaty.PercentProfit / 100;
                         }
                     }
-
                     MaterialWithPatySDOs.Add(mateSdo);
                 }
             }

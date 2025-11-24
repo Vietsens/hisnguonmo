@@ -92,7 +92,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
                 inputImpMestSDO.ImpMest = this._ImpMestUp != null ? this._ImpMestUp : this.ImpMest;
                 inputImpMestSDO.ManuMaterials = this.MaterialWithPatySDOs;
                 inputImpMestSDO.ManuMedicines = this.MedicineWithPatySDOs;
-
                 inputImpMestSDO.ImpMest.DELIVERER = this.Deliverer;
                 inputImpMestSDO.ImpMest.DESCRIPTION = this.Description;
                 inputImpMestSDO.ImpMest.RECEIVER_LOGINNAME = this.LogginName;
