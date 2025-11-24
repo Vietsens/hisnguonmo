@@ -1068,7 +1068,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             {
                 #region
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (printTypeCode == "Mps000096")
+                if (printTypeCode == "Mps000096")  
                 {
 
                     #region Mps000096
@@ -1085,10 +1085,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
                     // Lấy danh sách dịch vụ cần in
                     var serviceCodes = lstResultPrint.Select(o => o.SERVICE_CODE).Distinct().ToList();
-                    var lstService = BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => serviceCodes.Contains(o.SERVICE_CODE)).ToList();
+                    var lstService = BackendDataWorker.Get<V_HIS_SERVICE>();
 
                     // Gom nhóm theo cha (PARENT_ID)
-                    var groupByParent = lstService.GroupBy(o => o.PARENT_ID).ToList();
+                    var groupByParent = lstService.Where(o => serviceCodes.Contains(o.SERVICE_CODE)).GroupBy(o => o.PARENT_ID).ToList();
                     foreach (var group in groupByParent)
                     {
                         // Dịch vụ cha (có thể null nếu nhóm này không có cha)

@@ -749,7 +749,7 @@ namespace MPS.Processor.Mps000096
 
                 if (testIndexs != null && testIndexs.Count > 0)
                 {
-                    rdo.lstLisResult = rdo.lstLisResult.OrderBy(o => o.ID).ThenBy(o => o.TEST_INDEX_NAME).ToList();
+                    rdo.lstLisResult = rdo.lstLisResult.OrderBy(o => o.ID).ThenBy(o => o.TEST_INDEX_NAME).ToList();  
 
                     var groupListResult = rdo.lstLisResult.GroupBy(o => new { o.SERVICE_CODE, o.MACHINE_ID }).ToList();
                     Inventec.Common.Logging.LogSystem.Debug("groupListResult count: " + groupListResult.Count);
@@ -777,6 +777,7 @@ namespace MPS.Processor.Mps000096
                         hisSereServTeinSDO.RESULT_DESCRIPTION = firstItem.RESULT_DESCRIPTION;
                         hisSereServTeinSDO.ISO_PROCESS_CODE = firstItem.TDL_ISO_PROCESS_CODE;
                         hisSereServTeinSDO.IS_MEET_ISO_STANDARD = firstItem.TDL_IS_MEET_ISO_STANDARD;
+                        hisSereServTeinSDO.SERVICE_NAME = firstItem.SERVICE_NAME;   
 
                         V_HIS_SERVICE service = rdo.ListTestService != null ? rdo.ListTestService.FirstOrDefault(o => o.SERVICE_CODE == group.Key.SERVICE_CODE) : null;
                         V_HIS_SERVICE parent = null;
