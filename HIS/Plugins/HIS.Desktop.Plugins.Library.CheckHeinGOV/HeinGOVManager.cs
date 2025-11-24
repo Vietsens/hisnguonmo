@@ -171,7 +171,6 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     CommonParam param = new CommonParam();
                     ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
                     apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.APIEGW;
-                    apiInsuranceExpertise.isNullLsKCB2018 = false;
                     CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
                     checkHistoryLDO.maThe = dataHein.HeinCardNumber.Replace("-", "").Replace("_", "");
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
@@ -210,7 +209,10 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     }
                     else
                     {
-                        bool isHasNewCard = (!String.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheMoi) && String.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheCu) && (!rsData.ResultHistoryLDO.maThe.Equals(rsData.ResultHistoryLDO.maTheMoi) || rsData.ResultHistoryLDO.maKetQua.Equals(GOV_API_RESULT_004) || rsData.ResultHistoryLDO.maKetQua.Equals(GOV_API_RESULT_003)));
+                        DateTime dtHanTheTu = DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheTu).Value;
+                        DateTime dtHanTheDen = (DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheDen) ?? DateTime.MinValue);
+
+                        bool isHasNewCard = (!String.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheMoi) && String.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheCu) && (!rsData.ResultHistoryLDO.maThe.Equals(rsData.ResultHistoryLDO.maTheMoi) || rsData.ResultHistoryLDO.maKetQua.Equals(GOV_API_RESULT_004) || rsData.ResultHistoryLDO.maKetQua.Equals(GOV_API_RESULT_003)) && !(dtHanTheTu.Date <= dtIntructionTime.Date && dtHanTheDen.Date >= dtIntructionTime.Date));
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkHistoryLDO), checkHistoryLDO) +
                             "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsData), rsData));
 
@@ -252,8 +254,8 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                 DateTime dtHanTheTuMoi = DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheTuMoi).Value;
                                 DateTime dtHanTheDenMoi = (DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheDenMoi) ?? DateTime.MinValue);
 
-                                DateTime dtHanTheTuCu = DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheTu).Value;
-                                if ((dtHanTheTuMoi.Date <= dtIntructionTime.Date && (dtHanTheDenMoi == DateTime.MinValue || dtIntructionTime.Date <= dtHanTheDenMoi.Date)) || dtHanTheTuCu.Date <= dtIntructionTime.Date)
+                                DateTime dtHanTheDenCu = DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheDen).Value;
+                                if ((dtHanTheTuMoi.Date <= dtIntructionTime.Date && (dtHanTheDenMoi == DateTime.MinValue || dtIntructionTime.Date <= dtHanTheDenMoi.Date)) || dtHanTheDenCu.Date <= dtIntructionTime.Date)
                                 {
                                     isShowQuestionUpdateFormData = true;
                                 }
@@ -448,33 +450,31 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
 
                             CheckChangeAndUpdateForChangeHeinData(dataHein, rsData, ref isShowErrorMessage);
                         }
-                        if (rsData.ResultHistoryLDO.dsLichSuKCB2018 == null)
+                    }
+                    if (rsData.ResultHistoryLDO != null && rsData.ResultHistoryLDO.dsLichSuKCB2018 == null)
+                    {
+                        ResultHistoryLDO rsIns2 = new ResultHistoryLDO();
+                        if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
+                            || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
+                            || !string.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))
                         {
-                            ResultHistoryLDO rsIns2 = new ResultHistoryLDO();
-                            if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
-                                || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
-                                || !string.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))
+                            apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.OTHERAPIEGW;
+                            rsIns2 = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
+                            rsIns2 = null;
+                        }
+                        if (rsIns2 != null && rsIns2.dsLichSuKCB2025 != null && rsIns2.dsLichSuKCB2025.Count > 0 && rsIns2.success == true && String.IsNullOrEmpty(rsIns2.message))
+                        {
+                            rsData.ResultHistoryLDO.dsLichSuKCB2018 = new List<ExamHistoryLDO>();
+                            foreach (var item in rsIns2.dsLichSuKCB2025)
                             {
-                                apiInsuranceExpertise.isNullLsKCB2018 = true;
-                                apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.OTHERAPIEGW;
-                                rsIns2 = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
-                            }
-                            else
-                            {
-                                Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
-                                rsIns2 = null;
-                            }
-                            if (rsIns2 != null && rsIns2.dsLichSuKCB2025 != null && rsIns2.dsLichSuKCB2025.Count > 0 && rsIns2.success == true && String.IsNullOrEmpty(rsIns2.message))
-                            {
-                                rsData.ResultHistoryLDO.dsLichSuKCB2018 = new List<ExamHistoryLDO>();
-                                foreach (var item in rsIns2.dsLichSuKCB2025)
-                                {
-                                    rsData.ResultHistoryLDO.dsLichSuKCB2018.Add(item);
-                                }
+                                rsData.ResultHistoryLDO.dsLichSuKCB2018.Add(item);
                             }
                         }
                     }
-
 
                     //try
                     //{
@@ -1078,7 +1078,6 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     CommonParam param = new CommonParam();
                     ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
                     apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.APIEGW;
-                    apiInsuranceExpertise.isNullLsKCB2018 = false;
                     CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
                     checkHistoryLDO.maThe = dataHein.HeinCardNumber.Replace("-", "").Replace("_", "");
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
@@ -1111,8 +1110,10 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     }
                     else
                     {
+                        DateTime dtHanTheTu = DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheTu).Value;
+                        DateTime dtHanTheDen = (DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheDen) ?? DateTime.MinValue);
 
-                        bool isHasNewCard = (!String.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheMoi) && String.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheCu) && (!rsData.ResultHistoryLDO.maThe.Equals(rsData.ResultHistoryLDO.maTheMoi) || rsData.ResultHistoryLDO.maKetQua.Equals(GOV_API_RESULT_004)));
+                        bool isHasNewCard = (!String.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheMoi) && String.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheCu) && (!rsData.ResultHistoryLDO.maThe.Equals(rsData.ResultHistoryLDO.maTheMoi) || rsData.ResultHistoryLDO.maKetQua.Equals(GOV_API_RESULT_004) || rsData.ResultHistoryLDO.maKetQua.Equals(GOV_API_RESULT_003)) && !(dtHanTheTu.Date <= dtIntructionTime.Date && dtHanTheDen.Date >= dtIntructionTime.Date));
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkHistoryLDO), checkHistoryLDO) +
                             "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsData), rsData));
 
@@ -1133,7 +1134,9 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                             {
                                 DateTime dtHanTheTuMoi = DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheTuMoi).Value;
                                 DateTime dtHanTheDenMoi = (DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheDenMoi) ?? DateTime.MinValue);
-                                if (dtHanTheTuMoi.Date <= dtIntructionTime.Date && (dtHanTheDenMoi == DateTime.MinValue || dtIntructionTime.Date <= dtHanTheDenMoi.Date))
+
+                                DateTime dtHanTheDenCu = DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheDen).Value;
+                                if ((dtHanTheTuMoi.Date <= dtIntructionTime.Date && (dtHanTheDenMoi == DateTime.MinValue || dtIntructionTime.Date <= dtHanTheDenMoi.Date)) || dtHanTheDenCu.Date <= dtIntructionTime.Date)
                                 {
                                     isShowQuestionUpdateFormData = true;
                                     rsData.IsUsedNewCard = isShowQuestionUpdateFormData;
@@ -1296,7 +1299,6 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                 || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
                                 || !string.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))
                             {
-                                apiInsuranceExpertise.isNullLsKCB2018 = true;
                                 apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.OTHERAPIEGW;
                                 rsIns2 = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
                             }
