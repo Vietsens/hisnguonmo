@@ -2375,15 +2375,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     CommonParam param = new CommonParam();
                     HisServiceTesaFilter filter = new HisServiceTesaFilter();
 
-                    if (serviceIdClick > 0)
-                    {
-                        filter.SERVICE_ID = serviceIdClick;
-                    }
-                    else
-                    {
-                        filter.SERVICE_ID = null; 
-                    }
-
                     //filter.TEST_SAME_TYPE_ID = testSampleTypeId;
 
                     _cachedServiceTesa = new Inventec.Common.Adapter.BackendAdapter(param)
@@ -2489,8 +2480,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             ValidOnlyShowNoticeService(sereServADO);
                             if (((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue != "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue != "1")) && sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
                             {
-                                
-                                
                                 if (this.testSampleTypeId > 0)
                                 {
                                     sereServADO.TEST_SAMPLE_TYPE_ID = this.testSampleTypeId; 
@@ -2724,14 +2713,19 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     GridHitInfo hi = view.CalcHitInfo(e.Location);
                     if (hi.InRowCell)
                     {
+                        var dataRow = (SereServADO)gridViewServiceProcess.GetRow(hi.RowHandle);
+                        //var dataRow = (SereServADO)gridViewServiceProcess.GetRow(rowHandle);
+                        UpdateTestSampleTypeCombo(dataRow, ref this.testSampleTypeId);
                         if (hi.Column.RealColumnEdit.GetType() == typeof(DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit))
                         {
+                            int savedRowHandle = view.FocusedRowHandle;
                             view.FocusedRowHandle = hi.RowHandle;
                             view.FocusedColumn = hi.Column;
 
                             int rowHandle = gridViewServiceProcess.GetVisibleRowHandle(hi.RowHandle);
-                            var dataRow = (SereServADO)gridViewServiceProcess.GetRow(rowHandle);
-                            UpdateTestSampleTypeCombo(dataRow, ref this.testSampleTypeId);
+                            //var dataRow = (SereServADO)gridViewServiceProcess.GetRow(hi.RowHandle);
+                            ////var dataRow = (SereServADO)gridViewServiceProcess.GetRow(rowHandle);
+                            // UpdateTestSampleTypeCombo(dataRow, ref this.testSampleTypeId);
                             if (dataRow != null)
                             {
                                 //if (hi.Column.FieldName == "IsChecked" && (dataRow.IsAllowChecked == false))
@@ -2772,6 +2766,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 checkEdit.Checked = !checkEdit.Checked;
                                 view.CloseEditor();
                             }
+                            view.FocusedRowHandle = savedRowHandle;
                             (e as DevExpress.Utils.DXMouseEventArgs).Handled = true;
                         }
                     }
@@ -3293,7 +3288,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             //Phân biệt giá trị TEST_SAMPLE_TYPE_CODE mặc định bởi TEST_SAMPLE_TYPE_ID = 0;
                             if (((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue != "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue != "1")) && sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
                             {
-                                long testSampleTypeId = 0;
                                 UpdateTestSampleTypeCombo(sereServADO, ref testSampleTypeId);
                                 if (testSampleTypeId > 0)
                                 {
