@@ -1040,13 +1040,14 @@ namespace HIS.Desktop.Plugins.Register.Run
                     string allowManyTreatmentOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION");
                     if (allowManyTreatmentOpeningOption == "6")
                     {
+                        this.btnSave.Enabled = true;
+                        this.btnSaveAndPrint.Enabled = true;
                         HisPatientSDO patient = new HisPatientSDO();
                         if (data is HisPatientSDO)
                         {
                             patient = data as HisPatientSDO;
                         }
                         // Tạo bộ lọc và xử lý hồ sơ điều trị
-                        LogSystem.Debug("patient.ID" + patient.ID);
                         CommonParam paramCommon = new CommonParam();
                         HisTreatmentFilter filterTreatment = new HisTreatmentFilter
                         {
@@ -1064,7 +1065,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                         var treatmentList = new BackendAdapter(paramCommon)
                             .Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filterTreatment, paramCommon)
                             .ToList();
-                        LogSystem.Debug("treatmentList.Count" + treatmentList.Count);
                         // Lọc danh sách thỏa mãn các điều kiện bổ sung
                         var activeTreatments = treatmentList
                             .Where(t =>
@@ -1072,7 +1072,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                                 || t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
                                 || (t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && t.IS_EMERGENCY != 1))
                             .ToList();
-                        LogSystem.Debug("activeTreatments.Count" + activeTreatments.Count);
                         // Nếu tồn tại bất kỳ hồ sơ nào
                         if (activeTreatments != null && activeTreatments.Count > 0)
                         {
