@@ -1326,7 +1326,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             && currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL 
                             && item.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL)
                         {
-                            LogSystem.Debug("ext12:" + ext);
                             if (ext == null || ext.GPBL_STORE_CODE == null)
                             {
                                 string roomCode = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentServiceReq.EXECUTE_ROOM_ID).ROOM_CODE;
@@ -1340,7 +1339,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                                     formatOption = long.Parse(gpblStoreCodeOption)
                                 };
                                 string storeCode = CallGpblStoreCodeApi(gpblPayload); // Gọi API sinh số lưu trữ
-                                LogSystem.Debug("storeCode12:" + storeCode);
                                 if (!string.IsNullOrEmpty(storeCode))
                                 {
                                     ado.GPBL_STORE_CODE = storeCode;
@@ -1374,7 +1372,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
-                Inventec.Common.Logging.LogSystem.Info("payload12: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => payload), payload));
                 CommonParam param = new CommonParam();
                 return new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/HisSereServ/GetGpblStoreCode", ApiConsumer.ApiConsumers.MosConsumer, param, payload, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken);
             }
