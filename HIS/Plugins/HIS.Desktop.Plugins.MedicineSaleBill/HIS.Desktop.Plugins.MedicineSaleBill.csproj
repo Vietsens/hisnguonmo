@@ -149,8 +149,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\WCF\Inventec.WCF\Client\.Net 4.5\Inventec.WCFClient.ResultSaleClient\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -158,7 +157,7 @@
       <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Config">
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\MOS.LibraryHein.Config.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.LibraryHein.Config.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -219,7 +218,6 @@
     <EmbeddedResource Include="frmMedicineSaleBill.resx">
       <DependentUpon>frmMedicineSaleBill.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
   </ItemGroup>

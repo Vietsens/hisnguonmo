@@ -76,7 +76,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Death
                     result.MainCause = hisTreatmentFinishSDO_process.MainCause;
                     result.Surgery = hisTreatmentFinishSDO_process.Surgery;
                     result.DeathCertBookId = hisTreatmentFinishSDO_process.DeathCertBookId;
-
+                    //
+                    result.DeathIdentityNumber = hisTreatmentFinishSDO_process.DeathIdentityNumber;
                     result.DeathDocumentDate = hisTreatmentFinishSDO_process.DeathDocumentDate;
                     result.DeathDocumentNumber = hisTreatmentFinishSDO_process.DeathDocumentNumber;
                     result.DeathDocumentPlace = hisTreatmentFinishSDO_process.DeathDocumentPlace;
