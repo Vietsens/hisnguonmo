@@ -11,7 +11,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
  * GNU General Public License for more details.
- *  
+ *  MPS000
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -6593,7 +6593,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
-                if (row != null && !String.IsNullOrWhiteSpace(row.EMR_RESULT_DOCUMENT_CODE))
+                if (row != null && !String.IsNullOrWhiteSpace(row.EMR_RESULT_DOCUMENT_CODE)) 
                 {
                     CommonParam param = new CommonParam();
                     var apiResult = GetEmrDocumentFile(row, false, false, false, ref param);
@@ -7307,7 +7307,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
         }
 
-        public void TreeListHeaderMerger(TreeList treeList, TreeListColumn columnToMerge)
+        public void TreeListHeaderMerger(TreeList treeList, TreeListColumn columnToMerge) 
         {
             try
             {
@@ -7321,7 +7321,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            }    
         }
 
         public TreeListColumn GetNextColumn()
