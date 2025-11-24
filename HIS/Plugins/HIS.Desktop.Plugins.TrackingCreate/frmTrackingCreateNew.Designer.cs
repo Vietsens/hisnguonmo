@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTrackingCreateNew));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -98,7 +97,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject49 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnGoiYAI = new DevExpress.XtraEditors.SimpleButton();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
             this.btnAssignPan = new DevExpress.XtraEditors.SimpleButton();
             this.btnNew = new DevExpress.XtraEditors.SimpleButton();
             this.btnPhieuVoBenhAn = new DevExpress.XtraEditors.SimpleButton();
@@ -126,7 +125,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.cboDepartment = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItemPrint = new DevExpress.XtraBars.BarButtonItem();
@@ -353,10 +352,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.imageListIcon = new System.Windows.Forms.ImageList();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -1918,10 +1917,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             // btnPDF
             // 
             this.btnPDF.Image = ((System.Drawing.Image)(resources.GetObject("btnPDF.Image")));
-            this.btnPDF.Location = new System.Drawing.Point(588, 180);
+            this.btnPDF.Location = new System.Drawing.Point(584, 180);
             this.btnPDF.MaximumSize = new System.Drawing.Size(28, 30);
             this.btnPDF.Name = "btnPDF";
-            this.btnPDF.Size = new System.Drawing.Size(24, 22);
+            this.btnPDF.Size = new System.Drawing.Size(28, 22);
             this.btnPDF.StyleController = this.layoutControl2;
             this.btnPDF.TabIndex = 33;
             this.btnPDF.Click += new System.EventHandler(this.btnPDF_Click);
@@ -2142,7 +2141,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.txtDiseaseStage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.txtDiseaseStage.MenuManager = this.barManager1;
             this.txtDiseaseStage.Name = "txtDiseaseStage";
-            this.txtDiseaseStage.Size = new System.Drawing.Size(180, 20);
+            this.txtDiseaseStage.Size = new System.Drawing.Size(316, 20);
             this.txtDiseaseStage.StyleController = this.layoutControl2;
             this.txtDiseaseStage.TabIndex = 27;
             // 
@@ -3113,7 +3112,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.layoutControlItem59.Control = this.txtDiseaseStage;
             this.layoutControlItem59.Location = new System.Drawing.Point(0, 178);
             this.layoutControlItem59.Name = "layoutControlItem59";
-            this.layoutControlItem59.Size = new System.Drawing.Size(281, 26);
+            this.layoutControlItem59.Size = new System.Drawing.Size(417, 26);
             this.layoutControlItem59.Text = "Giai đoạn bệnh:";
             this.layoutControlItem59.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem59.TextSize = new System.Drawing.Size(92, 20);
@@ -3192,12 +3191,12 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.layoutControlItem71.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem71.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem71.Control = this.btnPDF;
-            this.layoutControlItem71.Location = new System.Drawing.Point(281, 178);
+            this.layoutControlItem71.Location = new System.Drawing.Point(417, 178);
             this.layoutControlItem71.Name = "layoutControlItem71";
-            this.layoutControlItem71.Size = new System.Drawing.Size(333, 26);
+            this.layoutControlItem71.Size = new System.Drawing.Size(197, 26);
             this.layoutControlItem71.Text = "Phác đồ tờ điều trị mẫu";
             this.layoutControlItem71.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem71.TextSize = new System.Drawing.Size(300, 20);
+            this.layoutControlItem71.TextSize = new System.Drawing.Size(160, 20);
             this.layoutControlItem71.TextToControlDistance = 5;
             // 
             // layoutControlGroup1
