@@ -1,4 +1,5 @@
-﻿using Inventec.Core;
+﻿using DevExpress.XtraEditors;
+using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using System;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
 {
@@ -28,12 +30,13 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
             this.medicine = _medicine;
         }
 
-        public bool CheckData(ref string message)
+        public bool CheckData()
         {
+            string message = "";
             bool result = true;
             try
             {
-                Inventec.Common.Logging.LogSystem.Info("ConnectWhoCndProcessor SendData");
+                Inventec.Common.Logging.LogSystem.Info("ConnectWhoCndProcessor CheckData");
                 //không có só thẻ BHYT, CCCD thì không đẩy
                 if (data == null || String.IsNullOrWhiteSpace(data.TDL_PATIENT_CCCD_NUMBER) || String.IsNullOrWhiteSpace(data.TDL_HEIN_CARD_NUMBER))
                     return result;
@@ -90,33 +93,48 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                     }
                 }
 
+                HasData = true;
                 if (medicine == null || medicine.Count <= 0)
                 {
                     message = "Bệnh nhân chưa có thông tin đơn thuốc";
-                    return false;
+                    HasData = false;
                 }
 
                 //cao huyết áp: I10-I15, khi lưu bắt buộc phải có thông tin huyết áp
                 if (Utilities.IsBATHA(totalIcds) && (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue))
                 {
                     message = "Bệnh nhân thiếu thông tin huyết áp";
-                    return false;
+                    HasData = false;
                 }
 
                 //đái tháo đường: E10-E14, khi lưu phải có kết quả của đường huyết
                 if (Utilities.IsBADTD(totalIcds) && (ssTein == null || ssTein.Count == 0))
                 {
                     message = "Bệnh nhân đái tháo đường thiếu kết quả xét nghiệm đường huyết";
-                    return false;
+                    HasData = false;
                 }
-                HasData = true;
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                message += ex.Message;
-                result = false;
             }
+            finally
+            {
+                if (!String.IsNullOrWhiteSpace(message))
+                {
+                    result = false;
+                    if (Configs.IS_WARNING == "1" && XtraMessageBox.Show(string.Format("{0}. Bạn có muốn tiếp tục?", message), "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                    {
+                        result = true;
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK);
+                    }
+                }
+            }
+
             return result;
         }
 

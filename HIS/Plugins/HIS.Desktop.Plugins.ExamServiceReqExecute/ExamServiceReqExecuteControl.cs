@@ -3102,10 +3102,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         checkData.ICD_SUB_CODE = hisServiceReqSDO.TreatmentFinishSDO.IcdSubCode;
                         checkData.ICD_CAUSE_CODE = hisServiceReqSDO.TreatmentFinishSDO.IcdCauseName;
                         whoCndProcessor = new Library.ConnectWhoCnd.ConnectWhoCndProcessor(checkData, hisServiceReqSDO.HisDhst, null);
-                        string mess = "";
-                        if (!whoCndProcessor.CheckData(ref mess))
+                        if (!whoCndProcessor.CheckData())
                         {
-                            MessageBox.Show(mess);
                             return;
                         }
                     }

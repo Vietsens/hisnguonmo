@@ -21,6 +21,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
         public static string PROGRAM;
         public static string USERNAME;
         public static string PASSWORD;
+        public static string IS_WARNING;
 
         internal static void LoadConfig()
         {
@@ -54,10 +55,9 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                         {
                             SERVICE_CODE_DVHBA1C = data.DVHBA1C.Split('|').ToList();
                         }
+                        IS_WARNING = (data.IS_WARNING + "").Trim();
                     }
                 }
-
-
 
             }
             catch (Exception ex)
@@ -135,5 +135,6 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
         /// Dịch vụ Đái tháo đường
         /// </summary>
         public string DVHBA1C { get; set; }
+        public string IS_WARNING { get; set; }
     }
 }
