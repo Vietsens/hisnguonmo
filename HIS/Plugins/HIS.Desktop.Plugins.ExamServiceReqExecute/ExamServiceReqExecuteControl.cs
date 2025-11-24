@@ -7887,6 +7887,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     }
 
+
+                }
+                else
+                {
+                    isCheckAssignServiceSimultaneityOption = true;
                 }
                 var checkInfos = new List<object>();
                 isCheckAssignSimultaneityOption = false;
