@@ -1310,7 +1310,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                         foreach (var itemGr in GroupTreatments)
                         {
                             var treatment = _Datatreatments.FirstOrDefault(p => p.ID == itemGr.Key);
-                            Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                            //Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                            Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : itemGr.First().TDL_TREATMENT_CODE), printTypeCode, this.currentModule.RoomId);
 
                             //xếp theo thời gian ra buồng. chưa ra thì là 0 bé nhất.
                             //xếp theo có thông tin giường hay ko. true lên trước false
@@ -1397,7 +1398,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                                 }
 
                                 var treatment = _Datatreatments.FirstOrDefault(p => p.ID == itemGr.Key);
-                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                //Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : itemGr.First().TDL_TREATMENT_CODE), printTypeCode, this.currentModule.RoomId);
 
                                 //xếp theo thời gian ra buồng. chưa ra thì là 0 bé nhất.
                                 //xếp theo có thông tin giường hay ko. true lên trước false
@@ -1479,7 +1481,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                                 }
 
                                 var treatment = _Datatreatments.FirstOrDefault(p => p.ID == itemGr.Key);
-                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                //Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : itemGr.First().TDL_TREATMENT_CODE), printTypeCode, this.currentModule.RoomId);
 
                                 //xếp theo thời gian ra buồng. chưa ra thì là 0 bé nhất.
                                 //xếp theo có thông tin giường hay ko. true lên trước false
@@ -1567,7 +1570,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                                     }
 
                                     var treatment = _Datatreatments.FirstOrDefault(p => p.ID == itemGr.Key);
-                                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                    //Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : itemGr.First().TDL_TREATMENT_CODE), printTypeCode, this.currentModule.RoomId);
 
                                     //xếp theo thời gian ra buồng. chưa ra thì là 0 bé nhất.
                                     //xếp theo có thông tin giường hay ko. true lên trước false
@@ -1648,7 +1652,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                                         }
 
                                         var treatment = _Datatreatments.FirstOrDefault(p => p.ID == itemGr.Key);
-                                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                        //Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : itemGr.First().TDL_TREATMENT_CODE), printTypeCode, this.currentModule.RoomId);
 
                                         //xếp theo thời gian ra buồng. chưa ra thì là 0 bé nhất.
                                         //xếp theo có thông tin giường hay ko. true lên trước false
@@ -1728,7 +1733,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                                         }
 
                                         var treatment = _Datatreatments.FirstOrDefault(p => p.ID == itemGr.Key);
-                                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                        //Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : itemGr.First().TDL_TREATMENT_CODE), printTypeCode, this.currentModule.RoomId);
 
                                         //xếp theo thời gian ra buồng. chưa ra thì là 0 bé nhất.
                                         //xếp theo có thông tin giường hay ko. true lên trước false
@@ -1812,7 +1818,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                                 }
 
                                 var treatment = _Datatreatments.FirstOrDefault(p => p.ID == itemGr.Key);
-                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                //Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : itemGr.First().TDL_TREATMENT_CODE), printTypeCode, this.currentModule.RoomId);
 
                                 //xếp theo thời gian ra buồng. chưa ra thì là 0 bé nhất.
                                 //xếp theo có thông tin giường hay ko. true lên trước false
@@ -1894,7 +1901,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                                 }
 
                                 var treatment = _Datatreatments.FirstOrDefault(p => p.ID == itemGr.Key);
-                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                //Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : itemGr.First().TDL_TREATMENT_CODE), printTypeCode, this.currentModule.RoomId);
 
                                 //xếp theo thời gian ra buồng. chưa ra thì là 0 bé nhất.
                                 //xếp theo có thông tin giường hay ko. true lên trước false
@@ -2001,7 +2009,11 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter.Run
                                     }
 
                                     var treatment = _Datatreatments.FirstOrDefault(p => p.ID == itemGr.Key);
-                                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+
+                                    //Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE) ? this._AggrExpMests.FirstOrDefault().TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currentModule.RoomId);
+
+                                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatment != null ? treatment.TREATMENT_CODE : itemGr.First().TDL_TREATMENT_CODE), printTypeCode, this.currentModule.RoomId);
+
 
                                     //xếp theo thời gian ra buồng. chưa ra thì là 0 bé nhất.
                                     //xếp theo có thông tin giường hay ko. true lên trước false
