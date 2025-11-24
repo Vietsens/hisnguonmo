@@ -165,6 +165,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ConfigKey.cs" />
     <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="ModuleLinkString.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
@@ -262,6 +263,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

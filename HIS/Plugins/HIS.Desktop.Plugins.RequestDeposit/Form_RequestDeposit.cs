@@ -50,6 +50,7 @@ using DevExpress.XtraBars;
 using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Common.Logging;
 using HIS.Desktop.ADO;
+using HIS.Desktop.Plugins.RequestDeposit.Config;
 
 namespace HIS.Desktop.Plugins.RequestDeposit
 {
@@ -107,6 +108,8 @@ namespace HIS.Desktop.Plugins.RequestDeposit
                 //InitLinkText();
                 LoadDefaultDepositReason();
                 InitLinkText();
+
+                Config.ConfigKey.GetConfigKey();
 
                 getDataDepositReq(this.treatmentID);
                 FillDataToGridDepositReq();
@@ -774,13 +777,16 @@ namespace HIS.Desktop.Plugins.RequestDeposit
 
                     decimal totalReceiveMore = (treat.TOTAL_PATIENT_PRICE ?? 0) - totalReceive - (treat.TOTAL_BILL_FUND ?? 0) - (treat.TOTAL_BILL_EXEMPTION ?? 0);
                     // string TotalReceiveMorePrice = Inventec.Common.Number.Convert.NumberToString(totalReceiveMore, ConfigApplications.NumberSeperator);
-                    if (totalReceiveMore > 0)
+
+                    long minAmount = ConfigKey.MinimumDepositAmount;
+
+                    if (totalReceiveMore < minAmount)
                     {
-                        this.spinEditPrice.Value = totalReceiveMore;
+                        this.spinEditPrice.Value = minAmount;
                     }
                     else
                     {
-                        this.spinEditPrice.EditValue = null;
+                        this.spinEditPrice.EditValue = totalReceiveMore;
                     }
                 }
                 else

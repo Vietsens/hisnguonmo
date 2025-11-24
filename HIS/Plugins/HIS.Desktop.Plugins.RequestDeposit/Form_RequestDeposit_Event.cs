@@ -15,25 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Grid;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.RequestDeposit.Config;
+using Inventec.Common.Adapter;
+using Inventec.Common.RichEditor.Base;
+using Inventec.Core;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MOS.EFMODEL.DataModels;
-using Inventec.Core;
-using HIS.Desktop.LocalStorage.LocalData;
-using Inventec.Common.Adapter;
-using Inventec.Desktop.Common.Message;
-using Inventec.Common.RichEditor.Base;
-using HIS.Desktop.Controls.Session;
-using DevExpress.XtraGrid.Views.Grid;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using MOS.Filter;
 
 namespace HIS.Desktop.Plugins.RequestDeposit
 {
@@ -159,6 +161,19 @@ namespace HIS.Desktop.Plugins.RequestDeposit
                     this.positionHandleControl = -1;
                     if (!dxValidationProvider1.Validate())
                         return;
+
+                    //Kiểm tra số tiền tối thiểu
+                    if (spinEditPrice.Value < ConfigKey.MinimumDepositAmount)
+                    {
+                        XtraMessageBox.Show(
+                            $"Số tiền tạm ứng tối thiểu là {ConfigKey.MinimumDepositAmount}",
+                            "Thông báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning
+                        );
+                        return;
+                    }
+
                     var depositReq = new HIS_DEPOSIT_REQ();
                     if (this.action == GlobalVariables.ActionEdit)
                     {
