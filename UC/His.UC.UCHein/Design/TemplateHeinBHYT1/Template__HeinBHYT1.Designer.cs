@@ -46,25 +46,21 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject41 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject44 = new DevExpress.Utils.SerializableAppearanceObject();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Template__HeinBHYT1));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SuperToolTip superToolTip7 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem7 = new DevExpress.Utils.ToolTipItem();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Template__HeinBHYT1));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -77,28 +73,32 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
             DevExpress.Utils.SuperToolTip superToolTip3 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem3 = new DevExpress.Utils.ToolTipItem();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SuperToolTip superToolTip6 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem6 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip4 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem4 = new DevExpress.Utils.ToolTipItem();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SuperToolTip superToolTip4 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem4 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SuperToolTip superToolTip5 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem5 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject37 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject38 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject39 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject40 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SuperToolTip superToolTip6 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem6 = new DevExpress.Utils.ToolTipItem();
             this.txtHeinCardToTime = new DevExpress.XtraEditors.ButtonEdit();
             this.txtHeinCardFromTime = new DevExpress.XtraEditors.ButtonEdit();
             this.dtHeinCardToTime = new DevExpress.XtraEditors.DateEdit();
@@ -482,7 +482,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.cboPatientCode.Name = "cboPatientCode";
             this.cboPatientCode.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboPatientCode.Properties.NullText = "";
             this.cboPatientCode.Properties.View = this.gridView4;
             this.cboPatientCode.Size = new System.Drawing.Size(79, 20);
@@ -676,7 +676,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.cboNoiSong.Properties.AutoComplete = false;
             this.cboNoiSong.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.cboNoiSong.Properties.NullText = "";
             this.cboNoiSong.Properties.View = this.gridView2;
             this.cboNoiSong.Size = new System.Drawing.Size(71, 20);
@@ -814,9 +814,9 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.chkPaid6Month.Properties.FullFocusRect = true;
             this.chkPaid6Month.Size = new System.Drawing.Size(30, 19);
             this.chkPaid6Month.StyleController = this.layoutControl1;
-            toolTipItem7.Text = "Đồng chi trả lũy kế đủ 6 tháng lương tối thiểu";
-            superToolTip7.Items.Add(toolTipItem7);
-            this.chkPaid6Month.SuperTip = superToolTip7;
+            toolTipItem1.Text = "Đồng chi trả lũy kế đủ 6 tháng lương tối thiểu";
+            superToolTip1.Items.Add(toolTipItem1);
+            this.chkPaid6Month.SuperTip = superToolTip1;
             this.chkPaid6Month.TabIndex = 15;
             this.chkPaid6Month.CheckedChanged += new System.EventHandler(this.chkPaid6Month_CheckedChanged);
             this.chkPaid6Month.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkPaid6Month_PreviewKeyDown);
@@ -839,7 +839,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.cboChanDoanTD.Properties.AutoComplete = false;
             this.cboChanDoanTD.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.cboChanDoanTD.Properties.NullText = "";
             this.cboChanDoanTD.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboChanDoanTD.Properties.View = this.gridView3;
@@ -901,7 +901,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.cboLyDoChuyen.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboLyDoChuyen.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.cboLyDoChuyen.Properties.NullText = "";
             this.cboLyDoChuyen.Properties.PopupSizeable = false;
             this.cboLyDoChuyen.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -934,7 +934,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.cboHeinRightRoute.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboHeinRightRoute.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.cboHeinRightRoute.Properties.NullText = "";
             this.cboHeinRightRoute.Properties.PopupSizeable = false;
             this.cboHeinRightRoute.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -1007,7 +1007,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.cboNoiChuyenDen.Properties.AutoComplete = false;
             this.cboNoiChuyenDen.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
             this.cboNoiChuyenDen.Properties.NullText = "";
             this.cboNoiChuyenDen.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboNoiChuyenDen.Properties.View = this.gridView1;
@@ -1047,7 +1047,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.cboHinhThucChuyen.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboHinhThucChuyen.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
             this.cboHinhThucChuyen.Properties.NullText = "";
             this.cboHinhThucChuyen.Properties.PopupSizeable = false;
             this.cboHinhThucChuyen.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -1100,9 +1100,9 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.chkJoin5Year.Properties.FullFocusRect = true;
             this.chkJoin5Year.Size = new System.Drawing.Size(30, 19);
             this.chkJoin5Year.StyleController = this.layoutControl1;
-            toolTipItem1.Text = "Đóng bảo hiểm y tế đủ 5 năm liên tục";
-            superToolTip1.Items.Add(toolTipItem1);
-            this.chkJoin5Year.SuperTip = superToolTip1;
+            toolTipItem2.Text = "Đóng bảo hiểm y tế đủ 5 năm liên tục";
+            superToolTip2.Items.Add(toolTipItem2);
+            this.chkJoin5Year.SuperTip = superToolTip2;
             this.chkJoin5Year.TabIndex = 14;
             this.chkJoin5Year.CheckedChanged += new System.EventHandler(this.chkJoin5Year_CheckedChanged);
             this.chkJoin5Year.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkJoin5Year_PreviewKeyDown);
@@ -1119,10 +1119,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.chkMediRecordNoRouteTransfer.Properties.FullFocusRect = true;
             this.chkMediRecordNoRouteTransfer.Size = new System.Drawing.Size(19, 20);
             this.chkMediRecordNoRouteTransfer.StyleController = this.layoutControl1;
-            toolTipItem2.Text = "Chuyển vượt tuyến CMKT gồm các trường hợp chuyển người bệnh không theo đúng quy đ" +
+            toolTipItem3.Text = "Chuyển vượt tuyến CMKT gồm các trường hợp chuyển người bệnh không theo đúng quy đ" +
     "ịnh tại các khoản 1, 2, 3, 4  Điều 5 Thông tư";
-            superToolTip2.Items.Add(toolTipItem2);
-            this.chkMediRecordNoRouteTransfer.SuperTip = superToolTip2;
+            superToolTip3.Items.Add(toolTipItem3);
+            this.chkMediRecordNoRouteTransfer.SuperTip = superToolTip3;
             this.chkMediRecordNoRouteTransfer.TabIndex = 26;
             this.chkMediRecordNoRouteTransfer.CheckedChanged += new System.EventHandler(this.chkMediRecordNoRouteTransfer_CheckedChanged);
             this.chkMediRecordNoRouteTransfer.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkMediRecordNoRouteTransfer_PreviewKeyDown);
@@ -1157,10 +1157,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.chkMediRecordRouteTransfer.Properties.FullFocusRect = true;
             this.chkMediRecordRouteTransfer.Size = new System.Drawing.Size(95, 20);
             this.chkMediRecordRouteTransfer.StyleController = this.layoutControl1;
-            toolTipItem3.Text = "Chuyển đúng tuyến CMKT gồm các trường hợp chuyển người bệnh theo đúng quy định tạ" +
+            toolTipItem4.Text = "Chuyển đúng tuyến CMKT gồm các trường hợp chuyển người bệnh theo đúng quy định tạ" +
     "i các khoản 1, 2, 3, 4  Điều 5 Thông tư";
-            superToolTip3.Items.Add(toolTipItem3);
-            this.chkMediRecordRouteTransfer.SuperTip = superToolTip3;
+            superToolTip4.Items.Add(toolTipItem4);
+            this.chkMediRecordRouteTransfer.SuperTip = superToolTip4;
             this.chkMediRecordRouteTransfer.TabIndex = 25;
             this.chkMediRecordRouteTransfer.CheckedChanged += new System.EventHandler(this.chkMediRecordRouteTransfer_CheckedChanged);
             this.chkMediRecordRouteTransfer.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkMediRecordRouteTransfer_PreviewKeyDown);
@@ -1187,17 +1187,17 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.txtSoThe.Properties.Appearance.Options.UseTextOptions = true;
             this.txtSoThe.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
             this.txtSoThe.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.DropDown, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "Nhập số thẻ mới", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.DropDown, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "", null, null, true),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Nhập số thẻ mới", null, null, true)});
             this.txtSoThe.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtSoThe.Properties.Mask.EditMask = "\\w{2}-\\d{1}-\\w{2}-\\w{2}-\\w{3}-\\w{5}";
             this.txtSoThe.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
             this.txtSoThe.Properties.Mask.UseMaskAsDisplayFormat = true;
             this.txtSoThe.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtSoThe_Properties_ButtonClick);
             this.txtSoThe.Size = new System.Drawing.Size(233, 20);
-            toolTipItem6.Text = "Nhấn tổ hợp phím Ctrl + F để mở danh sách thẻ của bệnh  nhân";
-            superToolTip6.Items.Add(toolTipItem6);
-            this.txtSoThe.SuperTip = superToolTip6;
+            toolTipItem5.Text = "Nhấn tổ hợp phím Ctrl + F để mở danh sách thẻ của bệnh  nhân";
+            superToolTip5.Items.Add(toolTipItem5);
+            this.txtSoThe.SuperTip = superToolTip5;
             this.txtSoThe.TabIndex = 2;
             this.txtSoThe.InvalidValue += new DevExpress.XtraEditors.Controls.InvalidValueExceptionEventHandler(this.txtSoThe_InvalidValue);
             this.txtSoThe.EditValueChanged += new System.EventHandler(this.txtSoThe_EditValueChanged);
@@ -1211,7 +1211,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.cboSoThe.Properties.AutoHeight = false;
             this.cboSoThe.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Nhập số thẻ mới", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Nhập số thẻ mới", null, null, true)});
             this.cboSoThe.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.cboSoThe.Properties.MaxLength = 17;
             this.cboSoThe.Properties.NullText = "";
@@ -1234,9 +1234,9 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             this.chkHasDobCertificate.Properties.FullFocusRect = true;
             this.chkHasDobCertificate.Size = new System.Drawing.Size(19, 19);
             this.chkHasDobCertificate.StyleController = this.layoutControl1;
-            toolTipItem4.Text = "Tự tạo thẻ BHYT cho trường hợp trẻ em dưới 6 tuổi có giấy khai sinh";
-            superToolTip4.Items.Add(toolTipItem4);
-            this.chkHasDobCertificate.SuperTip = superToolTip4;
+            toolTipItem6.Text = "Tự tạo thẻ BHYT cho trường hợp trẻ em dưới 6 tuổi có giấy khai sinh";
+            superToolTip6.Items.Add(toolTipItem6);
+            this.chkHasDobCertificate.SuperTip = superToolTip6;
             this.chkHasDobCertificate.TabIndex = 1;
             this.chkHasDobCertificate.CheckedChanged += new System.EventHandler(this.chkHasDobCertificate_CheckedChanged);
             this.chkHasDobCertificate.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkHasDobCertificate_PreviewKeyDown);

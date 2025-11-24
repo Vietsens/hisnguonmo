@@ -1023,29 +1023,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             }
             return null;
         }
-        private long getIdPatient(string patientCode )
-        {
-            long patientId = 0;
-            try
-            {
-                CommonParam paramCommon = new CommonParam();
-                HisPatientFilter filter = new HisPatientFilter
-                {
-                    PATIENT_CODE = patientCode
-                };
-                var patientList = new BackendAdapter(paramCommon)
-                                .Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, paramCommon)
-                                .ToList();
-                patientId = patientList?.FirstOrDefault()?.ID ?? 0;
-               
-            }
-            catch (Exception ex)
-            {
-                WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            return patientId;
-        }
         private async void ProcessPatientCodeKeydown(object data)
         {
             try
@@ -1060,6 +1037,69 @@ namespace HIS.Desktop.Plugins.Register.Run
                     string heinAddressOfPatient = "";
                     this.SetPatientSearchPanel(false);
                     this.isReadQrCode = false;
+                    string allowManyTreatmentOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION");
+                    if (allowManyTreatmentOpeningOption == "6")
+                    {
+                        HisPatientSDO patient = new HisPatientSDO();
+                        if (data is HisPatientSDO)
+                        {
+                            patient = data as HisPatientSDO;
+                        }
+                        // Tạo bộ lọc và xử lý hồ sơ điều trị
+                        LogSystem.Debug("patient.ID" + patient.ID);
+                        CommonParam paramCommon = new CommonParam();
+                        HisTreatmentFilter filterTreatment = new HisTreatmentFilter
+                        {
+
+                            PATIENT_ID = patient.ID,
+                            IS_PAUSE = false,
+                            TDL_TREATMENT_TYPE_IDs = new List<long>
+                                {
+                                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM,
+                                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU,
+                                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
+                                }
+                        };
+                        // Lấy danh sách HIS_TREATMENT từ backend
+                        var treatmentList = new BackendAdapter(paramCommon)
+                            .Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filterTreatment, paramCommon)
+                            .ToList();
+                        LogSystem.Debug("treatmentList.Count" + treatmentList.Count);
+                        // Lọc danh sách thỏa mãn các điều kiện bổ sung
+                        var activeTreatments = treatmentList
+                            .Where(t =>
+                                t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
+                                || t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
+                                || (t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && t.IS_EMERGENCY != 1))
+                            .ToList();
+                        LogSystem.Debug("activeTreatments.Count" + activeTreatments.Count);
+                        // Nếu tồn tại bất kỳ hồ sơ nào
+                        if (activeTreatments != null && activeTreatments.Count > 0)
+                        {
+                            var listId = activeTreatments.Select(t => t.TREATMENT_CODE).ToList();
+                            string listIdString = string.Join(", ", listId);
+                            // Hiển thị cảnh báo tới người dùng
+                            DialogResult result = DevExpress.XtraEditors.XtraMessageBox.Show(
+                                $"Tồn tại hồ sơ chưa được kết thúc điều trị (Hồ sơ đang mở: {listIdString}). Bạn có muốn mở thêm hồ sơ mới hay không?",
+                                "Cảnh báo",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning
+                            );
+
+                            if (result == DialogResult.Yes)
+                            {
+                                // Người dùng chọn "Có" => Tiếp tục xử lý mở hồ sơ mới
+                                // Không cần `return`, cho phép logic phía sau được tiếp tục
+                            }
+                            else
+                            {
+                                // Người dùng chọn "Không" => Không thực hiện gì thêm
+                                this.btnSave.Enabled = false;
+                                this.btnSaveAndPrint.Enabled = false;
+                                return; // Dừng toàn bộ xử lý tiếp theo
+                            }
+                        }
+                    }
                     //Trường hợp tìm ra bệnh nhân cũ
                     if (data is HisPatientSDO)
                     {
@@ -1071,63 +1111,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                             ResetPatientForm();
                             return;
                         }
-                        string allowManyTreatmentOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION");
-                        if (allowManyTreatmentOpeningOption == "6")
-                        {                     
-                            var id = getIdPatient(txtPatientCode.Text.ToString());
-                            // Tạo bộ lọc và xử lý hồ sơ điều trị
-
-                            CommonParam paramCommon = new CommonParam();
-                            HisTreatmentFilter filterTreatment = new HisTreatmentFilter
-                            {
-
-                                PATIENT_ID = id, 
-                                IS_PAUSE = false,
-                                TDL_TREATMENT_TYPE_IDs = new List<long>
-                                {
-                                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM,
-                                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU,
-                                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
-                                }
-                            };
-                            // Lấy danh sách HIS_TREATMENT từ backend
-                            var treatmentList = new BackendAdapter(paramCommon)
-                                .Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filterTreatment, paramCommon)
-                                .ToList();
-                            // Lọc danh sách thỏa mãn các điều kiện bổ sung
-                            var activeTreatments = treatmentList
-                                .Where(t =>
-                                    t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
-                                    || t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
-                                    || (t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && t.IS_EMERGENCY != 1))
-                                .ToList();
-
-                            // Nếu tồn tại bất kỳ hồ sơ nào
-                            if (activeTreatments != null && activeTreatments.Count > 0)
-                            {
-                                var listId = activeTreatments.Select(t => t.TREATMENT_CODE).ToList();
-                                string listIdString = string.Join(", ", listId);
-                                // Hiển thị cảnh báo tới người dùng
-                                DialogResult result = DevExpress.XtraEditors.XtraMessageBox.Show(
-                                    $"Tồn tại hồ sơ chưa được kết thúc điều trị (Hồ sơ đang mở: {listIdString}). Bạn có muốn mở thêm hồ sơ mới hay không?",
-                                    "Cảnh báo",
-                                    MessageBoxButtons.YesNo,
-                                    MessageBoxIcon.Warning
-                                );
-
-                                if (result == DialogResult.Yes)
-                                {
-                                    // Người dùng chọn "Có" => Tiếp tục xử lý mở hồ sơ mới
-                                    // Không cần `return`, cho phép logic phía sau được tiếp tục
-                                }
-                                else
-                                {
-                                    // Người dùng chọn "Không" => Không thực hiện gì thêm
-                                    return; // Dừng toàn bộ xử lý tiếp theo
-                                }
-                            }
-                        }
-
+                       
                         //An hien cac button lam moi thong tin benh nhan
                         this.SetPatientSearchPanel(true);
                         var patient = data as HisPatientSDO;
