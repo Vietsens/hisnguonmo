@@ -194,7 +194,8 @@
             this.cboServiceType.Location = new System.Drawing.Point(274, 2);
             this.cboServiceType.Name = "cboServiceType";
             this.cboServiceType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboServiceType.Properties.NullText = "";
             this.cboServiceType.Properties.View = this.gridLookUpEdit1View;
             this.cboServiceType.Size = new System.Drawing.Size(123, 20);
