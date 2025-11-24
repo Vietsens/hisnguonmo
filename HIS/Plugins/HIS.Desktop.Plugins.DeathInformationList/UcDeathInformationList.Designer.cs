@@ -86,6 +86,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn23 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -175,7 +176,6 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.timerRefreshForm = new System.Windows.Forms.Timer(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.gridColumn23 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -531,8 +531,17 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn18.OptionsColumn.AllowEdit = false;
             this.gridColumn18.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn18.Visible = true;
-            this.gridColumn18.VisibleIndex = 18;
+            this.gridColumn18.VisibleIndex = 17;
             this.gridColumn18.Width = 100;
+            // 
+            // gridColumn23
+            // 
+            this.gridColumn23.Caption = "Mã định danh";
+            this.gridColumn23.FieldName = "DEATH_IDENTITY_NUMBER";
+            this.gridColumn23.Name = "gridColumn23";
+            this.gridColumn23.Visible = true;
+            this.gridColumn23.VisibleIndex = 18;
+            this.gridColumn23.Width = 150;
             // 
             // gridColumn16
             // 
@@ -1475,14 +1484,6 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // gridColumn23
-            // 
-            this.gridColumn23.Caption = "Mã định danh";
-            this.gridColumn23.FieldName = "DEATH_IDENTITY_NUMBER";
-            this.gridColumn23.Name = "gridColumn23";
-            this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 17;
             // 
             // UcDeathInformationList
             // 

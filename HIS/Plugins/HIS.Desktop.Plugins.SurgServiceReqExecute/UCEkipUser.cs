@@ -717,53 +717,61 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             List<AcsUserADO> AcsUserADOList = null;
             try
             {
-                List<ACS.EFMODEL.DataModels.ACS_USER> datas = null;
-                List<V_HIS_EMPLOYEE> employeeList = null;
+                List<ACS.EFMODEL.DataModels.ACS_USER> datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>();
+                List<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE> employeeList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>();
 
                 CommonParam paramCommon = new CommonParam();
                 dynamic filter = new System.Dynamic.ExpandoObject();
-                //datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>();
-                    datas = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<ACS.EFMODEL.DataModels.ACS_USER>>("api/AcsUser/Get", ApiConsumers.AcsConsumer, filter, paramCommon);
-                    if (datas != null) BackendDataWorker.UpdateToRam(typeof(ACS.EFMODEL.DataModels.ACS_USER), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
-                    employeeList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>>("api/HisEmployee/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
-                    if (employeeList != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE), employeeList, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+
+                // Nếu không có dữ liệu trong RAM thì mới gọi API và cập nhật lại RAM
+                if (datas == null || datas.Count == 0)
+                {
+                    datas = new Inventec.Common.Adapter.BackendAdapter(paramCommon)
+                        .Get<List<ACS.EFMODEL.DataModels.ACS_USER>>("api/AcsUser/Get", ApiConsumers.AcsConsumer, filter, paramCommon);
+                    if (datas != null)
+                        BackendDataWorker.UpdateToRam(typeof(ACS.EFMODEL.DataModels.ACS_USER), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+                if (employeeList == null || employeeList.Count == 0)
+                {
+                    employeeList = new Inventec.Common.Adapter.BackendAdapter(paramCommon)
+                        .Get<List<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>>("api/HisEmployee/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+                    if (employeeList != null)
+                        BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE), employeeList, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
 
                 var departmentList = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1 && o.IS_CLINICAL == 1).ToList();
                 AcsUserADOList = new List<AcsUserADO>();
 
-                foreach (var item in datas)
+                if (datas != null)
                 {
-                    if (item.LOGINNAME == "anhnp")
-                    {
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item), item));
-                    }
-                    AcsUserADO user = new AcsUserADO();
-                    user.ID = item.ID;
-                    user.LOGINNAME = item.LOGINNAME;
-                    user.USERNAME = item.USERNAME;
-                    user.MOBILE = item.MOBILE;
-                    user.PASSWORD = item.PASSWORD;
-                    //user.IS_ACTIVE = item.IS_ACTIVE;
+                    foreach (var item in datas)
+                    {                        
+                        AcsUserADO user = new AcsUserADO();
+                        user.ID = item.ID;
+                        user.LOGINNAME = item.LOGINNAME;
+                        user.USERNAME = item.USERNAME;
+                        user.MOBILE = item.MOBILE;
+                        user.PASSWORD = item.PASSWORD;
+                        //user.IS_ACTIVE = item.IS_ACTIVE;
 
-                    var check = employeeList.FirstOrDefault(o => o.LOGINNAME == item.LOGINNAME && o.IS_ACTIVE == 1);
-                    if (check != null)
-                    {
-                        user.IS_ACTIVE = check.IS_ACTIVE;
-                        user.DOB_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(check.DOB ?? 0);
-
-                        user.DIPLOMA = check.DIPLOMA;
-                        var checkDepartment = departmentList.FirstOrDefault(o => o.ID == check.DEPARTMENT_ID);
-
-                        if (checkDepartment != null)
+                        var check = employeeList?.FirstOrDefault(o => o.LOGINNAME == item.LOGINNAME && o.IS_ACTIVE == 1);
+                        if (check != null)
                         {
-                            user.DEPARTMENT_NAME = checkDepartment.DEPARTMENT_NAME;
+                            user.IS_ACTIVE = check.IS_ACTIVE;
+                            user.DOB_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(check.DOB ?? 0);
 
+                            user.DIPLOMA = check.DIPLOMA;
+                            var checkDepartment = departmentList.FirstOrDefault(o => o.ID == check.DEPARTMENT_ID);
+
+                            if (checkDepartment != null)
+                            {
+                                user.DEPARTMENT_NAME = checkDepartment.DEPARTMENT_NAME;
+                            }
                         }
+                        AcsUserADOList.Add(user);
                     }
-                    AcsUserADOList.Add(user);
+                    AcsUserADOList = AcsUserADOList.OrderBy(o => o.USERNAME).ToList();
                 }
-
-                AcsUserADOList = AcsUserADOList.OrderBy(o => o.USERNAME).ToList();
             }
             catch (Exception ex)
             {
