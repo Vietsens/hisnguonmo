@@ -30,6 +30,7 @@ using HIS.Desktop.Plugins.ExamServiceReqExecute.Config;
 using HIS.Desktop.Plugins.ExamServiceReqExecute.ConnectCOM;
 using HIS.Desktop.Plugins.ExamServiceReqExecute.Resources;
 using HIS.Desktop.Plugins.ExamServiceReqExecute.Sda.SdaEventLogCreate;
+using HIS.Desktop.Plugins.Library.ConnectWhoCnd;
 using HIS.Desktop.Plugins.Library.ElectronicBill;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
 using HIS.Desktop.Plugins.Library.PrintPrescription;
@@ -49,6 +50,7 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using MOS.TDO;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -84,7 +86,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 ProcessExamSereIcdDTO(ref hisServiceReqSDO);
                 ProcessExamSereNextTreatmentIntructionDTO(ref hisServiceReqSDO);
                 ProcessExamSereDHST(ref hisServiceReqSDO);
-
 
                 hisServiceReqSDO.RequestRoomId = moduleData.RoomId;
                 HisServiceReqExamUpdateResultSDO HisServiceReqResult = await new BackendAdapter(param)
@@ -217,18 +218,18 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o =>
                 o.ModuleLink == "HIS.Desktop.Plugins.EmrDocument").FirstOrDefault();
-                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.EmrDocument"); 
-                if(moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.EmrDocument");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                 {
                     List<object> listArgs = new List<Object>();
-                    var tdlTreatmentCode = HisServiceReqView.TDL_TREATMENT_CODE.ToString(); 
+                    var tdlTreatmentCode = HisServiceReqView.TDL_TREATMENT_CODE.ToString();
                     listArgs.Add(tdlTreatmentCode);
                     var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                     ((Form)extenceInstance).ShowDialog();
-                }    
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
@@ -245,9 +246,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     List<object> listArgs = new List<Object>();
                     List<long> tdlTreatmentCode = new List<long>();
-                    tdlTreatmentCode.Add(HisServiceReqView.TREATMENT_ID); 
+                    tdlTreatmentCode.Add(HisServiceReqView.TREATMENT_ID);
                     listArgs.Add(HisServiceReqView.TREATMENT_ID);
-                    listArgs.Add(tdlTreatmentCode); 
+                    listArgs.Add(tdlTreatmentCode);
                     var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                     ((Form)extenceInstance).ShowDialog();
@@ -1473,6 +1474,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         ProcessExamSereIcdDTO(ref examServiceReqUpdateSDO);
                         ProcessExamSereNextTreatmentIntructionDTO(ref examServiceReqUpdateSDO);
                         ProcessExamSereDHST(ref examServiceReqUpdateSDO);
+
                         try
                         {
                             if (this.treatment != null && !string.IsNullOrEmpty(this.treatment.HOSPITALIZE_REASON_NAME) && examServiceReqUpdateSDO.TreatmentFinishSDO != null)
@@ -1505,7 +1507,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 examServiceReqUpdateSDO.Id = this.HisServiceReqView.ID;
-                examServiceReqUpdateSDO.StartTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtpStartTime.DateTime);
+                if (dtpStartTime.Enabled == true)
+                {
+                    examServiceReqUpdateSDO.StartTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtpStartTime.DateTime);
+                }
+                else
+                {
+                    examServiceReqUpdateSDO.StartTime = null;
+                }
                 examServiceReqUpdateSDO.Advise = this.HisServiceReqView.ADVISE;
                 examServiceReqUpdateSDO.Conclusion = this.HisServiceReqView.CONCLUSION;
                 examServiceReqUpdateSDO.SickDay = Inventec.Common.TypeConvert.Parse.ToInt64(spinNgayThuCuaBenh.Text ?? "0");
@@ -1876,8 +1885,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             }
                         }
                         var treatmentEndTypeId = treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeId;
-                        if (HisConfigCFG.RequiredTreatmentMethodOption == "1" && this.treatment != null 
-                            && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU 
+                        if (HisConfigCFG.RequiredTreatmentMethodOption == "1" && this.treatment != null
+                            && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
                             && (treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN
                             || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN
                             || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CTCV))
@@ -1888,9 +1897,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                 return false;
                             }
                         }
-                        else if (HisConfigCFG.RequiredTreatmentMethodOption == "2" && ((cboThongTinBoSung != null && cboThongTinBoSung == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM) 
-                            || ((this.treatment != null && (this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU 
-                            || this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU 
+                        else if (HisConfigCFG.RequiredTreatmentMethodOption == "2" && ((cboThongTinBoSung != null && cboThongTinBoSung == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM)
+                            || ((this.treatment != null && (this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
+                            || this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
                             || this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY)) && (treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN
                             || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN
                             || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN || treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CTCV))))
@@ -2095,7 +2104,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         if (treatmentFinish.SevereIllNessInfo != null)
                             treatmentFinish.SevereIllNessInfo.DEPARTMENT_ID = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == this.moduleData.RoomId).DepartmentId;
                         SevereIllnessInfo = treatmentFinish.SevereIllNessInfo;
-                        EventsCausesDeaths = treatmentFinish.ListEventsCausesDeath;                    
+                        EventsCausesDeaths = treatmentFinish.ListEventsCausesDeath;
                         isPrintAppoinment = treatmentFinish.IsPrintAppoinment;
                         isPrintBordereau = treatmentFinish.IsPrintBordereau;
                         isSignAppoinment = treatmentFinish.IsSignAppoinment;
@@ -2536,12 +2545,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 if (HisServiceReqResult != null)
                 {
+                    if (whoCndProcessor != null)
+                    {
+                        //cập nhật thành công thì gửi sang hệ thống who
+                        whoCndProcessor.SendData();
+                    }
 
                     CreateThreadPostApi();
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisServiceReqResult", HisServiceReqResult));
                     success = true;
-                     this.HisServiceReqView = new V_HIS_SERVICE_REQ();
+                    this.HisServiceReqView = new V_HIS_SERVICE_REQ();
                     Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERVICE_REQ>(this.HisServiceReqView, HisServiceReqResult.ServiceReq);
                     EnableButtonByServiceReq(HisServiceReqResult.ServiceReq.SERVICE_REQ_STT_ID);
                     btnSaveFinish.Enabled = false;
@@ -2572,8 +2586,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             btnAggrExam.Enabled = false;
                         }
                         Room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.moduleData.RoomId);
-                        if (Room.DEFAULT_CASHIER_ROOM_ID.HasValue && Room.BILL_ACCOUNT_BOOK_ID.HasValue 
-                            && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM 
+                        if (Room.DEFAULT_CASHIER_ROOM_ID.HasValue && Room.BILL_ACCOUNT_BOOK_ID.HasValue
+                            && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
                             && !string.IsNullOrEmpty(HisConfigCFG.AutoCreatePaymentTransactions))
                         {
                             var PatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => HisConfigCFG.AutoCreatePaymentTransactions.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList().Contains(o.PATIENT_TYPE_CODE)).ToList();

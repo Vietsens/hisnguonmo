@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.Patient
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCListPatient));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -160,12 +161,12 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.txtCCCD = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
             this.cboCSTheoDoi = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtPatientName = new DevExpress.XtraEditors.TextEdit();
@@ -686,7 +687,7 @@ namespace HIS.Desktop.Plugins.Patient
             // gridColumn40
             // 
             this.gridColumn40.Caption = "Số thẻ BHYT";
-            this.gridColumn40.FieldName = "TDL_HEIN_CARD_NUMBER_STR";
+            this.gridColumn40.FieldName = "TDL_HEIN_CARD_NUMBER";
             this.gridColumn40.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn40.Name = "gridColumn40";
             this.gridColumn40.OptionsColumn.ReadOnly = true;

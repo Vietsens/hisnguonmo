@@ -35,9 +35,12 @@ namespace HIS.Desktop.Plugins.Bordereau.Config
         private const string SDA_CONFIG__PATIENT_TYPE_CODE__FEE = "MOS.HIS_PATIENT_TYPE.HOSPITAL_FEE";
         private const string SDA_CONFIG__PATIENT_TYPE_CODE__BILL_INVOICE = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BILL_INVOICE";
 
+
         private const string SDA_CONFIG__PATIENT_TYPE_CODE__SERVICE = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.SERVICE";
         private const string SDA_CONFIG__PATIENT_TYPE_CODE__THUPHI = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.THUPHI";
+        private const string ENDABE_IS_LOCK_AFTER_FINISH_IF_HAS_NO_PATIENT_PRICE = "HIS.HisTreatment.EnableIsLockAfterFinishIfHasNoPatientPrice";//Tu dong khoa khi ket thuc neu khong co gia benh nhan
 
+     //   HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.AllowMps49GroupAllDrugs"
         private static long patientTypeIdIsService;
         public static long PATIENT_TYPE_ID__IS_SERIVCE
         {
@@ -117,6 +120,24 @@ namespace HIS.Desktop.Plugins.Bordereau.Config
                     patientTypeIdIsFree = GetId("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.IS_FREE");
                 }
                 return patientTypeIdIsFree;
+            }
+            set
+            {
+                patientTypeIdIsFree = value;
+            }
+        }
+
+        private static long EnableIsLockAfterFinishIfHasNoPatientPrice;
+         public static long ENABLE_IS_LOCK_AFTER_FINISH_IF_HAS_NO_PATIENT_PRICE
+        {
+            get
+            {
+                if (EnableIsLockAfterFinishIfHasNoPatientPrice == 0)
+                {
+                    EnableIsLockAfterFinishIfHasNoPatientPrice = GetId("HIS.HisTreatment.EnableIsLockAfterFinishIfHasNoPatientPrice");
+                   
+                }
+                return EnableIsLockAfterFinishIfHasNoPatientPrice;
             }
             set
             {

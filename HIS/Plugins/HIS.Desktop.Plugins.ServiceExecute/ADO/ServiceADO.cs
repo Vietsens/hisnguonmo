@@ -32,12 +32,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute.ADO
         public string conclude { get; set; }
         public string note { get; set; }
         public string description { get; set; }
-
+        
         public long? MACHINE_ID { get; set; }
         public long? NUMBER_OF_FILM { get; set; }
 
         public bool MustHavePressBeforeExecute { get; set; }
         public bool IsProcessed { get; set; }
+        public string GPBL_STORE_CODE { get; set; }
 
         public List<V_HIS_EKIP_USER> lstEkipUser { get; set; }
 

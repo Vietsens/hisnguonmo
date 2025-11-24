@@ -330,7 +330,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     }
                     else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
                     {
-                        if (XtraMessageBox.Show(param.GetMessage(), "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        if (XtraMessageBox.Show(string.Format("{0} Bạn có muốn tiếp tục không?", param.GetMessage()), "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
                         {
                             isCheckAssignServiceSimultaneityOption = true;
                             btnSave.Enabled = btnSaveAndPrint.Enabled = false;
@@ -385,7 +385,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         else if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
                         {
                             DialogResult dr = XtraMessageBox.Show(
-                                string.Format("{0}. Bạn có muốn tiếp tục?", apiMessage),
+                                string.Format("{0} Bạn có muốn tiếp tục không?", apiMessage),
                                 "Thông báo",
                                 MessageBoxButtons.YesNo,
                                 MessageBoxIcon.Question

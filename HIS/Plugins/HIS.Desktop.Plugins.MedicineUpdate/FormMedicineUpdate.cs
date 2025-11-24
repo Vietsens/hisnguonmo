@@ -290,6 +290,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 this.txtBidExtraCode.Text = medicine.TDL_BID_EXTRA_CODE;
                 this.cboImpSource.EditValue = medicine.IMP_SOURCE_ID;
                 this.txtTTThau.Text = medicine.TT_THAU;
+                this.txtDes.Text = medicine.DESCRIPTION; 
                 if (medicine.IS_SALE_EQUAL_IMP_PRICE == 1)
                 {
                     this.chkBBGN.CheckState = CheckState.Checked;
@@ -416,6 +417,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 result.TDL_BID_NUMBER = txtBidNumber.Text.Trim();
                 result.TDL_BID_YEAR = txtBidYear.Text.Trim();
                 result.TT_THAU = txtTTThau.Text.Trim();
+                result.DESCRIPTION = txtDes.Text.Trim();
                 if (chkBBGN.CheckState == CheckState.Checked)
                 {
                     result.IS_SALE_EQUAL_IMP_PRICE = 1;
@@ -1054,7 +1056,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    btnSave.Focus();
+                    cboImpSource.Focus();
                 }
             }
             catch (Exception ex)
@@ -1119,6 +1121,21 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
             int scale = (bits[3] >> 16) & 0x7F; // số chữ số thập phân
             string fmt = scale > 0 ? ("N" + scale) : "N0"; // có group separator, đúng locale
             return value.ToString(fmt, cul);
+        }
+
+        private void txtDes_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    btnSave.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
     }
 }

@@ -24,10 +24,15 @@ using His.UC.UCHein.ControlProcess;
 using His.UC.UCHein.Design.TemplateHeinBHYT1.ValidationRule;
 using His.UC.UCHein.HisPatient;
 using His.UC.UCHein.Utils;
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
+using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Common.QrCodeBHYT;
+using Inventec.Core;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -555,7 +560,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        
         private void txtSoThe_KeyDown(object sender, KeyEventArgs e)
         {
             try
@@ -598,6 +603,80 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                                 this.FillDataAfterSelectOnePatient(listResult[0]);
                                 if (entity.IsInitFromCallPatientTypeAlter)
                                     cboDKKCBBD_KeyUp(null, e);
+                            }
+                            string allowManyTreatmentOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION");
+                            if (allowManyTreatmentOpeningOption == "6")
+                            {
+                                // Tạo bộ lọc và xử lý hồ sơ điều trị
+                                LogSystem.Debug("listResult[0].ID" + listResult[0].ID);
+                                CommonParam paramCommon = new CommonParam();
+                                HisTreatmentFilter filterTreatment = new HisTreatmentFilter
+                                {
+
+                                    PATIENT_ID = listResult[0].ID,
+                                    IS_PAUSE = false,
+                                    TDL_TREATMENT_TYPE_IDs = new List<long>
+                                {
+                                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM,
+                                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU,
+                                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
+                                }
+                                };
+                                // Lấy danh sách HIS_TREATMENT từ backend
+                                var treatmentList = new BackendAdapter(paramCommon)
+                                    .Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filterTreatment, paramCommon)
+                                    .ToList();
+                                LogSystem.Debug("treatmentList.Count" + treatmentList.Count);
+                                // Lọc danh sách thỏa mãn các điều kiện bổ sung
+                                var activeTreatments = treatmentList
+                                    .Where(t =>
+                                        t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
+                                        || t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
+                                        || (t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && t.IS_EMERGENCY != 1))
+                                    .ToList();
+                                LogSystem.Debug("activeTreatments.Count" + activeTreatments.Count);
+                                // Nếu tồn tại bất kỳ hồ sơ nào
+                                if (activeTreatments != null && activeTreatments.Count > 0)
+                                {
+                                    var listId = activeTreatments.Select(t => t.TREATMENT_CODE).ToList();
+                                    string listIdString = string.Join(", ", listId);
+                                    // Hiển thị cảnh báo tới người dùng
+                                    DialogResult result = DevExpress.XtraEditors.XtraMessageBox.Show(
+                                        $"Tồn tại hồ sơ chưa được kết thúc điều trị (Hồ sơ đang mở: {listIdString}). Bạn có muốn mở thêm hồ sơ mới hay không?",
+                                        "Cảnh báo",
+                                        MessageBoxButtons.YesNo,
+                                        MessageBoxIcon.Warning
+                                    );
+
+                                    if (result == DialogResult.Yes)
+                                    {
+                                        // Người dùng chọn "Có" => Tiếp tục xử lý mở hồ sơ mới
+                                        // Không cần `return`, cho phép logic phía sau được tiếp tục
+                                    }
+                                    else
+                                    {
+                                        //btnSave
+                                        var formParent = this.FindForm(); // Tìm Form cha chứa UserControl
+                                        if (formParent != null)
+                                        {
+                                            var ucRegister = formParent.Controls.Find("UCRegister", true).FirstOrDefault(); // Tìm UserControl cha từ Form
+                                            if (ucRegister != null)
+                                            {
+                                                var btnXacNhan = ucRegister.Controls.Find("btnSave", true).FirstOrDefault(); // Tìm nút bên trong UserControl
+                                                var luuIn = ucRegister.Controls.Find("btnSaveAndPrint", true).FirstOrDefault(); // Tìm nút bên trong UserControl
+                                                if (btnXacNhan != null)
+                                                {
+                                                    btnXacNhan.Enabled = false; // Disable nút
+                                                }
+                                                if (luuIn != null)
+                                                {
+                                                    luuIn.Enabled = false; // Disable nút
+                                                }
+                                            }
+                                        }
+                                        return; // Dừng toàn bộ xử lý tiếp theo
+                                    }
+                                }
                             }
                         }
                         else

@@ -50,19 +50,20 @@ namespace HIS.Desktop.Plugins.DeathInformationList
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcDeathInformationList));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging = new Inventec.UC.Paging.UcPaging();
@@ -85,13 +86,14 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn23 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn22 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRefresh = new DevExpress.XtraBars.BarButtonItem();
@@ -171,9 +173,9 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.timerRefreshForm = new System.Windows.Forms.Timer();
-            this.timer1 = new System.Windows.Forms.Timer();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource();
+            this.timerRefreshForm = new System.Windows.Forms.Timer(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -322,6 +324,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn2,
             this.gridColumn3,
             this.gridColumn18,
+            this.gridColumn23,
             this.gridColumn16,
             this.gridColumn17,
             this.gridColumn19,
@@ -376,7 +379,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn20.OptionsColumn.AllowEdit = false;
             this.gridColumn20.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 20;
+            this.gridColumn20.VisibleIndex = 21;
             this.gridColumn20.Width = 150;
             // 
             // gridColumn5
@@ -531,6 +534,15 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn18.VisibleIndex = 17;
             this.gridColumn18.Width = 100;
             // 
+            // gridColumn23
+            // 
+            this.gridColumn23.Caption = "Mã định danh";
+            this.gridColumn23.FieldName = "DEATH_IDENTITY_NUMBER";
+            this.gridColumn23.Name = "gridColumn23";
+            this.gridColumn23.Visible = true;
+            this.gridColumn23.VisibleIndex = 18;
+            this.gridColumn23.Width = 150;
+            // 
             // gridColumn16
             // 
             this.gridColumn16.Caption = "Thời gian đồng bộ";
@@ -539,7 +551,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn16.OptionsColumn.AllowEdit = false;
             this.gridColumn16.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 18;
+            this.gridColumn16.VisibleIndex = 19;
             this.gridColumn16.Width = 130;
             // 
             // gridColumn17
@@ -549,7 +561,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn17.Name = "gridColumn17";
             this.gridColumn17.OptionsColumn.AllowEdit = false;
             this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 19;
+            this.gridColumn17.VisibleIndex = 20;
             this.gridColumn17.Width = 150;
             // 
             // gridColumn19
@@ -567,7 +579,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // 
             this.repositoryItemButtonEdit1.AutoHeight = false;
             this.repositoryItemButtonEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.repositoryItemButtonEdit1.Name = "repositoryItemButtonEdit1";
             this.repositoryItemButtonEdit1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -579,7 +591,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn21.OptionsColumn.AllowEdit = false;
             this.gridColumn21.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn21.Visible = true;
-            this.gridColumn21.VisibleIndex = 21;
+            this.gridColumn21.VisibleIndex = 22;
             this.gridColumn21.Width = 150;
             // 
             // gridColumn22
@@ -589,7 +601,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn22.Name = "gridColumn22";
             this.gridColumn22.OptionsColumn.AllowEdit = false;
             this.gridColumn22.Visible = true;
-            this.gridColumn22.VisibleIndex = 22;
+            this.gridColumn22.VisibleIndex = 23;
             this.gridColumn22.Width = 150;
             // 
             // barManager1
@@ -982,7 +994,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.cboDepartment.Name = "cboDepartment";
             this.cboDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.cboDepartment.Properties.NullText = "";
             this.cboDepartment.Properties.View = this.gridLookUpEdit1View;
             this.cboDepartment.Size = new System.Drawing.Size(213, 20);
@@ -1217,7 +1229,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.cboDeath_Case_Sync_Result.Name = "cboDeath_Case_Sync_Result";
             this.cboDeath_Case_Sync_Result.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.cboDeath_Case_Sync_Result.Size = new System.Drawing.Size(213, 20);
             this.cboDeath_Case_Sync_Result.StyleController = this.layoutControl9;
             this.cboDeath_Case_Sync_Result.TabIndex = 5;
@@ -1686,5 +1698,6 @@ namespace HIS.Desktop.Plugins.DeathInformationList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private System.Windows.Forms.BindingSource bindingSource1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn23;
     }
 }

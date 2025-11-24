@@ -38,6 +38,7 @@ namespace MPS.Processor.Mps000100
         List<Mps000100ADO> ImpMestManuMedicineSumForPrintsV2 = new List<Mps000100ADO>();
         List<Mps000100ADO> lstMedicineType = new List<Mps000100ADO>();
         List<Mps000100ADO> lstMedicineParent = new List<Mps000100ADO>();
+        List<Mps000100ADO> lstMedicineParent1 = new List<Mps000100ADO>();
         List<Mps000100ADO> listOtherPaySource = new List<Mps000100ADO>();
         public Mps000100Processor(CommonParam param, PrintData printData)
             : base(param, printData)
@@ -81,6 +82,7 @@ namespace MPS.Processor.Mps000100
                 ProcessListADO();
                 GetMedicineGroup();
                 GetMedicineParent();
+                GetMedicineParent1();
                 GetOtherPaySource();
                 Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
@@ -141,6 +143,7 @@ namespace MPS.Processor.Mps000100
                 objectTag.AddObjectData(store, "MedicineGroup", lstMedicineType);
                 objectTag.AddObjectData(store, "MedicineParent", listParentFilter.OrderBy(o=>o.MEDICINE_PARENT_NAME).ToList());
                 objectTag.AddObjectData(store, "OtherPaySource", listOtherPaySource);
+                objectTag.AddObjectData(store, "lstMedicineParent1", lstMedicineParent1);
 
                 if (rdo._ImpMestMedicines != null)
                     objectTag.AddObjectData(store, "ImpMestMedicines", rdo._ImpMestMedicines);
@@ -151,6 +154,7 @@ namespace MPS.Processor.Mps000100
                 objectTag.AddRelationship(store, "MedicineGroup", "ImpMestAggregates", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
                 objectTag.AddRelationship(store, "MedicineParent", "ImpMestAggregates", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
                 objectTag.AddRelationship(store, "OtherPaySource", "ImpMestAggregatesV2", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
+                objectTag.AddRelationship(store, "lstMedicineParent1", "ImpMestAggregates", "MEDICINE_PARENT_CODE", "MEDICINE_PARENT_CODE");
                 result = true;
             }
             catch (Exception ex)
@@ -227,6 +231,28 @@ namespace MPS.Processor.Mps000100
                     {
                         lstMedicineParent.Add(item.ToList().First());
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void GetMedicineParent1()
+        {
+            try
+            {
+                var group = ImpMestManuMedicineSumForPrints.GroupBy(o => o.MEDICINE_PARENT_CODE).OrderBy(g => g.Key);
+                foreach (var item in group)
+                {
+                    var first = item.First();
+                    string parentName = (first.MEDICINE_PARENT_NAME ?? "").Trim();
+                    if (string.IsNullOrWhiteSpace(parentName))
+                        parentName = "PHIẾU BÙ VẬT TƯ";
+                    else
+                        parentName = "PHIẾU BÙ VẬT TƯ " + parentName.ToUpper();
+                    first.MEDICINE_PARENT_NAME = parentName;
+                    lstMedicineParent1.Add(first);
                 }
             }
             catch (Exception ex)

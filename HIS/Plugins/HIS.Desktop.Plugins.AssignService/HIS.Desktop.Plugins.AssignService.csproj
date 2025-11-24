@@ -305,7 +305,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\AcsUserADO.cs" />
-    <Compile Include="ADO\CheckInfoAdo.cs" />
     <Compile Include="ADO\ChiDinhDichVuADO.cs" />
     <Compile Include="ADO\ContraindicatedADO.cs" />
     <Compile Include="ADO\HisBedADO.cs" />

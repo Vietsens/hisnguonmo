@@ -160,9 +160,8 @@
     <Reference Include="MPS.Processor.Mps000046.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000046.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000047.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000047.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000047.PDO">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000047.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000049.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000049.PDO.dll</HintPath>
@@ -205,9 +204,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Telerik.WinControls">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Telerik.WinControls.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\MediMatePrintADO.cs" />
@@ -239,7 +235,6 @@
     <Compile Include="Run\PrintNow.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Run\frmAggregateExpMestPrintFilter.resx">
       <DependentUpon>frmAggregateExpMestPrintFilter.cs</DependentUpon>
       <SubType>Designer</SubType>

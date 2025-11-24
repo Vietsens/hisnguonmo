@@ -81,7 +81,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
         List<V_HIS_SERVICE_ROOM> hisCurrentServiceRooms = new List<V_HIS_SERVICE_ROOM>();
 
         List<V_HIS_SERVICE> HisService = new List<V_HIS_SERVICE>();
-
+        private List<HIS_SERVICE_TESA> _cachedServiceTesa = null;
         HisServiceReqResultSDO resultSDO = null;
 
         HIS.UC.Icd.ADO.IcdInputADO icdAdo = null;
@@ -338,12 +338,12 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     this.SetDataSourceCboPatientType();
                     this.SetDataSourceCboExecuteRoom();
                     this.LoadDefaultUser();
-                    
                     this.InitDefaultPatientType();
                     this.SetDataSourceCboPaanServiceType();
+
                     this.InitComboTestSampleType();
                 }
-                
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -403,7 +403,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     }
                     var executeRoomIDs = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && _roomIds.Contains(p.ROOM_ID)).Select(o => o.ROOM_ID).ToList();
                     var dataold = BackendDataWorker.Get<V_HIS_SERVICE_ROOM>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
-                    
+
                     foreach (var item in dataold)
                     {
                         if (item.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL || item.BRANCH_ID != WorkPlace.GetBranchId())
@@ -605,6 +605,8 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+
         void InitComboUsername()
         {
             try
@@ -941,7 +943,110 @@ namespace HIS.Desktop.Plugins.AssignPaan
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        void LoadServiceTesaCache()
+        {
 
+            try
+            {
+                if (_cachedServiceTesa == null || _cachedServiceTesa.Count == 0)
+                {
+                    CommonParam param = new CommonParam();
+                    HisServiceTesaFilter filter = new HisServiceTesaFilter();
+                    
+
+                    _cachedServiceTesa = new Inventec.Common.Adapter.BackendAdapter(param)
+                        .Get<List<HIS_SERVICE_TESA>>("api/HisServiceTesa/Get", ApiConsumers.MosConsumer, filter, param)
+                        ?? new List<HIS_SERVICE_TESA>();
+                }
+
+                // _cachedServiceTesa = BackendDataWorker.Get<HIS_SERVICE_TESA>().ToList(); 
+            }
+            catch (Exception ex)
+            {
+                _cachedServiceTesa = new List<HIS_SERVICE_TESA>();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private void UpdateTestSampleTypeCombo(long selectedServiceId)
+        {
+            try
+            {
+                LoadServiceTesaCache();
+
+               
+                var allSampleTypes = BackendDataWorker.Get<HIS_TEST_SAMPLE_TYPE>()
+                    .Where(x => x.IS_ACTIVE == 1)
+                    .ToList();
+
+               
+                var selectedService = BackendDataWorker.Get<HIS_SERVICE>()
+                    .FirstOrDefault(x => x.ID == selectedServiceId);
+
+             
+                var tesaMappings = _cachedServiceTesa
+                    .Where(x => x.SERVICE_ID == selectedServiceId)
+                    .ToList();
+
+                List<HIS_TEST_SAMPLE_TYPE> filteredSampleTypes = null;
+
+                if (tesaMappings.Any())
+                {
+                    
+                    var allowedSampleTypeIds = tesaMappings.Select(x => x.TEST_SAME_TYPE_ID).Distinct().ToList();
+                    filteredSampleTypes = allSampleTypes
+                        .Where(x => allowedSampleTypeIds.Contains(x.ID))
+                        .ToList();
+                }
+                else
+                {
+                  
+                    filteredSampleTypes = allSampleTypes;
+                }
+
+                
+                cboTestSampleType.Properties.DataSource = filteredSampleTypes;
+
+                
+                object defaultValue = null;
+                if (tesaMappings.Any())
+                {
+                    
+                    var defaultTesa = tesaMappings.FirstOrDefault(x =>
+                        filteredSampleTypes.Any(st =>
+                            st.ID == x.TEST_SAME_TYPE_ID &&
+                            st.TEST_SAMPLE_TYPE_CODE == selectedService?.SAMPLE_TYPE_CODE
+                        )
+                    );
+                    if (defaultTesa != null)
+                    {
+                        defaultValue = defaultTesa.TEST_SAME_TYPE_ID;
+                    }
+                    else if (filteredSampleTypes.Count == 1)
+                    {
+                        defaultValue = filteredSampleTypes[0].ID;
+                    }
+                }
+                else
+                {
+                   
+                    var defaultSampleType = filteredSampleTypes
+                        .FirstOrDefault(st => st.TEST_SAMPLE_TYPE_CODE == selectedService?.SAMPLE_TYPE_CODE);
+                    if (defaultSampleType != null)
+                    {
+                        defaultValue = defaultSampleType.ID;
+                    }
+                }
+
+                cboTestSampleType.EditValue = defaultValue;
+            }
+            catch (Exception ex)
+            {
+               
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+           
+        }
         private void dxValidationProvider1_ValidationFailed(object sender, DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventArgs e)
         {
             try

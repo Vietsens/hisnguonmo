@@ -46,11 +46,7 @@ namespace HIS.Desktop.Plugins.TreatmentLockFee
         private void InitializeComponent()
         {
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.btnSave = new DevExpress.XtraEditors.SimpleButton();
-            this.dtFeeLockTime = new DevExpress.XtraEditors.DateEdit();
-            this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.layoutFeeLockTime = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkPrintPrescription = new DevExpress.XtraEditors.CheckEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnRCSave = new DevExpress.XtraBars.BarButtonItem();
@@ -58,17 +54,21 @@ namespace HIS.Desktop.Plugins.TreatmentLockFee
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.chkPrintPrescription = new DevExpress.XtraEditors.CheckEdit();
+            this.btnSave = new DevExpress.XtraEditors.SimpleButton();
+            this.dtFeeLockTime = new DevExpress.XtraEditors.DateEdit();
+            this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutFeeLockTime = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPrintPrescription.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFeeLockTime.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFeeLockTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutFeeLockTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkPrintPrescription.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -86,6 +86,79 @@ namespace HIS.Desktop.Plugins.TreatmentLockFee
             this.layoutControl1.Size = new System.Drawing.Size(264, 33);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // chkPrintPrescription
+            // 
+            this.chkPrintPrescription.Location = new System.Drawing.Point(2, 26);
+            this.chkPrintPrescription.MenuManager = this.barManager1;
+            this.chkPrintPrescription.Name = "chkPrintPrescription";
+            this.chkPrintPrescription.Properties.Caption = ":In đơn PK";
+            this.chkPrintPrescription.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkPrintPrescription.Size = new System.Drawing.Size(143, 19);
+            this.chkPrintPrescription.StyleController = this.layoutControl1;
+            this.chkPrintPrescription.TabIndex = 6;
+            this.chkPrintPrescription.ToolTip = "Tự động in đơn thuốc phòng khám sau khi duyệt khóa viện phí thành công";
+            this.chkPrintPrescription.CheckedChanged += new System.EventHandler(this.chkPrintPrescription_CheckedChanged);
+            // 
+            // barManager1
+            // 
+            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
+            this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
+            this.barManager1.Form = this;
+            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+            this.bbtnRCSave});
+            this.barManager1.MaxItemId = 1;
+            // 
+            // bar1
+            // 
+            this.bar1.BarName = "Tools";
+            this.bar1.DockCol = 0;
+            this.bar1.DockRow = 0;
+            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
+            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnRCSave)});
+            this.bar1.Text = "Tools";
+            this.bar1.Visible = false;
+            // 
+            // bbtnRCSave
+            // 
+            this.bbtnRCSave.Caption = "Lưu (Ctrl S)";
+            this.bbtnRCSave.Id = 0;
+            this.bbtnRCSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
+            this.bbtnRCSave.Name = "bbtnRCSave";
+            this.bbtnRCSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnRCSave_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(264, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 62);
+            this.barDockControlBottom.Size = new System.Drawing.Size(264, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 33);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(264, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 33);
             // 
             // btnSave
             // 
@@ -154,75 +227,6 @@ namespace HIS.Desktop.Plugins.TreatmentLockFee
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
-            // barManager1
-            // 
-            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
-            this.bar1});
-            this.barManager1.Form = this;
-            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.bbtnRCSave});
-            this.barManager1.MaxItemId = 1;
-            // 
-            // bar1
-            // 
-            this.bar1.BarName = "Tools";
-            this.bar1.DockCol = 0;
-            this.bar1.DockRow = 0;
-            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnRCSave)});
-            this.bar1.Text = "Tools";
-            this.bar1.Visible = false;
-            // 
-            // bbtnRCSave
-            // 
-            this.bbtnRCSave.Caption = "Lưu (Ctrl S)";
-            this.bbtnRCSave.Id = 0;
-            this.bbtnRCSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
-            this.bbtnRCSave.Name = "bbtnRCSave";
-            this.bbtnRCSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnRCSave_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(264, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 62);
-            this.barDockControlBottom.Size = new System.Drawing.Size(264, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 33);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(264, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 33);
-            // 
-            // chkPrintPrescription
-            // 
-            this.chkPrintPrescription.Location = new System.Drawing.Point(2, 26);
-            this.chkPrintPrescription.MenuManager = this.barManager1;
-            this.chkPrintPrescription.Name = "chkPrintPrescription";
-            this.chkPrintPrescription.Properties.Caption = ":In đơn PK";
-            this.chkPrintPrescription.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkPrintPrescription.Size = new System.Drawing.Size(143, 19);
-            this.chkPrintPrescription.StyleController = this.layoutControl1;
-            this.chkPrintPrescription.TabIndex = 6;
-            this.chkPrintPrescription.ToolTip = "Tự động in đơn thuốc phòng khám sau khi duyệt khóa viện phí thành công";
-            this.chkPrintPrescription.CheckedChanged += new System.EventHandler(this.chkPrintPrescription_CheckedChanged);
-            // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.chkPrintPrescription;
@@ -256,13 +260,13 @@ namespace HIS.Desktop.Plugins.TreatmentLockFee
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkPrintPrescription.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFeeLockTime.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtFeeLockTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutFeeLockTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkPrintPrescription.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

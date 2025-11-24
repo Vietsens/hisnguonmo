@@ -541,7 +541,8 @@ namespace HIS.Desktop.Plugins.AssignPaan
                     var service = this.HisService.FirstOrDefault(o => o.ID == Convert.ToInt64(cboPaanServiceType.EditValue));
                     if (service != null)
                     {
-                        if(service.IS_REQUIRED_SAMPLE_TYPE == 1 && cboTestSampleType.Properties.DataSource != null)
+                     
+                        if (service.IS_REQUIRED_SAMPLE_TYPE == 1 && cboTestSampleType.Properties.DataSource != null)
                         {
                             lciSampleType.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
                             ValidControlSampleType();
@@ -582,6 +583,7 @@ namespace HIS.Desktop.Plugins.AssignPaan
                         {
                             spinPrice.Value = currentPaty.PRICE;
                         }
+                        UpdateTestSampleTypeCombo(service.ID);
                     }
                 }
                 this.SetDataSourceCboExecuteRoom();

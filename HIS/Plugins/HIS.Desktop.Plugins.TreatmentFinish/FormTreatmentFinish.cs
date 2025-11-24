@@ -41,6 +41,7 @@ using HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment;
 using HIS.Desktop.Plugins.TreatmentFinish.Config;
 using HIS.Desktop.Plugins.TreatmentFinish.FormWarning;
 using HIS.Desktop.Plugins.TreatmentFinish.Validation;
+using HIS.Desktop.Plugins.Library.ConnectWhoCnd;
 using HIS.Desktop.Utility;
 using HIS.UC.Icd;
 using HIS.UC.Icd.ADO;
@@ -2630,7 +2631,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             try
             {
                 //huannh
-
+                string messageWho = "";
+                bool rswho = HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor.SendData(currentHisTreatment, ref messageWho);
+                if (!rswho)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(messageWho, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
+                    return;
+                }
                 long? treatmentEndTypeId = null;
                 if (cboTreatmentEndType.EditValue != null)
                 {

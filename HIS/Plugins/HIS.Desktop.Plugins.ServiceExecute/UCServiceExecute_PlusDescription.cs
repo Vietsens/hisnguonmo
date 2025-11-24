@@ -810,6 +810,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 }
 
                 dicParam.Add("USER_NAME", UserName);
+
+                if (sereServExt.GPBL_STORE_CODE != null)
+                {
+                    dicParam.Add("GPBL_STORE_CODE", sereServExt.GPBL_STORE_CODE);
+
+                }
+
                 if (!isPressButtonSave)
                 {
                     dicParam.Remove("CONCLUDE");
@@ -898,6 +905,67 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     dicParam.Add("ICD_CM_SUB_CODE", this.dicSereServPttt[this.sereServ.ID].ICD_CM_SUB_CODE);
                     dicParam.Add("ICD_CM_TEXT", this.dicSereServPttt[this.sereServ.ID].ICD_CM_TEXT);
                 }
+                
+                try
+                {
+                    string weight = "", height = "", pulse = "", blood_pressure_max = "", blood_pressure_min = "";
+                    if (lstDhstData != null && currentServiceReq != null)
+                    {
+                        var dhst = lstDhstData
+                            .Where(o => o.TREATMENT_ID == currentServiceReq.TREATMENT_ID && o.EXECUTE_TIME < currentServiceReq.INTRUCTION_TIME)
+                            .OrderByDescending(o => o.EXECUTE_TIME)
+                            .FirstOrDefault();
+                        if (dhst != null)
+                        {
+                            weight = dhst.WEIGHT?.ToString() ?? "";
+                            height = dhst.HEIGHT?.ToString() ?? "";
+                            pulse = dhst.PULSE?.ToString() ?? "";
+                            blood_pressure_max = dhst.BLOOD_PRESSURE_MAX?.ToString() ?? "";
+                            blood_pressure_min = dhst.BLOOD_PRESSURE_MIN?.ToString() ?? "";
+                        }
+                    }
+                    dicParam["weight"] = weight;
+                    dicParam["height"] = height;
+                    dicParam["pulse"] = pulse;
+                    dicParam["blood_pressure_max"] = blood_pressure_max;
+                    dicParam["blood_pressure_min"] = blood_pressure_min;
+                }
+                catch
+                {
+                    dicParam["weight"] = "";
+                    dicParam["height"] = "";
+                    dicParam["pulse"] = "";
+                    dicParam["blood_pressure_max"] = "";
+                    dicParam["blood_pressure_min"] = "";
+                }
+
+                try
+                {
+                    string bed_code = "", bed_name = "", bed_room = "";
+                    if (lstBedLogData != null && currentServiceReq != null)
+                    {
+                        var bedLog = lstBedLogData
+                            .Where(o => o.TREATMENT_ID == currentServiceReq.TREATMENT_ID && o.START_TIME < currentServiceReq.INTRUCTION_TIME && (o.FINISH_TIME > currentServiceReq.INTRUCTION_TIME || o.FINISH_TIME == null))
+                            .OrderByDescending(o => o.FINISH_TIME)
+                            .FirstOrDefault();
+                        if (bedLog != null)
+                        {
+                            bed_code = bedLog.BED_CODE ?? "";
+                            bed_name = bedLog.BED_NAME ?? "";
+                            bed_room = bedLog.BED_ROOM_NAME ?? bedLog.BED_ROOM_CODE ?? "";
+                        }
+                    }
+                    dicParam["bed_code"] = bed_code;
+                    dicParam["bed_name"] = bed_name;
+                    dicParam["bed_room"] = bed_room;
+                }
+                catch
+                {
+                    dicParam["bed_code"] = "";
+                    dicParam["bed_name"] = "";
+                    dicParam["bed_room"] = "";
+                }
+
             }
             catch (Exception ex)
             {

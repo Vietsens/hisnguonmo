@@ -31,6 +31,7 @@ using System.Windows.Forms;
 using HIS.Desktop.DelegateRegister;
 using MOS.EFMODEL.DataModels;
 using System.Globalization;
+using Inventec.Common.Logging;
 namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
 {
     public class HeinGOVManager
@@ -130,6 +131,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
             try
             {
                 long keyCheck = AppConfigs.CheDoTuDongCheckThongTinTheBHYT;
+                Inventec.Common.Logging.LogSystem.Debug("keycheck: " + keyCheck.ToString());
                 if (keyCheck > 0)
                 {
                     if (String.IsNullOrEmpty(dataHein.PatientName)
@@ -169,6 +171,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     CommonParam param = new CommonParam();
                     ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
                     apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.APIEGW;
+                    apiInsuranceExpertise.isNullLsKCB2018 = false;
                     CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
                     checkHistoryLDO.maThe = dataHein.HeinCardNumber.Replace("-", "").Replace("_", "");
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
@@ -415,40 +418,15 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                     rsData.ResultHistoryLDO.maKetQua = "9999";
                                 }
                             }
-
-                            try
-                            {
-                                if (rsData.ResultHistoryLDO.dsLichSuKCB2018 == null)
-                                {
-                                    ResultHistoryLDO rsIns2 = new ResultHistoryLDO();
-                                    if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
-                                        || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
-                                        || !string.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))
-                                    {
-                                        apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.OTHERAPIEGW;
-                                        rsIns2 = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
-                                    }
-                                    else
-                                    {
-                                        Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
-                                        rsIns2 = null;
-                                    }
-                                    if (rsIns2 != null && rsIns2.dsLichSuKCB2018 != null && rsIns2.dsLichSuKCB2018.Count > 0 && rsIns2.success == true && String.IsNullOrEmpty(rsIns2.message))
-                                    {
-                                        rsData.ResultHistoryLDO.dsLichSuKCB2018 = new List<ExamHistoryLDO>();
-                                        foreach (var item in rsIns2.dsLichSuKCB2018)
-                                        {
-                                            rsData.ResultHistoryLDO.dsLichSuKCB2018.Add(item);
-                                        }
-                                    }
-                                }
-
-                            }
-                            catch (Exception ex)
-                            {
-                                Inventec.Common.Logging.LogSystem.Warn(ex);
-                            }
-                        }
+                            //try
+                            //{
+                                
+                            //}
+                            //catch (Exception ex)
+                            //{
+                            //    Inventec.Common.Logging.LogSystem.Warn(ex);
+                            //}
+                        }                        
                         else if (rsData.ResultHistoryLDO.maKetQua.Equals(GOV_API_RESULT_000))
                         {
                             Inventec.Common.Logging.LogSystem.Debug("Kiem tra du lieu nguoi dung nhap vao");
@@ -469,6 +447,31 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                             }
 
                             CheckChangeAndUpdateForChangeHeinData(dataHein, rsData, ref isShowErrorMessage);
+                        }
+                        if (rsData.ResultHistoryLDO.dsLichSuKCB2018 == null)
+                        {
+                            ResultHistoryLDO rsIns2 = new ResultHistoryLDO();
+                            if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
+                                || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
+                                || !string.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))
+                            {
+                                apiInsuranceExpertise.isNullLsKCB2018 = true;
+                                apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.OTHERAPIEGW;
+                                rsIns2 = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
+                            }
+                            else
+                            {
+                                Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
+                                rsIns2 = null;
+                            }
+                            if (rsIns2 != null && rsIns2.dsLichSuKCB2025 != null && rsIns2.dsLichSuKCB2025.Count > 0 && rsIns2.success == true && String.IsNullOrEmpty(rsIns2.message))
+                            {
+                                rsData.ResultHistoryLDO.dsLichSuKCB2018 = new List<ExamHistoryLDO>();
+                                foreach (var item in rsIns2.dsLichSuKCB2025)
+                                {
+                                    rsData.ResultHistoryLDO.dsLichSuKCB2018.Add(item);
+                                }
+                            }
                         }
                     }
 
@@ -607,6 +610,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                         dlgEnableButtonSave(true);
                     if (dlgHeinEnableButtonSave != null)
                         dlgHeinEnableButtonSave(true);
+                    
                 }
             }
             catch (Exception ex)
@@ -1057,6 +1061,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
             {
                 Inventec.Common.Logging.LogSystem.Debug("___CheckHeinGOV.Start");
                 long keyCheck = AppConfigs.CheDoTuDongCheckThongTinTheBHYT;
+                LogSystem.Debug("___CheckHeinGOV.KeyCheck: " + keyCheck);
                 if (keyCheck > 0)
                 {
                     if (String.IsNullOrEmpty(dataHein.PatientName)
@@ -1073,6 +1078,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     CommonParam param = new CommonParam();
                     ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
                     apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.APIEGW;
+                    apiInsuranceExpertise.isNullLsKCB2018 = false;
                     CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
                     checkHistoryLDO.maThe = dataHein.HeinCardNumber.Replace("-", "").Replace("_", "");
                     checkHistoryLDO.ngaySinh = dataHein.Dob;
@@ -1258,32 +1264,8 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                             }
 
                             try
-                            {
-                                if (rsData.ResultHistoryLDO.dsLichSuKCB2018 == null)
-                                {
-                                    ResultHistoryLDO rsIns2 = new ResultHistoryLDO();
-                                    if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
-                                        || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
-                                        || !string.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))
-                                    {
-                                        apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.OTHERAPIEGW;
-                                        rsIns2 = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
-                                    }
-                                    else
-                                    {
-                                        Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
-                                        rsIns2 = null;
-                                    }
-                                    if (rsIns2 != null && rsIns2.dsLichSuKCB2018 != null && rsIns2.dsLichSuKCB2018.Count > 0 && rsIns2.success == true && String.IsNullOrEmpty(rsIns2.message))
-                                    {
-                                        rsData.ResultHistoryLDO.dsLichSuKCB2018 = new List<ExamHistoryLDO>();
-                                        foreach (var item in rsIns2.dsLichSuKCB2018)
-                                        {
-                                            rsData.ResultHistoryLDO.dsLichSuKCB2018.Add(item);
-                                        }
-                                    }
-                                }
-
+                            {                                
+                                
                             }
                             catch (Exception ex)
                             {
@@ -1306,6 +1288,31 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
 
                             rsData.ResultHistoryLDO.success = true;
                             rsData.ResultHistoryLDO.message = "";
+                        }
+                        if (rsData.ResultHistoryLDO.dsLichSuKCB2018 == null)
+                        {
+                            ResultHistoryLDO rsIns2 = new ResultHistoryLDO();
+                            if (!string.IsNullOrEmpty(BHXHLoginCFG.USERNAME)
+                                || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
+                                || !string.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))
+                            {
+                                apiInsuranceExpertise.isNullLsKCB2018 = true;
+                                apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.OTHERAPIEGW;
+                                rsIns2 = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
+                            }
+                            else
+                            {
+                                Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
+                                rsIns2 = null;
+                            }
+                            if (rsIns2 != null && rsIns2.dsLichSuKCB2018 != null && rsIns2.dsLichSuKCB2018.Count > 0 && rsIns2.success == true && String.IsNullOrEmpty(rsIns2.message))
+                            {
+                                rsData.ResultHistoryLDO.dsLichSuKCB2018 = new List<ExamHistoryLDO>();
+                                foreach (var item in rsIns2.dsLichSuKCB2018)
+                                {
+                                    rsData.ResultHistoryLDO.dsLichSuKCB2018.Add(item);
+                                }
+                            }
                         }
                     }
                     //try
