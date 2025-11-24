@@ -125,6 +125,15 @@
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000253.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000253.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.ProcessorBase">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -162,6 +171,7 @@
     <EmbeddedResource Include="frmAllergyCard.resx">
       <DependentUpon>frmAllergyCard.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -190,18 +200,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.csproj">
-      <Project>{075d8b91-153f-4e19-a00a-77547e6f2bd0}</Project>
-      <Name>MPS.ProcessorBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000253.PDO\MPS.Processor.Mps000253.PDO.csproj">
-      <Project>{b6c2c6c9-ef7b-4d94-99bd-3b46a541b5a8}</Project>
-      <Name>MPS.Processor.Mps000253.PDO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS\MPS.csproj">
-      <Project>{b7c687ba-a486-414e-8bcb-a6b294ca4310}</Project>
-      <Name>MPS %28MPS\MPS%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

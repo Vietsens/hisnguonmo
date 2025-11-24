@@ -1270,6 +1270,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                                     ado.packingTypeName = medicine.PACKING_TYPE_NAME;
                                     ado.heinServiceBhytName = medicine.HEIN_SERVICE_BHYT_NAME;
+                                    ado.DescriptionMedicineType = medicine.DESCRIPTION;
                                     ado.activeIngrBhytName = medicine.ACTIVE_INGR_BHYT_NAME;
                                     ado.HisMedicine.DOSAGE_FORM = medicine.DOSAGE_FORM;
                                     ado.medicineUseFormId = medicine.MEDICINE_USE_FORM_ID;
@@ -1375,6 +1376,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                                 ado.HisMedicine.PACKING_TYPE_NAME = ado.packingTypeName;
                                 ado.HisMedicine.HEIN_SERVICE_BHYT_NAME = ado.heinServiceBhytName;
+                                ado.HisMedicine.DESCRIPTION = ado.DescriptionMedicineType;
                                 ado.HisMedicine.ACTIVE_INGR_BHYT_NAME = ado.activeIngrBhytName;
                                 ado.HisMedicine.DOSAGE_FORM = ado.HisMedicine.DOSAGE_FORM;
                                 ado.HisMedicine.MEDICINE_USE_FORM_ID = ado.medicineUseFormId;
@@ -2246,6 +2248,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                 this.currrentServiceAdo.packingTypeName = this.txtPackingJoinBid.Text.Trim();
                 this.currrentServiceAdo.heinServiceBhytName = this.txtHeinServiceBidMateType.Text.Trim();
+                this.currrentServiceAdo.DescriptionMedicineType = this.txtDescriptionMedicineType.Text.Trim();
                 this.currrentServiceAdo.activeIngrBhytName = this.txtActiveIngrBhytName.Text.Trim();
 
 
@@ -2338,6 +2341,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 if (this.currrentServiceAdo.IsMedicine)
                 {
                     this.currrentServiceAdo.HisMedicine.AMOUNT = this.currrentServiceAdo.IMP_AMOUNT;
+                    this.currrentServiceAdo.HisMedicine.DESCRIPTION = this.currrentServiceAdo.DescriptionMedicineType;
 
                     if (cboDosageForm.EditValue != null)
                     {
@@ -2400,6 +2404,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                     this.currrentServiceAdo.HisMedicine.MEDICINE_REGISTER_NUMBER = this.currrentServiceAdo.REGISTER_NUMBER;
                     this.currrentServiceAdo.HisMedicine.HEIN_SERVICE_BHYT_NAME = this.currrentServiceAdo.heinServiceBhytName;
+                    this.currrentServiceAdo.HisMedicine.DESCRIPTION = this.currrentServiceAdo.DescriptionMedicineType;
                     this.currrentServiceAdo.HisMedicine.PACKING_TYPE_NAME = this.currrentServiceAdo.packingTypeName;
 
                     this.currrentServiceAdo.HisMedicine.NATIONAL_NAME = this.currrentServiceAdo.NATIONAL_NAME;
@@ -3300,6 +3305,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                 this.currrentServiceAdo.packingTypeName = this.txtPackingJoinBid.Text;
                 this.currrentServiceAdo.heinServiceBhytName = this.txtHeinServiceBidMateType.Text;
+                this.currrentServiceAdo.DescriptionMedicineType = this.txtDescriptionMedicineType.Text;
                 this.currrentServiceAdo.activeIngrBhytName = this.txtActiveIngrBhytName.Text;
                 //this.currrentServiceAdo.dosageForm = this.cboDosageForm.Text;
                 if (this.cboMedicineUseForm.EditValue != null)
@@ -3437,6 +3443,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                     this.currrentServiceAdo.HisMedicine.PACKING_TYPE_NAME = this.currrentServiceAdo.packingTypeName;
                     this.currrentServiceAdo.HisMedicine.HEIN_SERVICE_BHYT_NAME = this.currrentServiceAdo.heinServiceBhytName;
+                    this.currrentServiceAdo.HisMedicine.DESCRIPTION = this.currrentServiceAdo.DescriptionMedicineType;
                     this.currrentServiceAdo.HisMedicine.ACTIVE_INGR_BHYT_NAME = this.currrentServiceAdo.activeIngrBhytName;
                     if (cboDosageForm.EditValue != null)
                     {
@@ -3951,8 +3958,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     spinImpPrice.Value = this.currrentServiceAdo.IMP_PRICE;
                     spinImpVatRatio.Value = this.currrentServiceAdo.ImpVatRatio;
                     spinEditThueXuat.Value = this.currrentServiceAdo.TAX_RATIO * 100 ?? 0;
-                    spinEditTTCoVAT.Value = (long)Math.Round((this.currrentServiceAdo.IMP_AMOUNT * this.currrentServiceAdo.IMP_PRICE * (1 + this.currrentServiceAdo.ImpVatRatio / 100)), 0, MidpointRounding.AwayFromZero);
-
+                    spinEditTTCoVAT.Value = this.currrentServiceAdo.IMP_AMOUNT * this.currrentServiceAdo.IMP_PRICE * (1 + this.currrentServiceAdo.ImpVatRatio / 100);
                     txtBidGroupCode.Text = this.currrentServiceAdo.TDL_BID_GROUP_CODE;
                     txtBidNumOrder.Text = this.currrentServiceAdo.TDL_BID_NUM_ORDER;
                     txtBidYear.Text = this.currrentServiceAdo.TDL_BID_YEAR;
@@ -3961,6 +3967,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     txtBid.Text = this.currrentServiceAdo.TDL_BID_PACKAGE_CODE;
                     this.txtPackingJoinBid.Text = this.currrentServiceAdo.packingTypeName;
                     this.txtHeinServiceBidMateType.Text = this.currrentServiceAdo.heinServiceBhytName;
+                    this.txtDescriptionMedicineType.Text = this.currrentServiceAdo.DescriptionMedicineType;
                     this.txtActiveIngrBhytName.Text = this.currrentServiceAdo.activeIngrBhytName;
 
                     this.cboMedicineUseForm.EditValue = this.currrentServiceAdo.medicineUseFormId;
@@ -4342,7 +4349,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                 if (this.currrentServiceAdo != null)
                     this.currrentServiceAdo.IMP_VAT_RATIO = spinImpVatRatio.Value / 100;
-                if (this._currentImpMestUp != null && this._currentImpMestUp.ID > 0)
+                if (this.currrentServiceAdo != null && this._currentImpMestUp != null && this._currentImpMestUp.ID > 0)
                     this.currrentServiceAdo.IMP_VAT_RATIO = spinImpVatRatio.Value / 100;
                 if (this.currentContract != null && this.currentContract.ID > 0)
                 {
@@ -5943,6 +5950,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 txtActiveIngrBhytName.Enabled = !enable;
                 txtPackingJoinBid.Enabled = !enable;
                 txtHeinServiceBidMateType.Enabled = !enable;
+                txtDescriptionMedicineType.Enabled = !enable;
                 cboDosageForm.Enabled = !enable;
                 txtNognDoHL.Enabled = !enable;
                 IsBID = enable;
@@ -6150,14 +6158,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         {
             try
             {
-                if (e.NewValue != null)
+                if (e.NewValue != null && e.NewValue.ToString().Contains("-"))
                 {
-                    decimal value = Convert.ToDecimal(e.NewValue);
-                    if (value < 0)
-                    {
-                        e.NewValue = Math.Abs(value);
-                        e.Cancel = true;
-                    }
+                    e.Cancel = true;
                 }
             }
             catch (Exception ex)

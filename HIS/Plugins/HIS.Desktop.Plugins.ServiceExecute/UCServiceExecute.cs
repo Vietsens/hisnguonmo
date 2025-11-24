@@ -75,6 +75,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Markup;
+using Telerik.WinControls;
 
 namespace HIS.Desktop.Plugins.ServiceExecute
 {
@@ -1282,9 +1283,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     listServiceADO = new List<ADO.ServiceADO>();
                     var listId = apiResult.Select(o => o.ID).ToList();
                     ProcessDicSereServExt(listId);
-
+                    
                     foreach (var item in apiResult)
                     {
+                        string gpblStoreCodeOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.GPBL_STORE_CODE_OPTION");
                         ADO.ServiceADO ado = new ADO.ServiceADO(item);
                         var ext = dicSereServExt.ContainsKey(item.ID) ? dicSereServExt[item.ID] : null;
                         ado.MACHINE_ID = ChoseDataMachine(ado);
@@ -1319,7 +1321,35 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                                 ado.MustHavePressBeforeExecute = true;
                             }
                         }
+                        // Bổ sung logic xử lý GPBL_STORE_CODE
+                        if (gpblStoreCodeOption == "1"
+                            && currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL 
+                            && item.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL)
+                        {
+                            if (ext == null || ext.GPBL_STORE_CODE == null)
+                            {
+                                string roomCode = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentServiceReq.EXECUTE_ROOM_ID).ROOM_CODE;
 
+                                GpblStoreCodeSDO gpblPayload = new GpblStoreCodeSDO
+
+                                {
+                                    //ServiceReqConstruct.START_TIME
+                                    seedCodeTime = currentServiceReq.START_TIME ?? 0,
+                                    seedCode = roomCode,
+                                    formatOption = long.Parse(gpblStoreCodeOption)
+                                };
+                                string storeCode = CallGpblStoreCodeApi(gpblPayload); // Gọi API sinh số lưu trữ
+                                if (!string.IsNullOrEmpty(storeCode))
+                                {
+                                    ado.GPBL_STORE_CODE = storeCode;
+                                }
+                            }
+                            else
+                            {
+                                // Trường hợp dữ liệu HIS_SERE_SERV_EXT đã có GPBL_STORE_CODE
+                                ado.GPBL_STORE_CODE = ext.GPBL_STORE_CODE; // Hiển thị số lưu trữ sẵn có
+                            }
+                        }
                         listServiceADO.Add(ado);
                     }
 
@@ -1336,6 +1366,19 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 gridViewSereServ.EndUpdate();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private string CallGpblStoreCodeApi(GpblStoreCodeSDO payload)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                return new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/HisSereServ/GetGpblStoreCode", ApiConsumer.ApiConsumers.MosConsumer, param, payload, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error("erer"+ex);
+                return string.Empty;
             }
         }
 
@@ -1464,6 +1507,21 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     Inventec.Common.Logging.LogSystem.Debug("3.2.2");
 
                     var result = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
+
+                    if (sereServExt != null && !string.IsNullOrEmpty(sereServExt.GPBL_STORE_CODE))
+                    {
+                        txtGPBL.Text = sereServExt.GPBL_STORE_CODE;
+                    }
+                    else if (!string.IsNullOrEmpty(sereServ.GPBL_STORE_CODE))
+                    {
+                        txtGPBL.Text = sereServ.GPBL_STORE_CODE;
+                    }
+                    else
+                    {
+                        txtGPBL.Text = "";
+                    }
+
+
                     if (result != null && result.FILM_SIZE_ID > 0 && (sereServExt == null || sereServExt.FILM_SIZE_ID == null))
                     {
                         cboSizeOfFilm.EditValue = result.FILM_SIZE_ID;
@@ -4445,6 +4503,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 else
                 {
                     this.sereServExt.NUMBER_OF_FILM = null;
+                }
+                if (!String.IsNullOrEmpty(txtGPBL.Text.Trim()))
+                {
+                    this.sereServExt.GPBL_STORE_CODE = txtGPBL.Text;
+                }
+                else
+                {
+                    this.sereServExt.GPBL_STORE_CODE = null;
                 }
                 this.sereServExt.FILM_SIZE_ID = cboSizeOfFilm.EditValue != null ? (long?)cboSizeOfFilm.EditValue : null;
                 ProcessDescriptionContent();

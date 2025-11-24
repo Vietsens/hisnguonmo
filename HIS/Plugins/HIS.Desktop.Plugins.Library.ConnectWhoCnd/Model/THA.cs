@@ -64,12 +64,12 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
         /// Ghi số kilogram (kg) cân nặng của người bệnh, biểu thị đầy đủ cả số thập phân, dấu thập phân là dấu chấm “.”
         /// Điều kiện: >0 và <150
         /// </summary>
-        public string CAN_NANG { get; set; }
+        public decimal? CAN_NANG { get; set; }
         /// <summary>
         /// Ghi chiều cao của người bệnh theo centimet (cm). Nếu có phần thập phân biểu thị bằng dấu chấm “.”
         /// Điều kiện: >30 và <200
         /// </summary>
-        public string CHIEU_CAO { get; set; }
+        public decimal? CHIEU_CAO { get; set; }
         /// <summary>
         /// Ghi kích thước vòng eo của người bệnh theo centimet (cm).  Nếu có phần thập phân biểu thị bằng dấu chấm “.”
         /// Điều kiện: >10 và <150

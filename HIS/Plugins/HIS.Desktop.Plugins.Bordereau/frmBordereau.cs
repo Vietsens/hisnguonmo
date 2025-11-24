@@ -172,6 +172,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                 timer1.Interval = 100;
                 timer1.Start();
                 repositoryItemCheckEditIsNoExecute_Disable.Enabled = false;
+                UpdateFeeLockButtonState();
             }
             catch (Exception ex)
             {
@@ -2803,6 +2804,92 @@ namespace HIS.Desktop.Plugins.Bordereau
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        //huannh bổ sung check key EnableIsLockAfterFinishIfHasNoPatientPrice
+        private void UpdateFeeLockButtonState()
+        {
+            try
+            {
+                if (currentTreatment.IS_ACTIVE == 0)
+                {
+                    btnFeeLock.Enabled = false;
+                    return;
+                 }
+                var enableLock = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.HisTreatment.EnableIsLockAfterFinishIfHasNoPatientPrice");
+                if (enableLock == "1")
+                {
+                    CommonParam param = new CommonParam();
+                    HisTreatmentFeeViewFilter searchFilter = new HisTreatmentFeeViewFilter();
+                    searchFilter.ID = treatmentId;
+                    treatmentFees = new BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT_FEE>>(HisRequestUriStore.HIS_TREATMENT_GETFEEVIEW, ApiConsumers.MosConsumer, searchFilter, param);
+
+                    decimal amountToCollect = 0;
+                    if (treatmentFees != null && treatmentFees.Count > 0)
+                    {
+
+                        var fee = treatmentFees.FirstOrDefault();
+                        amountToCollect = (fee.TOTAL_PATIENT_PRICE ?? 0) - (fee.TOTAL_DEPOSIT_AMOUNT ?? 0) - (fee.TOTAL_BILL_AMOUNT ?? 0) - (fee.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) + (fee.TOTAL_REPAY_AMOUNT ?? 0);
+
+                    }
+
+
+                    bool isFinished = currentTreatment != null && currentTreatment.IS_PAUSE == 1;
+
+
+                    btnFeeLock.Enabled = (amountToCollect <= 0) && isFinished;
+                }
+                else
+                {
+
+                    btnFeeLock.Enabled = false;
+                }
+            }
+            
+            
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+
+
+        private void btnFeeLock_Click(object sender, EventArgs e)
+        {
+
+           
+            if (!btnFeeLock.Enabled || currentTreatment == null)
+                return;
+            var param = new CommonParam();
+            HisTreatmentLockSDO sdo = new HisTreatmentLockSDO();
+            sdo.TreatmentId = currentTreatment.ID;
+            if (this.currentModule != null)
+            {
+                sdo.RequestRoomId = this.currentModule.RoomId;
+            }
+            sdo.FeeLockTime = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
+
+
+            var result = new Inventec.Common.Adapter.BackendAdapter(param)
+                .Post<MOS.EFMODEL.DataModels.HIS_TREATMENT>("api/HisTreatment/Lock", ApiConsumers.MosConsumer, sdo, param);
+
+            if (result != null)
+            {
+                MessageBox.Show("Khóa viện phí thành công!", "Thông báo");
+                btnFeeLock.Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("Khóa viện phí thất bại!", "Thông báo");
+            }
+        }
+
+        private void gridControlBordereau_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

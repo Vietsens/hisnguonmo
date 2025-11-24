@@ -49,6 +49,9 @@
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="HIS.Desktop.ADO">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
@@ -56,7 +59,7 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Icd">
-      <HintPath>..\..\..\..\LIB\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.Icd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SecondaryIcd">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
@@ -236,10 +239,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
-      <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
-      <Name>HIS.Desktop.ADO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

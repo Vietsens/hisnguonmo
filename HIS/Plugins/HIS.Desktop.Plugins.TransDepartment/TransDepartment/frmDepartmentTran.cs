@@ -19,19 +19,26 @@ using AutoMapper;
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using EMR.EFMODEL.DataModels;
+using EMR.Filter;
+using EMR.SDO;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.TransDepartment.Config;
+using HIS.Desktop.Plugins.TransDepartment.Loader;
 using HIS.Desktop.Plugins.TransDepartment.Resources;
+using HIS.UC.SecondaryIcd;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
-using HIS.Desktop.Plugins.TransDepartment.Loader;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
@@ -45,12 +52,6 @@ using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.UC.SecondaryIcd;
-using Inventec.Common.Logging;
-using HIS.Desktop.LocalStorage.HisConfig;
-using EMR.EFMODEL.DataModels;
-using EMR.Filter;
-using EMR.SDO;
 
 namespace HIS.Desktop.Plugins.TransDepartment
 {
@@ -145,6 +146,8 @@ namespace HIS.Desktop.Plugins.TransDepartment
                 }
 
                 btnSave.Enabled = isView;
+
+                Config.ConfigKey.GetConfigKey();
 
                 ValidControl();
                 LoadCboChuanDoanDT();
@@ -941,14 +944,62 @@ namespace HIS.Desktop.Plugins.TransDepartment
                     if (MessageBox.Show("Các y lệnh " + string.Join(", ", string.Join(",", lstServiceReq.Select(o => o.SERVICE_REQ_CODE).ToList())) + " có thời gian y lệnh lớn hơn thời gian chuyển khoa. Bạn có muốn chuyển khoa?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                         return;
                 }
+                List<V_HIS_TREATMENT> treatment = new List<V_HIS_TREATMENT>();
+                if (ConfigKey.AllowManyOpeningOption == "6" || IsShowUnsignedDocument == 1 || IsShowUnsignedDocument == 2)
+                {
+                    HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
+                    treatmentFilter.ID = treatmentId;
+                    treatment = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, null);
+                }
+
+                //Kiểm tra bệnh nhân còn đợt điều trị
+                if (ConfigKey.AllowManyOpeningOption == "6")
+                {
+                    if (treatment != null && treatment.Count > 0)
+                    {
+                        var treatmentFilter = new HisTreatmentFilter();
+                        treatmentFilter.PATIENT_ID = treatment.FirstOrDefault()?.PATIENT_ID;
+                        treatmentFilter.ID__NOT_EQUAL = treatmentId;
+                        treatmentFilter.IS_PAUSE = false;
+                        treatmentFilter.TDL_TREATMENT_TYPE_IDs = new List<long>()
+                        {
+                            IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM,
+                            IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU,
+                            IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
+                        };
+
+                        var treatmentOlds = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, null);
+
+                        if (treatmentOlds != null && treatmentOlds.Count > 0)
+                        {
+                            var listWarning = treatmentOlds.Where(o =>
+                                o != null &&
+                                (
+                                    o.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
+                                    || o.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
+                                    || (o.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
+                                        && (o.IS_EMERGENCY ?? 0) != 1)
+                                )
+                            ).ToList();
+
+                            if (listWarning.Count > 0)
+                            {
+                                string treatmentCode = string.Join(", ", listWarning.Select(o => o.TREATMENT_CODE ?? ""));
+
+                                DialogResult dr = XtraMessageBox.Show($"Tồn tại hồ sơ chưa được kết thúc điều trị (Hồ sơ đang mở: {treatmentCode}). Bạn có muốn tiếp tục chuyển khoa?",
+                                    "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                                if (dr == DialogResult.No)
+                                    return;
+                            }
+                        }
+                    }
+                }
 
                 // Kiểm tra văn bản chưa hoàn thành chữ ký
                 if (IsShowUnsignedDocument == 1 || IsShowUnsignedDocument == 2)
                 {
-                    HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
-                    treatmentFilter.ID = treatmentId;
                     var treatmentCode = string.Empty;
-                    var treatment = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, null);
                     if (treatment != null && treatment.Count > 0)
                     {
                         treatmentCode = treatment.FirstOrDefault()?.TREATMENT_CODE;
@@ -1003,37 +1054,8 @@ namespace HIS.Desktop.Plugins.TransDepartment
                                 }
                             }
                         }
-                        else
-                        {
-                            WaitingManager.Show();
-                            if (WarningOptionInCaseOfUnassignTrackingServiceReq == 0 || (WarningOptionInCaseOfUnassignTrackingServiceReq != 1 && WarningOptionInCaseOfUnassignTrackingServiceReq != 2 && WarningOptionInCaseOfUnassignTrackingServiceReq != 3))
-                            {
-                                ConditionA(ref success, ref param);
-                            }
-                            else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1 || WarningOptionInCaseOfUnassignTrackingServiceReq == 2 || WarningOptionInCaseOfUnassignTrackingServiceReq == 3)
-                            {
-                                var checkDepartment = listDepartments.FirstOrDefault(o => o.ID == Int64.Parse(cboDepartment.EditValue.ToString()));
-
-                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkDepartment), checkDepartment));
-                                ConditionB(ref success, ref param, checkDepartment != null && checkDepartment.WARNING_WHEN_IS_NO_SURG == 1);
-                            }
-                        }    
-                    }
-                    else
-                    {
-                        WaitingManager.Show();
-                        if (WarningOptionInCaseOfUnassignTrackingServiceReq == 0 || (WarningOptionInCaseOfUnassignTrackingServiceReq != 1 && WarningOptionInCaseOfUnassignTrackingServiceReq != 2 && WarningOptionInCaseOfUnassignTrackingServiceReq != 3))
-                        {
-                            ConditionA(ref success, ref param);
-                        }
-                        else if (WarningOptionInCaseOfUnassignTrackingServiceReq == 1 || WarningOptionInCaseOfUnassignTrackingServiceReq == 2 || WarningOptionInCaseOfUnassignTrackingServiceReq == 3)
-                        {
-                            var checkDepartment = listDepartments.FirstOrDefault(o => o.ID == Int64.Parse(cboDepartment.EditValue.ToString()));
-
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => checkDepartment), checkDepartment));
-                            ConditionB(ref success, ref param, checkDepartment != null && checkDepartment.WARNING_WHEN_IS_NO_SURG == 1);
-                        }
-                    }
+                        //Nampp yêu cầu
+                    }                 
                 }
 
                 WaitingManager.Show();

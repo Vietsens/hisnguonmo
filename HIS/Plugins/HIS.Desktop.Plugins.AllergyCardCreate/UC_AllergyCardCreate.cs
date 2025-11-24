@@ -15,39 +15,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using ACS.EFMODEL.DataModels;
+using DevExpress.Data;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.LocalData;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.SignLibrary.ADO;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
+using MPS.Processor.Mps000253.PDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MOS.EFMODEL.DataModels;
-using Inventec.Core;
-using MOS.Filter;
-using DevExpress.Data;
-using DevExpress.XtraGrid.Views.Base;
-using System.Collections;
-using Inventec.Common.Adapter;
-using Inventec.Desktop.Common.Message;
-using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.LocalStorage.BackendData;
-using ACS.EFMODEL.DataModels;
-using MOS.SDO;
-using HIS.Desktop.Controls.Session;
-using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.ViewInfo;
-using DevExpress.XtraEditors.DXErrorProvider;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using HIS.Desktop.LocalStorage.LocalData;
-using MPS.Processor.Mps000253.PDO;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
-using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 
 namespace HIS.Desktop.Plugins.AllergyCardCreate
 {
@@ -65,6 +66,7 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
         bool isShowContainer = false;
         bool isShowContainerForChoose = false;
         V_HIS_MEDICINE_TYPE currentMedi { get; set; }
+        HIS_ACTIVE_INGREDIENT currentAct { get; set; }
         bool isShow = true;
         int theRequiredWidth = 900, theRequiredHeight = 130;
 
@@ -114,6 +116,7 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
 
                 SetCaptionByLanguageKey();
                 RebuildControlContainerThuoc();
+                RebuildControlContainerHoatChat();
                 ValidateControlForm();
                 LoadDefaultInfo();
                 SetDefaultValue();
@@ -361,11 +364,15 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             {
                 AllergenicADO allergenic = new AllergenicADO();
 
-                if (this.currentMedi != null)
+                if (this.checkEdit1.Checked  && this.currentMedi != null)
                 {
                     allergenic.MEDICINE_TYPE_ID = currentMedi.ID;
                 }
-                allergenic.ALLERGENIC_NAME = txtDiNguyenThuoc.Text;
+                if (this.checkEdit2.Checked  && this.currentAct != null)
+                {
+                    allergenic.ACTIVE_INGREDIENT_ID = currentAct.ID;
+                }
+                allergenic.ALLERGENIC_NAME = this.checkEdit1.Checked ? txtDiNguyenThuoc.Text : txtDiNguyenHoatChat.Text;
                 allergenic.IS_DOUBT = chkNghiNgo.Checked ? (short?)1 : null;
                 allergenic.IS_SURE = chkChacChan.Checked ? (short?)1 : null;
                 allergenic.ChacChan = chkChacChan.Checked;
@@ -412,9 +419,13 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
                 txtSoDienThoai.Text = "";
                 //cboThuoc.EditValue = null;
                 txtDiNguyenThuoc.Text = "";
+                txtDiNguyenHoatChat.Text = "";
                 chkNghiNgo.Checked = true;
                 chkChacChan.Checked = false;
                 txtBieuHienLamSang.Text = "";
+                this.checkEdit1.EditValue = null;
+                this.checkEdit2.EditValue = null;
+                this.checkEdit1.Checked = true;
                 SetVisibleDiNguyenThuoc(true);
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderAdd, dxErrorProviderAdd);
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderSave, dxErrorProviderSave);
@@ -434,6 +445,7 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
                 chkChacChan.Checked = false;
                 txtBieuHienLamSang.Text = "";
                 txtDiNguyenThuoc.Text = "";
+                txtDiNguyenHoatChat.Text = "";
 
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderAdd, dxErrorProviderAdd);
             }
@@ -578,13 +590,50 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
 
                 gridViewThuoc.GridControl.DataSource = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
                 gridViewThuoc.EndUpdate();
+
+                ;
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        internal void RebuildControlContainerHoatChat()
+        {
+            try
+            {
+                gridViewHoatChat.BeginUpdate();
+                gridViewHoatChat.Columns.Clear();
+                popupControlContainer1.Width = 500;
+                popupControlContainer1.Height = 250;
 
+                DevExpress.XtraGrid.Columns.GridColumn col1 = new DevExpress.XtraGrid.Columns.GridColumn();
+                col1.FieldName = "ACTIVE_INGREDIENT_CODE";
+                col1.Caption = "Mã hoạt chất";
+                col1.Width = 90;
+                col1.VisibleIndex = 1;
+                gridViewHoatChat.Columns.Add(col1);
+
+                DevExpress.XtraGrid.Columns.GridColumn col2 = new DevExpress.XtraGrid.Columns.GridColumn();
+                col2.FieldName = "ACTIVE_INGREDIENT_NAME";
+                col2.Caption = "Tên hoạt chất";
+                col2.Width = 250;
+                col2.VisibleIndex = 2;
+                gridViewHoatChat.Columns.Add(col2);
+
+
+                gridViewHoatChat.GridControl.DataSource = BackendDataWorker.Get<HIS_ACTIVE_INGREDIENT>();
+                gridViewHoatChat.EndUpdate();
+
+                ;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         #endregion
 
         #region Event form
@@ -1271,10 +1320,8 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             try
             {
                 ValidateSingleControl(dxValidationProviderSave, dtNgayCap);
-                ValidateSingleControl(dxValidationProviderAdd, txtDiNguyenThuoc);
                 ValidateTextEditWithGridLookUp(dxValidationProviderSave, txtBacSi, cboBacSi);
                 ValidateMaxLength(dxValidationProviderSave, txtSoDienThoai, 12);
-                ValidateMaxLength(dxValidationProviderAdd, txtBieuHienLamSang, 500);
             }
             catch (Exception ex)
             {
@@ -1509,6 +1556,235 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
                 return null;
             }
             return result;
+        }
+
+        private void txtDiNguyenHoatChat_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.DropDown)
+                {
+                    isShowContainer = !isShowContainer;
+                    if (isShowContainer)
+                    {
+                        popupControlContainer1ShowPopup();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        void popupControlContainer1ShowPopup()
+        {
+            try
+            {
+                Point controlLocation = txtDiNguyenHoatChat.PointToScreen(new Point(0, txtDiNguyenHoatChat.Height));
+                popupControlContainer1.ShowPopup(controlLocation);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void txtDiNguyenHoatChat_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    popupControlContainer1.HidePopup();
+                    //D_HIS_MEDI_STOCK_1 matyChePham = gridViewHoatChat.GetFocusedRow() as D_HIS_MEDI_STOCK_1;
+                    //if (matyChePham != null)
+                    //{
+                    //    popupControlContainer.HidePopup();
+                    //    isShowContainer = false;
+                    //    isShowContainerForChoose = true;
+                    //    GridThuoc_RowClick(matyChePham);
+                    //}
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    int rowHandlerNext = 0;
+                    int countInGridRows = gridViewHoatChat.RowCount;
+                    if (countInGridRows > 1)
+                    {
+                        rowHandlerNext = 1;
+                    }
+
+                    popupControlContainer1ShowPopup();
+                    gridViewHoatChat.Focus();
+                    gridViewHoatChat.FocusedRowHandle = rowHandlerNext;
+                }
+                else if (e.Control && e.KeyCode == Keys.A)
+                {
+                    txtDiNguyenHoatChat.SelectAll();
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtDiNguyenHoatChat_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(txtDiNguyenHoatChat.Text))
+                {
+                    txtDiNguyenHoatChat.Refresh();
+                    if (isShowContainerForChoose)
+                    {
+                        gridViewHoatChat.ActiveFilter.Clear();
+                    }
+                    else
+                    {
+                        if (!isShowContainer)
+                        {
+                            isShowContainer = true;
+                        }
+
+                        //Filter data
+                        gridViewHoatChat.ActiveFilterString = "[ACTIVE_INGREDIENT_NAME] Like '%" + txtDiNguyenHoatChat.Text + "%'"
+                        + " OR [ACTIVE_INGREDIENT_CODE] Like '%" + txtDiNguyenHoatChat.Text + "%'";
+                        gridViewHoatChat.OptionsFilter.FilterEditorUseMenuForOperandsAndOperators = false;
+                        gridViewHoatChat.OptionsFilter.ShowAllTableValuesInCheckedFilterPopup = false;
+                        gridViewHoatChat.OptionsFilter.ShowAllTableValuesInFilterPopup = false;
+                        gridViewHoatChat.FocusedRowHandle = 0;
+                        gridViewHoatChat.OptionsView.ShowFilterPanelMode = ShowFilterPanelMode.Never;
+                        gridViewHoatChat.OptionsFind.HighlightFindResults = true;
+
+
+                        if (isShow)
+                        {
+                            popupControlContainer1ShowPopup();
+                            isShow = false;
+                        }
+
+                        txtDiNguyenHoatChat.Focus();
+                    }
+                    isShowContainerForChoose = false;
+                }
+                else
+                {
+                    gridViewHoatChat.ActiveFilter.Clear();
+                    if (!isShowContainer)
+                    {
+                        popupControlContainer1.HidePopup();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void checkEdit1_CheckedChanged(object sender, EventArgs e)
+        {
+            var radio = sender as CheckEdit;
+            if (radio.Checked)
+            {
+                this.txtDiNguyenThuoc.Enabled = true;
+                this.txtDiNguyenHoatChat.Enabled = false;
+                this.txtDiNguyenHoatChat.Text = "";
+                this.currentAct = null;
+                ValidateSingleControl(dxValidationProviderAdd, txtDiNguyenThuoc);
+                dxValidationProviderAdd.SetValidationRule(txtDiNguyenHoatChat, null);
+                dxValidationProviderAdd.RemoveControlError(txtDiNguyenHoatChat);
+            }
+        }
+
+        private void checkEdit2_CheckedChanged(object sender, EventArgs e)
+        {
+            var radio = sender as CheckEdit;
+            if (radio.Checked)
+            {
+                this.txtDiNguyenThuoc.Enabled = false;
+                this.txtDiNguyenHoatChat.Enabled = true;
+                this.txtDiNguyenThuoc.Text = "";
+                this.currentMedi = null;
+                ValidateSingleControl(dxValidationProviderAdd, txtDiNguyenHoatChat);
+                dxValidationProviderAdd.SetValidationRule(txtDiNguyenThuoc, null);
+                dxValidationProviderAdd.RemoveControlError(txtDiNguyenThuoc);
+            }
+        }
+
+        private void GridHoatChat_RowClick(object data)
+        {
+            try
+            {
+                HIS_ACTIVE_INGREDIENT medi = data as HIS_ACTIVE_INGREDIENT;
+                if (medi != null)
+                {
+                    currentAct = medi;
+                    txtDiNguyenHoatChat.Text = currentAct.ACTIVE_INGREDIENT_NAME;
+                }
+                txtDiNguyenHoatChat.Focus();
+                txtDiNguyenHoatChat.SelectAll();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridControlHoatChat_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    HIS_ACTIVE_INGREDIENT medi = gridViewHoatChat.GetFocusedRow() as HIS_ACTIVE_INGREDIENT;
+                    if (medi != null)
+                    {
+                        popupControlContainer1.HidePopup();
+                        isShowContainer = false;
+                        isShowContainerForChoose = true;
+                        GridHoatChat_RowClick(medi);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewHoatChat_RowClick(object sender, DevExpress.XtraGrid.Views.Grid.RowClickEventArgs e)
+        {
+            try
+            {
+                HIS_ACTIVE_INGREDIENT medi = gridViewHoatChat.GetFocusedRow() as HIS_ACTIVE_INGREDIENT;
+                if (medi != null)
+                {
+                    popupControlContainer1.HidePopup();
+                    isShowContainer = false;
+                    isShowContainerForChoose = true;
+                    GridHoatChat_RowClick(medi);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void popupControlContainer1_CloseUp(object sender, EventArgs e)
+        {
+            try
+            {
+                isShow = true;
+                txtDiNguyenHoatChat.Focus();
+                txtDiNguyenHoatChat.SelectAll();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private V_HIS_PATIENT GetPatientPrint(long patientID)

@@ -75,7 +75,7 @@ namespace Inventec.Common.Address
                         {
                             //tỉnh không thêm dấu phẩy ở 2 đầu để so sánh dữ liệu
                             string lowerPath = checkData.ToLower();
-                            provinces = VSdaProvince.Where(o => lowerPath.Contains(o.PROVINCE_NAME.ToLower())).ToList();
+                            provinces = VSdaProvince.Where(o => lowerPath.Contains(o.PROVINCE_NAME.ToLower().Trim())).ToList();
 
                             if (provinces != null && provinces.Count > 0)
                             {
@@ -178,7 +178,7 @@ namespace Inventec.Common.Address
 
                                         List<string> addrNoInitial = new List<string>();
                                         addrNoInitial.Add(item.COMMUNE_NAME.Trim());
-                                        addrNoInitial.Add(item.DISTRICT_NAME.Trim());
+                                        addrNoInitial.Add((item.DISTRICT_NAME ?? "").Trim());
                                         addrNoInitial.Add(item.PROVINCE_NAME);
 
                                         string addressNoInitial = string.Join(" - ", addrNoInitial);

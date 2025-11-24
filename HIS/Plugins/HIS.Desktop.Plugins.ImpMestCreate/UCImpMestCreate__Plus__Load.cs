@@ -520,6 +520,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 txtSoDangKy.Text = "";
                 txtPackingJoinBid.Text = "";
                 txtHeinServiceBidMateType.Text = "";
+                txtDescriptionMedicineType.Text = "";
                 this.txtActiveIngrBhytName.Text = "";
                 this.cboDosageForm.EditValue = "";
                 this.cboMedicineUseForm.EditValue = null;

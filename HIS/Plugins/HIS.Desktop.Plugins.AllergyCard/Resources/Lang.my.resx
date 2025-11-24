@@ -118,129 +118,129 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="frmAllergyCard.layoutControl1.Text" xml:space="preserve">
-    <value>layoutControl1</value>
+    <value>layoutcontrol1</value>
   </data>
   <data name="frmAllergyCard.Text" xml:space="preserve">
-    <value>frmAllergyCard</value>
+    <value>frmallycard</value>
   </data>
   <data name="UC_AllergyCard.btnCreate.Text" xml:space="preserve">
-    <value>Tạo thẻ</value>
+    <value>tags များကိုဖန်တီးပါ</value>
   </data>
   <data name="UC_AllergyCard.gridColumn1.Caption" xml:space="preserve">
-    <value>Sửa</value>
+    <value>ပုံသေတပ်ထား</value>
   </data>
   <data name="UC_AllergyCard.gridColumn1.ToolTip" xml:space="preserve">
-    <value>Sửa</value>
+    <value>ပုံသေတပ်ထား</value>
   </data>
   <data name="UC_AllergyCard.gridColumn10.Caption" xml:space="preserve">
-    <value>Mã bệnh nhân</value>
+    <value>လူနာကုဒ်</value>
   </data>
   <data name="UC_AllergyCard.gridColumn11.Caption" xml:space="preserve">
-    <value>Chắc chắn</value>
+    <value>စိတ်ချသော</value>
   </data>
   <data name="UC_AllergyCard.gridColumn11.ToolTip" xml:space="preserve">
-    <value>Là chắc chắn</value>
+    <value>သေချာပါတယ်</value>
   </data>
   <data name="UC_AllergyCard.gridColumn12.Caption" xml:space="preserve">
-    <value>Nghi ngờ</value>
+    <value>မယုံသင်္ကာရှိ</value>
   </data>
   <data name="UC_AllergyCard.gridColumn12.ToolTip" xml:space="preserve">
-    <value>Là nghi ngờ</value>
+    <value>သံသယဖြစ်ပါတယ်</value>
   </data>
   <data name="UC_AllergyCard.gridColumn13.Caption" xml:space="preserve">
-    <value>Mã điều trị</value>
+    <value>ကုသမှုကုဒ်</value>
   </data>
   <data name="UC_AllergyCard.gridColumn14.Caption" xml:space="preserve">
-    <value>Tên bệnh nhân</value>
+    <value>လူနာအမည်</value>
   </data>
   <data name="UC_AllergyCard.gridColumn15.Caption" xml:space="preserve">
-    <value>Ngày sinh</value>
+    <value>မွေးနေ့</value>
   </data>
   <data name="UC_AllergyCard.gridColumn2.Caption" xml:space="preserve">
-    <value>Ngày ban hành</value>
+    <value>ထုတ်ဝေသည့်ရက်စွဲ</value>
   </data>
   <data name="UC_AllergyCard.gridColumn2.ToolTip" xml:space="preserve">
-    <value>Ngày ban hành</value>
+    <value>ထုတ်ဝေသည့်ရက်စွဲ</value>
   </data>
   <data name="UC_AllergyCard.gridColumn3.Caption" xml:space="preserve">
-    <value>Bác sĩ chẩn đoán</value>
+    <value>ဆရာဝန်က</value>
   </data>
   <data name="UC_AllergyCard.gridColumn3.ToolTip" xml:space="preserve">
-    <value>Bác sĩ chẩn đoán</value>
+    <value>ဆရာဝန်က</value>
   </data>
   <data name="UC_AllergyCard.gridColumn4.Caption" xml:space="preserve">
-    <value>SĐT</value>
+    <value>ဖုန်းနံပါတ်</value>
   </data>
   <data name="UC_AllergyCard.gridColumn4.ToolTip" xml:space="preserve">
-    <value>SĐT</value>
+    <value>ဖုန်းနံပါတ်</value>
   </data>
   <data name="UC_AllergyCard.gridColumn5.Caption" xml:space="preserve">
-    <value>In</value>
+    <value>ပုံနှိပ်</value>
   </data>
   <data name="UC_AllergyCard.gridColumn5.ToolTip" xml:space="preserve">
-    <value>In</value>
+    <value>ပုံနှိပ်</value>
   </data>
   <data name="UC_AllergyCard.gridColumn6.Caption" xml:space="preserve">
-    <value>Dị nguyên/Thuốc/Hoạt chất</value>
+    <value>မတည့် / မူးယစ်ဆေးဝါးများ / တက်ကြွပါဝင်ပစ္စည်းများ</value>
   </data>
   <data name="UC_AllergyCard.gridColumn6.ToolTip" xml:space="preserve">
-    <value>Dị nguyên/Thuốc</value>
+    <value>မတင့် / မူးယစ်ဆေးဝါးများ</value>
   </data>
   <data name="UC_AllergyCard.gridColumn7.Caption" xml:space="preserve">
-    <value>Biểu hiện lâm sàng</value>
+    <value>လက်တွေ့ထင်ရှားပြ</value>
   </data>
   <data name="UC_AllergyCard.gridColumn8.Caption" xml:space="preserve">
-    <value>Mã hoạt chất BHYT</value>
+    <value>ကျန်းမာရေးအာမခံ Active Instriant Code</value>
   </data>
   <data name="UC_AllergyCard.gridColumn9.Caption" xml:space="preserve">
-    <value>Tên hoạt chất BHYT</value>
+    <value>ကျန်းမာရေးအာမခံတွင်တက်ကြွသောပါဝင်ပစ္စည်းအမည်</value>
   </data>
   <data name="UC_AllergyCard.groupBox1.Text" xml:space="preserve">
-    <value>Thông tin bệnh nhân</value>
+    <value>လူနာသတင်းအချက်အလက်</value>
   </data>
   <data name="UC_AllergyCard.layoutControl1.Text" xml:space="preserve">
-    <value>layoutControl1</value>
+    <value>layoutcontrol1</value>
   </data>
   <data name="UC_AllergyCard.layoutControl2.Text" xml:space="preserve">
     <value>layoutControl2</value>
   </data>
   <data name="UC_AllergyCard.layoutControlItem1.Text" xml:space="preserve">
-    <value>Mã điều trị:</value>
+    <value>ကုသမှုကုဒ်:</value>
   </data>
   <data name="UC_AllergyCard.layoutControlItem10.Text" xml:space="preserve">
-    <value>Giới tính:</value>
+    <value>လိင်:</value>
   </data>
   <data name="UC_AllergyCard.layoutControlItem11.Text" xml:space="preserve">
-    <value>Ngày sinh:</value>
+    <value>မွေးနေ့:</value>
   </data>
   <data name="UC_AllergyCard.layoutControlItem12.Text" xml:space="preserve">
-    <value>Địa chỉ:</value>
+    <value>လိပ်စာ</value>
   </data>
   <data name="UC_AllergyCard.layoutControlItem2.Text" xml:space="preserve">
-    <value>Họ tên:</value>
+    <value>နာမည်အပြည့်အစုံ:</value>
   </data>
   <data name="UC_AllergyCard.layoutControlItem5.Text" xml:space="preserve">
-    <value>Giới tính:</value>
+    <value>လိင်:</value>
   </data>
   <data name="UC_AllergyCard.layoutControlItem6.Text" xml:space="preserve">
-    <value>Ngày sinh:</value>
+    <value>မွေးနေ့:</value>
   </data>
   <data name="UC_AllergyCard.layoutControlItem8.Text" xml:space="preserve">
-    <value>Mã bệnh nhân:</value>
+    <value>လူနာကုဒ်:</value>
   </data>
   <data name="UC_AllergyCard.layoutControlItem9.Text" xml:space="preserve">
-    <value>Tên bệnh nhân:</value>
+    <value>လူနာအမည်:</value>
   </data>
   <data name="UC_AllergyCard.toggleSwitchGomNhom.Properties.OffText" xml:space="preserve">
-    <value>Gom nhóm</value>
+    <value>အုပ်စုများစုဆောင်းပါ</value>
   </data>
   <data name="UC_AllergyCard.toggleSwitchGomNhom.Properties.OnText" xml:space="preserve">
-    <value>Gom nhóm</value>
+    <value>အုပ်စုများစုဆောင်းပါ</value>
   </data>
   <data name="UC_AllergyCard.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Từ khóa tìm kiếm</value>
+    <value>သော့ချက်စာလုံးများကိုရှာပါ</value>
   </data>
   <data name="UC_AllergyCard.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Mã điều trị</value>
+    <value>ကုသမှုကုဒ်</value>
   </data>
 </root>

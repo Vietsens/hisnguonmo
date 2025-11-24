@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using ACS.SDO; 
+using ACS.SDO;
 using DevExpress.Data;
 using DevExpress.Utils;
 using DevExpress.Utils.Menu;
@@ -236,6 +236,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private bool isRequiredPathologicalProcessTransferPatientBHYT = false;
         private int pathologicalProcessOption = 0;
         bool isLoadedMLCT;
+
+        Library.ConnectWhoCnd.ConnectWhoCndProcessor whoCndProcessor;
         #endregion
 
         #region Construct - Load
@@ -2102,7 +2104,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (patient != null)
                     {
                         hospitalizeADO.RelativeAddress = patient.RELATIVE_ADDRESS;
-                        hospitalizeADO.RelativeName = patient.RELATIVE_NAME;          
+                        hospitalizeADO.RelativeName = patient.RELATIVE_NAME;
                         hospitalizeADO.RelativePhone = patient.RELATIVE_PHONE;
                         hospitalizeADO.CareerId = patient.CAREER_ID;
                         hospitalizeADO.IsCAPD = this.patient.IS_CAPD != null ? true : false;
@@ -2114,7 +2116,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         hospitalizeADO.RelativePhone = "";
                     }
                     hospitalizeADO.isEmergency = this.treatment.IS_EMERGENCY != null ? true : false;
-                    
+
                     hospitalizeADO.InHospitalizationReasonCode = this.treatment.HOSPITALIZE_REASON_CODE;
                     hospitalizeADO.InHospitalizationReasonName = this.treatment.HOSPITALIZE_REASON_NAME;
                     hospitalizeADO.isAutoCheckChkHospitalizeExam = HisConfigCFG.IsAutoCheckPrintHospitalizeExam;
@@ -2168,7 +2170,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private void chkExamFinish_CheckedChanged(object sender, EventArgs e)
         {
             try
-            {  
+            {
                 if (isReturnCheckboxExamFinish)
                 {
                     chkExamFinish.Checked = false;
@@ -2940,16 +2942,18 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-
-
+                if (!AllowManyTreatmentOpeningOption())
+                {
+                    return;
+                }
                 if (HisConfigCFG.IsEnableEditStartTime == "1")
                 {
                     CheckAssignServiceSimultaneityOption();
-                    if(isCheckAssignServiceSimultaneityOption == false || isCheckAssignSimultaneityOption == false)
+                    if (isCheckAssignServiceSimultaneityOption == false || isCheckAssignSimultaneityOption == false)
                     {
                         return;
                     }
-                 
+
 
                 }
                 IsPrintExam = false;
@@ -3087,6 +3091,27 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     //{
                     //    SaveExamServiceReq(hisServiceReqSDO);
                     //}
+
+
+                    if (hisServiceReqSDO.TreatmentFinishSDO != null)
+                    {
+                        HIS_TREATMENT checkData = new HIS_TREATMENT();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(checkData, treatment);
+
+                        checkData.ICD_CODE = hisServiceReqSDO.TreatmentFinishSDO.IcdCode;
+                        checkData.ICD_SUB_CODE = hisServiceReqSDO.TreatmentFinishSDO.IcdSubCode;
+                        checkData.ICD_CAUSE_CODE = hisServiceReqSDO.TreatmentFinishSDO.IcdCauseName;
+                        whoCndProcessor = new Library.ConnectWhoCnd.ConnectWhoCndProcessor(checkData, hisServiceReqSDO.HisDhst, null);
+                        if (!whoCndProcessor.CheckData())
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        whoCndProcessor = null;
+                    }
+
                     if (hisServiceReqSDO.ExamAdditionSDO != null && hisServiceReqSDO.ExamAdditionSDO.IsNotUseBhyt)
                     {
                         if (MessageBox.Show("Bệnh nhân không được hưởng BHYT các chi phí phát sinh tại phòng khám thêm. Bạn có muốn tiếp tục?",
@@ -3475,9 +3500,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
 
-                
-              
-                    this.param = new CommonParam();
+
+
+                this.param = new CommonParam();
                 if (HisServiceReqView.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
                     return;
                 IsValidForSave = true;
@@ -6906,7 +6931,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         }
 
         private void LoadIcdCombo(string searchCode)
-                {
+        {
             try
             {
                 //GetUcIcdYHCT();
@@ -7265,7 +7290,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }  
+        }
 
         private void txtIcdCode_Validating(object sender, CancelEventArgs e)
         {
@@ -7797,7 +7822,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
 
-                
+
                 if ((HisConfigCFG.AssignServiceSimultaneityOption != "1" && HisConfigCFG.AssignServiceSimultaneityOption != "2"))
                     return;
 
@@ -7830,7 +7855,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 sdo.SereTimes = new List<long> { sereTime };
 
                 var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
-               
+
                 if (!CheckSereTimes)
                 {
                     if (HisConfigCFG.AssignServiceSimultaneityOption == "1")
@@ -7861,7 +7886,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         isCheckAssignServiceSimultaneityOption = true;
 
                     }
-                   
+
+
+                }
+                else
+                {
+                    isCheckAssignServiceSimultaneityOption = true;
                 }
                 var checkInfos = new List<object>();
                 isCheckAssignSimultaneityOption = false;
@@ -9193,7 +9223,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             //chkTreatmentFinish.Checked = false;
         }
 
-       
+
 
         private DateTime? lastValue = null;
         private void dtpStartTime_EditValueChanged(object sender, EventArgs e)
@@ -9212,6 +9242,47 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 CheckAssignServiceSimultaneityOption();
 
             }
+        }
+        bool AllowManyTreatmentOpeningOption()
+        {
+            try
+            {
+                if (chkHospitalize.Checked && HisConfigCFG.AllowManyTreatmentOpeningOption == "6")
+                {
+                    HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
+                    treatmentFilter.PATIENT_ID = this.treatment.PATIENT_ID;
+                    treatmentFilter.IS_PAUSE = false;
+                    treatmentFilter.TDL_TREATMENT_TYPE_IDs = new List<long>()
+                    {
+                        IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM,
+                        IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU,
+                        IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
+                    };
+                    treatmentFilter.ID__NOT_EQUAL = this.treatment.ID;
+                    var treatmentOlds = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, null);
+                    if (treatmentOlds != null && treatmentOlds.Any())
+                    {
+                        treatmentOlds = treatmentOlds.Where(a =>
+                            a.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU ||
+                            a.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY ||
+                            (a.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && a.IS_EMERGENCY != 1)
+                            ).ToList();
+                        if (treatmentOlds.Any())
+                        {
+                            if (XtraMessageBox.Show(string.Format("Tồn tại hồ sơ chưa được kết thúc điều trị (Hồ sơ đang mở: {0}). Bạn có muốn tiếp tục nhập viện?",
+                                String.Join(", ", treatmentOlds.Select(o => o.TREATMENT_CODE))), "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
         }
     }
 }

@@ -28,6 +28,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
 {
     class HisConfigCFG
     {
+        public const string KEY__MOS_TREATMENT_ALLOW_MANY_TREATMENT_OPENING_OPTION = "MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION";
         public const string KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISENABLEEDITSTARTTIME  = "HIS.Desktop.Plugins.ExamServiceReqExecute.IsEnableEditStartTime";
         public static string IsEnableEditStartTime;
         public const string CONFIG_KEY_IsCheckServiceFollowWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
@@ -114,6 +115,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         internal static int PathologicalProcessOption;
         private const string KEY_AllowBhxhLeaveOver30days = "His.LeaveDay.AllowBhxhLeaveOver30days";
         internal static string AllowBhxhLeaveOver30days;
+        internal static string AllowManyTreatmentOpeningOption;
         internal static void LoadConfig()
         {
             try
@@ -151,6 +153,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 PathologicalProcessOption = int.Parse(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_PathologicalProcessOption) ?? "0");
                 AllowBhxhLeaveOver30days = GetValue(KEY_AllowBhxhLeaveOver30days);
                 IsEnableEditStartTime = GetValue(KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISENABLEEDITSTARTTIME);
+                AllowManyTreatmentOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_TREATMENT_ALLOW_MANY_TREATMENT_OPENING_OPTION);
+
             }
             catch (Exception ex)
             {

@@ -105,6 +105,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
         public short? isBusiness { get; set; }
         public string packingTypeName { get; set; }
         public string heinServiceBhytName { get; set; }
+        public string DescriptionMedicineType { get; set; }
         public long? MAP_MEDI_MATE_ID { get; set; }
         public long? monthLifespan { get; set; }
 
@@ -173,6 +174,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
                     this.REGISTER_NUMBER = data.REGISTER_NUMBER;
                     this.packingTypeName = data.PACKING_TYPE_NAME;
                     this.heinServiceBhytName = data.HEIN_SERVICE_BHYT_NAME;
+                    this.DescriptionMedicineType = data.DESCRIPTION;
                     this.activeIngrBhytName = data.ACTIVE_INGR_BHYT_NAME;
                     this.HeinLimitPrice = data.HEIN_LIMIT_PRICE ?? null;
                     //this.dosageForm = data.DOSAGE_FORM;
@@ -223,6 +225,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
                     //this.REGISTER_NUMBER = data.REGISTER_NUMBER;
                     this.packingTypeName = data.PACKING_TYPE_NAME;
                     this.heinServiceBhytName = data.HEIN_SERVICE_BHYT_NAME;
+                    this.DescriptionMedicineType = data.DESCRIPTION;
                     this.PRICING_MAX_REUSE_COUNT = data.PRICING_MAX_REUSE_COUNT;
                     this.MAP_MEDI_MATE_ID = data.MATERIAL_TYPE_MAP_ID;
                     this.VS_PRICE = data.REUSE_FEE;

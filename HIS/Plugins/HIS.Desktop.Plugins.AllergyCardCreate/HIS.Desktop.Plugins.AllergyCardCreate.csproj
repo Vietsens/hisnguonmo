@@ -43,10 +43,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\ACS\ACS.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\..\TEST\His.Desktop\ReferencedAssemblies\AutoMapper.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
@@ -137,6 +133,15 @@
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000253.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000253.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.ProcessorBase">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -175,6 +180,7 @@
     <EmbeddedResource Include="frmAllergyCardCreate.resx">
       <DependentUpon>frmAllergyCardCreate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -185,7 +191,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Resources\Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Lang.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
@@ -203,18 +211,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.csproj">
-      <Project>{075d8b91-153f-4e19-a00a-77547e6f2bd0}</Project>
-      <Name>MPS.ProcessorBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000253.PDO\MPS.Processor.Mps000253.PDO.csproj">
-      <Project>{b6c2c6c9-ef7b-4d94-99bd-3b46a541b5a8}</Project>
-      <Name>MPS.Processor.Mps000253.PDO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS\MPS.csproj">
-      <Project>{b7c687ba-a486-414e-8bcb-a6b294ca4310}</Project>
-      <Name>MPS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
