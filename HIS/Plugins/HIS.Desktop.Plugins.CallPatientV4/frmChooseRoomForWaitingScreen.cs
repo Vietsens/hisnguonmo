@@ -21,7 +21,9 @@ using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraLayout.Utils;
 using HIS.Desktop.ADO;
+using HIS.Desktop.Library.CacheClient;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
@@ -350,11 +352,50 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                 }
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
                 WaitingManager.Hide();
+                UpdateEmergencyConfigVisibility(); 
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UpdateEmergencyConfigVisibility()
+        {
+            bool showEmergencyConfig = chkSeparatePatientNoiTruNgoaiTru.Checked;
+            lcTitleNgoaiTru.Visibility = showEmergencyConfig? LayoutVisibility.Always:LayoutVisibility.Never;
+            lcTitleNoiTru.Visibility = showEmergencyConfig? LayoutVisibility.Always:LayoutVisibility.Never;
+            lcFontSize.Visibility = showEmergencyConfig? LayoutVisibility.Always:LayoutVisibility.Never;
+            lcTextColor.Visibility = showEmergencyConfig? LayoutVisibility.Always:LayoutVisibility.Never;
+        }
+
+        private void chkSeparatePatientCapCuu_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                WaitingManager.Show();
+                var cs = currentControlStateRDO?.FirstOrDefault(o => o.KEY == ControlStateConstant_chkSeparateEmergency);
+                if (cs != null)
+                    cs.VALUE = chkSeparatePatientCapCuu.Checked ? "1" : "";
+                else
+                {
+                    var add = new ControlStateRDO
+                    {
+                        KEY = ControlStateConstant.chks,
+                        VALUE = chkSeparatePatientCapCuu.Checked ? "1" : "",
+                        MODULE_LINK = this.ModuleLink
+                    };
+                    currentControlStateRDO = currentControlStateRDO ?? new List<ControlStateRDO>();
+                    currentControlStateRDO.Add(add);
+                }
+                controlStateWorker.SetData(currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex) 
+            { 
+                WaitingManager.Hide(); 
+                Inventec.Common.Logging.LogSystem.Warn(ex); 
             }
         }
     }

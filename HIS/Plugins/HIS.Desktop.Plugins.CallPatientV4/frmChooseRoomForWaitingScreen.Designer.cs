@@ -45,17 +45,28 @@ namespace HIS.Desktop.Plugins.CallPatientV4
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.lblRoom = new DevExpress.XtraEditors.LabelControl();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.textEdit4 = new DevExpress.XtraEditors.TextEdit();
+            this.textEdit3 = new DevExpress.XtraEditors.TextEdit();
+            this.textEdit2 = new DevExpress.XtraEditors.TextEdit();
+            this.textEdit1 = new DevExpress.XtraEditors.TextEdit();
+            this.chkSeparatePatientCapCuu = new DevExpress.XtraEditors.CheckEdit();
             this.chkSeparatePatientNoiTruNgoaiTru = new DevExpress.XtraEditors.CheckEdit();
             this.tgExtendMonitor = new DevExpress.XtraEditors.ToggleSwitch();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lcTitleNoiTru = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lcTitleNgoaiTru = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lcFontSize = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lcTextColor = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControlExecuteStatus = new DevExpress.XtraGrid.GridControl();
             this.gridViewExecuteStatus = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -69,8 +80,8 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
@@ -79,11 +90,21 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.textEdit4.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textEdit3.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textEdit2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textEdit1.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSeparatePatientCapCuu.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSeparatePatientNoiTruNgoaiTru.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tgExtendMonitor.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcTitleNoiTru)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcTitleNgoaiTru)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcFontSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcTextColor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlExecuteStatus)).BeginInit();
@@ -108,7 +129,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(424, 235);
+            this.layoutControl1.Size = new System.Drawing.Size(424, 351);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -118,7 +139,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControl4.Location = new System.Drawing.Point(2, 2);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(420, 24);
+            this.layoutControl4.Size = new System.Drawing.Size(420, 38);
             this.layoutControl4.TabIndex = 6;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -142,7 +163,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(420, 24);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(420, 38);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem4
@@ -150,20 +171,68 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem4.Control = this.lblRoom;
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(420, 24);
+            this.layoutControlItem4.Size = new System.Drawing.Size(420, 38);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControl3
             // 
+            this.layoutControl3.Controls.Add(this.textEdit4);
+            this.layoutControl3.Controls.Add(this.textEdit3);
+            this.layoutControl3.Controls.Add(this.textEdit2);
+            this.layoutControl3.Controls.Add(this.textEdit1);
+            this.layoutControl3.Controls.Add(this.chkSeparatePatientCapCuu);
             this.layoutControl3.Controls.Add(this.chkSeparatePatientNoiTruNgoaiTru);
             this.layoutControl3.Controls.Add(this.tgExtendMonitor);
-            this.layoutControl3.Location = new System.Drawing.Point(2, 205);
+            this.layoutControl3.Location = new System.Drawing.Point(2, 200);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(420, 28);
+            this.layoutControl3.Size = new System.Drawing.Size(420, 149);
             this.layoutControl3.TabIndex = 5;
             this.layoutControl3.Text = "layoutControl3";
+            // 
+            // textEdit4
+            // 
+            this.textEdit4.Location = new System.Drawing.Point(157, 97);
+            this.textEdit4.Name = "textEdit4";
+            this.textEdit4.Size = new System.Drawing.Size(261, 20);
+            this.textEdit4.StyleController = this.layoutControl3;
+            this.textEdit4.TabIndex = 10;
+            // 
+            // textEdit3
+            // 
+            this.textEdit3.Location = new System.Drawing.Point(157, 73);
+            this.textEdit3.Name = "textEdit3";
+            this.textEdit3.Size = new System.Drawing.Size(261, 20);
+            this.textEdit3.StyleController = this.layoutControl3;
+            this.textEdit3.TabIndex = 9;
+            // 
+            // textEdit2
+            // 
+            this.textEdit2.Location = new System.Drawing.Point(157, 49);
+            this.textEdit2.Name = "textEdit2";
+            this.textEdit2.Size = new System.Drawing.Size(261, 20);
+            this.textEdit2.StyleController = this.layoutControl3;
+            this.textEdit2.TabIndex = 8;
+            // 
+            // textEdit1
+            // 
+            this.textEdit1.Location = new System.Drawing.Point(157, 25);
+            this.textEdit1.Name = "textEdit1";
+            this.textEdit1.Size = new System.Drawing.Size(261, 20);
+            this.textEdit1.StyleController = this.layoutControl3;
+            this.textEdit1.TabIndex = 7;
+            // 
+            // chkSeparatePatientCapCuu
+            // 
+            this.chkSeparatePatientCapCuu.Location = new System.Drawing.Point(192, 2);
+            this.chkSeparatePatientCapCuu.Name = "chkSeparatePatientCapCuu";
+            this.chkSeparatePatientCapCuu.Properties.Caption = "Phân biệt BN khoa Cấp Cứu";
+            this.chkSeparatePatientCapCuu.Size = new System.Drawing.Size(226, 19);
+            this.chkSeparatePatientCapCuu.StyleController = this.layoutControl3;
+            this.chkSeparatePatientCapCuu.TabIndex = 6;
+            this.chkSeparatePatientCapCuu.ToolTip = "Phân biệt chỉ định bệnh nhân của khoa cấp cứu";
+            this.chkSeparatePatientCapCuu.CheckedChanged += new System.EventHandler(this.chkSeparatePatientCapCuu_CheckedChanged);
             // 
             // chkSeparatePatientNoiTruNgoaiTru
             // 
@@ -171,7 +240,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.chkSeparatePatientNoiTruNgoaiTru.Name = "chkSeparatePatientNoiTruNgoaiTru";
             this.chkSeparatePatientNoiTruNgoaiTru.Properties.Caption = "Phân biệt BN nội trú và ngoại trú";
             this.chkSeparatePatientNoiTruNgoaiTru.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkSeparatePatientNoiTruNgoaiTru.Size = new System.Drawing.Size(178, 19);
+            this.chkSeparatePatientNoiTruNgoaiTru.Size = new System.Drawing.Size(186, 19);
             this.chkSeparatePatientNoiTruNgoaiTru.StyleController = this.layoutControl3;
             this.chkSeparatePatientNoiTruNgoaiTru.TabIndex = 5;
             this.chkSeparatePatientNoiTruNgoaiTru.ToolTip = "Hiển thị thành 2 danh sách riêng biệt: bệnh nhân nội trú và ngoại trú";
@@ -179,11 +248,11 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             // 
             // tgExtendMonitor
             // 
-            this.tgExtendMonitor.Location = new System.Drawing.Point(184, 2);
+            this.tgExtendMonitor.Location = new System.Drawing.Point(2, 121);
             this.tgExtendMonitor.Name = "tgExtendMonitor";
             this.tgExtendMonitor.Properties.OffText = "Bật màn hình mở rộng";
             this.tgExtendMonitor.Properties.OnText = "Bật màn hình mở rộng";
-            this.tgExtendMonitor.Size = new System.Drawing.Size(234, 24);
+            this.tgExtendMonitor.Size = new System.Drawing.Size(416, 24);
             this.tgExtendMonitor.StyleController = this.layoutControl3;
             this.tgExtendMonitor.TabIndex = 4;
             this.tgExtendMonitor.Toggled += new System.EventHandler(this.tgExtendMonitor_Toggled);
@@ -193,39 +262,107 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlGroup2.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.layoutControlGroup2.GroupBordersVisible = false;
             this.layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem5,
+            this.layoutControlItem8,
             this.layoutControlItem6,
-            this.layoutControlItem5});
+            this.lcTitleNoiTru,
+            this.lcTitleNgoaiTru,
+            this.lcFontSize,
+            this.lcTextColor});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "Root";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(420, 28);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(420, 149);
             this.layoutControlGroup2.TextVisible = false;
-            // 
-            // layoutControlItem6
-            // 
-            this.layoutControlItem6.Control = this.tgExtendMonitor;
-            this.layoutControlItem6.Location = new System.Drawing.Point(182, 0);
-            this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(238, 28);
-            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.chkSeparatePatientNoiTruNgoaiTru;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(182, 28);
+            this.layoutControlItem5.Size = new System.Drawing.Size(190, 23);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
+            // 
+            // layoutControlItem8
+            // 
+            this.layoutControlItem8.Control = this.chkSeparatePatientCapCuu;
+            this.layoutControlItem8.Location = new System.Drawing.Point(190, 0);
+            this.layoutControlItem8.Name = "layoutControlItem8";
+            this.layoutControlItem8.Size = new System.Drawing.Size(230, 23);
+            this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem8.TextVisible = false;
+            // 
+            // layoutControlItem6
+            // 
+            this.layoutControlItem6.Control = this.tgExtendMonitor;
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 119);
+            this.layoutControlItem6.Name = "layoutControlItem6";
+            this.layoutControlItem6.Size = new System.Drawing.Size(420, 30);
+            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem6.TextVisible = false;
+            // 
+            // lcTitleNoiTru
+            // 
+            this.lcTitleNoiTru.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lcTitleNoiTru.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lcTitleNoiTru.Control = this.textEdit1;
+            this.lcTitleNoiTru.Location = new System.Drawing.Point(0, 23);
+            this.lcTitleNoiTru.Name = "lcTitleNoiTru";
+            this.lcTitleNoiTru.OptionsToolTip.ToolTip = "Vùng danh sách bên trái màn hình, bao gồm diện điều trị nội trú và ban ngày";
+            this.lcTitleNoiTru.Size = new System.Drawing.Size(420, 24);
+            this.lcTitleNoiTru.Text = "Tiêu đề DS BN nội trú:";
+            this.lcTitleNoiTru.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lcTitleNoiTru.TextSize = new System.Drawing.Size(150, 20);
+            this.lcTitleNoiTru.TextToControlDistance = 5;
+            // 
+            // lcTitleNgoaiTru
+            // 
+            this.lcTitleNgoaiTru.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lcTitleNgoaiTru.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lcTitleNgoaiTru.Control = this.textEdit2;
+            this.lcTitleNgoaiTru.Location = new System.Drawing.Point(0, 47);
+            this.lcTitleNgoaiTru.Name = "lcTitleNgoaiTru";
+            this.lcTitleNgoaiTru.OptionsToolTip.ToolTip = "Vùng danh sách bên phải màn hình, bao gồm diện khám và điều trị ngoại trú";
+            this.lcTitleNgoaiTru.Size = new System.Drawing.Size(420, 24);
+            this.lcTitleNgoaiTru.Text = "Tiêu đề DS BN ngoại trú:";
+            this.lcTitleNgoaiTru.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lcTitleNgoaiTru.TextSize = new System.Drawing.Size(150, 20);
+            this.lcTitleNgoaiTru.TextToControlDistance = 5;
+            // 
+            // lcFontSize
+            // 
+            this.lcFontSize.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lcFontSize.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lcFontSize.Control = this.textEdit3;
+            this.lcFontSize.Location = new System.Drawing.Point(0, 71);
+            this.lcFontSize.Name = "lcFontSize";
+            this.lcFontSize.Size = new System.Drawing.Size(420, 24);
+            this.lcFontSize.Text = "Cỡ chữ tiêu đề:";
+            this.lcFontSize.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lcFontSize.TextSize = new System.Drawing.Size(150, 20);
+            this.lcFontSize.TextToControlDistance = 5;
+            // 
+            // lcTextColor
+            // 
+            this.lcTextColor.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lcTextColor.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lcTextColor.Control = this.textEdit4;
+            this.lcTextColor.Location = new System.Drawing.Point(0, 95);
+            this.lcTextColor.Name = "lcTextColor";
+            this.lcTextColor.Size = new System.Drawing.Size(420, 24);
+            this.lcTextColor.Text = "Màu chữ tiêu đề:";
+            this.lcTextColor.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lcTextColor.TextSize = new System.Drawing.Size(150, 20);
+            this.lcTextColor.TextToControlDistance = 5;
             // 
             // layoutControl2
             // 
             this.layoutControl2.Controls.Add(this.gridControlExecuteStatus);
-            this.layoutControl2.Location = new System.Drawing.Point(2, 30);
+            this.layoutControl2.Location = new System.Drawing.Point(2, 44);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(420, 171);
+            this.layoutControl2.Size = new System.Drawing.Size(420, 152);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             // 
@@ -236,7 +373,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridControlExecuteStatus.Name = "gridControlExecuteStatus";
             this.gridControlExecuteStatus.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.CheckEditStt});
-            this.gridControlExecuteStatus.Size = new System.Drawing.Size(416, 167);
+            this.gridControlExecuteStatus.Size = new System.Drawing.Size(416, 148);
             this.gridControlExecuteStatus.TabIndex = 4;
             this.gridControlExecuteStatus.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewExecuteStatus});
@@ -299,7 +436,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(420, 171);
+            this.Root.Size = new System.Drawing.Size(420, 152);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem7
@@ -307,7 +444,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem7.Control = this.gridControlExecuteStatus;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(420, 171);
+            this.layoutControlItem7.Size = new System.Drawing.Size(420, 152);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
@@ -322,24 +459,24 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(424, 235);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(424, 351);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.layoutControl2;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 28);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 42);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(424, 175);
+            this.layoutControlItem1.Size = new System.Drawing.Size(424, 156);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.layoutControl3;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 203);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 198);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(424, 32);
+            this.layoutControlItem2.Size = new System.Drawing.Size(424, 153);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -348,7 +485,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem3.Control = this.layoutControl4;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(424, 28);
+            this.layoutControlItem3.Size = new System.Drawing.Size(424, 42);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -364,7 +501,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(424, 235);
+            this.ClientSize = new System.Drawing.Size(424, 351);
             this.Controls.Add(this.layoutControl1);
             this.Name = "frmChooseRoomForWaitingScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -379,11 +516,21 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.textEdit4.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textEdit3.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textEdit2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textEdit1.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSeparatePatientCapCuu.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSeparatePatientNoiTruNgoaiTru.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tgExtendMonitor.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcTitleNoiTru)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcTitleNgoaiTru)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcFontSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcTextColor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControlExecuteStatus)).EndInit();
@@ -430,5 +577,15 @@ namespace HIS.Desktop.Plugins.CallPatientV4
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private DevExpress.XtraEditors.CheckEdit chkSeparatePatientNoiTruNgoaiTru;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
+        private DevExpress.XtraEditors.TextEdit textEdit4;
+        private DevExpress.XtraEditors.TextEdit textEdit3;
+        private DevExpress.XtraEditors.TextEdit textEdit2;
+        private DevExpress.XtraEditors.TextEdit textEdit1;
+        private DevExpress.XtraEditors.CheckEdit chkSeparatePatientCapCuu;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
+        private DevExpress.XtraLayout.LayoutControlItem lcTitleNoiTru;
+        private DevExpress.XtraLayout.LayoutControlItem lcTitleNgoaiTru;
+        private DevExpress.XtraLayout.LayoutControlItem lcFontSize;
+        private DevExpress.XtraLayout.LayoutControlItem lcTextColor;
     }
 }

@@ -26,5 +26,6 @@ namespace HIS.Desktop.Plugins.CallPatientV4.Config
     internal class ControlStateConstant
     {
         internal const string chkSeparatePatientNoiTruNgoaiTru = "chkSeparatePatientNoiTruNgoaiTru";
+        internal const string chkSeparatePatientCapCuu = "chkSeparatePatientCapCuu";
     }
 }
