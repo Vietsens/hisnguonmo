@@ -80,7 +80,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
     public partial class frmAssignPrescription : FormBase
@@ -2221,6 +2220,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
+                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(this.currentTreatment, null, null);
+                if (!who.CheckData())
+                {
+                    return;
+                }
                 this.bIsSelectMultiPatientProcessing = false;
 
                 if (this.gridViewServiceProcess.IsEditing)
@@ -3236,7 +3240,6 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             try
             {
                 //ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE.SAVE);
-
                 LogTheadInSessionInfo(() => ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE.SAVE), !GlobalStore.IsCabinet ? "SavePrescription" : "SaveMedicalStore");
                 CheckEnableBtnQR();
             }
@@ -3253,6 +3256,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 //ProcessSaveData
                 var hisConfigCFGprintTypeCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.SAVE_PRINT_MPS_DEFAULT);
                 //ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE.SAVE_PRINT_NOW);
+                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(this.currentTreatment, null, null);
+                if (!who.CheckData())
+                {
+                    return;
+                }
                 this.PrintPrescription = hisConfigCFGprintTypeCode;
                 LogTheadInSessionInfo(() => ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE.SAVE_PRINT_NOW), !GlobalStore.IsCabinet ? "SaveAndPrintPrescription" : "SaveAndPrintMedicalStore");
                 CheckEnableBtnQR();
@@ -3284,6 +3292,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     return;
                 }
                 this.NoEdit = false;
+
                 if (HisConfigCFG.CheckSoNgay && this.spinSoLuongNgay.Value != 0 && !string.IsNullOrEmpty(this.spinAmount.Text))
                 {
                     var amountSTCT = (this.GetValueSpin(this.spinSang.Text) + this.GetValueSpin(this.spinTrua.Text) + this.GetValueSpin(this.spinChieu.Text) + this.GetValueSpin(this.spinToi.Text));
@@ -3505,52 +3514,122 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             bool result = true;
             try
             {
-                Inventec.Common.Logging.LogSystem.Info("CheckAllergenicByPatient.1");
-                if (this.currentMedicineTypeADOForEdit != null)
+                if (this.currentMedicineTypeADOForEdit == null)
+                    return true;
+                long patientId = currentTreatmentWithPatientType.PATIENT_ID; // <-- Đảm bảo bạn có biến này
+                long medicineTypeId = this.currentMedicineTypeADOForEdit.ID;
+                string medicineTypeName = this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_NAME;
+                // 1. Lấy toàn bộ thẻ dị ứng của bệnh nhân (Danh sách A)
+                var allPatientAllergenics = (this.allergenics ?? new List<HIS_ALLERGENIC>())
+                    .Where(a => a.TDL_PATIENT_ID == patientId)
+                    .ToList();
+                if (allPatientAllergenics.Count == 0)
+                    return true;
+                StringBuilder sb = new StringBuilder();
+                // ==================================================================
+                // 2. Xử lý dị ứng trực tiếp với thuốc (MEDICINE_TYPE_ID) → chỉ lấy 1 mới nhất
+                // ==================================================================
+                var latestMedicineAllergy = allPatientAllergenics
+                    .Where(a => a.MEDICINE_TYPE_ID.HasValue && a.MEDICINE_TYPE_ID.Value == medicineTypeId)
+                    .OrderByDescending(a => a.MODIFY_TIME ?? 0)
+                    .FirstOrDefault();
+                // ==================================================================
+                // 3. Xử lý dị ứng hoạt chất → chỉ lấy 1 bản ghi mới nhất cho mỗi hoạt chất
+                // ==================================================================
+                var medicineTypeAcins = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                    .Get<V_HIS_MEDICINE_TYPE_ACIN>()
+                    .Where(ac => ac.MEDICINE_TYPE_ID == medicineTypeId)
+                    .ToList();
+                // Dictionary: Key = ACTIVE_INGREDIENT_ID, Value = bản ghi mới nhất
+                var latestAcinAllergies = new Dictionary<long, dynamic>();
+                foreach (var allergenic in allPatientAllergenics)
                 {
-                    if (allergenics == null || allergenics.Count == 0)
-                        return result;
-                    HIS_ALLERGENIC allergencic = allergenics.FirstOrDefault(o => o.MEDICINE_TYPE_ID == this.currentMedicineTypeADOForEdit.ID);
-                    string messageError = "";
-                    if (allergencic != null)
+                    if (!allergenic.ACTIVE_INGREDIENT_ID.HasValue)
+                        continue;
+                    long acinId = allergenic.ACTIVE_INGREDIENT_ID.Value;
+                    // Tìm hoạt chất có trong thuốc đang chọn không
+                    var matchedAcin = medicineTypeAcins
+                        .FirstOrDefault(ac => ac.ACTIVE_INGREDIENT_ID == acinId);
+                    if (matchedAcin == null)
+                        continue;
+                    dynamic currentBest = null;
+                    if (latestAcinAllergies.TryGetValue(acinId, out currentBest))
                     {
-                        string messageErrorRow = String.Format("{0} {1}: {2}.", "-", currentMedicineTypeADOForEdit.MEDICINE_TYPE_NAME, allergencic.CLINICAL_EXPRESSION);
-                        if (allergencic.IS_SURE == 1)
+                        HIS_ALLERGENIC existingAllerg = currentBest.Allergenic;
+                        if ((allergenic.MODIFY_TIME ?? 0) > (existingAllerg.MODIFY_TIME ?? 0))
                         {
-                            Inventec.Common.Logging.LogSystem.Info("CheckAllergenicByPatient.2");
-                            messageError = Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag(ResourceMessage.CanhBaoDiUngThuoc, Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-                            messageError += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag(messageErrorRow, Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-                            messageError = Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag(messageError, Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br) + ResourceMessage.BanCoMuonTiepTuc.Replace("{0} {1}. ", "");
-                        }
-                        else if (allergencic.IS_DOUBT == 1)
-                        {
-                            Inventec.Common.Logging.LogSystem.Info("CheckAllergenicByPatient.3");
-                            messageError = Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag(ResourceMessage.BenhNhanNghiNgoDiUngVoiThuocXBanCoMuonTiepTuc, Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-                            messageError += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag(messageErrorRow, Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
-                            messageError = Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag(messageError, Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br) + ResourceMessage.BanCoMuonTiepTuc.Replace("{0} {1}. ", "");
-
-                        }
-
-                        if (!String.IsNullOrEmpty(messageError))
-                        {
-                            DialogResult myResult;
-                            myResult = XtraMessageBox.Show(messageError, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao), MessageBoxButtons.YesNo, MessageBoxIcon.Question, DefaultBoolean.True);
-                            if (myResult != DialogResult.Yes)
-                            {
-                                result = false;
-                            }
+                            latestAcinAllergies[acinId] = new { Allergenic = allergenic, ActiveIngr = matchedAcin };
                         }
                     }
+                    else
+                    {
+                        latestAcinAllergies[acinId] = new { Allergenic = allergenic, ActiveIngr = matchedAcin };
+                    }
                 }
-                Inventec.Common.Logging.LogSystem.Info("CheckAllergenicByPatient.4");
+                // ==================================================================
+                // 4. Xây dựng nội dung cảnh báo (không trùng, chỉ mới nhất)
+                // ==================================================================
+                bool hasWarning = false;
+                // --- Dị ứng thuốc ---
+                if (latestMedicineAllergy != null)
+                {
+                    hasWarning = true;
+                    string prefix = (latestMedicineAllergy.IS_DOUBT == 1) ? "NGHI NGỜ " : "";
+                    sb.AppendLine(string.Format("Cảnh báo {0}dị ứng thuốc:", prefix));
+                    sb.AppendLine(string.Format("- {0}: {1}",
+                        medicineTypeName,
+                        (latestMedicineAllergy.CLINICAL_EXPRESSION ?? "").Trim()));
+                    sb.AppendLine();
+                }
+                // --- Dị ứng hoạt chất ---
+                if (latestAcinAllergies.Count > 0)
+                {
+                    hasWarning = true;
+                    // Lấy prefix từ bản ghi đầu tiên (thường giống nhau)
+
+                    var groupPrefix = latestAcinAllergies.Values.GroupBy(o => o.Allergenic.IS_DOUBT);
+                    foreach (var item in groupPrefix)
+                    {
+                        var firstEntry = item.FirstOrDefault();
+                        string prefix = (firstEntry.Allergenic.IS_DOUBT == 1) ? "NGHI NGỜ " : "";
+                        sb.AppendLine(string.Format("Cảnh báo {0}dị ứng hoạt chất:", prefix));
+                        foreach (var entry in item.ToList())
+                        {
+                            HIS_ALLERGENIC allerg = entry.Allergenic;
+                            V_HIS_MEDICINE_TYPE_ACIN acin = entry.ActiveIngr;
+                            sb.AppendLine(string.Format("- {0}: {1}",
+                                acin.ACTIVE_INGREDIENT_NAME,
+                                (allerg.CLINICAL_EXPRESSION ?? "").Trim()));
+                        }
+
+                        sb.AppendLine();
+                    }
+                    sb.AppendLine();
+                }
+                if (!hasWarning)
+                    return true;
+                sb.Append("Bạn có muốn tiếp tục không?");
+                DialogResult dlg = XtraMessageBox.Show(
+                    sb.ToString(),
+                    "Cảnh báo",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button2);
+                if (dlg != DialogResult.Yes)
+                    result = false;
             }
             catch (Exception ex)
             {
                 result = false;
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
         }
+
+
+
+
+
 
         private bool CheckContraidication()
         {

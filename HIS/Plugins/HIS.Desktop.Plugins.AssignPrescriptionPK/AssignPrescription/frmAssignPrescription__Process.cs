@@ -1208,6 +1208,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             return dataInput;
         }
 
+        private void CheckDiUng()
+        {
+            
+        }
+
         private void UpdateMediMatyClickHandler()
         {
             CommonParam param = new CommonParam();
@@ -1231,7 +1236,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 datatype);
 
                 if (iEdit != null)
-                {
+                {                    
                     var success = iEdit.Run();
                     if (!success)
                     {
@@ -1250,6 +1255,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         private void AddMediMatyClickHandler()
         {
@@ -1276,7 +1282,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 datatype);
 
                 if (iAdd != null)
-                {
+                {                   
                     var success = iAdd.Run();
                     if (!success)
                     {

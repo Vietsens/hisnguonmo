@@ -61,6 +61,68 @@ namespace HIS.UC.UCPatientRaw
         {
             this._dlgTransferData = _dlgTransferData;
         }
+
+        public bool checkKey6(long patientId)
+        {
+            bool rs = true;
+            string allowManyTreatmentOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION");
+            if (allowManyTreatmentOpeningOption == "6")
+            {
+                CommonParam paramCommon = new CommonParam();
+                HisTreatmentFilter filterTreatment = new HisTreatmentFilter
+                {
+
+                    PATIENT_ID = patientId,
+                    IS_PAUSE = false,
+                    TDL_TREATMENT_TYPE_IDs = new List<long>
+                                {
+                                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM,
+                                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU,
+                                    IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
+                                }
+                };
+                // Lấy danh sách HIS_TREATMENT từ backend
+                var treatmentList = new BackendAdapter(paramCommon)
+                    .Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filterTreatment, paramCommon)
+                    .ToList();
+                // Lọc danh sách thỏa mãn các điều kiện bổ sung
+                var activeTreatments = treatmentList
+                    .Where(t =>
+                        t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
+                        || t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY
+                        || (t.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && t.IS_EMERGENCY != 1))
+                    .ToList();
+
+                // Nếu tồn tại bất kỳ hồ sơ nào
+                if (activeTreatments != null && activeTreatments.Count > 0)
+                {
+                    var listId = activeTreatments.Select(t => t.TREATMENT_CODE).ToList();
+                    string listIdString = string.Join(", ", listId);
+                    // Hiển thị cảnh báo tới người dùng
+                    DialogResult result = DevExpress.XtraEditors.XtraMessageBox.Show(
+                        $"Tồn tại hồ sơ chưa được kết thúc điều trị (Hồ sơ đang mở: {listIdString}). Bạn có muốn mở thêm hồ sơ mới hay không?",
+                        "Cảnh báo",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    );
+
+                    if (result == DialogResult.Yes)
+                    {
+                        rs = true;
+                    }
+                    else
+                    {
+                        // Người dùng chọn "Không" => Không thực hiện gì thêm
+                        rs = false; // Dừng toàn bộ xử lý tiếp theo
+                    }
+                }
+            }
+            return rs;
+        }
+        //public void a()
+        //{
+            
+        //}
         public async void SearchPatientByCodeOrQrCode(string strValue, string keyTypeFind = null)
         {
             oldTypeFind = this.typeCodeFind;
@@ -106,6 +168,30 @@ namespace HIS.UC.UCPatientRaw
                                 dataResult.HisPatientSDO = (HisPatientSDO)data;
                                 dataResult.OldPatient = true;
                                 this.currentPatientSDO = (HisPatientSDO)data;
+                                //Gọi api - gán dữ liệu txh cho dlg
+                                if (HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
+                                {
+                                    HisTreatmentFilter filter = new HisTreatmentFilter();
+                                    filter.ID = dataResult.HisPatientSDO.TreatmentId;
+                                    var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, filter, param);
+                                    var latestTreatment = treatment.Where(t => t.PATIENT_ID == currentPatientSDO.ID && !string.IsNullOrEmpty(t.TDL_PATIENT_ADDRESS))
+                                        .OrderByDescending(t => t.IN_TIME)
+                                        .FirstOrDefault();
+                                    Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.6.5");
+                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => latestTreatment), latestTreatment));
+                                    if (latestTreatment != null)
+                                    {
+                                        currentPatientSDO.PROVINCE_CODE = latestTreatment.TDL_PATIENT_PROVINCE_CODE;
+                                        currentPatientSDO.PROVINCE_NAME = latestTreatment.TDL_PATIENT_PROVINCE_NAME;
+                                        currentPatientSDO.DISTRICT_CODE = latestTreatment.TDL_PATIENT_DISTRICT_CODE;
+                                        currentPatientSDO.DISTRICT_NAME = latestTreatment.TDL_PATIENT_DISTRICT_NAME;
+                                        currentPatientSDO.COMMUNE_CODE = latestTreatment.TDL_PATIENT_COMMUNE_CODE;
+                                        currentPatientSDO.COMMUNE_NAME = latestTreatment.TDL_PATIENT_COMMUNE_NAME;
+                                        //dataAddressPatient.IsNoDistrict = latestTreatment.;
+
+                                        currentPatientSDO.ADDRESS = latestTreatment.TDL_PATIENT_ADDRESS;
+                                    }
+                                }
                                 this.dlgSendPatientSdo(currentPatientSDO);
                                 this.patientTD3 = (HisPatientSDO)data;
                                 hrmEmployeeCode = currentPatientSDO.HRM_EMPLOYEE_CODE;
@@ -136,6 +222,7 @@ namespace HIS.UC.UCPatientRaw
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientInRegisterSearchByCard), patientInRegisterSearchByCard));
                         if (patientInRegisterSearchByCard != null)
                         {
+                            //checkKey6((long)patientInRegisterSearchByCard.PatientId);
                             await SetDataFromCardSDO(patientInRegisterSearchByCard);
                         }
                         else
@@ -769,6 +856,18 @@ namespace HIS.UC.UCPatientRaw
                     }
                     MapHeinCardToPatientSDO();
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataResult), dataResult));
+                    bool checkK = checkKey6(dataResult.HisPatientSDO.ID);
+                    if (!checkK)
+                    {
+                        if (this.dlgEnableSave != null)
+                            this.dlgEnableSave(false);
+                        return;
+                    }
+                    else
+                    {
+                        if (this.dlgEnableSave != null)
+                            this.dlgEnableSave(true);
+                    }
                     if (!this.isAlertTreatmentEndInDay && this.dlgSearchPatient1 != null)
                         this.dlgSearchPatient1(dataResult);
                 }

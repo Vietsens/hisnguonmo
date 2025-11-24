@@ -824,7 +824,7 @@ namespace HIS.UC.Death
 
                     txtDeathAnatomize.Text = hisTreatment.SURGERY;
                     txtDeathCauseDetail.Text = hisTreatment.MAIN_CAUSE;
-
+                    txtDeathIdentity.Text = hisTreatment.DEATH_IDENTITY_NUMBER;
                     if (hisTreatment.DEATH_TIME.HasValue)
                     {
                         dtDeathTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(hisTreatment.DEATH_TIME.Value) ?? new DateTime();
@@ -1091,6 +1091,7 @@ namespace HIS.UC.Death
 
                 outPut.DeathCertBookId = cboDeathCertBook.EditValue != null ? (long?)cboDeathCertBook.EditValue : null;
                 outPut.DeathPlace = txtNoiTuVong.Text;
+                outPut.DeathIdentityNumber = txtDeathIdentity.Text.Trim();
                 if (cboDeathCertBookFirst.EditValue != null)
                     outPut.DeathCertBookFirstId = Int64.Parse(cboDeathCertBookFirst.EditValue.ToString());
                 else
@@ -1186,6 +1187,7 @@ namespace HIS.UC.Death
 
                 outPut.DEATH_CERT_BOOK_ID = cboDeathCertBook.EditValue != null ? (long?)cboDeathCertBook.EditValue : null;
                 outPut.DEATH_PLACE = txtNoiTuVong.Text.Trim();
+                outPut.DEATH_IDENTITY_NUMBER = txtDeathIdentity.Text.Trim();
                 if (cboDeathCertBookFirst.EditValue != null)
                     outPut.DEATH_CERT_BOOK_FIRST_ID = Int64.Parse(cboDeathCertBookFirst.EditValue.ToString());
                 else
