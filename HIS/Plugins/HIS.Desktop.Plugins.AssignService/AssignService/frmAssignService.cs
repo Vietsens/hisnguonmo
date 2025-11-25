@@ -2478,11 +2478,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 MessageBox.Show(ResourceMessage.DichVuCLSCoGioiHanChiDinhThanhToanBHYT_DeNghiBSXemXetTruocKhiChiDinh, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                             ValidOnlyShowNoticeService(sereServADO);
+                            // qtcode2
                             if (((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue != "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue != "1")) && sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
                             {
                                 if (this.testSampleTypeId > 0)
                                 {
-                                    sereServADO.TEST_SAMPLE_TYPE_ID = this.testSampleTypeId; 
+                                    sereServADO.TEST_SAMPLE_TYPE_ID = this.testSampleTypeId;
                                     var sampleType = dataListTestSampleType.FirstOrDefault(o => o.ID == sereServADO.TEST_SAMPLE_TYPE_ID);
                                     if (sampleType != null)
                                     {
@@ -2531,7 +2532,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         {
                             //Phân biệt giá trị TEST_SAMPLE_TYPE_CODE mặc định bởi TEST_SAMPLE_TYPE_ID = 0;
                             if (((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue != "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue != "1")) && sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
-                            {
+                            { 
                                 if (dataListTestSampleType != null && dataListTestSampleType.Count > 0 && sereServADO.TEST_SAMPLE_TYPE_ID == 0 && !string.IsNullOrEmpty(sereServADO.TEST_SAMPLE_TYPE_CODE_DEFAULT))
                                 {
                                     var sampleType = dataListTestSampleType.FirstOrDefault(o => o.TEST_SAMPLE_TYPE_CODE == sereServADO.TEST_SAMPLE_TYPE_CODE_DEFAULT);
@@ -2713,19 +2714,17 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     GridHitInfo hi = view.CalcHitInfo(e.Location);
                     if (hi.InRowCell)
                     {
-                        var dataRow = (SereServADO)gridViewServiceProcess.GetRow(hi.RowHandle);
-                        //var dataRow = (SereServADO)gridViewServiceProcess.GetRow(rowHandle);
-                        UpdateTestSampleTypeCombo(dataRow, ref this.testSampleTypeId);
+                       
                         if (hi.Column.RealColumnEdit.GetType() == typeof(DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit))
                         {
-                            int savedRowHandle = view.FocusedRowHandle;
+                            
                             view.FocusedRowHandle = hi.RowHandle;
                             view.FocusedColumn = hi.Column;
-
+                            // qtcode2
                             int rowHandle = gridViewServiceProcess.GetVisibleRowHandle(hi.RowHandle);
-                            //var dataRow = (SereServADO)gridViewServiceProcess.GetRow(hi.RowHandle);
+                            var dataRow = (SereServADO)gridViewServiceProcess.GetRow(hi.RowHandle);
                             ////var dataRow = (SereServADO)gridViewServiceProcess.GetRow(rowHandle);
-                            // UpdateTestSampleTypeCombo(dataRow, ref this.testSampleTypeId);
+                            UpdateTestSampleTypeCombo(dataRow, ref this.testSampleTypeId);
                             if (dataRow != null)
                             {
                                 //if (hi.Column.FieldName == "IsChecked" && (dataRow.IsAllowChecked == false))
@@ -2766,7 +2765,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 checkEdit.Checked = !checkEdit.Checked;
                                 view.CloseEditor();
                             }
-                            view.FocusedRowHandle = savedRowHandle;
                             (e as DevExpress.Utils.DXMouseEventArgs).Handled = true;
                         }
                     }
@@ -3009,6 +3007,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
                         if (data != null && data.IsChecked)
                         {
+                            // qtcode2
+                            //var dataRow = (SereServADO)gridViewServiceProcess.GetRow(rowHandle);
+                            UpdateTestSampleTypeCombo(data, ref this.testSampleTypeId);
                             GridLookUpEdit editor = view.ActiveEditor as GridLookUpEdit;
                             this.FillSampleType(data, editor);
                         }
@@ -3275,7 +3276,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     var sereServADO = (SereServADO)this.gridViewServiceProcess.GetRow(0);
                     if (sereServADO != null)
                     {
-                        //qtcode1
+                        // qtcode2
                         if (lstSereServExist != null && lstSereServExist.FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID) != null && DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Dịch vụ có thời gian chỉ định nằm trong khoảng thời gian thiết lập của phác đồ điều trị. Thời gian chỉ định {0} (mã y lệnh: {1}). Bạn có muốn tiếp tục?", Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(lstSereServExist.FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID).TDL_INTRUCTION_TIME), lstSereServExist.FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID).TDL_SERVICE_REQ_CODE), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) != DialogResult.Yes)
                         {
                             sereServADO.IsChecked = false;
