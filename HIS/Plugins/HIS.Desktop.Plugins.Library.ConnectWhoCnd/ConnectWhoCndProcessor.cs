@@ -124,13 +124,9 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 if (!String.IsNullOrWhiteSpace(message))
                 {
                     result = false;
-                    //  - IS_WARNING: Giá trị 1 là hiển thị cảnh báo thiếu thông tin. Khác 1: Bắt buộc có đủ thông tin
-                    if (Configs.IS_WARNING == "1")
+                    if (Configs.IS_WARNING == "1" && XtraMessageBox.Show(string.Format("{0}. Bạn có muốn tiếp tục?", message), "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
                     {
-                        if (XtraMessageBox.Show(string.Format("{0}. Bạn có muốn tiếp tục?", message), "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                        {
-                            result = true;
-                        }
+                        result = true;
                     }
                     else
                     {
