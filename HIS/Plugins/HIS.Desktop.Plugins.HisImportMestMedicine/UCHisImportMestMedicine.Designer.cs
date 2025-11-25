@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCHisImportMestMedicine));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -144,6 +143,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.groupBoxInfo = new System.Windows.Forms.GroupBox();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
+            this.lblSoTienThueChungTu = new System.Windows.Forms.Label();
             this.lblSoHopDong = new System.Windows.Forms.Label();
             this.lblCtyXuatHoaDon = new System.Windows.Forms.Label();
             this.lblNhomThau = new System.Windows.Forms.Label();
@@ -178,12 +178,13 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem31 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem47 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.btnExport = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.txtImpMestSubCode = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -315,11 +316,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.lciBtnExport = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.imageListStatus = new System.Windows.Forms.ImageList(this.components);
-            this.toolTipController = new DevExpress.Utils.ToolTipController(this.components);
+            this.imageListStatus = new System.Windows.Forms.ImageList();
+            this.toolTipController = new DevExpress.Utils.ToolTipController();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.lblSoTienThueChungTu = new System.Windows.Forms.Label();
-            this.layoutControlItem47 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
@@ -345,6 +344,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -449,7 +449,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnExport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -517,30 +516,40 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControl5.TabIndex = 0;
             this.layoutControl5.Text = "layoutControl5";
             // 
+            // lblSoTienThueChungTu
+            // 
+            this.lblSoTienThueChungTu.AutoEllipsis = true;
+            this.lblSoTienThueChungTu.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.lblSoTienThueChungTu.Location = new System.Drawing.Point(157, 266);
+            this.lblSoTienThueChungTu.Name = "lblSoTienThueChungTu";
+            this.lblSoTienThueChungTu.Size = new System.Drawing.Size(137, 20);
+            this.lblSoTienThueChungTu.TabIndex = 35;
+            this.lblSoTienThueChungTu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // lblSoHopDong
             // 
             this.lblSoHopDong.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblSoHopDong.Location = new System.Drawing.Point(137, 122);
+            this.lblSoHopDong.Location = new System.Drawing.Point(157, 122);
             this.lblSoHopDong.Name = "lblSoHopDong";
-            this.lblSoHopDong.Size = new System.Drawing.Size(157, 20);
+            this.lblSoHopDong.Size = new System.Drawing.Size(137, 20);
             this.lblSoHopDong.TabIndex = 33;
             this.lblSoHopDong.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblCtyXuatHoaDon
             // 
             this.lblCtyXuatHoaDon.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblCtyXuatHoaDon.Location = new System.Drawing.Point(137, 98);
+            this.lblCtyXuatHoaDon.Location = new System.Drawing.Point(157, 98);
             this.lblCtyXuatHoaDon.Name = "lblCtyXuatHoaDon";
-            this.lblCtyXuatHoaDon.Size = new System.Drawing.Size(157, 20);
+            this.lblCtyXuatHoaDon.Size = new System.Drawing.Size(137, 20);
             this.lblCtyXuatHoaDon.TabIndex = 32;
             this.lblCtyXuatHoaDon.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblNhomThau
             // 
             this.lblNhomThau.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblNhomThau.Location = new System.Drawing.Point(137, 74);
+            this.lblNhomThau.Location = new System.Drawing.Point(157, 74);
             this.lblNhomThau.Name = "lblNhomThau";
-            this.lblNhomThau.Size = new System.Drawing.Size(157, 20);
+            this.lblNhomThau.Size = new System.Drawing.Size(137, 20);
             this.lblNhomThau.TabIndex = 29;
             this.lblNhomThau.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -548,9 +557,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             // 
             this.lblQuyetDinhThau.AutoEllipsis = true;
             this.lblQuyetDinhThau.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblQuyetDinhThau.Location = new System.Drawing.Point(137, 50);
+            this.lblQuyetDinhThau.Location = new System.Drawing.Point(157, 50);
             this.lblQuyetDinhThau.Name = "lblQuyetDinhThau";
-            this.lblQuyetDinhThau.Size = new System.Drawing.Size(157, 20);
+            this.lblQuyetDinhThau.Size = new System.Drawing.Size(137, 20);
             this.lblQuyetDinhThau.TabIndex = 28;
             this.lblQuyetDinhThau.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -558,9 +567,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             // 
             this.lblDiaChi.AutoEllipsis = true;
             this.lblDiaChi.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblDiaChi.Location = new System.Drawing.Point(137, 386);
+            this.lblDiaChi.Location = new System.Drawing.Point(157, 386);
             this.lblDiaChi.Name = "lblDiaChi";
-            this.lblDiaChi.Size = new System.Drawing.Size(157, 20);
+            this.lblDiaChi.Size = new System.Drawing.Size(137, 20);
             this.lblDiaChi.TabIndex = 27;
             this.lblDiaChi.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -568,9 +577,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             // 
             this.lblGioiTinh.AutoEllipsis = true;
             this.lblGioiTinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblGioiTinh.Location = new System.Drawing.Point(137, 362);
+            this.lblGioiTinh.Location = new System.Drawing.Point(157, 362);
             this.lblGioiTinh.Name = "lblGioiTinh";
-            this.lblGioiTinh.Size = new System.Drawing.Size(157, 20);
+            this.lblGioiTinh.Size = new System.Drawing.Size(137, 20);
             this.lblGioiTinh.TabIndex = 26;
             this.lblGioiTinh.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -578,9 +587,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             // 
             this.lblNgaySinh.AutoEllipsis = true;
             this.lblNgaySinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblNgaySinh.Location = new System.Drawing.Point(137, 338);
+            this.lblNgaySinh.Location = new System.Drawing.Point(157, 338);
             this.lblNgaySinh.Name = "lblNgaySinh";
-            this.lblNgaySinh.Size = new System.Drawing.Size(157, 20);
+            this.lblNgaySinh.Size = new System.Drawing.Size(137, 20);
             this.lblNgaySinh.TabIndex = 25;
             this.lblNgaySinh.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -588,9 +597,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             // 
             this.lblGoiThau.AutoEllipsis = true;
             this.lblGoiThau.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblGoiThau.Location = new System.Drawing.Point(137, 26);
+            this.lblGoiThau.Location = new System.Drawing.Point(157, 26);
             this.lblGoiThau.Name = "lblGoiThau";
-            this.lblGoiThau.Size = new System.Drawing.Size(157, 20);
+            this.lblGoiThau.Size = new System.Drawing.Size(137, 20);
             this.lblGoiThau.TabIndex = 24;
             this.lblGoiThau.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -598,9 +607,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             // 
             this.lblTenBenhNhan.AutoEllipsis = true;
             this.lblTenBenhNhan.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblTenBenhNhan.Location = new System.Drawing.Point(137, 314);
+            this.lblTenBenhNhan.Location = new System.Drawing.Point(157, 314);
             this.lblTenBenhNhan.Name = "lblTenBenhNhan";
-            this.lblTenBenhNhan.Size = new System.Drawing.Size(157, 20);
+            this.lblTenBenhNhan.Size = new System.Drawing.Size(137, 20);
             this.lblTenBenhNhan.TabIndex = 23;
             this.lblTenBenhNhan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -608,9 +617,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             // 
             this.lblMaDieuTri.AutoEllipsis = true;
             this.lblMaDieuTri.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblMaDieuTri.Location = new System.Drawing.Point(137, 290);
+            this.lblMaDieuTri.Location = new System.Drawing.Point(157, 290);
             this.lblMaDieuTri.Name = "lblMaDieuTri";
-            this.lblMaDieuTri.Size = new System.Drawing.Size(157, 20);
+            this.lblMaDieuTri.Size = new System.Drawing.Size(137, 20);
             this.lblMaDieuTri.TabIndex = 22;
             this.lblMaDieuTri.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -618,9 +627,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             // 
             this.lblSoTienChungTu.AutoEllipsis = true;
             this.lblSoTienChungTu.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblSoTienChungTu.Location = new System.Drawing.Point(137, 242);
+            this.lblSoTienChungTu.Location = new System.Drawing.Point(157, 242);
             this.lblSoTienChungTu.Name = "lblSoTienChungTu";
-            this.lblSoTienChungTu.Size = new System.Drawing.Size(157, 20);
+            this.lblSoTienChungTu.Size = new System.Drawing.Size(137, 20);
             this.lblSoTienChungTu.TabIndex = 21;
             this.lblSoTienChungTu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -628,9 +637,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             // 
             this.lblNgayChungTu.AutoEllipsis = true;
             this.lblNgayChungTu.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblNgayChungTu.Location = new System.Drawing.Point(137, 218);
+            this.lblNgayChungTu.Location = new System.Drawing.Point(157, 218);
             this.lblNgayChungTu.Name = "lblNgayChungTu";
-            this.lblNgayChungTu.Size = new System.Drawing.Size(157, 20);
+            this.lblNgayChungTu.Size = new System.Drawing.Size(137, 20);
             this.lblNgayChungTu.TabIndex = 20;
             this.lblNgayChungTu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -638,9 +647,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             // 
             this.lblSoChungTu.AutoEllipsis = true;
             this.lblSoChungTu.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblSoChungTu.Location = new System.Drawing.Point(137, 194);
+            this.lblSoChungTu.Location = new System.Drawing.Point(157, 194);
             this.lblSoChungTu.Name = "lblSoChungTu";
-            this.lblSoChungTu.Size = new System.Drawing.Size(157, 20);
+            this.lblSoChungTu.Size = new System.Drawing.Size(137, 20);
             this.lblSoChungTu.TabIndex = 19;
             this.lblSoChungTu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -648,9 +657,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             // 
             this.lblChietKhau.AutoEllipsis = true;
             this.lblChietKhau.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblChietKhau.Location = new System.Drawing.Point(137, 170);
+            this.lblChietKhau.Location = new System.Drawing.Point(157, 170);
             this.lblChietKhau.Name = "lblChietKhau";
-            this.lblChietKhau.Size = new System.Drawing.Size(157, 20);
+            this.lblChietKhau.Size = new System.Drawing.Size(137, 20);
             this.lblChietKhau.TabIndex = 18;
             this.lblChietKhau.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -658,9 +667,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             // 
             this.lblNguoiGiao.AutoEllipsis = true;
             this.lblNguoiGiao.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblNguoiGiao.Location = new System.Drawing.Point(137, 146);
+            this.lblNguoiGiao.Location = new System.Drawing.Point(157, 146);
             this.lblNguoiGiao.Name = "lblNguoiGiao";
-            this.lblNguoiGiao.Size = new System.Drawing.Size(157, 20);
+            this.lblNguoiGiao.Size = new System.Drawing.Size(137, 20);
             this.lblNguoiGiao.TabIndex = 17;
             this.lblNguoiGiao.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -668,9 +677,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             // 
             this.lblNCC.AutoEllipsis = true;
             this.lblNCC.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lblNCC.Location = new System.Drawing.Point(137, 2);
+            this.lblNCC.Location = new System.Drawing.Point(157, 2);
             this.lblNCC.Name = "lblNCC";
-            this.lblNCC.Size = new System.Drawing.Size(157, 20);
+            this.lblNCC.Size = new System.Drawing.Size(137, 20);
             this.lblNCC.TabIndex = 16;
             this.lblNCC.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -713,7 +722,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem35.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem35.Text = "Nhà cung cấp:";
             this.layoutControlItem35.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem35.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem35.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem35.TextToControlDistance = 5;
             // 
             // layoutControlItem36
@@ -726,7 +735,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem36.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem36.Text = "Người giao:";
             this.layoutControlItem36.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem36.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem36.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem36.TextToControlDistance = 5;
             // 
             // layoutControlItem37
@@ -739,7 +748,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem37.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem37.Text = "Chiết khấu (%):";
             this.layoutControlItem37.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem37.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem37.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem37.TextToControlDistance = 5;
             // 
             // layoutControlItem38
@@ -753,7 +762,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem38.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem38.Text = "Số hóa đơn:";
             this.layoutControlItem38.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem38.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem38.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem38.TextToControlDistance = 5;
             // 
             // layoutControlItem39
@@ -767,7 +776,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem39.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem39.Text = "Ngày hóa đơn:";
             this.layoutControlItem39.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem39.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem39.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem39.TextToControlDistance = 5;
             // 
             // layoutControlItem40
@@ -781,7 +790,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem40.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem40.Text = "Số tiền hóa đơn:";
             this.layoutControlItem40.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem40.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem40.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem40.TextToControlDistance = 5;
             // 
             // layoutControlItem41
@@ -794,7 +803,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem41.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem41.Text = "Mã điều trị:";
             this.layoutControlItem41.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem41.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem41.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem41.TextToControlDistance = 5;
             // 
             // layoutControlItem42
@@ -807,7 +816,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem42.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem42.Text = "Tên bệnh nhân:";
             this.layoutControlItem42.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem42.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem42.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem42.TextToControlDistance = 5;
             // 
             // layoutControlItem44
@@ -820,7 +829,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem44.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem44.Text = "Ngày sinh:";
             this.layoutControlItem44.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem44.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem44.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem44.TextToControlDistance = 5;
             // 
             // layoutControlItem45
@@ -833,7 +842,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem45.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem45.Text = "Giới tính:";
             this.layoutControlItem45.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem45.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem45.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem45.TextToControlDistance = 5;
             // 
             // layoutControlItem46
@@ -846,7 +855,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem46.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem46.Text = "Địa chỉ:";
             this.layoutControlItem46.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem46.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem46.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem46.TextToControlDistance = 5;
             // 
             // layoutControlItem43
@@ -859,7 +868,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem43.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem43.Text = "Gói thầu:";
             this.layoutControlItem43.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem43.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem43.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem43.TextToControlDistance = 5;
             // 
             // layoutControlItem29
@@ -872,7 +881,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem29.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem29.Text = "Quyết định thầu:";
             this.layoutControlItem29.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem29.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem29.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem29.TextToControlDistance = 5;
             // 
             // layoutControlItem30
@@ -885,7 +894,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem30.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem30.Text = "Nhóm thầu:";
             this.layoutControlItem30.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem30.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem30.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem30.TextToControlDistance = 5;
             // 
             // emptySpaceItem2
@@ -907,7 +916,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem33.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem33.Text = "Cty xuất hóa đơn:";
             this.layoutControlItem33.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem33.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem33.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem33.TextToControlDistance = 5;
             // 
             // layoutControlItem31
@@ -920,8 +929,22 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.layoutControlItem31.Size = new System.Drawing.Size(296, 24);
             this.layoutControlItem31.Text = "Số hợp đồng:";
             this.layoutControlItem31.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem31.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem31.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem31.TextToControlDistance = 5;
+            // 
+            // layoutControlItem47
+            // 
+            this.layoutControlItem47.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem47.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem47.Control = this.lblSoTienThueChungTu;
+            this.layoutControlItem47.Location = new System.Drawing.Point(0, 264);
+            this.layoutControlItem47.Name = "layoutControlItem47";
+            this.layoutControlItem47.OptionsToolTip.ToolTip = "Số tiền thuế trên hóa đơn chứng từ";
+            this.layoutControlItem47.Size = new System.Drawing.Size(296, 24);
+            this.layoutControlItem47.Text = "Số tiền thuế trên hóa đơn:";
+            this.layoutControlItem47.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem47.TextSize = new System.Drawing.Size(150, 20);
+            this.layoutControlItem47.TextToControlDistance = 5;
             // 
             // layoutControlGroup2
             // 
@@ -2543,30 +2566,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.toolTipController.AllowHtmlText = true;
             this.toolTipController.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipController_GetActiveObjectInfo);
             // 
-            // lblSoTienThueChungTu
-            // 
-            this.lblSoTienThueChungTu.AutoEllipsis = true;
-            this.lblSoTienThueChungTu.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblSoTienThueChungTu.Location = new System.Drawing.Point(137, 266);
-            this.lblSoTienThueChungTu.Name = "lblSoTienThueChungTu";
-            this.lblSoTienThueChungTu.Size = new System.Drawing.Size(157, 20);
-            this.lblSoTienThueChungTu.TabIndex = 35;
-            this.lblSoTienThueChungTu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // layoutControlItem47
-            // 
-            this.layoutControlItem47.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem47.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem47.Control = this.lblSoTienThueChungTu;
-            this.layoutControlItem47.Location = new System.Drawing.Point(0, 264);
-            this.layoutControlItem47.Name = "layoutControlItem47";
-            this.layoutControlItem47.OptionsToolTip.ToolTip = "Số tiền thuế trên hóa đơn chứng từ";
-            this.layoutControlItem47.Size = new System.Drawing.Size(296, 24);
-            this.layoutControlItem47.Text = "Số tiền thuế trên hóa đơn:";
-            this.layoutControlItem47.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem47.TextSize = new System.Drawing.Size(130, 20);
-            this.layoutControlItem47.TextToControlDistance = 5;
-            // 
             // UCHisImportMestMedicine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2604,6 +2603,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
@@ -2708,7 +2708,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnExport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
