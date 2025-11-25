@@ -99,32 +99,24 @@ namespace MPS.Processor.Mps000100.ADO
 
                     if (vHisMaterialTypes != null && vHisMaterialTypes.Count > 0)
                     {
-                        //V_HIS_MEDICINE_TYPE MedicineType = vHisMaterialTypes.FirstOrDefault(o => o.ID == datas[0].MEDICINE_TYPE_ID);
-                        V_HIS_MATERIAL_TYPE MaterialType = vHisMaterialTypes.FirstOrDefault(o => o.ID == datas[0].MATERIAL_TYPE_ID);
+                        long materialTypeId = datas[0].MATERIAL_TYPE_ID;
 
-                        if (MaterialType != null)
+                        V_HIS_MATERIAL_TYPE materialType =
+                            vHisMaterialTypes.FirstOrDefault(o => o.ID == materialTypeId);
+
+                        if (materialType != null)
                         {
-                         
-                            this.OTHER_PAY_SOURCE_ID = MaterialType.OTHER_PAY_SOURCE_ID;
-                            this.OTHER_PAY_SOURCE_CODE = MaterialType.OTHER_PAY_SOURCE_CODE;
-                            this.OTHER_PAY_SOURCE_NAME = MaterialType.OTHER_PAY_SOURCE_NAME != null ? MaterialType.OTHER_PAY_SOURCE_NAME.ToUpper() : null;
+                            // --- Gán nhóm cha ---
+                            this.MEDICINE_PARENT_ID = materialType.PARENT_ID;
+                            this.MEDICINE_PARENT_CODE = materialType.PARENT_CODE;
+                            this.MEDICINE_PARENT_NAME = materialType.PARENT_NAME;
 
-                        }
-                    }
-
-                    //huannh bổ sung other_pay_source
-                    if (datas != null && datas.Count > 0 && vHisMaterialTypes != null)
-                    {
-                        //var materialTypeId = datas.First().MATERIAL_TYPE_ID;
-                        //var materialType = vHisMaterialTypes.FirstOrDefault(x => x.ID == materialTypeId);
-                        var firstMaterial = vHisMaterialTypes.First();
-                        if (firstMaterial != null)
-                        {
-                            this.MEDICINE_PARENT_CODE = firstMaterial.PARENT_CODE;
-                            this.MEDICINE_PARENT_NAME = firstMaterial.PARENT_NAME;
-                            this.OTHER_PAY_SOURCE_ID = firstMaterial.OTHER_PAY_SOURCE_ID;
-                            this.OTHER_PAY_SOURCE_CODE = firstMaterial.OTHER_PAY_SOURCE_CODE;
-                            this.OTHER_PAY_SOURCE_NAME = firstMaterial.OTHER_PAY_SOURCE_NAME != null ? firstMaterial.OTHER_PAY_SOURCE_NAME.ToUpper() : null;
+                            // --- Nguồn chi trả ---
+                            this.OTHER_PAY_SOURCE_ID = materialType.OTHER_PAY_SOURCE_ID;
+                            this.OTHER_PAY_SOURCE_CODE = materialType.OTHER_PAY_SOURCE_CODE;
+                            this.OTHER_PAY_SOURCE_NAME = materialType.OTHER_PAY_SOURCE_NAME != null
+                                ? materialType.OTHER_PAY_SOURCE_NAME.ToUpper()
+                                : null;
                         }
                     }
 

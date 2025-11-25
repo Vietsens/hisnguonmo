@@ -353,6 +353,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
+                string message1 = "";
+                bool rswho = HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor.SendData(currentTreatmentWithPatientType, ref message1);
+                if (!rswho)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(message1, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
+                    return;
+                }
                 this.bIsSelectMultiPatientProcessing = false;
 
                 if (this.gridViewServiceProcess.IsEditing)
