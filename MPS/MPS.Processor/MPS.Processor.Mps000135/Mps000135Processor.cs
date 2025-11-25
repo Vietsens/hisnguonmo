@@ -424,7 +424,7 @@ namespace MPS.Processor.Mps000135
                                 {
                                     decimal REQ_AMOUNT = rdo._ExpMestMatyReqs.Where(o => o.MATERIAL_TYPE_ID == dic.Value.First().MATERIAL_TYPE_ID).ToList().Sum(o => o.AMOUNT);
                                     decimal DD_AMOUNT = group.Sum(o => o.AMOUNT);
-                                    var pdo = new Mps000135ADO(dic.Value, REQ_AMOUNT, DD_AMOUNT);
+                                    var pdo = new Mps000135ADO(dic.Value, rdo._MaterialTypes, REQ_AMOUNT, DD_AMOUNT);
                                     pdo.TOTAL_PRICE_AFTER_VAT = group.Sum(s => s.AMOUNT * s.IMP_PRICE * (1 + s.IMP_VAT_RATIO));
                                     rdo.listAdo.Add(pdo);
                                 }
@@ -460,7 +460,7 @@ namespace MPS.Processor.Mps000135
 
                                     decimal DD_AMOUNT = dic.Value.Sum(o => o.AMOUNT);
 
-                                    var pdo = new Mps000135ADO(dic.Value, REQ_AMOUNT, DD_AMOUNT);
+                                    var pdo = new Mps000135ADO(dic.Value, rdo._MaterialTypes, REQ_AMOUNT, DD_AMOUNT);
 
                                     // lấy giá của thằng đầu tiên (firstItem)
                                     pdo.TOTAL_PRICE_AFTER_VAT =
