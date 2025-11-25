@@ -674,6 +674,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
 
                 if (this.currentCCCDInfo == null)
                 {
+                    Inventec.Common.Logging.LogSystem.Warn("currentCCCDInfo == null");
                     param.Messages.Add("Vui lòng quét CCCD trước khi phát hành chứng thư.");
                     MessageManager.Show(this.ParentForm, param, success);
                     return;
@@ -681,6 +682,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
 
                 if (picSignPatient.Image == null)
                 {
+                    Inventec.Common.Logging.LogSystem.Warn("picSignPatient.Image == null");
                     param.Messages.Add("Vui lòng ký và lưu chữ ký trước khi phát hành chứng thư.");
                     MessageManager.Show(this.ParentForm, param, success);
                     return;
@@ -707,24 +709,12 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     currentPatient = lstPatient.FirstOrDefault();
                 }
                 string placeOfResidence = string.IsNullOrWhiteSpace(currentCCCDInfo.address) ? currentCCCDInfo.hometown : currentCCCDInfo.address;
-                // Chuyển đổi ngày sinh sang yyyy-MM-dd
-                string dateOfBirthFormatted = null;
-                DateTime dob;
-                if (!string.IsNullOrWhiteSpace(currentCCCDInfo.dateOfBirth) &&
-                    DateTime.TryParseExact(currentCCCDInfo.dateOfBirth, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out dob))
-                {
-                    dateOfBirthFormatted = dob.ToString("yyyy-MM-dd");
-                }
-                else
-                {
-                    dateOfBirthFormatted = currentCCCDInfo.dateOfBirth; // hoặc null nếu muốn bỏ qua khi sai định dạng
-                }
                 EmrPatientCertificateRegisterSDO sdo = new EMR.SDO.EmrPatientCertificateRegisterSDO()
                 {
                     citizenIdentify = currentCCCDInfo.identifyNumber,
                     oldCitizenIdentify = currentCCCDInfo.previousNumber,
                     fullName = currentCCCDInfo.name,
-                    dateOfBirth = dateOfBirthFormatted,
+                    dateOfBirth = currentCCCDInfo.dateOfBirth,
                     dateOfExpired = currentCCCDInfo.expiredDate,
                     gender = currentCCCDInfo.sex,
                     nationality = currentCCCDInfo.nationality,
@@ -778,7 +768,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error("Lỗi phát hành chứng thư: " + ex.ToString());
                 XtraMessageBox.Show("Có lỗi khi phát hành chứng thư: " + ex.Message, "Thông báo");
             }
         }
