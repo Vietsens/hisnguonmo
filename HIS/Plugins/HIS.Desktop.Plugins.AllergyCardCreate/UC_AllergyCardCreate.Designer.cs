@@ -45,21 +45,23 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.popupControlContainer = new DevExpress.XtraBars.PopupControlContainer(this.components);
-            this.gridControlThuoc = new DevExpress.XtraGrid.GridControl();
-            this.gridViewThuoc = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
+            this.gridControlHoatChat = new DevExpress.XtraGrid.GridControl();
+            this.gridViewHoatChat = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.popupControlContainer = new DevExpress.XtraBars.PopupControlContainer();
+            this.gridControlThuoc = new DevExpress.XtraGrid.GridControl();
+            this.gridViewThuoc = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.checkEdit2 = new DevExpress.XtraEditors.CheckEdit();
             this.checkEdit1 = new DevExpress.XtraEditors.CheckEdit();
             this.txtDiNguyenHoatChat = new DevExpress.XtraEditors.ButtonEdit();
@@ -113,20 +115,21 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProviderAdd = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProviderAdd = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.dxValidationProviderSave = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProviderSave = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
-            this.gridControlHoatChat = new DevExpress.XtraGrid.GridControl();
-            this.gridViewHoatChat = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.dxValidationProviderAdd = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProviderAdd = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxValidationProviderSave = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProviderSave = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
+            this.popupControlContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlHoatChat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewHoatChat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer)).BeginInit();
             this.popupControlContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlThuoc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewThuoc)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkEdit2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDiNguyenHoatChat.Properties)).BeginInit();
@@ -173,10 +176,6 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderAdd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderSave)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderSave)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
-            this.popupControlContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlHoatChat)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewHoatChat)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -212,39 +211,39 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // popupControlContainer
+            // popupControlContainer1
             // 
-            this.popupControlContainer.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.popupControlContainer.Controls.Add(this.gridControlThuoc);
-            this.popupControlContainer.Location = new System.Drawing.Point(156, 138);
-            this.popupControlContainer.Manager = this.barManager1;
-            this.popupControlContainer.Name = "popupControlContainer";
-            this.popupControlContainer.Size = new System.Drawing.Size(550, 37);
-            this.popupControlContainer.TabIndex = 17;
-            this.popupControlContainer.Visible = false;
-            this.popupControlContainer.CloseUp += new System.EventHandler(this.popupControlContainer_CloseUp);
+            this.popupControlContainer1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlContainer1.Controls.Add(this.gridControlHoatChat);
+            this.popupControlContainer1.Location = new System.Drawing.Point(207, 151);
+            this.popupControlContainer1.Manager = this.barManager1;
+            this.popupControlContainer1.Name = "popupControlContainer1";
+            this.popupControlContainer1.Size = new System.Drawing.Size(550, 37);
+            this.popupControlContainer1.TabIndex = 19;
+            this.popupControlContainer1.Visible = false;
+            this.popupControlContainer1.CloseUp += new System.EventHandler(this.popupControlContainer1_CloseUp);
             // 
-            // gridControlThuoc
+            // gridControlHoatChat
             // 
-            this.gridControlThuoc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControlThuoc.Location = new System.Drawing.Point(0, 0);
-            this.gridControlThuoc.MainView = this.gridViewThuoc;
-            this.gridControlThuoc.MenuManager = this.barManager1;
-            this.gridControlThuoc.Name = "gridControlThuoc";
-            this.gridControlThuoc.Size = new System.Drawing.Size(550, 37);
-            this.gridControlThuoc.TabIndex = 0;
-            this.gridControlThuoc.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewThuoc});
-            this.gridControlThuoc.KeyUp += new System.Windows.Forms.KeyEventHandler(this.gridControlThuoc_KeyDown);
+            this.gridControlHoatChat.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridControlHoatChat.Location = new System.Drawing.Point(0, 0);
+            this.gridControlHoatChat.MainView = this.gridViewHoatChat;
+            this.gridControlHoatChat.MenuManager = this.barManager1;
+            this.gridControlHoatChat.Name = "gridControlHoatChat";
+            this.gridControlHoatChat.Size = new System.Drawing.Size(550, 37);
+            this.gridControlHoatChat.TabIndex = 0;
+            this.gridControlHoatChat.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewHoatChat});
+            this.gridControlHoatChat.KeyUp += new System.Windows.Forms.KeyEventHandler(this.gridControlHoatChat_KeyUp);
             // 
-            // gridViewThuoc
+            // gridViewHoatChat
             // 
-            this.gridViewThuoc.GridControl = this.gridControlThuoc;
-            this.gridViewThuoc.Name = "gridViewThuoc";
-            this.gridViewThuoc.OptionsBehavior.Editable = false;
-            this.gridViewThuoc.OptionsView.ShowGroupPanel = false;
-            this.gridViewThuoc.OptionsView.ShowIndicator = false;
-            this.gridViewThuoc.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridViewThuoc_RowClick);
+            this.gridViewHoatChat.GridControl = this.gridControlHoatChat;
+            this.gridViewHoatChat.Name = "gridViewHoatChat";
+            this.gridViewHoatChat.OptionsBehavior.Editable = false;
+            this.gridViewHoatChat.OptionsView.ShowGroupPanel = false;
+            this.gridViewHoatChat.OptionsView.ShowIndicator = false;
+            this.gridViewHoatChat.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridViewHoatChat_RowClick);
             // 
             // barManager1
             // 
@@ -297,6 +296,40 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             this.barDockControlRight.Location = new System.Drawing.Point(863, 20);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 333);
             // 
+            // popupControlContainer
+            // 
+            this.popupControlContainer.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlContainer.Controls.Add(this.gridControlThuoc);
+            this.popupControlContainer.Location = new System.Drawing.Point(156, 138);
+            this.popupControlContainer.Manager = this.barManager1;
+            this.popupControlContainer.Name = "popupControlContainer";
+            this.popupControlContainer.Size = new System.Drawing.Size(550, 37);
+            this.popupControlContainer.TabIndex = 17;
+            this.popupControlContainer.Visible = false;
+            this.popupControlContainer.CloseUp += new System.EventHandler(this.popupControlContainer_CloseUp);
+            // 
+            // gridControlThuoc
+            // 
+            this.gridControlThuoc.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridControlThuoc.Location = new System.Drawing.Point(0, 0);
+            this.gridControlThuoc.MainView = this.gridViewThuoc;
+            this.gridControlThuoc.MenuManager = this.barManager1;
+            this.gridControlThuoc.Name = "gridControlThuoc";
+            this.gridControlThuoc.Size = new System.Drawing.Size(550, 37);
+            this.gridControlThuoc.TabIndex = 0;
+            this.gridControlThuoc.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewThuoc});
+            this.gridControlThuoc.KeyUp += new System.Windows.Forms.KeyEventHandler(this.gridControlThuoc_KeyDown);
+            // 
+            // gridViewThuoc
+            // 
+            this.gridViewThuoc.GridControl = this.gridControlThuoc;
+            this.gridViewThuoc.Name = "gridViewThuoc";
+            this.gridViewThuoc.OptionsBehavior.Editable = false;
+            this.gridViewThuoc.OptionsView.ShowGroupPanel = false;
+            this.gridViewThuoc.OptionsView.ShowIndicator = false;
+            this.gridViewThuoc.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridViewThuoc_RowClick);
+            // 
             // checkEdit2
             // 
             this.checkEdit2.Location = new System.Drawing.Point(542, 80);
@@ -342,9 +375,9 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(785, 104);
+            this.btnAdd.Location = new System.Drawing.Point(729, 104);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(76, 46);
+            this.btnAdd.Size = new System.Drawing.Size(132, 46);
             this.btnAdd.StyleController = this.layoutControl1;
             this.btnAdd.TabIndex = 7;
             this.btnAdd.Text = "Bổ sung (Ctrl A)";
@@ -378,7 +411,7 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             this.txtBieuHienLamSang.Location = new System.Drawing.Point(127, 104);
             this.txtBieuHienLamSang.Name = "txtBieuHienLamSang";
             this.txtBieuHienLamSang.Properties.MaxLength = 500;
-            this.txtBieuHienLamSang.Size = new System.Drawing.Size(654, 46);
+            this.txtBieuHienLamSang.Size = new System.Drawing.Size(598, 46);
             this.txtBieuHienLamSang.StyleController = this.layoutControl1;
             this.txtBieuHienLamSang.TabIndex = 6;
             // 
@@ -458,7 +491,7 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             // 
             this.Btn_Xoa_Enable.AutoHeight = false;
             this.Btn_Xoa_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Xóa", null, null, true)});
             this.Btn_Xoa_Enable.Name = "Btn_Xoa_Enable";
             this.Btn_Xoa_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_Xoa_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_Xoa_Enable_ButtonClick);
@@ -837,7 +870,7 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             this.layoutControlItem17.Control = this.txtBieuHienLamSang;
             this.layoutControlItem17.Location = new System.Drawing.Point(0, 102);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(783, 50);
+            this.layoutControlItem17.Size = new System.Drawing.Size(727, 50);
             this.layoutControlItem17.Text = "B/hiện lâm sàng:";
             this.layoutControlItem17.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem17.TextSize = new System.Drawing.Size(120, 20);
@@ -846,11 +879,11 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnAdd;
-            this.layoutControlItem9.Location = new System.Drawing.Point(783, 102);
+            this.layoutControlItem9.Location = new System.Drawing.Point(727, 102);
             this.layoutControlItem9.MaxSize = new System.Drawing.Size(0, 50);
             this.layoutControlItem9.MinSize = new System.Drawing.Size(80, 50);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(80, 50);
+            this.layoutControlItem9.Size = new System.Drawing.Size(136, 50);
             this.layoutControlItem9.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
@@ -941,40 +974,6 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             // 
             this.dxErrorProviderSave.ContainerControl = this;
             // 
-            // popupControlContainer1
-            // 
-            this.popupControlContainer1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.popupControlContainer1.Controls.Add(this.gridControlHoatChat);
-            this.popupControlContainer1.Location = new System.Drawing.Point(207, 151);
-            this.popupControlContainer1.Manager = this.barManager1;
-            this.popupControlContainer1.Name = "popupControlContainer1";
-            this.popupControlContainer1.Size = new System.Drawing.Size(550, 37);
-            this.popupControlContainer1.TabIndex = 19;
-            this.popupControlContainer1.Visible = false;
-            this.popupControlContainer1.CloseUp += new System.EventHandler(this.popupControlContainer1_CloseUp);
-            // 
-            // gridControlHoatChat
-            // 
-            this.gridControlHoatChat.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControlHoatChat.Location = new System.Drawing.Point(0, 0);
-            this.gridControlHoatChat.MainView = this.gridViewHoatChat;
-            this.gridControlHoatChat.MenuManager = this.barManager1;
-            this.gridControlHoatChat.Name = "gridControlHoatChat";
-            this.gridControlHoatChat.Size = new System.Drawing.Size(550, 37);
-            this.gridControlHoatChat.TabIndex = 0;
-            this.gridControlHoatChat.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewHoatChat});
-            this.gridControlHoatChat.KeyUp += new System.Windows.Forms.KeyEventHandler(this.gridControlHoatChat_KeyUp);
-            // 
-            // gridViewHoatChat
-            // 
-            this.gridViewHoatChat.GridControl = this.gridControlHoatChat;
-            this.gridViewHoatChat.Name = "gridViewHoatChat";
-            this.gridViewHoatChat.OptionsBehavior.Editable = false;
-            this.gridViewHoatChat.OptionsView.ShowGroupPanel = false;
-            this.gridViewHoatChat.OptionsView.ShowIndicator = false;
-            this.gridViewHoatChat.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridViewHoatChat_RowClick);
-            // 
             // UC_AllergyCardCreate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -989,11 +988,15 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             this.Load += new System.EventHandler(this.UC_AllergyCardCreate_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).EndInit();
+            this.popupControlContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlHoatChat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewHoatChat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer)).EndInit();
             this.popupControlContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControlThuoc)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewThuoc)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkEdit2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDiNguyenHoatChat.Properties)).EndInit();
@@ -1040,10 +1043,6 @@ namespace HIS.Desktop.Plugins.AllergyCardCreate
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderAdd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderSave)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderSave)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).EndInit();
-            this.popupControlContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlHoatChat)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewHoatChat)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
