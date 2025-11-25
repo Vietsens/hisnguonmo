@@ -2631,13 +2631,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             try
             {
                 //huannh
-                string messageWho = "";
-                bool rswho = HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor.SendData(currentHisTreatment, ref messageWho);
-                if (!rswho)
+               
+                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(this.currentHisTreatment, null, null);
+                if (!who.CheckData())
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(messageWho, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
                     return;
                 }
+
                 long? treatmentEndTypeId = null;
                 if (cboTreatmentEndType.EditValue != null)
                 {
@@ -2977,7 +2977,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (rs)
                 {
                     return;
-                }
+                } 
                 //if (hisTreatmentFinishSDO != null && (string.IsNullOrEmpty(hisTreatmentFinishSDO.ClinicalNote) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentDirection) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TreatmentMethod) && string.IsNullOrEmpty(hisTreatmentFinishSDO.TransportVehicle) || (string.IsNullOrEmpty(hisTreatmentFinishSDO.TransporterLoginnames) && string.IsNullOrEmpty(hisTreatmentFinishSDO.Transporter)) || string.IsNullOrEmpty(hisTreatmentFinishSDO.TransferOutMediOrgCode) || !hisTreatmentFinishSDO.TranPatiReasonId.HasValue || !hisTreatmentFinishSDO.TranPatiFormId.HasValue))
                 //{
                 //    XtraMessageBox.Show("Thiếu thông tin chuyển viện", "Thông báo");
@@ -2988,6 +2988,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 MessageManager.Show(this, param, success);
                 if (success)
                 {
+                    who.SendData();
                     Inventec.Common.Logging.LogSystem.Warn("WarningOption: " + ConfigKey.WarningOption);
                     HIS_TREATMENT HisTreatment = hisTreatmentResult;
 
@@ -3520,6 +3521,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 MessageManager.Show(this, new CommonParam(), true);
                 if (success)
                 {
+                  
                     SetPrintMenu(hisTreatmentFinishSDO.TreatmentEndTypeId, hisTreatmentFinishSDO.TreatmentEndTypeExtId, this.currentHisTreatment.TDL_TREATMENT_TYPE_ID);
                     BtnEndCode.Enabled = CheckTreatmentEndCode();
                     btnDeleteEndInfo.Enabled = true;

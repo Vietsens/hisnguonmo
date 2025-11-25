@@ -81,7 +81,8 @@
     <Reference Include="HIS.Desktop.Plugins.Library.CheckIcd">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.CheckIcd\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.ConnectWhoCnd">
+    <Reference Include="HIS.Desktop.Plugins.Library.ConnectWhoCnd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.ConnectWhoCnd\HIS.Desktop.Plugins.Library.ConnectWhoCnd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
