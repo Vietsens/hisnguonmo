@@ -407,7 +407,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                         if (this.dicImage != null && this.dicImage.Count > 0)
                             processImageTag.ProcessData(store, this.dicImage);
-
+                       
                         doc.EndUpdate();
                     }
                 }
@@ -811,10 +811,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                 dicParam.Add("USER_NAME", UserName);
 
-                if (sereServExt.GPBL_STORE_CODE != null)
+                if (sereServExt != null && sereServExt.GPBL_STORE_CODE != null)
                 {
                     dicParam.Add("GPBL_STORE_CODE", sereServExt.GPBL_STORE_CODE);
-
                 }
 
                 if (!isPressButtonSave)
@@ -859,17 +858,30 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (!String.IsNullOrWhiteSpace(this.ViewPacsUrlFormat))
                 {
                     string content = this.ViewPacsUrlFormat;
-                    if (patient != null)
+                    if (patient != null && !string.IsNullOrEmpty(patient.PATIENT_CODE))
                     {
                         content = content.Replace("<MA_BN>", patient.PATIENT_CODE);
                     }
-                    else
+                    else if (this.currentServiceReq != null && !string.IsNullOrEmpty(this.currentServiceReq.TDL_PATIENT_CODE))
                     {
                         content = content.Replace("<MA_BN>", this.currentServiceReq.TDL_PATIENT_CODE);
                     }
+                    else
+                    {
+                        content = content.Replace("<MA_BN>", "");
+                    }
 
-                    content = content.Replace("<ACCESSNUMBER>", this.sereServ.ID.ToString());
-                    content = content.Replace("<ENCODE_ACCESSNUMBER>", Encrypt(this.sereServ.ID.ToString()));
+                    if (this.sereServ != null && this.sereServ.ID != null)
+                    {
+                        content = content.Replace("<ACCESSNUMBER>", this.sereServ.ID.ToString());
+                        content = content.Replace("<ENCODE_ACCESSNUMBER>", Encrypt(this.sereServ.ID.ToString()));
+                    }
+                    else
+                    {
+                        content = content.Replace("<ACCESSNUMBER>", "");
+                        content = content.Replace("<ENCODE_ACCESSNUMBER>", "");
+                    }
+
                     QRCodeGenerator qrGeneratorViewResult = new QRCodeGenerator();
                     QRCodeData qrCodeDataViewResult = qrGeneratorViewResult.CreateQrCode(content, QRCodeGenerator.ECCLevel.Q);
                     BitmapByteQRCode qrCodeViewResult = new BitmapByteQRCode(qrCodeDataViewResult);
@@ -905,7 +917,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     dicParam.Add("ICD_CM_SUB_CODE", this.dicSereServPttt[this.sereServ.ID].ICD_CM_SUB_CODE);
                     dicParam.Add("ICD_CM_TEXT", this.dicSereServPttt[this.sereServ.ID].ICD_CM_TEXT);
                 }
-                
+
                 try
                 {
                     string weight = "", height = "", pulse = "", blood_pressure_max = "", blood_pressure_min = "";
@@ -924,11 +936,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             blood_pressure_min = dhst.BLOOD_PRESSURE_MIN?.ToString() ?? "";
                         }
                     }
-                    dicParam["weight"] = weight;
-                    dicParam["height"] = height;
-                    dicParam["pulse"] = pulse;
-                    dicParam["blood_pressure_max"] = blood_pressure_max;
-                    dicParam["blood_pressure_min"] = blood_pressure_min;
+                    dicParam["weight"] = string.IsNullOrWhiteSpace(weight) ? "" : weight;
+                    dicParam["height"] = string.IsNullOrWhiteSpace(height) ? "" : height;
+                    dicParam["pulse"] = string.IsNullOrWhiteSpace(pulse) ? "" : pulse;
+                    dicParam["blood_pressure_max"] = string.IsNullOrWhiteSpace(blood_pressure_max) ? "" : blood_pressure_max;
+                    dicParam["blood_pressure_min"] = string.IsNullOrWhiteSpace(blood_pressure_min) ? "" : blood_pressure_min;
                 }
                 catch
                 {
@@ -955,9 +967,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             bed_room = bedLog.BED_ROOM_NAME ?? bedLog.BED_ROOM_CODE ?? "";
                         }
                     }
-                    dicParam["bed_code"] = bed_code;
-                    dicParam["bed_name"] = bed_name;
-                    dicParam["bed_room"] = bed_room;
+                    dicParam["bed_code"] = string.IsNullOrWhiteSpace(bed_code) ? "" : bed_code;
+                    dicParam["bed_name"] = string.IsNullOrWhiteSpace(bed_name) ? "" : bed_name;
+                    dicParam["bed_room"] = string.IsNullOrWhiteSpace(bed_room) ? "" : bed_room;
                 }
                 catch
                 {
@@ -965,7 +977,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     dicParam["bed_name"] = "";
                     dicParam["bed_room"] = "";
                 }
-
             }
             catch (Exception ex)
             {

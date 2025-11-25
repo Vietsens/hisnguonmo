@@ -279,6 +279,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 GetDataFromRam();
                 isNotLoadWhileChangeControlStateInFirst = true;
                 LoadKeysFromlanguage();
+                ProcessDicParam();
                 Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.2");
                 this.LoadExecuteRoleUser();
                 timerLoadEkip.Enabled = true;
