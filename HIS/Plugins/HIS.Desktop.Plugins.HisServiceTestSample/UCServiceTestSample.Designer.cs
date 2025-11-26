@@ -197,6 +197,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboServiceType.Properties.NullText = "";
+            this.cboServiceType.Properties.NullValuePromptShowForEmptyValue = true;
             this.cboServiceType.Properties.View = this.gridLookUpEdit1View;
             this.cboServiceType.Size = new System.Drawing.Size(123, 20);
             this.cboServiceType.StyleController = this.layoutControl1;
