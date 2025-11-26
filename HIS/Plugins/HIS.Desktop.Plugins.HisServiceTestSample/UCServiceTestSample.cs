@@ -139,7 +139,7 @@ namespace HIS.Desktop.Plugins.HisServiceTestSample
                 cboServiceType.Properties.DisplayMember = "SERVICE_TYPE_NAME";
                 cboServiceType.Properties.ValueMember = "ID";
 
-                cboServiceType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboServiceType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
                 cboServiceType.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
                 cboServiceType.Properties.ImmediatePopup = true;
                 cboServiceType.ForceInitialize();
@@ -1255,8 +1255,9 @@ namespace HIS.Desktop.Plugins.HisServiceTestSample
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
-                    cboServiceType.Properties.Buttons[1].Visible = false;
                     cboServiceType.EditValue = null;
+                    cboServiceType.Properties.Buttons[1].Visible = false;
+                    cboServiceType.Refresh();
                 }
 
                 HisServiceTypeFilter filter = new HisServiceTypeFilter();
@@ -1271,19 +1272,18 @@ namespace HIS.Desktop.Plugins.HisServiceTestSample
         {
             try
             {
-                if (cboServiceType.EditValue != null)
+                if (cboServiceType.EditValue == null)
                 {
-                    HIS_SERVICE_TYPE data = ServiceType.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboServiceType.EditValue.ToString()));
-                    if (data != null)
-                    {
-                        cboServiceType.Properties.Buttons[1].Visible = true;
-                        btnFind1.Focus();
-                    }
+                    cboServiceType.Properties.Buttons[1].Visible = false;
+                }
+                else
+                {
+                    cboServiceType.Properties.Buttons[1].Visible = true;
                 }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }
