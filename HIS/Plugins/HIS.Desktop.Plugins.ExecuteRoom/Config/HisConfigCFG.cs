@@ -23,6 +23,7 @@ using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -55,6 +56,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private const string IS_HAS_CONNECTION_EMR = "MOS.HAS_CONNECTION_EMR";
         private const string KEY__IsCheckHeinCard = "HIS.Desktop.Plugins.ExamServiceReqExecute.IsCheckHeinCard";
         private const string KEY__MustSignBeforeStart = "HIS.Desktop.Plugins.ExecuteRoom.MustSignBeforeStart";
+        private const string HIS_MODEL = "HIS.Desktop.ApplyRestoreLayout.ModuleLinks";
         internal static bool IsCheckHeinCard;
         internal static bool IsHasConnectionEmr;
         internal static string IsShowResultWhenReqComplete;
@@ -84,6 +86,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         public static bool IsEnableEditStartTime;
         internal static string ServiceSimultaneity;
         internal static string Simultaneity;
+        internal static string model;
+        internal static bool isRestoreLayout;
 
         internal static string IsSplitTotalReceivePrice
         {
@@ -124,6 +128,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 AutoDeleteEmrDocumentWhenEditReq = GetValue(CONFIG_KEY__AutoDeleteEmrDocumentWhenEditReq);
                 isDisablePartExamByExecutor = GetValue(DISABLE_PART_EXAM_BY_EXECUTOR) == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CommonStringTrue;
                 MustSignBeforeStart = GetValue(KEY__MustSignBeforeStart);
+                model = GetValue(HIS_MODEL);
+                isRestoreLayout = new HashSet<string>(model.Split(','), StringComparer.OrdinalIgnoreCase).Contains("HIS.Desktop.Plugins.ExecuteRoom");
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)
