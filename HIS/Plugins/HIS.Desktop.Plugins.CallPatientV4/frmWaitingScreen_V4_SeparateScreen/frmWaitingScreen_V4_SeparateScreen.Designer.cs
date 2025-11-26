@@ -45,7 +45,9 @@ namespace HIS.Desktop.Plugins.CallPatientV4
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.lblTitleNgoaiTru = new System.Windows.Forms.Label();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
@@ -106,13 +108,16 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.timerForScrollListPatient = new System.Windows.Forms.Timer();
-            this.timerAutoLoadDataPatient = new System.Windows.Forms.Timer();
-            this.imageList1 = new System.Windows.Forms.ImageList();
-            this.timerSetDataToGridControl = new System.Windows.Forms.Timer();
-            this.timerForHightLightCallPatientLayout = new System.Windows.Forms.Timer();
-            this.timer1 = new System.Windows.Forms.Timer();
-            this.timerChangeColorRow = new System.Windows.Forms.Timer();
+            this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.timerForScrollListPatient = new System.Windows.Forms.Timer(this.components);
+            this.timerAutoLoadDataPatient = new System.Windows.Forms.Timer(this.components);
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.timerSetDataToGridControl = new System.Windows.Forms.Timer(this.components);
+            this.timerForHightLightCallPatientLayout = new System.Windows.Forms.Timer(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timerChangeColorRow = new System.Windows.Forms.Timer(this.components);
+            this.lblTitleNoiTru = new System.Windows.Forms.Label();
+            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
@@ -161,10 +166,14 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.lblTitleNoiTru);
+            this.layoutControl1.Controls.Add(this.lblTitleNgoaiTru);
             this.layoutControl1.Controls.Add(this.layoutControl5);
             this.layoutControl1.Controls.Add(this.layoutControl4);
             this.layoutControl1.Controls.Add(this.layoutControl2);
@@ -176,16 +185,24 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // lblTitleNgoaiTru
+            // 
+            this.lblTitleNgoaiTru.Location = new System.Drawing.Point(677, 44);
+            this.lblTitleNgoaiTru.Name = "lblTitleNgoaiTru";
+            this.lblTitleNgoaiTru.Size = new System.Drawing.Size(671, 20);
+            this.lblTitleNgoaiTru.TabIndex = 9;
+            this.lblTitleNgoaiTru.Text = "label1";
+            // 
             // layoutControl5
             // 
             this.layoutControl5.Controls.Add(this.panelControl2);
             this.layoutControl5.Controls.Add(this.panelControl1);
-            this.layoutControl5.Location = new System.Drawing.Point(2, 541);
+            this.layoutControl5.Location = new System.Drawing.Point(2, 525);
             this.layoutControl5.Name = "layoutControl5";
             this.layoutControl5.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(20, 157, 250, 350);
             this.layoutControl5.Padding = new System.Windows.Forms.Padding(5);
             this.layoutControl5.Root = this.layoutControlGroup4;
-            this.layoutControl5.Size = new System.Drawing.Size(1346, 187);
+            this.layoutControl5.Size = new System.Drawing.Size(1346, 203);
             this.layoutControl5.TabIndex = 7;
             this.layoutControl5.Text = "layoutControl5";
             // 
@@ -200,7 +217,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.panelControl2.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat;
             this.panelControl2.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(1054, 187);
+            this.panelControl2.Size = new System.Drawing.Size(840, 203);
             this.panelControl2.TabIndex = 5;
             // 
             // layoutControl3
@@ -212,7 +229,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControl3.Location = new System.Drawing.Point(3, 3);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroupMoiBenhNhan;
-            this.layoutControl3.Size = new System.Drawing.Size(1048, 181);
+            this.layoutControl3.Size = new System.Drawing.Size(834, 197);
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
             // 
@@ -225,7 +242,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.lblMoiNguoiBenh.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblMoiNguoiBenh.Location = new System.Drawing.Point(5, 5);
             this.lblMoiNguoiBenh.Name = "lblMoiNguoiBenh";
-            this.lblMoiNguoiBenh.Size = new System.Drawing.Size(1038, 45);
+            this.lblMoiNguoiBenh.Size = new System.Drawing.Size(824, 45);
             this.lblMoiNguoiBenh.StyleController = this.layoutControl3;
             this.lblMoiNguoiBenh.TabIndex = 6;
             this.lblMoiNguoiBenh.Text = "MỜI NGƯỜI BỆNH";
@@ -238,7 +255,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.lblPatientName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblPatientName.Location = new System.Drawing.Point(5, 60);
             this.lblPatientName.Name = "lblPatientName";
-            this.lblPatientName.Size = new System.Drawing.Size(1038, 56);
+            this.lblPatientName.Size = new System.Drawing.Size(824, 56);
             this.lblPatientName.StyleController = this.layoutControl3;
             this.lblPatientName.TabIndex = 5;
             // 
@@ -250,7 +267,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.lblCoSttNhoHon.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblCoSttNhoHon.Location = new System.Drawing.Point(5, 126);
             this.lblCoSttNhoHon.Name = "lblCoSttNhoHon";
-            this.lblCoSttNhoHon.Size = new System.Drawing.Size(1038, 33);
+            this.lblCoSttNhoHon.Size = new System.Drawing.Size(824, 33);
             this.lblCoSttNhoHon.StyleController = this.layoutControl3;
             this.lblCoSttNhoHon.TabIndex = 4;
             this.lblCoSttNhoHon.Text = "HOẶC NGƯỜI BỆNH CÓ SỐ NHỎ HƠN";
@@ -268,7 +285,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlGroupMoiBenhNhan.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroupMoiBenhNhan.Name = "layoutControlGroupMoiBenhNhan";
             this.layoutControlGroupMoiBenhNhan.OptionsItemText.TextToControlDistance = 5;
-            this.layoutControlGroupMoiBenhNhan.Size = new System.Drawing.Size(1048, 181);
+            this.layoutControlGroupMoiBenhNhan.Size = new System.Drawing.Size(834, 197);
             this.layoutControlGroupMoiBenhNhan.TextVisible = false;
             // 
             // layoutControlItem8
@@ -276,7 +293,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem8.Control = this.lblCoSttNhoHon;
             this.layoutControlItem8.Location = new System.Drawing.Point(0, 121);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(1048, 60);
+            this.layoutControlItem8.Size = new System.Drawing.Size(834, 76);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
@@ -285,7 +302,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem9.Control = this.lblPatientName;
             this.layoutControlItem9.Location = new System.Drawing.Point(0, 55);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(1048, 66);
+            this.layoutControlItem9.Size = new System.Drawing.Size(834, 66);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
@@ -294,7 +311,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem10.Control = this.lblMoiNguoiBenh;
             this.layoutControlItem10.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(1048, 55);
+            this.layoutControlItem10.Size = new System.Drawing.Size(834, 55);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -303,11 +320,11 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.panelControl1.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.panelControl1.Appearance.Options.UseBorderColor = true;
             this.panelControl1.Controls.Add(this.layoutControl7);
-            this.panelControl1.Location = new System.Drawing.Point(1054, 0);
+            this.panelControl1.Location = new System.Drawing.Point(840, 0);
             this.panelControl1.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat;
             this.panelControl1.LookAndFeel.UseDefaultLookAndFeel = false;
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(292, 187);
+            this.panelControl1.Size = new System.Drawing.Size(506, 203);
             this.panelControl1.TabIndex = 4;
             // 
             // layoutControl7
@@ -318,7 +335,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControl7.Location = new System.Drawing.Point(3, 3);
             this.layoutControl7.Name = "layoutControl7";
             this.layoutControl7.Root = this.layoutControlGroupMoiBenhNhanSo;
-            this.layoutControl7.Size = new System.Drawing.Size(286, 181);
+            this.layoutControl7.Size = new System.Drawing.Size(500, 197);
             this.layoutControl7.TabIndex = 0;
             this.layoutControl7.Text = "layoutControl7";
             // 
@@ -357,7 +374,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlGroupMoiBenhNhanSo.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroupMoiBenhNhanSo.Name = "layoutControlGroupMoiBenhNhanSo";
             this.layoutControlGroupMoiBenhNhanSo.OptionsItemText.TextToControlDistance = 5;
-            this.layoutControlGroupMoiBenhNhanSo.Size = new System.Drawing.Size(500, 173);
+            this.layoutControlGroupMoiBenhNhanSo.Size = new System.Drawing.Size(500, 197);
             this.layoutControlGroupMoiBenhNhanSo.TextVisible = false;
             // 
             // layoutControlItem11
@@ -376,7 +393,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem13.MaxSize = new System.Drawing.Size(500, 118);
             this.layoutControlItem13.MinSize = new System.Drawing.Size(500, 118);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(500, 118);
+            this.layoutControlItem13.Size = new System.Drawing.Size(500, 142);
             this.layoutControlItem13.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
@@ -397,7 +414,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "Root";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup4.Size = new System.Drawing.Size(1346, 187);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(1346, 203);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // layoutControlItem2
@@ -405,10 +422,10 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem2.AppearanceItemCaption.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.layoutControlItem2.AppearanceItemCaption.Options.UseBorderColor = true;
             this.layoutControlItem2.Control = this.panelControl1;
-            this.layoutControlItem2.Location = new System.Drawing.Point(1054, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(840, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem2.Size = new System.Drawing.Size(292, 187);
+            this.layoutControlItem2.Size = new System.Drawing.Size(506, 203);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -418,7 +435,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem6.Size = new System.Drawing.Size(1054, 187);
+            this.layoutControlItem6.Size = new System.Drawing.Size(840, 203);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -429,7 +446,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControl4.Location = new System.Drawing.Point(2, 2);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(1346, 40);
+            this.layoutControl4.Size = new System.Drawing.Size(1346, 38);
             this.layoutControl4.TabIndex = 6;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -472,7 +489,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1346, 40);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(1346, 38);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem7
@@ -485,7 +502,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem7.Control = this.lblRoomName;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(949, 40);
+            this.layoutControlItem7.Size = new System.Drawing.Size(949, 38);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
@@ -494,28 +511,28 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem14.Control = this.lblDoctorName;
             this.layoutControlItem14.Location = new System.Drawing.Point(949, 0);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(397, 40);
+            this.layoutControlItem14.Size = new System.Drawing.Size(397, 38);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
             // layoutControl2
             // 
             this.layoutControl2.Controls.Add(this.layoutControl6);
-            this.layoutControl2.Location = new System.Drawing.Point(2, 46);
+            this.layoutControl2.Location = new System.Drawing.Point(2, 68);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(1346, 491);
+            this.layoutControl2.Size = new System.Drawing.Size(1346, 453);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // layoutControl6
             // 
-            this.layoutControl6.Controls.Add(this.layoutControl8);
             this.layoutControl6.Controls.Add(this.gridControlWaitingCls);
+            this.layoutControl6.Controls.Add(this.layoutControl8);
             this.layoutControl6.Location = new System.Drawing.Point(2, 2);
             this.layoutControl6.Name = "layoutControl6";
             this.layoutControl6.Root = this.layoutControlGroup5;
-            this.layoutControl6.Size = new System.Drawing.Size(1342, 487);
+            this.layoutControl6.Size = new System.Drawing.Size(1342, 449);
             this.layoutControl6.TabIndex = 4;
             this.layoutControl6.Text = "layoutControl6";
             // 
@@ -526,7 +543,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControl8.Margin = new System.Windows.Forms.Padding(0);
             this.layoutControl8.Name = "layoutControl8";
             this.layoutControl8.Root = this.layoutControlGroup_Grid2;
-            this.layoutControl8.Size = new System.Drawing.Size(682, 487);
+            this.layoutControl8.Size = new System.Drawing.Size(682, 449);
             this.layoutControl8.TabIndex = 5;
             this.layoutControl8.Text = "layoutControl8";
             // 
@@ -540,7 +557,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridControlWaitingCls2.MainView = this.gridViewWaitingCls2;
             this.gridControlWaitingCls2.Margin = new System.Windows.Forms.Padding(0);
             this.gridControlWaitingCls2.Name = "gridControlWaitingCls2";
-            this.gridControlWaitingCls2.Size = new System.Drawing.Size(678, 483);
+            this.gridControlWaitingCls2.Size = new System.Drawing.Size(678, 445);
             this.gridControlWaitingCls2.TabIndex = 5;
             this.gridControlWaitingCls2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewWaitingCls2});
@@ -824,7 +841,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlGroup_Grid2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup_Grid2.Name = "layoutControlGroup_Grid2";
             this.layoutControlGroup_Grid2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup_Grid2.Size = new System.Drawing.Size(682, 487);
+            this.layoutControlGroup_Grid2.Size = new System.Drawing.Size(682, 449);
             this.layoutControlGroup_Grid2.TextVisible = false;
             // 
             // layoutControlItem16
@@ -832,7 +849,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem16.Control = this.gridControlWaitingCls2;
             this.layoutControlItem16.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(682, 487);
+            this.layoutControlItem16.Size = new System.Drawing.Size(682, 449);
             this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem16.TextVisible = false;
             // 
@@ -845,7 +862,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridControlWaitingCls.LookAndFeel.UseDefaultLookAndFeel = false;
             this.gridControlWaitingCls.MainView = this.gridViewWaitingCls;
             this.gridControlWaitingCls.Name = "gridControlWaitingCls";
-            this.gridControlWaitingCls.Size = new System.Drawing.Size(660, 487);
+            this.gridControlWaitingCls.Size = new System.Drawing.Size(660, 449);
             this.gridControlWaitingCls.TabIndex = 4;
             this.gridControlWaitingCls.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewWaitingCls});
@@ -974,7 +991,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridColumnLastName.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnLastName.OptionsColumn.ReadOnly = true;
             this.gridColumnLastName.Visible = true;
-            this.gridColumnLastName.VisibleIndex = 1;
+            this.gridColumnLastName.VisibleIndex = 2;
             this.gridColumnLastName.Width = 380;
             // 
             // gridColumnAge
@@ -1009,7 +1026,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridColumnAge.OptionsColumn.ReadOnly = true;
             this.gridColumnAge.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnAge.Visible = true;
-            this.gridColumnAge.VisibleIndex = 2;
+            this.gridColumnAge.VisibleIndex = 3;
             this.gridColumnAge.Width = 242;
             // 
             // gridColumnAddress
@@ -1134,7 +1151,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "layoutControlGroup5";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup5.Size = new System.Drawing.Size(1342, 487);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(1342, 449);
             this.layoutControlGroup5.TextVisible = false;
             // 
             // layoutControlItem12
@@ -1143,7 +1160,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
             this.layoutControlItem12.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem12.Size = new System.Drawing.Size(660, 487);
+            this.layoutControlItem12.Size = new System.Drawing.Size(660, 449);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
@@ -1153,7 +1170,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem_Grid2.Location = new System.Drawing.Point(660, 0);
             this.layoutControlItem_Grid2.Name = "layoutControlItem_Grid2";
             this.layoutControlItem_Grid2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem_Grid2.Size = new System.Drawing.Size(682, 487);
+            this.layoutControlItem_Grid2.Size = new System.Drawing.Size(682, 449);
             this.layoutControlItem_Grid2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem_Grid2.TextVisible = false;
             // 
@@ -1166,7 +1183,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(1346, 491);
+            this.Root.Size = new System.Drawing.Size(1346, 453);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem5
@@ -1174,7 +1191,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem5.Control = this.layoutControl6;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(1346, 491);
+            this.layoutControlItem5.Size = new System.Drawing.Size(1346, 453);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -1193,7 +1210,9 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem1,
             this.layoutControlItem3,
-            this.layoutControlItem4});
+            this.layoutControlItem4,
+            this.layoutControlItem17,
+            this.layoutControlItem15});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1203,9 +1222,9 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.layoutControl2;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 44);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 66);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1350, 495);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1350, 457);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -1214,18 +1233,27 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem3.Control = this.layoutControl4;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(1350, 44);
+            this.layoutControlItem3.Size = new System.Drawing.Size(1350, 42);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.layoutControl5;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 539);
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 523);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(1350, 191);
+            this.layoutControlItem4.Size = new System.Drawing.Size(1350, 207);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
+            // 
+            // layoutControlItem17
+            // 
+            this.layoutControlItem17.Control = this.lblTitleNgoaiTru;
+            this.layoutControlItem17.Location = new System.Drawing.Point(675, 42);
+            this.layoutControlItem17.Name = "layoutControlItem17";
+            this.layoutControlItem17.Size = new System.Drawing.Size(675, 24);
+            this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem17.TextVisible = false;
             // 
             // timerForScrollListPatient
             // 
@@ -1262,6 +1290,23 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.timerChangeColorRow.Interval = 1000;
             this.timerChangeColorRow.Tick += new System.EventHandler(this.timerChangeColorRow_Tick);
             // 
+            // lblTitleNoiTru
+            // 
+            this.lblTitleNoiTru.Location = new System.Drawing.Point(2, 44);
+            this.lblTitleNoiTru.Name = "lblTitleNoiTru";
+            this.lblTitleNoiTru.Size = new System.Drawing.Size(671, 20);
+            this.lblTitleNoiTru.TabIndex = 10;
+            this.lblTitleNoiTru.Text = "label1";
+            // 
+            // layoutControlItem15
+            // 
+            this.layoutControlItem15.Control = this.lblTitleNoiTru;
+            this.layoutControlItem15.Location = new System.Drawing.Point(0, 42);
+            this.layoutControlItem15.Name = "layoutControlItem15";
+            this.layoutControlItem15.Size = new System.Drawing.Size(675, 24);
+            this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem15.TextVisible = false;
+            // 
             // frmWaitingScreen_V4_SeparateScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1275,6 +1320,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmWaitingScreen_V4_FormClosing);
             this.Load += new System.EventHandler(this.frmWaitingScreen_QY_Load);
+            this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).EndInit();
@@ -1323,7 +1369,10 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -1397,5 +1446,9 @@ namespace HIS.Desktop.Plugins.CallPatientV4
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn8;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
+        private System.Windows.Forms.Label lblTitleNgoaiTru;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
+        private System.Windows.Forms.Label lblTitleNoiTru;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
     }
 }
