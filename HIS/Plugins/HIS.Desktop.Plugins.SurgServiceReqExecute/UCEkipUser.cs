@@ -15,33 +15,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using ACS.EFMODEL.DataModels;
+using ACS.Filter;
+using AutoMapper;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Columns;
+using HIS.Desktop.ADO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Plugins.SurgServiceReqExecute.Base;
+using HIS.Desktop.Plugins.SurgServiceReqExecute.Config;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.Dynamic;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.ADO;
-using HIS.Desktop.Utility;
-using DevExpress.XtraEditors;
-using HIS.Desktop.Plugins.SurgServiceReqExecute.Base;
-using DevExpress.XtraGrid.Columns;
-using MOS.EFMODEL.DataModels;
-using Inventec.Core;
-using HIS.Desktop.LocalStorage.BackendData;
-using HIS.Desktop.ApiConsumer;
-using ACS.EFMODEL.DataModels;
-using Inventec.Common.Controls.EditorLoader;
-using MOS.Filter;
-using Inventec.Common.Adapter;
-using AutoMapper;
-using ACS.Filter;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
-using HIS.Desktop.Plugins.SurgServiceReqExecute.Config;
 namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 {
     public partial class UCEkipUser : UserControlBase
@@ -55,12 +56,21 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             InitializeComponent();
             this.SetCaptionByLanguageKey();
+            //AcsUserADOList = ProcessAcsUser();
+            //LoadDataToComboDepartment();
+            //ComboAcsUser();
+            //ComboExecuteRole();
+            //LoadExecuteRoleUser();
+
+        }
+
+        public void LoadUserData()
+        {
             AcsUserADOList = ProcessAcsUser();
             LoadDataToComboDepartment();
             ComboAcsUser();
             ComboExecuteRole();
             LoadExecuteRoleUser();
-
         }
 
         public void FillDataToGrid(List<HisEkipUserADO> lst)
@@ -714,72 +724,88 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
         private List<AcsUserADO> ProcessAcsUser()
         {
-            List<AcsUserADO> AcsUserADOList = null;
+            List<AcsUserADO> AcsUserADOList = new List<AcsUserADO>();
+
             try
             {
-                List<ACS.EFMODEL.DataModels.ACS_USER> datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>();
-                List<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE> employeeList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>();
+                var datas = BackendDataWorker.Get<ACS_USER>();
+                var employeeList = BackendDataWorker.Get<V_HIS_EMPLOYEE>();
+                var departmentList = BackendDataWorker.Get<HIS_DEPARTMENT>()
+                    .Where(o => o.IS_ACTIVE == 1 && o.IS_CLINICAL == 1)
+                    .ToList();
 
-                CommonParam paramCommon = new CommonParam();
-                dynamic filter = new System.Dynamic.ExpandoObject();
+                CommonParam param = new CommonParam();
+                dynamic filter = new ExpandoObject();
 
-                // Nếu không có dữ liệu trong RAM thì mới gọi API và cập nhật lại RAM
+                // Load from API if RAM empty
                 if (datas == null || datas.Count == 0)
                 {
-                    datas = new Inventec.Common.Adapter.BackendAdapter(paramCommon)
-                        .Get<List<ACS.EFMODEL.DataModels.ACS_USER>>("api/AcsUser/Get", ApiConsumers.AcsConsumer, filter, paramCommon);
+                    datas = new BackendAdapter(param)
+                        .Get<List<ACS_USER>>("api/AcsUser/Get", ApiConsumers.AcsConsumer, filter, param);
+
                     if (datas != null)
-                        BackendDataWorker.UpdateToRam(typeof(ACS.EFMODEL.DataModels.ACS_USER), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
-                }
-                if (employeeList == null || employeeList.Count == 0)
-                {
-                    employeeList = new Inventec.Common.Adapter.BackendAdapter(paramCommon)
-                        .Get<List<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>>("api/HisEmployee/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
-                    if (employeeList != null)
-                        BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE), employeeList, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                        BackendDataWorker.UpdateToRam(typeof(ACS_USER), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                 }
 
-                var departmentList = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1 && o.IS_CLINICAL == 1).ToList();
-                AcsUserADOList = new List<AcsUserADO>();
+                if (employeeList == null || employeeList.Count == 0)
+                {
+                    employeeList = new BackendAdapter(param)
+                        .Get<List<V_HIS_EMPLOYEE>>("api/HisEmployee/GetView", ApiConsumers.MosConsumer, filter, param);
+
+                    if (employeeList != null)
+                        BackendDataWorker.UpdateToRam(typeof(V_HIS_EMPLOYEE), employeeList, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                }
+
+                // ⭐ Tối ưu lookup
+                var employeeDict = employeeList?
+                    .Where(o => o.IS_ACTIVE == 1)
+                    .GroupBy(o => o.LOGINNAME)
+                    .ToDictionary(g => g.Key, g => g.First());
+
+                var departmentDict = departmentList
+                    .ToDictionary(o => o.ID, o => o);
 
                 if (datas != null)
                 {
                     foreach (var item in datas)
-                    {                        
-                        AcsUserADO user = new AcsUserADO();
-                        user.ID = item.ID;
-                        user.LOGINNAME = item.LOGINNAME;
-                        user.USERNAME = item.USERNAME;
-                        user.MOBILE = item.MOBILE;
-                        user.PASSWORD = item.PASSWORD;
-                        //user.IS_ACTIVE = item.IS_ACTIVE;
-
-                        var check = employeeList?.FirstOrDefault(o => o.LOGINNAME == item.LOGINNAME && o.IS_ACTIVE == 1);
-                        if (check != null)
+                    {
+                        var user = new AcsUserADO()
                         {
-                            user.IS_ACTIVE = check.IS_ACTIVE;
-                            user.DOB_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(check.DOB ?? 0);
+                            ID = item.ID,
+                            LOGINNAME = item.LOGINNAME,
+                            USERNAME = item.USERNAME,
+                            MOBILE = item.MOBILE,
+                            PASSWORD = item.PASSWORD
+                        };
 
-                            user.DIPLOMA = check.DIPLOMA;
-                            var checkDepartment = departmentList.FirstOrDefault(o => o.ID == check.DEPARTMENT_ID);
+                        // ⭐ Lookup O(1) thay vì FirstOrDefault O(n)
+                        if (employeeDict != null && employeeDict.TryGetValue(item.LOGINNAME, out var emp))
+                        {
+                            user.IS_ACTIVE = emp.IS_ACTIVE;
+                            user.DOB_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(emp.DOB ?? 0);
+                            user.DIPLOMA = emp.DIPLOMA;
 
-                            if (checkDepartment != null)
+                            if (emp.DEPARTMENT_ID.HasValue && departmentDict.TryGetValue(emp.DEPARTMENT_ID.Value, out var dept))
                             {
-                                user.DEPARTMENT_NAME = checkDepartment.DEPARTMENT_NAME;
+                                user.DEPARTMENT_NAME = dept.DEPARTMENT_NAME;
                             }
                         }
+
                         AcsUserADOList.Add(user);
                     }
+
                     AcsUserADOList = AcsUserADOList.OrderBy(o => o.USERNAME).ToList();
                 }
             }
             catch (Exception ex)
             {
-                AcsUserADOList = null;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
             }
+
             return AcsUserADOList;
         }
+
 
         private async Task ComboAcsUser()
         {

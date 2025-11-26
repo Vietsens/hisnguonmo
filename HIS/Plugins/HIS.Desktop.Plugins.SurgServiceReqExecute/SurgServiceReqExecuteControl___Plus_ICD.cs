@@ -55,7 +55,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 this.autoCheckIcd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("HIS.Desktop.Plugins.AutoCheckIcd");
                 chkIcd1.Enabled = (this.autoCheckIcd != 2);
                 chkIcd2.Enabled = (this.autoCheckIcd != 2);
-                chkIcd3.Enabled = (this.autoCheckIcd != 2);
+                chkIcd3.Enabled = (this.autoCheckIcd != 2); 
                 chkIcdCm.Enabled = (this.autoCheckIcd != 2);
                 List<HIS_ICD> datas = null;
                 if (BackendDataWorker.IsExistsKey<HIS_ICD>())

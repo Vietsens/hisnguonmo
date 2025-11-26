@@ -168,6 +168,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Debug("SurgServiceReqExecuteControl_Load. 1");
                 isNotLoadWhileChangeControlStateInFirst = true;
                 this.InitLanguage();
+
+                ucEkip.LoadUserData();
                 this.ComboMethodICD();
                 this.InitControlState();
                 Inventec.Common.Logging.LogSystem.Debug("SurgServiceReqExecuteControl_Load. 2");
@@ -5543,19 +5545,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     try { if (item.SERE_SERV_ID != 0) serviceCodeMap.TryGetValue(item.SERE_SERV_ID, out displayCode); } catch { displayCode = null; }
                     var display = !string.IsNullOrEmpty(displayCode) ? displayCode : (item.SERE_SERV_ID > 0 ? item.SERE_SERV_ID.ToString() : "UNKNOWN");
 
-                    if (!begin.HasValue || !end.HasValue)
-                    {
-                        invalids.Add(string.Format("{0} thiếu thời gian bắt đầu hoặc kết thúc", display));
-                        continue;
-                    }
-
-                    if (instructionTime.HasValue && begin.Value < instructionTime.Value)
-                    {
-                        invalids.Add(string.Format("{0} có thời gian bắt đầu nhỏ hơn thời gian y lệnh", display));
-                        continue;
-                    }
-
-                    if (instructionTime.HasValue && end.Value < instructionTime.Value)
+                    if (instructionTime.HasValue && end.Value < instructionTime.Value && chkKetThuc.Checked)
                     {
                         invalids.Add(string.Format("{0} có thời gian kết thúc nhỏ hơn thời gian y lệnh", display));    
                         continue;
