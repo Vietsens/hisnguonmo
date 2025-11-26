@@ -29,6 +29,7 @@ using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.BedRoomWithIn.ADO;
 using HIS.Desktop.Plugins.BedRoomWithIn.Resources;
@@ -1118,8 +1119,31 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             {
                 if (btnSave.Enabled)
                 {
-                    
-                     ProcessDepartmentTranSaveClick(sender, e);
+                    if (HisConfigs.Get<string>("MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION") == "6")
+                    {
+                        CommonParam param = new CommonParam();
+                        HisTreatmentFilter filter = new HisTreatmentFilter();
+                        filter.PATIENT_ID = this.currentTreatment.PATIENT_ID;
+                        filter.IS_PAUSE = false;
+                        filter.TDL_TREATMENT_TYPE_IDs = new List<long>() { IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM, IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU, IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY };
+                        filter.ID__NOT_EQUAL = this.currentTreatment.ID;
+
+                        var Histreatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param);
+                        if (Histreatment != null && Histreatment.Count > 0)
+                        {
+                            Histreatment = Histreatment.Where(o => o.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU ||
+                                                                   o.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY || (
+                                                                   o.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && o.IS_EMERGENCY != 1)).ToList();
+
+                            if (Histreatment != null && Histreatment.Count > 0)
+                            {
+                                var result = XtraMessageBox.Show(String.Format("Tồn tại hồ sơ chưa được kết thúc điều trị (Hồ sơ đang mở: {0}). Bạn có muốn tiếp tục nhập viện?", string.Join(",", Histreatment.Select(o => o.TREATMENT_CODE))), "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                                if (result == DialogResult.No)
+                                    return;
+                            }
+                        }
+                    }
+                    ProcessDepartmentTranSaveClick(sender, e);
                     
                 }
             }
