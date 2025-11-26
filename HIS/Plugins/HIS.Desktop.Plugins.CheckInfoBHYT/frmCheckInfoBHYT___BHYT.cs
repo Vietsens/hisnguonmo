@@ -170,7 +170,6 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                             || !string.IsNullOrEmpty(BHXHLoginCFG.PASSWORD)
                             || !string.IsNullOrEmpty(BHXHLoginCFG.ADDRESS))
                         {
-                            apiInsuranceExpertise.isNullLsKCB2018 = true;
                             apiInsuranceExpertise.ApiEgw = newapi;
                             rsIns2 = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsIns2), rsIns2));

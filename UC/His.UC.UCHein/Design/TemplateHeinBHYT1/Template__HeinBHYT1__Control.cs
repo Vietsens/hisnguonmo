@@ -560,7 +560,21 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        
+        private void SetRegisterButtonsEnabled(bool enabled)
+        {
+            var formParent = this.FindForm();
+            if (formParent != null)
+            {
+                var ucRegister = formParent.Controls.Find("UCRegister", true).FirstOrDefault();
+                if (ucRegister != null)
+                {
+                    var btnXacNhan = ucRegister.Controls.Find("btnSave", true).FirstOrDefault();
+                    var luuIn = ucRegister.Controls.Find("btnSaveAndPrint", true).FirstOrDefault();
+                    if (btnXacNhan != null) btnXacNhan.Enabled = enabled;
+                    if (luuIn != null) luuIn.Enabled = enabled;
+                }
+            }
+        }
         private void txtSoThe_KeyDown(object sender, KeyEventArgs e)
         {
             try
@@ -607,8 +621,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                             string allowManyTreatmentOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION");
                             if (allowManyTreatmentOpeningOption == "6")
                             {
-                                // Tạo bộ lọc và xử lý hồ sơ điều trị
-                                LogSystem.Debug("listResult[0].ID" + listResult[0].ID);
+                                SetRegisterButtonsEnabled(true);
                                 CommonParam paramCommon = new CommonParam();
                                 HisTreatmentFilter filterTreatment = new HisTreatmentFilter
                                 {
@@ -655,25 +668,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                                     }
                                     else
                                     {
-                                        //btnSave
-                                        var formParent = this.FindForm(); // Tìm Form cha chứa UserControl
-                                        if (formParent != null)
-                                        {
-                                            var ucRegister = formParent.Controls.Find("UCRegister", true).FirstOrDefault(); // Tìm UserControl cha từ Form
-                                            if (ucRegister != null)
-                                            {
-                                                var btnXacNhan = ucRegister.Controls.Find("btnSave", true).FirstOrDefault(); // Tìm nút bên trong UserControl
-                                                var luuIn = ucRegister.Controls.Find("btnSaveAndPrint", true).FirstOrDefault(); // Tìm nút bên trong UserControl
-                                                if (btnXacNhan != null)
-                                                {
-                                                    btnXacNhan.Enabled = false; // Disable nút
-                                                }
-                                                if (luuIn != null)
-                                                {
-                                                    luuIn.Enabled = false; // Disable nút
-                                                }
-                                            }
-                                        }
+                                        SetRegisterButtonsEnabled(false);
                                         return; // Dừng toàn bộ xử lý tiếp theo
                                     }
                                 }

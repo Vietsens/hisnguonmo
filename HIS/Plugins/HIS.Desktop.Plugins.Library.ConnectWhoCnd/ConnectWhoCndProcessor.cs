@@ -39,7 +39,11 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 Inventec.Common.Logging.LogSystem.Info("ConnectWhoCndProcessor CheckData");
                 //không có só thẻ BHYT, CCCD thì không đẩy
                 if (data == null || String.IsNullOrWhiteSpace(data.TDL_PATIENT_CCCD_NUMBER) || String.IsNullOrWhiteSpace(data.TDL_HEIN_CARD_NUMBER))
+                {
+                    Inventec.Common.Logging.LogSystem.Info(string.Format("không có só thẻ BHYT, CCCD. CCCD:{0}, BHYT:{1}", data.TDL_PATIENT_CCCD_NUMBER, data.TDL_HEIN_CARD_NUMBER));
                     return result;
+                }
+
 
                 Configs.LoadConfig();
                 List<string> totalIcds = new List<string>();
@@ -96,22 +100,19 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 HasData = true;
                 if (medicine == null || medicine.Count <= 0)
                 {
-                    message = "Bệnh nhân chưa có thông tin đơn thuốc";
-                    HasData = false;
+                    message += "Bệnh nhân chưa có thông tin đơn thuốc. ";
                 }
 
                 //cao huyết áp: I10-I15, khi lưu bắt buộc phải có thông tin huyết áp
                 if (Utilities.IsBATHA(totalIcds) && (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue))
                 {
-                    message = "Bệnh nhân thiếu thông tin huyết áp";
-                    HasData = false;
+                    message += "Bệnh nhân thiếu thông tin huyết áp. ";
                 }
 
                 //đái tháo đường: E10-E14, khi lưu phải có kết quả của đường huyết
                 if (Utilities.IsBADTD(totalIcds) && (ssTein == null || ssTein.Count == 0))
                 {
-                    message = "Bệnh nhân đái tháo đường thiếu kết quả xét nghiệm đường huyết";
-                    HasData = false;
+                    message += "Bệnh nhân đái tháo đường thiếu kết quả xét nghiệm đường huyết. ";
                 }
 
             }
@@ -124,9 +125,13 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 if (!String.IsNullOrWhiteSpace(message))
                 {
                     result = false;
-                    if (Configs.IS_WARNING == "1" && XtraMessageBox.Show(string.Format("{0}. Bạn có muốn tiếp tục?", message), "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                    HasData = false;
+                    if (Configs.IS_WARNING == "1")
                     {
-                        result = true;
+                        if (XtraMessageBox.Show(string.Format("{0}. Bạn có muốn tiếp tục?", message.Trim()), "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        {
+                            result = true;
+                        }
                     }
                     else
                     {
@@ -134,6 +139,8 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                     }
                 }
             }
+            Inventec.Common.Logging.LogSystem.Info("ConnectWhoCndProcessor CheckData message: " + message);
+            Inventec.Common.Logging.LogSystem.Info("ConnectWhoCndProcessor CheckData: " + result);
 
             return result;
         }

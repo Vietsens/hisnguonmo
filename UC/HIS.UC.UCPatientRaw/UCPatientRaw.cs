@@ -101,6 +101,7 @@ namespace HIS.UC.UCPatientRaw
         internal bool isDobTextEditKeyEnter;
         internal bool isNotPatientDayDob = false;
         public bool isReadQrCode;
+        public bool isKey6 = false;
         bool isChild;
         int positionHandleControl = -1;
         bool isGKS;

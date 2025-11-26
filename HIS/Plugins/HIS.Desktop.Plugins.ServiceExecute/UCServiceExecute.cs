@@ -279,6 +279,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 GetDataFromRam();
                 isNotLoadWhileChangeControlStateInFirst = true;
                 LoadKeysFromlanguage();
+                ProcessDicParam();
                 Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.2");
                 this.LoadExecuteRoleUser();
                 timerLoadEkip.Enabled = true;
@@ -1466,10 +1467,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                 }
 
-                Inventec.Common.Logging.LogSystem.Debug("DelegateCaptureImage____" +
-                                    Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => maxImage), maxImage)
-                                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => detail), detail)
-                                    + Inventec.Common.Logging.LogUtil.TraceData("GlobalVariables.listImage.Count", GlobalVariables.listImage.Count));
+                //Inventec.Common.Logging.LogSystem.Debug("DelegateCaptureImage____" +
+                //                    Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => maxImage), maxImage)
+                //                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => detail), detail)
+                //                    + Inventec.Common.Logging.LogUtil.TraceData("GlobalVariables.listImage.Count", GlobalVariables.listImage.Count));
             }
             catch (Exception ex)
             {
@@ -4009,7 +4010,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (CheckEkip())
                 {
                     return;
-                }
+                } 
 
                 var lstEkipUser = ProcessEkipUser(new HIS_SERE_SERV());
                 if (AppConfigKeys.IsSampleInfoOption == "1")
@@ -4703,6 +4704,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         TabControlBaseProcess.CloseSelectedTabPage(SessionManager.GetTabControlMain());
                     }
                 }
+
+                // BỔ SUNG ĐOẠN NÀY ĐỂ HIỂN THỊ LẠI KẾT QUẢ VÀ MẪU
+                ProcessDicParam();
+                ProcessDescriptionContent();
+                ProcessLoadTemplate(sereServ); // nếu muốn load lại mẫu
 
                 #region Process has exception
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
@@ -7695,6 +7701,28 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     var edit = sender as GridLookUpEdit;
                     edit.EditValue = null;
                 }
+
+
+                // --- BỔ SUNG ĐOẠN NÀY ---
+                // Lấy dòng đang chọn
+                var asereServ = (ADO.ServiceADO)gridViewSereServ.GetFocusedRow();
+                if (asereServ != null)
+                {
+                    // Gán lại MACHINE_ID cho sereServExt (nếu có)
+                    if (dicSereServExt != null && dicSereServExt.ContainsKey(asereServ.ID))
+                    {
+                        dicSereServExt[asereServ.ID].MACHINE_ID = asereServ.MACHINE_ID;
+                    }
+                    // Nếu đang xử lý 1 dòng duy nhất
+                    if (sereServExt != null && sereServ != null && sereServ.ID == asereServ.ID)
+                    {
+                        sereServExt.MACHINE_ID = asereServ.MACHINE_ID;
+                    }
+                    // Cập nhật lại dữ liệu hiển thị
+                    ProcessDicParam();
+                    ProcessDescriptionContent();
+                }
+                // --- KẾT THÚC BỔ SUNG ---
             }
             catch (Exception ex)
             {

@@ -813,6 +813,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.5");
                 if (this.resultDataPrescription != null)
                 {
+                    HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(this.currentTreatment, null, null);
+                    who.SendData();
                     HIS_SERVICE_REQ serviceReqResult = null;
                     HIS_EXP_MEST expMestResult = null;
                     ListExpMestResult = null;

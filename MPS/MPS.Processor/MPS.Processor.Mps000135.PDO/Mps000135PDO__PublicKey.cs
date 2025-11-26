@@ -410,13 +410,14 @@ namespace MPS.Processor.Mps000135.PDO
             }
         }
 
-        public Mps000135ADO(List<V_HIS_EXP_MEST_MATERIAL> listMaterial, decimal REQ_AMOUNT, decimal DD_AMOUNT)
+        public Mps000135ADO(List<V_HIS_EXP_MEST_MATERIAL> listMaterial, List<V_HIS_MATERIAL_TYPE> _materialTypes, decimal REQ_AMOUNT, decimal DD_AMOUNT)
         {
             try
             {
                 if (listMaterial != null && listMaterial.Count > 0)
                 {
                     this.TYPE_ID = 2;
+                    var data = _materialTypes.FirstOrDefault(p => p.ID == listMaterial.First().MATERIAL_TYPE_ID);
                     this.MEDI_MATE_TYPE_CODE = listMaterial.First().MATERIAL_TYPE_CODE;
                     this.MEDI_MATE_TYPE_ID = listMaterial.First().MATERIAL_TYPE_ID;
                     this.MEDI_MATE_TYPE_NAME = listMaterial.First().MATERIAL_TYPE_NAME;
@@ -437,6 +438,9 @@ namespace MPS.Processor.Mps000135.PDO
                     this.TOTAL_PRICE = this.IMP_PRICE * this.AMOUNT;
                     this.REQ_AMOUNT = REQ_AMOUNT;
                     this.DD_AMOUNT = DD_AMOUNT;
+                    this.MEDICINE_PARENT_ID = data.PARENT_ID;
+                    this.MEDICINE_PARENT_CODE = data.PARENT_CODE;
+                    this.MEDICINE_PARENT_NAME = data.PARENT_NAME;
                 }
             }
             catch (Exception ex)

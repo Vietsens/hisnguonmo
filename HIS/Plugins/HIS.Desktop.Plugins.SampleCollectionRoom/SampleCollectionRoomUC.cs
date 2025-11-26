@@ -1161,20 +1161,23 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     }
                     else
                     {
-                        LisSampleSampleSDO sdo = new LisSampleSampleSDO();
-                        sdo.SampleId = rowSample.ID;
-                        sdo.RequestRoomCode = room.ROOM_CODE;
-                        var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
-                        if (curentSTT != null)
+                        if (LisConfigCFG.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE != "1")
                         {
-                            rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
-                            rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
-                            rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
-                            rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
-                            rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
-                            rowSample.SAMPLE_ORDER = curentSTT.SAMPLE_ORDER;
+                            LisSampleSampleSDO sdo = new LisSampleSampleSDO();
+                            sdo.SampleId = rowSample.ID;
+                            sdo.RequestRoomCode = room.ROOM_CODE;
+                            var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
+                            if (curentSTT != null)
+                            {
+                                rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
+                                rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
+                                rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
+                                rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
+                                rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
+                                rowSample.SAMPLE_ORDER = curentSTT.SAMPLE_ORDER;
 
-                            gridViewSample.RefreshData();
+                                gridViewSample.RefreshData();
+                            } 
                         }
                     }
                 }
@@ -1248,19 +1251,22 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     }
                     else
                     {
-                        LisSampleSampleSDO sdo = new LisSampleSampleSDO();
-                        sdo.SampleId = rowSample.ID;
-                        sdo.RequestRoomCode = room.ROOM_CODE;
-                        var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
-                        if (curentSTT != null)
+                        if (LisConfigCFG.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE != "1")
                         {
-                            rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
-                            rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
-                            rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
-                            rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
-                            rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
-                            rowSample.SAMPLE_ORDER = curentSTT.SAMPLE_ORDER;
-                            gridViewSample.RefreshData();
+                            LisSampleSampleSDO sdo = new LisSampleSampleSDO();
+                            sdo.SampleId = rowSample.ID;
+                            sdo.RequestRoomCode = room.ROOM_CODE;
+                            var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
+                            if (curentSTT != null)
+                            {
+                                rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
+                                rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
+                                rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
+                                rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
+                                rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
+                                rowSample.SAMPLE_ORDER = curentSTT.SAMPLE_ORDER;
+                                gridViewSample.RefreshData();
+                            } 
                         }
                     }
                 }
@@ -1348,22 +1354,25 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     }
                     else
                     {
-                        CommonParam param = new CommonParam();
-                        LisSampleSampleSDO sdo = new LisSampleSampleSDO();
-                        sdo.SampleId = rowSample.ID;
-                        sdo.RequestRoomCode = room.ROOM_CODE;
-                        var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
-                        if (curentSTT != null)
+                        if (LisConfigCFG.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE != "1")
                         {
-                            rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
-                            rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
-                            rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
-                            rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
-                            rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
-                            rowSample.SAMPLE_ORDER = curentSTT.SAMPLE_ORDER;
+                            CommonParam param = new CommonParam();
+                            LisSampleSampleSDO sdo = new LisSampleSampleSDO();
+                            sdo.SampleId = rowSample.ID;
+                            sdo.RequestRoomCode = room.ROOM_CODE;
+                            var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
+                            if (curentSTT != null)
+                            {
+                                rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
+                                rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
+                                rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
+                                rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
+                                rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
+                                rowSample.SAMPLE_ORDER = curentSTT.SAMPLE_ORDER;
 
-                            FillDataToGridControl();
-                            gridViewSample.RefreshData();
+                                FillDataToGridControl();
+                                gridViewSample.RefreshData();
+                            } 
                         }
                     }
                 }

@@ -46,60 +46,61 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCExecuteRoom));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject49 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject50 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject51 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject52 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject53 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject54 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject55 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject56 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject57 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject58 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject59 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject60 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject61 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject62 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject63 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject64 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject65 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject66 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject67 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject68 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject69 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject70 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject71 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject72 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject73 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject74 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject75 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject76 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject77 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject78 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject79 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject80 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject81 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject82 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject83 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject84 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject85 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject86 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject87 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject88 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject177 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject178 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject179 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject180 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject181 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject182 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject183 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject184 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject185 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject186 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject187 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject188 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject189 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject190 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject191 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject192 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject193 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject194 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject195 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject196 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject197 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject198 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject199 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject200 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject201 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject202 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject203 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject204 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject205 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject206 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject207 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject208 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject209 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject210 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject211 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject212 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject213 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject214 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject215 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject216 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject217 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject218 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject219 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject220 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtCallPatientCPA = new DevExpress.XtraEditors.LabelControl();
             this.ckKQCLS = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
             this.btnNotEnter = new DevExpress.XtraEditors.SimpleButton();
             this.btnMissCall = new DevExpress.XtraEditors.SimpleButton();
             this.chkScreenSaver = new DevExpress.XtraEditors.CheckEdit();
@@ -244,7 +245,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumnSoPhieu = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnSereServServiceReqBlock = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.toolTipController2 = new DevExpress.Utils.ToolTipController();
+            this.toolTipController2 = new DevExpress.Utils.ToolTipController(this.components);
             this.layoutControlGroup5 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
@@ -321,42 +322,44 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
             this.gridControlServiceReq = new DevExpress.XtraGrid.GridControl();
             this.gridViewServiceReq = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemPictureEdit7 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.grdColTRANGTHAI_IMG = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemPictureEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
+            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemPictureEdit7 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemBtnMedisoftHistory = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.grdColNUM_ORDER = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnBusyCount = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemPictureEdit_Attach_STT = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemPictureEdit5 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
-            this.grdColPRIORIRY_DISPLAY = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemPictureEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
-            this.grdColNUM_ORDER = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnBusyCount = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grdColServiceReqCode = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemTextEdit = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
-            this.grdColVirPatientName = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grdColPatientCode = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grdColDob = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnGender = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnTreatmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnInstructionTime = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnServiceReqBlock = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gc_PatientClassify = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Gc_MedisoftHistory = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemBtnMedisoftHistory = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.grdColFinishTime = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grdColPatientType = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemPictureEdit6 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
-            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn22 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemPictureEdit8 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
+            this.grdColVirPatientName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemTextEdit = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
+            this.grdColDob = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColPatientCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnTreatmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColServiceReqCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnGender = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnInstructionTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnServiceReqBlock = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gc_PatientClassify = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColFinishTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColPatientType = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColPRIORIRY_DISPLAY = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemPictureEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
+            this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_MedisoftHistory = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButton_CallPatient = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton__Send = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton__Send__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -419,14 +422,14 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.layoutControlItem42 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem53 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcCkhCPA = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageListPriority = new System.Windows.Forms.ImageList();
-            this.imageListIcon = new System.Windows.Forms.ImageList();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
-            this.timerDoubleClick = new System.Windows.Forms.Timer();
-            this.timerAutoReload = new System.Windows.Forms.Timer();
-            this.imageListRefesh = new System.Windows.Forms.ImageList();
-            this.timerReloadMachineCounter = new System.Windows.Forms.Timer();
+            this.imageListPriority = new System.Windows.Forms.ImageList(this.components);
+            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.timerDoubleClick = new System.Windows.Forms.Timer(this.components);
+            this.timerAutoReload = new System.Windows.Forms.Timer(this.components);
+            this.imageListRefesh = new System.Windows.Forms.ImageList(this.components);
+            this.timerReloadMachineCounter = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ckKQCLS.Properties)).BeginInit();
@@ -584,14 +587,15 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlServiceReq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewServiceReq)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnMedisoftHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit_Attach_STT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnMedisoftHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton_CallPatient)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send__Disable)).BeginInit();
@@ -2155,7 +2159,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // 
             this.repositoryItemBtnViewAccessionNumber.AutoHeight = false;
             this.repositoryItemBtnViewAccessionNumber.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnViewAccessionNumber.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnViewAccessionNumber.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject177, serializableAppearanceObject178, serializableAppearanceObject179, serializableAppearanceObject180, "", null, null, true)});
             this.repositoryItemBtnViewAccessionNumber.Name = "repositoryItemBtnViewAccessionNumber";
             this.repositoryItemBtnViewAccessionNumber.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnViewAccessionNumber.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnViewAccessionNumber_ButtonClick);
@@ -2181,7 +2185,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // 
             this.repositoryItemBtnPrint.AutoHeight = false;
             this.repositoryItemBtnPrint.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnPrint.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnPrint.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject181, serializableAppearanceObject182, serializableAppearanceObject183, serializableAppearanceObject184, "", null, null, true)});
             this.repositoryItemBtnPrint.Name = "repositoryItemBtnPrint";
             this.repositoryItemBtnPrint.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnPrint.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnPrint_ButtonClick);
@@ -3231,7 +3235,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.repositoryItembtnLoaGoiNho,
             this.repositoryItemBtnDangGoi,
             this.repositoryItemPictureEdit7,
-            this.repositoryItemTextEdit});
+            this.repositoryItemTextEdit,
+            this.repositoryItemPictureEdit8});
             this.gridControlServiceReq.Size = new System.Drawing.Size(428, 561);
             this.gridControlServiceReq.TabIndex = 9;
             this.gridControlServiceReq.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -3248,6 +3253,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn1,
             this.gridColumn11,
             this.gridColumn15,
+            this.gridColumn22,
             this.grdColVirPatientName,
             this.grdColDob,
             this.grdColPatientCode,
@@ -3288,22 +3294,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridViewServiceReq.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewServiceReq_CustomUnboundColumnData);
             this.gridViewServiceReq.DoubleClick += new System.EventHandler(this.gridViewServiceReq_DoubleClick);
             // 
-            // gridColumn2
-            // 
-            this.gridColumn2.Caption = "Call Patient";
-            this.gridColumn2.ColumnEdit = this.repositoryItemPictureEdit7;
-            this.gridColumn2.FieldName = "CallPatient";
-            this.gridColumn2.Name = "gridColumn2";
-            this.gridColumn2.OptionsColumn.ShowCaption = false;
-            this.gridColumn2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 2;
-            this.gridColumn2.Width = 20;
-            // 
-            // repositoryItemPictureEdit7
-            // 
-            this.repositoryItemPictureEdit7.Name = "repositoryItemPictureEdit7";
-            // 
             // grdColTRANGTHAI_IMG
             // 
             this.grdColTRANGTHAI_IMG.AppearanceCell.Options.UseTextOptions = true;
@@ -3326,6 +3316,66 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // 
             this.repositoryItemPictureEdit1.Name = "repositoryItemPictureEdit1";
             this.repositoryItemPictureEdit1.NullText = " ";
+            // 
+            // gridColumn2
+            // 
+            this.gridColumn2.Caption = "Call Patient";
+            this.gridColumn2.ColumnEdit = this.repositoryItemPictureEdit7;
+            this.gridColumn2.FieldName = "CallPatient";
+            this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.OptionsColumn.ShowCaption = false;
+            this.gridColumn2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn2.Visible = true;
+            this.gridColumn2.VisibleIndex = 2;
+            this.gridColumn2.Width = 20;
+            // 
+            // repositoryItemPictureEdit7
+            // 
+            this.repositoryItemPictureEdit7.Name = "repositoryItemPictureEdit7";
+            // 
+            // gridColumn14
+            // 
+            this.gridColumn14.Caption = "a";
+            this.gridColumn14.ColumnEdit = this.repositoryItemBtnMedisoftHistory;
+            this.gridColumn14.FieldName = "PatientMissed";
+            this.gridColumn14.Name = "gridColumn14";
+            this.gridColumn14.OptionsColumn.ShowCaption = false;
+            this.gridColumn14.Visible = true;
+            this.gridColumn14.VisibleIndex = 3;
+            this.gridColumn14.Width = 20;
+            // 
+            // repositoryItemBtnMedisoftHistory
+            // 
+            this.repositoryItemBtnMedisoftHistory.AutoHeight = false;
+            this.repositoryItemBtnMedisoftHistory.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnMedisoftHistory.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject185, serializableAppearanceObject186, serializableAppearanceObject187, serializableAppearanceObject188, "", null, null, true)});
+            this.repositoryItemBtnMedisoftHistory.Name = "repositoryItemBtnMedisoftHistory";
+            this.repositoryItemBtnMedisoftHistory.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // grdColNUM_ORDER
+            // 
+            this.grdColNUM_ORDER.AppearanceHeader.Options.UseTextOptions = true;
+            this.grdColNUM_ORDER.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.grdColNUM_ORDER.Caption = "#";
+            this.grdColNUM_ORDER.FieldName = "NUM_ORDER";
+            this.grdColNUM_ORDER.Name = "grdColNUM_ORDER";
+            this.grdColNUM_ORDER.OptionsColumn.AllowEdit = false;
+            this.grdColNUM_ORDER.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.grdColNUM_ORDER.Visible = true;
+            this.grdColNUM_ORDER.VisibleIndex = 4;
+            this.grdColNUM_ORDER.Width = 30;
+            // 
+            // gridColumnBusyCount
+            // 
+            this.gridColumnBusyCount.Caption = "gridColumn9";
+            this.gridColumnBusyCount.ColumnEdit = this.repositoryItemPictureEdit1;
+            this.gridColumnBusyCount.FieldName = "BUSY_COUNT_DISPLAY";
+            this.gridColumnBusyCount.Name = "gridColumnBusyCount";
+            this.gridColumnBusyCount.OptionsColumn.ShowCaption = false;
+            this.gridColumnBusyCount.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnBusyCount.Visible = true;
+            this.gridColumnBusyCount.VisibleIndex = 5;
+            this.gridColumnBusyCount.Width = 20;
             // 
             // gridColumn1
             // 
@@ -3359,268 +3409,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.repositoryItemPictureEdit5.Name = "repositoryItemPictureEdit5";
             this.repositoryItemPictureEdit5.NullText = " ";
             // 
-            // grdColPRIORIRY_DISPLAY
-            // 
-            this.grdColPRIORIRY_DISPLAY.AppearanceHeader.Options.UseTextOptions = true;
-            this.grdColPRIORIRY_DISPLAY.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.grdColPRIORIRY_DISPLAY.Caption = "*";
-            this.grdColPRIORIRY_DISPLAY.ColumnEdit = this.repositoryItemPictureEdit2;
-            this.grdColPRIORIRY_DISPLAY.FieldName = "PRIORIRY_DISPLAY";
-            this.grdColPRIORIRY_DISPLAY.Name = "grdColPRIORIRY_DISPLAY";
-            this.grdColPRIORIRY_DISPLAY.OptionsColumn.AllowEdit = false;
-            this.grdColPRIORIRY_DISPLAY.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-            this.grdColPRIORIRY_DISPLAY.OptionsColumn.ShowCaption = false;
-            this.grdColPRIORIRY_DISPLAY.ToolTip = "Trạng thái của các yêu cầu kèm theo";
-            this.grdColPRIORIRY_DISPLAY.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.grdColPRIORIRY_DISPLAY.Width = 20;
-            // 
-            // repositoryItemPictureEdit2
-            // 
-            this.repositoryItemPictureEdit2.Name = "repositoryItemPictureEdit2";
-            this.repositoryItemPictureEdit2.NullText = " ";
-            // 
-            // grdColNUM_ORDER
-            // 
-            this.grdColNUM_ORDER.AppearanceHeader.Options.UseTextOptions = true;
-            this.grdColNUM_ORDER.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.grdColNUM_ORDER.Caption = "#";
-            this.grdColNUM_ORDER.FieldName = "NUM_ORDER";
-            this.grdColNUM_ORDER.Name = "grdColNUM_ORDER";
-            this.grdColNUM_ORDER.OptionsColumn.AllowEdit = false;
-            this.grdColNUM_ORDER.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-            this.grdColNUM_ORDER.Visible = true;
-            this.grdColNUM_ORDER.VisibleIndex = 4;
-            this.grdColNUM_ORDER.Width = 30;
-            // 
-            // gridColumnBusyCount
-            // 
-            this.gridColumnBusyCount.Caption = "gridColumn9";
-            this.gridColumnBusyCount.ColumnEdit = this.repositoryItemPictureEdit1;
-            this.gridColumnBusyCount.FieldName = "BUSY_COUNT_DISPLAY";
-            this.gridColumnBusyCount.Name = "gridColumnBusyCount";
-            this.gridColumnBusyCount.OptionsColumn.ShowCaption = false;
-            this.gridColumnBusyCount.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumnBusyCount.Visible = true;
-            this.gridColumnBusyCount.VisibleIndex = 5;
-            this.gridColumnBusyCount.Width = 20;
-            // 
-            // grdColServiceReqCode
-            // 
-            this.grdColServiceReqCode.Caption = "Mã y lệnh";
-            this.grdColServiceReqCode.ColumnEdit = this.repositoryItemTextEdit;
-            this.grdColServiceReqCode.FieldName = "SERVICE_REQ_CODE";
-            this.grdColServiceReqCode.Name = "grdColServiceReqCode";
-            this.grdColServiceReqCode.OptionsColumn.ReadOnly = true;
-            this.grdColServiceReqCode.Visible = true;
-            this.grdColServiceReqCode.VisibleIndex = 12;
-            this.grdColServiceReqCode.Width = 110;
-            // 
-            // repositoryItemTextEdit
-            // 
-            this.repositoryItemTextEdit.AutoHeight = false;
-            this.repositoryItemTextEdit.Name = "repositoryItemTextEdit";
-            this.repositoryItemTextEdit.DoubleClick += new System.EventHandler(this.repositoryItemTextEdit_DoubleClick);
-            // 
-            // grdColVirPatientName
-            // 
-            this.grdColVirPatientName.Caption = "Tên bệnh nhân";
-            this.grdColVirPatientName.ColumnEdit = this.repositoryItemTextEdit;
-            this.grdColVirPatientName.FieldName = "TDL_PATIENT_NAME";
-            this.grdColVirPatientName.Name = "grdColVirPatientName";
-            this.grdColVirPatientName.OptionsColumn.ReadOnly = true;
-            this.grdColVirPatientName.Visible = true;
-            this.grdColVirPatientName.VisibleIndex = 8;
-            this.grdColVirPatientName.Width = 140;
-            // 
-            // gridColumn20
-            // 
-            this.gridColumn20.Caption = "Ngày dự trù";
-            this.gridColumn20.FieldName = "USE_TIME_DISPLAY";
-            this.gridColumn20.Name = "gridColumn20";
-            this.gridColumn20.OptionsColumn.AllowEdit = false;
-            this.gridColumn20.OptionsColumn.ReadOnly = true;
-            this.gridColumn20.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            // 
-            // gridColumn21
-            // 
-            this.gridColumn21.Caption = "Người yêu cầu";
-            this.gridColumn21.FieldName = "REQUEST_USER_DISPLAY";
-            this.gridColumn21.Name = "gridColumn21";
-            // 
-            // grdColPatientCode
-            // 
-            this.grdColPatientCode.AppearanceCell.Options.UseTextOptions = true;
-            this.grdColPatientCode.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.grdColPatientCode.AppearanceHeader.Options.UseTextOptions = true;
-            this.grdColPatientCode.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.grdColPatientCode.Caption = "Mã bệnh nhân";
-            this.grdColPatientCode.ColumnEdit = this.repositoryItemTextEdit;
-            this.grdColPatientCode.FieldName = "TDL_PATIENT_CODE";
-            this.grdColPatientCode.Name = "grdColPatientCode";
-            this.grdColPatientCode.OptionsColumn.ReadOnly = true;
-            this.grdColPatientCode.Visible = true;
-            this.grdColPatientCode.VisibleIndex = 10;
-            this.grdColPatientCode.Width = 96;
-            // 
-            // grdColDob
-            // 
-            this.grdColDob.Caption = "Năm sinh";
-            this.grdColDob.ColumnEdit = this.repositoryItemTextEdit;
-            this.grdColDob.FieldName = "DOB_DISPLAY";
-            this.grdColDob.Name = "grdColDob";
-            this.grdColDob.OptionsColumn.AllowSize = false;
-            this.grdColDob.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
-            this.grdColDob.OptionsColumn.ReadOnly = true;
-            this.grdColDob.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.grdColDob.Visible = true;
-            this.grdColDob.VisibleIndex = 9;
-            this.grdColDob.Width = 66;
-            // 
-            // gridColumnGender
-            // 
-            this.gridColumnGender.Caption = "Giới tính";
-            this.gridColumnGender.FieldName = "TDL_PATIENT_GENDER_NAME";
-            this.gridColumnGender.Name = "gridColumnGender";
-            this.gridColumnGender.OptionsColumn.AllowSize = false;
-            this.gridColumnGender.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
-            this.gridColumnGender.OptionsColumn.ReadOnly = true;
-            this.gridColumnGender.Visible = true;
-            this.gridColumnGender.VisibleIndex = 13;
-            this.gridColumnGender.Width = 62;
-            // 
-            // gridColumnTreatmentCode
-            // 
-            this.gridColumnTreatmentCode.Caption = "Mã điều trị";
-            this.gridColumnTreatmentCode.ColumnEdit = this.repositoryItemTextEdit;
-            this.gridColumnTreatmentCode.FieldName = "TDL_TREATMENT_CODE";
-            this.gridColumnTreatmentCode.Name = "gridColumnTreatmentCode";
-            this.gridColumnTreatmentCode.OptionsColumn.AllowSize = false;
-            this.gridColumnTreatmentCode.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
-            this.gridColumnTreatmentCode.OptionsColumn.ReadOnly = true;
-            this.gridColumnTreatmentCode.Visible = true;
-            this.gridColumnTreatmentCode.VisibleIndex = 11;
-            this.gridColumnTreatmentCode.Width = 100;
-            // 
-            // gridColumnInstructionTime
-            // 
-            this.gridColumnInstructionTime.Caption = "Thời gian y lệnh";
-            this.gridColumnInstructionTime.FieldName = "INSTRUCTION_TIME_DISPLAY";
-            this.gridColumnInstructionTime.Name = "gridColumnInstructionTime";
-            this.gridColumnInstructionTime.OptionsColumn.AllowSize = false;
-            this.gridColumnInstructionTime.OptionsColumn.ReadOnly = true;
-            this.gridColumnInstructionTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumnInstructionTime.Visible = true;
-            this.gridColumnInstructionTime.VisibleIndex = 16;
-            this.gridColumnInstructionTime.Width = 146;
-            // 
-            // gridColumn17
-            // 
-            this.gridColumn17.Caption = "Thời gian bắt đầu";
-            this.gridColumn17.FieldName = "START_TIME_DISPLAY";
-            this.gridColumn17.Name = "gridColumn17";
-            this.gridColumn17.OptionsColumn.ReadOnly = true;
-            this.gridColumn17.OptionsFilter.AllowAutoFilter = false;
-            this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 17;
-            this.gridColumn17.Width = 146;
-            // 
-            // gridColumn9
-            // 
-            this.gridColumn9.Caption = "Khoa chỉ định";
-            this.gridColumn9.FieldName = "REQUEST_DEPARTMENT_DISPLAY";
-            this.gridColumn9.Name = "gridColumn9";
-            this.gridColumn9.OptionsColumn.ReadOnly = true;
-            this.gridColumn9.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 14;
-            this.gridColumn9.Width = 156;
-            // 
-            // gridColumn10
-            // 
-            this.gridColumn10.Caption = "Phòng chỉ định";
-            this.gridColumn10.FieldName = "REQUEST_ROOM_DISPLAY";
-            this.gridColumn10.Name = "gridColumn10";
-            this.gridColumn10.OptionsColumn.ReadOnly = true;
-            this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 15;
-            this.gridColumn10.Width = 149;
-            // 
-            // gridColumnServiceReqBlock
-            // 
-            this.gridColumnServiceReqBlock.Caption = "BLOCK";
-            this.gridColumnServiceReqBlock.FieldName = "BLOCK";
-            this.gridColumnServiceReqBlock.Name = "gridColumnServiceReqBlock";
-            this.gridColumnServiceReqBlock.OptionsColumn.AllowEdit = false;
-            this.gridColumnServiceReqBlock.Visible = true;
-            this.gridColumnServiceReqBlock.VisibleIndex = 18;
-            this.gridColumnServiceReqBlock.Width = 60;
-            // 
-            // gc_PatientClassify
-            // 
-            this.gc_PatientClassify.Caption = "Phân loại BN";
-            this.gc_PatientClassify.FieldName = "PATIENT_CLASSIFY_NAME";
-            this.gc_PatientClassify.Name = "gc_PatientClassify";
-            this.gc_PatientClassify.OptionsColumn.ReadOnly = true;
-            this.gc_PatientClassify.ToolTip = "Phân loại bệnh nhân";
-            this.gc_PatientClassify.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gc_PatientClassify.Visible = true;
-            this.gc_PatientClassify.VisibleIndex = 19;
-            this.gc_PatientClassify.Width = 80;
-            // 
-            // Gc_MedisoftHistory
-            // 
-            this.Gc_MedisoftHistory.Caption = "Lịch sử điều trị medisoft";
-            this.Gc_MedisoftHistory.ColumnEdit = this.repositoryItemBtnMedisoftHistory;
-            this.Gc_MedisoftHistory.FieldName = "MEDISOFT_HISTORY";
-            this.Gc_MedisoftHistory.Name = "Gc_MedisoftHistory";
-            this.Gc_MedisoftHistory.OptionsColumn.ShowCaption = false;
-            this.Gc_MedisoftHistory.Width = 25;
-            // 
-            // repositoryItemBtnMedisoftHistory
-            // 
-            this.repositoryItemBtnMedisoftHistory.AutoHeight = false;
-            this.repositoryItemBtnMedisoftHistory.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnMedisoftHistory.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "", null, null, true)});
-            this.repositoryItemBtnMedisoftHistory.Name = "repositoryItemBtnMedisoftHistory";
-            this.repositoryItemBtnMedisoftHistory.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            // 
-            // grdColFinishTime
-            // 
-            this.grdColFinishTime.Caption = "Thời gian kết thúc";
-            this.grdColFinishTime.FieldName = "FINISH_TIME_STR";
-            this.grdColFinishTime.Name = "grdColFinishTime";
-            this.grdColFinishTime.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-            this.grdColFinishTime.OptionsColumn.ReadOnly = true;
-            this.grdColFinishTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.grdColFinishTime.Visible = true;
-            this.grdColFinishTime.VisibleIndex = 20;
-            this.grdColFinishTime.Width = 100;
-            // 
-            // grdColPatientType
-            // 
-            this.grdColPatientType.Caption = "Đối tượng BN";
-            this.grdColPatientType.FieldName = "PATIENT_TYPE_NAME";
-            this.grdColPatientType.Name = "grdColPatientType";
-            this.grdColPatientType.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-            this.grdColPatientType.OptionsColumn.ReadOnly = true;
-            this.grdColPatientType.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.grdColPatientType.Visible = true;
-            this.grdColPatientType.VisibleIndex = 21;
-            this.grdColPatientType.Width = 100;
-            // 
-            // gridColumn14
-            // 
-            this.gridColumn14.Caption = "a";
-            this.gridColumn14.ColumnEdit = this.repositoryItemBtnMedisoftHistory;
-            this.gridColumn14.FieldName = "PatientMissed";
-            this.gridColumn14.Name = "gridColumn14";
-            this.gridColumn14.OptionsColumn.ShowCaption = false;
-            this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 3;
-            this.gridColumn14.Width = 20;
-            // 
             // gridColumn15
             // 
             this.gridColumn15.AppearanceCell.Options.UseTextOptions = true;
@@ -3643,6 +3431,251 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.repositoryItemPictureEdit6.Name = "repositoryItemPictureEdit6";
             this.repositoryItemPictureEdit6.NullText = " ";
             // 
+            // gridColumn22
+            // 
+            this.gridColumn22.Caption = "Đang nợ viện phí (icon)";
+            this.gridColumn22.ColumnEdit = this.repositoryItemPictureEdit8;
+            this.gridColumn22.FieldName = "IS_NOT_IN_DEBT_ICON";
+            this.gridColumn22.Name = "gridColumn22";
+            this.gridColumn22.OptionsColumn.AllowEdit = false;
+            this.gridColumn22.OptionsColumn.ShowCaption = false;
+            this.gridColumn22.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn22.Visible = true;
+            this.gridColumn22.VisibleIndex = 8;
+            this.gridColumn22.Width = 20;
+            // 
+            // repositoryItemPictureEdit8
+            // 
+            this.repositoryItemPictureEdit8.Name = "repositoryItemPictureEdit8";
+            this.repositoryItemPictureEdit8.NullText = " ";
+            // 
+            // grdColVirPatientName
+            // 
+            this.grdColVirPatientName.Caption = "Tên bệnh nhân";
+            this.grdColVirPatientName.ColumnEdit = this.repositoryItemTextEdit;
+            this.grdColVirPatientName.FieldName = "TDL_PATIENT_NAME";
+            this.grdColVirPatientName.Name = "grdColVirPatientName";
+            this.grdColVirPatientName.OptionsColumn.ReadOnly = true;
+            this.grdColVirPatientName.Visible = true;
+            this.grdColVirPatientName.VisibleIndex = 9;
+            this.grdColVirPatientName.Width = 140;
+            // 
+            // repositoryItemTextEdit
+            // 
+            this.repositoryItemTextEdit.AutoHeight = false;
+            this.repositoryItemTextEdit.Name = "repositoryItemTextEdit";
+            this.repositoryItemTextEdit.DoubleClick += new System.EventHandler(this.repositoryItemTextEdit_DoubleClick);
+            // 
+            // grdColDob
+            // 
+            this.grdColDob.Caption = "Năm sinh";
+            this.grdColDob.ColumnEdit = this.repositoryItemTextEdit;
+            this.grdColDob.FieldName = "DOB_DISPLAY";
+            this.grdColDob.Name = "grdColDob";
+            this.grdColDob.OptionsColumn.AllowSize = false;
+            this.grdColDob.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.grdColDob.OptionsColumn.ReadOnly = true;
+            this.grdColDob.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColDob.Visible = true;
+            this.grdColDob.VisibleIndex = 10;
+            this.grdColDob.Width = 66;
+            // 
+            // grdColPatientCode
+            // 
+            this.grdColPatientCode.AppearanceCell.Options.UseTextOptions = true;
+            this.grdColPatientCode.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.grdColPatientCode.AppearanceHeader.Options.UseTextOptions = true;
+            this.grdColPatientCode.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.grdColPatientCode.Caption = "Mã bệnh nhân";
+            this.grdColPatientCode.ColumnEdit = this.repositoryItemTextEdit;
+            this.grdColPatientCode.FieldName = "TDL_PATIENT_CODE";
+            this.grdColPatientCode.Name = "grdColPatientCode";
+            this.grdColPatientCode.OptionsColumn.ReadOnly = true;
+            this.grdColPatientCode.Visible = true;
+            this.grdColPatientCode.VisibleIndex = 11;
+            this.grdColPatientCode.Width = 96;
+            // 
+            // gridColumnTreatmentCode
+            // 
+            this.gridColumnTreatmentCode.Caption = "Mã điều trị";
+            this.gridColumnTreatmentCode.ColumnEdit = this.repositoryItemTextEdit;
+            this.gridColumnTreatmentCode.FieldName = "TDL_TREATMENT_CODE";
+            this.gridColumnTreatmentCode.Name = "gridColumnTreatmentCode";
+            this.gridColumnTreatmentCode.OptionsColumn.AllowSize = false;
+            this.gridColumnTreatmentCode.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumnTreatmentCode.OptionsColumn.ReadOnly = true;
+            this.gridColumnTreatmentCode.Visible = true;
+            this.gridColumnTreatmentCode.VisibleIndex = 12;
+            this.gridColumnTreatmentCode.Width = 100;
+            // 
+            // grdColServiceReqCode
+            // 
+            this.grdColServiceReqCode.Caption = "Mã y lệnh";
+            this.grdColServiceReqCode.ColumnEdit = this.repositoryItemTextEdit;
+            this.grdColServiceReqCode.FieldName = "SERVICE_REQ_CODE";
+            this.grdColServiceReqCode.Name = "grdColServiceReqCode";
+            this.grdColServiceReqCode.OptionsColumn.ReadOnly = true;
+            this.grdColServiceReqCode.Visible = true;
+            this.grdColServiceReqCode.VisibleIndex = 13;
+            this.grdColServiceReqCode.Width = 110;
+            // 
+            // gridColumnGender
+            // 
+            this.gridColumnGender.Caption = "Giới tính";
+            this.gridColumnGender.FieldName = "TDL_PATIENT_GENDER_NAME";
+            this.gridColumnGender.Name = "gridColumnGender";
+            this.gridColumnGender.OptionsColumn.AllowSize = false;
+            this.gridColumnGender.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumnGender.OptionsColumn.ReadOnly = true;
+            this.gridColumnGender.Visible = true;
+            this.gridColumnGender.VisibleIndex = 14;
+            this.gridColumnGender.Width = 62;
+            // 
+            // gridColumn9
+            // 
+            this.gridColumn9.Caption = "Khoa chỉ định";
+            this.gridColumn9.FieldName = "REQUEST_DEPARTMENT_DISPLAY";
+            this.gridColumn9.Name = "gridColumn9";
+            this.gridColumn9.OptionsColumn.ReadOnly = true;
+            this.gridColumn9.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn9.Visible = true;
+            this.gridColumn9.VisibleIndex = 15;
+            this.gridColumn9.Width = 156;
+            // 
+            // gridColumn10
+            // 
+            this.gridColumn10.Caption = "Phòng chỉ định";
+            this.gridColumn10.FieldName = "REQUEST_ROOM_DISPLAY";
+            this.gridColumn10.Name = "gridColumn10";
+            this.gridColumn10.OptionsColumn.ReadOnly = true;
+            this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn10.Visible = true;
+            this.gridColumn10.VisibleIndex = 16;
+            this.gridColumn10.Width = 149;
+            // 
+            // gridColumnInstructionTime
+            // 
+            this.gridColumnInstructionTime.Caption = "Thời gian y lệnh";
+            this.gridColumnInstructionTime.FieldName = "INSTRUCTION_TIME_DISPLAY";
+            this.gridColumnInstructionTime.Name = "gridColumnInstructionTime";
+            this.gridColumnInstructionTime.OptionsColumn.AllowSize = false;
+            this.gridColumnInstructionTime.OptionsColumn.ReadOnly = true;
+            this.gridColumnInstructionTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnInstructionTime.Visible = true;
+            this.gridColumnInstructionTime.VisibleIndex = 17;
+            this.gridColumnInstructionTime.Width = 146;
+            // 
+            // gridColumn17
+            // 
+            this.gridColumn17.Caption = "Thời gian bắt đầu";
+            this.gridColumn17.FieldName = "START_TIME_DISPLAY";
+            this.gridColumn17.Name = "gridColumn17";
+            this.gridColumn17.OptionsColumn.ReadOnly = true;
+            this.gridColumn17.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn17.Visible = true;
+            this.gridColumn17.VisibleIndex = 18;
+            this.gridColumn17.Width = 146;
+            // 
+            // gridColumnServiceReqBlock
+            // 
+            this.gridColumnServiceReqBlock.Caption = "BLOCK";
+            this.gridColumnServiceReqBlock.FieldName = "BLOCK";
+            this.gridColumnServiceReqBlock.Name = "gridColumnServiceReqBlock";
+            this.gridColumnServiceReqBlock.OptionsColumn.AllowEdit = false;
+            this.gridColumnServiceReqBlock.Visible = true;
+            this.gridColumnServiceReqBlock.VisibleIndex = 19;
+            this.gridColumnServiceReqBlock.Width = 60;
+            // 
+            // gc_PatientClassify
+            // 
+            this.gc_PatientClassify.Caption = "Phân loại BN";
+            this.gc_PatientClassify.FieldName = "PATIENT_CLASSIFY_NAME";
+            this.gc_PatientClassify.Name = "gc_PatientClassify";
+            this.gc_PatientClassify.OptionsColumn.ReadOnly = true;
+            this.gc_PatientClassify.ToolTip = "Phân loại bệnh nhân";
+            this.gc_PatientClassify.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gc_PatientClassify.Visible = true;
+            this.gc_PatientClassify.VisibleIndex = 20;
+            this.gc_PatientClassify.Width = 80;
+            // 
+            // grdColFinishTime
+            // 
+            this.grdColFinishTime.Caption = "Thời gian kết thúc";
+            this.grdColFinishTime.FieldName = "FINISH_TIME_STR";
+            this.grdColFinishTime.Name = "grdColFinishTime";
+            this.grdColFinishTime.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.grdColFinishTime.OptionsColumn.ReadOnly = true;
+            this.grdColFinishTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColFinishTime.Visible = true;
+            this.grdColFinishTime.VisibleIndex = 21;
+            this.grdColFinishTime.Width = 100;
+            // 
+            // grdColPatientType
+            // 
+            this.grdColPatientType.Caption = "Đối tượng BN";
+            this.grdColPatientType.FieldName = "PATIENT_TYPE_NAME";
+            this.grdColPatientType.Name = "grdColPatientType";
+            this.grdColPatientType.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.grdColPatientType.OptionsColumn.ReadOnly = true;
+            this.grdColPatientType.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColPatientType.Visible = true;
+            this.grdColPatientType.VisibleIndex = 22;
+            this.grdColPatientType.Width = 100;
+            // 
+            // gridColumn19
+            // 
+            this.gridColumn19.Caption = "Máy xử lý";
+            this.gridColumn19.FieldName = "MACHINE_NAMES";
+            this.gridColumn19.Name = "gridColumn19";
+            this.gridColumn19.Visible = true;
+            this.gridColumn19.VisibleIndex = 23;
+            this.gridColumn19.Width = 120;
+            // 
+            // grdColPRIORIRY_DISPLAY
+            // 
+            this.grdColPRIORIRY_DISPLAY.AppearanceHeader.Options.UseTextOptions = true;
+            this.grdColPRIORIRY_DISPLAY.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.grdColPRIORIRY_DISPLAY.Caption = "*";
+            this.grdColPRIORIRY_DISPLAY.ColumnEdit = this.repositoryItemPictureEdit2;
+            this.grdColPRIORIRY_DISPLAY.FieldName = "PRIORIRY_DISPLAY";
+            this.grdColPRIORIRY_DISPLAY.Name = "grdColPRIORIRY_DISPLAY";
+            this.grdColPRIORIRY_DISPLAY.OptionsColumn.AllowEdit = false;
+            this.grdColPRIORIRY_DISPLAY.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.grdColPRIORIRY_DISPLAY.OptionsColumn.ShowCaption = false;
+            this.grdColPRIORIRY_DISPLAY.ToolTip = "Trạng thái của các yêu cầu kèm theo";
+            this.grdColPRIORIRY_DISPLAY.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColPRIORIRY_DISPLAY.Width = 20;
+            // 
+            // repositoryItemPictureEdit2
+            // 
+            this.repositoryItemPictureEdit2.Name = "repositoryItemPictureEdit2";
+            this.repositoryItemPictureEdit2.NullText = " ";
+            // 
+            // gridColumn20
+            // 
+            this.gridColumn20.Caption = "Ngày dự trù";
+            this.gridColumn20.FieldName = "USE_TIME_DISPLAY";
+            this.gridColumn20.Name = "gridColumn20";
+            this.gridColumn20.OptionsColumn.AllowEdit = false;
+            this.gridColumn20.OptionsColumn.ReadOnly = true;
+            this.gridColumn20.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            // 
+            // gridColumn21
+            // 
+            this.gridColumn21.Caption = "Người yêu cầu";
+            this.gridColumn21.FieldName = "REQUEST_USER_DISPLAY";
+            this.gridColumn21.Name = "gridColumn21";
+            // 
+            // Gc_MedisoftHistory
+            // 
+            this.Gc_MedisoftHistory.Caption = "Lịch sử điều trị medisoft";
+            this.Gc_MedisoftHistory.ColumnEdit = this.repositoryItemBtnMedisoftHistory;
+            this.Gc_MedisoftHistory.FieldName = "MEDISOFT_HISTORY";
+            this.Gc_MedisoftHistory.Name = "Gc_MedisoftHistory";
+            this.Gc_MedisoftHistory.OptionsColumn.ShowCaption = false;
+            this.Gc_MedisoftHistory.Width = 25;
+            // 
             // gridColumn16
             // 
             this.gridColumn16.Caption = "gridColumn16";
@@ -3655,22 +3688,13 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn16.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn16.Width = 20;
             // 
-            // gridColumn19
-            // 
-            this.gridColumn19.Caption = "Máy xử lý";
-            this.gridColumn19.FieldName = "MACHINE_NAMES";
-            this.gridColumn19.Name = "gridColumn19";
-            this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 22;
-            this.gridColumn19.Width = 120;
-            // 
             // repositoryItemButton_CallPatient
             // 
             this.repositoryItemButton_CallPatient.Appearance.BackColor = System.Drawing.Color.Transparent;
             this.repositoryItemButton_CallPatient.Appearance.Options.UseBackColor = true;
             this.repositoryItemButton_CallPatient.AutoHeight = false;
             this.repositoryItemButton_CallPatient.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.ExecuteRoom.Properties.Resources.demostration, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject57, serializableAppearanceObject58, serializableAppearanceObject59, serializableAppearanceObject60, "Gọi bệnh nhân", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.ExecuteRoom.Properties.Resources.demostration, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject189, serializableAppearanceObject190, serializableAppearanceObject191, serializableAppearanceObject192, "Gọi bệnh nhân", null, null, true)});
             this.repositoryItemButton_CallPatient.Name = "repositoryItemButton_CallPatient";
             this.repositoryItemButton_CallPatient.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -3678,7 +3702,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // 
             this.repositoryItemButton__Send.AutoHeight = false;
             this.repositoryItemButton__Send.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Send.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject61, serializableAppearanceObject62, serializableAppearanceObject63, serializableAppearanceObject64, "Gửi lại yêu cầu xét nghiệm", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Send.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject193, serializableAppearanceObject194, serializableAppearanceObject195, serializableAppearanceObject196, "Gửi lại yêu cầu xét nghiệm", null, null, true)});
             this.repositoryItemButton__Send.Name = "repositoryItemButton__Send";
             this.repositoryItemButton__Send.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButton__Send.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButton__Send_ButtonClick);
@@ -3687,7 +3711,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // 
             this.repositoryItemButton__Send__Disable.AutoHeight = false;
             this.repositoryItemButton__Send__Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Send__Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject65, serializableAppearanceObject66, serializableAppearanceObject67, serializableAppearanceObject68, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton__Send__Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject197, serializableAppearanceObject198, serializableAppearanceObject199, serializableAppearanceObject200, "", null, null, true)});
             this.repositoryItemButton__Send__Disable.Name = "repositoryItemButton__Send__Disable";
             this.repositoryItemButton__Send__Disable.ReadOnly = true;
             this.repositoryItemButton__Send__Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
@@ -3696,7 +3720,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // 
             this.repositoryEditServiceReq__Enable.AutoHeight = false;
             this.repositoryEditServiceReq__Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryEditServiceReq__Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject69, serializableAppearanceObject70, serializableAppearanceObject71, serializableAppearanceObject72, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryEditServiceReq__Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject201, serializableAppearanceObject202, serializableAppearanceObject203, serializableAppearanceObject204, "", null, null, true)});
             this.repositoryEditServiceReq__Enable.Name = "repositoryEditServiceReq__Enable";
             this.repositoryEditServiceReq__Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryEditServiceReq__Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryEditServiceReq__Enable_ButtonClick);
@@ -3705,7 +3729,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // 
             this.repositoryEditServiceReq__Disable.AutoHeight = false;
             this.repositoryEditServiceReq__Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryEditServiceReq__Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject73, serializableAppearanceObject74, serializableAppearanceObject75, serializableAppearanceObject76, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryEditServiceReq__Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject205, serializableAppearanceObject206, serializableAppearanceObject207, serializableAppearanceObject208, "", null, null, true)});
             this.repositoryEditServiceReq__Disable.Name = "repositoryEditServiceReq__Disable";
             this.repositoryEditServiceReq__Disable.ReadOnly = true;
             this.repositoryEditServiceReq__Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
@@ -3726,7 +3750,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // 
             this.repositoryItembtnGoiNho.AutoHeight = false;
             this.repositoryItembtnGoiNho.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.ExecuteRoom.Properties.Resources.GoiNhoiCon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject77, serializableAppearanceObject78, serializableAppearanceObject79, serializableAppearanceObject80, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.ExecuteRoom.Properties.Resources.GoiNhoiCon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject209, serializableAppearanceObject210, serializableAppearanceObject211, serializableAppearanceObject212, "", null, null, true)});
             this.repositoryItembtnGoiNho.Name = "repositoryItembtnGoiNho";
             this.repositoryItembtnGoiNho.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -3734,7 +3758,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // 
             this.repositoryItembtnLoaGoiNho.AutoHeight = false;
             this.repositoryItembtnLoaGoiNho.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.ExecuteRoom.Properties.Resources.LoaGoiNho, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject81, serializableAppearanceObject82, serializableAppearanceObject83, serializableAppearanceObject84, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.ExecuteRoom.Properties.Resources.LoaGoiNho, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject213, serializableAppearanceObject214, serializableAppearanceObject215, serializableAppearanceObject216, "", null, null, true)});
             this.repositoryItembtnLoaGoiNho.Name = "repositoryItembtnLoaGoiNho";
             this.repositoryItembtnLoaGoiNho.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -3742,7 +3766,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // 
             this.repositoryItemBtnDangGoi.AutoHeight = false;
             this.repositoryItemBtnDangGoi.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.ExecuteRoom.Properties.Resources.danggoi, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject85, serializableAppearanceObject86, serializableAppearanceObject87, serializableAppearanceObject88, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.ExecuteRoom.Properties.Resources.danggoi, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject217, serializableAppearanceObject218, serializableAppearanceObject219, serializableAppearanceObject220, "", null, null, true)});
             this.repositoryItemBtnDangGoi.Name = "repositoryItemBtnDangGoi";
             this.repositoryItemBtnDangGoi.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -4384,6 +4408,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.imageListIcon.Images.SetKeyName(12, "GoiNhoiCon.png");
             this.imageListIcon.Images.SetKeyName(13, "LoaGoiNho.png");
             this.imageListIcon.Images.SetKeyName(14, "demostration.png");
+            this.imageListIcon.Images.SetKeyName(15, "tai-chinh.png");
             // 
             // toolTipController1
             // 
@@ -4592,14 +4617,15 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlServiceReq)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewServiceReq)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnMedisoftHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit_Attach_STT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnMedisoftHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton_CallPatient)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send__Disable)).EndInit();
@@ -5005,5 +5031,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn21;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnPrint;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemBtnPrint;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn22;
+        private DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit repositoryItemPictureEdit8;
     }
 }

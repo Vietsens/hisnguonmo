@@ -177,7 +177,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 Inventec.Common.Logging.LogSystem.Debug("UCRegister_Load .4");
                 SetDelegateForResetRegister();
                 this.actionType = GlobalVariables.ActionAdd;
-
                 this.SetDefaultRegisterForm();
                 LogSystem.Debug("UCRegister_Load .5");
 
@@ -192,6 +191,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 {
                     lstModuleLinkApply = HisConfigCFG.ModuleLinkApply.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 }
+
                 Inventec.Common.Logging.LogSystem.Debug("UCRegister_Load .9");
             }
             catch (Exception ex)

@@ -51,6 +51,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dt), dt));
+
+                CommonParam param = new CommonParam();
                 var heinCardData = dt.HeinCardData;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => heinCardData), heinCardData));
                 Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.1");
@@ -99,6 +102,30 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     dataAddressPatient.Address = heinCardData.Address;
                     this.ucAddressCombo1.SetValue(dataAddressPatient);
                     Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.6");
+                }
+                else if (dt.HisPatientSDO != null && HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
+                {
+                    HisTreatmentFilter filter = new HisTreatmentFilter();
+                    filter.ID = dt.HisPatientSDO.ID;
+                    var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, filter, param);
+                    var latestTreatment = treatment.Where(t => t.PATIENT_ID == currentPatientSDO.ID && !string.IsNullOrEmpty(t.TDL_PATIENT_ADDRESS))
+                        .OrderByDescending(t => t.IN_TIME)
+                        .FirstOrDefault();
+                    Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.6.5");
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => latestTreatment), latestTreatment));
+                    if (latestTreatment != null)
+                    {
+                        dataAddressPatient.Province_Code = latestTreatment.TDL_PATIENT_PROVINCE_CODE;
+                        dataAddressPatient.Province_Name = latestTreatment.TDL_PATIENT_PROVINCE_NAME;
+                        dataAddressPatient.District_Code = latestTreatment.TDL_PATIENT_DISTRICT_CODE;
+                        dataAddressPatient.District_Name = latestTreatment.TDL_PATIENT_DISTRICT_NAME;
+                        dataAddressPatient.Commune_Code = latestTreatment.TDL_PATIENT_COMMUNE_CODE;
+                        dataAddressPatient.Commune_Name = latestTreatment.TDL_PATIENT_COMMUNE_NAME;
+                        //dataAddressPatient.IsNoDistrict = latestTreatment.;
+
+                        dataAddressPatient.Address = latestTreatment.TDL_PATIENT_ADDRESS;
+                    }
+                    this.ucAddressCombo1.SetValue(dataAddressPatient);
                 }
                 if (this.ucOtherServiceReqInfo1 != null)
                     this.ucOtherServiceReqInfo1.RefreshUserControl();

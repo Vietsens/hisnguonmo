@@ -46,14 +46,15 @@
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EMR.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\EMR\EMR.EFMODEL.dll</HintPath>
+      <HintPath>C:\Users\minhp\Desktop\New folder\EMR.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="EMR.Filter">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\EMR.Filter.dll</HintPath>
+    <Reference Include="EMR.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\minhp\Desktop\New folder\EMR.Filter.dll</HintPath>
     </Reference>
     <Reference Include="EMR.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
+      <HintPath>C:\Users\minhp\Desktop\New folder\EMR.SDO.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ApiConsumer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -148,7 +149,7 @@
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>C:\Users\minhp\Desktop\New folder\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MOS.Filter.dll</HintPath>

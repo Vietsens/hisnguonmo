@@ -981,6 +981,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 }
                 LogSystem.Debug("btnAdd_TabMedicine_Click => 3");
                 bool valid = true;
+                //if (!CheckAllergenicWarningByPatient(currentMedicineTypeADOForEdit))
+                //    return;
                 this.positionHandleControl = -1;
                 this.paramCommon = new CommonParam();
                 valid = valid && (dxValidProviderBoXung.Validate());
@@ -1071,48 +1073,120 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
             return result;
         }
-
         private bool CheckAllergenicByPatient()
         {
             bool result = true;
             try
             {
-                if (this.currentMedicineTypeADOForEdit != null)
+                if (this.currentMedicineTypeADOForEdit == null)
+                    return true;
+                long patientId = currentTreatmentWithPatientType.PATIENT_ID; // <-- Đảm bảo bạn có biến này
+                long medicineTypeId = this.currentMedicineTypeADOForEdit.ID;
+                string medicineTypeName = this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_NAME;
+                // 1. Lấy toàn bộ thẻ dị ứng của bệnh nhân (Danh sách A)
+                var allPatientAllergenics = (this.allergenics ?? new List<HIS_ALLERGENIC>())
+                    .Where(a => a.TDL_PATIENT_ID == patientId)
+                    .ToList();
+                if (allPatientAllergenics.Count == 0)
+                    return true;
+                StringBuilder sb = new StringBuilder();
+                // ==================================================================
+                // 2. Xử lý dị ứng trực tiếp với thuốc (MEDICINE_TYPE_ID) → chỉ lấy 1 mới nhất
+                // ==================================================================
+                var latestMedicineAllergy = allPatientAllergenics
+                    .Where(a => a.MEDICINE_TYPE_ID.HasValue && a.MEDICINE_TYPE_ID.Value == medicineTypeId)
+                    .OrderByDescending(a => a.MODIFY_TIME ?? 0)
+                    .FirstOrDefault();
+                // ==================================================================
+                // 3. Xử lý dị ứng hoạt chất → chỉ lấy 1 bản ghi mới nhất cho mỗi hoạt chất
+                // ==================================================================
+                var medicineTypeAcins = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                    .Get<V_HIS_MEDICINE_TYPE_ACIN>()
+                    .Where(ac => ac.MEDICINE_TYPE_ID == medicineTypeId)
+                    .ToList();
+                // Dictionary: Key = ACTIVE_INGREDIENT_ID, Value = bản ghi mới nhất
+                var latestAcinAllergies = new Dictionary<long, dynamic>();
+                foreach (var allergenic in allPatientAllergenics)
                 {
-                    if (allergenics == null || allergenics.Count == 0)
-                        return result;
-                    HIS_ALLERGENIC allergencic = allergenics.FirstOrDefault(o => o.MEDICINE_TYPE_ID == this.currentMedicineTypeADOForEdit.ID);
-                    if (allergencic != null)
+                    if (!allergenic.ACTIVE_INGREDIENT_ID.HasValue)
+                        continue;
+                    long acinId = allergenic.ACTIVE_INGREDIENT_ID.Value;
+                    // Tìm hoạt chất có trong thuốc đang chọn không
+                    var matchedAcin = medicineTypeAcins
+                        .FirstOrDefault(ac => ac.ACTIVE_INGREDIENT_ID == acinId);
+                    if (matchedAcin == null)
+                        continue;
+                    dynamic currentBest = null;
+                    if (latestAcinAllergies.TryGetValue(acinId, out currentBest))
                     {
-                        if (allergencic.IS_SURE == 1)
+                        HIS_ALLERGENIC existingAllerg = currentBest.Allergenic;
+                        if ((allergenic.MODIFY_TIME ?? 0) > (existingAllerg.MODIFY_TIME ?? 0))
                         {
-                            DialogResult myResult;
-                            myResult = MessageBox.Show(String.Format("Bệnh nhân dị ứng với thuốc {0}. Bạn có muốn tiếp tục không", this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_NAME), "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                            if (myResult != DialogResult.OK)
-                            {
-                                result = false;
-                            }
-                        }
-                        else if (allergencic.IS_DOUBT == 1)
-                        {
-                            DialogResult myResult;
-                            myResult = MessageBox.Show(String.Format("Bệnh nhân nghi ngờ dị ứng với thuốc {0}. Bạn có muốn tiếp tục không", this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_NAME), "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                            if (myResult != DialogResult.OK)
-                            {
-                                result = false;
-                            }
+                            latestAcinAllergies[acinId] = new { Allergenic = allergenic, ActiveIngr = matchedAcin };
                         }
                     }
+                    else
+                    {
+                        latestAcinAllergies[acinId] = new { Allergenic = allergenic, ActiveIngr = matchedAcin };
+                    }
                 }
+                // ==================================================================
+                // 4. Xây dựng nội dung cảnh báo (không trùng, chỉ mới nhất)
+                // ==================================================================
+                bool hasWarning = false;
+                // --- Dị ứng thuốc ---
+                if (latestMedicineAllergy != null)
+                {
+                    hasWarning = true;
+                    string prefix = (latestMedicineAllergy.IS_DOUBT == 1) ? "NGHI NGỜ " : "";
+                    sb.AppendLine(string.Format("Cảnh báo {0}dị ứng thuốc:", prefix));
+                    sb.AppendLine(string.Format("- {0}: {1}",
+                        medicineTypeName,
+                        (latestMedicineAllergy.CLINICAL_EXPRESSION ?? "").Trim()));
+                    sb.AppendLine();
+                }
+                // --- Dị ứng hoạt chất ---
+                if (latestAcinAllergies.Count > 0)
+                {
+                    hasWarning = true;
+                    // Lấy prefix từ bản ghi đầu tiên (thường giống nhau)
+                    var groupPrefix = latestAcinAllergies.Values.GroupBy(o => o.Allergenic.IS_DOUBT);
+                    foreach (var item in groupPrefix)
+                    {
+                        var firstEntry = item.FirstOrDefault();
+                        string prefix = (firstEntry.Allergenic.IS_DOUBT == 1) ? "NGHI NGỜ " : "";
+                        sb.AppendLine(string.Format("Cảnh báo {0}dị ứng hoạt chất:", prefix));
+                        foreach (var entry in item.ToList())
+                        {
+                            HIS_ALLERGENIC allerg = entry.Allergenic;
+                            V_HIS_MEDICINE_TYPE_ACIN acin = entry.ActiveIngr;
+                            sb.AppendLine(string.Format("- {0}: {1}",
+                                acin.ACTIVE_INGREDIENT_NAME,
+                                (allerg.CLINICAL_EXPRESSION ?? "").Trim()));
+                        }
+                        sb.AppendLine();
+                    }
+                    sb.AppendLine();
+                }
+                if (!hasWarning)
+                    return true;
+                sb.Append("Bạn có muốn tiếp tục không?");
+                DialogResult dlg = XtraMessageBox.Show(
+                    sb.ToString(),
+                    "Cảnh báo",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button2);
+                if (dlg != DialogResult.Yes)
+                    result = false;
             }
             catch (Exception ex)
             {
                 result = false;
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
         }
-
         private void btnTomLuocVienPhi_Click(object sender, EventArgs e)
         {
             try
@@ -4712,6 +4786,78 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
         #endregion
+        //internal bool CheckAllergenicWarningByPatient(MediMatyTypeADO medicineTypeADO)
+        //{
+        //    try
+        //    {
+        //        if (medicineTypeADO == null || this.allergenics == null || this.allergenics.Count == 0)
+        //            return true;
+
+        //        long medicineTypeId = medicineTypeADO.ID;
+        //        string medicineTypeName = medicineTypeADO.MEDICINE_TYPE_NAME;
+
+        //        // Danh sách A: tất cả thẻ dị ứng của bệnh nhân
+        //        var allergenicList = this.allergenics;
+
+        //        // Danh sách B: thẻ dị ứng với loại thuốc đang chọn
+        //        var allergenicMedicine = allergenicList
+        //            .Where(a => a.MEDICINE_TYPE_ID != null && a.MEDICINE_TYPE_ID == medicineTypeId)
+        //            .ToList();
+
+        //        // Danh sách C: thẻ dị ứng với hoạt chất của thuốc đang chọn
+        //        var allergenicAcin = new List<Tuple<HIS_ALLERGENIC, V_HIS_MEDICINE_TYPE_ACIN>>();
+        //        foreach (var a in allergenicList.Where(x => x.ACTIVE_INGREDIENT_ID != null))
+        //        {
+        //            var acinList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_MEDICINE_TYPE_ACIN>()
+        //                .Where(ac => ac.ACTIVE_INGREDIENT_ID == a.ACTIVE_INGREDIENT_ID && ac.MEDICINE_TYPE_ID == medicineTypeId)
+        //                .ToList();
+        //            foreach (var acin in acinList)
+        //            {
+        //                allergenicAcin.Add(Tuple.Create(a, acin));
+        //            }
+        //        }
+
+        //        // Nếu có dị ứng thuốc hoặc hoạt chất thì cảnh báo
+        //        if (allergenicMedicine.Count > 0 || allergenicAcin.Count > 0)
+        //        {
+        //            var sb = new StringBuilder();
+        //            sb.AppendLine("Cảnh báo bệnh nhân NGHI NGỜ dị ứng thuốc - nghiệp dụng ác:");
+        //            sb.AppendLine();
+
+        //            foreach (var a in allergenicMedicine)
+        //            {
+        //                string symptom = a.IS_DOUBT == 1 ? "NGHI NGỜ " : "";
+        //                sb.AppendFormat("- {0}dị ứng thuốc {1}: {2}\r\n", symptom, medicineTypeName, a.CLINICAL_EXPRESSION);
+        //            }
+
+        //            foreach (var tuple in allergenicAcin)
+        //            {
+        //                var a = tuple.Item1;
+        //                var acin = tuple.Item2;
+        //                string symptom = a.IS_DOUBT == 1 ? "NGHI NGỜ " : "";
+        //                sb.AppendFormat("- {0}dị ứng hoạt chất {1}: {2}\r\n", symptom, acin.ACTIVE_INGREDIENT_NAME, a.CLINICAL_EXPRESSION);
+        //            }
+
+        //            sb.AppendLine();
+        //            sb.Append("Bạn có muốn tiếp tục?");
+
+        //            var result = XtraMessageBox.Show(
+        //                sb.ToString(),
+        //                "Cảnh báo",
+        //                MessageBoxButtons.YesNo,
+        //                MessageBoxIcon.Warning,
+        //                MessageBoxDefaultButton.Button2);
+
+        //            if (result != DialogResult.Yes)
+        //                return false;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //    return true;
+        //}
         public class BankInfo
         {
             public BankInfo() { }
