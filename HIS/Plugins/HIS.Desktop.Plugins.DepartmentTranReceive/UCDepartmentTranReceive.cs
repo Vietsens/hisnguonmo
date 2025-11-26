@@ -391,30 +391,6 @@ namespace HIS.Desktop.Plugins.DepartmentTranReceive
 
                 if (row != null)
                 {
-                    if (HisConfigs.Get<string>("MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION") == "6")
-                    {
-                        CommonParam param = new CommonParam();
-                        HisTreatmentFilter filter = new HisTreatmentFilter();
-                        filter.PATIENT_ID = getPatientIdByTreatment(row.TREATMENT_ID);
-                        filter.IS_PAUSE = false;
-                        filter.TDL_TREATMENT_TYPE_IDs = new List<long>() { IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM, IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU, IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY };
-                        
-                        var Histreatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param);
-                        if (Histreatment != null && Histreatment.Count > 0)
-                        {
-                            Histreatment = Histreatment.Where(o => o.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || 
-                                                                   o.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY || (
-                                                                   o.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && o.IS_EMERGENCY != 1)).ToList();
-
-                            if (Histreatment != null && Histreatment.Count > 0)
-                            {
-                                var result = XtraMessageBox.Show(String.Format("Tồn tại hồ sơ chưa được kết thúc điều trị (Hồ sơ đang mở: {0}). Bạn có muốn tiếp tục nhập viện?", string.Join(",", Histreatment.Select(o => o.TREATMENT_CODE))), "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                                if (result == DialogResult.No)
-                                    return;
-                            }
-                        }
-                    }
-
                     Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.BedRoomWithIn").FirstOrDefault();
                     moduleData.RoomId = this.currentModule.RoomId;
                     moduleData.RoomTypeId = this.currentModule.RoomTypeId;
