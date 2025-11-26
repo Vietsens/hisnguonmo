@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static DevExpress.Utils.Drawing.Helpers.NativeMethods;
 
 namespace HIS.Desktop.Plugins.SampleCollectionRoom.Config
 {
@@ -33,12 +34,14 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom.Config
         //private const string CONFIG_KEY__SHOW_BUTTON_APPROVE = "LIS.LIS_SAMPLE.IS_SHOW_BUTTON_APPROVE_SAMPLE";
         private const string CONFIG_KEY__SHOW_FROM_SAMPLE_INFO = "LIS.LIS_SAMPLE.TAKE_SAMPLE.IS_SHOW_FORM_SAMPLE_INFO";
         private const string CONFIG_KEY__AUTO_SAMPLE_AFTER_ENTER_BARCODE = "LIS.DESKTOP.AUTO_SAMPLE_AFTER_ENTER_BARCODE";
+        private const string CONFIG_KEY__ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE = "LIS.LIS_SAMPLE.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE";
 
         internal static string IS_AUTO_CREATE_BARCODE;
         //internal static string MUST_APPROVE_SAMPLE;
         internal static string PRINT_BARCODE_BY_BARTENDER;
         //internal static string SHOW_BUTTON_APPROVE;
         internal static string SHOW_FORM_SAMPLE_INFO;
+        internal static string ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE;
 
         internal static bool IsAutoSampleAfterEnterBarcode;
 
@@ -51,6 +54,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom.Config
                 PRINT_BARCODE_BY_BARTENDER = GetValue(CONFIG_KEY__PRINT_BARCODE_BY_BARTENDER);
                 //SHOW_BUTTON_APPROVE = GetValue(CONFIG_KEY__SHOW_BUTTON_APPROVE);
                 SHOW_FORM_SAMPLE_INFO = GetValue(CONFIG_KEY__SHOW_FROM_SAMPLE_INFO);
+                ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE = GetValue(CONFIG_KEY__ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE);
                 IsAutoSampleAfterEnterBarcode = GetValue(CONFIG_KEY__AUTO_SAMPLE_AFTER_ENTER_BARCODE) == "1";
 
             }
