@@ -100,19 +100,19 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 HasData = true;
                 if (medicine == null || medicine.Count <= 0)
                 {
-                    message = "Bệnh nhân chưa có thông tin đơn thuốc";
+                    message += "Bệnh nhân chưa có thông tin đơn thuốc. ";
                 }
 
                 //cao huyết áp: I10-I15, khi lưu bắt buộc phải có thông tin huyết áp
                 if (Utilities.IsBATHA(totalIcds) && (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue))
                 {
-                    message = "Bệnh nhân thiếu thông tin huyết áp";
+                    message += "Bệnh nhân thiếu thông tin huyết áp. ";
                 }
 
                 //đái tháo đường: E10-E14, khi lưu phải có kết quả của đường huyết
                 if (Utilities.IsBADTD(totalIcds) && (ssTein == null || ssTein.Count == 0))
                 {
-                    message = "Bệnh nhân đái tháo đường thiếu kết quả xét nghiệm đường huyết";
+                    message += "Bệnh nhân đái tháo đường thiếu kết quả xét nghiệm đường huyết. ";
                 }
 
             }
@@ -128,7 +128,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                     HasData = false;
                     if (Configs.IS_WARNING == "1")
                     {
-                        if (XtraMessageBox.Show(string.Format("{0}. Bạn có muốn tiếp tục?", message), "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        if (XtraMessageBox.Show(string.Format("{0}. Bạn có muốn tiếp tục?", message.Trim()), "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
                         {
                             result = true;
                         }

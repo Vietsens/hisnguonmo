@@ -28,6 +28,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
         public string DIA_CHI { get; set; }
         public string MA_NGHE_NGHIEP { get; set; }
         public string MA_CSKCB { get; set; }
+        public string MA_CSYT_BHYT { get; set; }
         public string MA_LK { get; set; }
         public BENH_NHAN(HIS_TREATMENT data)
         {
@@ -45,6 +46,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
             if (branch != null)
             {
                 this.MA_CSKCB = branch.HEIN_MEDI_ORG_CODE;
+                this.MA_CSYT_BHYT = branch.HEIN_MEDI_ORG_CODE;
             }
         }
     }
