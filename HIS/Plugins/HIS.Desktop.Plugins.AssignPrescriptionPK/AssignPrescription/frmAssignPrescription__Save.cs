@@ -404,7 +404,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             return result;
         }
 
-        private string AppendIcd(string oldValue, string newValue)
+        private string AppendIcd(string oldIcd, string oldValue, string newValue)
         {
             oldValue = oldValue?.Trim();
             newValue = newValue?.Trim();
@@ -529,17 +529,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 //    XtraMessageBox.Show("Mã đối tượng khám bệnh không được nhập chữ");
                 //    return;
                 //}
-                this.currentTreatment.ICD_CODE =
-                    AppendIcd(this.currentTreatment.ICD_CODE, txtIcdCode.EditValue as string);
+                this.currentTreatment.ICD_CODE = txtIcdCode.EditValue.ToString();
 
-                this.currentTreatment.ICD_NAME =
-                    AppendIcd(this.currentTreatment.ICD_NAME, txtIcdMainText.EditValue as string);
+                this.currentTreatment.ICD_NAME = txtIcdMainText.EditValue.ToString();
 
                 this.currentTreatment.ICD_SUB_CODE =
-                    AppendIcd(this.currentTreatment.ICD_SUB_CODE, txtIcdSubCode.EditValue as string);
+                    AppendIcd(this.currentTreatment.ICD_CODE, this.currentTreatment.ICD_SUB_CODE, txtIcdSubCode.EditValue as string);
 
                 this.currentTreatment.ICD_TEXT =
-                    AppendIcd(this.currentTreatment.ICD_TEXT, txtIcdText.EditValue as string);
+                    AppendIcd(this.currentTreatment.ICD_NAME, this.currentTreatment.ICD_TEXT, txtIcdText.EditValue as string);
 
                 HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(this.currentTreatment, null, null);
                 if (isHasTreatmentFinishChecked && treatUC != null)
