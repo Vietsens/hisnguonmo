@@ -112,6 +112,8 @@ namespace MPS.Processor.Mps000217.PDO
         public string VIR_PATIENT_NAME { get; set; }
         public string TREATMENT_CODE { get; set; }
         public string SUPPLIER_NAME { get; set; }
+        public string SUPPLIER_CODE { get; set; }
+        public long? SUPPLIER_ID { get; set; }
         public string SECOND_MEST_CODE { get; set; }
         public string VIR_PATIENT_ADDRESS { get; set; }
 
@@ -156,6 +158,8 @@ namespace MPS.Processor.Mps000217.PDO
                 if (ImpMest != null)
                 {
                     DESCRIPTION = ImpMest.DESCRIPTION;
+                    SUPPLIER_CODE = ImpMest.SUPPLIER_CODE;
+                    SUPPLIER_ID =  ImpMest.SUPPLIER_ID;
                 }
 
                 V_HIS_IMP_MEST chmsImpMest = Listimp != null && imp.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__CK ? Listimp.Where(o => o.ID == imp.IMP_MEST_ID).FirstOrDefault() : null;
