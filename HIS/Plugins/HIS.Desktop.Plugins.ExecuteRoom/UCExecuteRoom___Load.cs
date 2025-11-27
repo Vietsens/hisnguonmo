@@ -1845,6 +1845,15 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 filter.ColumnParams.Add("NEXT_TREAT_INTR_CODE");
                 filter.ColumnParams.Add("HOSPITALIZATION_REASON");
                 filter.ColumnParams.Add("SICK_DAY");
+                filter.ColumnParams.Add("SICK_HOUR");
+                filter.ColumnParams.Add("HISTORY_ALLERGY");
+                filter.ColumnParams.Add("IS_HISTORY_ALLERGY_RELATED");
+                filter.ColumnParams.Add("IS_HISTORY_RELATED");
+                filter.ColumnParams.Add("IS_HISTORY_FAMILY_RELATED");
+                filter.ColumnParams.Add("IS_FULL_EXAM_ABNORMAL");
+                filter.ColumnParams.Add("IS_PART_EXAM_ABNORMAL");
+                filter.ColumnParams.Add("EXECUTED_SERVICES");
+                filter.ColumnParams.Add("SPECIALIST_NOTE");
                 filter.ColumnParams.Add("PATHOLOGICAL_PROCESS");
                 filter.ColumnParams.Add("SUBCLINICAL");
                 filter.ColumnParams.Add("TREATMENT_INSTRUCTION");
