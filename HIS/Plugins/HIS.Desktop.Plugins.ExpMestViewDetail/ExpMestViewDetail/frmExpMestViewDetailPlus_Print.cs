@@ -2292,6 +2292,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             }
         }
 
+
         List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_GN_HTs { get; set; }
         List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_GNs { get; set; }
         List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_HTs { get; set; }
@@ -2308,6 +2309,13 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_KSs = new List<HIS_EXP_MEST_METY_REQ>();
         List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_LAOs = new List<HIS_EXP_MEST_METY_REQ>();
         List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_TCs = new List<HIS_EXP_MEST_METY_REQ>();
+        List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_HCGNs = new List<HIS_EXP_MEST_METY_REQ>();
+        List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_HCHTs = new List<HIS_EXP_MEST_METY_REQ>();
+
+   
+
+
+        
 
         private void InPhieuXuatChuyenKho(string printTypeCode, string fileName, ref bool result)
         {
@@ -3973,6 +3981,145 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
 
                     result = MPS.MpsPrinter.Run(PrintData);
                 }
+                #endregion
+                #region --- Bổ sung ---
+                // Tách nhóm thuốc Tiền chất, Gây nghiện, Hướng thần theo IS_SEPARATE_PRINTING
+                _ExpMestMetyReq_TCs = new List<HIS_EXP_MEST_METY_REQ>();
+                _ExpMestMetyReq_HCGNs = new List<HIS_EXP_MEST_METY_REQ>();
+                _ExpMestMetyReq_HCHTs = new List<HIS_EXP_MEST_METY_REQ>();
+                _ExpMestMetyReq_Ts = new List<HIS_EXP_MEST_METY_REQ>();
+
+                var medicineGroups = BackendDataWorker.Get<HIS_MEDICINE_GROUP>().ToList();
+                var mediTypes2 = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
+
+                foreach (var item in this._ExpMestMetyReqs_Print)
+                {
+                    var dataMedi = mediTypes2.FirstOrDefault(p => p.ID == item.MEDICINE_TYPE_ID);
+                    if (dataMedi != null)
+                    {
+                        var group = medicineGroups.FirstOrDefault(g => g.ID == dataMedi.MEDICINE_GROUP_ID);
+                        if (group != null)
+                        {
+                            if (group.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__TC)
+                            {
+                                if (group.IS_SEPARATE_PRINTING == 1)
+                                    _ExpMestMetyReq_TCs.Add(item);
+                                else
+                                    _ExpMestMetyReq_Ts.Add(item);
+                            }
+                            else if (group.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCGN)
+                            {
+                                if (group.IS_SEPARATE_PRINTING == 1)
+                                    _ExpMestMetyReq_HCGNs.Add(item);
+                                else
+                                    _ExpMestMetyReq_Ts.Add(item);
+                            }
+                            else if (group.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCHT)
+                            {
+                                if (group.IS_SEPARATE_PRINTING == 1)
+                                    _ExpMestMetyReq_HCHTs.Add(item);
+                                else
+                                    _ExpMestMetyReq_Ts.Add(item);
+                            }
+                            else
+                            {
+                                _ExpMestMetyReq_Ts.Add(item);
+                            }
+                        }
+                        else
+                        {
+                            _ExpMestMetyReq_Ts.Add(item);
+                        }
+                    }
+                }
+
+                // In phiếu bổ sung cơ số riêng cho từng nhóm nếu có IS_SEPARATE_PRINTING = 1
+                if (_ExpMestMetyReq_TCs.Count > 0)
+                {
+                    var pdo = new MPS.Processor.Mps000347.PDO.Mps000347PDO(
+                        _CurrentExpMest,
+                        _ExpMestMedicines_Print,
+                        null,
+                        _ExpMestMetyReq_TCs,
+                        null,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE,
+                        BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
+                        null,
+                        _Medicines,
+                        null,
+                        "PHIẾU BỔ SUNG CƠ SỐ TIỀN CHẤT",
+                        Config.HisConfigCFG.ODER_OPTION
+                    );
+                    var printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
+                    printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
+                    result = MPS.MpsPrinter.Run(printData);
+                }
+                if (_ExpMestMetyReq_HCGNs.Count > 0)
+                {
+                    var pdo = new MPS.Processor.Mps000347.PDO.Mps000347PDO(
+                        _CurrentExpMest,
+                        _ExpMestMedicines_Print,
+                        null,
+                        _ExpMestMetyReq_HCGNs,
+                        null,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE,
+                        BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
+                        null,
+                        _Medicines,
+                        null,
+                        "PHIẾU BỔ SUNG CƠ SỐ DƯỢC CHẤT GÂY NGHIỆN",
+                        Config.HisConfigCFG.ODER_OPTION
+                    );
+                    var printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
+                    printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
+                    result = MPS.MpsPrinter.Run(printData);
+                }
+                if (_ExpMestMetyReq_HCHTs.Count > 0)
+                {
+                    var pdo = new MPS.Processor.Mps000347.PDO.Mps000347PDO(
+                        _CurrentExpMest,
+                        _ExpMestMedicines_Print,
+                        null,
+                        _ExpMestMetyReq_HCHTs,
+                        null,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE,
+                        BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
+                        null,
+                        _Medicines,
+                        null,
+                        "PHIẾU BỔ SUNG CƠ SỐ DƯỢC CHẤT HƯỚNG THẦN",
+                        Config.HisConfigCFG.ODER_OPTION
+                    );
+                    var printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
+                    printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
+                    result = MPS.MpsPrinter.Run(printData);
+                }
+                // Nếu không tích "in tách" thì vào phiếu bổ sung cơ số thuốc thường
+                if (_ExpMestMetyReq_Ts.Count > 0)
+                {
+                    var pdo = new MPS.Processor.Mps000347.PDO.Mps000347PDO(
+                        _CurrentExpMest,
+                        _ExpMestMedicines_Print,
+                        _ExpMestMaterials_Print,
+                        _ExpMestMetyReq_Ts,
+                        null,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE,
+                        IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE,
+                        BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
+                        BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
+                        _Medicines,
+                        _Materials,
+                        "THUỐC THƯỜNG",
+                        Config.HisConfigCFG.ODER_OPTION
+                    );
+                    var printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "");
+                    printData.EmrInputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(_CurrentExpMest.TDL_TREATMENT_CODE ?? printTypeCode, printTypeCode, this.moduleData.RoomId);
+                    result = MPS.MpsPrinter.Run(printData);
+                }
+
                 #endregion
             }
             catch (Exception ex)
