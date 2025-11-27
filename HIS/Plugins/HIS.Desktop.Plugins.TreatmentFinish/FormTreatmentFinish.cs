@@ -2548,6 +2548,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             try
             {
                 //huannh
+                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(this.currentHisTreatment, null, null);
+                if (!who.CheckData())
+                {
+                    return;
+                }
 
                 long? treatmentEndTypeId = null;
                 if (cboTreatmentEndType.EditValue != null)
@@ -2889,6 +2894,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 MessageManager.Show(this, param, success);
                 if (success)
                 {
+                    who.SendData();
                     Inventec.Common.Logging.LogSystem.Warn("WarningOption: " + ConfigKey.WarningOption);
                     HIS_TREATMENT HisTreatment = hisTreatmentResult;
 
