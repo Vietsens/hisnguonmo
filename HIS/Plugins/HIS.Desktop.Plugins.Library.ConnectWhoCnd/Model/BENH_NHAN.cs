@@ -28,6 +28,8 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
         public string DIA_CHI { get; set; }
         public string MA_NGHE_NGHIEP { get; set; }
         public string MA_CSKCB { get; set; }
+        public string MA_CSYT_BHYT { get; set; }
+        public string MA_CSKCB_BHYT { get; set; }
         public string MA_LK { get; set; }
         public BENH_NHAN(HIS_TREATMENT data)
         {
@@ -38,6 +40,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
             this.MA_LK = data.TREATMENT_CODE;
             this.MA_NGHE_NGHIEP = data.TDL_PATIENT_CAREER_NAME;
             this.MA_THE_BHYT = data.TDL_HEIN_CARD_NUMBER;
+            this.MA_CSKCB_BHYT = data.TDL_HEIN_MEDI_ORG_CODE;            
             this.MAXA_CU_TRU = data.TDL_PATIENT_COMMUNE_CODE;
             this.NGAY_SINH = DateTime.ParseExact(data.TDL_PATIENT_DOB + "", "yyyyMMddHHmmss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
             this.SO_CCCD = data.TDL_PATIENT_CCCD_NUMBER;
@@ -45,6 +48,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
             if (branch != null)
             {
                 this.MA_CSKCB = branch.HEIN_MEDI_ORG_CODE;
+                this.MA_CSYT_BHYT = branch.HEIN_MEDI_ORG_CODE;
             }
         }
     }

@@ -849,6 +849,9 @@
 	<data name="UCExecuteRoom.ToolTipControl.UnFinishCLS" xml:space="preserve">
     <value>Chưa kết thúc CLS</value>
   </data>
+	<data name="UCExecuteRoom.ToolTipControl.DEBT" xml:space="preserve">
+    <value>Đang nợ viện phí</value>
+  </data>
 	<data name="UCExecuteRoom.txtBMI.Text" xml:space="preserve">
     <value>0</value>
   </data>

@@ -1130,6 +1130,17 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         else
                             e.Value = null;
                     }
+
+                    if (e.Column.FieldName == "IS_NOT_IN_DEBT_ICON")
+                    {
+                        if (HisConfigCFG.isRestoreLayout)
+                        {
+                            e.Value = dataRow.IS_NOT_IN_DEBT == null
+                                ? imageListIcon.Images[15]
+                                : null;
+                        }
+                    }
+
                 }
                 else
                 {
@@ -1476,6 +1487,17 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                                 {
                                     text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.ToolTipControl.HaveResultCLS", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                                 }
+                            }
+                            else if (info.Column.FieldName == "IS_NOT_IN_DEBT_ICON")
+                            {
+
+                                object isNotInDebtObj = view.GetRowCellValue(lastRowHandle, "IS_NOT_IN_DEBT");
+                                short? isNotInDebt = isNotInDebtObj == null || isNotInDebtObj == DBNull.Value
+                                    ? (short?)null
+                                    : Inventec.Common.TypeConvert.Parse.ToInt16(isNotInDebtObj.ToString());
+                                if (isNotInDebt == null)
+                                    text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.ToolTipControl.DEBT", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
+
                             }
                             if (info.Column.FieldName == "EXAM_END_TYPE_STR")
                             {

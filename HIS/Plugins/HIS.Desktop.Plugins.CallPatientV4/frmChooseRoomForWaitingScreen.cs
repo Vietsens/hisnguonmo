@@ -91,6 +91,37 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                 ValidateRoom();
                 ToogleExtendMonitor();
                 SetDataTolblControl();
+                LoadTitleConfigFromControlState();
+                UpdateEmergencyConfigVisibility(); 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void LoadTitleConfigFromControlState()
+        {
+            try
+            {
+                if (currentControlStateRDO == null) return;
+
+                var titleNoiTru = currentControlStateRDO.FirstOrDefault(o => o.KEY == "TitleNoiTru");
+                if (titleNoiTru != null) txtTitleNoiTru.Text = titleNoiTru.VALUE ?? "";
+
+                var titleNgoaiTru = currentControlStateRDO.FirstOrDefault(o => o.KEY == "TitleNgoaiTru");
+                if (titleNgoaiTru != null) txtTitleNgoaiTru.Text = titleNgoaiTru.VALUE ?? "";
+
+                var fontSize = currentControlStateRDO.FirstOrDefault(o => o.KEY == "TitleFontSize");
+                if (fontSize != null && int.TryParse(fontSize.VALUE, out int size) && size > 0)
+                    spinFontSize.Value = size;
+
+                var color = currentControlStateRDO.FirstOrDefault(o => o.KEY == "TitleFontColor");
+                if (color != null)
+                {
+                    var rgb = color.VALUE.Split(',').Select(int.Parse).ToArray();
+                    if (rgb.Length == 3)
+                        colorEditTitle.Color = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
+                }
             }
             catch (Exception ex)
             {
@@ -212,9 +243,11 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                 this.positionHandleControl = -1;
                 if (!dxValidationProviderControl.Validate())
                     return;
+                //qtcode
+                SaveTitleConfig(); 
                 if (chkSeparatePatientNoiTruNgoaiTru.Checked)
                 {
-                    aFrmWaitingScreenQy_SeparateScreen = new frmWaitingScreen_V4_SeparateScreen(this.currentModule,HisServiceReq, serviceReqStts);
+                    aFrmWaitingScreenQy_SeparateScreen = new frmWaitingScreen_V4_SeparateScreen(this.currentModule,HisServiceReq, serviceReqStts, this.currentControlStateRDO);
                     if (this.room != null)
                     {
                         aFrmWaitingScreenQy_SeparateScreen.room = this.room;
@@ -367,7 +400,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             lcTitleNgoaiTru.Visibility = showEmergencyConfig? LayoutVisibility.Always:LayoutVisibility.Never;
             lcTitleNoiTru.Visibility = showEmergencyConfig? LayoutVisibility.Always:LayoutVisibility.Never;
             lcFontSize.Visibility = showEmergencyConfig? LayoutVisibility.Always:LayoutVisibility.Never;
-            lcTextColor.Visibility = showEmergencyConfig? LayoutVisibility.Always:LayoutVisibility.Never;
+            lcColor.Visibility = showEmergencyConfig? LayoutVisibility.Always:LayoutVisibility.Never;
         }
 
         private void chkSeparatePatientCapCuu_CheckedChanged(object sender, EventArgs e)
@@ -375,14 +408,14 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             try
             {
                 WaitingManager.Show();
-                var cs = currentControlStateRDO?.FirstOrDefault(o => o.KEY == ControlStateConstant_chkSeparateEmergency);
+                var cs = currentControlStateRDO?.FirstOrDefault(o => o.KEY == ControlStateConstant.chkSeparatePatientCapCuu);
                 if (cs != null)
                     cs.VALUE = chkSeparatePatientCapCuu.Checked ? "1" : "";
                 else
                 {
                     var add = new ControlStateRDO
                     {
-                        KEY = ControlStateConstant.chks,
+                        KEY = ControlStateConstant.chkSeparatePatientCapCuu,
                         VALUE = chkSeparatePatientCapCuu.Checked ? "1" : "",
                         MODULE_LINK = this.ModuleLink
                     };
@@ -396,6 +429,51 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             { 
                 WaitingManager.Hide(); 
                 Inventec.Common.Logging.LogSystem.Warn(ex); 
+            }
+        }
+
+        private void SaveTitleConfig()
+        {
+            try
+            {
+                var listAddOrUpdate = new List<ControlStateRDO>();
+
+                UpdateControlState(ref listAddOrUpdate, "CallPatientV4_TitleNoiTru", txtTitleNoiTru.Text.Trim());
+
+                UpdateControlState(ref listAddOrUpdate, "CallPatientV4_TitleNgoaiTru", txtTitleNgoaiTru.Text.Trim());
+
+                UpdateControlState(ref listAddOrUpdate, "CallPatientV4_TitleFontSize", spinFontSize.Value.ToString());
+
+                Color c = colorEditTitle.Color;
+                UpdateControlState(ref listAddOrUpdate, "CallPatientV4_TitleFontColor", string.Format("{0},{1},{2}", c.R, c.G, c.B));
+
+                if (listAddOrUpdate.Count > 0)
+                {
+                    controlStateWorker.SetData(listAddOrUpdate);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UpdateControlState(ref List<ControlStateRDO> list, string key, string value)
+        {
+            var exist = currentControlStateRDO?.FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == this.ModuleLink);
+            if (exist != null)
+            {
+                exist.VALUE = value;
+                list.Add(exist);
+            }
+            else
+            {
+                list.Add(new ControlStateRDO
+                {
+                    KEY = key,
+                    VALUE = value,
+                    MODULE_LINK = this.ModuleLink
+                });
             }
         }
     }

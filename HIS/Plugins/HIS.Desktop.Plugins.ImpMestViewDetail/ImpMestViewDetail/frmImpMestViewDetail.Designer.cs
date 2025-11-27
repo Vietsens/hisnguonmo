@@ -45,11 +45,10 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmImpMestViewDetail));
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnNew = new DevExpress.XtraBars.BarButtonItem();
@@ -59,9 +58,9 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
@@ -592,13 +591,13 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             0,
             0,
             0});
-            this.SpDocumentVatPrice.Location = new System.Drawing.Point(972, 26);
+            this.SpDocumentVatPrice.Location = new System.Drawing.Point(992, 26);
             this.SpDocumentVatPrice.MenuManager = this.barManager1;
             this.SpDocumentVatPrice.Name = "SpDocumentVatPrice";
             this.SpDocumentVatPrice.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.SpDocumentVatPrice.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.SpDocumentVatPrice.Size = new System.Drawing.Size(118, 20);
+            this.SpDocumentVatPrice.Size = new System.Drawing.Size(98, 20);
             this.SpDocumentVatPrice.StyleController = this.layoutControl3;
             this.SpDocumentVatPrice.TabIndex = 17;
             this.SpDocumentVatPrice.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.SpDocumentVatPrice_EditValueChanging);
@@ -980,7 +979,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.layoutControlItem10.Size = new System.Drawing.Size(267, 24);
             this.layoutControlItem10.Text = "Số tiền thuế trên hóa đơn:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem10.TextSize = new System.Drawing.Size(140, 20);
+            this.layoutControlItem10.TextSize = new System.Drawing.Size(160, 20);
             this.layoutControlItem10.TextToControlDistance = 5;
             // 
             // xtraTabControl1

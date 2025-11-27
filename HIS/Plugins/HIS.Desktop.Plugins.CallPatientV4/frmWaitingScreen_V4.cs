@@ -117,7 +117,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        
         private void SetFormFrontOfAll()
         {
             try

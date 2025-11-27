@@ -580,6 +580,11 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
                     txtHisPackageCode.Text = data.PACKAGE_CODE;
                     txtHisPackageName.Text = data.PACKAGE_NAME;
                     chkIsNotFixedService.Checked = data.IS_NOT_FIXED_SERVICE == 1 ? true : false;
+                    spinAmountDay.EditValue = data.MAX_PACKAGE_USAGE_PER_DAY;
+                    if(data.WARNING_OPTION == 1)
+                        chkChan.Checked = true;
+                    if(data.WARNING_OPTION == 2)
+                        chkCanhBao.Checked = true;
                     //spMaxCapacity.EditValue = data.MAX_CAPACITY;
 
                 }
@@ -821,6 +826,7 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
                     LoadCurrent(this.currentData.ID, ref updateDTO);
                 }
                 UpdateDTOFromDataForm(ref updateDTO);
+                Inventec.Common.Logging.LogSystem.Error(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
                 if (ActionType == GlobalVariables.ActionAdd)
                 {
                     updateDTO.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
@@ -897,6 +903,16 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
                 {
                     currentDTO.IS_NOT_FIXED_SERVICE = null;
                 }
+                decimal? val = spinAmountDay.EditValue as decimal?;
+                currentDTO.MAX_PACKAGE_USAGE_PER_DAY = val.HasValue ? (long?)val.Value : null;
+
+                if (chkChan.Checked)
+                    currentDTO.WARNING_OPTION = 1;
+                else if (chkCanhBao.Checked)
+                    currentDTO.WARNING_OPTION = 2;
+                else
+                    currentDTO.WARNING_OPTION = null;
+
                 //currentDTO.MAX_CAPACITY = (long)spMaxCapacity.Value;
 
             }
@@ -1284,7 +1300,94 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             }
         }
 
-        
+        private void chkChan_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if(chkChan.Checked)
+                    chkCanhBao.Checked = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
+        private void chkCanhBao_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if(chkCanhBao.Checked)
+                    chkChan.Checked = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkChan_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkChan.Checked)
+                    return;
+                chkChan_CheckedChanged(sender, e);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+
+            }
+        }
+
+        private void chkCanhBao_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkCanhBao.Checked)
+                    return;
+                chkCanhBao_CheckedChanged(sender, e);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+
+            }
+        }
+
+        private void spinAmountDay_Spin(object sender, DevExpress.XtraEditors.Controls.SpinEventArgs e)
+        {
+            try
+            {
+                if (!e.IsSpinUp && (spinAmountDay.Value <= 0 || spinAmountDay.EditValue == null))
+                {
+                    e.Handled = true;   // chặn không cho xuống dưới 0
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spinAmountDay_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            try
+            {
+                if (e.NewValue == null) return;
+
+                if (decimal.TryParse(e.NewValue.ToString(), out decimal v))
+                {
+                    if (v < 0)
+                        e.Cancel = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+
+            }
+        }
     }
 }

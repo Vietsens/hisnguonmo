@@ -570,16 +570,20 @@ namespace HIS.Desktop.Plugins.EmrDocument
         {
             try
             {
-                OpenFileDialog openFile = new OpenFileDialog
-                {
-                    Multiselect = true,
-                    Filter = "Ảnh(*.jpg, *.Png, *.jpeg, *.bmp,*.gif,*.pdf)|*.jpg;*.png;*.jpeg;*.bmp;*.gif;*.pdf",
-                    DefaultExt = ".jpg;.png;.jpeg;.bmp;.gif;.pdf"
-                };
+                OpenFileDialog openFile = new OpenFileDialog();
+                //openFile.Filter = "Ảnh jpg|*.jpg|Ảnh Png|*.png|Ảnh jpeg|*.jpeg|Ảnh bmp|*.bmp|Ảnh gif|*.gif";
+                //openFile.DefaultExt = ".jpg";
+
+                openFile.Multiselect = true;
+                openFile.Filter = "Ảnh(*.jpg, *.Png, *.jpeg, *.bmp,*.gif,*.pdf)|*.jpg;*.png;*.jpeg;*.bmp;*.gif;*.pdf";
+                openFile.DefaultExt = ".jpg;.png;.jpeg;.bmp;.gif;.pdf";
 
                 if (openFile.ShowDialog() == DialogResult.OK)
                 {
+                    // pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(openFile.FileName);
                     this.fullfileNameAttack = openFile.FileNames;
+                    // pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
+                    // Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => pteAnhChupFileDinhKem.Image.Tag), pteAnhChupFileDinhKem.Image.Tag));
 
                     if (this.fullfileNameAttack != null)
                     {
@@ -593,17 +597,42 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             string extension = System.IO.Path.GetExtension(item);
                             if ((extension ?? "").ToLower() == ".pdf")
                             {
-                                // Load PDF file path and base64, do not convert to image
-                                this.fileNameAttack.FullName = item;
-                                this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(item);
-                                this.fileNameAttack.image = null;
+                                //từ đường dẫn file pdf là item đọc nội dung file và convert sang file ảnh
+                                string joinPdfPathFile = "";
+                                iTextSharp.text.pdf.PdfReader readerWorking = new iTextSharp.text.pdf.PdfReader(item);
+                                float pageHeight = readerWorking.GetPageSize(1).Height;
+                                Inventec.Common.SignLibrary.PdfDocumentProcess.SplitOnePageToImageAndJoinToNewOnePdf(item, pageHeight, ref joinPdfPathFile);
+                                LogSystem.Debug("joinPdfPathFile:" + joinPdfPathFile);
+                                this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(joinPdfPathFile);
+                                this.fileNameAttack.FullName = joinPdfPathFile;
                             }
                             else
                             {
                                 this.fileNameAttack.FullName = item;
                                 this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(item);
+                            }
+
+
+                            if ((extension ?? "").ToLower() != ".pdf")
+                            {
+                                //int largestEdgeLength = 10;
+                                // DevExpress.XtraPdfViewer.PdfViewer pdf = new DevExpress.XtraPdfViewer.PdfViewer();
+                                //pdf.LoadDocument(item);
+                                //for (int i = 1; i <= pdf.PageCount; i++)
+                                //{
+                                //FileStream st = new FileStream(item, FileMode.Open);
+
+                                //    // Export all pages to bitmaps
+                                //  Bitmap image = pdf.CreateBitmap(i, largestEdgeLength);
+                                //    // Save the resulting images
+                                //   this.fileNameAttack.image = System.Drawing.Image.FromStream(st);
+                                //}
                                 this.fileNameAttack.image = System.Drawing.Image.FromFile(item);
                             }
+                            //else
+                            //{
+                            //    
+                            //}
                             this.ListfileNameAttack.Add(fileNameAttack);
                         }
                     }
@@ -614,6 +643,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => fullfileNameAttack), fullfileNameAttack));
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListfileNameAttack), ListfileNameAttack));
+
             }
             catch (Exception ex)
             {

@@ -69,6 +69,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.CheckIcd">
       <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.ConnectWhoCnd">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.ConnectWhoCnd\HIS.Desktop.Plugins.Library.ConnectWhoCnd.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
     </Reference>

@@ -28,15 +28,15 @@ namespace Inventec.Common.Address
     {
         private static string formatCheck = ",{0},";
         private static string formatAddress = "{0} {1}";
-        List<V_SDA_PROVINCE> VSdaProvince = new List<V_SDA_PROVINCE>();
-        List<V_SDA_DISTRICT> VSdaDistrict = new List<V_SDA_DISTRICT>();
-        List<V_SDA_COMMUNE> VSdaCommune = new List<V_SDA_COMMUNE>();
-
+        List<V_SDA_PROVINCE> VSdaProvinceAll = new List<V_SDA_PROVINCE>();
+        List<V_SDA_DISTRICT> VSdaDistrictAll = new List<V_SDA_DISTRICT>();
+        List<V_SDA_COMMUNE> VSdaCommuneAll = new List<V_SDA_COMMUNE>();
+        private bool IsAddressLv2 = true;
         public AddressProcessor(List<V_SDA_PROVINCE> vSdaProvince, List<V_SDA_DISTRICT> vSdaDistrict, List<V_SDA_COMMUNE> vSdaCommune)
         {
-            if (vSdaProvince != null) VSdaProvince = vSdaProvince.Where(o => o.IS_ACTIVE == 1).ToList();
-            if (vSdaDistrict != null) VSdaDistrict = vSdaDistrict.Where(o => o.IS_ACTIVE == 1).ToList();
-            if (vSdaCommune != null) VSdaCommune = vSdaCommune.Where(o => o.IS_ACTIVE == 1).ToList();
+            if (vSdaProvince != null) VSdaProvinceAll = vSdaProvince.Where(o => o.IS_ACTIVE == 1).ToList();
+            if (vSdaDistrict != null) VSdaDistrictAll = vSdaDistrict.Where(o => o.IS_ACTIVE == 1).ToList();
+            if (vSdaCommune != null) VSdaCommuneAll = vSdaCommune.Where(o => o.IS_ACTIVE == 1).ToList();
         }
 
         /// <summary>
@@ -58,6 +58,9 @@ namespace Inventec.Common.Address
             {
                 if (!String.IsNullOrWhiteSpace(fullAddress))
                 {
+                    var VSdaProvince = VSdaProvinceAll.Where(o => IsAddressLv2 ? o.IS_NO_DISTRICT == 1 : o.IS_NO_DISTRICT != 1).ToList();
+                    var VSdaDistrict = IsAddressLv2 ? new List<V_SDA_DISTRICT>() : VSdaDistrictAll;
+                    var VSdaCommune = VSdaCommuneAll.Where(o => IsAddressLv2 ? o.IS_NO_DISTRICT == 1 : o.IS_NO_DISTRICT != 1).ToList();
                     result.Address = fullAddress.Trim(',', '-', ' ');
                     List<V_SDA_PROVINCE> provinces = null;
                     List<V_SDA_DISTRICT> district = null;
@@ -243,12 +246,18 @@ namespace Inventec.Common.Address
             }
             catch (Exception ex)
             {
+                IsAddressLv2 = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 result.Address = fullAddress;
             }
             finally
             {
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("____Address_Split____", result));
+                if(IsAddressLv2 && string.IsNullOrEmpty(result.CommuneName) && string.IsNullOrEmpty(result.DistrictName) && string.IsNullOrEmpty(result.ProvinceName))
+                {
+                    IsAddressLv2 = false;
+                    result = SplitFromFullAddress(fullAddress);
+                }    
             }
 
             return result;

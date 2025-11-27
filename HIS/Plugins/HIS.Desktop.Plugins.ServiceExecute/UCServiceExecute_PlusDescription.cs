@@ -111,6 +111,15 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
+                    // Đảm bảo sereServExt có MACHINE_ID đúng trước khi fill template
+                    if (this.sereServExt != null && this.sereServ != null)
+                    {
+                        // Nếu sereServ.MACHINE_ID đã có, cập nhật lại vào sereServExt
+                        if (this.sereServ.MACHINE_ID.HasValue)
+                        {
+                            this.sereServExt.MACHINE_ID = this.sereServ.MACHINE_ID;
+                        }
+                    }
 
                     ProcessDescriptionContent();
 
