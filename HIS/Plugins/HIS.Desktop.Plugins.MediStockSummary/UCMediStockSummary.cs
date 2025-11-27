@@ -1288,6 +1288,16 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             }
         }
 
+        private List<List<T>> SplitList<T>(List<T> items, int chunkSize)
+        {
+            var list = new List<List<T>>();
+            for (int i = 0; i < items.Count; i += chunkSize)
+            {
+                list.Add(items.GetRange(i, Math.Min(chunkSize, items.Count - i)));
+            }
+            return list;
+        }
+
         private void LoadPrint()
         {
             try
@@ -1463,9 +1473,25 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                             {
                                 var lstMateBeanGroup = lstMaterialBeans.GroupBy(p => p.ID).Select(grc => grc.ToList()).ToList();
                                 List<long> materialIds = lstMateBeanGroup.Select(p => p.FirstOrDefault().ID).ToList();
-                                MOS.Filter.HisMaterialPatyFilter matePatyFilter = new MOS.Filter.HisMaterialPatyFilter();
-                                matePatyFilter.MATERIAL_IDs = materialIds;
-                                var lstMatePaty = new BackendAdapter(param).Get<List<HIS_MATERIAL_PATY>>("api/HisMaterialPaty/Get", ApiConsumers.MosConsumer, matePatyFilter, param);
+                                //MOS.Filter.HisMaterialPatyFilter matePatyFilter = new MOS.Filter.HisMaterialPatyFilter();
+                                //matePatyFilter.MATERIAL_IDs = materialIds;
+                                //var lstMatePaty = new BackendAdapter(param).Get<List<HIS_MATERIAL_PATY>>("api/HisMaterialPaty/Get", ApiConsumers.MosConsumer, matePatyFilter, param);
+
+                                var chunkIds = SplitList(materialIds, 200); 
+
+                                List<HIS_MATERIAL_PATY> lstMatePaty = new List<HIS_MATERIAL_PATY>();
+
+                                foreach (var chunk in chunkIds)
+                                {
+                                    MOS.Filter.HisMaterialPatyFilter matePatyFilter = new MOS.Filter.HisMaterialPatyFilter();
+                                    matePatyFilter.MATERIAL_IDs = chunk;
+
+                                    var dataChunk = new BackendAdapter(param)
+                                        .Get<List<HIS_MATERIAL_PATY>>("api/HisMaterialPaty/Get", ApiConsumers.MosConsumer, matePatyFilter, param);
+
+                                    if (dataChunk != null)
+                                        lstMatePaty.AddRange(dataChunk);
+                                }
 
                                 if (lstMatePaty != null && lstMatePaty.Count > 0)
                                 {
