@@ -153,13 +153,13 @@ namespace MPS.Processor.Mps000217.PDO
                 }
                 if (imp.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC)
                     SUPPLIER_NAME = imp.SUPPLIER_NAME;
+                    SUPPLIER_ID = imp.SUPPLIER_ID;
+                    SUPPLIER_CODE = imp.SUPPLIER_CODE;
                 //thong tin phieu nhap
                 V_HIS_IMP_MEST ImpMest = Listimp.FirstOrDefault(o => o.ID == imp.IMP_MEST_ID);
                 if (ImpMest != null)
                 {
                     DESCRIPTION = ImpMest.DESCRIPTION;
-                    SUPPLIER_CODE = ImpMest.SUPPLIER_CODE;
-                    SUPPLIER_ID =  ImpMest.SUPPLIER_ID;
                 }
 
                 V_HIS_IMP_MEST chmsImpMest = Listimp != null && imp.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__CK ? Listimp.Where(o => o.ID == imp.IMP_MEST_ID).FirstOrDefault() : null;
@@ -253,6 +253,9 @@ namespace MPS.Processor.Mps000217.PDO
                 EXP_AMOUNT = exp.AMOUNT;
                 EXP_MEST_CODE = exp.EXP_MEST_CODE;
                 DESCRIPTION_DETAIL = exp.DESCRIPTION;
+                SUPPLIER_CODE = exp.SUPPLIER_CODE;
+                SUPPLIER_ID = exp.SUPPLIER_ID;
+                SUPPLIER_NAME = exp.SUPPLIER_NAME;
                 //thong tin phieu xuất
                 V_HIS_EXP_MEST ExpMest = Listexp.FirstOrDefault(o => o.ID == exp.EXP_MEST_ID);
                 if (ExpMest != null)
