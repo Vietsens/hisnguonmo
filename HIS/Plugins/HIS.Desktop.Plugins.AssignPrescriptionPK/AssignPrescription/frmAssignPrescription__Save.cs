@@ -404,6 +404,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             return result;
         }
 
+        private string AppendIcd(string oldValue, string newValue)
+        {
+            oldValue = oldValue?.Trim();
+            newValue = newValue?.Trim();
+
+            if (string.IsNullOrEmpty(newValue))
+                return oldValue ?? "";
+
+            if (string.IsNullOrEmpty(oldValue))
+                return newValue;
+
+            return oldValue + ";" + newValue;
+        }
+
+
         private void ProcessSaveData(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE saveType)
         {
             try
@@ -514,9 +529,25 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 //    XtraMessageBox.Show("Mã đối tượng khám bệnh không được nhập chữ");
                 //    return;
                 //}
+                this.currentTreatment.ICD_CODE =
+                    AppendIcd(this.currentTreatment.ICD_CODE, txtIcdCode.EditValue as string);
 
+                this.currentTreatment.ICD_NAME =
+                    AppendIcd(this.currentTreatment.ICD_NAME, txtIcdMainText.EditValue as string);
+
+                this.currentTreatment.ICD_SUB_CODE =
+                    AppendIcd(this.currentTreatment.ICD_SUB_CODE, txtIcdSubCode.EditValue as string);
+
+                this.currentTreatment.ICD_TEXT =
+                    AppendIcd(this.currentTreatment.ICD_TEXT, txtIcdText.EditValue as string);
+
+                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(this.currentTreatment, null, null);
                 if (isHasTreatmentFinishChecked && treatUC != null)
                 {
+                    if (!who.CheckData())
+                    {
+                        return;
+                    }
                     if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "2" && treatUC.HeinPatientTypeCode == "")
                     {
                         var result = DevExpress.XtraEditors.XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị. Bạn có muốn tiếp tục?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -798,6 +829,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 //mediMatyTypeADOTemps = AutoMapper.Mapper.Map<List<MediMatyTypeADO>>(this.mediMatyTypeADOs);
                 //mediMatyTypeADOTemps.AddRange(this.mediMatyTypeADOs);
 
+
                 ISave isave = SaveFactory.MakeISave(
                     paramCommon,
                     mediMatyTypeADOs,
@@ -809,11 +841,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     );
 
                 Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.4");
+
                 this.resultDataPrescription = (isave != null ? isave.Run() : null);
                 Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.5");
                 if (this.resultDataPrescription != null)
                 {
-                    HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(this.currentTreatment, null, null);
                     who.SendData();
                     HIS_SERVICE_REQ serviceReqResult = null;
                     HIS_EXP_MEST expMestResult = null;
