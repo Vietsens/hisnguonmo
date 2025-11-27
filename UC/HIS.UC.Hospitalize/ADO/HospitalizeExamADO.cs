@@ -39,6 +39,8 @@ namespace HIS.UC.Hospitalize.ADO
         public SecondaryIcdDataADO icdSubADOInTreatment { get; set; }
         public SecondaryIcdDataADO tradtionalIcdSub { get; set; }
         public string Note { get; set; }
+        public string SpecialistNote { get; set; }
+        public string ExecutedServices { get; set; }
 
     }
 }
