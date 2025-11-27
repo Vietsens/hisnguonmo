@@ -214,8 +214,7 @@
     <Reference Include="Inventec.UC.Login">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\Inventec.UC.Login.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -350,7 +349,7 @@
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000352.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000421.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000421.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000421.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000422.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000422.PDO.dll</HintPath>

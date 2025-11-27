@@ -46,6 +46,12 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
 
 
                 Configs.LoadConfig();
+                if (String.IsNullOrWhiteSpace(Configs.API_NCD))
+                {
+                    //không thiết lập địa chỉ thì bỏ qua kiểm tra
+                    return result;
+                }
+
                 List<string> totalIcds = new List<string>();
                 if (!String.IsNullOrWhiteSpace(data.ICD_CODE))
                 {

@@ -1382,7 +1382,8 @@ namespace HIS.UC.AddressCombo
                     }
                 }
                 togChangeStructAdress.IsOn = true;
-                layoutControlItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                //layoutControlItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
                 IsInitForm = false;
             }
             catch (Exception ex)

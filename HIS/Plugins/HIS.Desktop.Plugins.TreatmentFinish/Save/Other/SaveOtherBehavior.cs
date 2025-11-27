@@ -64,6 +64,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Other
                 result.ClinicalNote = this.ClinicalNote;
                 result.SubclinicalResult = this.Subclinical;
 
+                result.DeathIdentityNumber = hisTreatmentFinishSDO_process.DeathIdentityNumber;
+
                 //treatment sick
                 result.SickLeaveDay = hisTreatmentFinishSDO_process.SickLeaveDay;
                 result.SickLeaveFrom = hisTreatmentFinishSDO_process.SickLeaveFrom;
