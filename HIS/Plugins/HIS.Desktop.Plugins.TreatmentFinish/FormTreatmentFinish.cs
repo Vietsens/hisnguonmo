@@ -2631,7 +2631,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             try
             {
                 //huannh
-               
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("currentTreatment input:", this.currentHisTreatment));
                 HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(this.currentHisTreatment, null, null);
                 if (!who.CheckData())
                 {

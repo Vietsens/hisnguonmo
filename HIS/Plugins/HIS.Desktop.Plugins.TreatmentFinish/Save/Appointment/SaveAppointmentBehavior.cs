@@ -80,6 +80,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Appointment
                 result.SickUsername = hisTreatmentFinishSDO_process.SickUsername;
                 result.DocumentBookId = hisTreatmentFinishSDO_process.DocumentBookId;
 
+                result.DeathIdentityNumber = hisTreatmentFinishSDO_process.DeathIdentityNumber;
+
                 result.TreatmentEndTypeExtId = hisTreatmentFinishSDO_process.TreatmentEndTypeExtId;
                 result.Babies = hisTreatmentFinishSDO_process.Babies;
                 result.PatientWorkPlace = hisTreatmentFinishSDO_process.PatientWorkPlace;

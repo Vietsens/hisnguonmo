@@ -68,6 +68,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Death
                     result.ClinicalNote = this.ClinicalNote;
                     result.SubclinicalResult = this.Subclinical;
 
+                    result.DeathIdentityNumber = hisTreatmentFinishSDO_process.DeathIdentityNumber;
+
                     //treatment death
                     result.DeathCauseId = hisTreatmentFinishSDO_process.DeathCauseId;
                     result.DeathTime = hisTreatmentFinishSDO_process.DeathTime;

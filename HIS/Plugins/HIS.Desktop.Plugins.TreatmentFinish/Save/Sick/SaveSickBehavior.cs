@@ -65,6 +65,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Sick
                     result.Advise = this.Advised;
                     result.TreatmentMethod = this.Treatment_Method;
 
+                    result.DeathIdentityNumber = hisTreatmentFinishSDO_process.DeathIdentityNumber;
+
                     result.ClinicalNote = this.ClinicalNote;
                     result.SubclinicalResult = this.Subclinical;
 

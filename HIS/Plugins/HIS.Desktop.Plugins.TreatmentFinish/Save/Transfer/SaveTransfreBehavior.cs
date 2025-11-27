@@ -84,6 +84,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Transfer
                     result.TranPatiTechId = hisTreatmentFinishSDO_process.TranPatiTechId;
                     //qtcode
                     result.ClinicalSigns = hisTreatmentFinishSDO_process.ClinicalSigns;
+                    result.DeathIdentityNumber = hisTreatmentFinishSDO_process.DeathIdentityNumber;
                     //qtcode
                     //treatment sick
                     result.SickLeaveDay = hisTreatmentFinishSDO_process.SickLeaveDay;
