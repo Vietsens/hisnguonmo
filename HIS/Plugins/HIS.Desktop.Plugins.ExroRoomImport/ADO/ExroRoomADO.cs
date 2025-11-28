@@ -28,5 +28,6 @@ namespace HIS.Desktop.Plugins.ExroRoomImport.ADO
         public string EXECUTE_ROOM_CODE { get; set; }
         public string ROOM_CODE { get; set; }
         public string ERROR { get; set; }
+       
     }
 }
