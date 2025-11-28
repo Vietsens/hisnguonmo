@@ -394,8 +394,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 }
                 //Thuốc ở trạng thái đang thực hiện, duyệt với các loại xuất trừ bean trực tiếp (đơn pk, đơn điều trị, đơn tủ trực, xuất khác...)
                 List<V_HIS_EXP_MEST_MEDICINE_1> expMestMedicineSubs = _ExpMestMedicines != null && _ExpMestMedicines.Count > 0 ? _ExpMestMedicines.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE || o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE).ToList() : _ExpMestMedicines;
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("expMestMedicineSubs inputCount:", expMestMedicineSubs.Count));
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("expMestMedicineSubs total price:", expMestMedicineSubs));
+              
 
                 var expMestMedicine = GroupExpMestMedicine(expMestMedicineSubs);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("expMestMedicine input:", expMestMedicine));
@@ -467,8 +466,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             
             AutoMapper.Mapper.CreateMap<V_HIS_EXP_MEST_MEDICINE_1, V_HIS_EXP_MEST_MEDICINE_1>();
             expMestmedicineTemps = AutoMapper.Mapper.Map<List<V_HIS_EXP_MEST_MEDICINE_1>>(expMestMedicine1s);
-            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("expMestmedicineTemps count: ", expMestmedicineTemps.Count));
-            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("expMestMedicine1s count: ", expMestMedicine1s.Count));
+           
             List<V_HIS_EXP_MEST_MEDICINE_1> result = new List<V_HIS_EXP_MEST_MEDICINE_1>();
             try
             {
@@ -505,24 +503,15 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     foreach (var dataGroup in dataGroups)
                     {
                         var first = dataGroup.First();
-                        V_HIS_EXP_MEST_MEDICINE_1 expMestMedicine = new V_HIS_EXP_MEST_MEDICINE_1
-                        {
-                          
-                            MEDICINE_TYPE_ID = first.MEDICINE_TYPE_ID,
-                            PRICE = first.PRICE,
-                            IMP_PRICE = first.IMP_PRICE,
-                            IMP_VAT_RATIO = first.IMP_VAT_RATIO,
-                            IS_NOT_PRES = first.IS_NOT_PRES,
-                            PATIENT_TYPE_ID = first.PATIENT_TYPE_ID,
-                            OTHER_PAY_SOURCE_ID = first.OTHER_PAY_SOURCE_ID,
-                            IS_EXPEND = first.IS_EXPEND,
-                            PACKAGE_NUMBER = first.PACKAGE_NUMBER,
-                            EXPIRED_DATE = first.EXPIRED_DATE,
-                          
-                            AMOUNT = dataGroup.Sum(o => o.AMOUNT),
-                            PRES_AMOUNT = dataGroup.Sum(o => o.PRES_AMOUNT ?? o.AMOUNT),
-                            SUM_BY_MEDICINE_IN_STOCK = dataGroup.Sum(o => o.SUM_BY_MEDICINE_IN_STOCK)
-                        };
+                        // Map all properties from 'first' to a new instance
+                        AutoMapper.Mapper.CreateMap<V_HIS_EXP_MEST_MEDICINE_1, V_HIS_EXP_MEST_MEDICINE_1>();
+                        V_HIS_EXP_MEST_MEDICINE_1 expMestMedicine = AutoMapper.Mapper.Map<V_HIS_EXP_MEST_MEDICINE_1>(first);
+
+                        // Override the summed properties
+                        expMestMedicine.AMOUNT = dataGroup.Sum(o => o.AMOUNT);
+                        expMestMedicine.PRES_AMOUNT = dataGroup.Sum(o => o.PRES_AMOUNT ?? o.AMOUNT);
+                        expMestMedicine.SUM_BY_MEDICINE_IN_STOCK = dataGroup.Sum(o => o.SUM_BY_MEDICINE_IN_STOCK);
+
                         result.Add(expMestMedicine);
                     }
 
