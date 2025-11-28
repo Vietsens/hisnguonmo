@@ -255,10 +255,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
 
                     if (package.TOTAL_PACKAGE_USED.HasValue && package.MAX_PACKAGE_USAGE_PER_DAY.HasValue &&
-                        package.TOTAL_PACKAGE_USED.Value >= package.MAX_PACKAGE_USAGE_PER_DAY.Value && package.WARNING_OPTION == 1)
+                        package.TOTAL_PACKAGE_USED.Value >= package.MAX_PACKAGE_USAGE_PER_DAY.Value && package.WARNING_OPTION == 2)
                     {
                         var check = XtraMessageBox.Show(
-                                string.Format("Gói {0} vượt quá số lượng sử dụng tối đa trong ngày {1}. Bạn có muốn tiếp tục không?", package.TOTAL_PACKAGE_USED, package.MAX_PACKAGE_USAGE_PER_DAY),
+                                string.Format("Gói {0} đã sử dụng {2} lần vượt quá số lượng sử dụng tối đa trong ngày {1}. Bạn có muốn tiếp tục không?", package.PACKAGE_NAME, package.MAX_PACKAGE_USAGE_PER_DAY, package.TOTAL_PACKAGE_USED),
                                 "Cảnh báo",
                                 MessageBoxButtons.YesNo,
                                 MessageBoxIcon.Warning
@@ -274,7 +274,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                              package.TOTAL_PACKAGE_USED.Value >= package.MAX_PACKAGE_USAGE_PER_DAY.Value && package.WARNING_OPTION == 1)
                     {
                         MessageBox.Show(
-                            string.Format("Gói {0} vượt quá số lượng sử dụng tối đa trong ngày {1}", package.TOTAL_PACKAGE_USED, package.MAX_PACKAGE_USAGE_PER_DAY),
+                            string.Format("Gói {0} đã sử dụng {2} lần vượt quá số lượng sử dụng tối đa trong ngày {1}", package.TOTAL_PACKAGE_USED, package.MAX_PACKAGE_USAGE_PER_DAY),
                             "Thông báo",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Stop

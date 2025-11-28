@@ -1052,11 +1052,28 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 ControlEditorADO controlEditorADO = new ControlEditorADO("PACKAGE_NAME", "ID", columnInfos, true, 350);
                 ControlEditorLoader.Load(cboPackage, this.packagesSdo, controlEditorADO);
 
+                var view = cboPackage.Properties.View;
+                view.CustomDrawCell += View_CustomDrawCell;
                 Inventec.Common.Logging.LogSystem.Debug("InitComboPackage. 2");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void View_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
+        {
+            var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+            if (e.RowHandle < 0) return;
+
+            var row = view.GetRow(e.RowHandle) as HisPackageCounterSDO;
+            if (row == null) return;
+
+            if (row.TOTAL_PACKAGE_USED >= row.MAX_PACKAGE_USAGE_PER_DAY)
+            {
+                e.Appearance.BackColor = Color.LightCoral;
+                e.Appearance.ForeColor = Color.Black;
             }
         }
 
