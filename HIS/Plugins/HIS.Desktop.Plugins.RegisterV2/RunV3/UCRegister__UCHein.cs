@@ -106,7 +106,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 else if (dt.HisPatientSDO != null && HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
                 {
                     HisTreatmentFilter filter = new HisTreatmentFilter();
-                    filter.ID = dt.HisPatientSDO.ID;
+                    filter.ID = dt.HisPatientSDO.TreatmentId;
                     var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, filter, param);
                     var latestTreatment = treatment.Where(t => t.PATIENT_ID == currentPatientSDO.ID && !string.IsNullOrEmpty(t.TDL_PATIENT_ADDRESS))
                         .OrderByDescending(t => t.IN_TIME)
