@@ -1448,7 +1448,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.chkIsPartExamAbnormal.Location = new System.Drawing.Point(829, 359);
             this.chkIsPartExamAbnormal.MenuManager = this.barManager1;
             this.chkIsPartExamAbnormal.Name = "chkIsPartExamAbnormal";
-            this.chkIsPartExamAbnormal.Properties.Caption = "B/T";
+            this.chkIsPartExamAbnormal.Properties.Caption = "BT";
             this.chkIsPartExamAbnormal.Size = new System.Drawing.Size(35, 19);
             this.chkIsPartExamAbnormal.StyleController = this.layoutControl3;
             this.chkIsPartExamAbnormal.TabIndex = 81;
@@ -1525,7 +1525,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.chkIsFullExamAbnormal.Location = new System.Drawing.Point(829, 220);
             this.chkIsFullExamAbnormal.MenuManager = this.barManager1;
             this.chkIsFullExamAbnormal.Name = "chkIsFullExamAbnormal";
-            this.chkIsFullExamAbnormal.Properties.Caption = "B/T";
+            this.chkIsFullExamAbnormal.Properties.Caption = "BT";
             this.chkIsFullExamAbnormal.Size = new System.Drawing.Size(35, 19);
             this.chkIsFullExamAbnormal.StyleController = this.layoutControl3;
             this.chkIsFullExamAbnormal.TabIndex = 80;
