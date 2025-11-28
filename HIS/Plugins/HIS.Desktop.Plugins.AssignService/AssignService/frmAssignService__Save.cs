@@ -17,6 +17,7 @@
  */
 using ACS.EFMODEL.DataModels;
 using DevExpress.Office.Utils;
+using DevExpress.XtraEditors;
 using EMR.Filter;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
@@ -64,7 +65,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     this.gridViewServiceProcess.UpdateCurrentRow();
 
                 bool isValid = true;
-
+                if (!CheckPackage())
+                {
+                    return;
+                }
                 List<SereServADO> serviceCheckeds__Send = this.ServiceIsleafADOs.FindAll(o => o.IsChecked);
                 if (serviceTypeIdRequired != null && serviceTypeIdRequired.Count > 0)
                 {
@@ -201,6 +205,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     ChangeLockButtonWhileProcess(false);
                     AssignServiceSDO serviceReqSDO = new AssignServiceSDO();
                     serviceReqSDO.ServiceReqDetails = new List<ServiceReqDetailSDO>();
+                    if (cboPackage.EditValue != null)
+                    {
+                        serviceReqSDO.PackageId = Convert.ToInt32(cboPackage.EditValue.ToString());
+                    }
+                    
                     bool isDupicate = false;
                     this.ProcessServiceReqSDO(serviceReqSDO, serviceCheckeds__Send, ref isDupicate, treatmentId, true);
                     if (isDupicate)
@@ -233,6 +242,55 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.ChangeLockButtonWhileProcess(true);
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private bool CheckPackage()
+        {
+            bool result = true;
+            try
+            {
+                if (cboPackage.EditValue != null)
+                {
+                    var package = this.packagesSdo.FirstOrDefault(o => o.ID == Convert.ToInt32(cboPackage.EditValue.ToString()));
+
+
+                    if (package.TOTAL_PACKAGE_USED.HasValue && package.MAX_PACKAGE_USAGE_PER_DAY.HasValue &&
+                        package.TOTAL_PACKAGE_USED.Value >= package.MAX_PACKAGE_USAGE_PER_DAY.Value && package.WARNING_OPTION == 1)
+                    {
+                        var check = XtraMessageBox.Show(
+                                string.Format("Gói {0} vượt quá số lượng sử dụng tối đa trong ngày {1}. Bạn có muốn tiếp tục không?", package.TOTAL_PACKAGE_USED, package.MAX_PACKAGE_USAGE_PER_DAY),
+                                "Cảnh báo",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning
+                            );
+
+                        if (check == DialogResult.No)
+                        {
+                            // Người dùng chọn Không → dừng lại
+                            return false;
+                        }
+                    }
+                    else if (package.TOTAL_PACKAGE_USED.HasValue && package.MAX_PACKAGE_USAGE_PER_DAY.HasValue &&
+                             package.TOTAL_PACKAGE_USED.Value >= package.MAX_PACKAGE_USAGE_PER_DAY.Value && package.WARNING_OPTION == 1)
+                    {
+                        MessageBox.Show(
+                            string.Format("Gói {0} vượt quá số lượng sử dụng tối đa trong ngày {1}", package.TOTAL_PACKAGE_USED, package.MAX_PACKAGE_USAGE_PER_DAY),
+                            "Thông báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Stop
+                        );
+                        return false;
+                    }
+                }
+                
+
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         V_HIS_SERVICE_REQ vServiceReq;

@@ -27,17 +27,24 @@ using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
 {
     public partial class frmAssignService : HIS.Desktop.Utility.FormBase
     {
         private List<HIS_TEST_SAMPLE_TYPE> dataListTestSampleType;
+        List<HisPackageCounterSDO> packagesSdo = new List<HisPackageCounterSDO>();
+
+        private System.Timers.Timer packageAutoRefreshTimer;
+        private readonly object packageLockObject = new object();
 
         //Load người chỉ định
         private async Task InitComboUser()
@@ -853,6 +860,129 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
+        private void InitializePackageAutoRefresh()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("InitializePackageAutoRefresh - Start");
+
+                // Lấy interval từ config (tính bằng giây)
+                string intervalConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(
+                    "His.Desktop.AssignService.HisPackage.UsageCheckInterval");
+
+                if (!string.IsNullOrWhiteSpace(intervalConfig) && int.TryParse(intervalConfig, out int intervalSeconds))
+                {
+                    // Chỉ khởi động timer nếu có config hợp lệ
+                    packageAutoRefreshTimer = new System.Timers.Timer();
+                    packageAutoRefreshTimer.Interval = intervalSeconds * 1000; // Chuyển sang milliseconds
+                    packageAutoRefreshTimer.Elapsed += PackageAutoRefreshTimer_Elapsed;
+                    packageAutoRefreshTimer.AutoReset = true;
+                    packageAutoRefreshTimer.Start();
+
+                    Inventec.Common.Logging.LogSystem.Info(
+                        $"Package auto refresh timer started with interval: {intervalSeconds} seconds");
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "His.Desktop.AssignService.HisPackage.UsageCheckInterval not configured. Auto refresh disabled.");
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug("InitializePackageAutoRefresh - End");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private async void PackageAutoRefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            await RefreshPackageCounterData();
+        }
+
+        private async Task RefreshPackageCounterData()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("RefreshPackageCounterData - Start");
+
+                CommonParam paramCommon = new CommonParam();
+                HisPackageCounterFilter filter = new HisPackageCounterFilter();
+
+                // Gọi API GetCounter
+                List<HisPackageCounterSDO> sdos = await new BackendAdapter(paramCommon)
+                    .GetAsync<List<HisPackageCounterSDO>>(
+                        "api/HisPackage/GetCounter",
+                        ApiConsumers.MosConsumer,
+                        filter,
+                        paramCommon);
+
+                if (sdos != null && sdos.Count > 0)
+                {
+                    lock (packageLockObject)
+                    {
+                        // Cập nhật dữ liệu vào biến packagesSdo
+                        this.packagesSdo = sdos
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                     && o.IS_NOT_FIXED_SERVICE != (short)1)
+                            .OrderBy(o => o.PACKAGE_NAME)
+                            .ToList();
+
+                        // Cập nhật vào RAM
+                        BackendDataWorker.UpdateToRam(
+                            typeof(HisPackageCounterSDO),
+                            this.packagesSdo,
+                            long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                    }
+
+                    // Cập nhật ComboBox trên UI thread
+                    if (this.InvokeRequired)
+                    {
+                        this.Invoke(new Action(() => UpdatePackageComboBoxUI()));
+                    }
+                    else
+                    {
+                        UpdatePackageComboBoxUI();
+                    }
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "RefreshPackageCounterData - No data returned from API");
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug("RefreshPackageCounterData - End");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void UpdatePackageComboBoxUI()
+        {
+            try
+            {
+                List<HisPackageCounterSDO> data = null;
+                lock (packageLockObject)
+                {
+                    data = this.packagesSdo?.ToList();
+                }
+
+                if (data != null && data.Count > 0)
+                {
+                    cboPackage.Properties.DataSource = null; // Clear trước
+                    cboPackage.Properties.DataSource = data;
+                    cboPackage.Properties.View.RefreshData();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         //Load gói dịch vụ, chỉ load ra các gói dịch vụ có is_active = 1
         private async Task InitComboPackage()
         {
@@ -860,38 +990,67 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             {
                 Inventec.Common.Logging.LogSystem.Debug("InitComboPackage. 1");
 
-                List<HIS_PACKAGE> packages = null;
-                if (BackendDataWorker.IsExistsKey<HIS_PACKAGE>())
+                List<HisPackageCounterSDO> sdos = null;
+
+                // Kiểm tra xem đã có dữ liệu từ auto refresh chưa
+                lock (packageLockObject)
                 {
-                    packages = BackendDataWorker.Get<HIS_PACKAGE>();
+                    if (this.packagesSdo != null && this.packagesSdo.Count > 0)
+                    {
+                        sdos = this.packagesSdo.ToList();
+                        Inventec.Common.Logging.LogSystem.Debug("InitComboPackage - Using cached data from auto refresh");
+                    }
                 }
-                else
+
+                // Nếu chưa có dữ liệu, gọi API lần đầu
+                if (sdos == null || sdos.Count == 0)
                 {
+                    Inventec.Common.Logging.LogSystem.Debug("InitComboPackage - Fetching data from API");
                     CommonParam paramCommon = new CommonParam();
-                    dynamic filter = new System.Dynamic.ExpandoObject();
-                    List<HIS_PACKAGE> lstPackage = await new BackendAdapter(paramCommon).GetAsync<List<HIS_PACKAGE>>("api/HisPackage/Get", ApiConsumers.MosConsumer, filter, paramCommon);
-                    if (lstPackage != null) BackendDataWorker.UpdateToRam(typeof(HIS_PACKAGE), lstPackage, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
-                    packages = lstPackage;
+                    HisPackageCounterFilter filter = new HisPackageCounterFilter();
+                    sdos = await new BackendAdapter(paramCommon).GetAsync<List<HisPackageCounterSDO>>(
+                        "api/HisPackage/GetCounter",
+                        ApiConsumers.MosConsumer,
+                        filter,
+                        paramCommon);
+
+                    if (sdos != null && sdos.Count > 0)
+                    {
+                        lock (packageLockObject)
+                        {
+                            this.packagesSdo = sdos
+                                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                         && o.IS_NOT_FIXED_SERVICE != (short)1)
+                                .OrderBy(o => o.PACKAGE_NAME)
+                                .ToList();
+
+                            BackendDataWorker.UpdateToRam(
+                                typeof(HisPackageCounterSDO),
+                                this.packagesSdo,
+                                long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                        }
+                    }
                 }
 
-                packages = packages != null ? packages.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NOT_FIXED_SERVICE != (short)1).ToList() : packages;
-
-                // order tăng dần theo num_order
-                if (packages != null && packages.Count > 0)
+                // Bind dữ liệu vào ComboBox
+                if (this.packagesSdo != null && this.packagesSdo.Count > 0)
                 {
-                    packages = packages.OrderBy(o => o.PACKAGE_NAME).ToList();
-                    cboPackage.Properties.DataSource = packages;
+                    cboPackage.Properties.DataSource = this.packagesSdo;
                 }
                 else
                 {
                     cboPackage.Properties.DataSource = null;
                 }
 
+                // Cấu hình columns
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("PACKAGE_CODE", "", 100, 1));
-                columnInfos.Add(new ColumnInfo("PACKAGE_NAME", "", 250, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("PACKAGE_NAME", "ID", columnInfos, false, 350);
-                ControlEditorLoader.Load(cboPackage, packages, controlEditorADO);
+                columnInfos.Add(new ColumnInfo("PACKAGE_CODE", "Mã gói dịch vụ", 100, 1));
+                columnInfos.Add(new ColumnInfo("PACKAGE_NAME", "Tên gói dịch vụ", 250, 2));
+                columnInfos.Add(new ColumnInfo("TOTAL_PACKAGE_USED", "Đã xử lý", 100, 3)); 
+                columnInfos.Add(new ColumnInfo("MAX_PACKAGE_USAGE_PER_DAY", "Tối đa", 100, 4));
+
+                ControlEditorADO controlEditorADO = new ControlEditorADO("PACKAGE_NAME", "ID", columnInfos, true, 350);
+                ControlEditorLoader.Load(cboPackage, this.packagesSdo, controlEditorADO);
 
                 Inventec.Common.Logging.LogSystem.Debug("InitComboPackage. 2");
             }
@@ -899,6 +1058,42 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void StopPackageAutoRefresh()
+        {
+            try
+            {
+                if (packageAutoRefreshTimer != null)
+                {
+                    packageAutoRefreshTimer.Stop();
+                    packageAutoRefreshTimer.Elapsed -= PackageAutoRefreshTimer_Elapsed;
+                    packageAutoRefreshTimer.Dispose();
+                    packageAutoRefreshTimer = null;
+                    Inventec.Common.Logging.LogSystem.Info("Package auto refresh timer stopped");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Khởi động lại timer - có thể gọi khi cần reset
+        /// </summary>
+        private void RestartPackageAutoRefresh()
+        {
+            StopPackageAutoRefresh();
+            InitializePackageAutoRefresh();
+        }
+
+        /// <summary>
+        /// Refresh thủ công khi cần thiết
+        /// </summary>
+        private async void btnRefreshPackage_Click(object sender, EventArgs e)
+        {
+            await RefreshPackageCounterData();
         }
 
         private async Task InitPackageDetail()
