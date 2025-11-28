@@ -280,6 +280,12 @@
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dich-vu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\y-te.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)

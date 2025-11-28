@@ -46,7 +46,17 @@ namespace HIS.Desktop.Plugins.CallPatientV4
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmWaitingScreen_V4_SeparateScreen));
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.lblTitleNoiTru = new System.Windows.Forms.Label();
             this.lblTitleNgoaiTru = new System.Windows.Forms.Label();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
@@ -76,22 +86,10 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl6 = new DevExpress.XtraLayout.LayoutControl();
-            this.layoutControl8 = new DevExpress.XtraLayout.LayoutControl();
-            this.gridControlWaitingCls2 = new DevExpress.XtraGrid.GridControl();
-            this.gridViewWaitingCls2 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumnSTT2 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnLastName2 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnAge2 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.layoutControlGroup_Grid2 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridControlWaitingCls = new DevExpress.XtraGrid.GridControl();
             this.gridViewWaitingCls = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumnSTT = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnIcon = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnLastName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnAge = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnAddress = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -99,6 +97,22 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridColumnServiceReqStt = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnInstructionTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnServiceReqType = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.layoutControl8 = new DevExpress.XtraLayout.LayoutControl();
+            this.gridControlWaitingCls2 = new DevExpress.XtraGrid.GridControl();
+            this.gridViewWaitingCls2 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumnSTT2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnIcon2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnLastName2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnAge2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.layoutControlGroup_Grid2 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup5 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem_Grid2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -109,6 +123,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.timerForScrollListPatient = new System.Windows.Forms.Timer(this.components);
             this.timerAutoLoadDataPatient = new System.Windows.Forms.Timer(this.components);
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
@@ -116,8 +131,6 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.timerForHightLightCallPatientLayout = new System.Windows.Forms.Timer(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timerChangeColorRow = new System.Windows.Forms.Timer(this.components);
-            this.lblTitleNoiTru = new System.Windows.Forms.Label();
-            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
@@ -149,14 +162,16 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).BeginInit();
             this.layoutControl6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlWaitingCls)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewWaitingCls)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl8)).BeginInit();
             this.layoutControl8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlWaitingCls2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewWaitingCls2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup_Grid2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlWaitingCls)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewWaitingCls)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem_Grid2)).BeginInit();
@@ -185,13 +200,24 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // lblTitleNoiTru
+            // 
+            this.lblTitleNoiTru.BackColor = System.Drawing.Color.Black;
+            this.lblTitleNoiTru.ForeColor = System.Drawing.SystemColors.ButtonShadow;
+            this.lblTitleNoiTru.Location = new System.Drawing.Point(2, 39);
+            this.lblTitleNoiTru.Name = "lblTitleNoiTru";
+            this.lblTitleNoiTru.Size = new System.Drawing.Size(662, 37);
+            this.lblTitleNoiTru.TabIndex = 10;
+            this.lblTitleNoiTru.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // lblTitleNgoaiTru
             // 
-            this.lblTitleNgoaiTru.Location = new System.Drawing.Point(677, 44);
+            this.lblTitleNgoaiTru.BackColor = System.Drawing.Color.Black;
+            this.lblTitleNgoaiTru.Location = new System.Drawing.Point(668, 39);
             this.lblTitleNgoaiTru.Name = "lblTitleNgoaiTru";
-            this.lblTitleNgoaiTru.Size = new System.Drawing.Size(671, 20);
+            this.lblTitleNgoaiTru.Size = new System.Drawing.Size(680, 37);
             this.lblTitleNgoaiTru.TabIndex = 9;
-            this.lblTitleNgoaiTru.Text = "label1";
+            this.lblTitleNgoaiTru.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // layoutControl5
             // 
@@ -446,7 +472,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControl4.Location = new System.Drawing.Point(2, 2);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(1346, 38);
+            this.layoutControl4.Size = new System.Drawing.Size(1346, 33);
             this.layoutControl4.TabIndex = 6;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -489,7 +515,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1346, 38);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(1346, 33);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem7
@@ -502,7 +528,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem7.Control = this.lblRoomName;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(949, 38);
+            this.layoutControlItem7.Size = new System.Drawing.Size(949, 33);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
@@ -511,17 +537,17 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem14.Control = this.lblDoctorName;
             this.layoutControlItem14.Location = new System.Drawing.Point(949, 0);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(397, 38);
+            this.layoutControlItem14.Size = new System.Drawing.Size(397, 33);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
             // layoutControl2
             // 
             this.layoutControl2.Controls.Add(this.layoutControl6);
-            this.layoutControl2.Location = new System.Drawing.Point(2, 68);
+            this.layoutControl2.Location = new System.Drawing.Point(2, 80);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(1346, 453);
+            this.layoutControl2.Size = new System.Drawing.Size(1346, 441);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             // 
@@ -532,9 +558,341 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControl6.Location = new System.Drawing.Point(2, 2);
             this.layoutControl6.Name = "layoutControl6";
             this.layoutControl6.Root = this.layoutControlGroup5;
-            this.layoutControl6.Size = new System.Drawing.Size(1342, 449);
+            this.layoutControl6.Size = new System.Drawing.Size(1342, 437);
             this.layoutControl6.TabIndex = 4;
             this.layoutControl6.Text = "layoutControl6";
+            // 
+            // gridControlWaitingCls
+            // 
+            this.gridControlWaitingCls.EmbeddedNavigator.Appearance.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.gridControlWaitingCls.EmbeddedNavigator.Appearance.Options.UseForeColor = true;
+            this.gridControlWaitingCls.Location = new System.Drawing.Point(0, 0);
+            this.gridControlWaitingCls.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat;
+            this.gridControlWaitingCls.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.gridControlWaitingCls.MainView = this.gridViewWaitingCls;
+            this.gridControlWaitingCls.Name = "gridControlWaitingCls";
+            this.gridControlWaitingCls.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemButtonEdit1});
+            this.gridControlWaitingCls.Size = new System.Drawing.Size(660, 437);
+            this.gridControlWaitingCls.TabIndex = 4;
+            this.gridControlWaitingCls.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewWaitingCls});
+            // 
+            // gridViewWaitingCls
+            // 
+            this.gridViewWaitingCls.Appearance.Empty.BackColor = System.Drawing.Color.Black;
+            this.gridViewWaitingCls.Appearance.Empty.BackColor2 = System.Drawing.Color.Black;
+            this.gridViewWaitingCls.Appearance.Empty.BorderColor = System.Drawing.Color.Transparent;
+            this.gridViewWaitingCls.Appearance.Empty.Options.UseBackColor = true;
+            this.gridViewWaitingCls.Appearance.Empty.Options.UseBorderColor = true;
+            this.gridViewWaitingCls.Appearance.FocusedCell.BackColor = System.Drawing.Color.Azure;
+            this.gridViewWaitingCls.Appearance.FocusedCell.BackColor2 = System.Drawing.Color.Transparent;
+            this.gridViewWaitingCls.Appearance.FocusedCell.Options.UseBackColor = true;
+            this.gridViewWaitingCls.Appearance.FocusedRow.BackColor = System.Drawing.Color.Transparent;
+            this.gridViewWaitingCls.Appearance.FocusedRow.BackColor2 = System.Drawing.Color.Transparent;
+            this.gridViewWaitingCls.Appearance.FocusedRow.Options.UseBackColor = true;
+            this.gridViewWaitingCls.Appearance.HorzLine.BackColor = System.Drawing.Color.Transparent;
+            this.gridViewWaitingCls.Appearance.HorzLine.Options.UseBackColor = true;
+            this.gridViewWaitingCls.Appearance.OddRow.BackColor = System.Drawing.Color.Transparent;
+            this.gridViewWaitingCls.Appearance.OddRow.Options.UseBackColor = true;
+            this.gridViewWaitingCls.Appearance.Preview.BackColor = System.Drawing.Color.Transparent;
+            this.gridViewWaitingCls.Appearance.Preview.Options.UseBackColor = true;
+            this.gridViewWaitingCls.Appearance.Row.BackColor = System.Drawing.Color.Transparent;
+            this.gridViewWaitingCls.Appearance.Row.ForeColor = System.Drawing.Color.Black;
+            this.gridViewWaitingCls.Appearance.Row.Options.UseBackColor = true;
+            this.gridViewWaitingCls.Appearance.Row.Options.UseForeColor = true;
+            this.gridViewWaitingCls.Appearance.RowSeparator.BackColor = System.Drawing.Color.Black;
+            this.gridViewWaitingCls.Appearance.RowSeparator.Options.UseBackColor = true;
+            this.gridViewWaitingCls.Appearance.SelectedRow.BackColor = System.Drawing.Color.Transparent;
+            this.gridViewWaitingCls.Appearance.SelectedRow.BackColor2 = System.Drawing.Color.Transparent;
+            this.gridViewWaitingCls.Appearance.SelectedRow.Options.UseBackColor = true;
+            this.gridViewWaitingCls.Appearance.TopNewRow.BackColor = System.Drawing.Color.Black;
+            this.gridViewWaitingCls.Appearance.TopNewRow.Options.UseBackColor = true;
+            this.gridViewWaitingCls.Appearance.VertLine.BackColor = System.Drawing.Color.Black;
+            this.gridViewWaitingCls.Appearance.VertLine.Options.UseBackColor = true;
+            this.gridViewWaitingCls.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.gridViewWaitingCls.ColumnPanelRowHeight = 70;
+            this.gridViewWaitingCls.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumnSTT,
+            this.gridColumnIcon,
+            this.gridColumnLastName,
+            this.gridColumnAge,
+            this.gridColumnAddress,
+            this.gridColumnFirstName,
+            this.gridColumnServiceReqStt,
+            this.gridColumnInstructionTime,
+            this.gridColumnServiceReqType});
+            this.gridViewWaitingCls.GridControl = this.gridControlWaitingCls;
+            this.gridViewWaitingCls.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Never;
+            this.gridViewWaitingCls.Name = "gridViewWaitingCls";
+            this.gridViewWaitingCls.OptionsFind.AllowFindPanel = false;
+            this.gridViewWaitingCls.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewWaitingCls.OptionsSelection.EnableAppearanceFocusedRow = false;
+            this.gridViewWaitingCls.OptionsView.ShowGroupPanel = false;
+            this.gridViewWaitingCls.OptionsView.ShowHorizontalLines = DevExpress.Utils.DefaultBoolean.False;
+            this.gridViewWaitingCls.OptionsView.ShowIndicator = false;
+            this.gridViewWaitingCls.OptionsView.ShowPreviewRowLines = DevExpress.Utils.DefaultBoolean.False;
+            this.gridViewWaitingCls.RowHeight = 65;
+            this.gridViewWaitingCls.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Never;
+            this.gridViewWaitingCls.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gridViewWaitingCls_RowStyle);
+            this.gridViewWaitingCls.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewWaitingCls_CustomRowCellEdit);
+            this.gridViewWaitingCls.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewWaitingCls_CustomUnboundColumnData);
+            // 
+            // gridColumnSTT
+            // 
+            this.gridColumnSTT.AppearanceCell.BackColor = System.Drawing.Color.Black;
+            this.gridColumnSTT.AppearanceCell.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnSTT.AppearanceCell.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
+            this.gridColumnSTT.AppearanceCell.ForeColor = System.Drawing.Color.Yellow;
+            this.gridColumnSTT.AppearanceCell.Options.UseBackColor = true;
+            this.gridColumnSTT.AppearanceCell.Options.UseBorderColor = true;
+            this.gridColumnSTT.AppearanceCell.Options.UseFont = true;
+            this.gridColumnSTT.AppearanceCell.Options.UseForeColor = true;
+            this.gridColumnSTT.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnSTT.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumnSTT.AppearanceHeader.BackColor = System.Drawing.Color.Black;
+            this.gridColumnSTT.AppearanceHeader.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnSTT.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
+            this.gridColumnSTT.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
+            this.gridColumnSTT.AppearanceHeader.Options.UseBackColor = true;
+            this.gridColumnSTT.AppearanceHeader.Options.UseBorderColor = true;
+            this.gridColumnSTT.AppearanceHeader.Options.UseFont = true;
+            this.gridColumnSTT.AppearanceHeader.Options.UseForeColor = true;
+            this.gridColumnSTT.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumnSTT.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumnSTT.Caption = "STT";
+            this.gridColumnSTT.FieldName = "NUM_ORDER";
+            this.gridColumnSTT.Name = "gridColumnSTT";
+            this.gridColumnSTT.OptionsColumn.AllowEdit = false;
+            this.gridColumnSTT.OptionsColumn.AllowFocus = false;
+            this.gridColumnSTT.OptionsColumn.AllowMove = false;
+            this.gridColumnSTT.OptionsColumn.AllowShowHide = false;
+            this.gridColumnSTT.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnSTT.OptionsColumn.ReadOnly = true;
+            this.gridColumnSTT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnSTT.Visible = true;
+            this.gridColumnSTT.VisibleIndex = 0;
+            this.gridColumnSTT.Width = 150;
+            // 
+            // gridColumnIcon
+            // 
+            this.gridColumnIcon.AppearanceCell.BackColor = System.Drawing.Color.Black;
+            this.gridColumnIcon.AppearanceCell.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnIcon.AppearanceCell.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
+            this.gridColumnIcon.AppearanceCell.ForeColor = System.Drawing.Color.White;
+            this.gridColumnIcon.AppearanceCell.Options.UseBackColor = true;
+            this.gridColumnIcon.AppearanceCell.Options.UseBorderColor = true;
+            this.gridColumnIcon.AppearanceCell.Options.UseFont = true;
+            this.gridColumnIcon.AppearanceCell.Options.UseForeColor = true;
+            this.gridColumnIcon.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnIcon.AppearanceHeader.BackColor = System.Drawing.Color.DarkRed;
+            this.gridColumnIcon.AppearanceHeader.BorderColor = System.Drawing.Color.DarkRed;
+            this.gridColumnIcon.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
+            this.gridColumnIcon.AppearanceHeader.ForeColor = System.Drawing.Color.DarkRed;
+            this.gridColumnIcon.AppearanceHeader.Options.UseBackColor = true;
+            this.gridColumnIcon.AppearanceHeader.Options.UseBorderColor = true;
+            this.gridColumnIcon.AppearanceHeader.Options.UseFont = true;
+            this.gridColumnIcon.AppearanceHeader.Options.UseForeColor = true;
+            this.gridColumnIcon.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumnIcon.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumnIcon.Caption = "gridColumn1";
+            this.gridColumnIcon.FieldName = "ICON_DISPLAY";
+            this.gridColumnIcon.Name = "gridColumnIcon";
+            this.gridColumnIcon.OptionsColumn.AllowEdit = false;
+            this.gridColumnIcon.OptionsColumn.AllowFocus = false;
+            this.gridColumnIcon.OptionsColumn.AllowMove = false;
+            this.gridColumnIcon.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnIcon.OptionsColumn.ReadOnly = true;
+            this.gridColumnIcon.OptionsColumn.ShowCaption = false;
+            this.gridColumnIcon.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            // 
+            // gridColumnLastName
+            // 
+            this.gridColumnLastName.AppearanceCell.BackColor = System.Drawing.Color.Black;
+            this.gridColumnLastName.AppearanceCell.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnLastName.AppearanceCell.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
+            this.gridColumnLastName.AppearanceCell.ForeColor = System.Drawing.Color.Yellow;
+            this.gridColumnLastName.AppearanceCell.Options.UseBackColor = true;
+            this.gridColumnLastName.AppearanceCell.Options.UseBorderColor = true;
+            this.gridColumnLastName.AppearanceCell.Options.UseFont = true;
+            this.gridColumnLastName.AppearanceCell.Options.UseForeColor = true;
+            this.gridColumnLastName.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnLastName.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
+            this.gridColumnLastName.AppearanceHeader.BackColor = System.Drawing.Color.Black;
+            this.gridColumnLastName.AppearanceHeader.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnLastName.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
+            this.gridColumnLastName.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
+            this.gridColumnLastName.AppearanceHeader.Options.UseBackColor = true;
+            this.gridColumnLastName.AppearanceHeader.Options.UseBorderColor = true;
+            this.gridColumnLastName.AppearanceHeader.Options.UseFont = true;
+            this.gridColumnLastName.AppearanceHeader.Options.UseForeColor = true;
+            this.gridColumnLastName.Caption = "HỌ TÊN";
+            this.gridColumnLastName.FieldName = "TDL_PATIENT_NAME";
+            this.gridColumnLastName.Name = "gridColumnLastName";
+            this.gridColumnLastName.OptionsColumn.AllowEdit = false;
+            this.gridColumnLastName.OptionsColumn.AllowFocus = false;
+            this.gridColumnLastName.OptionsColumn.AllowMove = false;
+            this.gridColumnLastName.OptionsColumn.AllowShowHide = false;
+            this.gridColumnLastName.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnLastName.OptionsColumn.ReadOnly = true;
+            this.gridColumnLastName.Visible = true;
+            this.gridColumnLastName.VisibleIndex = 1;
+            this.gridColumnLastName.Width = 380;
+            // 
+            // gridColumnAge
+            // 
+            this.gridColumnAge.AppearanceCell.BackColor = System.Drawing.Color.Black;
+            this.gridColumnAge.AppearanceCell.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnAge.AppearanceCell.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
+            this.gridColumnAge.AppearanceCell.ForeColor = System.Drawing.Color.Yellow;
+            this.gridColumnAge.AppearanceCell.Options.UseBackColor = true;
+            this.gridColumnAge.AppearanceCell.Options.UseBorderColor = true;
+            this.gridColumnAge.AppearanceCell.Options.UseFont = true;
+            this.gridColumnAge.AppearanceCell.Options.UseForeColor = true;
+            this.gridColumnAge.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnAge.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumnAge.AppearanceHeader.BackColor = System.Drawing.Color.Black;
+            this.gridColumnAge.AppearanceHeader.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnAge.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
+            this.gridColumnAge.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
+            this.gridColumnAge.AppearanceHeader.Options.UseBackColor = true;
+            this.gridColumnAge.AppearanceHeader.Options.UseBorderColor = true;
+            this.gridColumnAge.AppearanceHeader.Options.UseFont = true;
+            this.gridColumnAge.AppearanceHeader.Options.UseForeColor = true;
+            this.gridColumnAge.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumnAge.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumnAge.Caption = "NĂM SINH";
+            this.gridColumnAge.FieldName = "AGE_DISPLAY";
+            this.gridColumnAge.Name = "gridColumnAge";
+            this.gridColumnAge.OptionsColumn.AllowEdit = false;
+            this.gridColumnAge.OptionsColumn.AllowFocus = false;
+            this.gridColumnAge.OptionsColumn.AllowMove = false;
+            this.gridColumnAge.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnAge.OptionsColumn.ReadOnly = true;
+            this.gridColumnAge.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnAge.Visible = true;
+            this.gridColumnAge.VisibleIndex = 2;
+            this.gridColumnAge.Width = 242;
+            // 
+            // gridColumnAddress
+            // 
+            this.gridColumnAddress.AppearanceCell.BackColor = System.Drawing.Color.Black;
+            this.gridColumnAddress.AppearanceCell.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnAddress.AppearanceCell.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
+            this.gridColumnAddress.AppearanceCell.ForeColor = System.Drawing.Color.Yellow;
+            this.gridColumnAddress.AppearanceCell.Options.UseBackColor = true;
+            this.gridColumnAddress.AppearanceCell.Options.UseBorderColor = true;
+            this.gridColumnAddress.AppearanceCell.Options.UseFont = true;
+            this.gridColumnAddress.AppearanceCell.Options.UseForeColor = true;
+            this.gridColumnAddress.AppearanceHeader.BackColor = System.Drawing.Color.Black;
+            this.gridColumnAddress.AppearanceHeader.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnAddress.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
+            this.gridColumnAddress.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
+            this.gridColumnAddress.AppearanceHeader.Options.UseBackColor = true;
+            this.gridColumnAddress.AppearanceHeader.Options.UseBorderColor = true;
+            this.gridColumnAddress.AppearanceHeader.Options.UseFont = true;
+            this.gridColumnAddress.AppearanceHeader.Options.UseForeColor = true;
+            this.gridColumnAddress.Caption = "ĐỊA CHỈ";
+            this.gridColumnAddress.FieldName = "TDL_PATIENT_ADDRESS";
+            this.gridColumnAddress.Name = "gridColumnAddress";
+            this.gridColumnAddress.OptionsColumn.AllowEdit = false;
+            this.gridColumnAddress.OptionsColumn.AllowFocus = false;
+            this.gridColumnAddress.OptionsColumn.AllowMove = false;
+            this.gridColumnAddress.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnAddress.OptionsColumn.ReadOnly = true;
+            this.gridColumnAddress.Width = 538;
+            // 
+            // gridColumnFirstName
+            // 
+            this.gridColumnFirstName.AppearanceCell.Font = new System.Drawing.Font("Arial", 21.75F);
+            this.gridColumnFirstName.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.gridColumnFirstName.AppearanceCell.Options.UseFont = true;
+            this.gridColumnFirstName.AppearanceCell.Options.UseForeColor = true;
+            this.gridColumnFirstName.AppearanceHeader.Font = new System.Drawing.Font("Arial", 22F);
+            this.gridColumnFirstName.AppearanceHeader.Options.UseFont = true;
+            this.gridColumnFirstName.Caption = "Tên";
+            this.gridColumnFirstName.FieldName = "FIRST_NAME";
+            this.gridColumnFirstName.Name = "gridColumnFirstName";
+            this.gridColumnFirstName.OptionsColumn.AllowEdit = false;
+            this.gridColumnFirstName.OptionsColumn.AllowFocus = false;
+            this.gridColumnFirstName.OptionsColumn.AllowMove = false;
+            this.gridColumnFirstName.OptionsColumn.AllowShowHide = false;
+            this.gridColumnFirstName.Width = 162;
+            // 
+            // gridColumnServiceReqStt
+            // 
+            this.gridColumnServiceReqStt.AppearanceCell.Font = new System.Drawing.Font("Arial", 22F);
+            this.gridColumnServiceReqStt.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.gridColumnServiceReqStt.AppearanceCell.Options.UseFont = true;
+            this.gridColumnServiceReqStt.AppearanceCell.Options.UseForeColor = true;
+            this.gridColumnServiceReqStt.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnServiceReqStt.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumnServiceReqStt.AppearanceHeader.Font = new System.Drawing.Font("Arial", 22F);
+            this.gridColumnServiceReqStt.AppearanceHeader.Options.UseFont = true;
+            this.gridColumnServiceReqStt.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumnServiceReqStt.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumnServiceReqStt.Caption = "Trạng thái";
+            this.gridColumnServiceReqStt.FieldName = "SERVICE_REQ_STT_NAME";
+            this.gridColumnServiceReqStt.Name = "gridColumnServiceReqStt";
+            this.gridColumnServiceReqStt.OptionsColumn.AllowEdit = false;
+            this.gridColumnServiceReqStt.OptionsColumn.AllowFocus = false;
+            this.gridColumnServiceReqStt.Width = 180;
+            // 
+            // gridColumnInstructionTime
+            // 
+            this.gridColumnInstructionTime.AppearanceCell.Font = new System.Drawing.Font("Arial", 22F);
+            this.gridColumnInstructionTime.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.gridColumnInstructionTime.AppearanceCell.Options.UseFont = true;
+            this.gridColumnInstructionTime.AppearanceCell.Options.UseForeColor = true;
+            this.gridColumnInstructionTime.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnInstructionTime.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumnInstructionTime.AppearanceHeader.Font = new System.Drawing.Font("Arial", 22F);
+            this.gridColumnInstructionTime.AppearanceHeader.Options.UseFont = true;
+            this.gridColumnInstructionTime.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumnInstructionTime.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumnInstructionTime.Caption = "Thời gian chỉ định";
+            this.gridColumnInstructionTime.FieldName = "INSTRUCTION_TIME_STR";
+            this.gridColumnInstructionTime.Name = "gridColumnInstructionTime";
+            this.gridColumnInstructionTime.OptionsColumn.AllowEdit = false;
+            this.gridColumnInstructionTime.OptionsColumn.AllowFocus = false;
+            this.gridColumnInstructionTime.Width = 270;
+            // 
+            // gridColumnServiceReqType
+            // 
+            this.gridColumnServiceReqType.AppearanceCell.Font = new System.Drawing.Font("Tahoma", 22F);
+            this.gridColumnServiceReqType.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.gridColumnServiceReqType.AppearanceCell.Options.UseFont = true;
+            this.gridColumnServiceReqType.AppearanceCell.Options.UseForeColor = true;
+            this.gridColumnServiceReqType.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnServiceReqType.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumnServiceReqType.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.gridColumnServiceReqType.AppearanceHeader.Font = new System.Drawing.Font("Arial", 22F);
+            this.gridColumnServiceReqType.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
+            this.gridColumnServiceReqType.AppearanceHeader.Options.UseBackColor = true;
+            this.gridColumnServiceReqType.AppearanceHeader.Options.UseFont = true;
+            this.gridColumnServiceReqType.AppearanceHeader.Options.UseForeColor = true;
+            this.gridColumnServiceReqType.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumnServiceReqType.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumnServiceReqType.Caption = "Loại";
+            this.gridColumnServiceReqType.FieldName = "SERVICE_REQ_TYPE_NAME";
+            this.gridColumnServiceReqType.Name = "gridColumnServiceReqType";
+            this.gridColumnServiceReqType.OptionsColumn.AllowEdit = false;
+            this.gridColumnServiceReqType.OptionsColumn.AllowFocus = false;
+            this.gridColumnServiceReqType.OptionsColumn.AllowShowHide = false;
+            this.gridColumnServiceReqType.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnServiceReqType.Width = 270;
+            // 
+            // repositoryItemButtonEdit1
+            // 
+            this.repositoryItemButtonEdit1.Appearance.BackColor = System.Drawing.Color.Black;
+            this.repositoryItemButtonEdit1.Appearance.BorderColor = System.Drawing.Color.Black;
+            this.repositoryItemButtonEdit1.Appearance.Options.UseBackColor = true;
+            this.repositoryItemButtonEdit1.Appearance.Options.UseBorderColor = true;
+            this.repositoryItemButtonEdit1.AutoHeight = false;
+            this.repositoryItemButtonEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            this.repositoryItemButtonEdit1.Name = "repositoryItemButtonEdit1";
+            this.repositoryItemButtonEdit1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // layoutControl8
             // 
@@ -543,7 +901,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControl8.Margin = new System.Windows.Forms.Padding(0);
             this.layoutControl8.Name = "layoutControl8";
             this.layoutControl8.Root = this.layoutControlGroup_Grid2;
-            this.layoutControl8.Size = new System.Drawing.Size(682, 449);
+            this.layoutControl8.Size = new System.Drawing.Size(682, 437);
             this.layoutControl8.TabIndex = 5;
             this.layoutControl8.Text = "layoutControl8";
             // 
@@ -557,7 +915,9 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridControlWaitingCls2.MainView = this.gridViewWaitingCls2;
             this.gridControlWaitingCls2.Margin = new System.Windows.Forms.Padding(0);
             this.gridControlWaitingCls2.Name = "gridControlWaitingCls2";
-            this.gridControlWaitingCls2.Size = new System.Drawing.Size(678, 445);
+            this.gridControlWaitingCls2.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemButtonEdit2});
+            this.gridControlWaitingCls2.Size = new System.Drawing.Size(678, 433);
             this.gridControlWaitingCls2.TabIndex = 5;
             this.gridControlWaitingCls2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewWaitingCls2});
@@ -598,6 +958,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridViewWaitingCls2.ColumnPanelRowHeight = 70;
             this.gridViewWaitingCls2.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumnSTT2,
+            this.gridColumnIcon2,
             this.gridColumnLastName2,
             this.gridColumnAge2,
             this.gridColumn4,
@@ -618,6 +979,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridViewWaitingCls2.RowHeight = 65;
             this.gridViewWaitingCls2.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Never;
             this.gridViewWaitingCls2.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gridViewWaitingCls2_RowStyle);
+            this.gridViewWaitingCls2.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewWaitingCls2_CustomRowCellEdit);
             this.gridViewWaitingCls2.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewWaitingCls2_CustomUnboundColumnData);
             // 
             // gridColumnSTT2
@@ -655,6 +1017,30 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridColumnSTT2.Visible = true;
             this.gridColumnSTT2.VisibleIndex = 0;
             this.gridColumnSTT2.Width = 150;
+            // 
+            // gridColumnIcon2
+            // 
+            this.gridColumnIcon2.AppearanceCell.BackColor = System.Drawing.Color.Black;
+            this.gridColumnIcon2.AppearanceCell.Options.UseBackColor = true;
+            this.gridColumnIcon2.AppearanceHeader.BackColor = System.Drawing.Color.DarkRed;
+            this.gridColumnIcon2.AppearanceHeader.BorderColor = System.Drawing.Color.DarkRed;
+            this.gridColumnIcon2.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
+            this.gridColumnIcon2.AppearanceHeader.ForeColor = System.Drawing.Color.DarkRed;
+            this.gridColumnIcon2.AppearanceHeader.Options.UseBackColor = true;
+            this.gridColumnIcon2.AppearanceHeader.Options.UseBorderColor = true;
+            this.gridColumnIcon2.AppearanceHeader.Options.UseFont = true;
+            this.gridColumnIcon2.AppearanceHeader.Options.UseForeColor = true;
+            this.gridColumnIcon2.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumnIcon2.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumnIcon2.Caption = "gridColumn1";
+            this.gridColumnIcon2.FieldName = "ICON_DISPLAY2";
+            this.gridColumnIcon2.Name = "gridColumnIcon2";
+            this.gridColumnIcon2.OptionsColumn.AllowEdit = false;
+            this.gridColumnIcon2.OptionsColumn.AllowFocus = false;
+            this.gridColumnIcon2.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnIcon2.OptionsColumn.ReadOnly = true;
+            this.gridColumnIcon2.OptionsColumn.ShowCaption = false;
+            this.gridColumnIcon2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             // 
             // gridColumnLastName2
             // 
@@ -832,6 +1218,14 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridColumn8.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn8.Width = 270;
             // 
+            // repositoryItemButtonEdit2
+            // 
+            this.repositoryItemButtonEdit2.AutoHeight = false;
+            this.repositoryItemButtonEdit2.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.CallPatientV4.Properties.Resources.y_te, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            this.repositoryItemButtonEdit2.Name = "repositoryItemButtonEdit2";
+            this.repositoryItemButtonEdit2.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
             // layoutControlGroup_Grid2
             // 
             this.layoutControlGroup_Grid2.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -841,7 +1235,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlGroup_Grid2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup_Grid2.Name = "layoutControlGroup_Grid2";
             this.layoutControlGroup_Grid2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup_Grid2.Size = new System.Drawing.Size(682, 449);
+            this.layoutControlGroup_Grid2.Size = new System.Drawing.Size(682, 437);
             this.layoutControlGroup_Grid2.TextVisible = false;
             // 
             // layoutControlItem16
@@ -849,293 +1243,9 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem16.Control = this.gridControlWaitingCls2;
             this.layoutControlItem16.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(682, 449);
+            this.layoutControlItem16.Size = new System.Drawing.Size(682, 437);
             this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem16.TextVisible = false;
-            // 
-            // gridControlWaitingCls
-            // 
-            this.gridControlWaitingCls.EmbeddedNavigator.Appearance.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.gridControlWaitingCls.EmbeddedNavigator.Appearance.Options.UseForeColor = true;
-            this.gridControlWaitingCls.Location = new System.Drawing.Point(0, 0);
-            this.gridControlWaitingCls.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat;
-            this.gridControlWaitingCls.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.gridControlWaitingCls.MainView = this.gridViewWaitingCls;
-            this.gridControlWaitingCls.Name = "gridControlWaitingCls";
-            this.gridControlWaitingCls.Size = new System.Drawing.Size(660, 449);
-            this.gridControlWaitingCls.TabIndex = 4;
-            this.gridControlWaitingCls.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewWaitingCls});
-            // 
-            // gridViewWaitingCls
-            // 
-            this.gridViewWaitingCls.Appearance.Empty.BackColor = System.Drawing.Color.Black;
-            this.gridViewWaitingCls.Appearance.Empty.BackColor2 = System.Drawing.Color.Black;
-            this.gridViewWaitingCls.Appearance.Empty.BorderColor = System.Drawing.Color.Transparent;
-            this.gridViewWaitingCls.Appearance.Empty.Options.UseBackColor = true;
-            this.gridViewWaitingCls.Appearance.Empty.Options.UseBorderColor = true;
-            this.gridViewWaitingCls.Appearance.FocusedCell.BackColor = System.Drawing.Color.Azure;
-            this.gridViewWaitingCls.Appearance.FocusedCell.BackColor2 = System.Drawing.Color.Transparent;
-            this.gridViewWaitingCls.Appearance.FocusedCell.Options.UseBackColor = true;
-            this.gridViewWaitingCls.Appearance.FocusedRow.BackColor = System.Drawing.Color.Transparent;
-            this.gridViewWaitingCls.Appearance.FocusedRow.BackColor2 = System.Drawing.Color.Transparent;
-            this.gridViewWaitingCls.Appearance.FocusedRow.Options.UseBackColor = true;
-            this.gridViewWaitingCls.Appearance.HorzLine.BackColor = System.Drawing.Color.Transparent;
-            this.gridViewWaitingCls.Appearance.HorzLine.Options.UseBackColor = true;
-            this.gridViewWaitingCls.Appearance.OddRow.BackColor = System.Drawing.Color.Transparent;
-            this.gridViewWaitingCls.Appearance.OddRow.Options.UseBackColor = true;
-            this.gridViewWaitingCls.Appearance.Preview.BackColor = System.Drawing.Color.Transparent;
-            this.gridViewWaitingCls.Appearance.Preview.Options.UseBackColor = true;
-            this.gridViewWaitingCls.Appearance.Row.BackColor = System.Drawing.Color.Transparent;
-            this.gridViewWaitingCls.Appearance.Row.ForeColor = System.Drawing.Color.Black;
-            this.gridViewWaitingCls.Appearance.Row.Options.UseBackColor = true;
-            this.gridViewWaitingCls.Appearance.Row.Options.UseForeColor = true;
-            this.gridViewWaitingCls.Appearance.RowSeparator.BackColor = System.Drawing.Color.Black;
-            this.gridViewWaitingCls.Appearance.RowSeparator.Options.UseBackColor = true;
-            this.gridViewWaitingCls.Appearance.SelectedRow.BackColor = System.Drawing.Color.Transparent;
-            this.gridViewWaitingCls.Appearance.SelectedRow.BackColor2 = System.Drawing.Color.Transparent;
-            this.gridViewWaitingCls.Appearance.SelectedRow.Options.UseBackColor = true;
-            this.gridViewWaitingCls.Appearance.TopNewRow.BackColor = System.Drawing.Color.Black;
-            this.gridViewWaitingCls.Appearance.TopNewRow.Options.UseBackColor = true;
-            this.gridViewWaitingCls.Appearance.VertLine.BackColor = System.Drawing.Color.Black;
-            this.gridViewWaitingCls.Appearance.VertLine.Options.UseBackColor = true;
-            this.gridViewWaitingCls.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.gridViewWaitingCls.ColumnPanelRowHeight = 70;
-            this.gridViewWaitingCls.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gridColumnSTT,
-            this.gridColumnLastName,
-            this.gridColumnAge,
-            this.gridColumnAddress,
-            this.gridColumnFirstName,
-            this.gridColumnServiceReqStt,
-            this.gridColumnInstructionTime,
-            this.gridColumnServiceReqType});
-            this.gridViewWaitingCls.GridControl = this.gridControlWaitingCls;
-            this.gridViewWaitingCls.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Never;
-            this.gridViewWaitingCls.Name = "gridViewWaitingCls";
-            this.gridViewWaitingCls.OptionsFind.AllowFindPanel = false;
-            this.gridViewWaitingCls.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridViewWaitingCls.OptionsSelection.EnableAppearanceFocusedRow = false;
-            this.gridViewWaitingCls.OptionsView.ShowGroupPanel = false;
-            this.gridViewWaitingCls.OptionsView.ShowHorizontalLines = DevExpress.Utils.DefaultBoolean.False;
-            this.gridViewWaitingCls.OptionsView.ShowIndicator = false;
-            this.gridViewWaitingCls.OptionsView.ShowPreviewRowLines = DevExpress.Utils.DefaultBoolean.False;
-            this.gridViewWaitingCls.RowHeight = 65;
-            this.gridViewWaitingCls.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Never;
-            this.gridViewWaitingCls.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gridViewWaitingCls_RowStyle);
-            this.gridViewWaitingCls.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewWaitingCls_CustomUnboundColumnData);
-            // 
-            // gridColumnSTT
-            // 
-            this.gridColumnSTT.AppearanceCell.BackColor = System.Drawing.Color.Black;
-            this.gridColumnSTT.AppearanceCell.BorderColor = System.Drawing.Color.Black;
-            this.gridColumnSTT.AppearanceCell.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
-            this.gridColumnSTT.AppearanceCell.ForeColor = System.Drawing.Color.Yellow;
-            this.gridColumnSTT.AppearanceCell.Options.UseBackColor = true;
-            this.gridColumnSTT.AppearanceCell.Options.UseBorderColor = true;
-            this.gridColumnSTT.AppearanceCell.Options.UseFont = true;
-            this.gridColumnSTT.AppearanceCell.Options.UseForeColor = true;
-            this.gridColumnSTT.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumnSTT.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnSTT.AppearanceHeader.BackColor = System.Drawing.Color.Black;
-            this.gridColumnSTT.AppearanceHeader.BorderColor = System.Drawing.Color.Black;
-            this.gridColumnSTT.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
-            this.gridColumnSTT.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
-            this.gridColumnSTT.AppearanceHeader.Options.UseBackColor = true;
-            this.gridColumnSTT.AppearanceHeader.Options.UseBorderColor = true;
-            this.gridColumnSTT.AppearanceHeader.Options.UseFont = true;
-            this.gridColumnSTT.AppearanceHeader.Options.UseForeColor = true;
-            this.gridColumnSTT.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColumnSTT.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnSTT.Caption = "STT";
-            this.gridColumnSTT.FieldName = "NUM_ORDER";
-            this.gridColumnSTT.Name = "gridColumnSTT";
-            this.gridColumnSTT.OptionsColumn.AllowEdit = false;
-            this.gridColumnSTT.OptionsColumn.AllowFocus = false;
-            this.gridColumnSTT.OptionsColumn.AllowMove = false;
-            this.gridColumnSTT.OptionsColumn.AllowShowHide = false;
-            this.gridColumnSTT.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-            this.gridColumnSTT.OptionsColumn.ReadOnly = true;
-            this.gridColumnSTT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumnSTT.Visible = true;
-            this.gridColumnSTT.VisibleIndex = 0;
-            this.gridColumnSTT.Width = 150;
-            // 
-            // gridColumnLastName
-            // 
-            this.gridColumnLastName.AppearanceCell.BackColor = System.Drawing.Color.Black;
-            this.gridColumnLastName.AppearanceCell.BorderColor = System.Drawing.Color.Black;
-            this.gridColumnLastName.AppearanceCell.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
-            this.gridColumnLastName.AppearanceCell.ForeColor = System.Drawing.Color.Yellow;
-            this.gridColumnLastName.AppearanceCell.Options.UseBackColor = true;
-            this.gridColumnLastName.AppearanceCell.Options.UseBorderColor = true;
-            this.gridColumnLastName.AppearanceCell.Options.UseFont = true;
-            this.gridColumnLastName.AppearanceCell.Options.UseForeColor = true;
-            this.gridColumnLastName.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumnLastName.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            this.gridColumnLastName.AppearanceHeader.BackColor = System.Drawing.Color.Black;
-            this.gridColumnLastName.AppearanceHeader.BorderColor = System.Drawing.Color.Black;
-            this.gridColumnLastName.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
-            this.gridColumnLastName.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
-            this.gridColumnLastName.AppearanceHeader.Options.UseBackColor = true;
-            this.gridColumnLastName.AppearanceHeader.Options.UseBorderColor = true;
-            this.gridColumnLastName.AppearanceHeader.Options.UseFont = true;
-            this.gridColumnLastName.AppearanceHeader.Options.UseForeColor = true;
-            this.gridColumnLastName.Caption = "HỌ TÊN";
-            this.gridColumnLastName.FieldName = "TDL_PATIENT_NAME";
-            this.gridColumnLastName.Name = "gridColumnLastName";
-            this.gridColumnLastName.OptionsColumn.AllowEdit = false;
-            this.gridColumnLastName.OptionsColumn.AllowFocus = false;
-            this.gridColumnLastName.OptionsColumn.AllowMove = false;
-            this.gridColumnLastName.OptionsColumn.AllowShowHide = false;
-            this.gridColumnLastName.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-            this.gridColumnLastName.OptionsColumn.ReadOnly = true;
-            this.gridColumnLastName.Visible = true;
-            this.gridColumnLastName.VisibleIndex = 2;
-            this.gridColumnLastName.Width = 380;
-            // 
-            // gridColumnAge
-            // 
-            this.gridColumnAge.AppearanceCell.BackColor = System.Drawing.Color.Black;
-            this.gridColumnAge.AppearanceCell.BorderColor = System.Drawing.Color.Black;
-            this.gridColumnAge.AppearanceCell.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
-            this.gridColumnAge.AppearanceCell.ForeColor = System.Drawing.Color.Yellow;
-            this.gridColumnAge.AppearanceCell.Options.UseBackColor = true;
-            this.gridColumnAge.AppearanceCell.Options.UseBorderColor = true;
-            this.gridColumnAge.AppearanceCell.Options.UseFont = true;
-            this.gridColumnAge.AppearanceCell.Options.UseForeColor = true;
-            this.gridColumnAge.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumnAge.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnAge.AppearanceHeader.BackColor = System.Drawing.Color.Black;
-            this.gridColumnAge.AppearanceHeader.BorderColor = System.Drawing.Color.Black;
-            this.gridColumnAge.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
-            this.gridColumnAge.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
-            this.gridColumnAge.AppearanceHeader.Options.UseBackColor = true;
-            this.gridColumnAge.AppearanceHeader.Options.UseBorderColor = true;
-            this.gridColumnAge.AppearanceHeader.Options.UseFont = true;
-            this.gridColumnAge.AppearanceHeader.Options.UseForeColor = true;
-            this.gridColumnAge.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColumnAge.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnAge.Caption = "NĂM SINH";
-            this.gridColumnAge.FieldName = "AGE_DISPLAY";
-            this.gridColumnAge.Name = "gridColumnAge";
-            this.gridColumnAge.OptionsColumn.AllowEdit = false;
-            this.gridColumnAge.OptionsColumn.AllowFocus = false;
-            this.gridColumnAge.OptionsColumn.AllowMove = false;
-            this.gridColumnAge.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-            this.gridColumnAge.OptionsColumn.ReadOnly = true;
-            this.gridColumnAge.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumnAge.Visible = true;
-            this.gridColumnAge.VisibleIndex = 3;
-            this.gridColumnAge.Width = 242;
-            // 
-            // gridColumnAddress
-            // 
-            this.gridColumnAddress.AppearanceCell.BackColor = System.Drawing.Color.Black;
-            this.gridColumnAddress.AppearanceCell.BorderColor = System.Drawing.Color.Black;
-            this.gridColumnAddress.AppearanceCell.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
-            this.gridColumnAddress.AppearanceCell.ForeColor = System.Drawing.Color.Yellow;
-            this.gridColumnAddress.AppearanceCell.Options.UseBackColor = true;
-            this.gridColumnAddress.AppearanceCell.Options.UseBorderColor = true;
-            this.gridColumnAddress.AppearanceCell.Options.UseFont = true;
-            this.gridColumnAddress.AppearanceCell.Options.UseForeColor = true;
-            this.gridColumnAddress.AppearanceHeader.BackColor = System.Drawing.Color.Black;
-            this.gridColumnAddress.AppearanceHeader.BorderColor = System.Drawing.Color.Black;
-            this.gridColumnAddress.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
-            this.gridColumnAddress.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
-            this.gridColumnAddress.AppearanceHeader.Options.UseBackColor = true;
-            this.gridColumnAddress.AppearanceHeader.Options.UseBorderColor = true;
-            this.gridColumnAddress.AppearanceHeader.Options.UseFont = true;
-            this.gridColumnAddress.AppearanceHeader.Options.UseForeColor = true;
-            this.gridColumnAddress.Caption = "ĐỊA CHỈ";
-            this.gridColumnAddress.FieldName = "TDL_PATIENT_ADDRESS";
-            this.gridColumnAddress.Name = "gridColumnAddress";
-            this.gridColumnAddress.OptionsColumn.AllowEdit = false;
-            this.gridColumnAddress.OptionsColumn.AllowFocus = false;
-            this.gridColumnAddress.OptionsColumn.AllowMove = false;
-            this.gridColumnAddress.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-            this.gridColumnAddress.OptionsColumn.ReadOnly = true;
-            this.gridColumnAddress.Width = 538;
-            // 
-            // gridColumnFirstName
-            // 
-            this.gridColumnFirstName.AppearanceCell.Font = new System.Drawing.Font("Arial", 21.75F);
-            this.gridColumnFirstName.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.gridColumnFirstName.AppearanceCell.Options.UseFont = true;
-            this.gridColumnFirstName.AppearanceCell.Options.UseForeColor = true;
-            this.gridColumnFirstName.AppearanceHeader.Font = new System.Drawing.Font("Arial", 22F);
-            this.gridColumnFirstName.AppearanceHeader.Options.UseFont = true;
-            this.gridColumnFirstName.Caption = "Tên";
-            this.gridColumnFirstName.FieldName = "FIRST_NAME";
-            this.gridColumnFirstName.Name = "gridColumnFirstName";
-            this.gridColumnFirstName.OptionsColumn.AllowEdit = false;
-            this.gridColumnFirstName.OptionsColumn.AllowFocus = false;
-            this.gridColumnFirstName.OptionsColumn.AllowMove = false;
-            this.gridColumnFirstName.OptionsColumn.AllowShowHide = false;
-            this.gridColumnFirstName.Width = 162;
-            // 
-            // gridColumnServiceReqStt
-            // 
-            this.gridColumnServiceReqStt.AppearanceCell.Font = new System.Drawing.Font("Arial", 22F);
-            this.gridColumnServiceReqStt.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.gridColumnServiceReqStt.AppearanceCell.Options.UseFont = true;
-            this.gridColumnServiceReqStt.AppearanceCell.Options.UseForeColor = true;
-            this.gridColumnServiceReqStt.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumnServiceReqStt.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnServiceReqStt.AppearanceHeader.Font = new System.Drawing.Font("Arial", 22F);
-            this.gridColumnServiceReqStt.AppearanceHeader.Options.UseFont = true;
-            this.gridColumnServiceReqStt.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColumnServiceReqStt.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnServiceReqStt.Caption = "Trạng thái";
-            this.gridColumnServiceReqStt.FieldName = "SERVICE_REQ_STT_NAME";
-            this.gridColumnServiceReqStt.Name = "gridColumnServiceReqStt";
-            this.gridColumnServiceReqStt.OptionsColumn.AllowEdit = false;
-            this.gridColumnServiceReqStt.OptionsColumn.AllowFocus = false;
-            this.gridColumnServiceReqStt.Width = 180;
-            // 
-            // gridColumnInstructionTime
-            // 
-            this.gridColumnInstructionTime.AppearanceCell.Font = new System.Drawing.Font("Arial", 22F);
-            this.gridColumnInstructionTime.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.gridColumnInstructionTime.AppearanceCell.Options.UseFont = true;
-            this.gridColumnInstructionTime.AppearanceCell.Options.UseForeColor = true;
-            this.gridColumnInstructionTime.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumnInstructionTime.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnInstructionTime.AppearanceHeader.Font = new System.Drawing.Font("Arial", 22F);
-            this.gridColumnInstructionTime.AppearanceHeader.Options.UseFont = true;
-            this.gridColumnInstructionTime.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColumnInstructionTime.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnInstructionTime.Caption = "Thời gian chỉ định";
-            this.gridColumnInstructionTime.FieldName = "INSTRUCTION_TIME_STR";
-            this.gridColumnInstructionTime.Name = "gridColumnInstructionTime";
-            this.gridColumnInstructionTime.OptionsColumn.AllowEdit = false;
-            this.gridColumnInstructionTime.OptionsColumn.AllowFocus = false;
-            this.gridColumnInstructionTime.Width = 270;
-            // 
-            // gridColumnServiceReqType
-            // 
-            this.gridColumnServiceReqType.AppearanceCell.Font = new System.Drawing.Font("Tahoma", 22F);
-            this.gridColumnServiceReqType.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.gridColumnServiceReqType.AppearanceCell.Options.UseFont = true;
-            this.gridColumnServiceReqType.AppearanceCell.Options.UseForeColor = true;
-            this.gridColumnServiceReqType.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumnServiceReqType.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnServiceReqType.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.gridColumnServiceReqType.AppearanceHeader.Font = new System.Drawing.Font("Arial", 22F);
-            this.gridColumnServiceReqType.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
-            this.gridColumnServiceReqType.AppearanceHeader.Options.UseBackColor = true;
-            this.gridColumnServiceReqType.AppearanceHeader.Options.UseFont = true;
-            this.gridColumnServiceReqType.AppearanceHeader.Options.UseForeColor = true;
-            this.gridColumnServiceReqType.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColumnServiceReqType.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnServiceReqType.Caption = "Loại";
-            this.gridColumnServiceReqType.FieldName = "SERVICE_REQ_TYPE_NAME";
-            this.gridColumnServiceReqType.Name = "gridColumnServiceReqType";
-            this.gridColumnServiceReqType.OptionsColumn.AllowEdit = false;
-            this.gridColumnServiceReqType.OptionsColumn.AllowFocus = false;
-            this.gridColumnServiceReqType.OptionsColumn.AllowShowHide = false;
-            this.gridColumnServiceReqType.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumnServiceReqType.Width = 270;
             // 
             // layoutControlGroup5
             // 
@@ -1151,7 +1261,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "layoutControlGroup5";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup5.Size = new System.Drawing.Size(1342, 449);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(1342, 437);
             this.layoutControlGroup5.TextVisible = false;
             // 
             // layoutControlItem12
@@ -1160,7 +1270,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
             this.layoutControlItem12.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem12.Size = new System.Drawing.Size(660, 449);
+            this.layoutControlItem12.Size = new System.Drawing.Size(660, 437);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
@@ -1170,7 +1280,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem_Grid2.Location = new System.Drawing.Point(660, 0);
             this.layoutControlItem_Grid2.Name = "layoutControlItem_Grid2";
             this.layoutControlItem_Grid2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem_Grid2.Size = new System.Drawing.Size(682, 449);
+            this.layoutControlItem_Grid2.Size = new System.Drawing.Size(682, 437);
             this.layoutControlItem_Grid2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem_Grid2.TextVisible = false;
             // 
@@ -1183,7 +1293,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(1346, 453);
+            this.Root.Size = new System.Drawing.Size(1346, 441);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem5
@@ -1191,7 +1301,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem5.Control = this.layoutControl6;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(1346, 453);
+            this.layoutControlItem5.Size = new System.Drawing.Size(1346, 441);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -1222,9 +1332,9 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.layoutControl2;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 66);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 78);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1350, 457);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1350, 445);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -1233,7 +1343,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControlItem3.Control = this.layoutControl4;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(1350, 42);
+            this.layoutControlItem3.Size = new System.Drawing.Size(1350, 37);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -1249,11 +1359,20 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.lblTitleNgoaiTru;
-            this.layoutControlItem17.Location = new System.Drawing.Point(675, 42);
+            this.layoutControlItem17.Location = new System.Drawing.Point(666, 37);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(675, 24);
+            this.layoutControlItem17.Size = new System.Drawing.Size(684, 41);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
+            // 
+            // layoutControlItem15
+            // 
+            this.layoutControlItem15.Control = this.lblTitleNoiTru;
+            this.layoutControlItem15.Location = new System.Drawing.Point(0, 37);
+            this.layoutControlItem15.Name = "layoutControlItem15";
+            this.layoutControlItem15.Size = new System.Drawing.Size(666, 41);
+            this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem15.TextVisible = false;
             // 
             // timerForScrollListPatient
             // 
@@ -1290,23 +1409,6 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.timerChangeColorRow.Interval = 1000;
             this.timerChangeColorRow.Tick += new System.EventHandler(this.timerChangeColorRow_Tick);
             // 
-            // lblTitleNoiTru
-            // 
-            this.lblTitleNoiTru.Location = new System.Drawing.Point(2, 44);
-            this.lblTitleNoiTru.Name = "lblTitleNoiTru";
-            this.lblTitleNoiTru.Size = new System.Drawing.Size(671, 20);
-            this.lblTitleNoiTru.TabIndex = 10;
-            this.lblTitleNoiTru.Text = "label1";
-            // 
-            // layoutControlItem15
-            // 
-            this.layoutControlItem15.Control = this.lblTitleNoiTru;
-            this.layoutControlItem15.Location = new System.Drawing.Point(0, 42);
-            this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(675, 24);
-            this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem15.TextVisible = false;
-            // 
             // frmWaitingScreen_V4_SeparateScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1316,8 +1418,9 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.Controls.Add(this.layoutControl1);
             this.ForeColor = System.Drawing.SystemColors.ButtonShadow;
             this.Name = "frmWaitingScreen_V4_SeparateScreen";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Màn hình gọi bệnh nhân";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmWaitingScreen_V4_FormClosing);
             this.Load += new System.EventHandler(this.frmWaitingScreen_QY_Load);
             this.Controls.SetChildIndex(this.layoutControl1, 0);
@@ -1352,14 +1455,16 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).EndInit();
             this.layoutControl6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlWaitingCls)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewWaitingCls)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl8)).EndInit();
             this.layoutControl8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControlWaitingCls2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewWaitingCls2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup_Grid2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlWaitingCls)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewWaitingCls)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem_Grid2)).EndInit();
@@ -1450,5 +1555,9 @@ namespace HIS.Desktop.Plugins.CallPatientV4
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
         private System.Windows.Forms.Label lblTitleNoiTru;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnIcon;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnIcon2;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit2;
     }
 }
