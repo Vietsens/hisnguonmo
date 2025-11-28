@@ -1510,8 +1510,9 @@ namespace HIS.UC.Hospitalize.Run
             this.layoutControlItem33.Control = this.txtSpecialistNote;
             this.layoutControlItem33.Location = new System.Drawing.Point(0, 362);
             this.layoutControlItem33.Name = "layoutControlItem33";
+            this.layoutControlItem33.OptionsToolTip.ToolTip = "Ý kiến chuyên khoa";
             this.layoutControlItem33.Size = new System.Drawing.Size(496, 24);
-            this.layoutControlItem33.Text = "Ý kiến chuyên khoa:";
+            this.layoutControlItem33.Text = "Ý kiến CK:";
             this.layoutControlItem33.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem33.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem33.TextToControlDistance = 5;

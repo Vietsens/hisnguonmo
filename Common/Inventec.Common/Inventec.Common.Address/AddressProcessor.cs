@@ -31,7 +31,7 @@ namespace Inventec.Common.Address
         List<V_SDA_PROVINCE> VSdaProvinceAll = new List<V_SDA_PROVINCE>();
         List<V_SDA_DISTRICT> VSdaDistrictAll = new List<V_SDA_DISTRICT>();
         List<V_SDA_COMMUNE> VSdaCommuneAll = new List<V_SDA_COMMUNE>();
-        private bool IsAddressLv2 = true;
+        private bool IsAddressLv2 = false;
         public AddressProcessor(List<V_SDA_PROVINCE> vSdaProvince, List<V_SDA_DISTRICT> vSdaDistrict, List<V_SDA_COMMUNE> vSdaCommune)
         {
             if (vSdaProvince != null) VSdaProvinceAll = vSdaProvince.Where(o => o.IS_ACTIVE == 1).ToList();
@@ -246,16 +246,16 @@ namespace Inventec.Common.Address
             }
             catch (Exception ex)
             {
-                IsAddressLv2 = false;
+                IsAddressLv2 = true;
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 result.Address = fullAddress;
             }
             finally
             {
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("____Address_Split____", result));
-                if(IsAddressLv2 && string.IsNullOrEmpty(result.CommuneName) && string.IsNullOrEmpty(result.DistrictName) && string.IsNullOrEmpty(result.ProvinceName))
+                if(!IsAddressLv2 && string.IsNullOrEmpty(result.CommuneName) && string.IsNullOrEmpty(result.DistrictName) && string.IsNullOrEmpty(result.ProvinceName))
                 {
-                    IsAddressLv2 = false;
+                    IsAddressLv2 = true;
                     result = SplitFromFullAddress(fullAddress);
                 }    
             }
