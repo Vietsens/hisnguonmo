@@ -336,6 +336,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     currentWorkingRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
                 }
                 //Inventec.Common.Logging.LogSystem.Info("frmAssignService.Init .2___sereServsInTreatmentRaw.count=" + (sereServsInTreatmentRaw != null ? sereServsInTreatmentRaw.Count : 0));
+                this.InitializePackageAutoRefresh();  // Gọi để khởi động timer
             }
             catch (Exception ex)
             {
@@ -1216,6 +1217,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 }
+
+                this.InitializePackageAutoRefresh();  // Gọi để khởi động timer
             }
             catch (Exception ex)
             {
@@ -8449,7 +8452,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
-        private void cboPackage_EditValueChanged(object sender, EventArgs e)
+        private void cboPackage_EditValueChanged(object sender, EventArgs e)  
         {
             try
             {
@@ -10595,6 +10598,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 LogSystem.Warn(ex);
             }
         }
+
     }
     public class BankInfo
     {

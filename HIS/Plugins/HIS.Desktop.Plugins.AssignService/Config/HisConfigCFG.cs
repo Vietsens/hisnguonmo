@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
 {
     class HisConfigCFG
     {
+        private const string CONFIG_KEY__WARNING_OPTION = "HIS.DESKTOP.HIS_PACKAGE.MAX_PACKAGE_USAGE_PER_DAY.WARNING_OPTION";
         private const string CONFIG_KEY__BHYT__EXCEED_DAY_ALLOW_FOR_IN_PATIENT = "MOS.BHYT.EXCEED_DAY_ALLOW_FOR_IN_PATIENT";
         private const string CONFIG_KEY__TrackingCreate__UpdateTreatmentIcd = "HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd";
         private const string CONFIG_KEY__IsAutoCheckPriorityForPrioritizedExam = "HIS.Desktop.Plugins.AssignService.IsAutoCheckPriorityForPrioritizedExam";
@@ -196,6 +197,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         internal static bool AllowAssignOxygen;
 
         internal static string SuggestAssignServicesInfo;
+        internal static string IsWarningOption;
 
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
@@ -216,6 +218,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         {
             try
             {
+                IsWarningOption = GetValue(CONFIG_KEY__WARNING_OPTION);
                 IsAssignRoomByPatientType = GetValue(KEY_ASSIGN_ROOM_BY_PATIENT_TYPE) == GlobalVariables.CommonStringTrue;
                 ASSIGN_SERVICE_SIMULTANEITY_OPTION = GetValue(KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION);
                 ASSIGN_SIMULTANEITY_OPTION = GetValue(KEY_ASSIGN_SIMULTANEITY_OPTION);
