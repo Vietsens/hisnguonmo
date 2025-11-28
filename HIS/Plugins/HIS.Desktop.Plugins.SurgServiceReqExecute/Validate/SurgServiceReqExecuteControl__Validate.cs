@@ -183,7 +183,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 ValidationControlMaxLength(txtMANNER, 3000, mannerRequired);
                 ValidationControlMaxLength(txtConclude, 1000);
                 ValidationControlMaxLength(txtResultNote, 3000);
-                ValidationControlMaxLength(txtDescription, 4000);
+                //ValidationControlMaxLength(txtDescription, 4000);
             }
             catch (Exception)
             {

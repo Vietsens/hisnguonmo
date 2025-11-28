@@ -1696,7 +1696,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.txtDescription.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtDescription.Location = new System.Drawing.Point(0, 0);
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Properties.MaxLength = 4000;
             this.txtDescription.Size = new System.Drawing.Size(425, 175);
             this.txtDescription.TabIndex = 28;
             // 

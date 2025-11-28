@@ -79,6 +79,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
             this.lcPtDucTTT = new DevExpress.XtraLayout.LayoutControl();
+            this.spinKichThuocRachForraRachBaoSau = new DevExpress.XtraEditors.TextEdit();
             this.txtDienBienKhac = new DevExpress.XtraEditors.TextEdit();
             this.txtLoaiThuocForraTraMat = new DevExpress.XtraEditors.TextEdit();
             this.raTraMatMo = new DevExpress.XtraEditors.CheckEdit();
@@ -251,6 +252,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem77 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem31 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem75 = new DevExpress.XtraLayout.LayoutControlItem();
             this.raTTMongMat = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControl24 = new DevExpress.XtraLayout.LayoutControl();
             this.labelControl10 = new DevExpress.XtraEditors.LabelControl();
@@ -958,6 +960,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem350 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabOther = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl_TabOther = new DevExpress.XtraLayout.LayoutControl();
+            this.toDateClearRoom = new DevExpress.XtraEditors.DateEdit();
+            this.fromDateClearRoom = new DevExpress.XtraEditors.DateEdit();
+            this.toDatePrepareRoom = new DevExpress.XtraEditors.DateEdit();
+            this.fromDatePrepareRoom = new DevExpress.XtraEditors.DateEdit();
             this.dtSewingDate = new DevExpress.XtraEditors.DateEdit();
             this.dtDrawDate = new DevExpress.XtraEditors.DateEdit();
             this.txtOther = new DevExpress.XtraEditors.MemoEdit();
@@ -972,6 +978,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem295 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem29 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem30 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem357 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem358 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem360 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem361 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem32 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItem33 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItem34 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.btnDelete = new DevExpress.XtraEditors.SimpleButton();
             this.simpleButton2 = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -980,10 +993,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem99 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem356 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.spinKichThuocRachForraRachBaoSau = new DevExpress.XtraEditors.TextEdit();
-            this.layoutControlItem75 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.lcPtDucTTT)).BeginInit();
             this.lcPtDucTTT.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinKichThuocRachForraRachBaoSau.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDienBienKhac.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtLoaiThuocForraTraMat.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.raTraMatMo.Properties)).BeginInit();
@@ -1148,6 +1160,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem77)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem31)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem75)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.raTTMongMat.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl24)).BeginInit();
             this.layoutControl24.SuspendLayout();
@@ -1827,6 +1840,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.xtraTabOther.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl_TabOther)).BeginInit();
             this.layoutControl_TabOther.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.toDateClearRoom.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.toDateClearRoom.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fromDateClearRoom.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fromDateClearRoom.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.toDatePrepareRoom.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.toDatePrepareRoom.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fromDatePrepareRoom.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fromDatePrepareRoom.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtSewingDate.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtSewingDate.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtDrawDate.Properties.CalendarTimeProperties)).BeginInit();
@@ -1843,14 +1864,19 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem295)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem29)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem30)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem357)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem358)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem360)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem361)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem32)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem33)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem34)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem102)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem99)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem356)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinKichThuocRachForraRachBaoSau.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem75)).BeginInit();
             this.SuspendLayout();
             // 
             // lcPtDucTTT
@@ -1947,6 +1973,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.lcPtDucTTT.Size = new System.Drawing.Size(609, 547);
             this.lcPtDucTTT.TabIndex = 0;
             this.lcPtDucTTT.Text = "layoutControl1";
+            // 
+            // spinKichThuocRachForraRachBaoSau
+            // 
+            this.spinKichThuocRachForraRachBaoSau.Location = new System.Drawing.Point(482, 363);
+            this.spinKichThuocRachForraRachBaoSau.Name = "spinKichThuocRachForraRachBaoSau";
+            this.spinKichThuocRachForraRachBaoSau.Size = new System.Drawing.Size(79, 20);
+            this.spinKichThuocRachForraRachBaoSau.StyleController = this.lcPtDucTTT;
+            this.spinKichThuocRachForraRachBaoSau.TabIndex = 95;
             // 
             // txtDienBienKhac
             // 
@@ -4019,6 +4053,19 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.emptySpaceItem31.Text = "mm";
             this.emptySpaceItem31.TextSize = new System.Drawing.Size(55, 0);
             this.emptySpaceItem31.TextVisible = true;
+            // 
+            // layoutControlItem75
+            // 
+            this.layoutControlItem75.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem75.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem75.Control = this.spinKichThuocRachForraRachBaoSau;
+            this.layoutControlItem75.Location = new System.Drawing.Point(395, 351);
+            this.layoutControlItem75.Name = "layoutControlItem75";
+            this.layoutControlItem75.Size = new System.Drawing.Size(158, 24);
+            this.layoutControlItem75.Text = "Kích thước:";
+            this.layoutControlItem75.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem75.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem75.TextToControlDistance = 5;
             // 
             // raTTMongMat
             // 
@@ -12610,6 +12657,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // layoutControl_TabOther
             // 
+            this.layoutControl_TabOther.Controls.Add(this.toDateClearRoom);
+            this.layoutControl_TabOther.Controls.Add(this.fromDateClearRoom);
+            this.layoutControl_TabOther.Controls.Add(this.toDatePrepareRoom);
+            this.layoutControl_TabOther.Controls.Add(this.fromDatePrepareRoom);
             this.layoutControl_TabOther.Controls.Add(this.dtSewingDate);
             this.layoutControl_TabOther.Controls.Add(this.dtDrawDate);
             this.layoutControl_TabOther.Controls.Add(this.txtOther);
@@ -12624,10 +12675,87 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControl_TabOther.TabIndex = 0;
             this.layoutControl_TabOther.Text = "layoutControl3";
             // 
+            // toDateClearRoom
+            // 
+            this.toDateClearRoom.EditValue = null;
+            this.toDateClearRoom.Location = new System.Drawing.Point(638, 261);
+            this.toDateClearRoom.Name = "toDateClearRoom";
+            this.toDateClearRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.toDateClearRoom.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.toDateClearRoom.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.toDateClearRoom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.toDateClearRoom.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.toDateClearRoom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.toDateClearRoom.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.toDateClearRoom.Size = new System.Drawing.Size(293, 20);
+            this.toDateClearRoom.StyleController = this.layoutControl_TabOther;
+            this.toDateClearRoom.TabIndex = 12;
+            // 
+            // fromDateClearRoom
+            // 
+            this.fromDateClearRoom.EditValue = null;
+            this.fromDateClearRoom.Location = new System.Drawing.Point(218, 261);
+            this.fromDateClearRoom.MaximumSize = new System.Drawing.Size(293, 0);
+            this.fromDateClearRoom.MinimumSize = new System.Drawing.Size(293, 0);
+            this.fromDateClearRoom.Name = "fromDateClearRoom";
+            this.fromDateClearRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.fromDateClearRoom.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.fromDateClearRoom.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.fromDateClearRoom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.fromDateClearRoom.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.fromDateClearRoom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.fromDateClearRoom.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.fromDateClearRoom.Size = new System.Drawing.Size(293, 20);
+            this.fromDateClearRoom.StyleController = this.layoutControl_TabOther;
+            this.fromDateClearRoom.TabIndex = 11;
+            // 
+            // toDatePrepareRoom
+            // 
+            this.toDatePrepareRoom.EditValue = null;
+            this.toDatePrepareRoom.Location = new System.Drawing.Point(638, 237);
+            this.toDatePrepareRoom.MaximumSize = new System.Drawing.Size(293, 0);
+            this.toDatePrepareRoom.Name = "toDatePrepareRoom";
+            this.toDatePrepareRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.toDatePrepareRoom.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.toDatePrepareRoom.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.toDatePrepareRoom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.toDatePrepareRoom.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.toDatePrepareRoom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.toDatePrepareRoom.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.toDatePrepareRoom.Size = new System.Drawing.Size(293, 20);
+            this.toDatePrepareRoom.StyleController = this.layoutControl_TabOther;
+            this.toDatePrepareRoom.TabIndex = 10;
+            // 
+            // fromDatePrepareRoom
+            // 
+            this.fromDatePrepareRoom.EditValue = null;
+            this.fromDatePrepareRoom.Location = new System.Drawing.Point(218, 237);
+            this.fromDatePrepareRoom.MaximumSize = new System.Drawing.Size(293, 0);
+            this.fromDatePrepareRoom.MinimumSize = new System.Drawing.Size(293, 0);
+            this.fromDatePrepareRoom.Name = "fromDatePrepareRoom";
+            this.fromDatePrepareRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.fromDatePrepareRoom.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.fromDatePrepareRoom.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.fromDatePrepareRoom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.fromDatePrepareRoom.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.fromDatePrepareRoom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.fromDatePrepareRoom.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.fromDatePrepareRoom.Size = new System.Drawing.Size(293, 20);
+            this.fromDatePrepareRoom.StyleController = this.layoutControl_TabOther;
+            this.fromDatePrepareRoom.TabIndex = 9;
+            // 
             // dtSewingDate
             // 
             this.dtSewingDate.EditValue = null;
-            this.dtSewingDate.Location = new System.Drawing.Point(107, 216);
+            this.dtSewingDate.Location = new System.Drawing.Point(218, 174);
             this.dtSewingDate.Name = "dtSewingDate";
             this.dtSewingDate.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.dtSewingDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -12640,7 +12768,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.dtSewingDate.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dtSewingDate.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtSewingDate.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dtSewingDate.Size = new System.Drawing.Size(267, 20);
+            this.dtSewingDate.Size = new System.Drawing.Size(332, 20);
             this.dtSewingDate.StyleController = this.layoutControl_TabOther;
             this.dtSewingDate.TabIndex = 8;
             this.dtSewingDate.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.dtSewingDate_ButtonClick);
@@ -12649,7 +12777,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // dtDrawDate
             // 
             this.dtDrawDate.EditValue = null;
-            this.dtDrawDate.Location = new System.Drawing.Point(107, 192);
+            this.dtDrawDate.Location = new System.Drawing.Point(218, 150);
             this.dtDrawDate.Name = "dtDrawDate";
             this.dtDrawDate.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.dtDrawDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -12662,7 +12790,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.dtDrawDate.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dtDrawDate.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtDrawDate.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dtDrawDate.Size = new System.Drawing.Size(267, 20);
+            this.dtDrawDate.Size = new System.Drawing.Size(332, 20);
             this.dtDrawDate.StyleController = this.layoutControl_TabOther;
             this.dtDrawDate.TabIndex = 7;
             this.dtDrawDate.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.dtDrawDate_ButtonClick);
@@ -12670,25 +12798,25 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             // txtOther
             // 
-            this.txtOther.Location = new System.Drawing.Point(107, 240);
+            this.txtOther.Location = new System.Drawing.Point(218, 198);
             this.txtOther.Name = "txtOther";
-            this.txtOther.Size = new System.Drawing.Size(824, 113);
+            this.txtOther.Size = new System.Drawing.Size(713, 35);
             this.txtOther.StyleController = this.layoutControl_TabOther;
             this.txtOther.TabIndex = 6;
             // 
             // txtWick
             // 
-            this.txtWick.Location = new System.Drawing.Point(107, 98);
+            this.txtWick.Location = new System.Drawing.Point(218, 80);
             this.txtWick.Name = "txtWick";
-            this.txtWick.Size = new System.Drawing.Size(824, 90);
+            this.txtWick.Size = new System.Drawing.Size(713, 66);
             this.txtWick.StyleController = this.layoutControl_TabOther;
             this.txtWick.TabIndex = 5;
             // 
             // txtDrainage
             // 
-            this.txtDrainage.Location = new System.Drawing.Point(107, 12);
+            this.txtDrainage.Location = new System.Drawing.Point(218, 12);
             this.txtDrainage.Name = "txtDrainage";
-            this.txtDrainage.Size = new System.Drawing.Size(824, 82);
+            this.txtDrainage.Size = new System.Drawing.Size(713, 64);
             this.txtDrainage.StyleController = this.layoutControl_TabOther;
             this.txtDrainage.TabIndex = 4;
             // 
@@ -12704,7 +12832,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem293,
             this.layoutControlItem295,
             this.emptySpaceItem29,
-            this.emptySpaceItem30});
+            this.emptySpaceItem30,
+            this.layoutControlItem357,
+            this.layoutControlItem358,
+            this.layoutControlItem360,
+            this.layoutControlItem361,
+            this.emptySpaceItem32,
+            this.emptySpaceItem33,
+            this.emptySpaceItem34});
             this.layoutControlGroup_TabOther.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup_TabOther.Name = "Root";
             this.layoutControlGroup_TabOther.Size = new System.Drawing.Size(943, 629);
@@ -12715,9 +12850,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem286.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem286.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem286.Control = this.txtDrainage;
-            this.layoutControlItem286.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem286.Location = new System.Drawing.Point(111, 0);
             this.layoutControlItem286.Name = "layoutControlItem286";
-            this.layoutControlItem286.Size = new System.Drawing.Size(923, 86);
+            this.layoutControlItem286.Size = new System.Drawing.Size(812, 68);
             this.layoutControlItem286.Text = "Dẫn lưu:";
             this.layoutControlItem286.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem286.TextSize = new System.Drawing.Size(90, 20);
@@ -12726,9 +12861,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 345);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 273);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(923, 264);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(923, 336);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem289
@@ -12736,9 +12871,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem289.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem289.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem289.Control = this.txtWick;
-            this.layoutControlItem289.Location = new System.Drawing.Point(0, 86);
+            this.layoutControlItem289.Location = new System.Drawing.Point(111, 68);
             this.layoutControlItem289.Name = "layoutControlItem289";
-            this.layoutControlItem289.Size = new System.Drawing.Size(923, 94);
+            this.layoutControlItem289.Size = new System.Drawing.Size(812, 70);
             this.layoutControlItem289.Text = "Bấc:";
             this.layoutControlItem289.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem289.TextSize = new System.Drawing.Size(90, 20);
@@ -12749,9 +12884,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem291.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem291.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem291.Control = this.txtOther;
-            this.layoutControlItem291.Location = new System.Drawing.Point(0, 228);
+            this.layoutControlItem291.Location = new System.Drawing.Point(111, 186);
             this.layoutControlItem291.Name = "layoutControlItem291";
-            this.layoutControlItem291.Size = new System.Drawing.Size(923, 117);
+            this.layoutControlItem291.Size = new System.Drawing.Size(812, 39);
             this.layoutControlItem291.Text = "Khác:";
             this.layoutControlItem291.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem291.TextSize = new System.Drawing.Size(90, 20);
@@ -12762,9 +12897,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem293.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem293.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem293.Control = this.dtDrawDate;
-            this.layoutControlItem293.Location = new System.Drawing.Point(0, 180);
+            this.layoutControlItem293.Location = new System.Drawing.Point(111, 138);
             this.layoutControlItem293.Name = "layoutControlItem293";
-            this.layoutControlItem293.Size = new System.Drawing.Size(366, 24);
+            this.layoutControlItem293.Size = new System.Drawing.Size(431, 24);
             this.layoutControlItem293.Text = "Ngày rút:";
             this.layoutControlItem293.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem293.TextSize = new System.Drawing.Size(90, 20);
@@ -12775,10 +12910,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem295.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem295.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem295.Control = this.dtSewingDate;
-            this.layoutControlItem295.Location = new System.Drawing.Point(0, 204);
+            this.layoutControlItem295.Location = new System.Drawing.Point(111, 162);
             this.layoutControlItem295.Name = "layoutControlItem295";
             this.layoutControlItem295.OptionsToolTip.ToolTip = "Ngày cắt chỉ";
-            this.layoutControlItem295.Size = new System.Drawing.Size(366, 24);
+            this.layoutControlItem295.Size = new System.Drawing.Size(431, 24);
             this.layoutControlItem295.Text = "Ngày CC:";
             this.layoutControlItem295.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem295.TextSize = new System.Drawing.Size(90, 20);
@@ -12787,18 +12922,108 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // emptySpaceItem29
             // 
             this.emptySpaceItem29.AllowHotTrack = false;
-            this.emptySpaceItem29.Location = new System.Drawing.Point(366, 204);
+            this.emptySpaceItem29.Location = new System.Drawing.Point(542, 162);
             this.emptySpaceItem29.Name = "emptySpaceItem29";
-            this.emptySpaceItem29.Size = new System.Drawing.Size(557, 24);
+            this.emptySpaceItem29.Size = new System.Drawing.Size(381, 24);
             this.emptySpaceItem29.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem30
             // 
             this.emptySpaceItem30.AllowHotTrack = false;
-            this.emptySpaceItem30.Location = new System.Drawing.Point(366, 180);
+            this.emptySpaceItem30.Location = new System.Drawing.Point(542, 138);
             this.emptySpaceItem30.Name = "emptySpaceItem30";
-            this.emptySpaceItem30.Size = new System.Drawing.Size(557, 24);
+            this.emptySpaceItem30.Size = new System.Drawing.Size(381, 24);
             this.emptySpaceItem30.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem357
+            // 
+            this.layoutControlItem357.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+            this.layoutControlItem357.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem357.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem357.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem357.Control = this.fromDatePrepareRoom;
+            this.layoutControlItem357.CustomizationFormText = "TG chuẩn bị phòng mổ:   Bắt đầu:";
+            this.layoutControlItem357.Location = new System.Drawing.Point(0, 225);
+            this.layoutControlItem357.Name = "layoutControlItem357";
+            this.layoutControlItem357.OptionsToolTip.ToolTip = "Thời gian chuẩn bị phòng mổ";
+            this.layoutControlItem357.Size = new System.Drawing.Size(503, 24);
+            this.layoutControlItem357.Text = "TG chuẩn bị phòng mổ:   Bắt đầu:";
+            this.layoutControlItem357.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem357.TextSize = new System.Drawing.Size(201, 13);
+            this.layoutControlItem357.TextToControlDistance = 5;
+            // 
+            // layoutControlItem358
+            // 
+            this.layoutControlItem358.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem358.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem358.Control = this.toDatePrepareRoom;
+            this.layoutControlItem358.Location = new System.Drawing.Point(577, 225);
+            this.layoutControlItem358.Name = "layoutControlItem358";
+            this.layoutControlItem358.OptionsToolTip.ToolTip = "Thời gian chuẩn bị phòng mổ";
+            this.layoutControlItem358.Size = new System.Drawing.Size(346, 24);
+            this.layoutControlItem358.Text = "Kết thúc:";
+            this.layoutControlItem358.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
+            this.layoutControlItem358.TextSize = new System.Drawing.Size(44, 13);
+            this.layoutControlItem358.TextToControlDistance = 5;
+            // 
+            // layoutControlItem360
+            // 
+            this.layoutControlItem360.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem360.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem360.Control = this.fromDateClearRoom;
+            this.layoutControlItem360.CustomizationFormText = "TG vệ sinh phòng mổ:   Bắt đầu:";
+            this.layoutControlItem360.Location = new System.Drawing.Point(0, 249);
+            this.layoutControlItem360.Name = "layoutControlItem360";
+            this.layoutControlItem360.OptionsToolTip.ToolTip = "Thời gian vệ sinh phòng mổ";
+            this.layoutControlItem360.Size = new System.Drawing.Size(503, 24);
+            this.layoutControlItem360.Text = "TG vệ sinh phòng mổ:   Bắt đầu:";
+            this.layoutControlItem360.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem360.TextSize = new System.Drawing.Size(201, 13);
+            this.layoutControlItem360.TextToControlDistance = 5;
+            // 
+            // layoutControlItem361
+            // 
+            this.layoutControlItem361.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem361.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem361.Control = this.toDateClearRoom;
+            this.layoutControlItem361.Location = new System.Drawing.Point(577, 249);
+            this.layoutControlItem361.Name = "layoutControlItem361";
+            this.layoutControlItem361.OptionsToolTip.ToolTip = "Thời gian vệ sinh phòng mổ";
+            this.layoutControlItem361.Size = new System.Drawing.Size(346, 24);
+            this.layoutControlItem361.Text = "Kết thúc:";
+            this.layoutControlItem361.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
+            this.layoutControlItem361.TextSize = new System.Drawing.Size(44, 13);
+            this.layoutControlItem361.TextToControlDistance = 5;
+            // 
+            // emptySpaceItem32
+            // 
+            this.emptySpaceItem32.AllowHotTrack = false;
+            this.emptySpaceItem32.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.emptySpaceItem32.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.emptySpaceItem32.Location = new System.Drawing.Point(503, 225);
+            this.emptySpaceItem32.Name = "emptySpaceItem32";
+            this.emptySpaceItem32.Size = new System.Drawing.Size(74, 48);
+            this.emptySpaceItem32.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // emptySpaceItem33
+            // 
+            this.emptySpaceItem33.AllowHotTrack = false;
+            this.emptySpaceItem33.Location = new System.Drawing.Point(0, 0);
+            this.emptySpaceItem33.MinSize = new System.Drawing.Size(10, 10);
+            this.emptySpaceItem33.Name = "emptySpaceItem33";
+            this.emptySpaceItem33.Size = new System.Drawing.Size(111, 186);
+            this.emptySpaceItem33.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.emptySpaceItem33.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // emptySpaceItem34
+            // 
+            this.emptySpaceItem34.AllowHotTrack = false;
+            this.emptySpaceItem34.Location = new System.Drawing.Point(0, 186);
+            this.emptySpaceItem34.MinSize = new System.Drawing.Size(10, 10);
+            this.emptySpaceItem34.Name = "emptySpaceItem34";
+            this.emptySpaceItem34.Size = new System.Drawing.Size(111, 39);
+            this.emptySpaceItem34.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.emptySpaceItem34.TextSize = new System.Drawing.Size(0, 0);
             // 
             // btnDelete
             // 
@@ -12882,27 +13107,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.layoutControlItem356.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem356.TextVisible = false;
             // 
-            // spinKichThuocRachForraRachBaoSau
-            // 
-            this.spinKichThuocRachForraRachBaoSau.Location = new System.Drawing.Point(482, 363);
-            this.spinKichThuocRachForraRachBaoSau.Name = "spinKichThuocRachForraRachBaoSau";
-            this.spinKichThuocRachForraRachBaoSau.Size = new System.Drawing.Size(79, 20);
-            this.spinKichThuocRachForraRachBaoSau.StyleController = this.lcPtDucTTT;
-            this.spinKichThuocRachForraRachBaoSau.TabIndex = 95;
-            // 
-            // layoutControlItem75
-            // 
-            this.layoutControlItem75.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem75.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem75.Control = this.spinKichThuocRachForraRachBaoSau;
-            this.layoutControlItem75.Location = new System.Drawing.Point(395, 351);
-            this.layoutControlItem75.Name = "layoutControlItem75";
-            this.layoutControlItem75.Size = new System.Drawing.Size(158, 24);
-            this.layoutControlItem75.Text = "Kích thước:";
-            this.layoutControlItem75.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem75.TextSize = new System.Drawing.Size(70, 20);
-            this.layoutControlItem75.TextToControlDistance = 5;
-            // 
             // frmInputDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -12916,6 +13120,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.Load += new System.EventHandler(this.frmInputDetail_Load);
             ((System.ComponentModel.ISupportInitialize)(this.lcPtDucTTT)).EndInit();
             this.lcPtDucTTT.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spinKichThuocRachForraRachBaoSau.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDienBienKhac.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtLoaiThuocForraTraMat.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.raTraMatMo.Properties)).EndInit();
@@ -13080,6 +13285,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem77)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem31)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem75)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.raTTMongMat.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl24)).EndInit();
             this.layoutControl24.ResumeLayout(false);
@@ -13759,6 +13965,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.xtraTabOther.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl_TabOther)).EndInit();
             this.layoutControl_TabOther.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.toDateClearRoom.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.toDateClearRoom.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fromDateClearRoom.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fromDateClearRoom.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.toDatePrepareRoom.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.toDatePrepareRoom.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fromDatePrepareRoom.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fromDatePrepareRoom.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtSewingDate.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtSewingDate.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtDrawDate.Properties.CalendarTimeProperties)).EndInit();
@@ -13775,14 +13989,19 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem295)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem29)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem30)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem357)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem358)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem360)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem361)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem32)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem33)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem34)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem102)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem99)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem356)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinKichThuocRachForraRachBaoSau.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem75)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -13975,7 +14194,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         private DevExpress.XtraEditors.SimpleButton simpleButton2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem102;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem6;
-        private DevExpress.XtraTab.XtraTabControl xtraTabControl1;
+        public DevExpress.XtraTab.XtraTabControl xtraTabControl1;
         private DevExpress.XtraTab.XtraTabPage tabPagePTDucTTT;
         private DevExpress.XtraTab.XtraTabPage tabPageGlocom;
         private DevExpress.XtraLayout.LayoutControl layoutControl5;
@@ -14557,7 +14776,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem40;
         private DevExpress.XtraEditors.TextEdit textEdit3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem285;
-        private DevExpress.XtraTab.XtraTabControl xtraTabAddInfo;
+        public DevExpress.XtraTab.XtraTabControl xtraTabAddInfo;
         private DevExpress.XtraTab.XtraTabPage xtraTabEye;
         private DevExpress.XtraLayout.LayoutControl layoutControl24;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup23;
@@ -14613,7 +14832,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         private DevExpress.XtraEditors.LabelControl labelControl43;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem266;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem284;
-        private DevExpress.XtraTab.XtraTabPage xtraTabOther;
+        public DevExpress.XtraTab.XtraTabPage xtraTabOther;
         private DevExpress.XtraLayout.LayoutControl layoutControl_TabOther;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup_TabOther;
         private DevExpress.XtraEditors.DateEdit dtSewingDate;
@@ -14693,5 +14912,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         private DevExpress.XtraEditors.TextEdit txtLucHut;
         private DevExpress.XtraEditors.TextEdit spinKichThuocRachForraRachBaoSau;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem75;
+        private DevExpress.XtraEditors.DateEdit toDateClearRoom;
+        private DevExpress.XtraEditors.DateEdit fromDateClearRoom;
+        public DevExpress.XtraEditors.DateEdit toDatePrepareRoom;
+        public DevExpress.XtraEditors.DateEdit fromDatePrepareRoom;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem357;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem358;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem360;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem361;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem32;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem33;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem34;
     }
 }
