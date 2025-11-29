@@ -43,6 +43,25 @@
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="EMR.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\EMR\EMR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="EMR.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\EMR\EMR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="EMR.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.IsAdmin">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Library.CacheClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Library.CacheClient.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentFinish">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintTreatmentFinish\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.dll</HintPath>
     </Reference>
@@ -51,6 +70,12 @@
     </Reference>
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\..\LIB\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.TreeSereServ7">
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.TreeSereServ7.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.ViewEmrDocument">
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.ViewEmrDocument.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -146,18 +171,26 @@
     <Reference Include="MOS.TDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\DepartmentFilterADO.cs" />
+    <Compile Include="ADO\SereServADO.cs" />
+    <Compile Include="ADO\ServiceReqGroupByDateADO.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
+    <Compile Include="CallModule.cs" />
     <Compile Include="ComboADO.cs" />
     <Compile Include="frmTreatmentHistory__Pluss__TreeSS.cs">
       <SubType>Form</SubType>
@@ -168,6 +201,8 @@
     <Compile Include="frmTreatmentHistory.Designer.cs">
       <DependentUpon>frmTreatmentHistory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Key\HisConfigCFG.cs" />
+    <Compile Include="Key\HisConfigKeys.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -182,11 +217,24 @@
     <Compile Include="TreatmentHistory\ITreatmentHistory.cs" />
     <Compile Include="TreatmentHistory\TreatmentHistoryBehavior.cs" />
     <Compile Include="TreatmentHistory\TreatmentHistoryFactory.cs" />
+    <Compile Include="UCPanelControlTreeSere7.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCPanelControlTreeSere7.Designer.cs">
+      <DependentUpon>UCPanelControlTreeSere7.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCTreeListService.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCTreeListService.Designer.cs">
+      <DependentUpon>UCTreeListService.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmTreatmentHistory.resx">
       <DependentUpon>frmTreatmentHistory.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -199,12 +247,14 @@
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="UCPanelControlTreeSere7.resx">
+      <DependentUpon>UCPanelControlTreeSere7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCTreeListService.resx">
+      <DependentUpon>UCTreeListService.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.TreeSereServ7\HIS.UC.TreeSereServ7.csproj">
-      <Project>{81a0490c-ab41-449d-b164-ddf364eeee66}</Project>
-      <Name>HIS.UC.TreeSereServ7</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

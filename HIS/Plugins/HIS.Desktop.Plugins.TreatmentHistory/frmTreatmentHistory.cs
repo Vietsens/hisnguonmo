@@ -17,20 +17,28 @@
  */
 using DevExpress.Data;
 using DevExpress.Utils;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using DevExpress.XtraTab;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
+using EMR.EFMODEL.DataModels;
+using EMR.SDO;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
+using HIS.Desktop.IsAdmin;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.TreatmentHistory.ADO;
 using HIS.Desktop.Plugins.TreatmentHistory.Resources;
 using HIS.Desktop.Utility;
 using HIS.UC.TreeSereServ7;
+using HIS.Desktop.Plugins.TreatmentHistory;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Core;
@@ -56,6 +64,16 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
 {
     public partial class frmTreatmentHistory : HIS.Desktop.Utility.FormBase
     {
+        //UCTreeListService ucAll, ucCLS, ucMediMate, ucOrther;
+        DHisSereServ2 TreeClickData;
+        long DepartmentID;
+        V_HIS_BED_ROOM currentBedRoom;
+        bool IsExpandList = true;
+        long treatment_id = 0;
+        bool IsInitForm = false;
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        internal ServiceReqGroupByDateADO rowClickByDate { get; set; }
         Inventec.Desktop.Common.Modules.Module currentModule;
         internal TreatmentHistoryADO currentInput;
 
@@ -114,13 +132,19 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
         {
             try
             {
+                rowClickByDate = new ServiceReqGroupByDateADO();
+                this.currentBedRoom = BackendDataWorker.Get<V_HIS_BED_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.currentModule.RoomId);
+                this.DepartmentID = currentBedRoom != null ? currentBedRoom.DEPARTMENT_ID : 0;
+                
                 SetIconFrm();
                 LoadDataToCombo();
                 LoadDataToComboStatus();
                 SetCaptionByLanguageKey();
                 Base.ResourceLangManager.InitResourceLanguageManager();
+                InitComboFilterByDepartment();
                 SetValueDefault();
                 InitUcSereServ();
+                InitControlState();
                 if (this.currentModule != null)
                 {
                     this.Text = this.currentModule.text;
@@ -132,6 +156,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                     txtPatientCode.Text = this.currentInput.patient_code;
                 }
                 LoadDataGridTreatment5();
+                cboFilterByDepartment.EditValue = (long)0;
                 gridControlHisTreatment5.ToolTipController = toolTipController;
             }
             catch (Exception ex)
@@ -184,7 +209,24 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void InitComboFilterByDepartment()
+        {
+            try
+            {
+                List<ADO.DepartmentFilterADO> listFilterDepartment = new List<ADO.DepartmentFilterADO>();
 
+                listFilterDepartment.Add(new ADO.DepartmentFilterADO(0, Resources.ResourceMessage.TrongKhoa));
+                listFilterDepartment.Add(new ADO.DepartmentFilterADO(1, Resources.ResourceMessage.TatCa));
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("DepartmentFilter", "", 150, 1));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("DepartmentFilter", "ID", columnInfos, false, 151);
+                ControlEditorLoader.Load(cboFilterByDepartment, listFilterDepartment, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void LoadDataToCombo()
         {
             try
@@ -207,7 +249,249 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void treeView_Click(ADO.SereServADO data)
+        {
+            try
+            {
+                if (data != null)
+                {
+                    TreeClickData = data;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private UCPanelControlTreeSere7 ucTreeDetail;
+        private void LoadDataSereServByTreatmentId()
+        {
+            try
+            {
+                List<ADO.SereServADO> SereServADOs = new List<ADO.SereServADO>();
+                List<DHisSereServ2> dataNew = new List<DHisSereServ2>();
+                List<HIS_SERVICE_REQ> dataServiceReq = new List<HIS_SERVICE_REQ>();
+                WaitingManager.Show();
+                if (rowCellClick != null && rowCellClick.ID > 0)
+                {
+                    CommonParam param = new CommonParam();
+                    DHisSereServ2Filter _sereServ2Filter = new DHisSereServ2Filter();
+                    _sereServ2Filter.TREATMENT_ID = rowCellClick.ID;
+                    if (serviceReq2Focus != null)
+                    {
+                        _sereServ2Filter.INTRUCTION_DATE = serviceReq2Focus.INTRUCTION_DATE;
+                    }    
+                    //_sereServ2Filter.INTRUCTION_DATE = Int64.Parse(rowCellClick..ToString().Substring(0, 8) + "000000");
+                    dataNew = new BackendAdapter(param).Get<List<DHisSereServ2>>("api/HisSereServ/GetDHisSereServ2", ApiConsumers.MosConsumer, _sereServ2Filter, param);
+                    if (dataNew != null && dataNew.Count > 0)
+                    {
+                        if ((long)cboFilterByDepartment.EditValue == (long)0) //Theo khoa
+                        {
+                            dataNew = dataNew.Where(o => o.REQUEST_DEPARTMENT_ID == serviceReq2Focus.REQUEST_DEPARTMENT_ID).ToList();
+                        }
+                        //if (!currentHisServiceReq.isParent)
+                        //{
+                        //    dataNew = dataNew.Where(o => o.TRACKING_ID == currentHisServiceReq.TRACKING_ID).ToList();
+                        //}
+                        HisServiceReqFilter filter = new HisServiceReqFilter();
+                        filter.IDs = dataNew.Select(o => o.SERVICE_REQ_ID ?? 0).ToList();
+                        dataServiceReq = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+                        var listRootByType = dataNew.OrderByDescending(o => o.TRACKING_TIME).GroupBy(o => o.TDL_SERVICE_TYPE_ID).ToList();
+                        var department = currentModule != null ? BackendDataWorker.Get<HIS_ROOM>().FirstOrDefault(p => p.ID == currentModule.RoomId) : null;
+                        var departmentId = department != null ? department.DEPARTMENT_ID : 0;
+                        foreach (var types in listRootByType)
+                        {
+                            ADO.SereServADO ssRootType = new ADO.SereServADO();
+                            #region Parent
+                            ssRootType.CONCRETE_ID__IN_SETY = types.First().TDL_SERVICE_TYPE_ID + "";
+                            var serviceType = BackendDataWorker.Get<HIS_SERVICE_TYPE>().FirstOrDefault(p => p.ID == types.First().TDL_SERVICE_TYPE_ID);
+                            long idSerReqType = 0;
+                            long idDepartment = 0;
+                            long idExecuteDepartment = 0;
+                            short? IsTemporaryPres = 0;
+                            if (dataServiceReq != null && dataServiceReq.Count > 0)
+                            {
+                                if (dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID) != null && dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).ToList().Count > 0)
+                                {
+                                    idSerReqType = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().SERVICE_REQ_TYPE_ID;
+                                    idDepartment = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().REQUEST_DEPARTMENT_ID;
+                                    idExecuteDepartment = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().EXECUTE_DEPARTMENT_ID;
+                                    IsTemporaryPres = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().IS_TEMPORARY_PRES;
+                                }
+                            }
+                            ssRootType.TRACKING_TIME = types.First().TRACKING_TIME;
+                            ssRootType.TDL_SERVICE_TYPE_ID = types.First().TDL_SERVICE_TYPE_ID;
+                            ssRootType.SERVICE_CODE = serviceType != null ? serviceType.SERVICE_TYPE_NAME : null;
+                            #endregion
+                            SereServADOs.Add(ssRootType);
+                            var listRootSety = types.GroupBy(g => g.SERVICE_REQ_ID).ToList();
+                            foreach (var rootSety in listRootSety)
+                            {
+                                #region Child
+                                ADO.SereServADO ssRootSety = new ADO.SereServADO();
+                                ssRootSety.CONCRETE_ID__IN_SETY = ssRootType.CONCRETE_ID__IN_SETY + "_" + rootSety.First().SERVICE_REQ_ID;
+                                //qtcode
+                                if (rootSety.First().USE_TIME.HasValue)
+                                {
+                                    ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().USE_TIME.Value));
+                                }
+                                //qtcode
+                                ssRootSety.PARENT_ID__IN_SETY = ssRootType.CONCRETE_ID__IN_SETY;
+                                ssRootSety.REQUEST_DEPARTMENT_ID = idDepartment;
+                                ssRootSety.EXECUTE_DEPARTMENT_ID = idExecuteDepartment;
+                                ssRootSety.SERVICE_REQ_TYPE_ID = BackendDataWorker.Get<HIS_SERVICE_REQ_TYPE>().FirstOrDefault(p => p.ID == idSerReqType) != null ?
+                                BackendDataWorker.Get<HIS_SERVICE_REQ_TYPE>().FirstOrDefault(p => p.ID == idSerReqType).ID : 0;
+                                ssRootSety.TRACKING_TIME = rootSety.First().TRACKING_TIME;
+                                ssRootSety.SERVICE_REQ_ID = rootSety.First().SERVICE_REQ_ID;
+                                ssRootSety.SERVICE_REQ_STT_ID = rootSety.First().SERVICE_REQ_STT_ID;
+                                ssRootSety.TDL_SERVICE_TYPE_ID = rootSety.First().TDL_SERVICE_TYPE_ID;
+                                ssRootSety.SERVICE_CODE = rootSety.First().SERVICE_REQ_CODE;
+                                ssRootSety.SERVICE_REQ_CODE = rootSety.First().SERVICE_REQ_CODE;
+                                ssRootSety.IS_TEMPORARY_PRES = IsTemporaryPres;
+                                if (dataServiceReq != null && dataServiceReq.Count > 0)
+                                {
+                                    var serviceReq = dataServiceReq.FirstOrDefault(o => o.ID == rootSety.First().SERVICE_REQ_ID) ?? new HIS_SERVICE_REQ();
+                                    ssRootSety.SAMPLE_TIME = serviceReq.SAMPLE_TIME;
+                                    ssRootSety.RECEIVE_SAMPLE_TIME = serviceReq.RECEIVE_SAMPLE_TIME;
+                                }
+                                ssRootSety.TDL_TREATMENT_ID = rootSety.First().TDL_TREATMENT_ID;
+                                ssRootSety.PRESCRIPTION_TYPE_ID = rootSety.First().PRESCRIPTION_TYPE_ID;
+                                ssRootSety.REQUEST_LOGINNAME = rootSety.First().REQUEST_LOGINNAME;
+                                ssRootSety.REQUEST_DEPARTMENT_ID = rootSety.First().REQUEST_DEPARTMENT_ID ?? 0;
+                                ssRootSety.SERVICE_NAME = String.Format("- {0} - {1}", rootSety.First().REQUEST_ROOM_NAME, rootSety.First().REQUEST_DEPARTMENT_NAME);
+                                var time = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rootSety.First().TDL_INTRUCTION_TIME ?? 0);
+                                ssRootSety.NOTE_ADO = time.Substring(0, time.Count() - 3);
+                                if ((rootSety.First().REQUEST_LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() || CheckLoginAdmin.IsAdmin(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()))
+                                    && (rootSety.First().SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL || HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_MODIFYING_OF_STARTED") == "1" || (HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_MODIFYING_OF_STARTED") == "2"
+                                    && ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH))
+                                    && rootSety.First().IS_NO_EXECUTE != 1)
+                                {
+                                    ssRootSety.IsEnableEdit = true;
+                                }
+                                if ((rootSety.First().REQUEST_LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() || CheckLoginAdmin.IsAdmin(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName())
+                                  || (rootSety.First().REQUEST_DEPARTMENT_ID == departmentId && ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH))
+                                  && rootSety.First().SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
+                                {
+                                    ssRootSety.IsEnableDelete = true;
+                                }
 
+
+                                SereServADOs.Add(ssRootSety);
+                                #endregion
+                                int d = 0;
+                                foreach (var item in rootSety)
+                                {
+                                    d++;
+                                    #region Child (+n)
+                                    ADO.SereServADO ado = new ADO.SereServADO(item);
+                                    ado.CONCRETE_ID__IN_SETY = ssRootSety.CONCRETE_ID__IN_SETY + "_" + d;
+                                    ado.PARENT_ID__IN_SETY = ssRootSety.CONCRETE_ID__IN_SETY;
+                                    if (!String.IsNullOrWhiteSpace(item.TUTORIAL))
+                                    {
+                                        ado.NOTE_ADO = string.Format("{0}. {1}", item.TUTORIAL, item.INSTRUCTION_NOTE);
+
+                                    }
+                                    else
+                                    {
+                                        ado.NOTE_ADO = string.Format("{0}", item.INSTRUCTION_NOTE);
+                                    }
+                                    ado.AMOUNT_SER = string.Format("{0} - {1}", item.AMOUNT, item.SERVICE_UNIT_NAME);
+                                    ado.IS_TEMPORARY_PRES = IsTemporaryPres;
+                                    SereServADOs.Add(ado);
+                                    #endregion
+                                }
+                            }
+                        }
+                    }
+                }
+
+                WaitingManager.Hide();
+                ucTreeDetail.LoadTabs(dataNew,dataServiceReq,SereServADOs);
+                //if (SereServADOs != null && SereServADOs.Count > 0)
+                //{
+                //    SereServADOs = SereServADOs.OrderBy(o => o.PARENT_ID__IN_SETY).ThenBy(p => p.SERVICE_CODE).ThenBy(o => o.SERVICE_NAME).ToList();
+
+                //    #region ALL
+
+                //    ucAll.ReLoad(treeView_Click, GroupDataByTracking(dataNew, dataServiceReq), null, null, null);
+                //    #endregion
+
+                //    #region CLS
+
+                //    List<ADO.SereServADO> listCLS = new List<ADO.SereServADO>();
+                //    listCLS.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA
+                //        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA
+                //        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS
+                //        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL
+                //        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN
+                //        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
+                //        ));
+
+                //    ucCLS.ReLoad(treeView_Click, listCLS, null, null, null);
+
+                //    #endregion
+
+                //    #region MediMate
+
+                //    List<ADO.SereServADO> listMediMate = new List<ADO.SereServADO>();
+                //    listMediMate.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
+                //        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT
+                //        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU
+                //        ));
+
+                //    ucMediMate.ReLoad(treeView_Click, listMediMate, null, null, null);
+
+                //    #endregion
+
+                //    #region Orther
+
+                //    List<ADO.SereServADO> listOther = new List<ADO.SereServADO>();
+                //    listOther.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN
+                //        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G
+                //        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
+                //        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KHAC
+                //        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PHCN
+                //        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT
+                //        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT
+                //        ));
+
+                //    ucOrther.ReLoad(treeView_Click, listOther, null, null, null);
+
+                //    #endregion
+
+                //    #region reloadTabControl
+                //    IsExpandList = true;
+                //    //btnThuGon.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__BTN__THU_GON", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()); //"Thu gọn";                                       
+
+                //    //UCPanelControlTreeSere7 ucSS = new UCPanelControlTreeSere7();
+                //    //ucSS.SelectedTab();
+                //    #region reloadTabControl
+                //    IsExpandList = true;
+                //    //btnThuGon.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__BTN__THU_GON", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()); //"Thu gọn";                                       
+
+                //    tabSereServ.SelectedTabPage = tabSereServ.TabPages[3];
+                //    tabSereServ.SelectedTabPage = tabSereServ.TabPages[2];
+                //    tabSereServ.SelectedTabPage = tabSereServ.TabPages[1];
+                //    tabSereServ.SelectedTabPage = tabSereServ.TabPages[0];
+                //    #endregion
+                //    #endregion
+
+                //}
+                //else
+                //{
+                //    ucAll.ReLoad(treeView_Click, null, null, null, null);
+                //    ucCLS.ReLoad(treeView_Click, null, null, null, null);
+                //    ucMediMate.ReLoad(treeView_Click, null, null, null, null);
+                //    ucOrther.ReLoad(treeView_Click, null, null, null, null);
+                //}
+
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void LoadDataToComboStatus()
         {
             try
@@ -289,22 +573,22 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                 ado.TreeSereServ7Columns.Add(serviceBtn);
 
                 //Column mã dịch vụ
-                TreeSereServ7Column serviceCodeCol = new TreeSereServ7Column(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__TREE_SERE_SERV__COLUMN_SERVICE_CODE", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_CODE", 150, false);
+                TreeSereServ7Column serviceCodeCol = new TreeSereServ7Column(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__TREE_SERE_SERV__COLUMN_SERVICE_CODE", Base.ResourceLangManager.LanguageUCTreatmentHistory, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_CODE", 150, false);
                 serviceCodeCol.VisibleIndex = 2;
                 ado.TreeSereServ7Columns.Add(serviceCodeCol);
 
                 //Column tên dịch vụ
-                TreeSereServ7Column serviceNameCol = new TreeSereServ7Column(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__TREE_SERE_SERV__COLUMN_SERVICE_NAME", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_NAME", 370, false);
+                TreeSereServ7Column serviceNameCol = new TreeSereServ7Column(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__TREE_SERE_SERV__COLUMN_SERVICE_NAME", Base.ResourceLangManager.LanguageUCTreatmentHistory, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_NAME", 370, false);
                 serviceNameCol.VisibleIndex = 3;
                 ado.TreeSereServ7Columns.Add(serviceNameCol);
 
                 //Column mã yêu cầu
-                TreeSereServ7Column serviceReqCodeCol = new TreeSereServ7Column(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_REQ_CODE", 100, false);
+                TreeSereServ7Column serviceReqCodeCol = new TreeSereServ7Column(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE", Base.ResourceLangManager.LanguageUCTreatmentHistory, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_REQ_CODE", 100, false);
                 serviceReqCodeCol.VisibleIndex = 4;
                 ado.TreeSereServ7Columns.Add(serviceReqCodeCol);
 
                 //Column ghi chú
-                TreeSereServ7Column noteCol = new TreeSereServ7Column(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__TREE_SERE_SERV__COLUMN_NOTE", Base.ResourceLangManager.LanguageUCBedRoomPartial, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "NOTE_ADO", 250, false);
+                TreeSereServ7Column noteCol = new TreeSereServ7Column(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__TREE_SERE_SERV__COLUMN_NOTE", Base.ResourceLangManager.LanguageUCTreatmentHistory, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "NOTE_ADO", 250, false);
                 noteCol.VisibleIndex = 5;
                 ado.TreeSereServ7Columns.Add(noteCol);
 
@@ -757,7 +1041,16 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                     serviceReq2Focus = (HIS_SERVICE_REQ)hi.Node.Tag;
                     if (serviceReq2Focus != null)
                     {
-                        LoadDataSereServ7(serviceReq2Focus);
+                        if(chkShowTabDetail.Checked)
+                        {
+                            LoadDataSereServByTreatmentId();
+                            ucTreeDetail.LoadExamInfo(rowCellClick.ID);
+                        }    
+                        else
+                        {
+                            LoadDataSereServ7(serviceReq2Focus);
+                        }    
+                        
                     }
                 }
             }
@@ -1098,7 +1391,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                     if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                     {
                         List<object> listArgs = new List<object>();
-                        AssignServiceEditADO assignServiceEditADO = new ADO.AssignServiceEditADO(currentSS.SERVICE_REQ_ID ?? 0, currentSS.TDL_INTRUCTION_TIME, RefeshDataByTree);
+                        AssignServiceEditADO assignServiceEditADO = new HIS.Desktop.ADO.AssignServiceEditADO(currentSS.SERVICE_REQ_ID ?? 0, currentSS.TDL_INTRUCTION_TIME, RefeshDataByTree);
                         listArgs.Add(assignServiceEditADO);
                         listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
                         var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
@@ -1245,6 +1538,153 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             }
         }
 
+        private void cboFilterByDepartment_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Immediate || e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    LoadDataSereServByTreatmentId();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnThuGon_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ucTreeDetail == null)
+                    return;
+
+                bool isExpanded = ucTreeDetail.ToggleExpand();
+
+                if (isExpanded)
+                {
+                    btnThuGon.Text = Inventec.Common.Resource.Get.Value(
+                        "IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__BTN__THU_GON",
+                        Resources.ResourceLanguageManager.LanguageResource,
+                        LanguageManager.GetCulture()); //"Thu gọn";
+                }
+                else
+                {
+                    btnThuGon.Text = Inventec.Common.Resource.Get.Value(
+                        "IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__BTN__CHI_TIET",
+                        Resources.ResourceLanguageManager.LanguageResource,
+                        LanguageManager.GetCulture()); // "Chi tiết";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void InitControlState()
+        {
+            try
+            {
+                chkShowTabDetail.Checked = false;
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(this.ModuleLink);
+
+                IsInitForm = true;
+
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item_ in this.currentControlStateRDO)
+                    {
+                        if (item_.KEY == chkShowTabDetail.Name)
+                        {
+                            chkShowTabDetail.Checked = item_.VALUE == "1";
+                        }
+                    }
+                }
+
+                IsInitForm = false;
+                ToggleDetailTab(chkShowTabDetail.Checked);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkShowTabDetail_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (IsInitForm)
+                    return;
+
+                ToggleDetailTab(chkShowTabDetail.Checked);
+
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate =
+                    (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    ? this.currentControlStateRDO
+                        .Where(o => o.KEY == chkShowTabDetail.Name && o.MODULE_LINK == this.ModuleLink)
+                        .FirstOrDefault()
+                    : null;
+
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkShowTabDetail.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkShowTabDetail.Name;
+                    csAddOrUpdate.VALUE = (chkShowTabDetail.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = this.ModuleLink;
+
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ToggleDetailTab(bool show)
+        {
+            try
+            {
+                if (show)
+                {
+                    if (ucTreeDetail == null)
+                    {
+                        ucTreeDetail = new UCPanelControlTreeSere7(currentModule);
+                        ucTreeDetail.Dock = DockStyle.Fill;
+                    }
+
+                    panelControlTreeSere7.Controls.Clear();
+                    panelControlTreeSere7.Controls.Add(ucTreeDetail);
+
+                    if (rowCellClick != null && rowCellClick.ID > 0)
+                    {
+                        LoadDataSereServByTreatmentId();
+                        ucTreeDetail.LoadExamInfo(rowCellClick.ID);
+                    }
+                }
+                else
+                {
+                    panelControlTreeSere7.Controls.Clear();
+                    InitUcSereServ();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
 
         private void cboStatus_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
