@@ -494,7 +494,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     lblDob.Text = "";
                     lblGenderName.Text = "";
                     lblAddress.Text = "";
-                    txtTotalAmount.EditValue = null;
+                                                      
                 }
             }
             catch (Exception ex)
@@ -517,15 +517,25 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 this.ResetDefaultValueControl();
                 this.GeneratePrintMenu();
                 this.ValidControlDescription();
-                if (this.treatment != null && this.treatment.ID > 0)
+                if (isShowMess == true) 
                 {
-                    FillDataToCommon(this.treatment);
-                    txtTreatmenCode.Text = this.treatment.TREATMENT_CODE;
+                    if (this.treatment != null && this.treatment.ID > 0)
+                    {
+                        FillDataToCommon(this.treatment);
+                        txtTreatmenCode.Text = this.treatment.TREATMENT_CODE;
+                    }
+                }
+                if (HisConfigCFG.MinimumDepositAmount > 0)
+                {
+                    txtTotalAmount.EditValue = HisConfigCFG.MinimumDepositAmount;
                 }
                 else
                 {
-                    FillDataToCommon(this.depositReq);
-                    txtDepositReqCode.Text = this.depositReq != null ? this.depositReq.DEPOSIT_REQ_CODE : "";
+                    if (isShowMess == true)
+                    {
+                        FillDataToCommon(this.depositReq);
+                        txtDepositReqCode.Text = this.depositReq != null ? this.depositReq.DEPOSIT_REQ_CODE : "";
+                    }
                 }
                 if (this.treatment != null)
                 {
@@ -1011,6 +1021,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 if (HisConfigCFG.IsEditTransactionTimeCFG != null && HisConfigCFG.IsEditTransactionTimeCFG.Equals("1"))
                 {
                     lciTransactionTime.Enabled = true;
+                }              
+                if (HisConfigCFG.MinimumDepositAmount > 0)
+                {
+                    txtTotalAmount.EditValue = HisConfigCFG.MinimumDepositAmount;
                 }
                 else
                 {
@@ -1405,8 +1419,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             try
             {
                 positionHandleControl = -1;
+
                 if (!btnSave.Enabled || !dxValidationProvider1.Validate() || this.treatment == null)
                     return;
+
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 bool success = false;
@@ -1435,6 +1451,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                         MessageManager.Show(param, success);
                     }
                 }
+
                 SessionManager.ProcessTokenLost(param);
             }
             catch (Exception ex)
@@ -1637,12 +1654,19 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         {
             try
             {
+                isShowMess = false;
                 if (cboAccountBook.EditValue == null || cboPayForm.EditValue == null || txtTotalAmount.Value <= 0)
                 {
                     param.Messages.Add(Base.ResourceMessageLang.ThieuTruongDuLieuBatBuoc);
                     return;
-                }               
-
+                }
+                if (txtTotalAmount.Value < HisConfigCFG.MinimumDepositAmount)
+                {
+                    isShowMess = true;
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show( string.Format("Số tiền tạm ứng tối thiểu là {0:n0}", HisConfigCFG.MinimumDepositAmount), "Thông báo");
+                    return;
+                }
                 CARD.WCF.DCO.WcfDepositDCO DepositDCO = new CARD.WCF.DCO.WcfDepositDCO();
                 // thanh toán qua thẻ 
                 //var payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue));

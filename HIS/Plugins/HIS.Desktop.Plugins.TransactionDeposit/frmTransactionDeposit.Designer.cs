@@ -211,7 +211,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.layoutControl1.Controls.Add(this.cboBank);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 38);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(54, 209, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
@@ -222,7 +222,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // btnSaveAndSign
             // 
             this.btnSaveAndSign.Location = new System.Drawing.Point(505, 264);
-            this.btnSaveAndSign.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSaveAndSign.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSaveAndSign.Name = "btnSaveAndSign";
             this.btnSaveAndSign.Size = new System.Drawing.Size(101, 27);
             this.btnSaveAndSign.StyleController = this.layoutControl1;
@@ -233,7 +233,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // btnQR
             // 
             this.btnQR.Location = new System.Drawing.Point(454, 264);
-            this.btnQR.Margin = new System.Windows.Forms.Padding(4);
+            this.btnQR.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnQR.Name = "btnQR";
             this.btnQR.Size = new System.Drawing.Size(45, 27);
             this.btnQR.StyleController = this.layoutControl1;
@@ -255,7 +255,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // 
             this.btnConfigPos.Image = ((System.Drawing.Image)(resources.GetObject("btnConfigPos.Image")));
             this.btnConfigPos.Location = new System.Drawing.Point(188, 264);
-            this.btnConfigPos.Margin = new System.Windows.Forms.Padding(4);
+            this.btnConfigPos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnConfigPos.Name = "btnConfigPos";
             this.btnConfigPos.Size = new System.Drawing.Size(31, 27);
             this.btnConfigPos.StyleController = this.layoutControl1;
@@ -266,7 +266,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // chkConnectionPOS
             // 
             this.chkConnectionPOS.Location = new System.Drawing.Point(118, 264);
-            this.chkConnectionPOS.Margin = new System.Windows.Forms.Padding(4);
+            this.chkConnectionPOS.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chkConnectionPOS.MenuManager = this.barManager1;
             this.chkConnectionPOS.Name = "chkConnectionPOS";
             this.chkConnectionPOS.Properties.Caption = "";
@@ -392,7 +392,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // chkAutoClose
             // 
             this.chkAutoClose.Location = new System.Drawing.Point(225, 264);
-            this.chkAutoClose.Margin = new System.Windows.Forms.Padding(4);
+            this.chkAutoClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chkAutoClose.MenuManager = this.barManager1;
             this.chkAutoClose.Name = "chkAutoClose";
             this.chkAutoClose.Properties.Caption = "    :Tự động đóng";
@@ -411,7 +411,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             0,
             0});
             this.spinTransferAmount.Location = new System.Drawing.Point(499, 144);
-            this.spinTransferAmount.Margin = new System.Windows.Forms.Padding(4);
+            this.spinTransferAmount.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.spinTransferAmount.MenuManager = this.barManager1;
             this.spinTransferAmount.Name = "spinTransferAmount";
             this.spinTransferAmount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -425,7 +425,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // btnSearch
             // 
             this.btnSearch.Location = new System.Drawing.Point(341, 3);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(107, 27);
             this.btnSearch.StyleController = this.layoutControl1;
@@ -437,7 +437,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // txtTreatmenCode
             // 
             this.txtTreatmenCode.Location = new System.Drawing.Point(3, 3);
-            this.txtTreatmenCode.Margin = new System.Windows.Forms.Padding(4);
+            this.txtTreatmenCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtTreatmenCode.MenuManager = this.barManager1;
             this.txtTreatmenCode.Name = "txtTreatmenCode";
             this.txtTreatmenCode.Properties.NullValuePrompt = "Mã điều trị (F2)";
@@ -450,7 +450,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // txtDepositReqCode
             // 
             this.txtDepositReqCode.Location = new System.Drawing.Point(176, 3);
-            this.txtDepositReqCode.Margin = new System.Windows.Forms.Padding(4);
+            this.txtDepositReqCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtDepositReqCode.MenuManager = this.barManager1;
             this.txtDepositReqCode.Name = "txtDepositReqCode";
             this.txtDepositReqCode.Properties.NullValuePrompt = "Mã yêu cầu tạm ứng";
@@ -466,7 +466,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.lblGenderName.Appearance.ForeColor = System.Drawing.Color.Blue;
             this.lblGenderName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblGenderName.Location = new System.Drawing.Point(898, 36);
-            this.lblGenderName.Margin = new System.Windows.Forms.Padding(4);
+            this.lblGenderName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lblGenderName.Name = "lblGenderName";
             this.lblGenderName.Size = new System.Drawing.Size(192, 20);
             this.lblGenderName.StyleController = this.layoutControl1;
@@ -478,7 +478,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.lblDob.Appearance.ForeColor = System.Drawing.Color.Blue;
             this.lblDob.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblDob.Location = new System.Drawing.Point(626, 36);
-            this.lblDob.Margin = new System.Windows.Forms.Padding(4);
+            this.lblDob.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lblDob.Name = "lblDob";
             this.lblDob.Size = new System.Drawing.Size(171, 20);
             this.lblDob.StyleController = this.layoutControl1;
@@ -490,7 +490,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.lblPatientName.Appearance.ForeColor = System.Drawing.Color.Blue;
             this.lblPatientName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblPatientName.Location = new System.Drawing.Point(334, 36);
-            this.lblPatientName.Margin = new System.Windows.Forms.Padding(4);
+            this.lblPatientName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lblPatientName.Name = "lblPatientName";
             this.lblPatientName.Size = new System.Drawing.Size(211, 20);
             this.lblPatientName.StyleController = this.layoutControl1;
@@ -502,7 +502,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.lblPatientCode.Appearance.ForeColor = System.Drawing.Color.Blue;
             this.lblPatientCode.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblPatientCode.Location = new System.Drawing.Point(98, 36);
-            this.lblPatientCode.Margin = new System.Windows.Forms.Padding(4);
+            this.lblPatientCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lblPatientCode.Name = "lblPatientCode";
             this.lblPatientCode.Size = new System.Drawing.Size(135, 20);
             this.lblPatientCode.StyleController = this.layoutControl1;
@@ -514,7 +514,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.lblAddress.Appearance.ForeColor = System.Drawing.Color.Blue;
             this.lblAddress.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblAddress.Location = new System.Drawing.Point(68, 62);
-            this.lblAddress.Margin = new System.Windows.Forms.Padding(4);
+            this.lblAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lblAddress.Name = "lblAddress";
             this.lblAddress.Size = new System.Drawing.Size(1022, 20);
             this.lblAddress.StyleController = this.layoutControl1;
@@ -528,7 +528,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             0,
             0});
             this.spinTongTuDen.Location = new System.Drawing.Point(499, 116);
-            this.spinTongTuDen.Margin = new System.Windows.Forms.Padding(4);
+            this.spinTongTuDen.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.spinTongTuDen.MenuManager = this.barManager1;
             this.spinTongTuDen.Name = "spinTongTuDen";
             this.spinTongTuDen.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -543,7 +543,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // 
             this.dtTransactionTime.EditValue = null;
             this.dtTransactionTime.Location = new System.Drawing.Point(499, 88);
-            this.dtTransactionTime.Margin = new System.Windows.Forms.Padding(4);
+            this.dtTransactionTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dtTransactionTime.MenuManager = this.barManager1;
             this.dtTransactionTime.Name = "dtTransactionTime";
             this.dtTransactionTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -563,7 +563,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // ddBtnPrint
             // 
             this.ddBtnPrint.Location = new System.Drawing.Point(886, 264);
-            this.ddBtnPrint.Margin = new System.Windows.Forms.Padding(4);
+            this.ddBtnPrint.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ddBtnPrint.MenuManager = this.barManager1;
             this.ddBtnPrint.Name = "ddBtnPrint";
             this.ddBtnPrint.Size = new System.Drawing.Size(84, 27);
@@ -574,7 +574,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // btnSavePrint
             // 
             this.btnSavePrint.Location = new System.Drawing.Point(612, 264);
-            this.btnSavePrint.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSavePrint.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSavePrint.Name = "btnSavePrint";
             this.btnSavePrint.Size = new System.Drawing.Size(97, 27);
             this.btnSavePrint.StyleController = this.layoutControl1;
@@ -585,7 +585,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // btnPrint
             // 
             this.btnPrint.Location = new System.Drawing.Point(806, 264);
-            this.btnPrint.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPrint.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(74, 27);
             this.btnPrint.StyleController = this.layoutControl1;
@@ -596,7 +596,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // btnNew
             // 
             this.btnNew.Location = new System.Drawing.Point(976, 264);
-            this.btnNew.Margin = new System.Windows.Forms.Padding(4);
+            this.btnNew.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(114, 27);
             this.btnNew.StyleController = this.layoutControl1;
@@ -607,7 +607,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // btnSave
             // 
             this.btnSave.Location = new System.Drawing.Point(715, 264);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(85, 27);
             this.btnSave.StyleController = this.layoutControl1;
@@ -619,7 +619,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // 
             this.txtTransactionCode.Enabled = false;
             this.txtTransactionCode.Location = new System.Drawing.Point(898, 88);
-            this.txtTransactionCode.Margin = new System.Windows.Forms.Padding(4);
+            this.txtTransactionCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtTransactionCode.Name = "txtTransactionCode";
             this.txtTransactionCode.Size = new System.Drawing.Size(192, 22);
             this.txtTransactionCode.StyleController = this.layoutControl1;
@@ -634,7 +634,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             0,
             0});
             this.txtTotalAmount.Location = new System.Drawing.Point(98, 88);
-            this.txtTotalAmount.Margin = new System.Windows.Forms.Padding(4);
+            this.txtTotalAmount.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtTotalAmount.Name = "txtTotalAmount";
             this.txtTotalAmount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.txtTotalAmount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -648,7 +648,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // cboPayForm
             // 
             this.cboPayForm.Location = new System.Drawing.Point(98, 144);
-            this.cboPayForm.Margin = new System.Windows.Forms.Padding(4);
+            this.cboPayForm.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboPayForm.Name = "cboPayForm";
             this.cboPayForm.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -663,7 +663,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // cboAccountBook
             // 
             this.cboAccountBook.Location = new System.Drawing.Point(98, 116);
-            this.cboAccountBook.Margin = new System.Windows.Forms.Padding(4);
+            this.cboAccountBook.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboAccountBook.Name = "cboAccountBook";
             this.cboAccountBook.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -677,7 +677,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // txtDescription
             // 
             this.txtDescription.Location = new System.Drawing.Point(98, 172);
-            this.txtDescription.Margin = new System.Windows.Forms.Padding(4);
+            this.txtDescription.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Properties.MaxLength = 2000;
             this.txtDescription.Size = new System.Drawing.Size(699, 55);
@@ -688,6 +688,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // cboBank
             // 
             this.cboBank.Location = new System.Drawing.Point(898, 144);
+            this.cboBank.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cboBank.MenuManager = this.barManager1;
             this.cboBank.Name = "cboBank";
             this.cboBank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1138,7 +1139,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmTransactionDeposit";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tạm ứng";

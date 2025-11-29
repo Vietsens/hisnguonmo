@@ -35,6 +35,8 @@ namespace HIS.Desktop.Plugins.TransactionDeposit.Config
         internal static string IsEditTransactionTimeCFG;
         private const string CONFIG__CASHIER_ROOM_PAYMENT_OPTION = "MOS.EPAYMENT.CASHIER_ROOM_PAYMENT_OPTION";
         internal static string CashierRoomPaymentOption;
+        private const string HIS_Desktop_Plugins_RequestDeposit_MinimumDepositAmount= "HIS.Desktop.Plugins.RequestDeposit.MinimumDepositAmount";
+        internal static decimal    MinimumDepositAmount;
         internal static void LoadConfig()
         {
             try
@@ -43,6 +45,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit.Config
                 IsEditTransactionTimeCFG = GetValue(His_Desktop_plugins_transactionTime_IsEditTransactionTime);
                 CashierRoomPaymentOption = GetValue(CONFIG__CASHIER_ROOM_PAYMENT_OPTION);
                 ShowServerTimeByDefault = GetValue(HIS_Desktop_ShowServerTimeByDefault);
+                MinimumDepositAmount = decimal.Parse(GetValue(HIS_Desktop_Plugins_RequestDeposit_MinimumDepositAmount));
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

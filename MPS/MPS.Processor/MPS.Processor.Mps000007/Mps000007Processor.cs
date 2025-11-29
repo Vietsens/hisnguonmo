@@ -196,6 +196,17 @@ namespace MPS.Processor.Mps000007
                     SetSingleKey((new KeyValue(Mps000007ExtendSingleKey.ORIGINAL_ICD_SUB_CODE, rdo.ExamServiceReq.ICD_SUB_CODE)));
                     SetSingleKey((new KeyValue(Mps000007ExtendSingleKey.ORIGINAL_ICD_TEXT, rdo.ExamServiceReq.ICD_TEXT)));
 
+                    SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.SICK_HOUR, rdo.ExamServiceReq.SICK_HOUR));
+                    SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.IS_HISTORY_RELATED, rdo.ExamServiceReq.IS_HISTORY_RELATED));
+                    SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.IS_HISTORY_FAMILY_RELATED, rdo.ExamServiceReq.IS_HISTORY_FAMILY_RELATED));
+                    SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.IS_HISTORY_ALLERGY_RELATED, rdo.ExamServiceReq.IS_HISTORY_ALLERGY_RELATED));
+                    SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.HISTORY_ALLERGY, rdo.ExamServiceReq.HISTORY_ALLERGY));
+                    SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.IS_FULL_EXAM_ABNORMAL, rdo.ExamServiceReq.IS_FULL_EXAM_ABNORMAL));
+                    SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.IS_PART_EXAM_ABNORMAL, rdo.ExamServiceReq.IS_PART_EXAM_ABNORMAL));
+                    SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.EXECUTED_SERVICES, rdo.ExamServiceReq.EXECUTED_SERVICES));
+                    SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.SPECIALIST_NOTE, rdo.ExamServiceReq.SPECIALIST_NOTE));
+
+
                 }
                 AddObjectKeyIntoListkey<PatyAlterBhytADO>(patyAlter, false);
                 AddObjectKeyIntoListkey<HIS_DHST>(rdo.DHST, false);
