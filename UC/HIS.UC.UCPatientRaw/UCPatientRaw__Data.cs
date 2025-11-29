@@ -559,8 +559,9 @@ namespace HIS.UC.UCPatientRaw
 
 					if (this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw != null)
 						heinCardDataForCheckGOV.Address = heinCardDataForCheckGOV.Address ?? dataResult.HisPatientSDO.VIR_ADDRESS;
-						this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw(heinCardDataForCheckGOV);
-				}
+					this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw(heinCardDataForCheckGOV);
+					this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRawPatientSDO(patient);
+                }
 			}
 			catch (Exception ex)
 			{

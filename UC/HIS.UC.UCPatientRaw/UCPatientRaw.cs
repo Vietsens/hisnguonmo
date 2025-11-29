@@ -74,6 +74,7 @@ namespace HIS.UC.UCPatientRaw
         DelegateEnableButtonSave dlgEnableSave;
         DelegateSetDataRegisterBeforeSerachPatient dlgSearchPatient1;
         Action<HisPatientSDO> actInitExamServiceRoomByAppoimentTime;
+        Action<HisPatientSDO> dlgFillDataPreviewForSearchByQrcodeInUCPatientRawPatientSDO;
         DelegateVisibleUCHein dlgVisibleUCHein;
         GetIntructionTime dlgGetIntructionTime;
         Action<bool> dlgIsReadQrCode;

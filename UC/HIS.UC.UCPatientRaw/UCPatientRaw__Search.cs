@@ -1068,7 +1068,7 @@ namespace HIS.UC.UCPatientRaw
             return result;
         }
 
-        public void GetDataBySearchPatient(DelegateSetDataRegisterBeforeSerachPatient _dlgSearchPatient, Action<HeinCardData> _dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw, Action<HisPatientSDO> initExamServiceRoomByAppoimentTime = null)
+        public void GetDataBySearchPatient(DelegateSetDataRegisterBeforeSerachPatient _dlgSearchPatient, Action<HeinCardData> _dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw, Action<HisPatientSDO> _dlgFillDataPreviewForSearchByQrcodeInUCPatientRawPatientSDO, Action<HisPatientSDO> initExamServiceRoomByAppoimentTime = null)
         {
             try
             {
@@ -1077,6 +1077,8 @@ namespace HIS.UC.UCPatientRaw
                 if (_dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw != null)
                     this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw = _dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw;
                 this.actInitExamServiceRoomByAppoimentTime = initExamServiceRoomByAppoimentTime;
+                if (_dlgFillDataPreviewForSearchByQrcodeInUCPatientRawPatientSDO != null)
+                    this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRawPatientSDO = _dlgFillDataPreviewForSearchByQrcodeInUCPatientRawPatientSDO;
             }
             catch (Exception ex)
             {
