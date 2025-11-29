@@ -43,7 +43,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				this.ucPatientRaw1.FocusNextUserControl(focusToUCAddressCombo);
 				this.ucPatientRaw1.FocusToUCRelativeWhenPatientIsChild(focusToUCPersonHomeInfo);
 				this.ucPatientRaw1.SetDelegateFocusNextUserControlWhenPatientIsChild(this.SetDelegateFocusWhenPatientIsChild);
-				this.ucPatientRaw1.GetDataBySearchPatient(FillDataAfterSearchPatientInUCPatientRaw, FillDataPreviewForSearchByQrcodeInUCPatientRaw, InitExamServiceRoomByAppoimentTime);
+				this.ucPatientRaw1.GetDataBySearchPatient(FillDataAfterSearchPatientInUCPatientRaw, FillDataPreviewForSearchByQrcodeInUCPatientRaw, FillDataPreviewForSearchByQrcodeInUCPatientRawPatientSDO, InitExamServiceRoomByAppoimentTime);
 				this.ucPatientRaw1.InitDelegateProcessChangePatientDob(ProcessWhileChangeDOb);
 				this.ucPatientRaw1.SetDelegateVisibleUCHein(IsVisibleUCHein);
 				this.ucPatientRaw1.SetDelegateShowControlHrmKskCode(this.ShowControlHrmKskCode);
