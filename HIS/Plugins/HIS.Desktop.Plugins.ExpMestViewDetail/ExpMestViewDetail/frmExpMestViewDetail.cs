@@ -284,6 +284,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     foreach (var item in this._ExpMestBloods)
                     {
                         totalPrice += (item.PRICE ?? 0) * (1 + (item.VAT_RATIO ?? 0)) - (item.DISCOUNT ?? 0);
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("totalPrice 1:", totalPrice));
                     }
                 }
 
@@ -292,13 +293,40 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     foreach (var item in _ExpMestMaterials)
                     {
                         totalPrice += (item.PRICE ?? 0) * item.AMOUNT * (1 + (item.VAT_RATIO ?? 0)) - (item.DISCOUNT ?? 0);
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("totalPrice 2:", totalPrice));
                     }
                 }
                 if (this._ExpMestMedicines != null && this._ExpMestMedicines.Count > 0)
                 {
                     foreach (var item in _ExpMestMedicines)
                     {
-                        totalPrice += (item.PRICE ?? 0) * item.AMOUNT * (1 + (item.VAT_RATIO ?? 0)) - (item.DISCOUNT ?? 0);
+                        //totalPrice += (item.PRICE ?? 0) * item.AMOUNT * (1 + (item.VAT_RATIO ?? 0)) - (item.DISCOUNT ?? 0);
+                        //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("totalPrice 3:", totalPrice));
+                        decimal price = item.PRICE ?? 0;
+                        decimal amount = item.AMOUNT;
+                        decimal vat = item.VAT_RATIO ?? 0;
+                        decimal discount = item.DISCOUNT ?? 0;
+                        decimal lineTotal = (price * amount * (1 + vat)) - discount;
+
+                       
+                        Inventec.Common.Logging.LogSystem.Debug(
+                            Inventec.Common.Logging.LogUtil.TraceData("Item detail:",
+                            new
+                            {
+                                PRICE = price,
+                                AMOUNT = amount,
+                                VAT_RATIO = vat,
+                                DISCOUNT = discount,
+                                LINE_TOTAL = lineTotal
+                            })
+                        );
+
+                      
+                        totalPrice += lineTotal;
+
+                        Inventec.Common.Logging.LogSystem.Debug(
+                            Inventec.Common.Logging.LogUtil.TraceData("TotalPrice after add:", totalPrice)
+                        );
                     }
                 }
                 lblSumPrice.Text = Inventec.Common.Number.Convert.NumberToString(totalPrice, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);

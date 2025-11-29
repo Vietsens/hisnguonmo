@@ -339,9 +339,8 @@
     <Reference Include="MPS.Processor.Mps000219.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000219.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000220.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000220.PDO\bin\Debug\MPS.Processor.Mps000220.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000220.PDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000220.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000482.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000482.PDO.dll</HintPath>
@@ -461,7 +460,9 @@
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Lang.my.resx" />
+    <EmbeddedResource Include="Resources\Lang.my.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.vi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

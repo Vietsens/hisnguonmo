@@ -2448,8 +2448,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     {
                         List<object> listArgs = new List<object>();
                         TreatmentHistoryADO currentInput = new TreatmentHistoryADO();
-                        currentInput.treatmentId = treatmentBedRoomRow.TREATMENT_ID;
-                        currentInput.treatment_code = treatmentBedRoomRow.TREATMENT_CODE;
+                        //currentInput.treatmentId = treatmentBedRoomRow.TREATMENT_ID;
+                        //currentInput.treatment_code = treatmentBedRoomRow.TREATMENT_CODE;
+                        currentInput.patient_code = treatmentBedRoomRow.TDL_PATIENT_CODE;
+                        currentInput.patientId = treatmentBedRoomRow.PATIENT_ID;
                         listArgs.Add(currentInput);
                         listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
                         var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);

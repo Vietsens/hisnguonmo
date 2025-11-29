@@ -229,6 +229,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         public List<long> USE_TIME { get; set; }
         public bool IsManyDay { get; set; }
         public long Assign_time { get; set; }
+        HIS_DHST currentDhst;
         #endregion
 
         #region Construct
@@ -266,6 +267,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 this.patientName = data.PatientName;
                 this.patientDob = data.PatientDob;
                 this.genderName = data.GenderName;
+                this.currentDhst = data.Dhst;
                 if (this.isInKip)
                     this.currentSereServInEkip = data.SereServ;
                 else

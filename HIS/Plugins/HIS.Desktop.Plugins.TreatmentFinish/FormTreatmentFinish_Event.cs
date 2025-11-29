@@ -712,6 +712,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 currentTreatmentFinishSDO.PatientCondition = data.PATIENT_CONDITION;
                 currentTreatmentFinishSDO.ClinicalSigns = data.CLINICAL_SIGNS;
                 currentTreatmentFinishSDO.SubclinicalResult = this.currentTreatmentExt != null ? this.currentTreatmentExt.SUBCLINICAL_RESULT : "";
+                currentTreatmentFinishSDO.DeathIdentityNumber = data.DEATH_IDENTITY_NUMBER;
                 currentTreatmentFinishSDO.Surgery = data.SURGERY;
                 currentTreatmentFinishSDO.TranPatiFormId = data.TRAN_PATI_FORM_ID;
                 currentTreatmentFinishSDO.TranPatiReasonId = data.TRAN_PATI_REASON_ID;

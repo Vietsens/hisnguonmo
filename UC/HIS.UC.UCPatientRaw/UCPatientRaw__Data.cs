@@ -558,8 +558,10 @@ namespace HIS.UC.UCPatientRaw
 					HeinCardData heinCardDataForCheckGOV = ConvertFromPatientData(patient);
 
 					if (this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw != null)
-						this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw(heinCardDataForCheckGOV);
-				}
+						heinCardDataForCheckGOV.Address = heinCardDataForCheckGOV.Address ?? dataResult.HisPatientSDO.VIR_ADDRESS;
+					this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw(heinCardDataForCheckGOV);
+					this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRawPatientSDO(patient);
+                }
 			}
 			catch (Exception ex)
 			{

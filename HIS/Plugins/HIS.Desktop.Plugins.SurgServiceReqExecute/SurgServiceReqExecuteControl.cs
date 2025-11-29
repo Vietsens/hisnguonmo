@@ -20,43 +20,46 @@ using AutoMapper;
 using DevExpress.Data;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Tile;
+using DevExpress.XtraTab;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.ModuleExt;
+using HIS.Desktop.Plugins.SurgServiceReqExecute;
 using HIS.Desktop.Plugins.SurgServiceReqExecute.Base;
+using HIS.Desktop.Plugins.SurgServiceReqExecute.Config;
 using HIS.Desktop.Plugins.SurgServiceReqExecute.Delegate;
 using HIS.Desktop.Plugins.SurgServiceReqExecute.EkipTemp;
 using HIS.Desktop.Plugins.SurgServiceReqExecute.Resources;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
+using Inventec.Common.RichEditor.Base;
 using Inventec.Common.ThreadCustom;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.Plugins.SurgServiceReqExecute.Config;
-using DevExpress.XtraGrid.Views.Tile;
-using Inventec.Common.Logging;
-using System.IO;
-using System.Drawing;
-using DevExpress.XtraTab;
-using HIS.Desktop.ModuleExt;
-using DevExpress.XtraEditors.DXErrorProvider;
-using Inventec.Common.RichEditor.Base;
+
 
 namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 {
@@ -689,7 +692,196 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         /// </summary>
         /// <param name="notShowMess"></param>
         /// <returns></returns>
+        private bool checkValidDate(object sender, EventArgs e)
+        {
+            try
+            {
+                bool require = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.SurgServiceReqExecute.RequirePrepCleaningAndGrouping") == "1";
 
+                DateTime? fromDatePrepareRoom = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.sereServPTTT?.PREPARE_ROOM_TIME_FROM ?? 0);
+                DateTime? toDatePrepareRoom = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.sereServPTTT?.PREPARE_ROOM_TIME_TO ?? 0);
+                DateTime? intrucTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.serviceReq.INTRUCTION_TIME);
+                DateTime? dtStartTime = dtStart.EditValue as DateTime?;
+                DateTime? dtFinishTime = dtFinish.EditValue as DateTime?;
+                long instructionTime = this.serviceReq.INTRUCTION_TIME;
+                frmInputDetail childForm = new frmInputDetail(this.sereServ, currentEyeSurgDesc, stentConcludeSave, GetEyeSurgryDescLast, SkinSurgeryDes, GetSkinSurg, this.sereServPTTT_Detail, GetSereServPTTT, GetDmv, instructionTime, dtStartTime, dtFinishTime);
+
+                //-----------------------THỜI GIAN CHUẨN BỊ PHÒNG MỔ-----------------------
+                // Bắt buộc nhập Bắt đầu
+                if (require && (fromDatePrepareRoom == null || fromDatePrepareRoom == DateTime.MinValue))
+                {
+                    var result = MessageBox.Show(
+                    "Thời gian bắt đầu chuẩn bị phòng mổ bắt buộc nhập",
+                    "Cảnh báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                    // Nếu người dùng bấm OK (hoặc Yes nếu dùng YesNo)
+                    if (result == DialogResult.OK)
+                    {
+                        childForm.ShouldFocusOtherTab = true;
+                        childForm.ShowDialog();
+                    }
+                    // Hàm check trả về false (lỗi)
+                    return false;
+                }
+
+                // Bắt buộc nhập Kết thúc
+                if (require && (toDatePrepareRoom == null || toDatePrepareRoom == DateTime.MinValue))
+                {
+                    var result = MessageBox.Show(
+                        "Thời gian kết thúc chuẩn bị phòng mổ bắt buộc nhập",
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.OK)
+                    {
+                        childForm.ShouldFocusOtherTab = true;
+                        childForm.ShowDialog();
+                    }
+                    // Hàm check trả về false (lỗi)
+                    return false;
+                }
+
+                //// Bắt đầu < thời gian y lệnh
+                if (require && (fromDatePrepareRoom != null && intrucTime != null && fromDatePrepareRoom < intrucTime))
+                {
+                    var result = MessageBox.Show(
+                        "Thời gian bắt đầu chuẩn bị phòng mổ không được nhỏ hơn thời gian y lệnh",
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.OK)
+                    {
+                        childForm.ShouldFocusOtherTab = true;
+                        childForm.ShowDialog();
+                    }
+                    // Hàm check trả về false (lỗi)
+                    return false;
+                }
+
+                //// Bắt đầu > kết thúc chuẩn bị
+                if (require && (fromDatePrepareRoom != null && toDatePrepareRoom != null && fromDatePrepareRoom > toDatePrepareRoom))
+                {
+                    var result = MessageBox.Show(
+                        "Thời gian bắt đầu chuẩn bị phòng mổ không được lớn hơn thời gian kết thúc chuẩn bị phòng mổ",
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.OK)
+                    {
+                        childForm.ShouldFocusOtherTab = true;
+                        childForm.ShowDialog();
+                    }
+                    // Hàm check trả về false (lỗi)
+                    return false;
+                }
+                //// Kết thúc > bắt đầu mổ
+
+                if (require && (toDatePrepareRoom != null && dtStartTime != null && toDatePrepareRoom > dtStartTime))
+                {
+                    var result = MessageBox.Show(
+                        "Thời gian kết thúc chuẩn bị phòng mổ không được lớn hơn thời gian bắt đầu mổ",
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.OK)
+                    {
+                        childForm.ShouldFocusOtherTab = true;
+                        childForm.ShowDialog();
+                    }
+                    // Hàm check trả về false (lỗi)
+                    return false;
+                }
+
+
+                //----------------------THỜI GIAN VỆ SINH PHÒNG MỔ---------------------------
+                DateTime? fromDateClearRoom = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.sereServPTTT?.CLEAR_ROOM_TIME_FROM ?? 0);
+                DateTime? toDateClearRoom = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.sereServPTTT?.CLEAR_ROOM_TIME_TO ?? 0);
+
+
+                if (require && (fromDateClearRoom == null || fromDateClearRoom == DateTime.MinValue))
+                {
+                    var result = MessageBox.Show(
+                    "Thời gian bắt đầu vệ sinh phòng mổ bắt buộc nhập",
+                    "Cảnh báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                    // Nếu người dùng bấm OK (hoặc Yes nếu dùng YesNo)
+                    if (result == DialogResult.OK)
+                    {
+                        childForm.ShouldFocusOtherTab = true;
+                        childForm.ShowDialog();
+                    }
+                    // Hàm check trả về false (lỗi)
+                    return false;
+                }
+
+                if (require && (fromDateClearRoom != null && dtFinishTime != null && fromDateClearRoom < dtFinishTime))
+                {
+                    var result = MessageBox.Show(
+                    "Thời gian bắt đầu vệ sinh phòng mổ không được nhỏ hơn thời gian kết thúc mổ.",
+                    "Cảnh báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                    // Nếu người dùng bấm OK (hoặc Yes nếu dùng YesNo)
+                    if (result == DialogResult.OK)
+                    {
+                        childForm.ShouldFocusOtherTab = true;
+                        childForm.ShowDialog();
+                    }
+                    // Hàm check trả về false (lỗi)
+                    return false;
+                }
+
+                if (require && (fromDateClearRoom != null && toDateClearRoom != null && fromDateClearRoom > toDateClearRoom))
+                {
+                    var result = MessageBox.Show(
+                   "Thời gian bắt đầu vệ sinh không được lớn hơn thời gian kết thúc vệ sinh",
+                   "Cảnh báo",
+                   MessageBoxButtons.OK,
+                   MessageBoxIcon.Warning);
+
+                    // Nếu người dùng bấm OK (hoặc Yes nếu dùng YesNo)
+                    if (result == DialogResult.OK)
+                    {
+                        childForm.ShouldFocusOtherTab = true;
+                        childForm.ShowDialog();
+                    }
+                    // Hàm check trả về false (lỗi)
+                    return false;
+                }
+
+                if (require && (toDateClearRoom == null || toDateClearRoom == DateTime.MinValue))
+                {
+                    var result = MessageBox.Show(
+                    "Thời gian kết thúc vệ sinh phòng mổ bắt buộc nhập",
+                    "Cảnh báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                    // Nếu người dùng bấm OK (hoặc Yes nếu dùng YesNo)
+                    if (result == DialogResult.OK)
+                    {
+                        childForm.ShouldFocusOtherTab = true;
+                        childForm.ShowDialog();
+                    }
+                    // Hàm check trả về false (lỗi)
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Fatal(ex);
+            }
+            return true;
+        }
         private bool btnSaveClick(bool notShowMess)
         {
             bool success = false;
@@ -805,11 +997,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         }
                     }
                 }
-
+              
                 if (chkSaveGroup.Checked)
                 {
                     // cập nhật "Cách thức" và “Phân loại” vào ram
                     UpdateForSaveGroup();
+                }
+                bool isValid1 = checkValidDate(null, EventArgs.Empty);
+                if (!isValid1)
+                {
+                    return valid=false;
                 }
                 if (valid)
                 {
@@ -1056,7 +1253,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         MessageBox.Show(warning, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
-
+                
                 if (HisConfigKeys.allowFinishWhenAccountIsDoctor == "1" && BackendDataWorker.Get<HIS_EMPLOYEE>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault().IS_DOCTOR != 1 && dtFinish.EditValue != null && chkKetThuc.Checked)
                     MessageBox.Show(ResourceMessage.BanKhongPhaiLaBacSyKhongDuocKetThuc, ResourceMessage.ThongBao);
             }
@@ -2517,7 +2714,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 if (this.sereServPTTT_Detail == null)
                     this.sereServPTTT_Detail = new V_HIS_SERE_SERV_PTTT();
 
-                frmInputDetail frmInputDetail = new frmInputDetail(this.sereServ, currentEyeSurgDesc, stentConcludeSave, GetEyeSurgryDescLast, SkinSurgeryDes, GetSkinSurg, this.sereServPTTT_Detail, GetSereServPTTT, GetDmv);
+                DateTime? dtStartTime = dtStart.EditValue as DateTime?;
+                DateTime? dtFinishTime = dtFinish.EditValue as DateTime?;
+                long instructionTime = this.serviceReq.INTRUCTION_TIME;
+                frmInputDetail frmInputDetail = new frmInputDetail(this.sereServ, currentEyeSurgDesc, stentConcludeSave, GetEyeSurgryDescLast, SkinSurgeryDes, GetSkinSurg, this.sereServPTTT_Detail, GetSereServPTTT, GetDmv, instructionTime, dtStartTime, dtFinishTime);
                 frmInputDetail.ShowDialog();
             }
             catch (Exception ex)
@@ -2552,7 +2752,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 this.sereServPTTT.DRAW_DATE = sereServPTTT_Detail.DRAW_DATE;
                 this.sereServPTTT.CUT_SEWING_DATE = sereServPTTT_Detail.CUT_SEWING_DATE;
                 this.sereServPTTT.OTHER = sereServPTTT_Detail.OTHER;
-
+                this.sereServPTTT.PREPARE_ROOM_TIME_FROM = sereServPTTT_Detail.PREPARE_ROOM_TIME_FROM;
+                this.sereServPTTT.PREPARE_ROOM_TIME_TO = sereServPTTT_Detail.PREPARE_ROOM_TIME_TO;
+                this.sereServPTTT.CLEAR_ROOM_TIME_FROM = sereServPTTT_Detail.CLEAR_ROOM_TIME_FROM;
+                this.sereServPTTT.CLEAR_ROOM_TIME_TO = sereServPTTT_Detail.CLEAR_ROOM_TIME_TO;
                 this.sereServPTTT.PCI = sereServPTTT_Detail.PCI;
                 this.sereServPTTT.STENTING = sereServPTTT_Detail.STENTING;
                 this.sereServPTTT.LOCATION_INTERVENTION = sereServPTTT_Detail.LOCATION_INTERVENTION;

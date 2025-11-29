@@ -537,13 +537,13 @@
     <value>Lý do khám:</value>
   </data>
   <data name="ExamServiceReqExecuteControl.lblCaptionNgayThuCuaBenh.Text" xml:space="preserve">
-    <value>Ngày thứ:</value>
+    <value>Ngày:</value>
   </data>
   <data name="ExamServiceReqExecuteControl.lblCaptionPathologicalHistory.Text" xml:space="preserve">
-    <value>Tiền sử bệnh của bệnh nhân:</value>
+    <value>Tiền sử bệnh:</value>
   </data>
   <data name="ExamServiceReqExecuteControl.lblCaptionPathologicalHistoryFamily.Text" xml:space="preserve">
-    <value>Tiền sử bệnh của gia đình:</value>
+    <value> </value>
   </data>
   <data name="ExamServiceReqExecuteControl.lblCaptionPathologicalProcess.Text" xml:space="preserve">
     <value>Quá trình bệnh lý:</value>

@@ -413,6 +413,7 @@
       <DependentUpon>FormPtttTemp.cs</DependentUpon>
     </Compile>
     <Compile Include="RequestUriStore.cs" />
+    <Compile Include="SereServPTTTHelper.cs\SereServPTTTHelper.cs" />
     <Compile Include="SurgServiceReqExecuteControl___Plus_ICD.cs">
       <SubType>UserControl</SubType>
     </Compile>

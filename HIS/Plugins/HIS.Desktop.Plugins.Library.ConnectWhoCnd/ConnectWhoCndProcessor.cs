@@ -46,6 +46,12 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
 
 
                 Configs.LoadConfig();
+                if (String.IsNullOrWhiteSpace(Configs.API_NCD))
+                {
+                    //không thiết lập địa chỉ thì bỏ qua kiểm tra
+                    return result;
+                }
+
                 List<string> totalIcds = new List<string>();
                 if (!String.IsNullOrWhiteSpace(data.ICD_CODE))
                 {
@@ -341,11 +347,19 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                     dhst = HIS_DHSTs.Where(o => o.BLOOD_PRESSURE_MAX.HasValue && o.BLOOD_PRESSURE_MIN.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).FirstOrDefault();
                     if (!dhst.WEIGHT.HasValue)
                     {
-                        dhst.WEIGHT = HIS_DHSTs.Where(o => o.WEIGHT.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).FirstOrDefault().WEIGHT;
+                        var weight = HIS_DHSTs.Where(o => o.WEIGHT.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).ToList();
+                        if (weight != null && weight.Count > 0)
+                        {
+                            dhst.WEIGHT = weight.FirstOrDefault().WEIGHT;
+                        }
                     }
                     if (!dhst.HEIGHT.HasValue)
                     {
-                        dhst.HEIGHT = HIS_DHSTs.Where(o => o.HEIGHT.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).FirstOrDefault().HEIGHT;
+                        var height = HIS_DHSTs.Where(o => o.HEIGHT.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).ToList();
+                        if (height != null && height.Count > 0)
+                        {
+                            dhst.HEIGHT = height.FirstOrDefault().HEIGHT;
+                        }
                     }
                 }
             }

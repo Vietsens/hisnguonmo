@@ -39,6 +39,11 @@ namespace HIS.UC.Hospitalize.Run
             {
                 if (hospitalize != null)
                 {
+                    if(hospitalize.IsNoReloadIcd)
+                    {
+                        txtServiceEx.Text = hospitalize.ExecutedServices;
+                        return;
+                    }
                     lblNumHospitalize.Text = hospitalize.InCode;
                     chkPrintHospitalizeExam.CheckState = hospitalize.isAutoCheckChkHospitalizeExam ? CheckState.Checked : CheckState.Unchecked;
                     if (hospitalize.FinishTime.HasValue)

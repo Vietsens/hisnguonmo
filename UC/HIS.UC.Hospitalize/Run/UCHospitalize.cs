@@ -39,6 +39,7 @@ using HIS.UC.SecondaryIcd;
 using HIS.UC.Hospitalize.ValidateRule;
 using Inventec.Common.Controls.EditorLoader;
 using DevExpress.XtraGrid.Views.Base;
+using HIS.Desktop.LocalStorage.LocalData;
 
 namespace HIS.UC.Hospitalize.Run
 {
@@ -226,7 +227,8 @@ namespace HIS.UC.Hospitalize.Run
                 {
                     chkCAPD.CheckState = CheckState.Unchecked;
                 }
-
+                txtServiceEx.Text = this.hospitalizeInitADO.ExecutedServices;
+                txtSpecialistNote.Text = this.hospitalizeInitADO.SpecialistNote;
                 LoadIcdToControl(this.hospitalizeInitADO.IcdCode, this.hospitalizeInitADO.IcdName);
                 LoadTraditionalIcdToControl(this.hospitalizeInitADO.TraditionalIcdCode, this.hospitalizeInitADO.TraditionalIcdName);
                 LoadTraditionalSubIcdToControl(this.hospitalizeInitADO.TraditionalIcdSubCode, this.hospitalizeInitADO.TraditionalIcdText);
@@ -254,7 +256,7 @@ namespace HIS.UC.Hospitalize.Run
                 validCode.maxLength = 10;
                 validCode.ListObject = data;
                 validCode.textEdit = txtHospitalReasonCode;
-                if(HisConfig.IsInHospitalizationReasonRequired)
+                if (HisConfig.IsInHospitalizationReasonRequired)
                 {
                     lciHospitalReasonCode.AppearanceItemCaption.ForeColor = Color.Maroon;
                     validCode.IsRequired = true;
@@ -277,8 +279,8 @@ namespace HIS.UC.Hospitalize.Run
                 columnInfos.Add(new ColumnInfo("HOSPITALIZE_REASON_NAME", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("HOSPITALIZE_REASON_NAME", "ID", columnInfos, false, 250);
                 ControlEditorLoader.Load(cboHospitalReasonName, data, controlEditorADO);
-                if(data != null)
-                gridControl1.DataSource = data;
+                if (data != null)
+                    gridControl1.DataSource = data;
             }
             catch (Exception ex)
             {
@@ -1032,10 +1034,11 @@ namespace HIS.UC.Hospitalize.Run
                     popupControlContainer1.HidePopup();
                     btnHospitalReasonName.Focus();
                     btnHospitalReasonName.SelectAll();
-                }else if(e.KeyCode == Keys.Down || e.KeyCode == Keys.Up)
+                }
+                else if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Up)
                 {
                     gridView3.Focus();
-                }    
+                }
             }
             catch (Exception ex)
             {
@@ -1065,7 +1068,7 @@ namespace HIS.UC.Hospitalize.Run
                 var data = BackendDataWorker.Get<HIS_HOSPITALIZE_REASON>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 if (data != null)
                 {
-                    var obj = data.FirstOrDefault(o=>o.ID == Int64.Parse(cboHospitalReasonName.EditValue.ToString()));
+                    var obj = data.FirstOrDefault(o => o.ID == Int64.Parse(cboHospitalReasonName.EditValue.ToString()));
                     if (obj != null)
                     {
                         IsFirstLoad = true;
@@ -1091,7 +1094,7 @@ namespace HIS.UC.Hospitalize.Run
                     return;
                 txtHospitalReasonCode.Refresh();
                 string keyWord = txtHospitalReasonCode.Text.Trim();
-                
+
                 gridView3.ActiveFilterString = String.Format("[HOSPITALIZE_REASON_CODE] Like '%{0}%'", keyWord);
                 gridView3.OptionsFilter.FilterEditorUseMenuForOperandsAndOperators = false;
                 gridView3.OptionsFilter.ShowAllTableValuesInCheckedFilterPopup = false;
@@ -1099,7 +1102,7 @@ namespace HIS.UC.Hospitalize.Run
                 gridView3.FocusedRowHandle = 0;
                 gridView3.OptionsView.ShowFilterPanelMode = ShowFilterPanelMode.Never;
                 gridView3.OptionsFind.HighlightFindResults = true;
-                popupControlContainer1.Size = new Size(txtHospitalReasonCode.Size.Width , 150);
+                popupControlContainer1.Size = new Size(txtHospitalReasonCode.Size.Width, 150);
                 Rectangle buttonBounds = new Rectangle(lciHospitalReasonCode.Bounds.X, lciHospitalReasonCode.Bounds.Y, lciHospitalReasonCode.Bounds.Width, lciHospitalReasonCode.Bounds.Height);
                 popupControlContainer1.ShowPopup(new Point(buttonBounds.X + lciHospitalReasonCode.Bounds.X + 1380, buttonBounds.Bottom + 247));
                 txtHospitalReasonCode.Focus();
@@ -1129,7 +1132,7 @@ namespace HIS.UC.Hospitalize.Run
         {
             try
             {
-                if(e.KeyCode == Keys.Enter)
+                if (e.KeyCode == Keys.Enter)
                 {
                     var dt = this.gridView3.GetFocusedRow() as HIS_HOSPITALIZE_REASON;
                     txtHospitalReasonCode.Text = dt.HOSPITALIZE_REASON_CODE;
@@ -1137,7 +1140,7 @@ namespace HIS.UC.Hospitalize.Run
                     popupControlContainer1.HidePopup();
                     btnHospitalReasonName.Focus();
                     btnHospitalReasonName.SelectAll();
-                }   
+                }
             }
             catch (Exception ex)
             {
@@ -1149,7 +1152,7 @@ namespace HIS.UC.Hospitalize.Run
         {
             try
             {
-                if(e.KeyCode == Keys.Enter)
+                if (e.KeyCode == Keys.Enter)
                 {
                     txtBedRoomCode.Focus();
                     txtBedRoomCode.SelectAll();
@@ -1188,6 +1191,19 @@ namespace HIS.UC.Hospitalize.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void btnInfomationExecute_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (hospitalizeInitADO.dlgOpenFormInformation != null)
+                    hospitalizeInitADO.dlgOpenFormInformation(txtServiceEx.Text.Trim());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }
