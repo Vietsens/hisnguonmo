@@ -353,13 +353,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
-                string message1 = "";
-                bool rswho = HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor.SendData(currentTreatmentWithPatientType, ref message1);
-                if (!rswho)
-                {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(message1, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
-                    return;
-                }
                 this.bIsSelectMultiPatientProcessing = false;
 
                 if (this.gridViewServiceProcess.IsEditing)
@@ -569,6 +562,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
             return valid;
         }
+        private string AppendIcd(string icdMain, string oldValue, string newValue)
+        {
+            icdMain = icdMain?.Trim();
+            oldValue = oldValue?.Trim();
+            newValue = newValue?.Trim();
+
+            // Không có ICD phụ mới → giữ nguyên
+            if (string.IsNullOrEmpty(newValue))
+                return oldValue ?? icdMain ?? "";
+
+            // Không có ICD phụ cũ → nối ICD chính + mới
+            if (string.IsNullOrEmpty(oldValue))
+                return $"{icdMain};{newValue}";
+
+            // Đủ cả 3: ICD chính ; ICD phụ cũ ; ICD phụ mới
+            return $"{icdMain};{oldValue};{newValue}";
+        }
         private void ProcessSaveData(bool isSaveAndPrint)
         {
             try
@@ -733,7 +743,27 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     return;
                 }
                 valid = valid && isValid;
+                HIS_TREATMENT checkTmWho = new HIS_TREATMENT();
 
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(checkTmWho, Histreatment);
+                // Append ICD_SUB_CODE
+                checkTmWho.ICD_SUB_CODE = AppendIcd(
+                    this.Histreatment.ICD_CODE,            // ICD chính
+                    this.Histreatment.ICD_SUB_CODE,        // ICD phụ cũ trong DB
+                    icdValueSecond.ICD_SUB_CODE as string          // ICD phụ mới
+                );
+
+                // Append ICD_TEXT
+                checkTmWho.ICD_TEXT = AppendIcd(
+                    this.Histreatment.ICD_NAME,            // Tên ICD chính
+                    this.Histreatment.ICD_TEXT,            // Tên ICD phụ cũ
+                    icdValueSecond.ICD_TEXT as string             // Tên ICD phụ mới
+                );
+                checkTmWho.ICD_CODE = icdValue.ICD_CODE.ToString();
+
+                checkTmWho.ICD_NAME = icdValue.ICD_NAME.ToString();
+
+                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(checkTmWho, currentDhst , null);
                 if (valid)
                 {
                     var uc = ucTreatmentFinish as HIS.UC.TreatmentFinish.Run.UCTreatmentFinish;
@@ -758,6 +788,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     
                     if (isAutoFinishChecked)
                     {
+                        if (!who.CheckData())
+                        {
+                            return;
+                        }
                         if (Config.HisConfigCFG.WarningHeinPatientTypeCode == "2" && uc != null && string.IsNullOrEmpty(uc.cboHeinPatientTypeCode.EditValue?.ToString()))
                         {
                             var result = DevExpress.XtraEditors.XtraMessageBox.Show("Chưa nhập mã đối tượng của hồ sơ điều trị. Bạn có muốn tiếp tục?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -823,6 +857,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                 if (rsData != null)
                 {
+                    who.SendData();
                     HIS_SERVICE_REQ serviceReqResult = null;
                     if (rsData.GetType() == typeof(InPatientPresResultSDO))
                     {
