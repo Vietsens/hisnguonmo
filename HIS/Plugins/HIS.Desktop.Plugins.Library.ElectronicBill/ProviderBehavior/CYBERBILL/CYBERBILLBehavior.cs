@@ -103,7 +103,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                             {
                                 GuiHoaDonThayThe(ref result);
                             }
-                            else if (configArr.Count() == 3 && configArr[2] == "1")
+                            else if (configArr.Count() >= 3 && configArr[2] == "1")
                             {
                                 GuiVaKyHoaDonGoc(ref result);
                             }
@@ -370,10 +370,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                 result.InvoiceSys = ProviderType.CYBERBILL;
                 if (OSEBill != null && OSEBill.result != null)
                 {
-                    if (OEBill.result.maketqua == SUCCESS_CODE)
+                    if (OSEBill.result.maketqua == SUCCESS_CODE)
                     {
                         result.Success = true;
-                        result.InvoiceNumOrder = OEBill.result.sohoadon;
+                        result.InvoiceNumOrder = OSEBill.result.sohoadon;
+                        result.InvoiceCode = OSEBill.result.magiaodich;
+                        result.InvoiceLookupCode = OSEBill.result.magiaodich;
+                        result.InvoiceLoginname = adoLogin.username;
+                        result.InvoiceTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
                     }
                     else
                     {
@@ -410,6 +414,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                         result.InvoiceLookupCode = OSASEBill.result.magiaodich;
                         result.InvoiceLoginname = adoLogin.username;
                         result.InvoiceTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
+                        result.InvoiceNumOrder = OSASEBill.result.sohoadon;
                     }
                     else
                     {
@@ -422,6 +427,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     result.Success = false;
                     ElectronicBillResultUtil.Set(ref result, false, OSASEBill != null && OSASEBill.error != null ? OSASEBill.error.details : "Gửi và ký hóa đơn gốc HSM thất bại");
                 }
+
             }
             catch (Exception ex)
             {
