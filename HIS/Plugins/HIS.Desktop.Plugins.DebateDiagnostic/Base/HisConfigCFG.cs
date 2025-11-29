@@ -28,20 +28,25 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.Config
     {
         private const string CONFIG_KEY__IS_USE_SIGN_EMR = "HIS.HIS.DESKTOP.IS_USE_SIGN_EMR";
         private const string CONFIG_KEY__DebateDiagnostic_IsDefaultTracking = "HIS.Desktop.Plugins.DebateDiagnostic.IsDefaultTracking";
+        private const string CONFIG_KEY__RequirePrepCleaningAndGrouping = "HIS.Desktop.Plugins.SurgServiceReqExecute.RequirePrepCleaningAndGrouping";
+
 
         internal static bool IsUseSignEmr;
         internal static bool DebateDiagnostic_IsDefaultTracking;
+        internal static bool RequirePrepCleaningAndGrouping;
+
         internal static void LoadConfig()
         {
             try
             {
                 IsUseSignEmr = GetValue(CONFIG_KEY__IS_USE_SIGN_EMR) == "1";
                 DebateDiagnostic_IsDefaultTracking = GetValue(CONFIG_KEY__DebateDiagnostic_IsDefaultTracking) == "1";
+                RequirePrepCleaningAndGrouping = GetValue(CONFIG_KEY__RequirePrepCleaningAndGrouping) == "1";
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            }           
         }
 
         private static string GetValue(string code)
