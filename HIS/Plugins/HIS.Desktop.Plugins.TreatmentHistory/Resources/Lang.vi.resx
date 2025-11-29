@@ -207,6 +207,12 @@
   <data name="frmTreatmentHistory.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Mã điều trị (F1)</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__BTN__CHI_TIET" xml:space="preserve">
+    <value>Chi tiết</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__BTN__THU_GON" xml:space="preserve">
+    <value>Thu Gọn</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__TREE_SERE_SERV__COLUMN_NOTE" xml:space="preserve">
     <value>Ghi chú</value>
   </data>
