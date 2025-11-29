@@ -278,7 +278,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             "Thông báo",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Stop
-                        );
+                        );    
                         return false;
                     }
                 }
@@ -824,7 +824,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         List<HIS_SERE_SERV> sameServiceType = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.TDL_SERVICE_TYPE_ID == item.SERVICE_TYPE_ID).ToList() : null;
                         List<HIS_SERE_SERV> sameService = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.SERVICE_ID == item.SERVICE_ID).ToList() : null;
                         intructionNumByType = sameServiceType != null ? (long)sameServiceType.Count() + 1 : 1;
-                        var intructionNum = sameService != null ? (long)sameService.Count() + 1 : 1;
+                        var intructionNum = sameService != null ? (long)sameService.Count() + 1 : 1;   
                         foreach (var con in dataCondition)
                         {
                             var dt = MOS.ServicePaty.ServicePatyUtil.GetApplied(new List<V_HIS_SERVICE_PATY>() { con }, item.TDL_EXECUTE_BRANCH_ID, item.TDL_EXECUTE_ROOM_ID, this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, item.SERVICE_ID, item.PATIENT_TYPE_ID, intructionNum, intructionNumByType, item.PackagePriceId, con.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
@@ -1731,11 +1731,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         sdo.ShareCount = item.ShareCount;
                         sdo.UserPrice = item.AssignSurgPriceEdit;
                         sdo.UserPackagePrice = item.AssignPackagePriceEdit;
-                        sdo.PackageId = item.PackagePriceId;
+                        if (HisConfigCFG.ServicePatyForServicePackage != "1")
+                        {
+                            sdo.PackageId = item.PackagePriceId;
+                        }
                         if (item.OTHER_PAY_SOURCE_ID.HasValue)
                             sdo.OtherPaySourceId = item.OTHER_PAY_SOURCE_ID;
                         if (HisConfigCFG.IsSetPrimaryPatientType == commonString__true
-                            || HisConfigCFG.IsSetPrimaryPatientType == "2")
+                            || HisConfigCFG.IsSetPrimaryPatientType == "2") 
                         {
                             sdo.PrimaryPatientTypeId = item.PRIMARY_PATIENT_TYPE_ID;
                         }
