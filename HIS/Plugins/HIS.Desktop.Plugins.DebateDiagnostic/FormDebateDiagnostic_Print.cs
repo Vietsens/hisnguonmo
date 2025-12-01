@@ -299,7 +299,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 if (lstHisDebateUser == null)
                     lstHisDebateUser = new List<HIS_DEBATE_USER>();
 
-                MPS.Processor.Mps000019.PDO.Mps000019PDO Mps000019PDO = new MPS.Processor.Mps000019.PDO.Mps000019PDO(
+                MPS.Processor.Mps000019.PDO.Mps000019PDO Mps000019PDO = new MPS.Processor.Mps000019.PDO.Mps000019PDO (
                     patient,
                    v_his_debate,
                    departmentTran,

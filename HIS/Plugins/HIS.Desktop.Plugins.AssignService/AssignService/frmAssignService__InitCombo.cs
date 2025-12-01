@@ -867,8 +867,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Debug("InitializePackageAutoRefresh - Start");
 
                 // Lấy interval từ config (tính bằng giây)
-                string intervalConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(
-                    "His.Desktop.AssignService.HisPackage.UsageCheckInterval");
+                string intervalConfig = HisConfigCFG.UsageCheckInterval;
 
                 if (!string.IsNullOrWhiteSpace(intervalConfig) && int.TryParse(intervalConfig, out int intervalSeconds))
                 {
@@ -928,12 +927,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                      && o.IS_NOT_FIXED_SERVICE != (short)1)
                             .OrderBy(o => o.PACKAGE_NAME)
                             .ToList();
-
-                        // Cập nhật vào RAM
-                        BackendDataWorker.UpdateToRam(
-                            typeof(HisPackageCounterSDO),
-                            this.packagesSdo,
-                            long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                     }
 
                     // Cập nhật ComboBox trên UI thread
@@ -988,47 +981,72 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                Inventec.Common.Logging.LogSystem.Debug("InitComboPackage. 1");
-
-                List<HisPackageCounterSDO> sdos = null;
-
-                // Kiểm tra xem đã có dữ liệu từ auto refresh chưa
-                lock (packageLockObject)
+                if (!string.IsNullOrWhiteSpace(HisConfigCFG.UsageCheckInterval))
                 {
-                    if (this.packagesSdo != null && this.packagesSdo.Count > 0)
+                    Inventec.Common.Logging.LogSystem.Debug("InitComboPackage. 1");
+
+                    List<HisPackageCounterSDO> sdos = null;
+
+
+                    // Kiểm tra xem đã có dữ liệu từ auto refresh chưa
+                    lock (packageLockObject)
                     {
-                        sdos = this.packagesSdo.ToList();
-                        Inventec.Common.Logging.LogSystem.Debug("InitComboPackage - Using cached data from auto refresh");
+                        if (this.packagesSdo != null && this.packagesSdo.Count > 0)
+                        {
+                            sdos = this.packagesSdo.ToList();
+                            Inventec.Common.Logging.LogSystem.Debug("InitComboPackage - Using cached data from auto refresh");
+                        }
+                    }
+
+                    // Nếu chưa có dữ liệu, gọi API lần đầu
+                    if (sdos == null || sdos.Count == 0)
+                    {
+                        Inventec.Common.Logging.LogSystem.Info("InitComboPackage - Fetching data from API");
+                        CommonParam paramCommon = new CommonParam();
+                        HisPackageCounterFilter filter = new HisPackageCounterFilter();
+                        sdos = await new BackendAdapter(paramCommon).GetAsync<List<HisPackageCounterSDO>>(
+                            "api/HisPackage/GetCounter",
+                            ApiConsumers.MosConsumer,
+                            filter,
+                            paramCommon);
+
+                        LogSystem.Info("2");
+                        if (sdos != null && sdos.Count > 0)
+                        {
+                            lock (packageLockObject)
+                            {
+                                this.packagesSdo = sdos
+                                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                             && o.IS_NOT_FIXED_SERVICE != (short)1)
+                                    .OrderBy(o => o.PACKAGE_NAME)
+                                    .ToList();
+                            }
+                        }
                     }
                 }
-
-                // Nếu chưa có dữ liệu, gọi API lần đầu
-                if (sdos == null || sdos.Count == 0)
+                else
                 {
-                    Inventec.Common.Logging.LogSystem.Debug("InitComboPackage - Fetching data from API");
-                    CommonParam paramCommon = new CommonParam();
-                    HisPackageCounterFilter filter = new HisPackageCounterFilter();
-                    sdos = await new BackendAdapter(paramCommon).GetAsync<List<HisPackageCounterSDO>>(
-                        "api/HisPackage/GetCounter",
-                        ApiConsumers.MosConsumer,
-                        filter,
-                        paramCommon);
-
-                    if (sdos != null && sdos.Count > 0)
+                    List<HIS_PACKAGE> packages = null;
+                    if (BackendDataWorker.IsExistsKey<HIS_PACKAGE>())
                     {
-                        lock (packageLockObject)
-                        {
-                            this.packagesSdo = sdos
-                                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                                         && o.IS_NOT_FIXED_SERVICE != (short)1)
-                                .OrderBy(o => o.PACKAGE_NAME)
-                                .ToList();
+                        packages = BackendDataWorker.Get<HIS_PACKAGE>();
+                    }
+                    else
+                    {
+                        CommonParam paramCommon = new CommonParam();
+                        dynamic filter = new System.Dynamic.ExpandoObject();
+                        List<HIS_PACKAGE> lstPackage = await new BackendAdapter(paramCommon).GetAsync<List<HIS_PACKAGE>>("api/HisPackage/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                        if (lstPackage != null) BackendDataWorker.UpdateToRam(typeof(HIS_PACKAGE), lstPackage, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                        packages = lstPackage;
+                    }
 
-                            BackendDataWorker.UpdateToRam(
-                                typeof(HisPackageCounterSDO),
-                                this.packagesSdo,
-                                long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
-                        }
+                    packages = packages != null ? packages.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NOT_FIXED_SERVICE != (short)1).ToList() : packages;
+
+                    foreach (var item in packages)
+                    {
+                        var sdo = new HisPackageCounterSDO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HisPackageCounterSDO>(sdo, item);
+                        this.packagesSdo.Add(sdo);
                     }
                 }
 

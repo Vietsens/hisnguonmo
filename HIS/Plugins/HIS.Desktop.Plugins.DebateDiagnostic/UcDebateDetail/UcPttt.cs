@@ -41,12 +41,16 @@ using ACS.EFMODEL.DataModels;
 using DevExpress.XtraGrid.Columns;
 using Inventec.Desktop.Common.Message;
 using Inventec.Common.Controls.EditorLoader;
+using HIS.Desktop.Plugins.DebateDiagnostic.Config;
 
 
 namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
 {
     public partial class UcPttt : UserControl
     {
+        private bool isInitializing = false;
+        private MOS.EFMODEL.DataModels.HIS_DEBATE currentHisDebate = null;
+
         private List<HIS_EKIP_TEMP> ekipTemps { get; set; }
         private List<HIS_EXECUTE_ROLE_USER> executeRoleUsers { get; set; }
         private int positionHandleControl = -1;
@@ -1218,6 +1222,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                 saveData.BEFORE_DIAGNOSTIC = memBeforeDiagnostic.Text.Trim();
                 saveData.DISCUSSION = memDiscussion.Text.Trim();
                 saveData.CARE_METHOD = memCareMethod.Text.Trim();
+
+                saveData.SURG_GROUP_TYPE = GetSurgGroupType();
+
             }
             catch (Exception ex)
             {
@@ -1251,7 +1258,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
         {
             try
             {
-                
+
                 memPathHis.Text = hisDebate.PATHOLOGICAL_HISTORY;
                 string hospitalizationState = hisDebate.FULL_EXAM + "\r\n" + hisDebate.PART_EXAM + "\r\n" + hisDebate.SUBCLINICAL;
                 memHosState.Text = hospitalizationState.Trim();
@@ -1285,7 +1292,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                     memHosState.Text = hisDebate.HOSPITALIZATION_STATE;
                     memBeforeDiagnostic.Text = hisDebate.BEFORE_DIAGNOSTIC;
                     memDiscussion.Text = hisDebate.DISCUSSION;
-                    memCareMethod.Text = hisDebate.CARE_METHOD;   
+                    memCareMethod.Text = hisDebate.CARE_METHOD;
                     TxtKqCls.Text = hisDebate.SUBCLINICAL_PROCESSES;
                     txtInternalMedicineState.Text = hisDebate.INTERNAL_MEDICINE_STATE;
                     TxtTreatmentTracking.Text = hisDebate.TREATMENT_TRACKING;
@@ -1322,6 +1329,23 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                     }
 
                     LoadGridEkipUserFromDebate(hisDebate.ID);
+
+                    isInitializing = true;
+                    long surgType = hisDebate.SURG_GROUP_TYPE ?? 0;
+                    chkCapcuu.Checked = (surgType == 1);
+                    chkBancap.Checked = (surgType == 2);
+                    chkChuongtrinh.Checked = (surgType == 3);
+                    isInitializing = false;
+
+                    if (HisConfigCFG.RequirePrepCleaningAndGrouping && lblPhannhom != null)
+                    {
+                        lblPhannhom.AppearanceItemCaption.ForeColor = Color.Maroon ;
+                    }
+                    else
+                    {
+                        lblPhannhom.AppearanceItemCaption.ForeColor = Color.Black;
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -1617,6 +1641,98 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void chkCapcuu_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isInitializing) return;
+
+                if (chkCapcuu.Checked)
+                {
+                    isInitializing = true;
+                    chkBancap.Checked = false;
+                    chkChuongtrinh.Checked = false;
+                    isInitializing = false;
+
+                    if (currentHisDebate != null)
+                        currentHisDebate.SURG_GROUP_TYPE = 1;
+                }
+                else
+                {
+                    if (currentHisDebate != null)
+                        currentHisDebate.SURG_GROUP_TYPE = 0;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkBancap_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isInitializing) return;
+
+                if (chkBancap.Checked)
+                {
+                    isInitializing = true;
+                    chkCapcuu.Checked = false;
+                    chkChuongtrinh.Checked = false;
+                    isInitializing = false;
+
+                    if (currentHisDebate != null)
+                        currentHisDebate.SURG_GROUP_TYPE = 2;
+                }
+                else
+                {
+                    if (currentHisDebate != null)
+                        currentHisDebate.SURG_GROUP_TYPE = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkChuongtrinh_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isInitializing) return;
+
+                if (chkChuongtrinh.Checked)
+                {
+                    isInitializing = true;
+                    chkCapcuu.Checked = false;
+                    chkBancap.Checked = false;
+                    isInitializing = false;
+
+                    if (currentHisDebate != null)
+                        currentHisDebate.SURG_GROUP_TYPE = 3;
+                }
+                else
+                {
+                    if (currentHisDebate != null)
+                        currentHisDebate.SURG_GROUP_TYPE = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        internal long? GetSurgGroupType()
+        {
+            if (chkCapcuu.Checked) return 1;
+            if (chkBancap.Checked) return 2;
+            if (chkChuongtrinh.Checked) return 3;
+            return null;
         }
     }
 }

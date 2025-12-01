@@ -18,25 +18,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.TreatmentHistory.Base
+namespace HIS.Desktop.Plugins.TreatmentHistory
 {
-    class ResourceLangManager
+    class CallModule
     {
-        internal static ResourceManager LanguageUCTreatmentHistory { get; set; }
-        internal static void InitResourceLanguageManager()
+        public CallModule(string _moduleLink, long _roomId, long _roomTypeId, List<object> _listObj)
         {
-            try
-            {
-                LanguageUCTreatmentHistory = new ResourceManager("HIS.Desktop.Plugins.TreatmentHistory.Resources.Lang", typeof(HIS.Desktop.Plugins.TreatmentHistory.frmTreatmentHistory).Assembly);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            CallModuleProcess(_moduleLink, _roomId, _roomTypeId, _listObj);
+        }
+
+        private void CallModuleProcess(string _moduleLink, long _roomId, long _roomTypeId, List<object> _listObj)
+        {
+            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(_moduleLink, _roomId, _roomTypeId, _listObj);
         }
     }
 }
