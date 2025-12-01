@@ -78,7 +78,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                         ElectronicBillResultUtil.Set(ref result, false, "Không tìm thấy địa chỉ Webservice URL");
                         return result;
                     }
-                    if (configArr.Count() == 4)
+                    if (configArr.Count() >= 4)
                     {
                         apiV2 = configArr[3]; 
                     }
