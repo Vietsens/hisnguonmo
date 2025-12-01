@@ -2121,6 +2121,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     hospitalizeADO.InHospitalizationReasonName = this.treatment.HOSPITALIZE_REASON_NAME;
                     hospitalizeADO.isAutoCheckChkHospitalizeExam = HisConfigCFG.IsAutoCheckPrintHospitalizeExam;
                     hospitalizeADO.Note = CurrentPatient.NOTE;
+                    hospitalizeADO.dlgOpenFormInformation = ClickOpen;
+                    hospitalizeADO.ExecutedServices = this.HisServiceReqView.EXECUTED_SERVICES;
+                    hospitalizeADO.SpecialistNote = this.HisServiceReqView.SPECIALIST_NOTE;
                     hospitalizeProcessor = new HospitalizeProcessor();
                     this.ucHospitalize = (UserControl)hospitalizeProcessor.Run(hospitalizeADO);
                     LoadUCToPanelExecuteExt(this.ucHospitalize, chkHospitalize);
@@ -2133,6 +2136,90 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        List<string> dataSelectedToExecuteServices = new List<string>();
+        private void ClickOpen(string contentShare)
+        {
+            try
+            {
+                dataSelectedToExecuteServices = new List<string>();
+                if (!string.IsNullOrEmpty(contentShare))
+                {
+                    if (contentShare.Contains(";"))
+                    {
+                        string[] serviceName = contentShare.Split(';');
+                        foreach (var item in serviceName)
+                        {
+                            dataSelectedToExecuteServices.Add(item.Trim());
+                        }
+                    }
+                    else
+                    {
+                        dataSelectedToExecuteServices.Add(contentShare);
+                    }
+                }
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.InfomationExecute").FirstOrDefault();
+
+                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.InfomationExecute'");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(this.treatmentId);
+                    listArgs.Add(this.dataSelectedToExecuteServices);
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)dataInformation);
+                    listArgs.Add(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModuleBase.RoomId, this.currentModuleBase.RoomTypeId));
+                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModuleBase.RoomId, this.currentModuleBase.RoomTypeId), listArgs);
+                    if (extenceInstance == null)
+                    {
+                        throw new ArgumentNullException("extenceInstance is null");
+                    }
+
+                    ((Form)extenceInstance).ShowDialog();
+
+                }
+                else
+                {
+                    MessageManager.Show("Chức năng chưa được hỗ trợ ở phiên bản này");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void dataInformation(object data)
+        {
+            try
+            {
+                if (data != null && data is string)
+                {
+                    string dt = data as string;
+
+                    HospitalizeInitADO hospitalizeInitData = new HospitalizeInitADO();
+                    hospitalizeInitData.IsNoReloadIcd = true;
+                    if (!string.IsNullOrEmpty(dt))
+                    {
+                        hospitalizeInitData.ExecutedServices = string.Join("; ",
+                                data
+                                );
+                    }
+                    else
+                    {
+                        hospitalizeInitData.ExecutedServices = "";
+                    }
+                    if (this.ucHospitalize != null)
+                    {
+                        this.hospitalizeProcessor.ReLoad(this.ucHospitalize, hospitalizeInitData);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -8095,6 +8182,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     case 21:
                         this.txtPathologicalHistoryFamily.Text = HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT);
                         break;
+                    case 22:
+                        this.txtHistoryAllergy.Text = HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT);
+                        break;
 
                 }
 
@@ -8487,7 +8577,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 sdo.Tracking.TRACKING_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
                 sdo.Tracking.TREATMENT_ID = treatment.ID;
                 sdo.Tracking.CONTENT = txtPathologicalProcess.Text + "\r\n" + txtPathologicalHistory.Text + "\r\n"
-                    + txtPathologicalHistoryFamily.Text + "\r\n" + txtKhamToanThan.Text + "\r\n" + txtKhamBoPhan.Text.Trim();
+                    + txtPathologicalHistoryFamily.Text + "\r\n" + txtHistoryAllergy.Text + "\r\n" + txtKhamToanThan.Text + "\r\n" + txtKhamBoPhan.Text.Trim();
                 sdo.Tracking.SUBCLINICAL_PROCESSES = txtSubclinical.Text.Trim();
                 //--dhst
                 sdo.Dhst = new HIS_DHST();
@@ -9048,13 +9138,20 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 //{
                 //    dtpStartTime.EditValue = new BackendAdapter(new CommonParam()).Get<TimerSDO>(AcsRequestUriStore.ACS_TIMER__SYNC, ApiConsumers.AcsConsumer, 1, new CommonParam()).DateNow ;
                 //}
+                spnGioThuCuaBenh.EditValue = data.SICK_HOUR;
                 spinNgayThuCuaBenh.EditValue = data.SICK_DAY;
                 cboPatientCase.EditValue = data.PATIENT_CASE_ID;
                 txtHospitalizationReason.Text = data.HOSPITALIZATION_REASON;
                 txtPathologicalProcess.Text = data.PATHOLOGICAL_PROCESS;
                 txtPathologicalHistory.Text = data.PATHOLOGICAL_HISTORY;
                 txtPathologicalHistoryFamily.Text = data.PATHOLOGICAL_HISTORY_FAMILY;
+                txtHistoryAllergy.Text = data.HISTORY_ALLERGY;
                 txtKhamToanThan.Text = data.FULL_EXAM;
+                chkIsHistoryAllergyRelated.Checked = data.IS_HISTORY_ALLERGY_RELATED == (short?)1;
+                chkIsHistoryRelated.Checked = data.IS_HISTORY_RELATED == (short?)1;
+                chkIsHistoryFamilyRelated.Checked = data.IS_HISTORY_FAMILY_RELATED == (short?)1;
+                chkIsFullExamAbnormal.Checked = data.IS_FULL_EXAM_ABNORMAL == (short?)1;
+                chkIsPartExamAbnormal.Checked = data.IS_PART_EXAM_ABNORMAL == (short?)1;
                 LogSystem.Debug("FillDataCopyToControl.Load thanh cong tt kham");
                 //kham bo phan
                 #region KHAM BO PHAN
@@ -9283,6 +9380,19 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return true;
+        }
+
+        private void btnHistoryAllergy_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                key = 22;
+                OpenModuleTextLibrary("", "TienSuDiUng");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
     }
 }

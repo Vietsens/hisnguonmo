@@ -43,7 +43,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				this.ucPatientRaw1.FocusNextUserControl(focusToUCAddressCombo);
 				this.ucPatientRaw1.FocusToUCRelativeWhenPatientIsChild(focusToUCPersonHomeInfo);
 				this.ucPatientRaw1.SetDelegateFocusNextUserControlWhenPatientIsChild(this.SetDelegateFocusWhenPatientIsChild);
-				this.ucPatientRaw1.GetDataBySearchPatient(FillDataAfterSearchPatientInUCPatientRaw, FillDataPreviewForSearchByQrcodeInUCPatientRaw, InitExamServiceRoomByAppoimentTime);
+				this.ucPatientRaw1.GetDataBySearchPatient(FillDataAfterSearchPatientInUCPatientRaw, FillDataPreviewForSearchByQrcodeInUCPatientRaw, FillDataPreviewForSearchByQrcodeInUCPatientRawPatientSDO, InitExamServiceRoomByAppoimentTime);
 				this.ucPatientRaw1.InitDelegateProcessChangePatientDob(ProcessWhileChangeDOb);
 				this.ucPatientRaw1.SetDelegateVisibleUCHein(IsVisibleUCHein);
 				this.ucPatientRaw1.SetDelegateShowControlHrmKskCode(this.ShowControlHrmKskCode);
@@ -141,7 +141,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				this.ucHeinInfo1.SetCurrentModule(this.currentModule);
 				this.ucHeinInfo1.Send3WBhytCode(Send3WCode);
 				//qtcode
-				this.ucOtherServiceReqInfo1.GetTreatmentTypeId(this.ucHeinInfo1.ReceiveIdFromUcOtherSviceReqInfo);
+				this.ucOtherServiceReqInfo1.GetTreatmentTypeIdForUcHeinInfo(this.ucHeinInfo1.ReceiveIdFromUcOtherSviceReqInfo);
 				this.ucOtherServiceReqInfo1.GetTreatmentTypeId(this.ucPlusInfo1.ReceiveTreatmentTypeIdFromUcOther);
 				this.ucPatientRaw1.TransferPatient(this.ucPlusInfo1.ReceivePatientFromUcPatientRaw); 
 				this.ucHeinInfo1.SendTreatmentTypeId(this.ucOtherServiceReqInfo1.ReceiveTreatmentTypeId); 

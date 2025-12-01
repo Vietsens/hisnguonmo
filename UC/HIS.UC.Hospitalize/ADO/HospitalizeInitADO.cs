@@ -25,6 +25,7 @@ using System.Threading.Tasks;
 namespace HIS.UC.Hospitalize.ADO
 {
     public delegate string DelegateGetIcdSubCode();
+    public delegate void BtnInformationEx_Click(string content);
     public class HospitalizeInitADO
     {
         public long? DepartmentId { get; set; }
@@ -62,5 +63,9 @@ namespace HIS.UC.Hospitalize.ADO
         public string InHospitalizationReasonName { get; set; }
         public string Note { get; set; }
         public bool IsCAPD { get; set; }
+        public string SpecialistNote { get; set; }
+        public BtnInformationEx_Click dlgOpenFormInformation { get; set; }
+        public string ExecutedServices { get; set; }
+        public bool IsNoReloadIcd { get; set; }
     }
 }

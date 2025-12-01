@@ -2385,8 +2385,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     List<object> listArgs = new List<object>();
                     //Inventec.Desktop.Common.Modules.Module currentModule = new Inventec.Desktop.Common.Modules.Module();
                     TreatmentHistoryADO currentInput = new TreatmentHistoryADO();
-                    currentInput.treatmentId = currentTreatment.ID;
-                    currentInput.treatment_code = currentTreatment.TREATMENT_CODE;
+                    currentInput.patientId = currentTreatment.PATIENT_ID;
+                    currentInput.patient_code = currentTreatment.TDL_PATIENT_CODE;
                     listArgs.Add(currentInput);
                     //    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, currentModule.RoomId, currentModule.RoomTypeId));
                     //    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, currentModule.RoomId, currentModule.RoomTypeId), listArgs);

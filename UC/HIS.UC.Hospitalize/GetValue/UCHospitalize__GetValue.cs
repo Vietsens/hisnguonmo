@@ -115,7 +115,6 @@ namespace HIS.UC.Hospitalize.Run
                 {
                     hospitalize.HisDepartmentTranHospitalizeSDO.IsCAPD = false;
                 }
-
                 hospitalize.HisDepartmentTranHospitalizeSDO.RelativeName = txtRELATIVE_NAME.Text;
                 hospitalize.HisDepartmentTranHospitalizeSDO.RelativePhone = txtRELATIVE_PHONE.Text;
                 hospitalize.HisDepartmentTranHospitalizeSDO.RelativeAddress = txtRELATIVE_ADDRESS.Text;
@@ -132,6 +131,8 @@ namespace HIS.UC.Hospitalize.Run
                 hospitalize.icdSubADOInTreatment = this.UcSecondaryIcdGetValue() as SecondaryIcdDataADO;
                 hospitalize.tradtionalIcdSub = this.UcTraditionalSecondaryIcdGetValue() as SecondaryIcdDataADO;
                 hospitalize.Note = txtNote.Text.Trim();
+                hospitalize.SpecialistNote = txtSpecialistNote.Text.Trim();
+                hospitalize.ExecutedServices = txtServiceEx.Text.Trim();
             }
             catch (Exception ex)
             {

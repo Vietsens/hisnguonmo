@@ -525,7 +525,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 MPS.Processor.Mps000011.PDO.Mps000011PDO mps000011RDO = new MPS.Processor.Mps000011.PDO.Mps000011PDO(
                    PatientADO,
                    PatyAlterBhyt,
-                   treatment,
+                   //treatment,
+                   null,
                    TranpatiReasonSDO,
                    TranpatiForm,
                    null, tranPatiTech, 

@@ -3214,21 +3214,24 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
         internal decimal ConvertToDecimal(string value)
         {
-            decimal result = 0;
+            LogSystem.Info("ConvertToDecimal_value: " + value);
+            if (string.IsNullOrWhiteSpace(value))
+                return 0;
             try
             {
-                if (string.IsNullOrEmpty(value))
-                    return 0;
-                CultureInfo culture = new CultureInfo("en-US");
-                if (value.Contains(","))
-                    culture = new CultureInfo("fr-FR");
-                result = Convert.ToDecimal(value, culture);
+                // chuẩn hóa
+                value = value.Trim();
+                value = new string(value.Where(c => char.IsDigit(c) || c == '.' || c == ',').ToArray());
+                value = value.Replace(",", ".");
+                decimal result = decimal.Parse(value, CultureInfo.InvariantCulture);
+                LogSystem.Info("ConvertToDecimal_result: " + result);
+                return result;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                LogSystem.Warn(ex);
+                return 0;
             }
-            return result;
         }
         private void btnSave_Click(object sender, EventArgs e)
         {

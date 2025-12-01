@@ -324,8 +324,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 layoutControlGroupTabExamExecute = null;
                 layoutControlTabExamExecute = null;
                 xtraTabPageExamExecute = null;
-                emptySpaceItem13 = null;
-                emptySpaceItem12 = null;
                 layoutControlItem108 = null;
                 layoutControlItem107 = null;
                 emptySpaceItem11 = null;
@@ -339,7 +337,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 layoutx = null;
                 emptySpaceItem9 = null;
                 btnKhamBoPhan = null;
-                emptySpaceItem8 = null;
                 layoutControlItem104 = null;
                 btnKhamToanThan = null;
                 gridColumn16 = null;

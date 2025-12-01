@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using AutoMapper;
 using DevExpress.Utils;
 using DevExpress.XtraBars;
 using DevExpress.XtraCharts.Native;
@@ -404,19 +405,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             return result;
         }
 
-        private string AppendIcd(string oldValue, string newValue)
+        private string AppendIcd(string icdMain, string oldValue, string newValue)
         {
+            icdMain = icdMain?.Trim();
             oldValue = oldValue?.Trim();
             newValue = newValue?.Trim();
 
+            // Không có ICD phụ mới → giữ nguyên
             if (string.IsNullOrEmpty(newValue))
-                return oldValue ?? "";
+                return oldValue ?? icdMain ?? "";
 
+            // Không có ICD phụ cũ → nối ICD chính + mới
             if (string.IsNullOrEmpty(oldValue))
-                return newValue;
+                return $"{icdMain};{newValue}";
 
-            return oldValue + ";" + newValue;
+            // Đủ cả 3: ICD chính ; ICD phụ cũ ; ICD phụ mới
+            return $"{icdMain};{oldValue};{newValue}";
         }
+
 
 
         private void ProcessSaveData(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE saveType)
@@ -529,19 +535,27 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 //    XtraMessageBox.Show("Mã đối tượng khám bệnh không được nhập chữ");
                 //    return;
                 //}
-                this.currentTreatment.ICD_CODE =
-                    AppendIcd(this.currentTreatment.ICD_CODE, txtIcdCode.EditValue as string);
+                HIS_TREATMENT checkTmWho = new HIS_TREATMENT();
 
-                this.currentTreatment.ICD_NAME =
-                    AppendIcd(this.currentTreatment.ICD_NAME, txtIcdMainText.EditValue as string);
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(checkTmWho, currentTreatment);
+                // Append ICD_SUB_CODE
+                checkTmWho.ICD_SUB_CODE = AppendIcd(
+                    this.currentTreatment.ICD_CODE,            // ICD chính
+                    this.currentTreatment.ICD_SUB_CODE,        // ICD phụ cũ trong DB
+                    txtIcdSubCode.EditValue as string          // ICD phụ mới
+                );
 
-                this.currentTreatment.ICD_SUB_CODE =
-                    AppendIcd(this.currentTreatment.ICD_SUB_CODE, txtIcdSubCode.EditValue as string);
+                // Append ICD_TEXT
+                checkTmWho.ICD_TEXT = AppendIcd(
+                    this.currentTreatment.ICD_NAME,            // Tên ICD chính
+                    this.currentTreatment.ICD_TEXT,            // Tên ICD phụ cũ
+                    txtIcdText.EditValue as string             // Tên ICD phụ mới
+                );
+                checkTmWho.ICD_CODE = txtIcdCode.EditValue.ToString();
 
-                this.currentTreatment.ICD_TEXT =
-                    AppendIcd(this.currentTreatment.ICD_TEXT, txtIcdText.EditValue as string);
+                checkTmWho.ICD_NAME = txtIcdMainText.EditValue.ToString();
 
-                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(this.currentTreatment, null, null);
+                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(checkTmWho, currentDhst, null);
                 if (isHasTreatmentFinishChecked && treatUC != null)
                 {
                     if (!who.CheckData())

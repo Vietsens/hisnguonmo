@@ -28,6 +28,7 @@ using HIS.Desktop.Utility;
 using HIS.UC.UCPatientRaw.ADO;
 using MOS.SDO;
 using Inventec.Common.QrCodeBHYT;
+using HIS.Desktop.LocalStorage.BackendData;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Run2
 {
@@ -70,6 +71,27 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 {
                     string heinCardNumber = dataCheck.HeinCardNumber;
                     DataResultADO dataResult = new DataResultADO() { HeinCardData = dataCheck };
+                    this.FillDataAfterSaerchPatientInUCPatientRaw(dataResult);
+                    //if (!String.IsNullOrEmpty(heinCardNumber))
+                    this.FillDataCareerUnder6AgeByHeinCardNumber(heinCardNumber);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void FillDataPreviewForSearchByQrcodeInUCPatientRawPatientSDO(HisPatientSDO dataCheck)
+        {
+            try
+            {
+                if (dataCheck != null)
+                {
+                    HeinCardData heinCardDataForCheckGOV = ConvertFromPatientData(dataCheck);
+                    heinCardDataForCheckGOV.Address = heinCardDataForCheckGOV.Address ?? dataCheck.VIR_ADDRESS;
+                    string heinCardNumber = dataCheck.HeinCardNumber;
+                    DataResultADO dataResult = new DataResultADO() { HisPatientSDO = dataCheck, HeinCardData = heinCardDataForCheckGOV };
                     this.FillDataAfterSaerchPatientInUCPatientRaw(dataResult);
                     //if (!String.IsNullOrEmpty(heinCardNumber))
                     this.FillDataCareerUnder6AgeByHeinCardNumber(heinCardNumber);

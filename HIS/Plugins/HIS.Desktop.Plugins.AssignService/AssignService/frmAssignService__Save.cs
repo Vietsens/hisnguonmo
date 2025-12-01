@@ -17,6 +17,7 @@
  */
 using ACS.EFMODEL.DataModels;
 using DevExpress.Office.Utils;
+using DevExpress.XtraEditors;
 using EMR.Filter;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
@@ -64,7 +65,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     this.gridViewServiceProcess.UpdateCurrentRow();
 
                 bool isValid = true;
-
+                if (!CheckPackage())
+                {
+                    return;
+                }
                 List<SereServADO> serviceCheckeds__Send = this.ServiceIsleafADOs.FindAll(o => o.IsChecked);
                 if (serviceTypeIdRequired != null && serviceTypeIdRequired.Count > 0)
                 {
@@ -201,6 +205,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     ChangeLockButtonWhileProcess(false);
                     AssignServiceSDO serviceReqSDO = new AssignServiceSDO();
                     serviceReqSDO.ServiceReqDetails = new List<ServiceReqDetailSDO>();
+                    if (cboPackage.EditValue != null)
+                    {
+                        serviceReqSDO.PackageId = Convert.ToInt32(cboPackage.EditValue.ToString());
+                    }
+                    
                     bool isDupicate = false;
                     this.ProcessServiceReqSDO(serviceReqSDO, serviceCheckeds__Send, ref isDupicate, treatmentId, true);
                     if (isDupicate)
@@ -233,6 +242,55 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.ChangeLockButtonWhileProcess(true);
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private bool CheckPackage()
+        {
+            bool result = true;
+            try
+            {
+                if (cboPackage.EditValue != null)
+                {
+                    var package = this.packagesSdo.FirstOrDefault(o => o.ID == Convert.ToInt32(cboPackage.EditValue.ToString()));
+
+
+                    if (package.TOTAL_PACKAGE_USED.HasValue && package.MAX_PACKAGE_USAGE_PER_DAY.HasValue &&
+                        package.TOTAL_PACKAGE_USED.Value >= package.MAX_PACKAGE_USAGE_PER_DAY.Value && package.WARNING_OPTION == 2)
+                    {
+                        var check = XtraMessageBox.Show(
+                                string.Format("Gói {0} đã sử dụng {2} lần vượt quá số lượng sử dụng tối đa trong ngày {1}. Bạn có muốn tiếp tục không?", package.PACKAGE_NAME, package.MAX_PACKAGE_USAGE_PER_DAY, package.TOTAL_PACKAGE_USED),
+                                "Cảnh báo",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning
+                            );
+
+                        if (check == DialogResult.No)
+                        {
+                            // Người dùng chọn Không → dừng lại
+                            return false;
+                        }
+                    }
+                    else if (package.TOTAL_PACKAGE_USED.HasValue && package.MAX_PACKAGE_USAGE_PER_DAY.HasValue &&
+                             package.TOTAL_PACKAGE_USED.Value >= package.MAX_PACKAGE_USAGE_PER_DAY.Value && package.WARNING_OPTION == 1)
+                    {
+                        MessageBox.Show(
+                            string.Format("Gói {0} đã sử dụng {2} lần vượt quá số lượng sử dụng tối đa trong ngày {1}", package.PACKAGE_NAME, package.MAX_PACKAGE_USAGE_PER_DAY, package.TOTAL_PACKAGE_USED),
+                            "Thông báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Stop
+                        );    
+                        return false;
+                    }
+                }
+                
+
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         V_HIS_SERVICE_REQ vServiceReq;
@@ -766,7 +824,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         List<HIS_SERE_SERV> sameServiceType = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.TDL_SERVICE_TYPE_ID == item.SERVICE_TYPE_ID).ToList() : null;
                         List<HIS_SERE_SERV> sameService = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.SERVICE_ID == item.SERVICE_ID).ToList() : null;
                         intructionNumByType = sameServiceType != null ? (long)sameServiceType.Count() + 1 : 1;
-                        var intructionNum = sameService != null ? (long)sameService.Count() + 1 : 1;
+                        var intructionNum = sameService != null ? (long)sameService.Count() + 1 : 1;   
                         foreach (var con in dataCondition)
                         {
                             var dt = MOS.ServicePaty.ServicePatyUtil.GetApplied(new List<V_HIS_SERVICE_PATY>() { con }, item.TDL_EXECUTE_BRANCH_ID, item.TDL_EXECUTE_ROOM_ID, this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, item.SERVICE_ID, item.PATIENT_TYPE_ID, intructionNum, intructionNumByType, item.PackagePriceId, con.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
@@ -1673,11 +1731,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         sdo.ShareCount = item.ShareCount;
                         sdo.UserPrice = item.AssignSurgPriceEdit;
                         sdo.UserPackagePrice = item.AssignPackagePriceEdit;
-                        sdo.PackageId = item.PackagePriceId;
+                        if (HisConfigCFG.ServicePatyForServicePackage != "1")
+                        {
+                            sdo.PackageId = item.PackagePriceId;
+                        }
                         if (item.OTHER_PAY_SOURCE_ID.HasValue)
                             sdo.OtherPaySourceId = item.OTHER_PAY_SOURCE_ID;
                         if (HisConfigCFG.IsSetPrimaryPatientType == commonString__true
-                            || HisConfigCFG.IsSetPrimaryPatientType == "2")
+                            || HisConfigCFG.IsSetPrimaryPatientType == "2") 
                         {
                             sdo.PrimaryPatientTypeId = item.PRIMARY_PATIENT_TYPE_ID;
                         }

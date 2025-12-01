@@ -15,25 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.DebateDiagnostic.Config;
+using HIS.Desktop.Plugins.DebateDiagnostic.Resources;
+using HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail;
+using Inventec.Common.Adapter;
+using Inventec.Core;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.LocalStorage.LocalData;
-using Inventec.Core;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.LibraryMessage;
-using System.ComponentModel;
-using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraEditors;
-using HIS.Desktop.LocalStorage.BackendData;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.Plugins.DebateDiagnostic.Resources;
-using Inventec.Common.Adapter;
-using HIS.Desktop.ApiConsumer;
-using MOS.SDO;
 
 namespace HIS.Desktop.Plugins.DebateDiagnostic
 {
@@ -306,6 +308,20 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     return false;
                 }
 
+                // Chỉ kiểm tra khi loại hội chẩn = Hội chẩn trước phẫu thuật
+                if (ChkPttt.Checked)
+                {
+                    if (HisConfigCFG.RequirePrepCleaningAndGrouping)
+                    {
+                        if (hisDebate == null || hisDebate.SURG_GROUP_TYPE == 0 || hisDebate.SURG_GROUP_TYPE==null)
+                        {
+                            WaitingManager.Hide();
+                            XtraMessageBox.Show("Vui lòng chọn phân nhóm (Cấp cứu / Bán cấp / Chương trình).",
+                                ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return false;
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -1265,6 +1281,8 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                             hisDebateSave.HOSPITALIZATION_STATE = data.HOSPITALIZATION_STATE;
                             hisDebateSave.PATHOLOGICAL_HISTORY = data.PATHOLOGICAL_HISTORY;
                             hisDebateSave.REQUEST_CONTENT = "";
+                            hisDebateSave.SURG_GROUP_TYPE = data.SURG_GROUP_TYPE;
+
                             break;
                         case HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail.DetailEnum.Khac:
                             //qtcode

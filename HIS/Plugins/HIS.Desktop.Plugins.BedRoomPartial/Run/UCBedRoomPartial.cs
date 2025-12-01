@@ -108,6 +108,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         List<HIS_PATIENT_CLASSIFY> patientClassifyFilterSelecteds = new List<HIS_PATIENT_CLASSIFY>();
         List<V_HIS_ROOM> bedRoomAlls;
         List<HIS_TREATMENT> histreatment;
+        List<MOS.EFMODEL.DataModels.V_HIS_DEPARTMENT_TRAN> departmentTrans;
         HIS_TREATMENT _hisTreatment; 
         /// <summary>
         /// khoa mà người dùng đang làm việc
@@ -125,7 +126,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             : base(null)
         {
             InitializeComponent();
-             
+            SetExamControlsReadOnly();
         }
 
         public UCBedRoomPartial(Inventec.Desktop.Common.Modules.Module currentModule)
@@ -603,6 +604,35 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 this.gridColumn9.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gridColCardExpiry.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn10.Caption = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gridColumn10.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn10.ToolTip = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.gridColumn10.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem52.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem52.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem53.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem53.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem54.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem54.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem55.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem55.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem75.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem75.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem76.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem76.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem77.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem77.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem79.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem79.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem80.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem80.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem81.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem81.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem82.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem82.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem56.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem56.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem57.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem57.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem58.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem58.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem59.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem59.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem60.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem60.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem61.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem61.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem61.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem61.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem62.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem62.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem62.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem62.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem63.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem63.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem65.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem65.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem65.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem65.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem67.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem67.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem67.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem67.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem69.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.layoutControlItem69.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.xtraTabPage5.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.xtraTabPage5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.notifyIcon1.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.notifyIcon1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtBMI.Text = Inventec.Common.Resource.Get.Value("UCBedRoomPartial.txtBMI.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.repositoryItemButton_IsUse.Buttons[0].ToolTip = Resources.ResourceMessage.ThuocVtBNDaDung;
                 this.repositoryItemButtonIS_EMERGENCY_STR.Buttons[0].ToolTip = Resources.ResourceMessage.BenhNhanCapCuu;
             }
@@ -880,6 +910,15 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             try
             {
                 FillDataToLableControl(rowclickBedRoom);
+                // Load main exam (Khám bệnh) cho treatment
+                try
+                {
+                    LoadMainExamByTreatmentId(treatmentId); 
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
                 //ServiceReq3 OrderByDateTime Hiển thị các ngày có chỉ định dịch vụ
                 LoadDataDateByTreatmentToTreeList(treatmentId);
                 SetEnableButton(true);
@@ -887,6 +926,204 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private async void LoadMainExamByTreatmentId(long treatmentId)
+        {
+            try
+            {
+                
+                xtraTabPage5.PageVisible = true;
+
+                if (treatmentId <= 0)
+                {
+                    ClearExamTab();
+                    return;
+                }
+
+                CommonParam param = new CommonParam();
+                HisServiceReqFilter filter = new HisServiceReqFilter();
+                filter.TREATMENT_ID = treatmentId;
+                try { filter.GetType().GetProperty("IS_MAIN_EXAM")?.SetValue(filter, 1); } catch { }
+                try { filter.GetType().GetProperty("IS_MAIN_EXAM")?.SetValue(filter, true); } catch { }
+
+                var data = await new BackendAdapter(param).GetAsync<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+                if (data != null && data.Count > 0)
+                {
+                    HIS_SERVICE_REQ currentHisServiceReq = data.FirstOrDefault();
+
+                    txtLyDoKham.Text = currentHisServiceReq.HOSPITALIZATION_REASON ?? "";
+                    txtQuaTrinhBenhLy.Text = currentHisServiceReq.PATHOLOGICAL_PROCESS ?? "";
+                    txtTienSuBenh.Text = currentHisServiceReq.PATHOLOGICAL_HISTORY ?? "";
+                    txtKhamToanThan.Text = currentHisServiceReq.FULL_EXAM ?? "";
+                    txtKhamBoPhan.Text = currentHisServiceReq.PART_EXAM ?? "";
+                    txtTomTat.Text = currentHisServiceReq.SUBCLINICAL ?? "";
+                    txtCdSoBo.Text = currentHisServiceReq.PROVISIONAL_DIAGNOSIS ?? "";
+
+                    txtHDTCode.Text = currentHisServiceReq.NEXT_TREAT_INTR_CODE ?? "";
+                    txtHDTName.Text = currentHisServiceReq.NEXT_TREATMENT_INSTRUCTION ?? "";
+
+                    txtCdCode.Text = currentHisServiceReq.ICD_CODE ?? "";
+                    txtCdName.Text = currentHisServiceReq.ICD_NAME ?? "";
+                    txtNNNCode.Text = currentHisServiceReq.ICD_CAUSE_CODE ?? "";
+                    txtNNNName.Text = currentHisServiceReq.ICD_CAUSE_NAME ?? "";
+                    txtBenhPhuCode.Text = currentHisServiceReq.ICD_SUB_CODE ?? "";
+                    txtBenhPhuName.Text = currentHisServiceReq.ICD_TEXT ?? "";
+
+                    // load DHST
+                    if (currentHisServiceReq.DHST_ID != null && currentHisServiceReq.DHST_ID > 0)
+                    {
+                        HisDhstFilter dhstFilter = new HisDhstFilter();
+                        dhstFilter.ID = currentHisServiceReq.DHST_ID;
+                        var dataDHST = await new BackendAdapter(param).GetAsync<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, dhstFilter, param);
+                        if (dataDHST != null && dataDHST.Count > 0)
+                        {
+                            HIS_DHST currentDhst = dataDHST.FirstOrDefault();
+                            txtMach.Text = currentDhst.PULSE != null ? currentDhst.PULSE.ToString() : "";
+                            txtNhietDo.Text = currentDhst.TEMPERATURE != null ? currentDhst.TEMPERATURE.ToString() : "";
+                            txtHACode.Text = currentDhst.BLOOD_PRESSURE_MAX != null ? currentDhst.BLOOD_PRESSURE_MAX.ToString() : "";
+                            txtHAName.Text = currentDhst.BLOOD_PRESSURE_MIN != null ? currentDhst.BLOOD_PRESSURE_MIN.ToString() : "";
+                            txtNhipTho.Text = currentDhst.BREATH_RATE != null ? currentDhst.BREATH_RATE.ToString() : "";
+                            txtCanNang.Text = currentDhst.WEIGHT != null ? currentDhst.WEIGHT.ToString() : "";
+                            txtChieuCao.Text = currentDhst.HEIGHT != null ? currentDhst.HEIGHT.ToString() : "";
+                            decimal bmi = currentDhst.VIR_BMI != null ? currentDhst.VIR_BMI ?? 0 : 0;
+
+                            txtBMI.Text = bmi + "";
+                            if (bmi < 16)
+                            {
+                                txtBMIDisplay.Text = "(Gầy độ III)";
+                            }
+                            else if (16 <= bmi && bmi < 17)
+                            {
+                                txtBMIDisplay.Text = "(Gầy độ II)";
+                            }
+                            else if (17 <= bmi && bmi < (decimal)18.5)
+                            {
+                                txtBMIDisplay.Text = "(Gầy độ I)";
+                            }
+                            else if ((decimal)18.5 <= bmi && bmi < 25)
+                            {
+                                txtBMIDisplay.Text = "(Bình thường)";
+                            }
+                            else if (25 <= bmi && bmi < 30)
+                            {
+                                txtBMIDisplay.Text = "(Thừa cân)";
+                            }
+                            else if (30 <= bmi && bmi < 35)
+                            {
+                                txtBMIDisplay.Text = "(Béo phì độ I)";
+                            }
+                            else if (35 <= bmi && bmi < 40)
+                            {
+                                txtBMIDisplay.Text = "(Béo phì độ II)";
+                            }
+                            else if (40 < bmi)
+                            {
+                                txtBMIDisplay.Text = "(Béo phì độ III)";
+                            }
+                        }
+                        else
+                        {
+                            txtMach.Text = "";
+                            txtNhietDo.Text = "";
+                            txtHACode.Text = "";
+                            txtHAName.Text = "";
+                            txtNhipTho.Text = "";
+                            txtCanNang.Text = "";
+                            txtChieuCao.Text = "";
+                            txtBMI.Text = "0";
+                            txtBMIDisplay.Text = "";
+                        }
+                    }
+                    // show exam tab
+                    xtraTabPage5.PageVisible = true;
+                }
+                else
+                {
+                    // no main exam -> hide page and clear
+                    xtraTabPage5.PageVisible = false;
+                    ClearExamTab();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                xtraTabPage5.PageVisible = false;
+            }
+        }
+
+        private void ClearExamTab()
+        {
+            try
+            {
+                txtLyDoKham.Text = "";
+                txtQuaTrinhBenhLy.Text = "";
+                txtTienSuBenh.Text = "";
+                txtKhamToanThan.Text = "";
+                txtKhamBoPhan.Text = "";
+                txtTomTat.Text = "";
+                txtCdSoBo.Text = "";
+                txtHDTCode.Text = "";
+                txtHDTName.Text = "";
+                txtCdCode.Text = "";
+                txtCdName.Text = "";
+                txtNNNCode.Text = "";
+                txtNNNName.Text = "";
+                txtBenhPhuCode.Text = "";
+                txtBenhPhuName.Text = "";
+
+                txtMach.Text = "";
+                txtNhietDo.Text = "";
+                txtHACode.Text = "";
+                txtHAName.Text = "";
+                txtNhipTho.Text = "";
+                txtCanNang.Text = "";
+                txtChieuCao.Text = "";
+                txtBMI.Text = "0";
+                txtBMIDisplay.Text = "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetExamControlsReadOnly()
+        {
+            try
+            {
+                txtLyDoKham.Properties.ReadOnly = true;
+                txtQuaTrinhBenhLy.Properties.ReadOnly = true;
+                txtTienSuBenh.Properties.ReadOnly = true;
+                txtKhamToanThan.Properties.ReadOnly = true;
+                txtKhamBoPhan.Properties.ReadOnly = true;
+                txtTomTat.Properties.ReadOnly = true;
+                txtCdSoBo.Properties.ReadOnly = true;
+
+                txtHDTCode.Properties.ReadOnly = true;
+                txtHDTName.Properties.ReadOnly = true;
+                txtCdCode.Properties.ReadOnly = true;
+                txtCdName.Properties.ReadOnly = true;
+                txtNNNCode.Properties.ReadOnly = true;
+                txtNNNName.Properties.ReadOnly = true;
+                txtBenhPhuCode.Properties.ReadOnly = true;
+                txtBenhPhuName.Properties.ReadOnly = true;
+
+                txtMach.Properties.ReadOnly = true;
+                txtNhietDo.Properties.ReadOnly = true;
+                txtHACode.Properties.ReadOnly = true;
+                txtHAName.Properties.ReadOnly = true;
+                txtNhipTho.Properties.ReadOnly = true;
+                txtCanNang.Properties.ReadOnly = true;
+                txtChieuCao.Properties.ReadOnly = true;
+
+                txtBMI.Enabled = false;
+                txtBMIDisplay.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -1233,6 +1470,51 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                         string pathLocal = GetPathDefault();
                         pictureEditAvatar.Image = Image.FromFile(pathLocal);
                     }
+
+                    //Lấy thông tin chuyển khoa
+                    HisDepartmentTranViewFilter departmentTranFilter = new HisDepartmentTranViewFilter();
+                    departmentTranFilter.TREATMENT_ID = data.TREATMENT_ID;
+                    departmentTrans = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_DEPARTMENT_TRAN>>("api/HisDepartmentTran/GetView", ApiConsumers.MosConsumer, departmentTranFilter, param);
+                    var addTime = data.ADD_TIME;
+                    if (departmentTrans != null && departmentTrans.Count > 0)
+                    {
+                        var validTrans = departmentTrans.Where(t => t.DEPARTMENT_IN_TIME.HasValue && t.DEPARTMENT_IN_TIME.Value > 0 && t.DEPARTMENT_IN_TIME.Value <= addTime).ToList();
+
+                        if (validTrans.Count > 0)
+                        {
+                            var selectedTran = validTrans.OrderByDescending(t => t.DEPARTMENT_IN_TIME.Value).FirstOrDefault();
+                            if (selectedTran != null)
+                            {
+                                lblNhanTuKhoa.Text = selectedTran.PREVIOUS_DEPARTMENT_NAME;
+                                lblChuyenDenKhoa.Text = selectedTran.DEPARTMENT_NAME_AFTER;
+                                string timeIn = selectedTran.DEPARTMENT_IN_TIME?.ToString();
+                                string timeOut = selectedTran.DEPARTMENT_IN_TIME_AFTER?.ToString();
+
+                                if (!string.IsNullOrEmpty(timeIn) && timeIn.Length == 14 &&
+                                    DateTime.TryParseExact(timeIn, "yyyyMMddHHmmss", null,
+                                    System.Globalization.DateTimeStyles.None, out DateTime dtIn))
+                                {
+                                    lblThoiGianNhan.Text = dtIn.ToString("dd/MM/yyyy HH:mm");
+                                }
+                                else
+                                {
+                                    lblThoiGianNhan.Text = "";
+                                }
+
+                                if (!string.IsNullOrEmpty(timeOut) && timeOut.Length == 14 &&
+                                    DateTime.TryParseExact(timeOut, "yyyyMMddHHmmss", null,
+                                    System.Globalization.DateTimeStyles.None, out DateTime dtOut))
+                                {
+                                    lblThoiGianChuyen.Text = dtOut.ToString("dd/MM/yyyy HH:mm");
+                                }
+                                else
+                                {
+                                    lblThoiGianChuyen.Text = "";
+                                }
+                            }
+                        }
+                    }
+
                 }
                 else
                 {     
@@ -1251,6 +1533,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     lblPatientPhone.Text = null;
                     lblCccd.Text = null;
                     lblBloodType.Text = null;
+                    lblNhanTuKhoa.Text = null;
+                    lblThoiGianNhan.Text = null;
+                    lblThoiGianChuyen.Text = null;
+                    lblChuyenDenKhoa.Text = null;
                     lblTreatmentEndType.Text = "";
                     lblTreatmentMethod.Text = "";
                     string pathLocal = GetPathDefault();

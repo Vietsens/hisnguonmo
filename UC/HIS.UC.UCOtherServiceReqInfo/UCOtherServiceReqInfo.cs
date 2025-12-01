@@ -57,6 +57,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
         Action<long?> dlgPriorityNumberChanged;
         //qtcode
         Action<string> dlgGetTreatmentTypeId;
+        Action<string> dlgGetTreatmentTypeIdForUcHeinInfo;
 
         internal HIS_TREATMENT _HisTreatment = null;
         HIS_PATIENT_TYPE workingPatientType;
@@ -1318,6 +1319,10 @@ namespace HIS.UC.UCOtherServiceReqInfo
         {
             this.dlgGetTreatmentTypeId = _dlgGetTreatmentTypeId;
         }
+        public void GetTreatmentTypeIdForUcHeinInfo(Action<string> _dlgGetTreatmentTypeId)
+        {
+            this.dlgGetTreatmentTypeIdForUcHeinInfo = _dlgGetTreatmentTypeId;
+        }
         public void ReceiveTreatmentTypeId(string treatmentTypeId)
         {
             this.treatmentTypeId = treatmentTypeId;
@@ -1328,7 +1333,14 @@ namespace HIS.UC.UCOtherServiceReqInfo
             try
             {
                 if (this.dlgGetTreatmentTypeId != null)
+                {
                     this.dlgGetTreatmentTypeId.Invoke(cboTreatmentType.EditValue.ToString());
+                }
+                if (this.dlgGetTreatmentTypeIdForUcHeinInfo != null)
+                {
+                    this.dlgGetTreatmentTypeIdForUcHeinInfo.Invoke(cboTreatmentType.EditValue.ToString());
+                }
+
                 long treatmentTypeId = cboTreatmentType.EditValue != null ? Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentType.EditValue ?? "").ToString()) : 0;
 
                 if (treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)

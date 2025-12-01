@@ -153,10 +153,28 @@
   <data name="Plugin_TreatmentHistory__TatCa" xml:space="preserve">
     <value>Tất cả</value>
   </data>
+  <data name="Plugin_TreatmentHistory__TrongKhoa" xml:space="preserve">
+    <value>Trong Khoa</value>
+  </data>
   <data name="Plugin_TreatmentHistory__ThongBao" xml:space="preserve">
     <value>Thông báo</value>
   </data>
   <data name="Plugin_TreatmentHistory__TrangThai" xml:space="preserve">
     <value>Trạng thái</value>
+  </data>
+  <data name="MucAn" xml:space="preserve">
+    <value>Mức ăn</value>
+  </data>
+  <data name="MucAnDTTT" xml:space="preserve">
+    <value>Mức ăn/DTTT</value>
+  </data>
+  <data name="Plugin_TreatmentHistory__DTTT" xml:space="preserve">
+    <value>ĐTTT</value>
+  </data>
+  <data name="ToolTipDTTT" xml:space="preserve">
+    <value>Đối tượng thanh toán</value>
+  </data>
+  <data name="ToolTipMucAnDTTT" xml:space="preserve">
+    <value>Mức ăn/Đối tượng thanh toán</value>
   </data>
 </root>

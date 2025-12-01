@@ -1518,6 +1518,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 examServiceReqUpdateSDO.Advise = this.HisServiceReqView.ADVISE;
                 examServiceReqUpdateSDO.Conclusion = this.HisServiceReqView.CONCLUSION;
                 examServiceReqUpdateSDO.SickDay = Inventec.Common.TypeConvert.Parse.ToInt64(spinNgayThuCuaBenh.Text ?? "0");
+                examServiceReqUpdateSDO.SickHour = Inventec.Common.TypeConvert.Parse.ToInt64(spnGioThuCuaBenh.Text ?? "0");
                 examServiceReqUpdateSDO.HospitalizationReason = !string.IsNullOrEmpty(txtHospitalizationReason.Text.Trim()) ? txtHospitalizationReason.Text.Trim() : null;
                 examServiceReqUpdateSDO.FullExam = !string.IsNullOrEmpty(txtKhamToanThan.Text.Trim()) ? txtKhamToanThan.Text.Trim() : null;
                 examServiceReqUpdateSDO.PartExam = !string.IsNullOrEmpty(txtKhamBoPhan.Text.Trim()) ? txtKhamBoPhan.Text.Trim() : null;
@@ -1607,6 +1608,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 examServiceReqUpdateSDO.PartExamRespiratory = !string.IsNullOrEmpty(txtHoHap.Text.Trim()) ? txtHoHap.Text.Trim() : null;
                 examServiceReqUpdateSDO.PathologicalHistory = !string.IsNullOrEmpty(txtPathologicalHistory.Text.Trim()) ? txtPathologicalHistory.Text.Trim() : null; // tien su cua BN
                 examServiceReqUpdateSDO.PathologicalHistoryFamily = !string.IsNullOrEmpty(txtPathologicalHistoryFamily.Text.Trim()) ? txtPathologicalHistoryFamily.Text.Trim() : null; // tien su gia dinh
+                examServiceReqUpdateSDO.HistoryAllergy = !string.IsNullOrEmpty(txtHistoryAllergy.Text.Trim()) ? txtHistoryAllergy.Text.Trim() : null;
+
+                if (chkIsHistoryAllergyRelated.Checked) examServiceReqUpdateSDO.IsHistoryAllergyRelated = (short?)1;
+                if (chkIsHistoryRelated.Checked) examServiceReqUpdateSDO.IsHistoryRelated = (short?)1;
+                if (chkIsHistoryFamilyRelated.Checked) examServiceReqUpdateSDO.IsHistoryFamilyRelated = (short?)1;
+                if (chkIsFullExamAbnormal.Checked) examServiceReqUpdateSDO.IsFullExamAbnormal = (short?)1;
+                if (chkIsPartExamAbnormal.Checked) examServiceReqUpdateSDO.IsPartExamAbnormal = (short?)1;
+
                 examServiceReqUpdateSDO.PathologicalProcess = !string.IsNullOrEmpty(txtPathologicalProcess.Text.Trim()) ? txtPathologicalProcess.Text.Trim() : null; // kham toan than
                 examServiceReqUpdateSDO.Note = !string.IsNullOrEmpty(txtResultNote.Text.Trim()) ? txtResultNote.Text.Trim() : null;
                 examServiceReqUpdateSDO.Subclinical = !string.IsNullOrEmpty(txtSubclinical.Text.Trim()) ? txtSubclinical.Text.Trim() : null;
@@ -1784,6 +1793,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             serviceReqUpdateSDO.HospitalizeSDO.InHospitalizationReasonCode = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.InHospitalizationReasonCode;
                             serviceReqUpdateSDO.HospitalizeSDO.InHospitalizationReasonName = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.InHospitalizationReasonName;
                         }
+                        serviceReqUpdateSDO.SpecialistNote = hisDepartmentTranHospitalizeSDO.SpecialistNote;
+                        serviceReqUpdateSDO.ExecutedServices = hisDepartmentTranHospitalizeSDO.ExecutedServices;
                         serviceReqUpdateSDO.NotePatient = hisDepartmentTranHospitalizeSDO.Note;
                         this.isPrintHospitalizeExam = hisDepartmentTranHospitalizeSDO.IsPrintHospitalizeExam;
                         this.isSign = hisDepartmentTranHospitalizeSDO.IsSign;

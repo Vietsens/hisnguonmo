@@ -26,12 +26,12 @@ namespace HIS.Desktop.Plugins.TreatmentHistory.Base
 {
     class ResourceLangManager
     {
-        internal static ResourceManager LanguageUCBedRoomPartial { get; set; }
+        internal static ResourceManager LanguageUCTreatmentHistory { get; set; }
         internal static void InitResourceLanguageManager()
         {
             try
             {
-                LanguageUCBedRoomPartial = new ResourceManager("HIS.Desktop.Plugins.TreatmentHistory.Resources.Lang", typeof(HIS.Desktop.Plugins.TreatmentHistory.frmTreatmentHistory).Assembly);
+                LanguageUCTreatmentHistory = new ResourceManager("HIS.Desktop.Plugins.TreatmentHistory.Resources.Lang", typeof(HIS.Desktop.Plugins.TreatmentHistory.frmTreatmentHistory).Assembly);
             }
             catch (Exception ex)
             {

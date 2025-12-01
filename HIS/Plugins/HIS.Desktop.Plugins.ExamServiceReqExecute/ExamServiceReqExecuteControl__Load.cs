@@ -228,6 +228,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     txtPathologicalProcess.Text = IsCheckLockInfor(txtPathologicalProcess.Text, status) ? examServiceTemp.PATHOLOGICAL_PROCESS : txtPathologicalProcess.Text;
                     txtPathologicalHistory.Text = IsCheckLockInfor(txtPathologicalHistory.Text, status) ? examServiceTemp.PATHOLOGICAL_HISTORY : txtPathologicalHistory.Text;
                     txtPathologicalHistoryFamily.Text = IsCheckLockInfor(txtPathologicalHistoryFamily.Text, status) ? examServiceTemp.PATHOLOGICAL_HISTORY_FAMILY : txtPathologicalHistoryFamily.Text;
+                    //txtHistoryAllergy.Text = IsCheckLockInfor(txtHistoryAllergy.Text, status) ? examServiceTemp : txtHistoryAllergy.Text;
                     txtKhamToanThan.Text = IsCheckLockInfor(txtKhamToanThan.Text, status) ? examServiceTemp.FULL_EXAM : txtKhamToanThan.Text;
                     txtKhamBoPhan.Text = IsCheckLockInfor(txtKhamBoPhan.Text, status) ? examServiceTemp.PART_EXAM : txtKhamBoPhan.Text;
                     txtTuanHoan.Text = IsCheckLockInfor(txtTuanHoan.Text, status) ? examServiceTemp.PART_EXAM_CIRCULATION : txtTuanHoan.Text;
@@ -451,10 +452,20 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 else if (ltreatment2 != null && !string.IsNullOrEmpty(ltreatment2.PT_PATHOLOGICAL_HISTORY_FAMILY))
                     txtPathologicalHistoryFamily.Text = ltreatment2.PT_PATHOLOGICAL_HISTORY_FAMILY;
 
+                if (!string.IsNullOrEmpty(this.HisServiceReqView.HISTORY_ALLERGY))
+                    txtHistoryAllergy.Text = this.HisServiceReqView.HISTORY_ALLERGY;
+
                 if (!string.IsNullOrEmpty(this.HisServiceReqView.PATHOLOGICAL_HISTORY))
                     txtPathologicalHistory.Text = this.HisServiceReqView.PATHOLOGICAL_HISTORY;
                 else if (ltreatment2 != null && !string.IsNullOrEmpty(ltreatment2.PT_PATHOLOGICAL_HISTORY))
                     txtPathologicalHistory.Text = ltreatment2.PT_PATHOLOGICAL_HISTORY;
+
+
+                chkIsHistoryAllergyRelated.Checked = HisServiceReqView.IS_HISTORY_ALLERGY_RELATED == (short?)1;
+                chkIsHistoryRelated.Checked = HisServiceReqView.IS_HISTORY_RELATED == (short?)1;
+                chkIsHistoryFamilyRelated.Checked = HisServiceReqView.IS_HISTORY_FAMILY_RELATED == (short?)1;
+                chkIsFullExamAbnormal.Checked = HisServiceReqView.IS_FULL_EXAM_ABNORMAL == (short?)1;
+                chkIsPartExamAbnormal.Checked = HisServiceReqView.IS_PART_EXAM_ABNORMAL == (short?)1;
             }
             catch (Exception ex)
             {
@@ -816,6 +827,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     }
                     if (this.HisServiceReqView.SICK_DAY.HasValue)
                         spinNgayThuCuaBenh.EditValue = this.HisServiceReqView.SICK_DAY;//TODO
+                    if (this.HisServiceReqView.SICK_HOUR.HasValue)
+                        spnGioThuCuaBenh.EditValue = this.HisServiceReqView.SICK_HOUR;//TODO
 
                     if (!string.IsNullOrEmpty(this.HisServiceReqView.PATHOLOGICAL_PROCESS))
                         txtPathologicalProcess.Text = this.HisServiceReqView.PATHOLOGICAL_PROCESS;
@@ -935,11 +948,20 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     else if (ltreatment2 != null && !string.IsNullOrEmpty(ltreatment2.PT_PATHOLOGICAL_HISTORY_FAMILY))
                         txtPathologicalHistoryFamily.Text = ltreatment2.PT_PATHOLOGICAL_HISTORY_FAMILY;
 
+                    if (!string.IsNullOrEmpty(this.HisServiceReqView.HISTORY_ALLERGY))
+                        txtHistoryAllergy.Text = this.HisServiceReqView.HISTORY_ALLERGY;
+
                     if (!string.IsNullOrEmpty(this.HisServiceReqView.PATHOLOGICAL_HISTORY))
                         txtPathologicalHistory.Text = this.HisServiceReqView.PATHOLOGICAL_HISTORY;
                     else if (ltreatment2 != null && !string.IsNullOrEmpty(ltreatment2.PT_PATHOLOGICAL_HISTORY))
                         txtPathologicalHistory.Text = ltreatment2.PT_PATHOLOGICAL_HISTORY;
 
+
+                    chkIsHistoryAllergyRelated.Checked = HisServiceReqView.IS_HISTORY_ALLERGY_RELATED == (short?)1;
+                    chkIsHistoryRelated.Checked = HisServiceReqView.IS_HISTORY_RELATED == (short?)1;
+                    chkIsHistoryFamilyRelated.Checked = HisServiceReqView.IS_HISTORY_FAMILY_RELATED == (short?)1;
+                    chkIsFullExamAbnormal.Checked = HisServiceReqView.IS_FULL_EXAM_ABNORMAL == (short?)1;
+                    chkIsPartExamAbnormal.Checked = HisServiceReqView.IS_PART_EXAM_ABNORMAL == (short?)1;
 
                     chkPartExamEyeStPlus.Checked = HisServiceReqView.PART_EXAM_EYE_ST_PLUS == 1;
                     chkPartExamEyeStMinus.Checked = HisServiceReqView.PART_EXAM_EYE_ST_MINUS == 1;

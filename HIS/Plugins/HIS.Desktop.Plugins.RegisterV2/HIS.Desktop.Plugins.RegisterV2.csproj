@@ -145,7 +145,7 @@
     </Reference>
     <Reference Include="HIS.UC.UCOtherServiceReqInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
+      <HintPath>..\..\..\UC\HIS.UC.UCOtherServiceReqInfo\bin\Debug\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCPatientRaw, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

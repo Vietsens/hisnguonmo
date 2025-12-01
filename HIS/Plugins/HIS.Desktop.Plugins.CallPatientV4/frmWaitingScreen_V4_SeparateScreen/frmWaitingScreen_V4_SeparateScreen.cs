@@ -78,6 +78,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
         , MOS.EFMODEL.DataModels.HIS_SERVICE_REQ HisServiceReq, List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT> ServiceReqStts, List<ControlStateRDO> controlStateRDO = null)
             : base(module)
         {
+            Inventec.Common.Logging.LogSystem.Debug("Dữ liệu lưu cache " + controlStateRDO);
             InitializeComponent();
             this.hisServiceReq = HisServiceReq;
             this.serviceReqStts = ServiceReqStts;
@@ -111,10 +112,10 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                 //qtcode
                 LoadControlState();
 
-                // 2. Áp dụng tiêu đề nội trú / ngoại trú (nếu có)
+                // tiêu đề nội trú, ngoại trú
                 ApplyTitleConfig();
 
-                // 3. Áp dụng kiểu hiển thị cho bệnh nhân cấp cứu
+                // bệnh nhân cấp cứu
                 ApplyEmergencyMode();
 
             }
@@ -1185,14 +1186,18 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             {
                 if (this.currentControlStateRDO == null) return;
 
-                // Checkbox phân biệt nội trú / ngoại trú
+                // Checkbox phân biệt nội trú, ngoại trú
+                Inventec.Common.Logging.LogSystem.Debug("thangdq1 ds state: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", this.currentControlStateRDO));
+                Inventec.Common.Logging.LogSystem.Debug("thangdq1 key state noi ngoai: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.chkSeparatePatientNoiTruNgoaiTru).Select(o => o.KEY)));
+                Inventec.Common.Logging.LogSystem.Debug("thangdq1 modulink noi ngoai: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.chkSeparatePatientNoiTruNgoaiTru).Select(o => o.MODULE_LINK)));
+                //Inventec.Common.Logging.LogSystem.Debug("thangdq1 modulink current: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", this.currentModule.ModuleLink));
                 var separateInOut = this.currentControlStateRDO
-                    .FirstOrDefault(o => o.KEY == ControlStateConstant.chkSeparatePatientNoiTruNgoaiTru && o.MODULE_LINK == this.currentModule.ModuleLink);
+                    .FirstOrDefault(o => o.KEY == ControlStateConstant.chkSeparatePatientNoiTruNgoaiTru && o.MODULE_LINK == "HIS.Desktop.Plugins.CallPatientV4");
                 isSeparateInOut = (separateInOut != null && separateInOut.VALUE == "1");
 
                 // Checkbox phân biệt cấp cứu
                 var separateEmergency = this.currentControlStateRDO
-                    .FirstOrDefault(o => o.KEY == ControlStateConstant.chkSeparatePatientCapCuu && o.MODULE_LINK == this.currentModule.ModuleLink);
+                    .FirstOrDefault(o => o.KEY == ControlStateConstant.chkSeparatePatientCapCuu && o.MODULE_LINK == "HIS.Desktop.Plugins.CallPatientV4");
                 isSeparateEmergency = (separateEmergency != null && separateEmergency.VALUE == "1");
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
@@ -1230,7 +1235,11 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                 lblTitleNgoaiTru.Font = new Font("Arial", fontSize, FontStyle.Bold);
                 lblTitleNoiTru.ForeColor = color;
                 lblTitleNgoaiTru.ForeColor = color;
+                int newHeight = fontSize * 2;
 
+                layoutControlItem15.MinSize = new Size(0, newHeight);
+                layoutControlItem15.MaxSize = new Size(0, newHeight);
+                layoutControlItem15.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
                 lblTitleNoiTru.Visible = !string.IsNullOrWhiteSpace(titleNoiTru);
                 lblTitleNgoaiTru.Visible = !string.IsNullOrWhiteSpace(titleNgoaiTru);
             }
@@ -1242,7 +1251,8 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             try
             {
                 var item = this.currentControlStateRDO
-                    .FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == this.currentModule.ModuleLink);
+                //.FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == this.currentModule.ModuleLink);
+                .FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == "HIS.Desktop.Plugins.CallPatientV4");
                 return item?.VALUE;
             }
             catch (Exception ex)
@@ -1256,14 +1266,14 @@ namespace HIS.Desktop.Plugins.CallPatientV4
         {
             try
             {
-                // 1. Kiểm tra có bệnh nhân cấp cứu nào không
+                // Kiểm tra có bệnh nhân cấp cứu nào không
                 bool hasEmergencyPatient = false;
-
+                Inventec.Common.Logging.LogSystem.Debug("Đang kiểm tra xem có bệnh nhân cấp cứu nào không");
                 var allPatients = new List<ServiceReq1ADO>();
                 if (CallPatientDataWorker.DicCallPatient != null &&
-                    CallPatientDataWorker.DicCallPatient.ContainsKey(room.ID))
+                    CallPatientDataWorker.DicCallPatient.ContainsKey(this.room.ID))
                 {
-                    allPatients.AddRange(CallPatientDataWorker.DicCallPatient[room.ID]);
+                    allPatients.AddRange(CallPatientDataWorker.DicCallPatient[this.room.ID]);
                 }
 
                 if (allPatients.Count > 0)
@@ -1280,52 +1290,57 @@ namespace HIS.Desktop.Plugins.CallPatientV4
 
                 if (enableEmergencyMode)
                 {
-                    //// Ẩn header
-                    //gridViewWaitingCls.OptionsView.ShowColumnHeaders = false;
-                    //if (isSeparateInOut)
-                    //    gridViewWaitingCls2.OptionsView.ShowColumnHeaders = false;
-
-                    // Thu nhỏ cột STT + NS
-                    gridColumnSTT.Width = 40;
-                    gridColumnAge.Width = 50;
+                    LogSystem.Debug("Có ít nhất 1 bn cấp cứu");
+                  
+                    gridColumnSTT.Width = 100;
+                    gridColumnAge.Width = 120;
                     gridColumnAge.Caption = "NS";
 
-                    //if (isSeparateInOut)
-                    //{
-                    gridColumnSTT2.Width = 40;
-                    gridColumnAge2.Width = 50;
+                    gridColumnSTT2.Width = 100;
+                    gridColumnAge2.Width = 120;
                     gridColumnAge2.Caption = "NS";
-                    //}
 
-                    // Thêm cột icon + (nếu chưa có)
-                    AddEmergencyIconColumn(gridViewWaitingCls, "colEmergencyIcon");
-                    if (isSeparateInOut)
-                        AddEmergencyIconColumn(gridViewWaitingCls2, "colEmergencyIcon2");
+                    var col = gridViewWaitingCls.Columns.ColumnByFieldName("ICON_DISPLAY");
+                    if (col != null)
+                    {
+                        col.Visible = true;
+                        col.VisibleIndex = 1;
+                    }
+
+                    var col2 = gridViewWaitingCls2.Columns.ColumnByFieldName("ICON_DISPLAY2");
+                    if (col2 != null)
+                    {
+                        col2.Visible = true;
+                        col2.VisibleIndex = 1;
+                    }
                 }
                 else
                 {
-                    // Trả lại giao diện bình thường
-                    gridViewWaitingCls.OptionsView.ShowColumnHeaders = true;
-                    if (isSeparateInOut)
-                        gridViewWaitingCls2.OptionsView.ShowColumnHeaders = true;
 
-                    gridColumnSTT.Width = 60;
-                    gridColumnAge.Width = 90;
+                    gridColumnSTT.Width = 150;
+                    gridColumnAge.Width = 242;
                     gridColumnAge.Caption = "Năm sinh";
 
-                    //if (isSeparateInOut)
-                    //{
-                    gridColumnSTT2.Width = 60;
+                 
+                    gridColumnSTT2.Width = 150;
+                    gridColumnAge2.Width = 242;
                     gridColumnAge2.Caption = "Năm sinh";
-                    //}
+               
+                    var col = gridViewWaitingCls.Columns.ColumnByFieldName("ICON_DISPLAY");
+                    if (col != null)
+                    {
+                        col.Visible = false;
+                        col.VisibleIndex = -1;
+                    }
 
-                    // Xóa cột icon nếu có
-                    RemoveColumnIfExist(gridViewWaitingCls, "colEmergencyIcon");
-                    //if (isSeparateInOut)
-                    RemoveColumnIfExist(gridViewWaitingCls2, "colEmergencyIcon2");
+                    var col2 = gridViewWaitingCls2.Columns.ColumnByFieldName("ICON_DISPLAY2");
+                    if (col2 != null)
+                    {
+                        col2.Visible = false;
+                        col2.VisibleIndex = -1;
+                    }
                 }
 
-                // Refresh grid để áp dụng thay đổi
                 gridViewWaitingCls.RefreshData();
                 if (isSeparateInOut) gridViewWaitingCls2.RefreshData();
             }
@@ -1335,66 +1350,44 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             }
         }
 
-        private void AddEmergencyIconColumn(GridView view, string columnName)
-        {
-            if (view.Columns[columnName] == null)
-            {
-                var col = view.Columns.AddVisible(columnName, "");
-                col.Width = 30;
-                col.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-                col.OptionsColumn.FixedWidth = true;
-                col.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            }
-        }
 
-        private void RemoveColumnIfExist(GridView view, string columnName)
+        private void gridViewWaitingCls_CustomRowCellEdit(object sender, CustomRowCellEditEventArgs e)
         {
-            var col = view.Columns[columnName];
-            if (col != null)
-            {
-                view.Columns.Remove(col);
-            }
-        }
 
-        // Tô đỏ bệnh nhân cấp cứu
-        private void gridViewWaitingCls_RowStyle_Emergency(object sender, RowStyleEventArgs e)
-        {
-            try
+            if (e.Column.FieldName == "ICON_DISPLAY")
             {
-                if (!isSeparateEmergency) return;
-                var data = gridViewWaitingCls.GetRow(e.RowHandle) as ServiceReq1ADO;
-                if (data == null) return;
-
+                var data = (ServiceReq1ADO)gridViewWaitingCls.GetRow(e.RowHandle);
                 var dept = BackendDataWorker.Get<V_HIS_DEPARTMENT>()
-                    .FirstOrDefault(o => o.ID == data.REQUEST_DEPARTMENT_ID);
+                    .FirstOrDefault(d => d.ID == data.REQUEST_DEPARTMENT_ID);
 
                 if (dept != null && dept.IS_EMERGENCY == 1)
                 {
-                    e.Appearance.ForeColor = Color.Red;
-                    e.HighPriority = true;
+                    e.RepositoryItem = repositoryItemButtonEdit1;
+                }
+                else
+                {
+                    e.RepositoryItem = null;
                 }
             }
-            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        private void gridViewWaitingCls2_RowStyle_Emergency(object sender, RowStyleEventArgs e)
+        private void gridViewWaitingCls2_CustomRowCellEdit(object sender, CustomRowCellEditEventArgs e)
         {
-            try
+            if (e.Column.FieldName == "ICON_DISPLAY2")
             {
-                if (!isSeparateEmergency) return;
-                var data = gridViewWaitingCls2.GetRow(e.RowHandle) as ServiceReq1ADO;
-                if (data == null) return;
-
+                var data = (ServiceReq1ADO)gridViewWaitingCls2.GetRow(e.RowHandle);
                 var dept = BackendDataWorker.Get<V_HIS_DEPARTMENT>()
-                    .FirstOrDefault(o => o.ID == data.REQUEST_DEPARTMENT_ID);
+                    .FirstOrDefault(d => d.ID == data.REQUEST_DEPARTMENT_ID);
 
                 if (dept != null && dept.IS_EMERGENCY == 1)
                 {
-                    e.Appearance.ForeColor = Color.Red;
-                    e.HighPriority = true;
+                    e.RepositoryItem = repositoryItemButtonEdit2;
+                }
+                else
+                {
+                    e.RepositoryItem = null;
                 }
             }
-            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
     }
 }

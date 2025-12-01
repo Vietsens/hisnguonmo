@@ -706,8 +706,19 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     var intructionNum = sameService != null ? (long)sameService.Count() + 1 : 1;
 
                     List<V_HIS_SERVICE_PATY> servicePaties = BranchDataWorker.ServicePatyWithListPatientType(sereServADOOld.SERVICE_ID, this.patientTypeIdAls);
+                    V_HIS_SERVICE_PATY oneServicePatyPrice = new V_HIS_SERVICE_PATY();
+                    if (HisConfigCFG.ServicePatyForServicePackage == "1")
+                    {
+                        //List<V_HIS_SERVICE_PATY> servicePatiesFirst = new List<V_HIS_SERVICE_PATY>();
+                        //servicePatiesFirst.Add(this.GetServicePaties(servicePaties, sereServADOOld.TDL_EXECUTE_BRANCH_ID, (sereServADOOld.TDL_EXECUTE_ROOM_ID > 0 ? (long?)sereServADOOld.TDL_EXECUTE_ROOM_ID : null), this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADOOld.SERVICE_ID, sereServADOOld.PATIENT_TYPE_ID, intructionNum, intructionNumByType, sereServADOOld.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null));
 
-                    V_HIS_SERVICE_PATY oneServicePatyPrice = MOS.ServicePaty.ServicePatyUtil.GetApplied(servicePaties, sereServADOOld.TDL_EXECUTE_BRANCH_ID, (sereServADOOld.TDL_EXECUTE_ROOM_ID > 0 ? (long?)sereServADOOld.TDL_EXECUTE_ROOM_ID : null), this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADOOld.SERVICE_ID, sereServADOOld.PATIENT_TYPE_ID, intructionNum, intructionNumByType, sereServADOOld.PackagePriceId, sereServADOOld.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
+                        oneServicePatyPrice = MOS.ServicePaty.ServicePatyUtil.GetApplied(servicePaties, sereServADOOld.TDL_EXECUTE_BRANCH_ID, (sereServADOOld.TDL_EXECUTE_ROOM_ID > 0 ? (long?)sereServADOOld.TDL_EXECUTE_ROOM_ID : null), this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADOOld.SERVICE_ID, sereServADOOld.PATIENT_TYPE_ID, intructionNum, intructionNumByType, null, sereServADOOld.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
+                    }
+                    else
+                    {
+                        oneServicePatyPrice = MOS.ServicePaty.ServicePatyUtil.GetApplied(servicePaties, sereServADOOld.TDL_EXECUTE_BRANCH_ID, (sereServADOOld.TDL_EXECUTE_ROOM_ID > 0 ? (long?)sereServADOOld.TDL_EXECUTE_ROOM_ID : null), this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADOOld.SERVICE_ID, sereServADOOld.PATIENT_TYPE_ID, intructionNum, intructionNumByType, sereServADOOld.PackagePriceId, sereServADOOld.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
+                    }
+                        
 
                     if (sereServADOOld.PRIMARY_PATIENT_TYPE_ID.HasValue)
                     {
@@ -728,7 +739,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         && sereServADOOld.IsNoDifference.Value)
                     {
                         this.GetHeinLimitPrice(sereServADOOld, instructionTime, this.currentHisTreatment.IN_TIME, ref heinLimitPrice, ref heinLimitRatio);
-
+                         
                         if (heinLimitPrice.HasValue && heinLimitPrice.Value > 0)
                         {
                             resultData = heinLimitPrice;
@@ -758,6 +769,48 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
 
             return resultData;
+        }
+
+        public V_HIS_SERVICE_PATY GetServicePaties(List<V_HIS_SERVICE_PATY> servicePaties, long executeBranchId, long? executeRoomId, long? requestRoomId, long? requestDepartmentId, long instructionTime, long treatmentTime, long serviceId, long patientTypeId, long? instructionNumber, long? instructionNumberByType, long? serviceConditionId, long? patientClassifyId, long? rationTimeId)
+        {
+            V_HIS_SERVICE_PATY result = null;
+            try
+            {
+                if (servicePaties != null && servicePaties.Count > 0)
+                {
+                    DateTime value = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(instructionTime).Value;
+                    int hour = int.Parse("1" + instructionTime.ToString().Substring(8, 4));
+                    int day = (int)(value.DayOfWeek + 1);
+                    string reqRoomIdStr = (requestRoomId.HasValue ? $",{requestRoomId}," : "");
+                    string requestDepartmentIdStr = (requestDepartmentId.HasValue ? $",{requestDepartmentId}," : "");
+                    string executeRoomIdStr = (executeRoomId.HasValue ? $",{executeRoomId}," : "");
+                    result = (from o in servicePaties
+                              where o.PATIENT_TYPE_ID == patientTypeId || (o.INHERIT_PATIENT_TYPE_IDS != null && ("," + o.INHERIT_PATIENT_TYPE_IDS + ",").Contains("," + patientTypeId + ","))
+                              where o.SERVICE_ID == serviceId && o.BRANCH_ID == executeBranchId && o.IS_ACTIVE == 1
+                              where ((!o.FROM_TIME.HasValue || o.FROM_TIME.Value <= instructionTime) && (!o.TO_TIME.HasValue || o.TO_TIME.Value >= instructionTime)) || ((!o.TREATMENT_FROM_TIME.HasValue || o.TREATMENT_FROM_TIME.Value <= treatmentTime) && (!o.TREATMENT_TO_TIME.HasValue || o.TREATMENT_TO_TIME.Value >= treatmentTime))
+                              where !instructionNumber.HasValue || ((!o.INTRUCTION_NUMBER_FROM.HasValue || o.INTRUCTION_NUMBER_FROM.Value <= instructionNumber.Value) && (!o.INTRUCTION_NUMBER_TO.HasValue || o.INTRUCTION_NUMBER_TO.Value >= instructionNumber.Value))
+                              where !instructionNumberByType.HasValue || ((!o.INSTR_NUM_BY_TYPE_FROM.HasValue || o.INSTR_NUM_BY_TYPE_FROM.Value <= instructionNumberByType.Value) && (!o.INSTR_NUM_BY_TYPE_TO.HasValue || o.INSTR_NUM_BY_TYPE_TO.Value >= instructionNumberByType.Value))
+                              where (o.HOUR_FROM == null || int.Parse("1" + o.HOUR_FROM) <= hour) && (o.HOUR_TO == null || int.Parse("1" + o.HOUR_TO) >= hour)
+                              where (!o.DAY_FROM.HasValue || o.DAY_FROM.Value <= day) && (!o.DAY_TO.HasValue || o.DAY_TO.Value >= day)
+                              where o.REQUEST_ROOM_IDS == null || ("," + o.REQUEST_ROOM_IDS + ",").Contains(reqRoomIdStr)
+                              where o.EXECUTE_ROOM_IDS == null || ("," + o.EXECUTE_ROOM_IDS + ",").Contains(executeRoomIdStr)
+                              where o.REQUEST_DEPARMENT_IDS == null || ("," + o.REQUEST_DEPARMENT_IDS + ",").Contains(requestDepartmentIdStr)
+                              where (!serviceConditionId.HasValue && !o.SERVICE_CONDITION_ID.HasValue) || (serviceConditionId.HasValue && o.SERVICE_CONDITION_ID == serviceConditionId)
+                              where !o.PATIENT_CLASSIFY_ID.HasValue || o.PATIENT_CLASSIFY_ID == patientClassifyId
+                              where !o.RATION_TIME_ID.HasValue || o.RATION_TIME_ID == rationTimeId
+                              orderby (!o.RATION_TIME_ID.HasValue || !rationTimeId.HasValue) ? 1 : 0
+                              orderby o.PRIORITY descending, o.ID descending
+                              select o).FirstOrDefault();
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+
+            return result;
         }
 
         private decimal? GetHeinLimitPriceByDataRow(SereServADO sereServADOOld)
@@ -1804,7 +1857,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     bool LastOption = false;
                     long intructionTime = this.intructionTimeSelecteds.FirstOrDefault();
                     long treatmentTime = this.currentHisTreatment.IN_TIME;
-                    var patientTypeIdInSePas = BranchDataWorker.ServicePatyWithListPatientType(serviceId, this.patientTypeIdAls).Where(o => ((!o.TREATMENT_TO_TIME.HasValue || o.TREATMENT_TO_TIME.Value >= treatmentTime) || (!o.TO_TIME.HasValue || o.TO_TIME.Value >= intructionTime)) && ((!sereServADO.PackagePriceId.HasValue && !o.PACKAGE_ID.HasValue) || (sereServADO.PackagePriceId.HasValue && sereServADO.PackagePriceId.Value == o.PACKAGE_ID))).Select(o => o.PATIENT_TYPE_ID).ToList();
+                    var patientTypeIdInSePas = BranchDataWorker.ServicePatyWithListPatientType(serviceId, this.patientTypeIdAls).Where(o => ((!o.TREATMENT_TO_TIME.HasValue || o.TREATMENT_TO_TIME.Value >= treatmentTime) || (!o.TO_TIME.HasValue || o.TO_TIME.Value >= intructionTime)) && (HisConfigCFG.ServicePatyForServicePackage == "1" ? true :((!sereServADO.PackagePriceId.HasValue && !o.PACKAGE_ID.HasValue) || (sereServADO.PackagePriceId.HasValue && sereServADO.PackagePriceId.Value == o.PACKAGE_ID)))).Select(o => o.PATIENT_TYPE_ID).ToList();
                     var patientTypeIdInSePasWithServices = BranchDataWorker.ServicePatyWithListPatientType(serviceId, this.patientTypeIdAls);
                     //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientTypeIdInSePasWithServices), patientTypeIdInSePasWithServices));
                     //    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADO.PackagePriceId), sereServADO.PackagePriceId));
@@ -2973,7 +3026,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     this.gridColumn_Service_PrimaryPatientType.Visible = true;
                     this.gridColumn_Service_PrimaryPatientType.OptionsColumn.AllowEdit = true;
                 }
-                else if (HisConfigCFG.IsSetPrimaryPatientType == "2")
+                else if (HisConfigCFG.IsSetPrimaryPatientType == "2" && HisConfigCFG.ServicePatyForServicePackage != "1")
                 {
                     this.gridColumn_Service_PrimaryPatientType.Visible = true;
                     this.gridColumn_Service_PrimaryPatientType.OptionsColumn.AllowEdit = false;

@@ -336,6 +336,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     currentWorkingRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
                 }
                 //Inventec.Common.Logging.LogSystem.Info("frmAssignService.Init .2___sereServsInTreatmentRaw.count=" + (sereServsInTreatmentRaw != null ? sereServsInTreatmentRaw.Count : 0));
+                if (!string.IsNullOrWhiteSpace(HisConfigCFG.UsageCheckInterval))
+                {
+                    this.InitializePackageAutoRefresh();  // Gọi để khởi động timer
+                }
+                
             }
             catch (Exception ex)
             {
@@ -1215,6 +1220,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 else
                 {
                     layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
+
+                if (!string.IsNullOrWhiteSpace(HisConfigCFG.UsageCheckInterval))
+                {
+                    this.InitializePackageAutoRefresh();  // Gọi để khởi động timer
                 }
             }
             catch (Exception ex)
@@ -2187,21 +2197,21 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     SereServADO data = (SereServADO)gridViewServiceProcess.GetRow(e.RowHandle);
                     if (e.Column.FieldName == "PATIENT_TYPE_ID")
                     {
-                        if (data != null && data.PackagePriceId.HasValue)
+                        if (data != null && data.PackagePriceId.HasValue && HisConfigCFG.ServicePatyForServicePackage != "1")
                             e.RepositoryItem = this.repositoryItemCboPatientTypeReadOnly;
                         else
                             e.RepositoryItem = this.repositoryItemcboPatientType_TabService;
                     }
                     else if (e.Column.FieldName == "PRIMARY_PATIENT_TYPE_ID")
                     {
-                        if (data != null && (data.PackagePriceId.HasValue || data.IsNotChangePrimaryPaty))
+                        if (data != null && (data.PackagePriceId.HasValue || data.IsNotChangePrimaryPaty) && HisConfigCFG.ServicePatyForServicePackage != "1")
                             e.RepositoryItem = this.repositoryItemCboPatientTypeReadOnly;
                         else
                             e.RepositoryItem = this.repositoryItemCboPrimaryPatientType;
                     }
                     else if (e.Column.FieldName == "IsChecked")
                     {
-                        if (data != null && data.PackagePriceId.HasValue)
+                        if (data != null && data.PackagePriceId.HasValue && HisConfigCFG.ServicePatyForServicePackage != "1")
                             e.RepositoryItem = this.repositoryItemchkIsCheckedDisable;
                         else
                             e.RepositoryItem = this.repositoryItemchkIsChecked;
@@ -2256,7 +2266,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             //isEditCtrol = isEditCtrol && IsAllowEditSurgeryPrice(e.RowHandle);
                             if (data != null && (data.PACKAGE_ID.HasValue || data.PackagePriceId.HasValue || !isEditCtrol))
                                 e.RepositoryItem = repositoryItemTxtReadOnly;
-                            else
+                            else   
                                 e.RepositoryItem = repositoryItembtnEditDonGia_TextDisable;
                         }
                     }
@@ -8449,7 +8459,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
-        private void cboPackage_EditValueChanged(object sender, EventArgs e)
+        private void cboPackage_EditValueChanged(object sender, EventArgs e)  
         {
             try
             {
@@ -8515,7 +8525,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             item.ShareCount = null;
                             item.PATIENT_TYPE_CODE = "";
                             item.PATIENT_TYPE_NAME = "";
-                            item.PRICE = 0;
+                            if (HisConfigCFG.ServicePatyForServicePackage != "1")
+                            {
+                                item.PRICE = 0;
+                            }
+                            //item.PRICE = 0;
                             item.TDL_EXECUTE_ROOM_ID = 0;
                             item.IsExpend = false;
                             item.IsOutKtcFee = false;
@@ -8588,6 +8602,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             service.OTHER_PAY_SOURCE_CODE = "";
                             service.OTHER_PAY_SOURCE_NAME = "";
                             this.SetAssignNumOrder(service);
+
                             HIS_PATIENT_TYPE paty = this.ChoosePatientTypeDefaultlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, service.SERVICE_ID, service);
 
                             if (!VerifyCheckFeeWhileAssign())
@@ -8610,7 +8625,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         }
                     }
 
-                    if (notHasServicePatys != null && notHasServicePatys.Count > 0)
+                    if (notHasServicePatys != null && notHasServicePatys.Count > 0 && HisConfigCFG.ServicePatyForServicePackage != "1")
                     {
                         string sJoin = String.Join(", ", notHasServicePatys.Select(s => s.SERVICE_NAME).ToList());
                         strMessage.Append(String.Format(ResourceMessage.CacDichVuTrongGoiChuaDuocThietLapChinhSachGiaHoacPhongThucHien, this.currentHisPatientTypeAlter.PATIENT_TYPE_NAME, sJoin));
@@ -10595,6 +10610,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 LogSystem.Warn(ex);
             }
         }
+
     }
     public class BankInfo
     {
