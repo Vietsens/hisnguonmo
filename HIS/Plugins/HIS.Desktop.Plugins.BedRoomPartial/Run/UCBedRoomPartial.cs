@@ -1486,9 +1486,31 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                             if (selectedTran != null)
                             {
                                 lblNhanTuKhoa.Text = selectedTran.PREVIOUS_DEPARTMENT_NAME;
-                                lblThoiGianNhan.Text = DateTime.ParseExact(selectedTran.DEPARTMENT_IN_TIME.ToString(), "yyyyMMddHHmmss", null).ToString("dd/MM/yyyy HH:mm");
-                                lblThoiGianChuyen.Text = DateTime.ParseExact(selectedTran.DEPARTMENT_IN_TIME_AFTER.ToString(), "yyyyMMddHHmmss", null).ToString("dd/MM/yyyy HH:mm");
                                 lblChuyenDenKhoa.Text = selectedTran.DEPARTMENT_NAME_AFTER;
+                                string timeIn = selectedTran.DEPARTMENT_IN_TIME?.ToString();
+                                string timeOut = selectedTran.DEPARTMENT_IN_TIME_AFTER?.ToString();
+
+                                if (!string.IsNullOrEmpty(timeIn) && timeIn.Length == 14 &&
+                                    DateTime.TryParseExact(timeIn, "yyyyMMddHHmmss", null,
+                                    System.Globalization.DateTimeStyles.None, out DateTime dtIn))
+                                {
+                                    lblThoiGianNhan.Text = dtIn.ToString("dd/MM/yyyy HH:mm");
+                                }
+                                else
+                                {
+                                    lblThoiGianNhan.Text = "";
+                                }
+
+                                if (!string.IsNullOrEmpty(timeOut) && timeOut.Length == 14 &&
+                                    DateTime.TryParseExact(timeOut, "yyyyMMddHHmmss", null,
+                                    System.Globalization.DateTimeStyles.None, out DateTime dtOut))
+                                {
+                                    lblThoiGianChuyen.Text = dtOut.ToString("dd/MM/yyyy HH:mm");
+                                }
+                                else
+                                {
+                                    lblThoiGianChuyen.Text = "";
+                                }
                             }
                         }
                     }
