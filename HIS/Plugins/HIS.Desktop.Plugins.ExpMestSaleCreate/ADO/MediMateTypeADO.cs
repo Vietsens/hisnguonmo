@@ -147,6 +147,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.ADO
                     this.USE_TIME_TO = mety.USE_TIME_TO;
                     this.DayNum = 1;
                     this.NUM_ORDER = mety.NUM_ORDER;
+                    this.TUTORIAL = mety.TUTORIAL;
                     if (intructionTime.HasValue && mety.USE_TIME_TO.HasValue)
                     {
                         DateTime dtUserTimeTo = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(mety.USE_TIME_TO.Value).Value;
@@ -184,6 +185,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.ADO
                     this.EXP_AMOUNT = maty.AMOUNT;
                     this.DayNum = 1;
                     this.NUM_ORDER = maty.NUM_ORDER;
+                    this.TUTORIAL = maty.TUTORIAL;
                 }
             }
             catch (Exception ex)
@@ -332,6 +334,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.ADO
                     this.ACTIVE_INGR_BHYT_NAME = medicine.ACTIVE_INGR_BHYT_NAME;
                     if (HisConfigCFG.IS_JOIN_NAME_WITH_CONCENTRA)
                         this.MEDI_MATE_TYPE_NAME = String.Format("{0} {1}", this.MEDI_MATE_TYPE_NAME, this.CONCENTRA);
+                    this.TUTORIAL = medicine.TUTORIAL;
                 }
             }
             catch (Exception ex)
@@ -382,6 +385,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.ADO
                     this.PresNumber = expMest.PRES_NUMBER;
                     this.TDL_PATIENT_NAME = expMest.TDL_PATIENT_NAME;
                     this.NUM_ORDER = material.NUM_ORDER;
+                    this.TUTORIAL = material.TUTORIAL;
                 }
             }
             catch (Exception ex)
