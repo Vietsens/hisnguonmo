@@ -8603,7 +8603,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             service.OTHER_PAY_SOURCE_NAME = "";
                             this.SetAssignNumOrder(service);
 
-                            this.ValidServiceDetailProcessing(service);
                             HIS_PATIENT_TYPE paty = this.ChoosePatientTypeDefaultlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, service.SERVICE_ID, service);
 
                             if (!VerifyCheckFeeWhileAssign())
@@ -8618,6 +8617,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             {
                                 notHasServicePatys.Add(pDetail);
                             }
+                            this.ValidServiceDetailProcessing(service);
                         }
                         else
                         {

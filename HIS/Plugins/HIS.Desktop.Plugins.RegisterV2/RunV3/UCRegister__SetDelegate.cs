@@ -141,7 +141,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				this.ucHeinInfo1.SetCurrentModule(this.currentModule);
 				this.ucHeinInfo1.Send3WBhytCode(Send3WCode);
 				//qtcode
-				this.ucOtherServiceReqInfo1.GetTreatmentTypeId(this.ucHeinInfo1.ReceiveIdFromUcOtherSviceReqInfo);
+				this.ucOtherServiceReqInfo1.GetTreatmentTypeIdForUcHeinInfo(this.ucHeinInfo1.ReceiveIdFromUcOtherSviceReqInfo);
 				this.ucOtherServiceReqInfo1.GetTreatmentTypeId(this.ucPlusInfo1.ReceiveTreatmentTypeIdFromUcOther);
 				this.ucPatientRaw1.TransferPatient(this.ucPlusInfo1.ReceivePatientFromUcPatientRaw); 
 				this.ucHeinInfo1.SendTreatmentTypeId(this.ucOtherServiceReqInfo1.ReceiveTreatmentTypeId); 
