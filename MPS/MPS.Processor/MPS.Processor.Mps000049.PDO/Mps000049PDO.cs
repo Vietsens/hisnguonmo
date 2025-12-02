@@ -146,6 +146,11 @@ namespace MPS.Processor.Mps000049.PDO
     {
         public long TYPE_ID { get; set; }
         public long MEDI_MATE_TYPE_ID { get; set; }
+<<<<<<< Updated upstream
+=======
+
+        public string USED_PART { get; set; }
+>>>>>>> Stashed changes
 
         public string MEDICINE_TYPE_NAME { get; set; }
         public string MEDICINE_TYPE_CODE { get; set; }
@@ -260,6 +265,12 @@ namespace MPS.Processor.Mps000049.PDO
                             this.MEDICINE_PARENT_ID = MedicineType.PARENT_ID;
                             this.MEDICINE_PARENT_CODE = MedicineType.PARENT_CODE;
                             this.MEDICINE_PARENT_NAME = MedicineType.PARENT_NAME;
+<<<<<<< Updated upstream
+=======
+
+                            this.USED_PART = MedicineType.USED_PART;
+
+>>>>>>> Stashed changes
                         }
                     }
 

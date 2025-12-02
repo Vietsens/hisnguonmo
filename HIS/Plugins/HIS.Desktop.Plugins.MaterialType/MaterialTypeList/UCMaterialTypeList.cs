@@ -261,7 +261,7 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 MaterialTypeColumn lockingReasonCol = new MaterialTypeColumn("Lý do khóa", "LOCKING_REASON", 120, false);
                 lockingReasonCol.VisibleIndex = 6;
                 ado.MaterialTypeColumns.Add(lockingReasonCol);
-
+           
                 //Column hãng giá nhập
                 MaterialTypeColumn virTotalImpPriceCol = new MaterialTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MATERIAL_TYPE__TREE_MATERIAL_TYPE__COLUMN_IMPORT_PRICE", ResourceLangManager.LanguageUCMaterialType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "IMPORT_PRICE", 120, false);
                 virTotalImpPriceCol.VisibleIndex = 7;
@@ -435,11 +435,19 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
         {
             try
             {
-                if (data is HIS.UC.MaterialType.ADO.MaterialTypeADO)
+                var material = data as HIS.UC.MaterialType.ADO.MaterialTypeADO;
+                if (material != null)
                 {
-                    if (((HIS.UC.MaterialType.ADO.MaterialTypeADO)data).IS_LEAF != 1)
+                    // Giữ logic cũ: node cha in đậm
+                    if (material.IS_LEAF != 1)
                     {
                         appearanceObject.FontStyleDelta = System.Drawing.FontStyle.Bold;
+                    }
+
+                    // Mới: loại vật tư dừng nhập thì hiển thị màu đỏ
+                    if (material.IS_STOP_IMP.HasValue && material.IS_STOP_IMP.Value == 1)
+                    {
+                        appearanceObject.ForeColor = System.Drawing.Color.Maroon;
                     }
                 }
             }
@@ -690,10 +698,11 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 {
                     filter.IS_ACTIVE = null;
                 }
-                List<String> ColnParams = new List<string> { "ID", "MATERIAL_TYPE_CODE", "MATERIAL_TYPE_NAME", "SERVICE_UNIT_NAME", "CONCENTRA",
-                    "NATIONAL_NAME", "MANUFACTURER_NAME", "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO",
-                    "LAST_EXP_PRICE","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME", "LAST_EXP_VAT_RATIO", "IS_LEAF", "PARENT_ID", "IS_ACTIVE", "REGISTER_NUMBER",
-                    "IMP_VAT_RATIO","IMP_PRICE","PACKING_TYPE_NAME","IS_BUSINESS", "IS_DRUG_STORE", "LOCKING_REASON", "IS_REUSABLE", "MODEL_CODE"};
+                List<String> ColnParams = new List<string> {"ID", "MATERIAL_TYPE_CODE", "MATERIAL_TYPE_NAME", "SERVICE_UNIT_NAME", "CONCENTRA",
+                "NATIONAL_NAME", "MANUFACTURER_NAME", "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO","LAST_EXP_PRICE","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME", "LAST_EXP_VAT_RATIO",
+                "IS_LEAF", "PARENT_ID", "IS_ACTIVE", "REGISTER_NUMBER","IMP_VAT_RATIO","IMP_PRICE","PACKING_TYPE_NAME","IS_BUSINESS", "IS_DRUG_STORE",
+                "LOCKING_REASON", "IS_STOP_IMP", "IS_REUSABLE", "MODEL_CODE"};
+
                 filter.ColumnParams = ColnParams;
                 this.materialTypes = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_TYPE>>(HisRequestUri.HIS_MATERIAL_TYPE_GETVIEWDynamic, ApiConsumers.MosConsumer, filter, param);
                 if (currentMediStock != null && currentMediStock.IS_BUSINESS == 1 && currentMediStock.IS_SHOW_DRUG_STORE == 1)
