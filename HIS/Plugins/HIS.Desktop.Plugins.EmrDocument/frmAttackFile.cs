@@ -598,13 +598,16 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             if ((extension ?? "").ToLower() == ".pdf")
                             {
                                 //từ đường dẫn file pdf là item đọc nội dung file và convert sang file ảnh
-                                string joinPdfPathFile = "";
-                                iTextSharp.text.pdf.PdfReader readerWorking = new iTextSharp.text.pdf.PdfReader(item);
-                                float pageHeight = readerWorking.GetPageSize(1).Height;
-                                Inventec.Common.SignLibrary.PdfDocumentProcess.SplitOnePageToImageAndJoinToNewOnePdf(item, pageHeight, ref joinPdfPathFile);
-                                LogSystem.Debug("joinPdfPathFile:" + joinPdfPathFile);
-                                this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(joinPdfPathFile);
-                                this.fileNameAttack.FullName = joinPdfPathFile;
+                                //string joinPdfPathFile = "";
+                                //iTextSharp.text.pdf.PdfReader readerWorking = new iTextSharp.text.pdf.PdfReader(item);
+                                //float pageHeight = readerWorking.GetPageSize(1).Height;
+                                //Inventec.Common.SignLibrary.PdfDocumentProcess.SplitOnePageToImageAndJoinToNewOnePdf(item, pageHeight, ref joinPdfPathFile);
+                                //LogSystem.Debug("joinPdfPathFile:" + joinPdfPathFile);
+                                //this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(joinPdfPathFile);
+                                //this.fileNameAttack.FullName = joinPdfPathFile;
+                                this.fileNameAttack.FullName = item;
+                                this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(item);
+                                this.fileNameAttack.image = null;
                             }
                             else
                             {
