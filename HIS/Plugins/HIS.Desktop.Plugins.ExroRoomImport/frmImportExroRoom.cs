@@ -17,6 +17,7 @@
  */
 using DevExpress.Data;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraLayout.Customization.Templates;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -26,6 +27,7 @@ using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -312,6 +314,22 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
                                 error += string.Format(Message.MessageImport.MaPhongDaKhoa, item.EXECUTE_ROOM_CODE);
                             }
                         }
+                        else if (exeRoom == null)
+                        {
+                            var HisbedRoom = BackendDataWorker.Get<V_HIS_BED_ROOM>().FirstOrDefault(p => p.BED_ROOM_CODE == item.EXECUTE_ROOM_CODE);
+                            if(HisbedRoom != null && HisbedRoom.IS_ACTIVE == 1)
+                            {
+                                serAdo.BED_ROOM_ID = HisbedRoom.ID;
+                            }
+                            else if (HisbedRoom == null)
+                            {
+                                error += string.Format("{0} không hợp lệ", item.EXECUTE_ROOM_CODE);
+                            }
+                            else
+                            {
+                                error += string.Format("Mã phòng {0} đã bị khóa", item.EXECUTE_ROOM_CODE);
+                            }
+                        }
                         else
                         {
                             error += string.Format(Message.MessageImport.KhongHopLe, item.EXECUTE_ROOM_CODE);
@@ -355,16 +373,36 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
                             {
                                 error += string.Format(Message.MessageImport.NhapMotTrongHai, item.EXECUTE_ROOM_CODE, exeRoom.EXECUTE_ROOM_NAME);
                             }
+                            else if (exeRoom == null)
+                            {
+                                var HisbedRoom = BackendDataWorker.Get<V_HIS_BED_ROOM>().FirstOrDefault(p => p.BED_ROOM_CODE == item.EXECUTE_ROOM_CODE);
+                                if (HisbedRoom != null)
+                                {
+                                    error += string.Format("Các phòng sau cần phải chọn ít nhất 1 trong 2 'Được lấy stt ưu tiên' hoặc 'được phép yêu cầu: {0} - {1}", HisbedRoom.BED_ROOM_CODE, HisbedRoom.BED_ROOM_NAME);
+                                }
+                                else
+                                {
+
+
+                                    error += string.Format("Các phòng sau cần phải chọn ít nhất 1 trong 2 'Được lấy stt ưu tiên' hoặc 'được phép yêu cầu': {0}", item.EXECUTE_ROOM_CODE);
+                                }
+                            }
                             else
                             {
                                 error += string.Format(Message.MessageImport.NhapMotTrongHai, item.EXECUTE_ROOM_CODE);
                             }
                         }
                     }
+                    
                     if (!string.IsNullOrEmpty(item.EXECUTE_ROOM_CODE) && !string.IsNullOrEmpty(item.ROOM_CODE))
                     {
                         var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(p => p.ROOM_CODE == item.ROOM_CODE.Trim());
                         var exeRoom = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(p => p.EXECUTE_ROOM_CODE == item.EXECUTE_ROOM_CODE.Trim());
+                        var HisbedRoom = BackendDataWorker.Get<V_HIS_BED_ROOM>().FirstOrDefault(p => p.BED_ROOM_CODE == item.EXECUTE_ROOM_CODE);
+
+                        var exeRoomId = exeRoom?.ID ?? 0;
+                        var roomId = room?.ID ?? 0;
+                        var hisBedRoomId = HisbedRoom?.ID ?? 0;
                         if (room != null && exeRoom != null)
                         {
                             //var checkExroRoom = BackendDataWorker.Get<HIS_EXRO_ROOM>().FirstOrDefault(p => p.ROOM_ID == room.ID && p.EXECUTE_ROOM_ID == exeRoom.ID);
@@ -372,17 +410,25 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
                             CommonParam paramCommon = new CommonParam();
                             HisExroRoomFilter filter = new HisExroRoomFilter();
                             filter.IS_ACTIVE = 1;
+                            filter.ROOM_ID = roomId;
 
                             var checkExroRoom = new BackendAdapter(paramCommon).Get<List<HIS_EXRO_ROOM>>
                                 ("api/HisExroRoom/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
-                            var check = checkExroRoom.Where(o => o.EXECUTE_ROOM_ID == exeRoom.ID && o.ROOM_ID == room.ID).FirstOrDefault();
+
+                            var ListExroRooms = checkExroRoom.Where(o => (o.EXECUTE_ROOM_ID == exeRoomId && o.ROOM_ID == roomId)
+                                                                || (o.ROOM_ID == roomId && o.BED_ROOM_ID == hisBedRoomId)).ToList();
+
+                            if (ListExroRooms.Count > 0)
+                            {
+                                error += ("Dữ liệu đã tồn tại");
+                            }
+
+                            var check = checkExroRoom.Where(o => o.EXECUTE_ROOM_ID == exeRoom.ID && o.ROOM_ID == room.ID).FirstOrDefault();  
                             if (check != null)
                             {
                                 error += string.Format(Message.MessageImport.DaTonTai, item.ROOM_CODE);
                             }
                         }
-
-
                     }
 
                     serAdo.ERROR = error;
@@ -526,8 +572,12 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
                     }
                     if (e.Column.FieldName == "EXECUTE_ROOM_NAME_STR")
                     {
-                        var exeRoomName = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.EXECUTE_ROOM_CODE == pData.EXECUTE_ROOM_CODE).EXECUTE_ROOM_NAME;
-                        e.Value = exeRoomName;
+                        var exeRoomName = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.EXECUTE_ROOM_CODE == pData.EXECUTE_ROOM_CODE)?.EXECUTE_ROOM_NAME;
+
+                        var hisBedRoomName = BackendDataWorker.Get<V_HIS_BED_ROOM>().FirstOrDefault(p => p.BED_ROOM_CODE == pData.EXECUTE_ROOM_CODE)?.BED_ROOM_NAME;
+
+                        // exeRoomName null → dùng hisBedRoomName  
+                        e.Value = exeRoomName ?? hisBedRoomName ?? "";
                     }
                 }
             }
@@ -551,20 +601,25 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
                     {
                         var executeRoom = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(p => p.EXECUTE_ROOM_CODE == item.EXECUTE_ROOM_CODE.Trim());
                         var assignRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(p => p.ROOM_CODE == item.ROOM_CODE.Trim());
-                        if (executeRoom != null && assignRoom != null)
+                        var HisbedRoom = BackendDataWorker.Get<V_HIS_BED_ROOM>().FirstOrDefault(p => p.BED_ROOM_CODE == item.EXECUTE_ROOM_CODE);
+
+                        if ((executeRoom != null || HisbedRoom != null) && assignRoom != null)
                         {
                             ExroRoomADO ado = new ExroRoomADO();
-                            ado.EXECUTE_ROOM_ID = executeRoom.ID;
+                            if (executeRoom != null)
+                            {
+                                ado.EXECUTE_ROOM_ID = executeRoom.ID;
+                            }
                             ado.ROOM_ID = assignRoom.ID;
                             ado.EXECUTE_ROOM_CODE = item.EXECUTE_ROOM_CODE;
                             ado.ROOM_CODE = item.ROOM_CODE;
                             ado.IS_ALLOW_REQUEST = item.IS_ALLOW_REQUEST;
                             ado.IS_PRIORITY_REQUIRE = item.IS_PRIORITY_REQUIRE;
                             ado.IS_HOLD_ORDER = item.IS_HOLD_ORDER;
-                            datas.Add(ado);
+                            ado.BED_ROOM_ID = item.BED_ROOM_ID;
+                            datas.Add(ado);    
                         }
-
-                    }
+                    } 
                 }
                 else
                 {
@@ -613,7 +668,7 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
         private void gridViewData_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
         {
             try
-            {
+            { 
                 DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                 if (e.RowHandle >= 0)
                 {
@@ -632,6 +687,11 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void frmImportExroRoom_Load(object sender, EventArgs e)
+        {
+            LoadDataExroRoom();
         }
     }
 }
