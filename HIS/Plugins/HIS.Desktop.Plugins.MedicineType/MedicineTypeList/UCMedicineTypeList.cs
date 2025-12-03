@@ -15,39 +15,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraTreeList;
+using DevExpress.XtraTreeList.Nodes;
+using HIS.Desktop.ADO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.MedicineType.ADO;
+using HIS.Desktop.Plugins.MedicineType.Form;
+using HIS.Desktop.Plugins.MedicineType.MedicineTypeList.Resources;
+using HIS.Desktop.Plugins.MedicineTypeList;
+using HIS.UC.MedicineType;
+using HIS.UC.MedicineType.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
-using HIS.Desktop.ApiConsumer;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using HIS.Desktop.Plugins.MedicineType.ADO;
-using HIS.Desktop.Controls.Session;
-using System.Collections;
-using DevExpress.XtraTreeList;
-using HIS.Desktop.Plugins.MedicineTypeList;
-using DevExpress.XtraTreeList.Nodes;
-using System.Runtime.Remoting.Contexts;
-using System.Linq;
-using System.Threading.Tasks;
-using HIS.Desktop.Common;
-using System.Resources;
-using System.ComponentModel;
-using HIS.UC.MedicineType.ADO;
-using HIS.Desktop.LocalStorage.BackendData;
-using HIS.Desktop.ADO;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Plugins.MedicineType.Form;
 using MOS.SDO;
-using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraGrid.Views.Base;
-using HIS.UC.MedicineType;
-using Inventec.Desktop.Common.LanguageManager;
-using HIS.Desktop.Plugins.MedicineType.MedicineTypeList.Resources;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
+using System.Resources;
+using System.Runtime.Remoting.Contexts;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
 {
@@ -134,7 +135,7 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                     "ACTIVE_INGR_BHYT_CODE", "CONCENTRA","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME" ,"REGISTER_NUMBER", "NATIONAL_NAME", "MANUFACTURER_NAME",
                     "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO", "LAST_EXP_PRICE", "LAST_EXP_VAT_RATIO", "PARENT_ID","MEDICINE_USE_FORM_CODE","MEDICINE_USE_FORM_NAME",
                     "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO",
-                    "IS_LEAF", "IS_ACTIVE" ,"IS_BUSINESS", "IS_DRUG_STORE","LOCKING_REASON", "ALERT_EXPIRED_DATE", "ALERT_MIN_IN_STOCK", "PACKING_TYPE_NAME", "MEDICINE_LINE_NAME", "DOSAGE_FORM", "DESCRIPTION"};
+                    "IS_LEAF", "IS_ACTIVE" ,"IS_BUSINESS", "IS_DRUG_STORE","LOCKING_REASON", "ALERT_EXPIRED_DATE", "ALERT_MIN_IN_STOCK", "PACKING_TYPE_NAME", "MEDICINE_LINE_NAME", "DOSAGE_FORM", "DESCRIPTION", "IS_STOP_IMP"};
                 filter.ColumnParams = ColnParams;
 
                 this.medicineTypes = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUri.HIS_MEDICINE_TYPE_GetViewDynamic, ApiConsumers.MosConsumer, filter, param);
@@ -182,7 +183,7 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                     "ACTIVE_INGR_BHYT_CODE", "CONCENTRA","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME" ,"REGISTER_NUMBER", "NATIONAL_NAME", "MANUFACTURER_NAME",
                     "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO", "LAST_EXP_PRICE", "LAST_EXP_VAT_RATIO", "PARENT_ID","MEDICINE_USE_FORM_CODE","MEDICINE_USE_FORM_NAME",
                     "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO","IS_BUSINESS", "IS_DRUG_STORE", "DOSAGE_FORM", "DESCRIPTION",
-                    "IS_LEAF", "IS_ACTIVE" };
+                    "IS_LEAF", "IS_ACTIVE", "IS_STOP_IMP" };
                 filter.ColumnParams = colunmParam;
                 var medicineTypes = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUri.HIS_MEDICINE_TYPE_GetViewDynamic, ApiConsumers.MosConsumer, filter, param);
                 if (mediStock != null && mediStock.IS_BUSINESS == 1 && mediStock.IS_SHOW_DRUG_STORE == 1)
@@ -614,6 +615,10 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                     if (((HIS.UC.MedicineType.ADO.MedicineTypeADO)data).IS_LEAF != 1)
                     {
                         appearanceObject.FontStyleDelta = System.Drawing.FontStyle.Bold;
+                    }
+                    if (((HIS.UC.MedicineType.ADO.MedicineTypeADO)data).IS_STOP_IMP == 1)
+                    {
+                        appearanceObject.ForeColor = Color.Red;
                     }
                 }
             }

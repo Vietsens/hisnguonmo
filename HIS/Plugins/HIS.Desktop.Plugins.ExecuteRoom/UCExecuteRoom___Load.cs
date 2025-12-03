@@ -2256,7 +2256,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         }
                     }
 
-                    if (!HisConfigCFG.IsEnableEditStartTime && (HisConfigCFG.ServiceSimultaneity == "1" || HisConfigCFG.ServiceSimultaneity == "2") && serviceReqInput.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)  
+                    if (!HisConfigCFG.IsEnableEditStartTime && (HisConfigCFG.ServiceSimultaneity == "1" || HisConfigCFG.ServiceSimultaneity == "2") && serviceReqInput.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)  
                     {
                         DateTime now = DateTime.Now;
                         CommonParam param = new CommonParam();
@@ -2283,7 +2283,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         }
                     }
 
-                    if (!HisConfigCFG.IsEnableEditStartTime && (HisConfigCFG.Simultaneity == "1" || HisConfigCFG.Simultaneity == "2") && serviceReqInput.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
+                    if (!HisConfigCFG.IsEnableEditStartTime && (HisConfigCFG.Simultaneity == "1" || HisConfigCFG.Simultaneity == "2") && serviceReqInput.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
                     {
                         var now = DateTime.Now;
                         var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
