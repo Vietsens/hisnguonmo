@@ -378,7 +378,7 @@ namespace HIS.UC.UCPatientRaw
 					}
 				}
 				this.currentPatientSDO = patientDTO;
-				this.dlgSendPatientSdo(currentPatientSDO);
+                this.dlgSendPatientSdo(currentPatientSDO);
 				if (isCheckPeriosTreatment)
 					this.PeriosTreatmentMessage();
 				Inventec.Common.Logging.LogSystem.Debug("FillDataPatientToControl.4");

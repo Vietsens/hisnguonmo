@@ -119,6 +119,42 @@ namespace HIS.UC.UCPatientRaw
             }
             return rs;
         }
+        public HisPatientSDO QuetThe(HisPatientSDO patientSDO)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                if (patientSDO.TreatmentId > 0 && HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
+                {
+                    HisTreatmentFilter filter = new HisTreatmentFilter();
+                    filter.ID = patientSDO.TreatmentId;
+                    var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, filter, param);
+                    var latestTreatment = treatment.Where(t => t.PATIENT_ID == patientSDO.ID && !string.IsNullOrEmpty(t.TDL_PATIENT_ADDRESS))
+                        .OrderByDescending(t => t.IN_TIME)
+                        .FirstOrDefault();
+                    Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.6.5");
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => latestTreatment), latestTreatment));
+                    if (latestTreatment != null)
+                    {
+                        patientSDO.PROVINCE_CODE = latestTreatment.TDL_PATIENT_PROVINCE_CODE;
+                        patientSDO.PROVINCE_NAME = latestTreatment.TDL_PATIENT_PROVINCE_NAME;
+                        patientSDO.DISTRICT_CODE = latestTreatment.TDL_PATIENT_DISTRICT_CODE;
+                        patientSDO.DISTRICT_NAME = latestTreatment.TDL_PATIENT_DISTRICT_NAME;
+                        patientSDO.COMMUNE_CODE = latestTreatment.TDL_PATIENT_COMMUNE_CODE;
+                        patientSDO.COMMUNE_NAME = latestTreatment.TDL_PATIENT_COMMUNE_NAME;
+                        //dataAddressPatient.IsNoDistrict = latestTreatment.;
+
+                        patientSDO.ADDRESS = latestTreatment.TDL_PATIENT_ADDRESS;
+                    }
+                }
+                return patientSDO;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                return patientSDO;
+            }
+        }
         //public void a()
         //{
             
@@ -169,29 +205,6 @@ namespace HIS.UC.UCPatientRaw
                                 dataResult.OldPatient = true;
                                 this.currentPatientSDO = (HisPatientSDO)data;
                                 //Gọi api - gán dữ liệu txh cho dlg
-                                if (HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
-                                {
-                                    HisTreatmentFilter filter = new HisTreatmentFilter();
-                                    filter.ID = dataResult.HisPatientSDO.TreatmentId;
-                                    var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, filter, param);
-                                    var latestTreatment = treatment.Where(t => t.PATIENT_ID == currentPatientSDO.ID && !string.IsNullOrEmpty(t.TDL_PATIENT_ADDRESS))
-                                        .OrderByDescending(t => t.IN_TIME)
-                                        .FirstOrDefault();
-                                    Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.6.5");
-                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => latestTreatment), latestTreatment));
-                                    if (latestTreatment != null)
-                                    {
-                                        currentPatientSDO.PROVINCE_CODE = latestTreatment.TDL_PATIENT_PROVINCE_CODE;
-                                        currentPatientSDO.PROVINCE_NAME = latestTreatment.TDL_PATIENT_PROVINCE_NAME;
-                                        currentPatientSDO.DISTRICT_CODE = latestTreatment.TDL_PATIENT_DISTRICT_CODE;
-                                        currentPatientSDO.DISTRICT_NAME = latestTreatment.TDL_PATIENT_DISTRICT_NAME;
-                                        currentPatientSDO.COMMUNE_CODE = latestTreatment.TDL_PATIENT_COMMUNE_CODE;
-                                        currentPatientSDO.COMMUNE_NAME = latestTreatment.TDL_PATIENT_COMMUNE_NAME;
-                                        //dataAddressPatient.IsNoDistrict = latestTreatment.;
-
-                                        currentPatientSDO.ADDRESS = latestTreatment.TDL_PATIENT_ADDRESS;
-                                    }
-                                }
                                 this.dlgSendPatientSdo(currentPatientSDO);
                                 this.patientTD3 = (HisPatientSDO)data;
                                 hrmEmployeeCode = currentPatientSDO.HRM_EMPLOYEE_CODE;
@@ -225,6 +238,7 @@ namespace HIS.UC.UCPatientRaw
                             //checkKey6((long)patientInRegisterSearchByCard.PatientId);
                             await SetDataFromCardSDO(patientInRegisterSearchByCard);
                         }
+                        
                         else
                         {
                             WaitingManager.Hide();
@@ -575,29 +589,29 @@ namespace HIS.UC.UCPatientRaw
                                         Inventec.Common.Logging.LogSystem.Warn("2________");
                                         dataResult.HisPatientSDO = (HisPatientSDO)dataQr;
                                         dataResult.OldPatient = true;
-                                        if (HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
-                                        {
-                                            HisTreatmentFilter filter = new HisTreatmentFilter();
-                                            filter.ID = dataResult.HisPatientSDO.TreatmentId;
-                                            var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, filter, param);
-                                            var latestTreatment = treatment.Where(t => t.PATIENT_ID == currentPatientSDO.ID && !string.IsNullOrEmpty(t.TDL_PATIENT_ADDRESS))
-                                                .OrderByDescending(t => t.IN_TIME)
-                                                .FirstOrDefault();
-                                            Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.6.5");
-                                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => latestTreatment), latestTreatment));
-                                            if (latestTreatment != null)
-                                            {
-                                                currentPatientSDO.PROVINCE_CODE = latestTreatment.TDL_PATIENT_PROVINCE_CODE;
-                                                currentPatientSDO.PROVINCE_NAME = latestTreatment.TDL_PATIENT_PROVINCE_NAME;
-                                                currentPatientSDO.DISTRICT_CODE = latestTreatment.TDL_PATIENT_DISTRICT_CODE;
-                                                currentPatientSDO.DISTRICT_NAME = latestTreatment.TDL_PATIENT_DISTRICT_NAME;
-                                                currentPatientSDO.COMMUNE_CODE = latestTreatment.TDL_PATIENT_COMMUNE_CODE;
-                                                currentPatientSDO.COMMUNE_NAME = latestTreatment.TDL_PATIENT_COMMUNE_NAME;
-                                                //dataAddressPatient.IsNoDistrict = latestTreatment.;
+                                        //if (HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
+                                        //{
+                                        //    HisTreatmentFilter filter = new HisTreatmentFilter();
+                                        //    filter.ID = dataResult.HisPatientSDO.TreatmentId;
+                                        //    var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, filter, param);
+                                        //    var latestTreatment = treatment.Where(t => t.PATIENT_ID == currentPatientSDO.ID && !string.IsNullOrEmpty(t.TDL_PATIENT_ADDRESS))
+                                        //        .OrderByDescending(t => t.IN_TIME)
+                                        //        .FirstOrDefault();
+                                        //    Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.6.5");
+                                        //    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => latestTreatment), latestTreatment));
+                                        //    if (latestTreatment != null)
+                                        //    {
+                                        //        currentPatientSDO.PROVINCE_CODE = latestTreatment.TDL_PATIENT_PROVINCE_CODE;
+                                        //        currentPatientSDO.PROVINCE_NAME = latestTreatment.TDL_PATIENT_PROVINCE_NAME;
+                                        //        currentPatientSDO.DISTRICT_CODE = latestTreatment.TDL_PATIENT_DISTRICT_CODE;
+                                        //        currentPatientSDO.DISTRICT_NAME = latestTreatment.TDL_PATIENT_DISTRICT_NAME;
+                                        //        currentPatientSDO.COMMUNE_CODE = latestTreatment.TDL_PATIENT_COMMUNE_CODE;
+                                        //        currentPatientSDO.COMMUNE_NAME = latestTreatment.TDL_PATIENT_COMMUNE_NAME;
+                                        //        //dataAddressPatient.IsNoDistrict = latestTreatment.;
 
-                                                currentPatientSDO.ADDRESS = latestTreatment.TDL_PATIENT_ADDRESS;
-                                            }
-                                        }
+                                        //        currentPatientSDO.ADDRESS = latestTreatment.TDL_PATIENT_ADDRESS;
+                                        //    }
+                                        //}
                                         this.currentPatientSDO = (HisPatientSDO)dataQr;
                                         this.dlgSendPatientSdo(currentPatientSDO);
                                         this.patientTD3 = (HisPatientSDO)dataQr;
@@ -746,6 +760,7 @@ namespace HIS.UC.UCPatientRaw
                                         dataResult.HeinCardData = heinCardDataForCheckGOV;
                                     }
                                 }
+
                             }
                         }
                         else
@@ -879,6 +894,8 @@ namespace HIS.UC.UCPatientRaw
                     }
                     MapHeinCardToPatientSDO();
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataResult), dataResult));
+
+                    this.currentPatientSDO = QuetThe(dataResult.HisPatientSDO);
                     bool checkK = checkKey6(dataResult.HisPatientSDO.ID);
                     if (!checkK)
                     {
@@ -1024,7 +1041,6 @@ namespace HIS.UC.UCPatientRaw
                         dataResult.HeinCardData = heinCardDataForCheckGOV;
                     }
                 }
-
                 if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
                 {
                     this.CheckPatientOldByHeinCard(heinCardDataForCheckGOV, false);//xuandv sua ve false// k check lan 2

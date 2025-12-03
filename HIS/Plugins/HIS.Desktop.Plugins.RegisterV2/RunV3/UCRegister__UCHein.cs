@@ -103,7 +103,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     this.ucAddressCombo1.SetValue(dataAddressPatient);
                     Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.6");
                 }
-                else if (dt.HisPatientSDO != null && HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
+                else if (dt.HisPatientSDO != null && dt.HisPatientSDO.TreatmentId != null && dt.HisPatientSDO.TreatmentId > 0 && HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
                 {
                     HisTreatmentFilter filter = new HisTreatmentFilter();
                     filter.ID = dt.HisPatientSDO.TreatmentId;
