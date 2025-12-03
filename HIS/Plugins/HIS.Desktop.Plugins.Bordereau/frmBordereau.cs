@@ -2817,7 +2817,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                     return;
                  }
                 var enableLock = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.HisTreatment.EnableIsLockAfterFinishIfHasNoPatientPrice");
-                if (enableLock == "1")
+                if (!string.IsNullOrEmpty(enableLock) && enableLock == "1")
                 {
                     CommonParam param = new CommonParam();
                     HisTreatmentFeeViewFilter searchFilter = new HisTreatmentFeeViewFilter();
@@ -2843,7 +2843,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                 else
                 {
 
-                    btnFeeLock.Enabled = false;
+                    btnFeeLock.Visible = false;
                 }
             }
             
