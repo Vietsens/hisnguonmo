@@ -432,12 +432,20 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
             }
         }
         private void MaterialTypeNodeCellStyle(object data, DevExpress.Utils.AppearanceObject appearanceObject)
-        {
+        {     
             try
             {
                 if (data is HIS.UC.MaterialType.ADO.MaterialTypeADO)
                 {
-                    if (((HIS.UC.MaterialType.ADO.MaterialTypeADO)data).IS_LEAF != 1)
+                    HIS.UC.MaterialType.ADO.MaterialTypeADO materialTypeData = (HIS.UC.MaterialType.ADO.MaterialTypeADO)data;
+                    if (materialTypeData.IS_STOP_IMP == 1)
+                    {
+                        // Đặt màu chữ thành màu đỏ
+                        appearanceObject.ForeColor = System.Drawing.Color.Maroon;
+                    }
+
+                    // Giữ lại logic in đậm cho các node không phải node lá
+                    if (materialTypeData.IS_LEAF != 1)
                     {
                         appearanceObject.FontStyleDelta = System.Drawing.FontStyle.Bold;
                     }
@@ -448,6 +456,7 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        
         private void MaterialTypeStateImageClick(MaterialTypeADO data)
         {
             try
@@ -693,7 +702,7 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 List<String> ColnParams = new List<string> { "ID", "MATERIAL_TYPE_CODE", "MATERIAL_TYPE_NAME", "SERVICE_UNIT_NAME", "CONCENTRA",
                     "NATIONAL_NAME", "MANUFACTURER_NAME", "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO",
                     "LAST_EXP_PRICE","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME", "LAST_EXP_VAT_RATIO", "IS_LEAF", "PARENT_ID", "IS_ACTIVE", "REGISTER_NUMBER",
-                    "IMP_VAT_RATIO","IMP_PRICE","PACKING_TYPE_NAME","IS_BUSINESS", "IS_DRUG_STORE", "LOCKING_REASON", "IS_REUSABLE", "MODEL_CODE"};
+                    "IMP_VAT_RATIO","IMP_PRICE","PACKING_TYPE_NAME","IS_BUSINESS", "IS_DRUG_STORE", "LOCKING_REASON", "IS_REUSABLE", "MODEL_CODE", "IS_STOP_IMP"};
                 filter.ColumnParams = ColnParams;
                 this.materialTypes = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_TYPE>>(HisRequestUri.HIS_MATERIAL_TYPE_GETVIEWDynamic, ApiConsumers.MosConsumer, filter, param);
                 if (currentMediStock != null && currentMediStock.IS_BUSINESS == 1 && currentMediStock.IS_SHOW_DRUG_STORE == 1)

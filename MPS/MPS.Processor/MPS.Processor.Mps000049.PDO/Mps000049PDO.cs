@@ -261,16 +261,11 @@ namespace MPS.Processor.Mps000049.PDO
                             this.MEDICINE_PARENT_ID = MedicineType.PARENT_ID;
                             this.MEDICINE_PARENT_CODE = MedicineType.PARENT_CODE;
                             this.MEDICINE_PARENT_NAME = MedicineType.PARENT_NAME;
-                            try
-                            {
-                                this.USED_PART = MedicineType.USED_PART;
-                            }
-                            catch
-                            {
-                                this.USED_PART = MedicineType.USED_PART != null ? MedicineType.USED_PART.ToString() : null;
-                            }
+                            
+                            this.USED_PART = MedicineType.USED_PART;                         
                         }
                     }
+
 
                     if (_expMest.EXP_MEST_STT_ID == _expMesttSttId__Approval || _expMest.EXP_MEST_STT_ID == _expMesttSttId__Export)
                     {
