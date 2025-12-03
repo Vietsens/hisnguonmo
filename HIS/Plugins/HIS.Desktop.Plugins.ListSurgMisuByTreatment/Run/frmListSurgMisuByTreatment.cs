@@ -557,15 +557,18 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
         {
             try
             {
+                // Thu thập các dịch vụ được chọn cùng với rowHandle tương ứng
                 List<SurgMisuADO> selectedAdos = new List<SurgMisuADO>();
+                List<int> selectedRowHandles = new List<int>();
                 int firstSelectedHandle = -1;
                 for (int i = 0; i < gridView.DataRowCount; i++)
                 {
                     var ado = (SurgMisuADO)gridView.GetRow(i);
                     bool isSelected = (bool?)gridView.GetRowCellValue(i, "IS_SELECTED_STR") ?? false;
-                    if (isSelected)
+                    if (isSelected && ado != null)
                     {
                         selectedAdos.Add(ado);
+                        selectedRowHandles.Add(i);
                         if (firstSelectedHandle < 0) firstSelectedHandle = i;
                     }
                 }
@@ -574,7 +577,8 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                     MessageBox.Show("Vui lòng chọn ít nhất một dịch vụ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
-                string surgeryNames = string.Join(";", selectedAdos.Select(s => s.TDL_SERVICE_NAME));
+
+                // Trường hợp chỉ chọn 1 dịch vụ: giữ nguyên hành vi cũ
                 if (selectedAdos.Count == 1)
                 {
                     int rowHandle = firstSelectedHandle;
@@ -596,15 +600,67 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                         if (DateTime.TryParse(cellEnd.ToString(), out var tmpEnd)) dtEndTime = tmpEnd;
                     }
 
+                    string surgeryName = selectedAdos[0].TDL_SERVICE_NAME;
                     if (loadPTTT != null)
-                        loadPTTT(surgeryNames, dtBeginTime, dtEndTime);
+                        loadPTTT(surgeryName, dtBeginTime, dtEndTime);
 
                     this.Close();
                     return;
                 }
+
+                // Trường hợp chọn nhiều dịch vụ:
+                // - Combobox thời gian bắt đầu / kết thúc ở FormTransfer vẫn để trống (truyền null)
+                // - Ghi tên dịch vụ + thời gian bắt đầu / kết thúc (nếu có) vào memPttt
+                List<string> surgeryInfoList = new List<string>();
+                GridColumn colBeginMulti = gridView.Columns[8];
+                GridColumn colEndMulti = gridView.Columns[9];
+
+                for (int index = 0; index < selectedAdos.Count; index++)
+                {
+                    var ado = selectedAdos[index];
+                    int rowHandle = selectedRowHandles[index];
+
+                    DateTime? dtBeginTime = null, dtEndTime = null;
+
+                    var cellBegin = gridView.GetRowCellValue(rowHandle, colBeginMulti);
+                    if (cellBegin != null && !string.IsNullOrWhiteSpace(cellBegin.ToString()))
+                    {
+                        if (DateTime.TryParse(cellBegin.ToString(), out var tmpBegin)) dtBeginTime = tmpBegin;
+                    }
+
+                    var cellEnd = gridView.GetRowCellValue(rowHandle, colEndMulti);
+                    if (cellEnd != null && !string.IsNullOrWhiteSpace(cellEnd.ToString()))
+                    {
+                        if (DateTime.TryParse(cellEnd.ToString(), out var tmpEnd)) dtEndTime = tmpEnd;
+                    }
+
+                    string name = ado.TDL_SERVICE_NAME;
+
+                    if (dtBeginTime.HasValue || dtEndTime.HasValue)
+                    {
+                        string beginStr = dtBeginTime.HasValue ? dtBeginTime.Value.ToString("dd/MM/yyyy HH:mm") : "";
+                        string endStr = dtEndTime.HasValue ? dtEndTime.Value.ToString("dd/MM/yyyy HH:mm") : "";
+
+                        if (!string.IsNullOrEmpty(beginStr) || !string.IsNullOrEmpty(endStr))
+                        {
+                            surgeryInfoList.Add(string.Format("{0} ({1} - {2})", name, beginStr, endStr));
+                        }
+                        else
+                        {
+                            surgeryInfoList.Add(name);
+                        }
+                    }
+                    else
+                    {
+                        surgeryInfoList.Add(name);
+                    }
+                }
+
+                string surgeryNamesWithTime = string.Join(";", surgeryInfoList);
                 if (loadPTTT != null)
                 {
-                    loadPTTT(surgeryNames, null, null);
+                    // Thời gian bắt đầu / kết thúc để null để dteBegin / dteEnd không tự set
+                    loadPTTT(surgeryNamesWithTime, null, null);
                 }
                 this.Close();
             }
