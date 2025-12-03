@@ -338,7 +338,7 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
                         }
                         else
                         {
-                            if (item.BLOOD_TYPE_CODE.Length > 25)
+                            if (item.BLOOD_TYPE_CODE.Length > 100)
                             {
                                 errors.Add(string.Format(Resources.ResourceLanguageManager.Maxlength, GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_CODE")));
                             }
@@ -363,7 +363,7 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
                         }
                         else
                         {
-                            if (Inventec.Common.String.CountVi.Count(ado.BLOOD_TYPE_NAME) > 500)
+                            if (Inventec.Common.String.CountVi.Count(ado.BLOOD_TYPE_NAME) > 3000)
                             {
                                 errors.Add(string.Format(Resources.ResourceLanguageManager.Maxlength, GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_NAME")));
                             }
