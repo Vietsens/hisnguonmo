@@ -323,11 +323,11 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
                             }
                             else if (HisbedRoom == null)
                             {
-                                error += string.Format("{0} không hợp lệ", item.EXECUTE_ROOM_CODE);
+                                error += string.Format("{0} không hợp lệ|", item.EXECUTE_ROOM_CODE);
                             }
                             else
                             {
-                                error += string.Format("Mã phòng {0} đã bị khóa", item.EXECUTE_ROOM_CODE);
+                                error += string.Format("Mã phòng {0} đã bị khóa|", item.EXECUTE_ROOM_CODE);
                             }
                         }
                         else
@@ -378,13 +378,11 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
                                 var HisbedRoom = BackendDataWorker.Get<V_HIS_BED_ROOM>().FirstOrDefault(p => p.BED_ROOM_CODE == item.EXECUTE_ROOM_CODE);
                                 if (HisbedRoom != null)
                                 {
-                                    error += string.Format("Các phòng sau cần phải chọn ít nhất 1 trong 2 'Được lấy stt ưu tiên' hoặc 'được phép yêu cầu: {0} - {1}", HisbedRoom.BED_ROOM_CODE, HisbedRoom.BED_ROOM_NAME);
+                                    error += string.Format("Các phòng sau cần phải chọn ít nhất 1 trong 2 'Được lấy stt ưu tiên' hoặc 'được phép yêu cầu: {0} - {1}|", HisbedRoom.BED_ROOM_CODE, HisbedRoom.BED_ROOM_NAME);
                                 }
                                 else
                                 {
-
-
-                                    error += string.Format("Các phòng sau cần phải chọn ít nhất 1 trong 2 'Được lấy stt ưu tiên' hoặc 'được phép yêu cầu': {0}", item.EXECUTE_ROOM_CODE);
+                                    error += string.Format("Các phòng sau cần phải chọn ít nhất 1 trong 2 'Được lấy stt ưu tiên' hoặc 'được phép yêu cầu': {0}|", item.EXECUTE_ROOM_CODE);
                                 }
                             }
                             else
@@ -412,18 +410,14 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
                             filter.IS_ACTIVE = 1;
                             filter.ROOM_ID = roomId;
 
-                            var checkExroRoom = new BackendAdapter(paramCommon).Get<List<HIS_EXRO_ROOM>>
-                                ("api/HisExroRoom/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
-
-                            var ListExroRooms = checkExroRoom.Where(o => (o.EXECUTE_ROOM_ID == exeRoomId && o.ROOM_ID == roomId)
-                                                                || (o.ROOM_ID == roomId && o.BED_ROOM_ID == hisBedRoomId)).ToList();
-
-                            if (ListExroRooms.Count > 0)
+                            List<HIS_EXRO_ROOM> checkExroRoom = new List<HIS_EXRO_ROOM>();
+                            if (true)
                             {
-                                error += ("Dữ liệu đã tồn tại");
+                                checkExroRoom = new BackendAdapter(paramCommon).Get<List<HIS_EXRO_ROOM>>
+                                ("api/HisExroRoom/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
                             }
-
-                            var check = checkExroRoom.Where(o => o.EXECUTE_ROOM_ID == exeRoom.ID && o.ROOM_ID == room.ID).FirstOrDefault();  
+                            
+                            var check = checkExroRoom.Where(o => (o.EXECUTE_ROOM_ID == exeRoomId || o.BED_ROOM_ID == hisBedRoomId) && o.ROOM_ID == roomId).FirstOrDefault();  
                             if (check != null)
                             {
                                 error += string.Format(Message.MessageImport.DaTonTai, item.ROOM_CODE);
