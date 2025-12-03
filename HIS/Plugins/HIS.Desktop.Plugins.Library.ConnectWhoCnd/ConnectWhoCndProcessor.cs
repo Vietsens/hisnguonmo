@@ -170,10 +170,10 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Info("SendDataWithoutCheck");
+
                 if (Configs.CheckConnect())
                 {
-                    Inventec.Common.Logging.LogSystem.Info("SendDataWithoutCheck");
-
                     List<string> totalIcds = new List<string>();
                     if (!String.IsNullOrWhiteSpace(data.ICD_CODE))
                     {
@@ -345,20 +345,23 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 if (HIS_DHSTs != null && HIS_DHSTs.Count > 0)
                 {
                     dhst = HIS_DHSTs.Where(o => o.BLOOD_PRESSURE_MAX.HasValue && o.BLOOD_PRESSURE_MIN.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).FirstOrDefault();
-                    if (!dhst.WEIGHT.HasValue)
+                    if (dhst != null)
                     {
-                        var weight = HIS_DHSTs.Where(o => o.WEIGHT.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).ToList();
-                        if (weight != null && weight.Count > 0)
+                        if (!dhst.WEIGHT.HasValue)
                         {
-                            dhst.WEIGHT = weight.FirstOrDefault().WEIGHT;
+                            var weight = HIS_DHSTs.Where(o => o.WEIGHT.HasValue).ToList();
+                            if (weight != null && weight.Count > 0)
+                            {
+                                dhst.WEIGHT = weight.OrderByDescending(o => o.EXECUTE_TIME ?? 0).FirstOrDefault().WEIGHT;
+                            }
                         }
-                    }
-                    if (!dhst.HEIGHT.HasValue)
-                    {
-                        var height = HIS_DHSTs.Where(o => o.HEIGHT.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).ToList();
-                        if (height != null && height.Count > 0)
+                        if (!dhst.HEIGHT.HasValue)
                         {
-                            dhst.HEIGHT = height.FirstOrDefault().HEIGHT;
+                            var height = HIS_DHSTs.Where(o => o.HEIGHT.HasValue).ToList();
+                            if (height != null && height.Count > 0)
+                            {
+                                dhst.HEIGHT = height.OrderByDescending(o => o.EXECUTE_TIME ?? 0).FirstOrDefault().HEIGHT;
+                            }
                         }
                     }
                 }

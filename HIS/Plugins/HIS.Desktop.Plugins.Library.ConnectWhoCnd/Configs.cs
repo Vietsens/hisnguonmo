@@ -68,6 +68,8 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
 
         internal static bool CheckConnect()
         {
+            Inventec.Common.Logging.LogSystem.Info("SendDataWithoutCheck. CheckConnect");
+
             if (Utilities.NCDToken == null || Utilities.NCDToken.response == null)
             {
                 var acc = new { program = PROGRAM, username = USERNAME, password = PASSWORD };
