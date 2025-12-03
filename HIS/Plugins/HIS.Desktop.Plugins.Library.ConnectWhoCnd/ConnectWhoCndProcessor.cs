@@ -110,8 +110,12 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 }
 
                 //cao huyết áp: I10-I15, khi lưu bắt buộc phải có thông tin huyết áp
-                if (Utilities.IsBATHA(totalIcds) && (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue))
+                //if (Utilities.IsBATHA(totalIcds) && (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue))
+                
+                if (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue)
                 {
+                    //cổng bắt lỗi nên check huyết áp với cả 2 bệnh
+                    //{"validate":{"ncdData.0.DU_LIEU.DTD.HA_TAM_THU":"Path `HA_TAM_THU` is required.","ncdData.0.DU_LIEU.DTD.HA_TAM_TRUONG":"Path `HA_TAM_TRUONG` is required."}}
                     message += "Bệnh nhân thiếu thông tin huyết áp. ";
                 }
 
