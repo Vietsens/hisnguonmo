@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using Aspose.Pdf.Devices;
 using DevExpress.Data;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Base;
@@ -46,8 +45,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Globalization;
-using System.Drawing.Imaging;
 using Inventec.Common.SignLibrary.DTO;
 using System.Drawing.Drawing2D;
 using Inventec.Desktop.Common.LanguageManager;
@@ -571,9 +568,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             try
             {
                 OpenFileDialog openFile = new OpenFileDialog();
-                //openFile.Filter = "Ảnh jpg|*.jpg|Ảnh Png|*.png|Ảnh jpeg|*.jpeg|Ảnh bmp|*.bmp|Ảnh gif|*.gif";
-                //openFile.DefaultExt = ".jpg";
-
                 openFile.Multiselect = true;
                 openFile.Filter = "Ảnh(*.jpg, *.Png, *.jpeg, *.bmp,*.gif,*.pdf)|*.jpg;*.png;*.jpeg;*.bmp;*.gif;*.pdf";
                 openFile.DefaultExt = ".jpg;.png;.jpeg;.bmp;.gif;.pdf";
@@ -598,16 +592,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             if ((extension ?? "").ToLower() == ".pdf")
                             {
                                 //từ đường dẫn file pdf là item đọc nội dung file và convert sang file ảnh
-                                //string joinPdfPathFile = "";
-                                //iTextSharp.text.pdf.PdfReader readerWorking = new iTextSharp.text.pdf.PdfReader(item);
-                                //float pageHeight = readerWorking.GetPageSize(1).Height;
-                                //Inventec.Common.SignLibrary.PdfDocumentProcess.SplitOnePageToImageAndJoinToNewOnePdf(item, pageHeight, ref joinPdfPathFile);
-                                //LogSystem.Debug("joinPdfPathFile:" + joinPdfPathFile);
-                                //this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(joinPdfPathFile);
-                                //this.fileNameAttack.FullName = joinPdfPathFile;
-                                this.fileNameAttack.FullName = item;
-                                this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(item);
-                                this.fileNameAttack.image = null;
+                                string joinPdfPathFile = "";
+                                iTextSharp.text.pdf.PdfReader readerWorking = new iTextSharp.text.pdf.PdfReader(item);
+                                float pageHeight = readerWorking.GetPageSize(1).Height;
+                                Inventec.Common.SignLibrary.PdfDocumentProcess.SplitOnePageToImageAndJoinToNewOnePdf(item, pageHeight, ref joinPdfPathFile);
+                                LogSystem.Debug("joinPdfPathFile:" + joinPdfPathFile);
+                                this.fileNameAttack.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(joinPdfPathFile);
+                                this.fileNameAttack.FullName = joinPdfPathFile;
                             }
                             else
                             {
