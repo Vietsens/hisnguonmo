@@ -262,7 +262,8 @@ namespace MPS.Processor.Mps000049.PDO
                             this.MEDICINE_PARENT_CODE = MedicineType.PARENT_CODE;
                             this.MEDICINE_PARENT_NAME = MedicineType.PARENT_NAME;
                             
-                            this.USED_PART = MedicineType.USED_PART;                         
+                            this.USED_PART = MedicineType.USED_PART;        
+                            
                         }
                     }
 
