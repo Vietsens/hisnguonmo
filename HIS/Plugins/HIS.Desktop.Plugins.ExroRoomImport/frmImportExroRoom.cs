@@ -231,6 +231,11 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
             {
                 _exeRoomRef = new List<ExroRoomADO>();
                 long i = 0;
+                CommonParam paramCommon = new CommonParam();
+                HisExroRoomFilter filter = new HisExroRoomFilter();
+                filter.IS_ACTIVE = 1;
+                var allExroRooms = new BackendAdapter(paramCommon).Get<List<HIS_EXRO_ROOM>>(
+                    "api/HisExroRoom/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
                 foreach (var item in _service)
                 {
                     i++;
@@ -393,43 +398,82 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
                             }
                         }
                     }
-                    
+
+                    //if (!string.IsNullOrEmpty(item.EXECUTE_ROOM_CODE) && !string.IsNullOrEmpty(item.ROOM_CODE))
+                    //{
+                    //    var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(p => p.ROOM_CODE == item.ROOM_CODE.Trim());
+                    //    var exeRoom = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(p => p.EXECUTE_ROOM_CODE == item.EXECUTE_ROOM_CODE.Trim());
+                    //    var HisbedRoom = BackendDataWorker.Get<V_HIS_BED_ROOM>().FirstOrDefault(p => p.BED_ROOM_CODE == item.EXECUTE_ROOM_CODE);
+
+                    //    var exeRoomId = exeRoom?.ID ?? 0;
+                    //    var roomId = room?.ID ?? 0;
+                    //    var hisBedRoomId = HisbedRoom?.ID ?? 0;
+                    //    if (room != null && exeRoom != null)
+                    //    {
+                    //        //var checkExroRoom = BackendDataWorker.Get<HIS_EXRO_ROOM>().FirstOrDefault(p => p.ROOM_ID == room.ID && p.EXECUTE_ROOM_ID == exeRoom.ID);
+
+                    //        CommonParam paramCommon = new CommonParam();
+                    //        HisExroRoomFilter filter = new HisExroRoomFilter();
+                    //        filter.IS_ACTIVE = 1;
+                    //        filter.ROOM_ID = roomId;
+
+                    //        var checkExroRoom = new BackendAdapter(paramCommon).Get<List<HIS_EXRO_ROOM>>
+                    //            ("api/HisExroRoom/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
+
+                    //        var ListExroRooms = checkExroRoom.Where(o => (o.EXECUTE_ROOM_ID == exeRoomId && o.ROOM_ID == roomId)
+                    //                                            || (o.ROOM_ID == roomId && o.BED_ROOM_ID == hisBedRoomId)).ToList();
+
+                    //        if (ListExroRooms.Count > 0)
+                    //        {
+                    //            error += ("Dữ liệu đã tồn tại");
+                    //        }
+
+                    //        var check = checkExroRoom.Where(o => o.EXECUTE_ROOM_ID == exeRoom.ID && o.ROOM_ID == room.ID).FirstOrDefault();  
+                    //        if (check != null)
+                    //        {
+                    //            error += string.Format(Message.MessageImport.DaTonTai, item.ROOM_CODE);
+                    //        }
+                    //    }
+                    //}
                     if (!string.IsNullOrEmpty(item.EXECUTE_ROOM_CODE) && !string.IsNullOrEmpty(item.ROOM_CODE))
                     {
-                        var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(p => p.ROOM_CODE == item.ROOM_CODE.Trim());
-                        var exeRoom = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().FirstOrDefault(p => p.EXECUTE_ROOM_CODE == item.EXECUTE_ROOM_CODE.Trim());
-                        var HisbedRoom = BackendDataWorker.Get<V_HIS_BED_ROOM>().FirstOrDefault(p => p.BED_ROOM_CODE == item.EXECUTE_ROOM_CODE);
+                        var room = BackendDataWorker.Get<V_HIS_ROOM>()
+                            .FirstOrDefault(p => p.ROOM_CODE == item.ROOM_CODE.Trim());
 
-                        var exeRoomId = exeRoom?.ID ?? 0;
-                        var roomId = room?.ID ?? 0;
-                        var hisBedRoomId = HisbedRoom?.ID ?? 0;
-                        if (room != null && exeRoom != null)
+                        var exeRoom = BackendDataWorker.Get<HIS_EXECUTE_ROOM>()
+                            .FirstOrDefault(p => p.EXECUTE_ROOM_CODE == item.EXECUTE_ROOM_CODE.Trim());
+
+                        var hisBedRoom = BackendDataWorker.Get<V_HIS_BED_ROOM>()
+                            .FirstOrDefault(p => p.BED_ROOM_CODE == item.EXECUTE_ROOM_CODE.Trim());
+
+                        if (room != null)
                         {
-                            //var checkExroRoom = BackendDataWorker.Get<HIS_EXRO_ROOM>().FirstOrDefault(p => p.ROOM_ID == room.ID && p.EXECUTE_ROOM_ID == exeRoom.ID);
-
-                            CommonParam paramCommon = new CommonParam();
-                            HisExroRoomFilter filter = new HisExroRoomFilter();
-                            filter.IS_ACTIVE = 1;
-                            filter.ROOM_ID = roomId;
-
-                            var checkExroRoom = new BackendAdapter(paramCommon).Get<List<HIS_EXRO_ROOM>>
-                                ("api/HisExroRoom/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
-
-                            var ListExroRooms = checkExroRoom.Where(o => (o.EXECUTE_ROOM_ID == exeRoomId && o.ROOM_ID == roomId)
-                                                                || (o.ROOM_ID == roomId && o.BED_ROOM_ID == hisBedRoomId)).ToList();
-
-                            if (ListExroRooms.Count > 0)
+                            
+                            if (exeRoom != null)
                             {
-                                error += ("Dữ liệu đã tồn tại");
+                                var check = allExroRooms?
+                                    .FirstOrDefault(o => o.EXECUTE_ROOM_ID == exeRoom.ID && o.ROOM_ID == room.ID);
+
+                                if (check != null)
+                                {
+                                    error += string.Format(Message.MessageImport.DaTonTai, item.ROOM_CODE);
+                                }
                             }
 
-                            var check = checkExroRoom.Where(o => o.EXECUTE_ROOM_ID == exeRoom.ID && o.ROOM_ID == room.ID).FirstOrDefault();  
-                            if (check != null)
+                          
+                            if (hisBedRoom != null)
                             {
-                                error += string.Format(Message.MessageImport.DaTonTai, item.ROOM_CODE);
+                                var checkBed = allExroRooms?
+                                    .FirstOrDefault(o => o.EXECUTE_ROOM_ID == hisBedRoom.ID && o.ROOM_ID == room.ID);
+
+                                if (checkBed != null)
+                                {
+                                    error += string.Format(Message.MessageImport.DaTonTai, item.ROOM_CODE);
+                                }
                             }
                         }
                     }
+
 
                     serAdo.ERROR = error;
                     serAdo.ID = i;

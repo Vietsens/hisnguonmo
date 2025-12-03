@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using Aspose.Pdf.Devices;
 using DevExpress.Data;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Base;
@@ -46,8 +45,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Globalization;
-using System.Drawing.Imaging;
 using Inventec.Common.SignLibrary.DTO;
 using System.Drawing.Drawing2D;
 using Inventec.Desktop.Common.LanguageManager;
@@ -571,9 +568,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             try
             {
                 OpenFileDialog openFile = new OpenFileDialog();
-                //openFile.Filter = "Ảnh jpg|*.jpg|Ảnh Png|*.png|Ảnh jpeg|*.jpeg|Ảnh bmp|*.bmp|Ảnh gif|*.gif";
-                //openFile.DefaultExt = ".jpg";
-
                 openFile.Multiselect = true;
                 openFile.Filter = "Ảnh(*.jpg, *.Png, *.jpeg, *.bmp,*.gif,*.pdf)|*.jpg;*.png;*.jpeg;*.bmp;*.gif;*.pdf";
                 openFile.DefaultExt = ".jpg;.png;.jpeg;.bmp;.gif;.pdf";

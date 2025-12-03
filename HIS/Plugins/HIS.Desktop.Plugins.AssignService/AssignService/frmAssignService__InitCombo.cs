@@ -760,10 +760,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     if (serviceGroups != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_SERVICE_GROUP), serviceGroups, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                 }
 
-                serviceGroups = (serviceGroups != null && serviceGroups.Count > 0) ?
-                    serviceGroups.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE &&
-                        ((o.IS_PUBLIC ?? -1) == 1 || o.CREATOR.ToLower() == loginName.ToLower()))
-                        .ToList()
+                serviceGroups = (serviceGroups != null && serviceGroups.Count > 0)
+                ? serviceGroups.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    && ((o.IS_PUBLIC ?? -1) == 1
+                        || (!string.IsNullOrEmpty(o.CREATOR)
+                            && !string.IsNullOrEmpty(loginName)
+                            && o.CREATOR.Equals(loginName, StringComparison.OrdinalIgnoreCase)))).ToList()
                 : serviceGroups;
 
                 // order tăng dần theo num_order
