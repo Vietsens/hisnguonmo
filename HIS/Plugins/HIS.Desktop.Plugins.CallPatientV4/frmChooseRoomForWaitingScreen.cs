@@ -61,7 +61,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
 
 
         public frmChooseRoomForWaitingScreen(Inventec.Desktop.Common.Modules.Module module)
-		:base(module)
+        : base(module)
         {
             FormCollection fc = Application.OpenForms;
             foreach (Form frm in fc)
@@ -75,6 +75,8 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             InitializeComponent();
             this.roomId = module.RoomId;
             this.currentModule = module;
+            Inventec.Common.Logging.LogSystem.Debug("thangdq: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", this.currentModule));
+
         }
 
         private void frmChooseRoomForWaitingScreen_Load(object sender, EventArgs e)
@@ -91,43 +93,46 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                 ValidateRoom();
                 ToogleExtendMonitor();
                 SetDataTolblControl();
-                LoadTitleConfigFromControlState();
-                UpdateEmergencyConfigVisibility(); 
+                //LoadTitleConfigFromControlState();
+                UpdateSeparateInOutConfigVisibility();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void LoadTitleConfigFromControlState()
-        {
-            try
-            {
-                if (currentControlStateRDO == null) return;
+        #region thua
+        //private void LoadTitleConfigFromControlState()
+        //{
+        //    try
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Debug("Load config ban ??u");
+        //        if (currentControlStateRDO == null) return;
 
-                var titleNoiTru = currentControlStateRDO.FirstOrDefault(o => o.KEY == "TitleNoiTru");
-                if (titleNoiTru != null) txtTitleNoiTru.Text = titleNoiTru.VALUE ?? "";
+        //        var titleNoiTru = currentControlStateRDO.FirstOrDefault(o => o.KEY == "CallPatientV4_TitleNoiTru"); 
+        //        if (titleNoiTru != null) txtTitleNoiTru.Text = titleNoiTru.VALUE ?? "";
 
-                var titleNgoaiTru = currentControlStateRDO.FirstOrDefault(o => o.KEY == "TitleNgoaiTru");
-                if (titleNgoaiTru != null) txtTitleNgoaiTru.Text = titleNgoaiTru.VALUE ?? "";
+        //        var titleNgoaiTru = currentControlStateRDO.FirstOrDefault(o => o.KEY == "CallPatientV4_TitleNgoaiTru");
+        //        if (titleNgoaiTru != null) txtTitleNgoaiTru.Text = titleNgoaiTru.VALUE ?? "";
 
-                var fontSize = currentControlStateRDO.FirstOrDefault(o => o.KEY == "TitleFontSize");
-                if (fontSize != null && int.TryParse(fontSize.VALUE, out int size) && size > 0)
-                    spinFontSize.Value = size;
+        //        var fontSize = currentControlStateRDO.FirstOrDefault(o => o.KEY == "CallPatientV4_TitleFontSize");
+        //        if (fontSize != null && int.TryParse(fontSize.VALUE, out int size) && size > 0)
+        //            spinFontSize.Value = size;
 
-                var color = currentControlStateRDO.FirstOrDefault(o => o.KEY == "TitleFontColor");
-                if (color != null)
-                {
-                    var rgb = color.VALUE.Split(',').Select(int.Parse).ToArray();
-                    if (rgb.Length == 3)
-                        colorEditTitle.Color = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //        var color = currentControlStateRDO.FirstOrDefault(o => o.KEY == "CallPatientV4_TitleFontColor");
+        //        if (color != null)
+        //        {
+        //            var rgb = color.VALUE.Split(',').Select(int.Parse).ToArray();
+        //            if (rgb.Length == 3)
+        //                colorEditTitle.Color = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
+        #endregion 
 
         private void InitControlState()
         {
@@ -142,6 +147,36 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                         if (item.KEY == ControlStateConstant.chkSeparatePatientNoiTruNgoaiTru)
                         {
                             chkSeparatePatientNoiTruNgoaiTru.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == ControlStateConstant.chkSeparatePatientCapCuu)
+                        {
+                            chkSeparatePatientCapCuu.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == "CallPatientV4_TitleNoiTru")
+                        {
+                            txtTitleNoiTru.Text = item.VALUE ?? "";
+                        }
+                        else if (item.KEY == "CallPatientV4_TitleNgoaiTru")
+                        {
+                            txtTitleNgoaiTru.Text = item.VALUE ?? "";
+                        }
+                        else if (item.KEY == "CallPatientV4_TitleFontSize")
+                        {
+                            if (int.TryParse(item.VALUE, out int size) && size > 0)
+                                spinFontSize.Value = size;
+                        }
+                        else if (item.KEY == "CallPatientV4_TitleFontColor")
+                        {
+                            try
+                            {
+                                var rgb = item.VALUE.Split(',').Select(int.Parse).ToArray();
+                                if (rgb.Length == 3)
+                                    colorEditTitle.Color = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
                         }
                     }
                 }
@@ -244,10 +279,11 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                 if (!dxValidationProviderControl.Validate())
                     return;
                 //qtcode
-                SaveTitleConfig(); 
+                SaveTitleConfig();
                 if (chkSeparatePatientNoiTruNgoaiTru.Checked)
                 {
-                    aFrmWaitingScreenQy_SeparateScreen = new frmWaitingScreen_V4_SeparateScreen(this.currentModule,HisServiceReq, serviceReqStts, this.currentControlStateRDO);
+                    Inventec.Common.Logging.LogSystem.Debug("G?i hàm kh?i t?o màn hình chia");
+                    aFrmWaitingScreenQy_SeparateScreen = new frmWaitingScreen_V4_SeparateScreen(this.currentModule, HisServiceReq, serviceReqStts, this.currentControlStateRDO);
                     if (this.room != null)
                     {
                         aFrmWaitingScreenQy_SeparateScreen.room = this.room;
@@ -264,7 +300,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                 }
                 else
                 {
-                    aFrmWaitingScreenQy = new frmWaitingScreen_V4(this.currentModule,HisServiceReq, serviceReqStts);
+                    aFrmWaitingScreenQy = new frmWaitingScreen_V4(this.currentModule, HisServiceReq, serviceReqStts, this.currentControlStateRDO);
                     if (this.room != null)
                     {
                         aFrmWaitingScreenQy.room = this.room;
@@ -385,7 +421,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                 }
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
                 WaitingManager.Hide();
-                UpdateEmergencyConfigVisibility(); 
+                UpdateSeparateInOutConfigVisibility();
             }
             catch (Exception ex)
             {
@@ -394,13 +430,14 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             }
         }
 
-        private void UpdateEmergencyConfigVisibility()
+        private void UpdateSeparateInOutConfigVisibility()
         {
-            bool showEmergencyConfig = chkSeparatePatientNoiTruNgoaiTru.Checked;
-            lcTitleNgoaiTru.Visibility = showEmergencyConfig? LayoutVisibility.Always:LayoutVisibility.Never;
-            lcTitleNoiTru.Visibility = showEmergencyConfig? LayoutVisibility.Always:LayoutVisibility.Never;
-            lcFontSize.Visibility = showEmergencyConfig? LayoutVisibility.Always:LayoutVisibility.Never;
-            lcColor.Visibility = showEmergencyConfig? LayoutVisibility.Always:LayoutVisibility.Never;
+            bool isChecked = chkSeparatePatientNoiTruNgoaiTru.Checked;
+            lcTitleNgoaiTru.Visibility = isChecked ? LayoutVisibility.Always : LayoutVisibility.Never;
+            lcTitleNoiTru.Visibility = isChecked ? LayoutVisibility.Always : LayoutVisibility.Never;
+            lcFontSize.Visibility = isChecked ? LayoutVisibility.Always : LayoutVisibility.Never;
+            lcColor.Visibility = isChecked ? LayoutVisibility.Always : LayoutVisibility.Never;
+            //layoutControlGroup4.Visibility = isChecked ? LayoutVisibility.Always : LayoutVisibility.Never;
         }
 
         private void chkSeparatePatientCapCuu_CheckedChanged(object sender, EventArgs e)
@@ -425,10 +462,10 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                 controlStateWorker.SetData(currentControlStateRDO);
                 WaitingManager.Hide();
             }
-            catch (Exception ex) 
-            { 
-                WaitingManager.Hide(); 
-                Inventec.Common.Logging.LogSystem.Warn(ex); 
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -436,6 +473,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("Luu trang thái title");
                 var listAddOrUpdate = new List<ControlStateRDO>();
 
                 UpdateControlState(ref listAddOrUpdate, "CallPatientV4_TitleNoiTru", txtTitleNoiTru.Text.Trim());
@@ -446,6 +484,8 @@ namespace HIS.Desktop.Plugins.CallPatientV4
 
                 Color c = colorEditTitle.Color;
                 UpdateControlState(ref listAddOrUpdate, "CallPatientV4_TitleFontColor", string.Format("{0},{1},{2}", c.R, c.G, c.B));
+                UpdateControlState(ref listAddOrUpdate, ControlStateConstant.chkSeparatePatientCapCuu, chkSeparatePatientCapCuu.Checked ? "1" : "");
+                UpdateControlState(ref listAddOrUpdate, ControlStateConstant.chkSeparatePatientNoiTruNgoaiTru, chkSeparatePatientNoiTruNgoaiTru.Checked ? "1" : "");
 
                 if (listAddOrUpdate.Count > 0)
                 {
@@ -475,6 +515,11 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                     MODULE_LINK = this.ModuleLink
                 });
             }
+        }
+
+        private void frmChooseRoomForWaitingScreen_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveTitleConfig();
         }
     }
 }

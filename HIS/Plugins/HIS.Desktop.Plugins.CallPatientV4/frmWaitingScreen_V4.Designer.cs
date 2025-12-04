@@ -46,6 +46,10 @@ namespace HIS.Desktop.Plugins.CallPatientV4
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
@@ -78,6 +82,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridControlWaitingCls = new DevExpress.XtraGrid.GridControl();
             this.gridViewWaitingCls = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumnSTT = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnIcon = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnLastName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemMemoEditName = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
             this.gridColumnAge = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -87,6 +92,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridColumnServiceReqStt = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnInstructionTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnServiceReqType = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup5 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -137,6 +143,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             ((System.ComponentModel.ISupportInitialize)(this.gridViewWaitingCls)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEditName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEditAddress)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
@@ -510,7 +517,8 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridControlWaitingCls.Name = "gridControlWaitingCls";
             this.gridControlWaitingCls.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemMemoEditName,
-            this.repositoryItemMemoEditAddress});
+            this.repositoryItemMemoEditAddress,
+            this.repositoryItemButtonEdit1});
             this.gridControlWaitingCls.Size = new System.Drawing.Size(1342, 487);
             this.gridControlWaitingCls.TabIndex = 4;
             this.gridControlWaitingCls.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -552,6 +560,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridViewWaitingCls.ColumnPanelRowHeight = 70;
             this.gridViewWaitingCls.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumnSTT,
+            this.gridColumnIcon,
             this.gridColumnLastName,
             this.gridColumnAge,
             this.gridColumnAddress,
@@ -573,6 +582,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridViewWaitingCls.RowHeight = 65;
             this.gridViewWaitingCls.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Never;
             this.gridViewWaitingCls.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gridViewWaitingCls_RowStyle);
+            this.gridViewWaitingCls.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewWaitingCls_CustomRowCellEdit);
             this.gridViewWaitingCls.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewWaitingCls_CustomUnboundColumnData);
             // 
             // gridColumnSTT
@@ -610,6 +620,19 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridColumnSTT.Visible = true;
             this.gridColumnSTT.VisibleIndex = 0;
             this.gridColumnSTT.Width = 150;
+            // 
+            // gridColumnIcon
+            // 
+            this.gridColumnIcon.AppearanceHeader.BackColor = System.Drawing.Color.DarkRed;
+            this.gridColumnIcon.AppearanceHeader.Options.UseBackColor = true;
+            this.gridColumnIcon.Caption = "gridColumn1";
+            this.gridColumnIcon.FieldName = "ICON_DISPLAY";
+            this.gridColumnIcon.Name = "gridColumnIcon";
+            this.gridColumnIcon.OptionsColumn.AllowEdit = false;
+            this.gridColumnIcon.OptionsColumn.AllowFocus = false;
+            this.gridColumnIcon.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnIcon.OptionsColumn.ShowCaption = false;
+            this.gridColumnIcon.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             // 
             // gridColumnLastName
             // 
@@ -811,6 +834,14 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             this.gridColumnServiceReqType.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnServiceReqType.Width = 270;
             // 
+            // repositoryItemButtonEdit1
+            // 
+            this.repositoryItemButtonEdit1.AutoHeight = false;
+            this.repositoryItemButtonEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.CallPatientV4.Properties.Resources.dich_vu, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            this.repositoryItemButtonEdit1.Name = "repositoryItemButtonEdit1";
+            this.repositoryItemButtonEdit1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
             // layoutControlGroup5
             // 
             this.layoutControlGroup5.AppearanceItemCaption.BackColor = System.Drawing.Color.Black;
@@ -991,6 +1022,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             ((System.ComponentModel.ISupportInitialize)(this.gridViewWaitingCls)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEditName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEditAddress)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
@@ -1062,5 +1094,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
         private System.Windows.Forms.Timer timerChangeColorRow;
         private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit repositoryItemMemoEditName;
         private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit repositoryItemMemoEditAddress;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnIcon;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit1;
     }
 }

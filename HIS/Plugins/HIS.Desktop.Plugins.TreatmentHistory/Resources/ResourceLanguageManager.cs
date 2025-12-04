@@ -10,5 +10,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory.Resources
     public class ResourceLanguageManager
     {
         public static ResourceManager LanguageResource { get; set; }
+        public static ResourceManager LanguageResource__FormApprovalFinish { get; set; }
+        public static ResourceManager LanguageResource__FrmFollow { get; set; }
+        public static ResourceManager LanguageResource__UCTreeListService { get; set; }
     }
 }

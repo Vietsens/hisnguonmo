@@ -248,9 +248,9 @@ namespace MPS.Processor.Mps000100
                     var first = item.First();
                     string parentName = (first.MEDICINE_PARENT_NAME ?? "").Trim();
                     if (string.IsNullOrWhiteSpace(parentName))
-                        parentName = "PHIẾU BÙ VẬT TƯ";
+                        parentName = "";
                     else
-                        parentName = "PHIẾU BÙ VẬT TƯ " + parentName.ToUpper();
+                        parentName = "" + parentName.ToUpper();
                     first.MEDICINE_PARENT_NAME = parentName;
                     lstMedicineParent1.Add(first);
                 }

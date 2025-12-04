@@ -126,14 +126,14 @@
   <data name="BHYT" xml:space="preserve">
     <value>BHYT: {0}/ {1}</value>
   </data>
+  <data name="BNChuaKeDonTrongKhoang" xml:space="preserve">
+    <value>BN chưa kê đơn trong khoảng</value>
+  </data>
   <data name="BNDangOTrongBuong" xml:space="preserve">
     <value>BN đang ở trong buồng</value>
   </data>
   <data name="BNVaoTrongKhoang" xml:space="preserve">
     <value>BN vào trong khoảng</value>
-  </data>
-	<data name="BNChuaKeDonTrongKhoang" xml:space="preserve">
-    <value>BN chưa kê đơn trong khoảng</value>
   </data>
   <data name="CoBenhNhanhBHYTTrongTongSoBenhNhan" xml:space="preserve">
     <value>Có {0} bệnh nhân BHYT trong tổng số {1} bệnh nhân</value>

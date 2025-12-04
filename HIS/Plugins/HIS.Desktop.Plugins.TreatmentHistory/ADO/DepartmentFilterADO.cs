@@ -18,25 +18,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.TreatmentHistory.Base
+namespace HIS.Desktop.Plugins.TreatmentHistory.ADO
 {
-    class ResourceLangManager
+    class DepartmentFilterADO
     {
-        internal static ResourceManager LanguageUCTreatmentHistory { get; set; }
-        internal static void InitResourceLanguageManager()
+        public long ID { get; set; }
+
+        public string DepartmentFilter { get; set; }
+
+        public DepartmentFilterADO(long id, string filterDepartment)
         {
-            try
-            {
-                LanguageUCTreatmentHistory = new ResourceManager("HIS.Desktop.Plugins.TreatmentHistory.Resources.Lang", typeof(HIS.Desktop.Plugins.TreatmentHistory.frmTreatmentHistory).Assembly);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            this.ID = id;
+            this.DepartmentFilter = filterDepartment;
         }
     }
 }

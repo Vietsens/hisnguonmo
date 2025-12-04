@@ -21,10 +21,12 @@ using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
+using HIS.Desktop.Library.CacheClient;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.Location;
+using HIS.Desktop.Plugins.CallPatientV4.Config;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
@@ -66,14 +68,16 @@ namespace HIS.Desktop.Plugins.CallPatientV4
         List<long> serviceReqSttIds = null;
         List<ServiceReq1ADO> tempListServiceReq;
         Inventec.Desktop.Common.Modules.Module module;
-
-        public frmWaitingScreen_V4(Inventec.Desktop.Common.Modules.Module module, MOS.EFMODEL.DataModels.HIS_SERVICE_REQ HisServiceReq, List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT> ServiceReqStts)
+        // qtcode
+        private bool isSeparateEmergency = false;
+        private List<ControlStateRDO> currentControlStateRDO;
+        public frmWaitingScreen_V4(Inventec.Desktop.Common.Modules.Module module, MOS.EFMODEL.DataModels.HIS_SERVICE_REQ HisServiceReq, List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT> ServiceReqStts, List<ControlStateRDO> controlStateRDO = null)
             : base(module)
         {
             InitializeComponent();
             this.hisServiceReq = HisServiceReq;
             this.serviceReqStts = ServiceReqStts;
-
+            this.currentControlStateRDO = controlStateRDO; 
         }
 
         private void frmWaitingScreen_QY_Load(object sender, EventArgs e)
@@ -86,8 +90,10 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                 SetDataToGridControlWaitingCLSs();
                 GetFilePath();
                 StartAllTimer();
-
-
+                //qtcode
+                LoadControlState(); 
+                ApplyEmergencyMode();
+                
                 //RegisterTimer(ModuleLink, "timerChangeColorRow", 1000, SetDataForChangeColor);
                 //StartTimer(ModuleLink, "timerChangeColorRow");
                 timerChangeColorRow.Enabled = true;
@@ -117,7 +123,18 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        
+        private void LoadControlState()
+        {
+            try
+            {
+                if (this.currentControlStateRDO == null) return;
+
+                var separateEmergency = this.currentControlStateRDO
+                    .FirstOrDefault(o => o.KEY == ControlStateConstant.chkSeparatePatientCapCuu && o.MODULE_LINK == "HIS.Desktop.Plugins.CallPatientV4");
+                isSeparateEmergency = (separateEmergency != null && separateEmergency.VALUE == "1");
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
         private void SetFormFrontOfAll()
         {
             try
@@ -533,6 +550,19 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                         }
                     }
                 }
+                // qtcode
+                if (!isSeparateEmergency) return;
+                var data = gridViewWaitingCls.GetRow(e.RowHandle) as ServiceReq1ADO;
+                if (data == null) return;
+
+                var dept = BackendDataWorker.Get<V_HIS_DEPARTMENT>()
+                    .FirstOrDefault(o => o.ID == data.REQUEST_DEPARTMENT_ID);
+
+                if (dept != null && dept.IS_EMERGENCY == 1)
+                {
+                    e.Appearance.ForeColor = Color.Red;
+                    e.HighPriority = true;
+                }
             }
             catch (Exception ex)
             {
@@ -582,7 +612,7 @@ namespace HIS.Desktop.Plugins.CallPatientV4
                     List<long> lstServiceReqSTTFilter = serviceReqStts.Select(o => o.ID).ToList();
                     hisServiceReqFilter.SERVICE_REQ_STT_IDs = lstServiceReqSTTFilter;
                 }
-                var result = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, hisServiceReqFilter, param);
+                var result = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumer.ApiConsumers.MosConsumer, hisServiceReqFilter, param);
                 //var result = BackendDataWorker.Get<HIS_SERVICE_REQ>().ToList();
                 if (result != null && result.Count > 0)
                 {
@@ -1087,6 +1117,84 @@ namespace HIS.Desktop.Plugins.CallPatientV4
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+            }
+        }
+
+        private void gridViewWaitingCls_CustomRowCellEdit(object sender, CustomRowCellEditEventArgs e)
+        {
+            if (e.Column.FieldName == "ICON_DISPLAY")
+            {
+                var data = (ServiceReq1ADO)gridViewWaitingCls.GetRow(e.RowHandle);
+                var dept = BackendDataWorker.Get<V_HIS_DEPARTMENT>()
+                    .FirstOrDefault(d => d.ID == data.REQUEST_DEPARTMENT_ID);
+
+                if (dept != null && dept.IS_EMERGENCY == 1)
+                {
+                    e.RepositoryItem = repositoryItemButtonEdit1;
+                }
+                else
+                {
+                    e.RepositoryItem = null;
+                }
+            }
+        }
+        private void ApplyEmergencyMode()
+        {
+            try
+            {
+                // Kiểm tra có bệnh nhân cấp cứu nào không
+                bool hasEmergencyPatient = false;
+                Inventec.Common.Logging.LogSystem.Debug("Đang kiểm tra xem có bệnh nhân cấp cứu nào không");
+                var allPatients = new List<ServiceReq1ADO>();
+                if (CallPatientDataWorker.DicCallPatient != null &&
+                    CallPatientDataWorker.DicCallPatient.ContainsKey(this.room.ID))
+                {
+                    allPatients.AddRange(CallPatientDataWorker.DicCallPatient[this.room.ID]);
+                }
+
+                if (allPatients.Count > 0)
+                {
+                    hasEmergencyPatient = allPatients.Any(p =>
+                    {
+                        var dept = BackendDataWorker.Get<V_HIS_DEPARTMENT>()
+                            .FirstOrDefault(d => d.ID == p.REQUEST_DEPARTMENT_ID);
+                        return dept != null && dept.IS_EMERGENCY == 1;
+                    });
+                }
+
+                bool enableEmergencyMode = isSeparateEmergency && hasEmergencyPatient;
+
+                if (enableEmergencyMode)
+                {
+                    LogSystem.Debug("Có ít nhất 1 bn cấp cứu");
+
+                    gridColumnSTT.Width = 100;
+
+                    var col = gridViewWaitingCls.Columns.ColumnByFieldName("ICON_DISPLAY");
+                    if (col != null)
+                    {
+                        col.Visible = true;
+                        col.VisibleIndex = 1;
+                    }
+                }
+                else
+                {
+
+                    gridColumnSTT.Width = 150;
+
+                    var col = gridViewWaitingCls.Columns.ColumnByFieldName("ICON_DISPLAY");
+                    if (col != null)
+                    {
+                        col.Visible = false;
+                        col.VisibleIndex = -1;
+                    }
+                }
+
+                gridViewWaitingCls.RefreshData();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

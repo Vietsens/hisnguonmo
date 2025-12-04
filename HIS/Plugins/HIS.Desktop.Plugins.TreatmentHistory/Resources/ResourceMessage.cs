@@ -9,7 +9,97 @@ namespace HIS.Desktop.Plugins.TreatmentHistory.Resources
     public class ResourceMessage
     {
         internal static System.Resources.ResourceManager languageMessage = new System.Resources.ResourceManager("HIS.Desktop.Plugins.TreatmentHistory.Resources.Message.Lang", System.Reflection.Assembly.GetExecutingAssembly());
-
+    
+        internal static string ThuocVtBNDaDung
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThuocVtBNDaDung", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+        internal static string MucAn
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("MucAn", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+        internal static string DTTT
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_TreatmentHistory__DTTT", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+        internal static string ToolTipDTTT
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ToolTipDTTT", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+        internal static string MucAnDTTT
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("MucAnDTTT", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+        internal static string ToolTipMucAnDTTT
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ToolTipMucAnDTTT", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
         internal static string DaDayThongTinLenHeThongYBaDienTu
         {
             get
@@ -113,6 +203,21 @@ namespace HIS.Desktop.Plugins.TreatmentHistory.Resources
                 try
                 {
                     return Inventec.Common.Resource.Get.Value("Plugin_TreatmentHistory__TatCa", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+                return "";
+            }
+        }
+        internal static string TrongKhoa
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_TreatmentHistory__TrongKhoa", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 }
                 catch (Exception ex)
                 {

@@ -254,6 +254,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private bool isInitializing = true;
         private void FormDebateDiagnostic_Load(object sender, EventArgs e)
         {
             try
@@ -355,7 +356,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 ICDValidationRule();
                 WaitingManager.Hide();
                 IsNotLoadFirst = false;
-
+                
             }
             catch (Exception ex)
             {
@@ -1771,7 +1772,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
         private void ChkPttt_CheckedChanged(object sender, EventArgs e)
         {
             try
-            {
+            {           
                 if (ChkPttt.Checked)
                 {
                     CheckThuoc.Checked = false;      
@@ -3423,6 +3424,6 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
         private void chkAutoCreateTracking_CheckedChanged(object sender, EventArgs e) //  đây là cái checkbox cần thêm
         {
 
-        }
+        }    
     }
 }
