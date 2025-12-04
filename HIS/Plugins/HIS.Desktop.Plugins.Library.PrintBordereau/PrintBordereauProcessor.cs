@@ -56,6 +56,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
 {
     public partial class PrintBordereauProcessor : MpsDataBase
     {
+        protected long? FromDateReq;
+        protected long? ToDateReq;
         private long roomId { get; set; }
         private long roomTypeId { get; set; }
         private long patientId { get; set; }
@@ -597,6 +599,37 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                     case PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_6556_THEO_LOAI_DICH_VU:
                         loadMps = new MpsBehavior.Mps000463.Mps000463Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, this.Patient, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, RoomName, UserNameReturnResult, this.SereServBills, this.SereServDeposits, this.SeseDepoRepays);
                         break;
+                    case PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_CHI_PHI_LOC:
+                        {
+                            long fromDateReq = this.FromDateReq.HasValue ? this.FromDateReq.Value : 0;
+                            long toDateReq = this.ToDateReq.HasValue ? this.ToDateReq.Value : long.MaxValue;
+
+                            loadMps = new MpsBehavior.Mps000504.Mps000504Behavior(
+                                this.roomId,
+                                this.PatientTypeAlter,
+                                SereServs,
+                                DepartmentTrans,
+                                TreatmentFees,
+                                Treatment,
+                                this.Patient,
+                                Rooms,
+                                Services,
+                                HeinServiceTypes,
+                                TotalDayTreatment,
+                                StatusTreatmentOut,
+                                DepartmentName,
+                                RoomName,
+                                UserNameReturnResult,
+                                this.SereServBills,
+                                this.transReq2,
+                                this.lstConfig,
+                                this.IsActionButtonPrintBill,
+                                fromDateReq,   
+                                toDateReq        
+                            );
+                            break;
+                        }
+
                 }
 
                 result = loadMps != null ? loadMps.Load(printCode, fileName, this.ReturnEventPrint) : false;

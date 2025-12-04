@@ -87,6 +87,11 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                     {
                         this.CurrentDepartmentId = data.CurrentDepartmentId;
                     }
+                    if (data.FromDateReq.HasValue)
+                        this.FromDateReq = data.FromDateReq;
+
+                    if (data.ToDateReq.HasValue)
+                        this.ToDateReq = data.ToDateReq;
                 }
 
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.KEY_IsPrintPrescriptionNoThread) == "1")
