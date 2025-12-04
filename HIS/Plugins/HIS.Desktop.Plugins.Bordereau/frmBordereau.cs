@@ -2811,14 +2811,16 @@ namespace HIS.Desktop.Plugins.Bordereau
         {
             try
             {
-                if (currentTreatment.IS_ACTIVE == 0)
-                {
-                    btnFeeLock.Enabled = false;
-                    return;
-                 }
+                
                 var enableLock = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.HisTreatment.EnableIsLockAfterFinishIfHasNoPatientPrice");
                 if (!string.IsNullOrEmpty(enableLock) && enableLock == "1")
                 {
+                    if (currentTreatment.IS_ACTIVE == 0)
+                    {
+                        btnFeeLock.Enabled = false;
+                        return;
+
+                    }
                     CommonParam param = new CommonParam();
                     HisTreatmentFeeViewFilter searchFilter = new HisTreatmentFeeViewFilter();
                     searchFilter.ID = treatmentId;
@@ -2842,8 +2844,12 @@ namespace HIS.Desktop.Plugins.Bordereau
                 }
                 else
                 {
-
-                    btnFeeLock.Visible = false;
+                    this.layoutControlItem12.MaxSize = new System.Drawing.Size(0, 56);
+                    this.layoutControlItem12.MinSize = new System.Drawing.Size(86, 56);
+              
+                    this.layoutControlItem12.Size = new System.Drawing.Size(86, 56);
+                    this.layoutControlItem12.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                    layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
             }
             
