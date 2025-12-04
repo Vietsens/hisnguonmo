@@ -10,7 +10,7 @@ namespace MPS.Processor.Mps000504
     {
         internal const string STR_HEIN_CARD_FROM_TIME = "STR_HEIN_CARD_FROM_TIME";
         internal const string STR_HEIN_CARD_TO_TIME = "STR_HEIN_CARD_TO_TIME";
-        internal const string STR_HEIN_CARD_NUMBER = "STR_HEIN_CARD_NUMBER";
+        internal const string STR_HEIN_CARD_NUMBER = "HEIN_CARD_NUMBER_SEPARATE";
         internal const string GENDER_NAME = "GENDER_NAME";
 
     }
