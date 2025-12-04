@@ -54,6 +54,7 @@ using HIS.Desktop.Plugins.MedicineTypeCreate.Popup;
 using HIS.Desktop.Plugins.MedicineTypeCreate.Config;
 using HIS.Desktop.ADO;
 using HIS.Desktop.Utility;
+using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 {
@@ -96,7 +97,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         List<HIS_PROCESSING_METHOD> lstProcessing = new List<HIS_PROCESSING_METHOD>();
         const string timerInitForm = "timerInitForm";
         List<HIS_SOURCE_MEDICINE> listHisSourceMedicine = new List<HIS_SOURCE_MEDICINE>();
-
+        List<AMedicineTypeADO> lstMedicine { get; set; }
+        List<AConfigADO> lstConfig { get; set; }
+        private bool chkKD = false;
+        private bool _isReloadingConfigCombo = false;
         enum ContainerClick
         {
             None,
@@ -200,20 +204,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                 InitComboPreserveCodition();
                 InitComboNguonGoc();
-
-
-                if (chkIsBusiness.Checked)
-                {
-                    chkIsSaleEqualImpPrice.Checked = false;
-                    chkIS_DRUG_STORE.Enabled = true;
-                }
-                else
-                {
-                    chkIsSaleEqualImpPrice.Enabled = true;
-                    chkIsSaleEqualImpPrice.Checked = true;
-                    chkIS_DRUG_STORE.Checked = false;
-                    chkIS_DRUG_STORE.Enabled = false;
-                }
+                LoadCboLoaiThuoc();
+                LoadCboConfig();
 
 
                 if (ChkIsSpecificHeinPrice.Checked)
@@ -245,7 +237,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         rdoUpdateAll.ReadOnly = false;
                         rdoUpdateNotFee.ReadOnly = false;
                         rdoUpdateNotFee.CheckState = CheckState.Checked;
-                        chkIsBusiness.Checked = false;
                         btnEditInfo.Enabled = true;
                         FillDataMedicineTypeToControl(currentVHisMedicineTypeDTODefault, currentVHisServiceDTODefault);
                         btnSave.Enabled = (currentVHisMedicineTypeDTODefault.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
@@ -264,7 +255,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     rdoWarning.Checked = true;
                     rdoWarning1.Checked = true;
                     var mediStock = BackendDataWorker.Get<HIS_MEDI_STOCK>().FirstOrDefault(o => o.ROOM_ID == this.module.RoomId);
-                    chkIsBusiness.Checked = mediStock != null && mediStock.IS_BUSINESS == 1;
                 }
 
                 FillBlockDepartment();
@@ -301,6 +291,203 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private List<AMedicineTypeADO> getListAMedicineType()
+        {
+            try
+            {
+                List<AMedicineTypeADO> listADO = new List<AMedicineTypeADO>()
+                {
+                    new AMedicineTypeADO { ID = 1,  NAME = "Hóa chất" },
+                    new AMedicineTypeADO { ID = 2,  NAME = "TPCN" },
+                    new AMedicineTypeADO { ID = 3,  NAME = "Thuốc dấu *" },
+                    new AMedicineTypeADO { ID = 4,  NAME = "Generic" },
+                    new AMedicineTypeADO { ID = 5,  NAME = "Vaccin" },
+                    new AMedicineTypeADO { ID = 6,  NAME = "Vitamin A" },
+                    new AMedicineTypeADO { ID = 7,  NAME = "TCMR" },
+                    new AMedicineTypeADO { ID = 8,  NAME = "Sinh phẩm" },
+                    new AMedicineTypeADO { ID = 9,  NAME = "Ô xy" },
+                    new AMedicineTypeADO { ID = 10, NAME = "Gây tê" },
+                    new AMedicineTypeADO { ID = 11, NAME = "Biệt dược gốc" },
+                    new AMedicineTypeADO { ID = 12, NAME = "Thuốc chạy thận" },
+                    new AMedicineTypeADO { ID = 13, NAME = "NLBC" }
+
+                };
+                return listADO;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        private List<AConfigADO> getConfigType()
+        {
+            try
+            {
+                List<AConfigADO> listADO = new List<AConfigADO>()
+                {
+                    new AConfigADO { ID = 1,  NAME = "Dừng nhập" },
+                    new AConfigADO { ID = 2,  NAME = "Chi phí ngoài gói" },
+                    new AConfigADO { ID = 3,  NAME = "Phải nhập hạn sử dụng" },
+                    new AConfigADO { ID = 4, NAME = "Cho kê lẻ" },
+                    new AConfigADO { ID = 5,  NAME = "Cho xuất lẻ" },
+                    new AConfigADO { ID = 6,  NAME = "Tách phần bù" },
+                    new AConfigADO { ID = 7,  NAME = "Không bắt buộc số lô, hạn sử dụng" },
+                    new AConfigADO { ID = 8,  NAME = "Phải dự trù" },
+                    new AConfigADO { ID = 9,  NAME = "Tự động hao phí" },
+                    new AConfigADO { ID = 10,  NAME = "Có nguồn chi trả khác" },
+                    new AConfigADO { ID = 11, NAME = "Đếm số ngày dùng" },
+                    new AConfigADO { ID = 12, NAME = "Không đếm số ngày dùng" },
+                    new AConfigADO { ID = 13, NAME = "Ngoài DRG" },
+                    new AConfigADO { ID = 14, NAME = "Thuốc ngoại viện" },
+                    new AConfigADO { ID = 15, NAME = "Thuốc kinh doanh" }
+                };
+                return listADO;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        private List<AConfigADO> getConfigTypeCheckKD()
+        {
+            try
+            {
+                List<AConfigADO> listADO = new List<AConfigADO>()
+                {
+                    new AConfigADO { ID = 1,  NAME = "Dừng nhập" },
+                    new AConfigADO { ID = 2,  NAME = "Chi phí ngoài gói" },
+                    new AConfigADO { ID = 3,  NAME = "Phải nhập hạn sử dụng" },
+                    new AConfigADO { ID = 4, NAME = "Cho kê lẻ" },
+                    new AConfigADO { ID = 5,  NAME = "Cho xuất lẻ" },
+                    new AConfigADO { ID = 6,  NAME = "Tách phần bù" },
+                    new AConfigADO { ID = 7,  NAME = "Không bắt buộc số lô, hạn sử dụng" },
+                    new AConfigADO { ID = 8,  NAME = "Phải dự trù" },
+                    new AConfigADO { ID = 9,  NAME = "Tự động hao phí" },
+                    new AConfigADO { ID = 10,  NAME = "Có nguồn chi trả khác" },
+                    new AConfigADO { ID = 11, NAME = "Đếm số ngày dùng" },
+                    new AConfigADO { ID = 12, NAME = "Không đếm số ngày dùng" },
+                    new AConfigADO { ID = 13, NAME = "Ngoài DRG" },
+                    new AConfigADO { ID = 14, NAME = "Thuốc ngoại viện" },
+                    new AConfigADO { ID = 15, NAME = "Thuốc kinh doanh" },
+                    new AConfigADO { ID = 16, NAME = "Thuốc quầy thuốc" }
+                };
+                return listADO;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        private void LoadCboLoaiThuoc()
+        {
+            try
+            {
+                List<AMedicineTypeADO> listADO = getListAMedicineType();
+                InitComboLoaiThuoc(listADO);
+                InitComboLoaiThuocCheck();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadCboConfig()
+        {
+            try
+            {
+                List<AConfigADO> listADO = getConfigType();
+                InitComboConfig(listADO);
+                InitComboConfigCheck();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // Danh sách ID cần disable
+        private readonly HashSet<long> disabledIds = new HashSet<long> { 16 };
+
+        private void InitComboConfig(List<AConfigADO> list)
+        {
+            try
+            {
+                cboConfig.Properties.View.Columns.Clear();
+                cboConfig.Properties.DataSource = null;
+                cboConfig.Properties.DataSource = list;
+                cboConfig.Properties.DisplayMember = "NAME";
+                cboConfig.Properties.ValueMember = "ID";
+                cboConfig.Properties.NullText = "";
+                cboConfig.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                cboConfig.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+                cboConfig.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
+                cboConfig.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
+                //cboLoaiThuoc.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                cboConfig.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+                cboConfig.Properties.View.OptionsView.ShowDetailButtons = false;
+                cboConfig.Properties.View.OptionsView.ShowGroupPanel = false;
+                cboConfig.Properties.View.OptionsView.ShowIndicator = false;
+
+                DevExpress.XtraGrid.Columns.GridColumn columnCode = cboConfig.Properties.View.Columns.AddField("NAME");
+                columnCode.Caption = "Loại";
+                columnCode.Visible = true;
+                columnCode.VisibleIndex = 2;
+                columnCode.Width = 100;
+
+                //column.Caption = "Tất cả";
+                cboConfig.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cboConfig.Properties.View.OptionsSelection.MultiSelect = true;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboLoaiThuoc(List<AMedicineTypeADO> list)
+        {
+            try
+            {
+                cboLoaiThuoc.Properties.DataSource = list;
+                cboLoaiThuoc.Properties.DisplayMember = "NAME";
+                cboLoaiThuoc.Properties.ValueMember = "ID";
+                cboLoaiThuoc.Properties.NullText = "";
+                cboLoaiThuoc.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                cboLoaiThuoc.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+                cboLoaiThuoc.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
+                cboLoaiThuoc.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
+                //cboLoaiThuoc.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                cboLoaiThuoc.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+                cboLoaiThuoc.Properties.View.OptionsView.ShowDetailButtons = false;
+                cboLoaiThuoc.Properties.View.OptionsView.ShowGroupPanel = false;
+                cboLoaiThuoc.Properties.View.OptionsView.ShowIndicator = false;
+
+                DevExpress.XtraGrid.Columns.GridColumn columnCode = cboLoaiThuoc.Properties.View.Columns.AddField("NAME");
+                columnCode.Caption = "Loại";
+                columnCode.Visible = true;
+                columnCode.VisibleIndex = 2;
+                columnCode.Width = 100;
+
+                //column.Caption = "Tất cả";
+                cboLoaiThuoc.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cboLoaiThuoc.Properties.View.OptionsSelection.MultiSelect = true;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
 
         private void InitComboOtherPay()
         {
@@ -371,15 +558,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
-                if (chkIsBusiness.Checked)
-                {
-                    chkIsSaleEqualImpPrice.Checked = false;
-                }
-                else
-                {
-                    chkIsSaleEqualImpPrice.Checked = true;
-                }
-
                 if (ChkIsSpecificHeinPrice.Checked)
                 {
                     btnGiaTran.Enabled = true;
@@ -406,7 +584,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         rdoUpdateAll.ReadOnly = false;
                         rdoUpdateNotFee.ReadOnly = false;
                         rdoUpdateNotFee.CheckState = CheckState.Checked;
-                        chkIsBusiness.Checked = false;
                         FillDataMedicineTypeToControl(currentVHisMedicineTypeDTODefault, currentVHisServiceDTODefault);
                         btnSave.Enabled = (currentVHisMedicineTypeDTODefault.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
                     }
@@ -501,23 +678,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 cboDosageForm.Properties.Buttons[1].Visible = false;
                 cboHowToUse.Properties.Buttons[1].Visible = false;
                 cboGender.Properties.Buttons[1].Visible = false;
-                chkIsStopImp.Checked = false;
                 chkIS_DRUG_STORE.Checked = false;
-                chkCPNG.Checked = false;
-                chkIsExprireDate.Checked = false;
-                chkIsAllowOdd.Checked = false;
-                chkIsSplitCompensation.Enabled = true;
-                chkIsAllowExportOdd.Checked = false;
-                chkIsBusiness.Checked = false;
-                chKNgoaiDRG.Checked = false;
-                chkIsMustPrepare.Checked = false;
-                chkIsKedney.Checked = false;
-                ckhIsRaw.Checked = false;
-                chkIsTreatmentDayCount.Checked = false;
-                chkIsNotTreatmentDayCount.Checked = false;
-                chkIsExpend.Checked = false;
-                chkAllowMissingInfoPkg.Checked = false;
-                chkIsOtherSourcePaid.Checked = false;
                 cboImpUnit.EditValue = null;
                 spUnitConvertRatio.EditValue = null;
                 txtTCCL.Text = "";
@@ -649,7 +810,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 }
                 else
                 {
-                    if (chkIsBusiness.CheckState == CheckState.Checked)
+                    if (chkKD)
                     {
                         List<HIS_PATIENT_TYPE> listPatientTypeForSale = new List<HIS_PATIENT_TYPE>();
                         var queryData = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_FOR_SALE_EXP == 1 && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
@@ -787,41 +948,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 cboMedicineUseForm.EditValue = hIS_MEDICINE_TYPE.MEDICINE_USE_FORM_ID;
                 spinVolume.EditValue = hIS_MEDICINE_TYPE.VOLUME;
 
-                if (hIS_MEDICINE_TYPE.IS_REQUIRE_HSD == 1)
-                {
-                    chkIsExprireDate.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsExprireDate.CheckState = CheckState.Unchecked;
-                }
+                
 
-                if (hIS_MEDICINE_TYPE.IS_SPLIT_COMPENSATION == 1)
-                {
-                    chkIsSplitCompensation.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsSplitCompensation.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_BUSINESS == 1)
-                {
-                    chkIsBusiness.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsBusiness.CheckState = CheckState.Unchecked;
-                }
-
-                if (HIS_Services.IS_OUT_OF_DRG == 1)
-                {
-                    chKNgoaiDRG.CheckState = CheckState.Unchecked;
-                }
-                else
-                {
-                    chKNgoaiDRG.CheckState = CheckState.Unchecked;
-                }
+                
 
                 if (hIS_MEDICINE_TYPE.IS_SALE_EQUAL_IMP_PRICE == 1)
                 {
@@ -832,32 +961,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     chkIsSaleEqualImpPrice.CheckState = CheckState.Unchecked;
                 }
 
-                if (hIS_MEDICINE_TYPE.IS_ALLOW_EXPORT_ODD == 1)
-                {
-                    chkIsAllowExportOdd.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsAllowExportOdd.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_FUNCTIONAL_FOOD == 1)
-                {
-                    chkFood.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkFood.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_STOP_IMP == 1)
-                {
-                    chkIsStopImp.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsStopImp.CheckState = CheckState.Unchecked;
-                }
+                
                 if (hIS_MEDICINE_TYPE.IS_DRUG_STORE == 1)
                 {
                     chkIS_DRUG_STORE.CheckState = CheckState.Checked;
@@ -881,70 +985,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 else
                 {
                     rdoWarning1.Checked = true;
-                }
+                }               
 
-                if (hIS_MEDICINE_TYPE.IS_OUT_PARENT_FEE == 1)
-                {
-                    chkCPNG.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkCPNG.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_RAW_MEDICINE == 1)
-                {
-                    ckhIsRaw.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    ckhIsRaw.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_TREATMENT_DAY_COUNT == 1)
-                {
-                    chkIsTreatmentDayCount.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsTreatmentDayCount.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_NOT_TREATMENT_DAY_COUNT == 1)
-                {
-                    chkIsNotTreatmentDayCount.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsNotTreatmentDayCount.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_AUTO_EXPEND == 1)
-                {
-                    chkIsExpend.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsExpend.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.ALLOW_MISSING_PKG_INFO == (short)1)
-                {
-                    chkAllowMissingInfoPkg.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkAllowMissingInfoPkg.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_MUST_PREPARE == 1)
-                {
-                    chkIsMustPrepare.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsMustPrepare.CheckState = CheckState.Unchecked;
-                }
+                
 
                 if (hIS_MEDICINE_TYPE.IS_NO_HEIN_LIMIT_FOR_SPECIAL == 1)
                 {
@@ -1008,14 +1051,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 cboPreserveCondition.EditValue = hIS_MEDICINE_TYPE.STORAGE_CONDITION_ID;
                 cboNguonGoc.EditValue = hIS_MEDICINE_TYPE.SOURCE_MEDICINE;
                 cboContraindication.EditValue = hIS_MEDICINE_TYPE.CONTRAINDICATION_IDS;
-                if (hIS_MEDICINE_TYPE.IS_STAR_MARK == 1)
-                {
-                    chkIsStarMark.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsStarMark.CheckState = CheckState.Unchecked;
-                }
+
                 var medicineTypeParent = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>().SingleOrDefault(o => o.ID == hIS_MEDICINE_TYPE.PARENT_ID);
                 txtMedicineTypeParentCode.Text = medicineTypeParent != null ? medicineTypeParent.MEDICINE_TYPE_CODE : "";
                 HIS.UC.National.ADO.NationalInputADO ado = new UC.National.ADO.NationalInputADO();
@@ -1036,14 +1072,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     nationalProcessor.SetValue(ucNational, ado);
                 }
 
-                if (hIS_MEDICINE_TYPE.IS_ALLOW_ODD == 1)
-                {
-                    chkIsAllowOdd.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsAllowOdd.CheckState = CheckState.Unchecked;
-                }
+
 
                 if (hIS_MEDICINE_TYPE.HEIN_SERVICE_TYPE_ID != null)
                 {
@@ -1054,86 +1083,126 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     cboHeinServiceType.EditValue = null;
                 }
 
+                #region thuoc
+                if (cboLoaiThuoc.Properties.DataSource == null)
+                {
+                    List<AMedicineTypeADO> listADO = getListAMedicineType();
+                    cboLoaiThuoc.Properties.DataSource = listADO;
+                }
+                GridCheckMarksSelection gridCheckChiSo = cboLoaiThuoc.Properties.Tag as GridCheckMarksSelection;
+                var arr = new List<string>();
+
                 if (hIS_MEDICINE_TYPE.IS_VACCINE == 1)
-                {
-                    chkIsVaccine.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsVaccine.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_VITAMIN_A == 1)
-                {
-                    chkIsVitaminA.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsVitaminA.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_ORIGINAL_BRAND_NAME == 1)
-                {
-                    chkOriginal.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkOriginal.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_GENERIC == 1)
-                {
-                    chkGenneric.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkGenneric.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_BIOLOGIC == 1)
-                {
-                    chkBiologic.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkBiologic.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_ANAESTHESIA == 1)
-                {
-                    chkGayTe.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkGayTe.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_OUT_HOSPITAL == 1)
-                {
-                    chkIsOutHospital.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsOutHospital.CheckState = CheckState.Unchecked;
-                }
-
-                if (hIS_MEDICINE_TYPE.IS_TCMR == 1)
-                {
-                    chkISTCMR.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkISTCMR.CheckState = CheckState.Unchecked;
-                }
+                    arr.Add("Vaccin");
 
                 if (hIS_MEDICINE_TYPE.IS_CHEMICAL_SUBSTANCE == 1)
+                    arr.Add("Hóa chất");
+
+                if (hIS_MEDICINE_TYPE.IS_OXYGEN == 1)
+                    arr.Add("Ô xy");
+
+                if (hIS_MEDICINE_TYPE.IS_GENERIC == 1)
+                    arr.Add("Generic");
+
+                if (hIS_MEDICINE_TYPE.IS_FUNCTIONAL_FOOD == 1)
+                    arr.Add("TPCN");
+
+                if (hIS_MEDICINE_TYPE.IS_VITAMIN_A == 1)
+                    arr.Add("Vitamin A");
+
+                if (hIS_MEDICINE_TYPE.IS_TCMR == 1)
+                    arr.Add("TCMR");
+
+                if (hIS_MEDICINE_TYPE.IS_BIOLOGIC == 1)
+                    arr.Add("Sinh phẩm");
+
+                if (hIS_MEDICINE_TYPE.IS_ANAESTHESIA == 1)
+                    arr.Add("Gây tê");
+
+                if (hIS_MEDICINE_TYPE.IS_ORIGINAL_BRAND_NAME == 1)
+                    arr.Add("Biệt dược gốc");
+
+                if (hIS_MEDICINE_TYPE.IS_STAR_MARK == 1)
+                    arr.Add("Thuốc dấu *");
+
+                if (hIS_MEDICINE_TYPE.IS_KIDNEY == 1)
+                    arr.Add("Thuốc chạy thận");
+
+                if (hIS_MEDICINE_TYPE.IS_RAW_MEDICINE == 1)
+                    arr.Add("NLBC");
+
+                string listArrayMedicine = string.Join(", ", arr);
+
+                ProcessSelectBS(listArrayMedicine, gridCheckChiSo);
+                #endregion
+
+                if (cboConfig.Properties.DataSource == null)
                 {
-                    ckhHoachat.CheckState = CheckState.Checked;
+                    List<AConfigADO> listADO = getConfigType();
+                    cboConfig.Properties.DataSource = listADO;
+                }
+                GridCheckMarksSelection gridCheckConfig = cboConfig.Properties.Tag as GridCheckMarksSelection;
+                var cArr = new List<string>();
+
+                if (hIS_MEDICINE_TYPE.IS_STOP_IMP == 1)
+                    cArr.Add("Dừng nhập");
+
+                if (hIS_MEDICINE_TYPE.IS_OUT_PARENT_FEE == 1)
+                    cArr.Add("Chi phí ngoài gói");
+
+                if (hIS_MEDICINE_TYPE.IS_REQUIRE_HSD == 1)
+                    cArr.Add("Phải nhập hạn sử dụng");
+
+                if (hIS_MEDICINE_TYPE.IS_ALLOW_EXPORT_ODD == 1)
+                    cArr.Add("Cho xuất lẻ");
+
+                if (hIS_MEDICINE_TYPE.IS_SPLIT_COMPENSATION == 1)
+                    cArr.Add("Tách phần bù");
+
+                if (hIS_MEDICINE_TYPE.ALLOW_MISSING_PKG_INFO == 1)
+                    cArr.Add("Không bắt buộc số lô, hạn sử dụng");
+
+                if (hIS_MEDICINE_TYPE.IS_MUST_PREPARE == 1)
+                    cArr.Add("Phải dự trù");
+
+                if (hIS_MEDICINE_TYPE.IS_AUTO_EXPEND == 1)
+                    cArr.Add("Tự động hao phí");
+
+                if (hIS_MEDICINE_TYPE.IS_OTHER_SOURCE_PAID == 1)
+                    cArr.Add("Có nguồn chi trả khác");
+
+                if (hIS_MEDICINE_TYPE.IS_TREATMENT_DAY_COUNT == 1)
+                    cArr.Add("Đếm số ngày dùng");
+
+                if (hIS_MEDICINE_TYPE.IS_NOT_TREATMENT_DAY_COUNT == 1)
+                    cArr.Add("Không đếm số ngày dùng");
+
+                if (HIS_Services.IS_OUT_OF_DRG == 1)
+                    cArr.Add("Ngoài DRG");
+
+                if (hIS_MEDICINE_TYPE.IS_OUT_HOSPITAL == 1)
+                    cArr.Add("Thuốc ngoại viện");
+
+                if (hIS_MEDICINE_TYPE.IS_BUSINESS == 1)
+                    cArr.Add("Thuốc kinh doanh");
+
+                if (hIS_MEDICINE_TYPE.IS_ALLOW_ODD == 1)
+                    cArr.Add("Cho kê lẻ");
+
+                string listArrayConfig = string.Join(", ", cArr);
+
+                ProcessSelectConfig(listArrayConfig, gridCheckConfig);
+
+
+                if (hIS_MEDICINE_TYPE.IS_DRUG_STORE == 1)
+                {
+                    chkIS_DRUG_STORE.CheckState = CheckState.Checked;
                 }
                 else
                 {
-                    ckhHoachat.CheckState = CheckState.Unchecked;
+                    chkIS_DRUG_STORE.CheckState = CheckState.Unchecked;
                 }
+
 
                 if (hIS_MEDICINE_TYPE.TDL_GENDER_ID != null)
                 {
@@ -1157,25 +1226,11 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     cboRank.EditValue = null;
                 }
 
-                if (HIS_Services.IS_OTHER_SOURCE_PAID.HasValue)
-                {
-                    chkIsOtherSourcePaid.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsOtherSourcePaid.CheckState = CheckState.Unchecked;
-                }
+
 
                 txtMedicineNationalCode.Text = hIS_MEDICINE_TYPE.MEDICINE_NATIONAL_CODE ?? "";
 
-                if (hIS_MEDICINE_TYPE.IS_KIDNEY.HasValue && hIS_MEDICINE_TYPE.IS_KIDNEY.Value == 1)
-                {
-                    chkIsKedney.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIsKedney.CheckState = CheckState.Unchecked;
-                }
+
 
                 ReloadActiveIngredientData();
                 if (!String.IsNullOrEmpty(hIS_MEDICINE_TYPE.ATC_CODES))
@@ -1201,7 +1256,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
 
 
-                checkIsOxygen.Checked = (hIS_MEDICINE_TYPE.IS_OXYGEN == 1);
                 this.txtScientificName.Text = hIS_MEDICINE_TYPE.SCIENTIFIC_NAME;
                 this.txtPreprocessing.Text = hIS_MEDICINE_TYPE.PREPROCESSING_CODE;
                 //this.txtPreprocessingName.Text = hIS_MEDICINE_TYPE.PREPROCESSING;
@@ -1844,19 +1898,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     medicineType.HIS_SERVICE.AGE_TO = null;
                 }
 
-                if (chkIsSplitCompensation.CheckState == CheckState.Checked)
-                    medicineType.IS_SPLIT_COMPENSATION = 1;
-                else
-                    medicineType.IS_SPLIT_COMPENSATION = null;
 
-                if (chkIsMustPrepare.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_MUST_PREPARE = 1;
-                }
-                else
-                {
-                    medicineType.IS_MUST_PREPARE = null;
-                }
 
                 if (ChkIsSpecificHeinPrice.CheckState == CheckState.Checked)
                     medicineType.HIS_SERVICE.IS_SPECIFIC_HEIN_PRICE = 1;
@@ -1964,7 +2006,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     medicineType.IMP_UNIT_CONVERT_RATIO = null;
                 }
 
-                medicineType.HIS_SERVICE.IS_OUT_PARENT_FEE = (short)(chkCPNG.Checked == true ? 1 : 0);
                 medicineType.HIS_SERVICE.SERVICE_UNIT_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboServiceUnit.EditValue ?? "").ToString());
                 if (dtHeinLimitPriceIntrTime.EditValue != null && dtHeinLimitPriceIntrTime.DateTime != DateTime.MinValue)
                     medicineType.HIS_SERVICE.HEIN_LIMIT_PRICE_INTR_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
@@ -2035,21 +2076,112 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     medicineType.LAST_EXP_PRICE = null;
                 }
 
-                if (chkIsExprireDate.CheckState == CheckState.Checked)
-                    medicineType.IS_REQUIRE_HSD = 1;
-                else
-                    medicineType.IS_REQUIRE_HSD = null;
+                #region Danh sach thuoc
+                if (lstMedicine != null && lstMedicine.Count > 0)
+                {
+                    if (lstMedicine.Any(x=>x.ID == 1)) medicineType.IS_CHEMICAL_SUBSTANCE = 1;
+                    else medicineType.IS_CHEMICAL_SUBSTANCE = null;
 
-                if (chkIsStopImp.CheckState == CheckState.Checked)
-                    medicineType.IS_STOP_IMP = 1;
-                else
-                    medicineType.IS_STOP_IMP = null;
+                    if (lstMedicine.Any(x => x.ID == 5)) medicineType.IS_VACCINE = 1;
+                    else medicineType.IS_VACCINE = null;
+
+                    if (lstMedicine.Any(x => x.ID == 9))
+                    {
+                        medicineType.HIS_SERVICE.HEIN_SERVICE_BHYT_CODE = medicineType.ACTIVE_INGR_BHYT_CODE;
+                        medicineType.IS_OXYGEN = 1;
+                    }
+                    else medicineType.IS_OXYGEN = null;
+
+                    if (lstMedicine.Any(x => x.ID == 4)) medicineType.IS_GENERIC = 1;
+                    else medicineType.IS_GENERIC = null;
+
+                    if (lstMedicine.Any(x => x.ID == 2)) medicineType.IS_FUNCTIONAL_FOOD = 1;
+                    else medicineType.IS_FUNCTIONAL_FOOD = null;
+
+                    if (lstMedicine.Any(x => x.ID == 6)) medicineType.IS_VITAMIN_A = 1;
+                    else medicineType.IS_VITAMIN_A = null;
+
+                    if (lstMedicine.Any(x => x.ID == 7)) medicineType.IS_TCMR = 1;
+                    else medicineType.IS_TCMR = null;
+
+                    if (lstMedicine.Any(x => x.ID == 8)) medicineType.IS_BIOLOGIC = 1;
+                    else medicineType.IS_BIOLOGIC = null;
+
+                    if (lstMedicine.Any(x => x.ID == 3)) medicineType.IS_STAR_MARK = 1;
+                    else medicineType.IS_STAR_MARK = null;
+
+                    if (lstMedicine.Any(x => x.ID == 10)) medicineType.IS_ANAESTHESIA = 1;
+                    else medicineType.IS_ANAESTHESIA = null;
+
+                    if (lstMedicine.Any(x => x.ID == 11)) medicineType.IS_ORIGINAL_BRAND_NAME = 1;
+                    else medicineType.IS_ORIGINAL_BRAND_NAME = null;
+
+                    if (lstMedicine.Any(x => x.ID == 12)) medicineType.IS_KIDNEY = 1;
+                    else medicineType.IS_KIDNEY = null;
+
+                    if (lstMedicine.Any(x => x.ID == 13)) medicineType.IS_RAW_MEDICINE = 1;
+                    else medicineType.IS_RAW_MEDICINE = null;
+                }
+                #endregion
+                if (lstConfig != null && lstConfig.Count > 0)
+                {
+                    if (lstConfig.Any(x => x.ID == 1)) medicineType.IS_STOP_IMP = 1;
+                    else medicineType.IS_STOP_IMP = null;
+
+                    if (lstConfig.Any(x => x.ID == 5)) medicineType.IS_ALLOW_EXPORT_ODD = 1;
+                    else medicineType.IS_ALLOW_EXPORT_ODD = null;
+
+                    if (lstConfig.Any(x => x.ID == 9))
+                    {
+                        medicineType.IS_AUTO_EXPEND = 1;
+                    }
+                    else medicineType.IS_AUTO_EXPEND = null;
+
+                    if (lstConfig.Any(x => x.ID == 4)) medicineType.IS_ALLOW_ODD = 1;
+                    else medicineType.IS_ALLOW_ODD = null;
+
+                    if (lstConfig.Any(x => x.ID == 2)) medicineType.HIS_SERVICE.IS_OUT_PARENT_FEE = 1;
+                    else medicineType.HIS_SERVICE.IS_OUT_PARENT_FEE = null;
+
+                    if (lstConfig.Any(x => x.ID == 6)) medicineType.IS_SPLIT_COMPENSATION = 1;
+                    else medicineType.IS_SPLIT_COMPENSATION = null;
+
+                    if (lstConfig.Any(x => x.ID == 7)) medicineType.ALLOW_MISSING_PKG_INFO = 1;
+                    else medicineType.ALLOW_MISSING_PKG_INFO = null;
+
+                    if (lstConfig.Any(x => x.ID == 8)) medicineType.IS_MUST_PREPARE = 1;
+                    else medicineType.IS_MUST_PREPARE = null;
+
+                    if (lstConfig.Any(x => x.ID == 3)) medicineType.IS_REQUIRE_HSD = 1;
+                    else medicineType.IS_REQUIRE_HSD = null;
+
+                    if (lstConfig.Any(x => x.ID == 10)) medicineType.HIS_SERVICE.IS_OTHER_SOURCE_PAID = 1;
+                    else medicineType.HIS_SERVICE.IS_OTHER_SOURCE_PAID = null;
+
+                    if (lstConfig.Any(x => x.ID == 11)) medicineType.IS_TREATMENT_DAY_COUNT = 1;
+                    else medicineType.IS_TREATMENT_DAY_COUNT = null;
+
+                    if (lstConfig.Any(x => x.ID == 12)) medicineType.IS_NOT_TREATMENT_DAY_COUNT = 1;
+                    else medicineType.IS_NOT_TREATMENT_DAY_COUNT = null;
+
+                    if (lstConfig.Any(x => x.ID == 13)) medicineType.HIS_SERVICE.IS_OUT_OF_DRG = 1;
+                    else medicineType.HIS_SERVICE.IS_OUT_OF_DRG = null;
+
+                    if (lstConfig.Any(x => x.ID == 14)) medicineType.IS_OUT_HOSPITAL = 1;
+                    else medicineType.IS_OUT_HOSPITAL = null;
+
+                    if (lstConfig.Any(x => x.ID == 15)) medicineType.IS_BUSINESS = 1;
+                    else medicineType.IS_BUSINESS = null;
+                }
 
                 if (chkIS_DRUG_STORE.CheckState == CheckState.Checked)
+                {
                     medicineType.IS_DRUG_STORE = 1;
+                }
                 else
+                {
                     medicineType.IS_DRUG_STORE = null;
-
+                }
 
                 if (rdoBlock.Checked)
                 {
@@ -2068,28 +2200,13 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     medicineType.IS_BLOCK_MAX_IN_DAY = null;
                 }
 
-                if (chkIsBusiness.CheckState == CheckState.Checked)
-                    medicineType.IS_BUSINESS = 1;
-                else
-                    medicineType.IS_BUSINESS = null;
 
-                if (chKNgoaiDRG.Checked)
-                {
-                    medicineType.HIS_SERVICE.IS_OUT_OF_DRG = 1;
-                }
-                else
-                {
-                    medicineType.HIS_SERVICE.IS_OUT_OF_DRG = null;
-                }
+
                 if (chkIsSaleEqualImpPrice.CheckState == CheckState.Checked)
                     medicineType.IS_SALE_EQUAL_IMP_PRICE = 1;
                 else
                     medicineType.IS_SALE_EQUAL_IMP_PRICE = null;
 
-                if (chkIsAllowExportOdd.CheckState == CheckState.Checked)
-                    medicineType.IS_ALLOW_EXPORT_ODD = 1;
-                else
-                    medicineType.IS_ALLOW_EXPORT_ODD = null;
 
                 if (cboManufacture.EditValue != null)
                 {
@@ -2115,60 +2232,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     medicineType.NATIONAL_NAME = nati.NATIONAL_NAME;
                 }
 
-                if (chkFood.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_FUNCTIONAL_FOOD = 1;
-                }
-                else
-                {
-                    medicineType.IS_FUNCTIONAL_FOOD = null;
-                }
-
-                if (chkIsStopImp.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_STOP_IMP = 1;
-                }
-                else
-                {
-                    medicineType.IS_STOP_IMP = null;
-                }
-
-                if (chkIS_DRUG_STORE.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_DRUG_STORE = 1;
-                }
-                else
-                {
-                    medicineType.IS_DRUG_STORE = null;
-                }
-
-
-                if (ckhIsRaw.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_RAW_MEDICINE = 1;
-                }
-                else
-                {
-                    medicineType.IS_RAW_MEDICINE = null;
-                }
-
-                if (chkIsTreatmentDayCount.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_TREATMENT_DAY_COUNT = 1;
-                }
-                else
-                {
-                    medicineType.IS_TREATMENT_DAY_COUNT = null;
-                }
-
-                if (chkIsNotTreatmentDayCount.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_NOT_TREATMENT_DAY_COUNT = 1;
-                }
-                else
-                {
-                    medicineType.IS_NOT_TREATMENT_DAY_COUNT = null;
-                }
 
                 if (spinAlertMinInStock.EditValue != null)
                 {
@@ -2194,41 +2257,12 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 medicineType.REGISTER_NUMBER = txtRegisterNumber.Text;
                 medicineType.TCY_NUM_ORDER = txtTcyNumOrder.Text;
                 medicineType.NUM_ORDER_CIRCULARS20 = txtSttTT20.Text;
-                if (chkIsStarMark.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_STAR_MARK = 1;
-                }
-                else
-                {
-                    medicineType.IS_STAR_MARK = null;
-                }
 
-                if (chkIsExpend.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_AUTO_EXPEND = 1;
-                }
-                else
-                {
-                    medicineType.IS_AUTO_EXPEND = null;
-                }
 
-                if (chkAllowMissingInfoPkg.CheckState == CheckState.Checked)
-                {
-                    medicineType.ALLOW_MISSING_PKG_INFO = 1;
-                }
-                else
-                {
-                    medicineType.ALLOW_MISSING_PKG_INFO = null;
-                }
 
-                if (chkIsAllowOdd.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_ALLOW_ODD = 1;
-                }
-                else
-                {
-                    medicineType.IS_ALLOW_ODD = null;
-                }
+
+
+
 
                 if (cboHeinServiceType.EditValue != null)
                 {
@@ -2237,86 +2271,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 else
                     medicineType.HIS_SERVICE.HEIN_SERVICE_TYPE_ID = null;
 
-                if (chkIsVitaminA.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_VITAMIN_A = 1;
-                }
-                else
-                {
-                    medicineType.IS_VITAMIN_A = null;
-                }
+                
 
-                if (chkGayTe.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_ANAESTHESIA = 1;
-                }
-                else
-                {
-                    medicineType.IS_ANAESTHESIA = null;
-                }
 
-                if (chkIsOutHospital.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_OUT_HOSPITAL = 1;
-                }
-                else
-                {
-                    medicineType.IS_OUT_HOSPITAL = null;
-                }
 
-                if (chkIsVaccine.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_VACCINE = 1;
-                }
-                else
-                {
-                    medicineType.IS_VACCINE = null;
-                }
-
-                if (chkISTCMR.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_TCMR = 1;
-                }
-                else
-                {
-                    medicineType.IS_TCMR = null;
-                }
-
-                if (chkOriginal.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_ORIGINAL_BRAND_NAME = 1;
-                }
-                else
-                {
-                    medicineType.IS_ORIGINAL_BRAND_NAME = null;
-                }
-
-                if (chkGenneric.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_GENERIC = 1;
-                }
-                else
-                {
-                    medicineType.IS_GENERIC = null;
-                }
-
-                if (chkBiologic.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_BIOLOGIC = 1;
-                }
-                else
-                {
-                    medicineType.IS_BIOLOGIC = null;
-                }
-
-                if (ckhHoachat.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_CHEMICAL_SUBSTANCE = 1;
-                }
-                else
-                {
-                    medicineType.IS_CHEMICAL_SUBSTANCE = null;
-                }
 
                 if (cboGender.EditValue != null)
                 {
@@ -2349,33 +2307,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     medicineType.HIS_MEDICINE_TYPE_ACIN = medicineTypeAcins;
                 }
 
-                if (chkIsOtherSourcePaid.Checked)
-                {
-                    medicineType.HIS_SERVICE.IS_OTHER_SOURCE_PAID = 1;
-                }
-                else
-                {
-                    medicineType.HIS_SERVICE.IS_OTHER_SOURCE_PAID = null;
-                }
 
-                if (chkIsKedney.Checked)
-                {
-                    medicineType.IS_KIDNEY = 1;
-                }
-                else
-                {
-                    medicineType.IS_KIDNEY = null;
-                }
 
-                if (checkIsOxygen.Checked)
-                {
-                    medicineType.IS_OXYGEN = 1;
-                    medicineType.HIS_SERVICE.HEIN_SERVICE_BHYT_CODE = medicineType.ACTIVE_INGR_BHYT_CODE;
-                }
-                else
-                {
-                    medicineType.IS_OXYGEN = null;
-                }
                 if (spinVolume.EditValue != null)
                 {
                     medicineType.VOLUME = ((decimal)spinVolume.Value);
@@ -3588,12 +3521,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 btnGiaTran.Enabled = false;
                 this.currentRightClick = null;
                 rdoWarning1.Checked = true;
-                chkIsOutHospital.Checked = false;
-                checkIsOxygen.Checked = false;
-                chkGayTe.Checked = false;
                 chkIsNoHeinLimitForSpecial.Checked = false;
                 ChkIsSpecificHeinPrice.Checked = false;
-                chkIsSplitCompensation.Checked = false;
                 txtContentWarning.Enabled = false;
                 txtContentWarning.Text = "";
                 FillDataToGridConrolServicePaty();
@@ -3888,7 +3817,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkCPNG.Focus();
                 }
             }
             catch (Exception ex)
@@ -3903,8 +3831,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsAllowExportOdd.Focus();
-                    chkIsAllowExportOdd.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -3935,8 +3861,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsBusiness.Focus();
-                    chkIsBusiness.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -3951,7 +3875,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsAllowExportOdd.Focus();
                 }
             }
             catch (Exception ex)
@@ -3966,7 +3889,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsStarMark.Focus();
                 }
             }
             catch (Exception ex)
@@ -4175,7 +4097,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsStopImp.Focus();
                 }
             }
             catch (Exception ex)
@@ -4274,27 +4195,23 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                             this.nationalProcessor.FocusControl(ucNational);
                             if (listData.First().IS_AUTO_TREATMENT_DAY_COUNT == 1)
                             {
-                                chkIsTreatmentDayCount.CheckState = CheckState.Checked;
                             }
                             else if (ActionType != HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
                             {
-                                chkIsTreatmentDayCount.CheckState = CheckState.Unchecked;
                             }
                         }
                         else if (ActionType != HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
                         {
-                            chkIsTreatmentDayCount.CheckState = CheckState.Unchecked;
                         }
                     }
                     else if (ActionType != HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
                     {
-                        chkIsTreatmentDayCount.CheckState = CheckState.Unchecked;
                     }
                     if (!valid)
                     {
                         cboMedicineGroup.Focus();
                         cboMedicineGroup.ShowPopup();
-                        if (ActionType != HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit) chkIsTreatmentDayCount.CheckState = CheckState.Unchecked;
+                        if (ActionType != HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit) ;
                     }
                 }
             }
@@ -4599,7 +4516,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkFood.Focus();
                 }
             }
             catch (Exception ex)
@@ -4614,7 +4530,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsStarMark.Focus();
                 }
             }
             catch (Exception ex)
@@ -4629,7 +4544,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkGenneric.Focus();
                 }
             }
             catch (Exception ex)
@@ -4644,7 +4558,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsVitaminA.Focus();
                 }
             }
             catch (Exception ex)
@@ -4659,8 +4572,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkISTCMR.Focus();
-                    chkISTCMR.SelectAll();
+
                 }
             }
             catch (Exception ex)
@@ -4675,8 +4587,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkBiologic.SelectAll();
-                    chkBiologic.Focus();
+
                 }
             }
             catch (Exception ex)
@@ -4825,7 +4736,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkCPNG.Focus();
                 }
             }
             catch (Exception ex)
@@ -4840,7 +4750,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsExprireDate.Focus();
                 }
             }
             catch (Exception ex)
@@ -4855,7 +4764,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsAllowOdd.Focus();
                 }
             }
             catch (Exception ex)
@@ -4870,7 +4778,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsSplitCompensation.Focus();
                 }
             }
             catch (Exception ex)
@@ -4885,7 +4792,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsMustPrepare.Focus();
                 }
             }
             catch (Exception ex)
@@ -4916,7 +4822,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsKedney.Focus();
                 }
             }
             catch (Exception ex)
@@ -4931,7 +4836,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    ckhIsRaw.Focus();
                 }
             }
             catch (Exception ex)
@@ -4946,7 +4850,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsExpend.Focus();
                 }
             }
             catch (Exception ex)
@@ -4961,7 +4864,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsOtherSourcePaid.Focus();
                 }
             }
             catch (Exception ex)
@@ -4976,7 +4878,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsTreatmentDayCount.Focus();
                 }
             }
             catch (Exception ex)
@@ -5116,7 +5017,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsExpend.Focus();
                 }
             }
             catch (Exception ex)
@@ -5211,7 +5111,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsAllowOdd.Focus();
                 }
             }
             catch (Exception ex)
@@ -5478,23 +5377,20 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                             if (medicineGroup.IS_AUTO_TREATMENT_DAY_COUNT == 1)
                             {
-                                chkIsTreatmentDayCount.CheckState = CheckState.Checked;
                             }
                             else if (ActionType != HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
                             {
-                                chkIsTreatmentDayCount.CheckState = CheckState.Unchecked;
                             }
                         }
                         else
                         {
-                            if (ActionType != HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit) chkIsTreatmentDayCount.CheckState = CheckState.Unchecked;
+                            if (ActionType != HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit) ;
                             cboMedicineGroup.Focus();
                             cboMedicineGroup.ShowPopup();
                         }
                     }
                     else if (ActionType != HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
                     {
-                        chkIsTreatmentDayCount.CheckState = CheckState.Unchecked;
                     }
                 }
             }
@@ -5721,20 +5617,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
-                if (chkIsBusiness.CheckState == CheckState.Checked)
-                {
-                    chkIsSaleEqualImpPrice.Enabled = false;
-                    chkIsSaleEqualImpPrice.Checked = false;
-                    chkIS_DRUG_STORE.Enabled = true;
-                }
-                else
-                {
-                    chkIsSaleEqualImpPrice.Enabled = true;
-                    chkIsSaleEqualImpPrice.Checked = true;
-                    chkIS_DRUG_STORE.Checked = false;
-                    chkIS_DRUG_STORE.Enabled = false;
-                }
-                FillDataToGridConrolServicePaty();
+
             }
             catch (Exception ex)
             {
@@ -5879,7 +5762,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkAllowMissingInfoPkg.Focus();
                 }
             }
             catch (Exception ex)
@@ -5950,7 +5832,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsNotTreatmentDayCount.Focus();
                 }
             }
             catch (Exception ex)
@@ -6023,20 +5904,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
-                if (chkIsAllowOdd.CheckState == CheckState.Unchecked)
-                {
-                    chkIsSplitCompensation.Enabled = true;
-                    txtContentWarning.Enabled = false;
-                    txtContentWarning.Text = "";
-                    btnContentWarning.Enabled = false;
-                }
-                else if (chkIsAllowOdd.CheckState == CheckState.Checked)
-                {
-                    chkIsSplitCompensation.Enabled = false;
-                    chkIsSplitCompensation.CheckState = CheckState.Unchecked;
-                    txtContentWarning.Enabled = true;
-                    btnContentWarning.Enabled = true;
-                }
+
             }
             catch (Exception ex)
             {
@@ -6050,7 +5918,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsAllowExportOdd.Focus();
                 }
             }
             catch (Exception ex)
@@ -6517,8 +6384,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkGayTe.Focus();
-                    chkGayTe.SelectAll();
+
                 }
             }
             catch (Exception ex)
@@ -6584,7 +6450,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    ckhHoachat.Focus();
                 }
             }
             catch (Exception ex)
@@ -6599,13 +6464,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (cboImpUnit.EditValue == null)
-                        ckhHoachat.Focus();
-                    else
-                    {
-                        spUnitConvertRatio.Focus();
-                        spUnitConvertRatio.SelectAll();
-                    }
+
                 }
             }
             catch (Exception ex)
@@ -6862,8 +6721,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chKNgoaiDRG.Focus();
-                    chKNgoaiDRG.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -6879,8 +6736,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkOriginal.Focus();
-                    chkOriginal.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -6895,8 +6750,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsBusiness.Focus();
-                    chkIsBusiness.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -6911,8 +6764,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsOutHospital.Focus();
-                    chkIsOutHospital.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -6926,10 +6777,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
             try
             {
-                if (this.chkIsTreatmentDayCount.Checked && this.chkIsNotTreatmentDayCount.Checked)
-                {
-                    this.chkIsNotTreatmentDayCount.Checked = !this.chkIsTreatmentDayCount.Checked;
-                }
             }
             catch (Exception ex)
             {
@@ -6941,10 +6788,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
-                if (this.chkIsNotTreatmentDayCount.Checked && this.chkIsTreatmentDayCount.Checked)
-                {
-                    this.chkIsTreatmentDayCount.Checked = !this.chkIsNotTreatmentDayCount.Checked;
-                }
             }
             catch (Exception ex)
             {
@@ -7011,8 +6854,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     }
                     else
                     {
-                        chkIsStopImp.Focus();
-                        chkIsStopImp.SelectAll();
                     }
                 }
             }
@@ -7028,8 +6869,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsStopImp.Focus();
-                    chkIsStopImp.SelectAll();
                 }
 
 
@@ -7650,7 +7489,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 SimpleButton editor = sender as SimpleButton;
                 Rectangle buttonPosition = new Rectangle(editor.Bounds.X, editor.Bounds.Y, editor.Bounds.Width, editor.Bounds.Height);
-                popupControlContainerTextEdit.ShowPopup(new System.Drawing.Point(layoutControlItem400.Location.X + editor.Bounds.X + lcIsAllowOdd.Size.Width, buttonPosition.Bottom + popupControlContainerTextEdit.Size.Height));
+                popupControlContainerTextEdit.ShowPopup(new System.Drawing.Point(layoutControlItem400.Location.X + editor.Bounds.X , buttonPosition.Bottom + popupControlContainerTextEdit.Size.Height));
                 this.currentContainerClick = ContainerClick.ContentWarning;
                 memoContainer.Text = txtContentWarning.Text;
             }
@@ -7733,7 +7572,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsVaccine.Focus();
                 }
             }
             catch (Exception ex)
@@ -7748,8 +7586,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    checkIsOxygen.Focus();
-                    checkIsOxygen.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -7897,6 +7733,298 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             }
         }
 
+        private void cboLoaiThuoc_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string roomName = "";
+                if (this.lstMedicine != null && this.lstMedicine.Count > 0)
+                {
+                    foreach (var item in this.lstMedicine)
+                    {
+                        roomName += item.NAME + ",";
+
+                    }
+                }
+                e.DisplayText = roomName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+
+            }
+        }
+
+        private void InitComboLoaiThuocCheck()
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboLoaiThuoc.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_Check);
+                cboLoaiThuoc.Properties.Tag = gridCheck;
+                cboLoaiThuoc.Properties.View.OptionsSelection.MultiSelect = true;
+                GridCheckMarksSelection gridCheckMark = cboLoaiThuoc.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboLoaiThuoc.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboConfigCheck()
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboConfig.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_Check_1);
+                cboConfig.Properties.Tag = gridCheck;
+                cboConfig.Properties.View.OptionsSelection.MultiSelect = true;
+                GridCheckMarksSelection gridCheckMark = cboConfig.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboConfig.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void Event_Check_1(object sender, EventArgs e)
+        {
+            if (_isReloadingConfigCombo) return; // Prevent recursion
+
+            try
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                lstConfig = new List<AConfigADO>();
+                bool hasKD = false;
+                bool hasAllowOdd = false; // Track if ID=4 is checked
+
+                if (gridCheckMark != null)
+                {
+                    List<AConfigADO> erSelectedNews = new List<AConfigADO>();
+                    foreach (AConfigADO er in gridCheckMark.Selection)
+                    {
+                        if (er != null)
+                        {
+                            if (sb.ToString().Length > 0) { sb.Append(", "); }
+                            sb.Append(er.NAME);
+                            erSelectedNews.Add(er);
+                            if (er.ID == 15) hasKD = true;
+                            if (er.ID == 4) hasAllowOdd = true; // Check for ID=4
+                        }
+                    }
+                    this.lstConfig = new List<AConfigADO>();
+                    this.lstConfig.AddRange(erSelectedNews);
+                }
+                this.cboConfig.Text = sb.ToString();
+
+                // Handle ID=15 logic (existing)
+                //if (hasKD && cboConfig.Properties.DataSource is List<AConfigADO> ds && ds.Count < 16)
+                //{
+                //    _isReloadingConfigCombo = true;
+                //    var newList = getConfigTypeCheckKD();
+                //    cboConfig.Properties.DataSource = newList;
+                //    GridCheckMarksSelection newGridCheckMark = cboConfig.Properties.Tag as GridCheckMarksSelection;
+                //    if (newGridCheckMark != null)
+                //    {
+                //        var selected = newList.Where(x => lstConfig.Any(y => y.ID == x.ID)).ToList();
+                //        newGridCheckMark.ClearSelection(cboConfig.Properties.View);
+                //        newGridCheckMark.SelectAll(selected);
+                //    }
+                //    _isReloadingConfigCombo = false;
+                //}
+                //else if (!hasKD && cboConfig.Properties.DataSource is List<AConfigADO> ds2 && ds2.Count == 16)
+                //{
+                //    _isReloadingConfigCombo = true;
+                //    var newList = getConfigType();
+
+                //    lstConfig = lstConfig.Where(x => x.ID != 16).ToList();
+                //    cboConfig.Properties.DataSource = newList;
+                //    GridCheckMarksSelection newGridCheckMark = cboConfig.Properties.Tag as GridCheckMarksSelection;
+                //    if (newGridCheckMark != null)
+                //    {
+                //        var selected = newList.Where(x => lstConfig.Any(y => y.ID == x.ID)).ToList();
+                //        newGridCheckMark.ClearSelection(cboConfig.Properties.View);
+                //        newGridCheckMark.SelectAll(selected);
+                //    }
+                //    _isReloadingConfigCombo = false;
+                //}
+
+                // Handle ID=4 logic (Cho kê lẻ)
+                if (hasKD)
+                {
+                    chkIsSaleEqualImpPrice.Enabled = false;
+                    chkIsSaleEqualImpPrice.Checked = false;
+                    chkIS_DRUG_STORE.Enabled = true;
+                    chkKD = true;
+                    FillDataToGridConrolServicePaty();
+                }
+                else
+                {
+                    chkIsSaleEqualImpPrice.Enabled = true;
+                    chkIsSaleEqualImpPrice.Checked = true;
+                    chkIS_DRUG_STORE.Checked = false;
+                    chkIS_DRUG_STORE.Enabled = false;
+                    chkKD = false;
+                    FillDataToGridConrolServicePaty();
+                }
+                if (hasAllowOdd)
+                {
+                    //chkIsSplitCompensation.Enabled = false;
+                    //chkIsSplitCompensation.CheckState = CheckState.Unchecked;
+                    txtContentWarning.Enabled = true;
+                    btnContentWarning.Enabled = true;
+                }
+                else
+                {
+                    //chkIsSplitCompensation.Enabled = true;
+                    txtContentWarning.Enabled = false;
+                    txtContentWarning.Text = "";
+                    btnContentWarning.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+
+
+        private void Event_Check(object sender, EventArgs e)
+        {
+
+            try
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                lstMedicine = new List<AMedicineTypeADO>();
+                if (gridCheckMark != null)
+                {
+                    List<AMedicineTypeADO> erSelectedNews = new List<AMedicineTypeADO>();
+                    foreach (AMedicineTypeADO er in (sender as GridCheckMarksSelection).Selection)
+                    {
+                        if (er != null)
+                        {
+                            if (sb.ToString().Length > 0) { sb.Append(", "); }
+                            sb.Append(er.NAME);
+                            erSelectedNews.Add(er);
+                        }
+                    }
+                    this.lstMedicine = new List<AMedicineTypeADO>();
+                    this.lstMedicine.AddRange(erSelectedNews);
+                }
+                this.cboLoaiThuoc.Text = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        List<AMedicineTypeADO> listHisSuimIndexDefault = new List<AMedicineTypeADO>();
+        private void ProcessSelectBS(string p, GridCheckMarksSelection gridCheckMark)
+        {
+            try
+            {
+                List<AMedicineTypeADO> ds = cboLoaiThuoc.Properties.DataSource as List<AMedicineTypeADO>;
+                if (ds == null || ds.Count == 0)
+                {
+                    ds = getListAMedicineType();
+
+                    // Gán lại datasource để GridLookup có dữ liệu
+                    cboLoaiThuoc.Properties.DataSource = ds;
+                }
+                string[] arrays = p.Split(',');
+                if (arrays != null && arrays.Length > 0)
+                {
+                    List<AMedicineTypeADO> selects = new List<AMedicineTypeADO>();
+                    foreach (var item in arrays)
+                    {
+                        string nameTrim = item.Trim();
+                        var row = ds.FirstOrDefault(o => o.NAME == nameTrim);
+                        if (row != null)
+                        {
+                            selects.Add(row);
+                            listHisSuimIndexDefault.Add(row);
+                        }
+                    }
+                    gridCheckMark.SelectAll(selects);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        List<AConfigADO> listConfigDefault = new List<AConfigADO>();
+        private void ProcessSelectConfig(string p, GridCheckMarksSelection gridCheckMark)
+        {
+            try
+            {
+                List<AConfigADO> ds = cboLoaiThuoc.Properties.DataSource as List<AConfigADO>;
+                if (ds == null || ds.Count == 0)
+                {
+                    ds = getConfigType();
+
+                    // Gán lại datasource để GridLookup có dữ liệu
+                    cboConfig.Properties.DataSource = ds;
+                }
+                string[] arrays = p.Split(',');
+                if (arrays != null && arrays.Length > 0)
+                {
+                    List<AConfigADO> selects = new List<AConfigADO>();
+                    foreach (var item in arrays)
+                    {
+                        string nameTrim = item.Trim();
+                        var row = ds.FirstOrDefault(o => o.NAME == nameTrim);
+                        if (row != null)
+                        {
+                            selects.Add(row);
+                            listConfigDefault.Add(row);
+                        }
+                    }
+                    gridCheckMark.SelectAll(selects);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboConfig_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string roomName = "";
+                if (this.lstConfig != null && this.lstConfig.Count > 0)
+                {
+                    foreach (var item in this.lstConfig)
+                    {
+                        roomName += item.NAME + ",";
+
+                    }
+                }
+                e.DisplayText = roomName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+
+            }
+        }
     }
 }
 
