@@ -645,7 +645,7 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
 
                     if (dtBeginTime.HasValue)
                     {
-                        timeInfo.Add(string.Format("Bắt đầu {0} giờ {1} phút, ngày {2} tháng {3} năm {4}",
+                        timeInfo.Add(string.Format("Bắt đầu: {0} giờ {1} phút, ngày {2} tháng {3} năm {4}",
                             dtBeginTime.Value.Hour.ToString("D2"),
                             dtBeginTime.Value.Minute.ToString("D2"),
                             dtBeginTime.Value.Day.ToString("D2"),
@@ -665,11 +665,11 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
 
                     if (timeInfo.Count > 0)
                     {
-                        surgeryInfoList.Add(name + ":" + Environment.NewLine + string.Join("; ", timeInfo) + ";");
+                        surgeryInfoList.Add(name + ";" + Environment.NewLine + string.Join("; ", timeInfo) + ";");
                     }
                     else
                     {
-                        surgeryInfoList.Add(name + ":;");
+                        surgeryInfoList.Add(name + ";");
                     }
                 }
 
