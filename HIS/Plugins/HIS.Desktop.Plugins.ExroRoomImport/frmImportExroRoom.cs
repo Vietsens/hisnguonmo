@@ -229,6 +229,7 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
         {
             try
             {
+                List<HIS_EXRO_ROOM> checkExroRoom = new List<HIS_EXRO_ROOM>();
                 _exeRoomRef = new List<ExroRoomADO>();
                 long i = 0;
                 foreach (var item in _service)
@@ -401,17 +402,16 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
                         var exeRoomId = exeRoom?.ID ?? 0;
                         var roomId = room?.ID ?? 0;
                         var hisBedRoomId = HisbedRoom?.ID ?? 0;
-                        if (room != null && exeRoom != null)
+                        if (room != null && (exeRoom != null || HisbedRoom != null))
                         {
                             //var checkExroRoom = BackendDataWorker.Get<HIS_EXRO_ROOM>().FirstOrDefault(p => p.ROOM_ID == room.ID && p.EXECUTE_ROOM_ID == exeRoom.ID);
 
                             CommonParam paramCommon = new CommonParam();
                             HisExroRoomFilter filter = new HisExroRoomFilter();
                             filter.IS_ACTIVE = 1;
-                            filter.ROOM_ID = roomId;
+                             
 
-                            List<HIS_EXRO_ROOM> checkExroRoom = new List<HIS_EXRO_ROOM>();
-                            if (true)
+                            if (checkExroRoom == null || checkExroRoom.Count <=0)
                             {
                                 checkExroRoom = new BackendAdapter(paramCommon).Get<List<HIS_EXRO_ROOM>>
                                 ("api/HisExroRoom/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
@@ -420,7 +420,7 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
                             var check = checkExroRoom.Where(o => (o.EXECUTE_ROOM_ID == exeRoomId || o.BED_ROOM_ID == hisBedRoomId) && o.ROOM_ID == roomId).FirstOrDefault();  
                             if (check != null)
                             {
-                                error += string.Format(Message.MessageImport.DaTonTai, item.ROOM_CODE);
+                                 error += string.Format(Message.MessageImport.DaTonTai, item.ROOM_CODE);
                             }
                         }
                     }
