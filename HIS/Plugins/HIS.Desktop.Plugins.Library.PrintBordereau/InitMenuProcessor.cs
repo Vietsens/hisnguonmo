@@ -191,6 +191,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                 this.CreateMenuNormal("Bảng kê đối tượng khác", PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_DOI_TUONG_KHAC);
                 this.CreateMenuNormal("Yêu cầu thanh toán", PrintTypeCodeWorker.PRINT_TYPE_CODE___YEU_CAU_THANH_TOAN);
                 this.CreateMenuNormal("Bảng kê 6556 theo loại dịch vụ", PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_6556_THEO_LOAI_DICH_VU);
+                this.CreateMenuNormal("In bảng kê chi phí theo điều kiện lọc", PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_CHI_PHI_LOC);
 
                 if (this.Treatment.FUND_ID.HasValue)
                 {
@@ -321,6 +322,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                 menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_DOI_TUONG_KHAC));
                 menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___YEU_CAU_THANH_TOAN));
                 menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_6556_THEO_LOAI_DICH_VU));
+                menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_CHI_PHI_LOC));
                 Inventec.Common.Logging.LogSystem.Debug("InitMenuDynamic. 9");
                 if (this.Treatment != null && this.Treatment.FUND_ID.HasValue)
                 {

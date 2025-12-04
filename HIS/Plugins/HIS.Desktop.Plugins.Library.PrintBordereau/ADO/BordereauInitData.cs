@@ -39,5 +39,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.ADO
         public long? CurrentDepartmentId { get; set; }
         public long RoomId { get; set; }
         public long RoomTypeId { get; set; }
+        public long? FromDateReq { get; set; }
+        public long? ToDateReq { get; set; }
     }
 }

@@ -142,7 +142,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
-      <HintPath>..\..\..\..\LIB\MPS\MPS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000120.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000120.PDO.dll</HintPath>
@@ -247,6 +247,9 @@
     <Reference Include="MPS.Processor.Mps000463.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000463.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000504.PDO">
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000504.PDO\bin\Debug\MPS.Processor.Mps000504.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
@@ -334,6 +337,7 @@
     <Compile Include="MpsBehavior\Mps000356\Mps000356Behavior.cs" />
     <Compile Include="MpsBehavior\Mps000359\Mps000359Behavior.cs" />
     <Compile Include="MpsBehavior\Mps000441\Mps000441Behavior.cs" />
+    <Compile Include="MpsBehavior\Mps000504\Mps000504Behavior.cs" />
     <Compile Include="MpsBehavior\Mps000446\Mps000446Behavior.cs" />
     <Compile Include="MpsBehavior\Mps000463\Mps000463Behavior.cs" />
     <Compile Include="PrintBordereauProcessorPlus.cs" />

@@ -61,6 +61,8 @@ namespace HIS.Desktop.Plugins.Bordereau
 {
     public partial class frmBordereau : FormBase
     {
+        private long _fromDateReq = 0;
+        private long _toDateReq = long.MaxValue;
         internal long treatmentId;
         internal V_HIS_TREATMENT currentTreatment { get; set; }
         internal List<HIS_SERE_SERV_DEPOSIT> sereServDeposits { get; set; }
@@ -2069,7 +2071,6 @@ namespace HIS.Desktop.Plugins.Bordereau
                 LogSystem.Warn(ex);
             }
         }
-
         private void btnFind_Click(object sender, EventArgs e)
         {
             try
@@ -2083,18 +2084,21 @@ namespace HIS.Desktop.Plugins.Bordereau
                 || (!string.IsNullOrEmpty(o.TDL_SERVICE_REQ_CODE) && o.TDL_SERVICE_REQ_CODE.ToUpper().Contains(this.txtKeyword.Text.ToUpper()))
                 || (!string.IsNullOrEmpty(o.TDL_HEIN_SERVICE_BHYT_CODE) && o.TDL_HEIN_SERVICE_BHYT_CODE.ToUpper().Contains(this.txtKeyword.Text.ToUpper()))).ToList();
 
+                _fromDateReq = 0;
+                _toDateReq = long.MaxValue;
+
                 if (this.dtFrom.EditValue != null)
                 {
                     long instructionFrom = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(new DateTime?(this.dtFrom.DateTime.AddHours(00).AddMinutes(00).AddSeconds(00))) ?? 0L;
                     sereServADOTemps = sereServADOTemps.Where(o => o.TDL_INTRUCTION_TIME >= instructionFrom).ToList();
-
+                    _fromDateReq = instructionFrom;
                 }
                 if (this.dtTo.EditValue != null)
                 {
 
                     long instructionTo = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(new DateTime?(this.dtTo.DateTime.AddHours(23).AddMinutes(59).AddSeconds(59))) ?? 0L;
                     sereServADOTemps = sereServADOTemps.Where(o => o.TDL_INTRUCTION_TIME <= instructionTo).ToList();
-
+                    _toDateReq = instructionTo;
                 }
 
                 if (sereServADOTemps != null && sereServADOTemps.Count > 0)
@@ -2460,7 +2464,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        
         private void cboPayType_Closed(object sender, ClosedEventArgs e)
         {
             try
@@ -2890,6 +2894,50 @@ namespace HIS.Desktop.Plugins.Bordereau
         private void gridControlBordereau_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void dtTo_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                _toDateReq = long.MaxValue;
+
+                if (this.dtTo.EditValue != null)
+                {
+                    long instructionTo = Inventec.Common.DateTime.Convert
+                        .SystemDateTimeToTimeNumber(
+                            new DateTime?(this.dtTo.DateTime.Date.AddHours(23).AddMinutes(59).AddSeconds(59))) ?? 0L;
+
+                    _toDateReq = instructionTo;
+                }
+                FillDataToButtonPrint();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void dtFrom_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                _fromDateReq = 0;
+
+                if (this.dtFrom.EditValue != null)
+                {
+                    long instructionFrom = Inventec.Common.DateTime.Convert
+                        .SystemDateTimeToTimeNumber(
+                            new DateTime?(this.dtFrom.DateTime.Date.AddHours(0).AddMinutes(0).AddSeconds(0))) ?? 0L;
+
+                    _fromDateReq = instructionFrom;
+                }
+                FillDataToButtonPrint();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
     }
 }

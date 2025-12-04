@@ -28,6 +28,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Base
     public abstract class MpsDataBase
     {
         public List<HIS_SERE_SERV> SereServs { get; set; }
+        public List<V_HIS_SERE_SERV> VSereServs { get; set; }
         public V_HIS_PATIENT Patient { get; set; }
         public List<V_HIS_DEPARTMENT_TRAN> DepartmentTrans { get; set; }
         public List<V_HIS_TREATMENT_FEE> TreatmentFees { get; set; }
@@ -43,6 +44,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Base
         public List<HIS_CONFIG> lstConfig { get; set; }
         public HIS_TRANS_REQ transReq { get; set; }
         public HIS_TRANS_REQ transReq2 { get; set; }
+        public long fromDateReq { get; set; }
+        public long toDateReq { get; set; }
         public long TotalDayTreatment { get; set; }
         public string StatusTreatmentOut { get; set; }
         public string DepartmentName { get; set; }
