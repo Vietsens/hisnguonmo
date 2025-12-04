@@ -921,7 +921,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                     Inventec.Common.Mapper.DataObjectMapper.Map<MaterialTypeImportADO>(mateAdo, item);
                     if (!string.IsNullOrEmpty(item.PARENT_CODE))
                     {
-                        if (!CheckMaxLenth(item.PARENT_CODE, 25))
+                        if (!CheckMaxLenth(item.PARENT_CODE, 100))
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Mã cha");
                             mateAdo.PARENT_CODE_ERROR = 1;
@@ -1418,7 +1418,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
 
                     if (!string.IsNullOrEmpty(item.MATERIAL_TYPE_CODE))
                     {
-                        if (!CheckMaxLenth(item.MATERIAL_TYPE_CODE, 25))
+                        if (!CheckMaxLenth(item.MATERIAL_TYPE_CODE, 100))
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Mã vật tư");
                             mateAdo.MATERIAL_TYPE_CODE_ERROR = 1;
@@ -1445,7 +1445,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
 
                     if (!string.IsNullOrEmpty(item.MATERIAL_TYPE_NAME))
                     {
-                        if (!CheckMaxLenth(item.MATERIAL_TYPE_NAME, 1500))
+                        if (!CheckMaxLenth(item.MATERIAL_TYPE_NAME, 3000))
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Tên vật tư");
                             mateAdo.MATERIAL_TYPE_NAME_ERROR = 1;
