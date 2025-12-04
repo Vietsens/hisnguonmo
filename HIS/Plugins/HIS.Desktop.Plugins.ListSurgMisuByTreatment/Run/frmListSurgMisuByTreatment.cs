@@ -552,7 +552,6 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
             }
         }
 
-        //qtcode
         private void btnSelect_Click(object sender, EventArgs e)
         {
             try
@@ -561,10 +560,12 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                 List<SurgMisuADO> selectedAdos = new List<SurgMisuADO>();
                 List<int> selectedRowHandles = new List<int>();
                 int firstSelectedHandle = -1;
+
                 for (int i = 0; i < gridView.DataRowCount; i++)
                 {
                     var ado = (SurgMisuADO)gridView.GetRow(i);
                     bool isSelected = (bool?)gridView.GetRowCellValue(i, "IS_SELECTED_STR") ?? false;
+
                     if (isSelected && ado != null)
                     {
                         selectedAdos.Add(ado);
@@ -572,9 +573,11 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                         if (firstSelectedHandle < 0) firstSelectedHandle = i;
                     }
                 }
+
                 if (selectedAdos.Count == 0)
                 {
-                    MessageBox.Show("Vui lòng chọn ít nhất một dịch vụ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Vui lòng chọn ít nhất một dịch vụ.", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
@@ -582,7 +585,6 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                 if (selectedAdos.Count == 1)
                 {
                     int rowHandle = firstSelectedHandle;
-
                     GridColumn colBeginTime = gridView.Columns[8];
                     GridColumn colEndTime = gridView.Columns[9];
 
@@ -591,13 +593,15 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                     var cellBegin = gridView.GetRowCellValue(rowHandle, colBeginTime);
                     if (cellBegin != null && !string.IsNullOrWhiteSpace(cellBegin.ToString()))
                     {
-                        if (DateTime.TryParse(cellBegin.ToString(), out var tmpBegin)) dtBeginTime = tmpBegin;
+                        if (DateTime.TryParse(cellBegin.ToString(), out var tmpBegin))
+                            dtBeginTime = tmpBegin;
                     }
 
                     var cellEnd = gridView.GetRowCellValue(rowHandle, colEndTime);
                     if (cellEnd != null && !string.IsNullOrWhiteSpace(cellEnd.ToString()))
                     {
-                        if (DateTime.TryParse(cellEnd.ToString(), out var tmpEnd)) dtEndTime = tmpEnd;
+                        if (DateTime.TryParse(cellEnd.ToString(), out var tmpEnd))
+                            dtEndTime = tmpEnd;
                     }
 
                     string surgeryName = selectedAdos[0].TDL_SERVICE_NAME;
@@ -608,9 +612,7 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                     return;
                 }
 
-                // Trường hợp chọn nhiều dịch vụ:
-                // - Combobox thời gian bắt đầu / kết thúc ở FormTransfer vẫn để trống (truyền null)
-                // - Ghi tên dịch vụ + thời gian bắt đầu / kết thúc (nếu có) vào memPttt
+                // Trường hợp chọn nhiều dịch vụ
                 List<string> surgeryInfoList = new List<string>();
                 GridColumn colBeginMulti = gridView.Columns[8];
                 GridColumn colEndMulti = gridView.Columns[9];
@@ -625,49 +627,66 @@ namespace HIS.Desktop.Plugins.ListSurgMisuByTreatment.Run
                     var cellBegin = gridView.GetRowCellValue(rowHandle, colBeginMulti);
                     if (cellBegin != null && !string.IsNullOrWhiteSpace(cellBegin.ToString()))
                     {
-                        if (DateTime.TryParse(cellBegin.ToString(), out var tmpBegin)) dtBeginTime = tmpBegin;
+                        if (DateTime.TryParse(cellBegin.ToString(), out var tmpBegin))
+                            dtBeginTime = tmpBegin;
                     }
 
                     var cellEnd = gridView.GetRowCellValue(rowHandle, colEndMulti);
                     if (cellEnd != null && !string.IsNullOrWhiteSpace(cellEnd.ToString()))
                     {
-                        if (DateTime.TryParse(cellEnd.ToString(), out var tmpEnd)) dtEndTime = tmpEnd;
+                        if (DateTime.TryParse(cellEnd.ToString(), out var tmpEnd))
+                            dtEndTime = tmpEnd;
                     }
 
                     string name = ado.TDL_SERVICE_NAME;
 
-                    if (dtBeginTime.HasValue || dtEndTime.HasValue)
-                    {
-                        string beginStr = dtBeginTime.HasValue ? dtBeginTime.Value.ToString("dd/MM/yyyy HH:mm") : "";
-                        string endStr = dtEndTime.HasValue ? dtEndTime.Value.ToString("dd/MM/yyyy HH:mm") : "";
+                    // Format lại dữ liệu theo yêu cầu trên thiết kế
+                    List<string> timeInfo = new List<string>();
 
-                        if (!string.IsNullOrEmpty(beginStr) || !string.IsNullOrEmpty(endStr))
-                        {
-                            surgeryInfoList.Add(string.Format("{0} ({1} - {2})", name, beginStr, endStr));
-                        }
-                        else
-                        {
-                            surgeryInfoList.Add(name);
-                        }
+                    if (dtBeginTime.HasValue)
+                    {
+                        timeInfo.Add(string.Format("Bắt đầu {0} giờ {1} phút, ngày {2} tháng {3} năm {4}",
+                            dtBeginTime.Value.Hour.ToString("D2"),
+                            dtBeginTime.Value.Minute.ToString("D2"),
+                            dtBeginTime.Value.Day.ToString("D2"),
+                            dtBeginTime.Value.Month.ToString("D2"),
+                            dtBeginTime.Value.Year));
+                    }
+
+                    if (dtEndTime.HasValue)
+                    {
+                        timeInfo.Add(string.Format("Kết thúc: {0} giờ {1} phút, ngày {2} tháng {3} năm {4}",
+                            dtEndTime.Value.Hour.ToString("D2"),
+                            dtEndTime.Value.Minute.ToString("D2"),
+                            dtEndTime.Value.Day.ToString("D2"),
+                            dtEndTime.Value.Month.ToString("D2"),
+                            dtEndTime.Value.Year));
+                    }
+
+                    if (timeInfo.Count > 0)
+                    {
+                        surgeryInfoList.Add(name + ":" + Environment.NewLine + string.Join("; ", timeInfo) + ";");
                     }
                     else
                     {
-                        surgeryInfoList.Add(name);
+                        surgeryInfoList.Add(name + ":;");
                     }
                 }
 
-                string surgeryNamesWithTime = string.Join(";", surgeryInfoList);
+                string surgeryNamesWithTime = string.Join(Environment.NewLine, surgeryInfoList);
+
                 if (loadPTTT != null)
                 {
-                    // Thời gian bắt đầu / kết thúc để null để dteBegin / dteEnd không tự set
                     loadPTTT(surgeryNamesWithTime, null, null);
                 }
+
                 this.Close();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                MessageBox.Show("Đã xảy ra lỗi khi xử lý.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Đã xảy ra lỗi khi xử lý.", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
