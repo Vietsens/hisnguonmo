@@ -40,23 +40,23 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Validtion
                 }
                 else
                 {
-                    if (Inventec.Common.String.CountVi.Count(txtMedicineTypeCode.Text) > 25 && Inventec.Common.String.CountVi.Count(txtMedicineTypeName.Text) > 1500)
+                    if (Inventec.Common.String.CountVi.Count(txtMedicineTypeCode.Text) > 50 && Inventec.Common.String.CountVi.Count(txtMedicineTypeName.Text) > 3000)
                     {
-                        this.ErrorText = "Độ dài mã vượt quá " + 25 + "||" + "Độ dài tên vượt quá " + 1500;
+                        this.ErrorText = "Độ dài mã vượt quá " + 50 + "||" + "Độ dài tên vượt quá " + 3000;
                         return valid;
                     }
                     else
                     {
                         var len = Inventec.Common.String.CountVi.Count(txtMedicineTypeName.Text);
                         var lenn = txtMedicineTypeName.Text.Length;
-                        if (Inventec.Common.String.CountVi.Count(txtMedicineTypeCode.Text) > 25)
+                        if (Inventec.Common.String.CountVi.Count(txtMedicineTypeCode.Text) > 50)
                         {
-                            this.ErrorText = "Độ dài mã vượt quá " + 25;
+                            this.ErrorText = "Độ dài mã vượt quá " + 50;
                             return valid;
                         }
-                        else if (len > 1500)
+                        else if (len > 3000)
                         {
-                            this.ErrorText = "Độ dài tên vượt quá " + 1500;
+                            this.ErrorText = "Độ dài tên vượt quá " + 3000;
                             return valid;
                         }
                         else
