@@ -262,6 +262,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 FillDataToGridConrolServicePaty();
                 RegisterTimer(this.module.ModuleLink, timerInitForm, 1000, timerInitForm_Tick);
                 StartTimer(this.module.ModuleLink, timerInitForm);
+                if(this.ActionType == GlobalVariables.ActionAdd)
+                {
+                    btnRefresh_Click(null, null);
+                }
                 Inventec.Common.Logging.LogAction.Info(this.module.ModuleLink + ": [StartTimer - Load du lieu len cac combobox]");
                 WaitingManager.Hide();
             }
@@ -342,7 +346,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     new AConfigADO { ID = 12, NAME = "Không đếm số ngày dùng" },
                     new AConfigADO { ID = 13, NAME = "Ngoài DRG" },
                     new AConfigADO { ID = 14, NAME = "Thuốc ngoại viện" },
-                    new AConfigADO { ID = 15, NAME = "Thuốc kinh doanh" }
+                    new AConfigADO { ID = 15, NAME = "Thuốc kinh doanh" },
+                    new AConfigADO { ID = 16, NAME = "Thuốc quầy thuốc" }
                 };
                 return listADO;
             }
@@ -405,7 +410,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 List<AConfigADO> listADO = getConfigType();
                 InitComboConfig(listADO);
-                InitComboConfigCheck();
+                //InitComboConfigCheck();
             }
             catch (Exception ex)
             {
@@ -442,12 +447,121 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 columnCode.VisibleIndex = 2;
                 columnCode.Width = 300;
 
-                cboLoaiThuoc.Properties.View.OptionsView.ColumnAutoWidth = false;
-                cboLoaiThuoc.Properties.PopupFormSize = new System.Drawing.Size(200, 350);
+                //cboLoaiThuoc.Properties.View.OptionsView.ColumnAutoWidth = false;
+                //cboLoaiThuoc.Properties.PopupFormSize = new System.Drawing.Size(200, 250);
+                //cboLoaiThuoc.Properties.PopupFormMinSize = new System.Drawing.Size(200, 250);
                 //column.Caption = "Tất cả";
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboConfig.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_Check_1);
+                cboConfig.Properties.Tag = gridCheck;
                 cboConfig.Properties.View.OptionsView.ShowColumnHeaders = true;
                 cboConfig.Properties.View.OptionsSelection.MultiSelect = true;
+                cboConfig.Properties.View.RowStyle += View_RowStyle;
+                cboConfig.Properties.View.MouseDown += View_MouseDown;
+                cboConfig.Properties.View.CustomColumnDisplayText += View_CustomDisplayText;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
+        private void View_CustomDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                var row = view.GetRow(e.ListSourceRowIndex) as AConfigADO;
+                if (row == null) return;
+
+                // Đảm bảo text luôn hiển thị cho cột Name
+                if (e.Column.FieldName == "Name" || e.Column.FieldName == "CAU_HINH_NAME")
+                {
+                    e.DisplayText = row.NAME; // Force hiển thị tên
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void View_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                var row = view.GetRow(e.RowHandle) as AConfigADO;
+                if (row == null) return;
+
+                // Định nghĩa các ràng buộc
+                Dictionary<string, string> dependencies = new Dictionary<string, string>
+        {
+            {"Thuốc quầy thuốc", "Thuốc kinh doanh"}
+        };
+
+                // Kiểm tra từng ràng buộc
+                foreach (var dependency in dependencies)
+                {
+                    string childName = dependency.Key;
+                    string parentName = dependency.Value;
+
+                    if (row.NAME == childName)
+                    {
+                        bool parentChosen = lstConfig.Any(x => x.NAME == parentName);
+
+                        if (!parentChosen)
+                        {
+                            // Đổi màu toàn bộ row thành xám
+                            e.Appearance.ForeColor = System.Drawing.Color.Gray;
+                            e.Appearance.BackColor = System.Drawing.Color.WhiteSmoke;
+                            break; // Thoát sau khi xử lý
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void View_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                var hitInfo = view.CalcHitInfo(new System.Drawing.Point(e.X, e.Y));
+
+                if (hitInfo.InRow && hitInfo.Column != null)
+                {
+                    var row = view.GetRow(hitInfo.RowHandle) as AConfigADO;
+                    if (row == null) return;
+
+                    // Định nghĩa ràng buộc
+                    Dictionary<string, string> dependencies = new Dictionary<string, string>
+            {
+                {"Thuốc quầy thuốc", "Thuốc kinh doanh"}
+            };
+
+                    // Kiểm tra nếu click vào item phụ thuộc
+                    if (dependencies.ContainsKey(row.NAME))
+                    {
+                        string parentName = dependencies[row.NAME];
+                        bool parentSelected = lstConfig.Any(x => x.NAME == parentName);
+
+                        if (!parentSelected)
+                        {
+                            // Chặn sự kiện click - không cho phép chọn
+                            ((Control)sender).Capture = false;
+
+                            // Có thể hiện thông báo nếu muốn
+                            // MessageBox.Show($"Bạn cần chọn '{parentName}' trước!");
+
+                            return;
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -479,7 +593,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 columnCode.VisibleIndex = 2;
                 columnCode.Width = 200;
                 cboLoaiThuoc.Properties.View.OptionsView.ColumnAutoWidth = false;
+                cboLoaiThuoc.Properties.View.OptionsView.RowAutoHeight = false;
+                cboLoaiThuoc.Properties.PopupFormMinSize = new System.Drawing.Size(200, 250);
                 cboLoaiThuoc.Properties.PopupFormSize = new System.Drawing.Size(200, 250);
+
                 //column.Caption = "Tất cả";
                 cboLoaiThuoc.Properties.View.OptionsView.ShowColumnHeaders = true;
                 cboLoaiThuoc.Properties.View.OptionsSelection.MultiSelect = true;
@@ -1133,59 +1250,64 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     List<AConfigADO> listADO = getConfigType();
                     cboConfig.Properties.DataSource = listADO;
                 }
-                GridCheckMarksSelection gridCheckConfig = cboConfig.Properties.Tag as GridCheckMarksSelection;
-                var cArr = new List<string>();
 
-                if (hIS_MEDICINE_TYPE.IS_STOP_IMP == 1)
-                    cArr.Add("Dừng nhập");
+                SetCauHinhFromData(hIS_MEDICINE_TYPE, HIS_Services);
 
-                if (hIS_MEDICINE_TYPE.IS_OUT_PARENT_FEE == 1)
-                    cArr.Add("Chi phí ngoài gói");
 
-                if (hIS_MEDICINE_TYPE.IS_REQUIRE_HSD == 1)
-                    cArr.Add("Phải nhập hạn sử dụng");
+                //#region config
+                //GridCheckMarksSelection gridCheckConfig = cboConfig.Properties.Tag as GridCheckMarksSelection;
+                //var cArr = new List<string>();
 
-                if (hIS_MEDICINE_TYPE.IS_ALLOW_EXPORT_ODD == 1)
-                    cArr.Add("Cho xuất lẻ");
+                //if (hIS_MEDICINE_TYPE.IS_STOP_IMP == 1)
+                //    cArr.Add("Dừng nhập");
 
-                if (hIS_MEDICINE_TYPE.IS_SPLIT_COMPENSATION == 1)
-                    cArr.Add("Tách phần bù");
+                //if (hIS_MEDICINE_TYPE.IS_OUT_PARENT_FEE == 1)
+                //    cArr.Add("Chi phí ngoài gói");
 
-                if (hIS_MEDICINE_TYPE.ALLOW_MISSING_PKG_INFO == 1)
-                    cArr.Add("Không bắt buộc số lô, hạn sử dụng");
+                //if (hIS_MEDICINE_TYPE.IS_REQUIRE_HSD == 1)
+                //    cArr.Add("Phải nhập hạn sử dụng");
 
-                if (hIS_MEDICINE_TYPE.IS_MUST_PREPARE == 1)
-                    cArr.Add("Phải dự trù");
+                //if (hIS_MEDICINE_TYPE.IS_ALLOW_EXPORT_ODD == 1)
+                //    cArr.Add("Cho xuất lẻ");
 
-                if (hIS_MEDICINE_TYPE.IS_AUTO_EXPEND == 1)
-                    cArr.Add("Tự động hao phí");
+                //if (hIS_MEDICINE_TYPE.IS_SPLIT_COMPENSATION == 1)
+                //    cArr.Add("Tách phần bù");
 
-                if (hIS_MEDICINE_TYPE.IS_OTHER_SOURCE_PAID == 1)
-                    cArr.Add("Có nguồn chi trả khác");
+                //if (hIS_MEDICINE_TYPE.ALLOW_MISSING_PKG_INFO == 1)
+                //    cArr.Add("Không bắt buộc số lô, hạn sử dụng");
 
-                if (hIS_MEDICINE_TYPE.IS_TREATMENT_DAY_COUNT == 1)
-                    cArr.Add("Đếm số ngày dùng");
+                //if (hIS_MEDICINE_TYPE.IS_MUST_PREPARE == 1)
+                //    cArr.Add("Phải dự trù");
 
-                if (hIS_MEDICINE_TYPE.IS_NOT_TREATMENT_DAY_COUNT == 1)
-                    cArr.Add("Không đếm số ngày dùng");
+                //if (hIS_MEDICINE_TYPE.IS_AUTO_EXPEND == 1)
+                //    cArr.Add("Tự động hao phí");
 
-                if (HIS_Services.IS_OUT_OF_DRG == 1)
-                    cArr.Add("Ngoài DRG");
+                //if (hIS_MEDICINE_TYPE.IS_OTHER_SOURCE_PAID == 1)
+                //    cArr.Add("Có nguồn chi trả khác");
 
-                if (hIS_MEDICINE_TYPE.IS_OUT_HOSPITAL == 1)
-                    cArr.Add("Thuốc ngoại viện");
+                //if (hIS_MEDICINE_TYPE.IS_TREATMENT_DAY_COUNT == 1)
+                //    cArr.Add("Đếm số ngày dùng");
 
-                if (hIS_MEDICINE_TYPE.IS_BUSINESS == 1)
-                    cArr.Add("Thuốc kinh doanh");
+                //if (hIS_MEDICINE_TYPE.IS_NOT_TREATMENT_DAY_COUNT == 1)
+                //    cArr.Add("Không đếm số ngày dùng");
 
-                if (hIS_MEDICINE_TYPE.IS_ALLOW_ODD == 1)
-                    cArr.Add("Cho kê lẻ");
-                if(hIS_MEDICINE_TYPE.IS_DRUG_STORE == 1)
-                    cArr.Add("Thuốc quầy thuốc");
-                string listArrayConfig = string.Join(", ", cArr);
+                //if (HIS_Services.IS_OUT_OF_DRG == 1)
+                //    cArr.Add("Ngoài DRG");
 
-                ProcessSelectConfig(listArrayConfig, gridCheckConfig);
+                //if (hIS_MEDICINE_TYPE.IS_OUT_HOSPITAL == 1)
+                //    cArr.Add("Thuốc ngoại viện");
 
+                //if (hIS_MEDICINE_TYPE.IS_BUSINESS == 1)
+                //    cArr.Add("Thuốc kinh doanh");
+
+                //if (hIS_MEDICINE_TYPE.IS_ALLOW_ODD == 1)
+                //    cArr.Add("Cho kê lẻ");
+                //if(hIS_MEDICINE_TYPE.IS_DRUG_STORE == 1)
+                //    cArr.Add("Thuốc quầy thuốc");
+                //string listArrayConfig = string.Join(", ", cArr);
+
+                //ProcessSelectConfig(listArrayConfig, gridCheckConfig);
+                //#endregion
 
 
                 if (hIS_MEDICINE_TYPE.TDL_GENDER_ID != null)
@@ -1282,6 +1404,204 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 this.UseInTreat = hIS_MEDICINE_TYPE.ALERT_MAX_IN_TREATMENT;
                 chkWarningInTreat.Checked = hIS_MEDICINE_TYPE.IS_BLOCK_MAX_IN_TREATMENT == 1 ? false : true;
                 chkBlockInTreat.Checked = hIS_MEDICINE_TYPE.IS_BLOCK_MAX_IN_TREATMENT != 1 ? false : true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SetCauHinhFromData(V_HIS_MEDICINE_TYPE hIS_MEDICINE_TYPE, V_HIS_SERVICE hIS_Services)
+        {
+            try
+            {                
+                var gridCheck = cboConfig.Properties.Tag as GridCheckMarksSelection;
+                
+                if (gridCheck != null)
+                {
+                    gridCheck.SelectionChanged -= Event_Check_1; // Tạm bỏ event
+                }
+
+                var allItems = cboConfig.Properties.DataSource as List<AConfigADO>;
+                var gridView = cboConfig.Properties.View as GridView;
+
+                if (allItems == null || gridCheck == null) return;
+                lstConfig = new List<AConfigADO>();
+                // Clear và add
+                lstConfig.Clear();
+                gridCheck.ClearSelection(gridView);
+
+                // Add items
+                if (hIS_MEDICINE_TYPE.IS_STOP_IMP == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Dừng nhập");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.IS_OUT_PARENT_FEE == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Chi phí ngoài gói");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.IS_REQUIRE_HSD == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Phải nhập hạn sử dụng");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.IS_ALLOW_EXPORT_ODD == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Cho xuất lẻ");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.IS_SPLIT_COMPENSATION == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Tách phần bù");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.ALLOW_MISSING_PKG_INFO == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Không bắt buộc số lô, hạn sử dụng");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.IS_MUST_PREPARE == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Phải dự trù");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.IS_AUTO_EXPEND == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Tự động hao phí");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.IS_TREATMENT_DAY_COUNT == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Đếm số ngày dùng");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.IS_OTHER_SOURCE_PAID == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Có nguồn chi trả khác");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.IS_NOT_TREATMENT_DAY_COUNT == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Không đếm số ngày dùng");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_Services.IS_OUT_OF_DRG == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Ngoài DRG");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.IS_OUT_HOSPITAL == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Thuốc ngoại viện");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.IS_BUSINESS == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Thuốc kinh doanh");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.IS_ALLOW_ODD == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Cho kê lẻ");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                if (hIS_MEDICINE_TYPE.IS_DRUG_STORE == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Thuốc quầy thuốc");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
+                // Update UI manually
+                cboConfig.EditValue = lstConfig;
+                cboConfig.Text = string.Join(", ", lstConfig.Select(s => s.NAME));
+
+                // Re-enable event
+                if (gridCheck != null)
+                {
+                    gridCheck.SelectionChanged += Event_Check_1; // Đăng ký lại event
+                }
+
             }
             catch (Exception ex)
             {
@@ -3517,6 +3837,12 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 spinUseInTreat.EditValue = null;
                 this.UseInTreat = null;
                 chkWarningInTreat.Checked = true;
+                GridCheckMarksSelection gridcboCauHinh = cboConfig.Properties.Tag as GridCheckMarksSelection;
+                gridcboCauHinh.ClearSelection(cboConfig.Properties.View);
+                cboConfig.Text = "";
+                GridCheckMarksSelection gridcboThuoc = cboLoaiThuoc.Properties.Tag as GridCheckMarksSelection;
+                gridcboThuoc.ClearSelection(cboConfig.Properties.View);
+                cboLoaiThuoc.Text = "";
             }
             catch (Exception ex)
             {
@@ -7788,56 +8114,96 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                 if (gridCheckMark != null)
                 {
-                    List<AConfigADO> erSelectedNews = new List<AConfigADO>();
-                    foreach (AConfigADO er in gridCheckMark.Selection)
+
+                    // Lấy selection hiện tại
+                    var currentSelection = gridCheckMark.Selection.OfType<AConfigADO>().ToList();
+
+                    // Định nghĩa ràng buộc
+                    Dictionary<string, string> dependencies = new Dictionary<string, string>
+            {
+                {"Thuốc quầy thuốc", "Thuốc kinh doanh"}
+            };
+
+                    // Validate và loại bỏ selection không hợp lệ
+                    var validSelection = new List<AConfigADO>();
+                    var itemsToRemove = new List<AConfigADO>();
+
+                    foreach (var item in currentSelection)
                     {
-                        if (er != null)
+                        bool isValid = true;
+
+                        // Kiểm tra ràng buộc
+                        if (dependencies.ContainsKey(item.NAME))
                         {
-                            if (sb.ToString().Length > 0) { sb.Append(", "); }
-                            sb.Append(er.NAME);
-                            erSelectedNews.Add(er);
-                            if (er.ID == 15) hasKD = true;
-                            if (er.ID == 4) hasAllowOdd = true; // Check for ID=4
+                            string parentName = dependencies[item.NAME];
+                            bool parentExists = currentSelection.Any(x => x.NAME == parentName);
+                            if (!parentExists)
+                            {
+                                isValid = false;
+                                itemsToRemove.Add(item);
+                            }
+                        }
+
+                        if (isValid)
+                        {
+                            validSelection.Add(item);
                         }
                     }
-                    this.lstConfig = new List<AConfigADO>();
-                    this.lstConfig.AddRange(erSelectedNews);
+
+                    // Remove invalid items từ GridCheckMarksSelection
+                    foreach (var item in itemsToRemove)
+                    {
+                        gridCheckMark.Selection.Remove(item);
+                    }
+
+                    this.lstConfig.Clear();
+                    foreach (var er in validSelection)
+                    {
+                        if (sb.Length > 0) 
+                        {                             
+                            sb.Append(", ");
+                        }
+
+                        if (er.ID == 15) hasKD = true;
+                        if (er.ID == 4) hasAllowOdd = true; // Check for ID=4
+                        sb.Append(er.NAME);
+
+                        lstConfig.Add(er);
+                    }
+
+                    cboConfig.EditValue = lstConfig;
+
+                    //List<AConfigADO> erSelectedNews = new List<AConfigADO>();
+                    //foreach (AConfigADO er in gridCheckMark.Selection)
+                    //{
+                    //    if (er != null)
+                    //    {
+                    //        if (sb.ToString().Length > 0) { sb.Append(", "); }
+                    //        sb.Append(er.NAME);
+                    //        erSelectedNews.Add(er);
+                    //    }
+                    //}
+                    //this.lstConfig = new List<AConfigADO>();
+                    //this.lstConfig.AddRange(erSelectedNews);
                 }
-                this.cboConfig.Text = sb.ToString();
+                // FORCE UPDATE TEXT - Sử dụng nhiều cách
+                string displayText = sb.ToString();
 
-                // Handle ID=15 logic (existing)
-                //if (hasKD && cboConfig.Properties.DataSource is List<AConfigADO> ds && ds.Count < 16)
-                //{
-                //    _isReloadingConfigCombo = true;
-                //    var newList = getConfigTypeCheckKD();
-                //    cboConfig.Properties.DataSource = newList;
-                //    GridCheckMarksSelection newGridCheckMark = cboConfig.Properties.Tag as GridCheckMarksSelection;
-                //    if (newGridCheckMark != null)
-                //    {
-                //        var selected = newList.Where(x => lstConfig.Any(y => y.ID == x.ID)).ToList();
-                //        newGridCheckMark.ClearSelection(cboConfig.Properties.View);
-                //        newGridCheckMark.SelectAll(selected);
-                //    }
-                //    _isReloadingConfigCombo = false;
-                //}
-                //else if (!hasKD && cboConfig.Properties.DataSource is List<AConfigADO> ds2 && ds2.Count == 16)
-                //{
-                //    _isReloadingConfigCombo = true;
-                //    var newList = getConfigType();
+                // Cách 1: Set trực tiếp
+                cboConfig.Text = displayText;
 
-                //    lstConfig = lstConfig.Where(x => x.ID != 16).ToList();
-                //    cboConfig.Properties.DataSource = newList;
-                //    GridCheckMarksSelection newGridCheckMark = cboConfig.Properties.Tag as GridCheckMarksSelection;
-                //    if (newGridCheckMark != null)
-                //    {
-                //        var selected = newList.Where(x => lstConfig.Any(y => y.ID == x.ID)).ToList();
-                //        newGridCheckMark.ClearSelection(cboConfig.Properties.View);
-                //        newGridCheckMark.SelectAll(selected);
-                //    }
-                //    _isReloadingConfigCombo = false;
-                //}
+                // Cách 2: BeginInvoke để chạy sau khi events khác hoàn thành
+                this.BeginInvoke(new Action(() =>
+                {
+                    cboConfig.Text = displayText;
+                }));
 
-                // Handle ID=4 logic (Cho kê lẻ)
+                // Force refresh để update UI
+                if (cboConfig.Properties.View != null)
+                {
+                    cboConfig.Properties.View.RefreshData();
+                }
+                //this.cboConfig.Text = sb.ToString();
                 if (hasKD)
                 {
                     chkIsSaleEqualImpPrice.Enabled = false;
@@ -7872,9 +8238,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-
-
 
         private void Event_Check(object sender, EventArgs e)
         {
@@ -7999,6 +8362,18 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
 
+            }
+        }
+
+        private void cboConfig_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }
