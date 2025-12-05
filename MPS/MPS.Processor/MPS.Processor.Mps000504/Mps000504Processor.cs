@@ -66,7 +66,7 @@ namespace MPS.Processor.Mps000504
                     }
                     else
                     {
-                        SetSingleKey(new KeyValue("TIME_FROM_STR", Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)rdo.fromDateReq)));
+                        SetSingleKey(new KeyValue("TIME_FROM_STR", Inventec.Common.DateTime.Convert.TimeNumberToDateString((long)rdo.fromDateReq)));
                     }
                     if (rdo.fromDateReq == long.MinValue)
                     {
@@ -74,7 +74,7 @@ namespace MPS.Processor.Mps000504
                     }
                     else
                     {
-                        SetSingleKey(new KeyValue("TIME_TO_STR", Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)rdo.toDateReq)));
+                        SetSingleKey(new KeyValue("TIME_TO_STR", Inventec.Common.DateTime.Convert.TimeNumberToDateString((long)rdo.toDateReq)));
                     }
                     SetSingleKey(new KeyValue("DOB", rdo.Treatment.TDL_PATIENT_DOB));
 
