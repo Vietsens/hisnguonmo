@@ -19,36 +19,30 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
-using HIS.Desktop.ADO;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.ApiConsumer;
-using Inventec.Core;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using Inventec.Desktop.Common.LibraryMessage;
-using Inventec.Desktop.Common.Message;
-using Inventec.Desktop.Common.Token;
-using MOS.EFMODEL.DataModels;
-using MOS.Filter;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Common.Adapter;
-using Inventec.Common.RichEditor.Base;
 using HIS.Desktop.Controls.Session;
-using MOS.SDO;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.HisBedRoomIn.ADO;
 using HIS.Desktop.Plugins.HisBedRoomIn.Resources;
-using DevExpress.XtraGrid.Views.Grid;
+using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Resources;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.HisBedRoomIn
 {
@@ -247,7 +241,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                 treatmentBR.TREATMENT_ID = this.treatmentId;
                 treatmentBR.RequestRoomId = this.currentModule.RoomId;
                 treatmentBR.ADD_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtLogTime.DateTime) ?? 0;
-                treatmentBR.BED_ROOM_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboBedRoom.EditValue).ToString());
+                treatmentBR.BED_ROOM_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboBedRoom.EditValue).ToString());  
 
                 if (cboBed.EditValue != null)
                 {
@@ -297,7 +291,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
-        }
+        } 
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -452,25 +446,25 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             }
         }
 
-        private void cboBedRoom_Closed(object sender, ClosedEventArgs e)
-        {
-            try
-            {
-                if (e.CloseMode == PopupCloseMode.Normal)
-                {
-                    var data = this.listBedRoom.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboBedRoom.EditValue ?? "").ToString()));
-                    if (data != null)
-                    {
-                        txtBedRoomCode.Text = data.BED_ROOM_CODE;
-                        cboBed.Focus();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void cboBedRoom_Closed(object sender, ClosedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.CloseMode == PopupCloseMode.Normal)
+        //        {
+        //            var data = this.listBedRoom.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboBedRoom.EditValue ?? "").ToString()));
+        //            if (data != null)
+        //            {
+        //                txtBedRoomCode.Text = data.BED_ROOM_CODE;
+        //                cboBed.Focus();
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
         private void cboBedRoom_KeyUp(object sender, KeyEventArgs e)
         {
@@ -501,26 +495,26 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             }
         }
 
-        private void cboBedRoom_EditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                cboBed.EditValue = null;
-                var data = this.listBedRoom.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboBedRoom.EditValue ?? "").ToString()));
-                if (data != null)
-                {
-                    this.ListServiceBedByRooms = BackendDataWorker.Get<V_HIS_SERVICE_ROOM>().Where(o =>
-                        o.ROOM_ID == data.ROOM_ID &&
-                        o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G && o.IS_ACTIVE == 1).ToList();
-                    LoadDataToBedCombo(this.cboBed, data.ID);
-                    LoadDefautBedServicePatient();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Fatal(ex);
-            }
-        }
+        //private void cboBedRoom_EditValueChanged(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        cboBed.EditValue = null;
+        //        var data = this.listBedRoom.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboBedRoom.EditValue ?? "").ToString()));
+        //        if (data != null)
+        //        {
+        //            this.ListServiceBedByRooms = BackendDataWorker.Get<V_HIS_SERVICE_ROOM>().Where(o =>
+        //                o.ROOM_ID == data.ROOM_ID &&
+        //                o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G && o.IS_ACTIVE == 1).ToList();
+        //            LoadDataToBedCombo(this.cboBed, data.ID);
+        //            LoadDefautBedServicePatient();
+        //        }
+        //    }
+        //    catch (Exception ex) 
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Fatal(ex);
+        //    }
+        //}
 
         private void cboBed_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
@@ -624,7 +618,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                 if (e.KeyCode == Keys.Enter)
                 {
                     List<V_HIS_BED_ROOM> searchs = null;
-                    var listData1 = this.listBedRoom.Where(o => o.BED_ROOM_CODE.ToUpper().Contains(txtBedRoomCode.Text.ToUpper())).ToList();
+                    var listData1 = this.listBedRoom.Where(o => o.BED_ROOM_CODE.ToUpper().Contains(txtBedRoomCode.Text.ToUpper())).ToList(); 
                     if (listData1 != null && listData1.Count > 0)
                     {
                         searchs = (listData1.Count == 1) ? listData1 : (listData1.Where(o => o.BED_ROOM_CODE.ToUpper() == txtBedRoomCode.Text.ToUpper()).ToList());
@@ -710,11 +704,11 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             }
         }
 
-        private void ValidateLookupWithTextEdit(LookUpEdit cbo, TextEdit textEdit, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor)
+        private void ValidateLookupWithTextEdit(GridLookUpEdit cbo, TextEdit textEdit, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor)
         {
             try
             {
-                LookupEditWithTextEditValidationRule validRule = new LookupEditWithTextEditValidationRule();
+                GridLookupEditWithTextEditValidationRule validRule = new GridLookupEditWithTextEditValidationRule();
                 validRule.txtTextEdit = textEdit;
                 validRule.cbo = cbo;
                 validRule.ErrorText = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
@@ -787,8 +781,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        private void LoadDataToBedRoomCombo(DevExpress.XtraEditors.LookUpEdit cboBedRoom)
+        
+        private void LoadDataToBedRoomCombo(DevExpress.XtraEditors.GridLookUpEdit cboBedRoom)
         {
             try
             {
@@ -796,17 +790,73 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                 HisBedRoomFilter filter = new HisBedRoomFilter();
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 this.listBedRoom = new BackendAdapter(param).Get<List<V_HIS_BED_ROOM>>(ApiConsumer.HisRequestUriStore.HIS_BED_ROOM_GETVIEW, ApiConsumers.MosConsumer, filter, param);
-                cboBedRoom.Properties.DataSource = this.listBedRoom;
+                var dataSource = listBedRoom.Select(x => new
+                {
+                    x.ID,
+                    x.BED_ROOM_CODE,
+                    x.BED_ROOM_NAME,
+                    x.PATIENT_COUNT,
+                    x.BED_COUNT,
+                    TT_PATIENT_BED_STR = ((int)(x.PATIENT_COUNT ?? 0)).ToString() + "/" + ((int)(x.BED_COUNT)).ToString()
+                }).ToList();
+                cboBedRoom.Properties.DataSource = dataSource;
                 cboBedRoom.Properties.DisplayMember = "BED_ROOM_NAME";
                 cboBedRoom.Properties.ValueMember = "ID";
-                cboBedRoom.Properties.ForceInitialize();
-                cboBedRoom.Properties.Columns.Clear();
-                cboBedRoom.Properties.Columns.Add(new LookUpColumnInfo("BED_ROOM_CODE", "", 50));
-                cboBedRoom.Properties.Columns.Add(new LookUpColumnInfo("BED_ROOM_NAME", "", 350));
-                cboBedRoom.Properties.ShowHeader = false;
+                cboBedRoom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboBedRoom.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
                 cboBedRoom.Properties.ImmediatePopup = true;
-                cboBedRoom.Properties.DropDownRows = 10;
-                cboBedRoom.Properties.PopupWidth = 150;
+                cboBedRoom.ForceInitialize();
+                cboBedRoom.Properties.View.Columns.Clear();
+                GridColumn aColumnCode = cboBedRoom.Properties.View.Columns.AddField("BED_ROOM_CODE");
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 50;
+                GridColumn aColumnName = cboBedRoom.Properties.View.Columns.AddField("BED_ROOM_NAME");
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 2;
+                aColumnName.Width = 150;
+                GridColumn aColumnCount = cboBedRoom.Properties.View.Columns.AddField("TT_PATIENT_BED_STR");
+                aColumnCount.Caption = "Tổng BN/Tổng giường";
+                aColumnCount.Visible = true;
+                aColumnCount.VisibleIndex = 3;
+                aColumnCount.Width = 200;
+                GridColumn aColumnPatient = cboBedRoom.Properties.View.Columns.AddField("PATIENT_COUNT");
+                aColumnPatient.Visible = false;
+                aColumnPatient.Width = 0;
+                GridColumn aColumnBed = cboBedRoom.Properties.View.Columns.AddField("BED_COUNT");
+                aColumnBed.Visible = false;
+                aColumnBed.Width = 0;
+                var view = cboBedRoom.Properties.View as GridView;
+                if (view != null)
+                {
+                    //view.OptionsView.ColumnAutoWidth = false;
+
+                    //// Cột mã: cố định chiều rộng
+                    //aColumnCode.OptionsColumn.FixedWidth = true;
+                    //aColumnCode.Width = 50;
+                    //aColumnName.OptionsColumn.FixedWidth = true;
+                    //aColumnName.Width = 150;
+                    //aColumnCount.OptionsColumn.FixedWidth = true;
+                    //aColumnCount.Width = 200;
+                    //aColumnPatient.OptionsColumn.FixedWidth = true;
+                    //aColumnPatient.Width = 0;
+                    //aColumnBed.OptionsColumn.FixedWidth = true;
+                    //aColumnBed.Width = 0;
+                    // tránh đăng ký trùng nhiều lần
+                    view.RowStyle -= BedRoomView_RowStyle;
+                    view.RowStyle += BedRoomView_RowStyle;
+                }
+                cboBedRoom.Properties.PopupFormSize = new Size(cboBedRoom.Width, 400);
+
+                //cboBedRoom.Properties.Columns.Clear();
+                //cboBedRoom.Properties.Columns.Add(new LookUpColumnInfo("BED_ROOM_CODE", "", 50));
+                //cboBedRoom.Properties.Columns.Add(new LookUpColumnInfo("BED_ROOM_NAME", "", 350));
+                //cboBedRoom.Properties.ShowHeader = false;
+                //cboBedRoom.Properties.ImmediatePopup = true;
+                //cboBedRoom.Properties.DropDownRows = 10;
+                //cboBedRoom.Properties.PopupWidth = 150;
             }
             catch (Exception ex)
             {
@@ -814,7 +864,38 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             }
         }
 
-        private void LoadDataToBedRoomCombo(DevExpress.XtraEditors.LookUpEdit cboBedRoom, long departmentId)
+        private void BedRoomView_RowStyle(object sender, RowStyleEventArgs e)
+        {
+            try
+            {
+                GridView view = sender as GridView;
+                if (view == null || e.RowHandle < 0)
+                {
+                    return;
+                }
+                var patientObj = view.GetRowCellValue(e.RowHandle, "PATIENT_COUNT") as decimal?;
+                var bedObj = view.GetRowCellValue(e.RowHandle, "BED_COUNT") as decimal?;
+
+                int patientCount = (int)(patientObj ?? 0);
+                int bedCount = (int)(bedObj ?? 0);
+                if (bedCount <= 0 && patientCount <= 0)
+                    return;
+                if (patientCount > bedCount)
+                {
+                    e.Appearance.ForeColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    e.Appearance.ForeColor = System.Drawing.Color.Blue;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadDataToBedRoomCombo(DevExpress.XtraEditors.GridLookUpEdit cboBedRoom, long departmentId)
         {
             try
             {
@@ -868,19 +949,48 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                 }
 
                 var bedRooms = bedRoom_AllowTreatmentType.Where(o => o.DEPARTMENT_ID == departmentId).ToList();
+                var dataSource = bedRooms.Select(x => new
+                {
+                    x.ID,
+                    x.BED_ROOM_CODE,
+                    x.BED_ROOM_NAME,
+                    x.PATIENT_COUNT,
+                    x.BED_COUNT,
+                    TT_PATIENT_BED_STR = ((int)(x.PATIENT_COUNT ?? 0)).ToString() + "/" + ((int)(x.BED_COUNT)).ToString()
+                }).ToList();
                 Inventec.Common.Logging.LogSystem.Debug("LoadDataToBedRoomCombo 3");
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("bedRooms", bedRooms));
-                cboBedRoom.Properties.DataSource = bedRooms;
+                cboBedRoom.Properties.DataSource = dataSource;
                 cboBedRoom.Properties.DisplayMember = "BED_ROOM_NAME";
                 cboBedRoom.Properties.ValueMember = "ID";
-                cboBedRoom.Properties.ForceInitialize();
-                cboBedRoom.Properties.Columns.Clear();
-                cboBedRoom.Properties.Columns.Add(new LookUpColumnInfo("BED_ROOM_CODE", "", 50));
-                cboBedRoom.Properties.Columns.Add(new LookUpColumnInfo("BED_ROOM_NAME", "", 150));
-                cboBedRoom.Properties.ShowHeader = false;
+                cboBedRoom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboBedRoom.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
                 cboBedRoom.Properties.ImmediatePopup = true;
-                cboBedRoom.Properties.DropDownRows = 10;
-                cboBedRoom.Properties.PopupWidth = 150;
+                cboBedRoom.ForceInitialize();
+                cboBedRoom.Properties.View.Columns.Clear();
+                GridColumn aColumnCode = cboBedRoom.Properties.View.Columns.AddField("BED_ROOM_CODE");
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 50;
+                GridColumn aColumnName = cboBedRoom.Properties.View.Columns.AddField("BED_ROOM_NAME");
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 2;
+                aColumnName.Width = 150;
+                GridColumn aColumnCount = cboBedRoom.Properties.View.Columns.AddField("TT_PATIENT_BED_STR");
+                aColumnCount.Caption = "Tổng BN/Tổng giường";
+                aColumnCount.Visible = true;
+                aColumnCount.VisibleIndex = 3;
+                aColumnCount.Width = 200;
+                //cboBedRoom.Properties.ForceInitialize();
+                //cboBedRoom.Properties.Columns.Clear();
+                //cboBedRoom.Properties.Columns.Add(new LookUpColumnInfo("BED_ROOM_CODE", "", 50));
+                //cboBedRoom.Properties.Columns.Add(new LookUpColumnInfo("BED_ROOM_NAME", "", 150));
+                //cboBedRoom.Properties.ShowHeader = false;
+                //cboBedRoom.Properties.ImmediatePopup = true;
+                //cboBedRoom.Properties.DropDownRows = 10;
+                //cboBedRoom.Properties.PopupWidth = 150;
             }
             catch (Exception ex)
             {
@@ -1380,6 +1490,65 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                 var ketQua = lstHopitalReason.Where(i => i.HOSPITALIZE_REASON_NAME.Contains(findReasonName) || i.HOSPITALIZE_REASON_CODE.Contains(findReasonName)).ToList();
                 lstHopitalReasonSave = ketQua;
             }
+        }
+        private void SetBedRoomCodeFromCombo()
+        {
+            try
+            {
+                if (cboBedRoom.EditValue == null)
+                    return;
+
+                var id = Inventec.Common.TypeConvert.Parse.ToInt64((cboBedRoom.EditValue ?? "").ToString());
+                var data = this.listBedRoom.SingleOrDefault(o => o.ID == id);
+                if (data != null)
+                {
+                    txtBedRoomCode.Text = data.BED_ROOM_CODE;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboBedRoom_Closed_1(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    SetBedRoomCodeFromCombo();
+                    cboBed.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboBedRoom_EditValueChanged_1(object sender, EventArgs e)
+        {
+            try
+            {
+                // luôn sync txtBedRoomCode với combo
+                SetBedRoomCodeFromCombo();
+
+                cboBed.EditValue = null;
+                var data = this.listBedRoom.SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboBedRoom.EditValue ?? "").ToString()));
+                if (data != null)
+                {
+                    this.ListServiceBedByRooms = BackendDataWorker.Get<V_HIS_SERVICE_ROOM>().Where(o =>
+                        o.ROOM_ID == data.ROOM_ID &&
+                        o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G && o.IS_ACTIVE == 1).ToList();
+                    LoadDataToBedCombo(this.cboBed, data.ID);
+                    LoadDefautBedServicePatient();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Fatal(ex);
+            }   
         }
     }
 }
