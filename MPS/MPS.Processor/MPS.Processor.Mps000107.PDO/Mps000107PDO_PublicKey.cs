@@ -30,6 +30,8 @@ namespace MPS.Processor.Mps000107.PDO
         public V_HIS_SERVICE_REQ HisServiceReq { get; set; }
         public List<V_HIS_EXP_MEST_BLOOD> HisExpMestBloods { get; set; }
         public List<V_HIS_EXP_MEST_BLTY_REQ> HisExpMestBltys { get; set; }
+        public List<V_HIS_BED_LOG> HisBedLog { get; set; }
+        public List<HIS_EXP_MEST> HisExpMest { get; set; }
         public List<ExpMestBloodADO> ListBloodADO = new List<ExpMestBloodADO>();
     }
 }
