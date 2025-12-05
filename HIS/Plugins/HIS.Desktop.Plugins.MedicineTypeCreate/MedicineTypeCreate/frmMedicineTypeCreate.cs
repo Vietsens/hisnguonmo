@@ -299,18 +299,18 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 List<AMedicineTypeADO> listADO = new List<AMedicineTypeADO>()
                 {
                     new AMedicineTypeADO { ID = 1,  NAME = "Hóa chất" },
-                    new AMedicineTypeADO { ID = 2,  NAME = "TPCN" },
-                    new AMedicineTypeADO { ID = 3,  NAME = "Thuốc dấu *" },
+                    new AMedicineTypeADO { ID = 2,  NAME = "Thực phẩm chức năng" },
+                    new AMedicineTypeADO { ID = 3,  NAME = "Thuốc dấu sao *" },
                     new AMedicineTypeADO { ID = 4,  NAME = "Generic" },
-                    new AMedicineTypeADO { ID = 5,  NAME = "Vaccin" },
+                    new AMedicineTypeADO { ID = 5,  NAME = "Vaccine" },
                     new AMedicineTypeADO { ID = 6,  NAME = "Vitamin A" },
-                    new AMedicineTypeADO { ID = 7,  NAME = "TCMR" },
+                    new AMedicineTypeADO { ID = 7,  NAME = "Tiêm chủng mở rộng" },
                     new AMedicineTypeADO { ID = 8,  NAME = "Sinh phẩm" },
                     new AMedicineTypeADO { ID = 9,  NAME = "Ô xy" },
                     new AMedicineTypeADO { ID = 10, NAME = "Gây tê" },
                     new AMedicineTypeADO { ID = 11, NAME = "Biệt dược gốc" },
                     new AMedicineTypeADO { ID = 12, NAME = "Thuốc chạy thận" },
-                    new AMedicineTypeADO { ID = 13, NAME = "NLBC" }
+                    new AMedicineTypeADO { ID = 13, NAME = "Nguyên liệu điều chế" }
 
                 };
                 return listADO;
@@ -440,8 +440,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 columnCode.Caption = "Loại";
                 columnCode.Visible = true;
                 columnCode.VisibleIndex = 2;
-                columnCode.Width = 100;
+                columnCode.Width = 300;
 
+                cboLoaiThuoc.Properties.View.OptionsView.ColumnAutoWidth = false;
+                cboLoaiThuoc.Properties.PopupFormSize = new System.Drawing.Size(200, 350);
                 //column.Caption = "Tất cả";
                 cboConfig.Properties.View.OptionsView.ShowColumnHeaders = true;
                 cboConfig.Properties.View.OptionsSelection.MultiSelect = true;
@@ -475,8 +477,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 columnCode.Caption = "Loại";
                 columnCode.Visible = true;
                 columnCode.VisibleIndex = 2;
-                columnCode.Width = 100;
-
+                columnCode.Width = 200;
+                cboLoaiThuoc.Properties.View.OptionsView.ColumnAutoWidth = false;
+                cboLoaiThuoc.Properties.PopupFormSize = new System.Drawing.Size(200, 250);
                 //column.Caption = "Tất cả";
                 cboLoaiThuoc.Properties.View.OptionsView.ShowColumnHeaders = true;
                 cboLoaiThuoc.Properties.View.OptionsSelection.MultiSelect = true;
@@ -678,7 +681,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 cboDosageForm.Properties.Buttons[1].Visible = false;
                 cboHowToUse.Properties.Buttons[1].Visible = false;
                 cboGender.Properties.Buttons[1].Visible = false;
-                chkIS_DRUG_STORE.Checked = false;
                 cboImpUnit.EditValue = null;
                 spUnitConvertRatio.EditValue = null;
                 txtTCCL.Text = "";
@@ -960,16 +962,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     chkIsSaleEqualImpPrice.CheckState = CheckState.Unchecked;
                 }
-
-                
-                if (hIS_MEDICINE_TYPE.IS_DRUG_STORE == 1)
-                {
-                    chkIS_DRUG_STORE.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIS_DRUG_STORE.CheckState = CheckState.Unchecked;
-                }
                 if (hIS_MEDICINE_TYPE.IS_BLOCK_MAX_IN_PRESCRIPTION == 1)
                 {
                     rdoBlock.Checked = true;
@@ -1188,20 +1180,12 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                 if (hIS_MEDICINE_TYPE.IS_ALLOW_ODD == 1)
                     cArr.Add("Cho kê lẻ");
-
+                if(hIS_MEDICINE_TYPE.IS_DRUG_STORE == 1)
+                    cArr.Add("Thuốc quầy thuốc");
                 string listArrayConfig = string.Join(", ", cArr);
 
                 ProcessSelectConfig(listArrayConfig, gridCheckConfig);
 
-
-                if (hIS_MEDICINE_TYPE.IS_DRUG_STORE == 1)
-                {
-                    chkIS_DRUG_STORE.CheckState = CheckState.Checked;
-                }
-                else
-                {
-                    chkIS_DRUG_STORE.CheckState = CheckState.Unchecked;
-                }
 
 
                 if (hIS_MEDICINE_TYPE.TDL_GENDER_ID != null)
@@ -2172,16 +2156,11 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                     if (lstConfig.Any(x => x.ID == 15)) medicineType.IS_BUSINESS = 1;
                     else medicineType.IS_BUSINESS = null;
+
+                    if (lstConfig.Any(x => x.ID == 16)) medicineType.IS_DRUG_STORE = 1;
+                    else medicineType.IS_DRUG_STORE = null;
                 }
 
-                if (chkIS_DRUG_STORE.CheckState == CheckState.Checked)
-                {
-                    medicineType.IS_DRUG_STORE = 1;
-                }
-                else
-                {
-                    medicineType.IS_DRUG_STORE = null;
-                }
 
                 if (rdoBlock.Checked)
                 {
@@ -7863,7 +7842,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     chkIsSaleEqualImpPrice.Enabled = false;
                     chkIsSaleEqualImpPrice.Checked = false;
-                    chkIS_DRUG_STORE.Enabled = true;
                     chkKD = true;
                     FillDataToGridConrolServicePaty();
                 }
@@ -7871,8 +7849,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     chkIsSaleEqualImpPrice.Enabled = true;
                     chkIsSaleEqualImpPrice.Checked = true;
-                    chkIS_DRUG_STORE.Checked = false;
-                    chkIS_DRUG_STORE.Enabled = false;
                     chkKD = false;
                     FillDataToGridConrolServicePaty();
                 }
