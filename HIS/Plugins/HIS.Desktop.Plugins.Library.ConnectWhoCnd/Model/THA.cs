@@ -20,6 +20,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
             CHAN_DOAN = null;
             KQDT = null;
             BIEN_CHUNG = null;
+            PHAN_LOAI_BN = 2;
         }
 
         /// <summary>
@@ -138,5 +139,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
         /// 3. Bệnh nặng lên
         /// </summary>
         public int? KQDT { get; set; }
+
+        public long? SO_NGAY_NHAN_THUOC { get; set; }
     }
 }

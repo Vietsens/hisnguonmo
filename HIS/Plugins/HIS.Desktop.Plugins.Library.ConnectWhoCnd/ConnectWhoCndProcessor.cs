@@ -111,7 +111,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
 
                 //cao huyết áp: I10-I15, khi lưu bắt buộc phải có thông tin huyết áp
                 //if (Utilities.IsBATHA(totalIcds) && (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue))
-                
+
                 if (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue)
                 {
                     //cổng bắt lỗi nên check huyết áp với cả 2 bệnh
@@ -210,6 +210,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                     }
 
                     string thuoc = "";
+                    List<long> numberUseDay = new List<long>();
                     CommonParam medicineParam = new CommonParam();
                     if (medicine != null && medicine.Count > 0)
                     {
@@ -241,6 +242,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                                     if (NUMBER_USE_DAY > 0)
                                     {
                                         sb.AppendFormat(" - {0} ngày", NUMBER_USE_DAY);
+                                        numberUseDay.Add(NUMBER_USE_DAY);
                                     }
                                 }
                                 catch (Exception ex)
@@ -261,6 +263,10 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                         long startTimeMin = examServiceReq.Min(m => m.START_TIME ?? 99999999999999);
                         ncdData.DU_LIEU.THA.NGAY_KHAM = DateTime.ParseExact(startTimeMin + "", "yyyyMMddHHmmss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                         ncdData.DU_LIEU.THA.THUOC = thuoc;
+                        if (numberUseDay != null && numberUseDay.Count > 0)
+                        {
+                            ncdData.DU_LIEU.THA.SO_NGAY_NHAN_THUOC = numberUseDay.Max();
+                        }
                         if (dhst != null)
                         {
                             ncdData.DU_LIEU.THA.HA_TAM_THU = dhst.BLOOD_PRESSURE_MAX + "";
@@ -276,6 +282,10 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                         long startTimeMin = examServiceReq.Min(m => m.START_TIME ?? 99999999999999);
                         ncdData.DU_LIEU.DTD.NGAY_KHAM = DateTime.ParseExact(startTimeMin + "", "yyyyMMddHHmmss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                         ncdData.DU_LIEU.DTD.THUOC = thuoc;
+                        if (numberUseDay != null && numberUseDay.Count > 0)
+                        {
+                            ncdData.DU_LIEU.DTD.SO_NGAY_NHAN_THUOC = numberUseDay.Max();
+                        }
                         if (dhst != null)
                         {
                             ncdData.DU_LIEU.DTD.HA_TAM_THU = dhst.BLOOD_PRESSURE_MAX + "";
