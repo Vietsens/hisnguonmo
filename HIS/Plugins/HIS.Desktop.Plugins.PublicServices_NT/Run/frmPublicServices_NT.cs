@@ -406,7 +406,7 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                                 //ado.INTRUCTION_DATE = item.TDL_INTRUCTION_DATE;
                                 //Dangth
                                 ado.INTRUCTION_DATE = dicServiceReq.ContainsKey(item.SERVICE_REQ_ID ?? 0)
-                                ? (dicServiceReq[item.SERVICE_REQ_ID ?? 0].USE_TIME ?? item.TDL_INTRUCTION_DATE)
+                                ? (ConvertToOutputFormat(dicServiceReq[item.SERVICE_REQ_ID ?? 0].USE_TIME) ?? item.TDL_INTRUCTION_DATE)
                                 : item.TDL_INTRUCTION_DATE;
                                 //Dangth
                                 ado.SERVICE_TYPE_ID = item.TDL_SERVICE_TYPE_ID;
