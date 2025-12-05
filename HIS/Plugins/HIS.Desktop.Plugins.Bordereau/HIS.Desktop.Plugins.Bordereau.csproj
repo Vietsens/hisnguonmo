@@ -71,7 +71,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintBordereau, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\HIS.Desktop.Plugins.Library.PrintBordereau\bin\Debug\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
@@ -388,7 +388,6 @@
     <EmbeddedResource Include="frmPriceEdit.resx">
       <DependentUpon>frmPriceEdit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -921,7 +921,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                     Inventec.Common.Mapper.DataObjectMapper.Map<MaterialTypeImportADO>(mateAdo, item);
                     if (!string.IsNullOrEmpty(item.PARENT_CODE))
                     {
-                        if (!CheckMaxLenth(item.PARENT_CODE, 100))
+                        if (!CheckMaxLenth(item.PARENT_CODE, 25))
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Mã cha");
                             mateAdo.PARENT_CODE_ERROR = 1;
