@@ -30,7 +30,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         internal const string HIS_QD_130_BYT__CONNECTION_INFO = "HIS.QD_130_BYT.CONNECTION_INFO";
         internal const string MOS_BHXH__XML_SIGN_OPTION = "MOS.BHXH.XML_SIGN.OPTION";
         internal const string HIS_QD_130_BYT__LAY_CA_DVU_0_DONG = "HIS.QD_130_BYT.LAY_CA_DVU_0_DONG";
+        internal const string HIS_QD_130_BYT_XML1_MA_KHOA_OPTION = "HIS.QD_130_BYT.XML1.MA_KHOA_OPTION";
         internal static string QD_130_BYT__LAY_CA_DVU_0_DONG;
+        internal static string QD_130_BVT_XML1_MA_KHOA_OPTION;
         internal static string QD_130_BYT__CONNECTION_INFO;
         internal static string BHXH__XML_SIGN_OPTION;
 
@@ -41,6 +43,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
                 QD_130_BYT__CONNECTION_INFO = GetValue(HIS_QD_130_BYT__CONNECTION_INFO);
                 BHXH__XML_SIGN_OPTION = GetValue(MOS_BHXH__XML_SIGN_OPTION);
                 QD_130_BYT__LAY_CA_DVU_0_DONG = GetValue(HIS_QD_130_BYT__LAY_CA_DVU_0_DONG);
+                QD_130_BVT_XML1_MA_KHOA_OPTION = GetValue(HIS_QD_130_BYT_XML1_MA_KHOA_OPTION);
             }
             catch (Exception ex)
             {

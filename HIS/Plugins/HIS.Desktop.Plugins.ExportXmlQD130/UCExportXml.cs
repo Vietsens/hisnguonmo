@@ -1491,6 +1491,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
                     ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
                     ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                    if (HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1")
+                    {
+                        ado.ListDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>();
+                    }
                     ado.serverInfo = new ServerInfo() { Username = username, Password = password, Address = address, TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi };
                     //if (!isNotFileSign)
                     //    ado.delegateSignXml = DataSignXML;
@@ -1846,6 +1850,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
                 ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
                 ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                if (HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1")
+                {
+                    ado.ListDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>();
+                }
                 ado.serverInfo = new ServerInfo() { Username = username, Password = password, Address = address, TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi };
 
                 //ado.delegateSignXml = DataSignXML;
@@ -4171,6 +4179,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
                             ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
                             ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                            if (HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1")
+                            {
+                                ado.ListDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>();
+                            }
                             ado.serverInfo = new ServerInfo() { Username = username, Password = password, Address = address, TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi };
                             //ado.delegateSignXml = DataSignXML;
 
@@ -4717,6 +4729,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             if (dicMedicalAssessment.ContainsKey(treatment.ID))
                             {
                                 ado.ListMedicalAssessment = dicMedicalAssessment[treatment.ID];
+                            }
+                            if (HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1")
+                            {
+                                ado.ListDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>();
                             }
                             ado.TotalConfigData = NewConfig;
                             His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML130.CreateXmlProcessor(ado);
