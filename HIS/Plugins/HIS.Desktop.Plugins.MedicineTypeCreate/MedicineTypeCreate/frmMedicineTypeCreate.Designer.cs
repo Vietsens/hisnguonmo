@@ -464,7 +464,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.rdoBlock1 = new DevExpress.XtraEditors.CheckEdit();
             this.rdoWarning1 = new DevExpress.XtraEditors.CheckEdit();
             this.spinUseInDay = new DevExpress.XtraEditors.SpinEdit();
-            this.chkIS_DRUG_STORE = new DevExpress.XtraEditors.CheckEdit();
             this.txtOTHER_PAY_SOURCE = new DevExpress.XtraEditors.TextEdit();
             this.cboOTHER_PAY_SOURCE = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView58 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -510,7 +509,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem288 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem395 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem396 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem398 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcUseInDay = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem402 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem401 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -1563,7 +1561,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.rdoBlock1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoWarning1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinUseInDay.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkIS_DRUG_STORE.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtOTHER_PAY_SOURCE.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboOTHER_PAY_SOURCE.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView58)).BeginInit();
@@ -1607,7 +1604,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem288)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem395)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem396)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem398)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcUseInDay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem402)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem401)).BeginInit();
@@ -5257,7 +5253,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControl7.Controls.Add(this.rdoBlock1);
             this.layoutControl7.Controls.Add(this.rdoWarning1);
             this.layoutControl7.Controls.Add(this.spinUseInDay);
-            this.layoutControl7.Controls.Add(this.chkIS_DRUG_STORE);
             this.layoutControl7.Controls.Add(this.txtOTHER_PAY_SOURCE);
             this.layoutControl7.Controls.Add(this.cboOTHER_PAY_SOURCE);
             this.layoutControl7.Controls.Add(this.rdoBlock);
@@ -5446,9 +5441,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             this.btnContentWarning.Appearance.Options.UseTextOptions = true;
             this.btnContentWarning.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            this.btnContentWarning.Location = new System.Drawing.Point(525, 294);
+            this.btnContentWarning.Location = new System.Drawing.Point(524, 294);
             this.btnContentWarning.Name = "btnContentWarning";
-            this.btnContentWarning.Size = new System.Drawing.Size(21, 22);
+            this.btnContentWarning.Size = new System.Drawing.Size(22, 22);
             this.btnContentWarning.StyleController = this.layoutControl7;
             this.btnContentWarning.TabIndex = 113;
             this.btnContentWarning.Text = "...";
@@ -5457,7 +5452,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // txtContentWarning
             // 
             this.txtContentWarning.EditValue = "";
-            this.txtContentWarning.Location = new System.Drawing.Point(408, 294);
+            this.txtContentWarning.Location = new System.Drawing.Point(263, 294);
             this.txtContentWarning.MenuManager = this.barManager1;
             this.txtContentWarning.Name = "txtContentWarning";
             this.txtContentWarning.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -5465,7 +5460,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.txtContentWarning.Properties.NullValuePrompt = "Nội dung cảnh báo khi kê lẻ";
             this.txtContentWarning.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtContentWarning.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtContentWarning.Size = new System.Drawing.Size(113, 20);
+            this.txtContentWarning.Size = new System.Drawing.Size(257, 20);
             this.txtContentWarning.StyleController = this.layoutControl7;
             this.txtContentWarning.TabIndex = 112;
             this.txtContentWarning.ToolTip = "Nội dung cảnh báo khi kê lẻ";
@@ -5525,17 +5520,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.spinUseInDay.TabIndex = 61;
             this.spinUseInDay.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.spinUseInDay_KeyPress);
             this.spinUseInDay.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinUseInDay_PreviewKeyDown);
-            // 
-            // chkIS_DRUG_STORE
-            // 
-            this.chkIS_DRUG_STORE.Location = new System.Drawing.Point(383, 294);
-            this.chkIS_DRUG_STORE.MenuManager = this.barManager1;
-            this.chkIS_DRUG_STORE.Name = "chkIS_DRUG_STORE";
-            this.chkIS_DRUG_STORE.Properties.Caption = " ";
-            this.chkIS_DRUG_STORE.Size = new System.Drawing.Size(25, 19);
-            this.chkIS_DRUG_STORE.StyleController = this.layoutControl7;
-            this.chkIS_DRUG_STORE.TabIndex = 111;
-            this.chkIS_DRUG_STORE.ToolTip = "Thuốc sử dụng tại kho có tích “Là quầy thuốc”";
             // 
             // txtOTHER_PAY_SOURCE
             // 
@@ -5927,8 +5911,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem410,
             this.layoutControlItem411,
             this.emptySpaceItem36,
-            this.layoutControlItem30,
-            this.layoutControlItem398});
+            this.layoutControlItem30});
             this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup6.Name = "Root";
             this.layoutControlGroup6.Size = new System.Drawing.Size(548, 318);
@@ -6191,21 +6174,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem396.TextSize = new System.Drawing.Size(115, 20);
             this.layoutControlItem396.TextToControlDistance = 5;
             // 
-            // layoutControlItem398
-            // 
-            this.layoutControlItem398.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem398.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem398.Control = this.chkIS_DRUG_STORE;
-            this.layoutControlItem398.Location = new System.Drawing.Point(261, 292);
-            this.layoutControlItem398.Name = "layoutControlItem398";
-            this.layoutControlItem398.OptionsToolTip.ToolTip = "Thuốc sử dụng tại kho có tích “Là quầy thuốc”";
-            this.layoutControlItem398.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -2, 2, 2);
-            this.layoutControlItem398.Size = new System.Drawing.Size(145, 26);
-            this.layoutControlItem398.Text = "Thuốc quầy thuốc:";
-            this.layoutControlItem398.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem398.TextSize = new System.Drawing.Size(120, 13);
-            this.layoutControlItem398.TextToControlDistance = 0;
-            // 
             // lcUseInDay
             // 
             this.lcUseInDay.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -6249,9 +6217,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // layoutControlItem400
             // 
             this.layoutControlItem400.Control = this.txtContentWarning;
-            this.layoutControlItem400.Location = new System.Drawing.Point(406, 292);
+            this.layoutControlItem400.Location = new System.Drawing.Point(261, 292);
             this.layoutControlItem400.Name = "layoutControlItem400";
-            this.layoutControlItem400.Size = new System.Drawing.Size(117, 26);
+            this.layoutControlItem400.Size = new System.Drawing.Size(261, 26);
             this.layoutControlItem400.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem400.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem400.TextToControlDistance = 0;
@@ -6260,9 +6228,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // layoutControlItem403
             // 
             this.layoutControlItem403.Control = this.btnContentWarning;
-            this.layoutControlItem403.Location = new System.Drawing.Point(523, 292);
+            this.layoutControlItem403.Location = new System.Drawing.Point(522, 292);
             this.layoutControlItem403.Name = "layoutControlItem403";
-            this.layoutControlItem403.Size = new System.Drawing.Size(25, 26);
+            this.layoutControlItem403.Size = new System.Drawing.Size(26, 26);
             this.layoutControlItem403.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem403.TextVisible = false;
             // 
@@ -17062,7 +17030,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.rdoBlock1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoWarning1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinUseInDay.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkIS_DRUG_STORE.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtOTHER_PAY_SOURCE.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboOTHER_PAY_SOURCE.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView58)).EndInit();
@@ -17106,7 +17073,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem288)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem395)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem396)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem398)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcUseInDay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem402)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem401)).EndInit();
@@ -18984,8 +18950,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         private DevExpress.XtraLayout.LayoutControlItem lciNguonGoc;
         private DevExpress.XtraEditors.SimpleButton btnTCCL;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem397;
-        private DevExpress.XtraEditors.CheckEdit chkIS_DRUG_STORE;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem398;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn17;
         private DevExpress.XtraEditors.Repository.RepositoryItemDateEdit repositoryItemDateEditFromTime;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn16;
