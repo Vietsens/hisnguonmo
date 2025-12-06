@@ -118,6 +118,16 @@ namespace MPS.Processor.Mps000107
                 {
                     rdo.HisExpMestBltys = new List<V_HIS_EXP_MEST_BLTY_REQ>();
                 }
+
+                if( rdo.HisBedLog != null && rdo.HisBedLog.Count > 0)
+                {
+                    SetSingleKey(new KeyValue(Mps000107ExtendSingleKey.BED_CODE, rdo.HisBedLog[0].BED_CODE));
+                    SetSingleKey(new KeyValue(Mps000107ExtendSingleKey.BED_NAME, rdo.HisBedLog[0].BED_NAME));
+                }
+                if( rdo.HisExpMest != null)
+                {
+                    SetSingleKey(new KeyValue(Mps000107ExtendSingleKey.COUNT_EXP_BLOOD, rdo.HisExpMest.Count()));
+                }
             }
             catch (Exception ex)
             {

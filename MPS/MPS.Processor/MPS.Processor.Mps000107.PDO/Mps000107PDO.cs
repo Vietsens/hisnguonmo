@@ -29,13 +29,33 @@ namespace MPS.Processor.Mps000107.PDO
     {
         public const string printTypeCode = "Mps000107";
 
-        public Mps000107PDO(V_HIS_SERVICE_REQ serviceReq, List<V_HIS_EXP_MEST_BLTY_REQ> expMestBltys, List<V_HIS_EXP_MEST_BLOOD> expMestBloods)
+        public Mps000107PDO(V_HIS_SERVICE_REQ serviceReq, 
+            List<V_HIS_EXP_MEST_BLTY_REQ> expMestBltys, 
+            List<V_HIS_EXP_MEST_BLOOD> expMestBloods)
         {
             try
             {
                 this.HisServiceReq = serviceReq;
                 this.HisExpMestBloods = expMestBloods;
                 this.HisExpMestBltys = expMestBltys;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public Mps000107PDO(
+            V_HIS_SERVICE_REQ serviceReq,
+            List<V_HIS_EXP_MEST_BLTY_REQ> expMestBltys,
+            List<V_HIS_EXP_MEST_BLOOD> expMestBloods,
+            List<V_HIS_BED_LOG> hisBedLog,
+            List<HIS_EXP_MEST> hisExpMest
+            ) : this(serviceReq, expMestBltys, expMestBloods)
+        {
+            try
+            {
+                this.HisBedLog = hisBedLog;
+                this.HisExpMest = hisExpMest;
             }
             catch (Exception ex)
             {

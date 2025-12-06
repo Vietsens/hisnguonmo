@@ -2238,6 +2238,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 if (this._CurrentExpMest.SERVICE_REQ_ID == null)
                     return;
                 //ProcessPrint(printTypeCode);
+                // Lấy thông tin serviceReq
                 MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ serviceReq = null;
                 HisServiceReqViewFilter hisServiceReqViewFilter = new HisServiceReqViewFilter();
                 hisServiceReqViewFilter.ID = this._CurrentExpMest.SERVICE_REQ_ID;
@@ -2246,15 +2247,66 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 {
                     serviceReq = serviceReqs.FirstOrDefault();
                 }
+                // Lấy danh sách giường
+                long exp_time = 0;
+                if (this._ExpMestBloods_Print != null && this._ExpMestBloods_Print.Count > 0)
+                {
+                    exp_time = this._ExpMestBloods_Print.Max(p => p.EXP_TIME.HasValue ? p.EXP_TIME.Value : 0);
+                }
+                if (exp_time == 0)
+                {
+                    exp_time = this._CurrentExpMest.LAST_EXP_TIME.HasValue ? this._CurrentExpMest.LAST_EXP_TIME.Value : 0;
+                }
+                List<V_HIS_BED_LOG> listBedLogs = null;
+                if (_CurrentExpMest.TDL_TREATMENT_ID.HasValue)
+                {
+                    var bedLogFilter = new HisBedLogViewFilter();
+                    bedLogFilter.TREATMENT_ID = this._CurrentExpMest.TDL_TREATMENT_ID.Value;
+                    var allBedLogs = new BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumers.MosConsumer, bedLogFilter, param);
+                    if (allBedLogs != null)
+                    {
+                        listBedLogs = allBedLogs
+                            .Where(b =>
+                                exp_time > (b.START_TIME) &&
+                                (
+                                    !b.FINISH_TIME.HasValue ||
+                                    exp_time < b.FINISH_TIME.Value
+                                )
+                            )
+                            .ToList();
+                    }
+                }
+                // Lấy danh sách các phiếu xuất đơn máu trước đó
+                List<HIS_EXP_MEST> prevExpMests = null;
+                if (_CurrentExpMest.TDL_TREATMENT_ID.HasValue)
+                {
+                    var prevExpMestFilter = new HisExpMestFilter();
+                    prevExpMestFilter.TDL_TREATMENT_ID = _CurrentExpMest.TDL_TREATMENT_ID.Value;
+                    prevExpMestFilter.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DM;
+                    prevExpMestFilter.EXP_MEST_STT_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE;
+                    var allPrevExpMests = new BackendAdapter(param).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumers.MosConsumer, prevExpMestFilter, param);
+                    if (allPrevExpMests != null)
+                    {
+                        prevExpMests = allPrevExpMests
+                            .Where(x => 
+                            x.IS_HTX != 1 &&
+                            x.LAST_EXP_TIME.HasValue && x.LAST_EXP_TIME.Value < exp_time)
+                            .ToList();
+                    }
+                }
 
+                // Lấy danh sách yêu cầu xuất máu
                 MOS.Filter.HisExpMestBltyReqViewFilter expMestBltyReqFilter = new HisExpMestBltyReqViewFilter();
                 expMestBltyReqFilter.EXP_MEST_ID = this._CurrentExpMest.ID;
                 var expMestBltyReqs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_BLTY_REQ>>("api/HisExpMestBltyReq/GetView", ApiConsumer.ApiConsumers.MosConsumer, expMestBltyReqFilter, new CommonParam());
+                // Tạo PDO truyền vào in
                 MPS.Processor.Mps000107.PDO.Mps000107PDO pdo = new MPS.Processor.Mps000107.PDO.Mps000107PDO(
-                 serviceReq,
-                 expMestBltyReqs,
-                 this._ExpMestBloods_Print
-                 );
+                    serviceReq,
+                    expMestBltyReqs,
+                    this._ExpMestBloods_Print,
+                    listBedLogs,
+                    prevExpMests
+                );
                 result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
             }
             catch (Exception ex)
@@ -2312,10 +2364,10 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_HCGNs = new List<HIS_EXP_MEST_METY_REQ>();
         List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_HCHTs = new List<HIS_EXP_MEST_METY_REQ>();
 
-   
 
 
-        
+
+
 
         private void InPhieuXuatChuyenKho(string printTypeCode, string fileName, ref bool result)
         {
@@ -3431,7 +3483,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 _ExpMestMetyReq_TDs = new List<HIS_EXP_MEST_METY_REQ>();
                 _ExpMestMetyReq_PXs = new List<HIS_EXP_MEST_METY_REQ>();
                 _ExpMestMatyReq_HCs = new List<HIS_EXP_MEST_MATY_REQ>();
-                
+
                 List<HIS_MEDICINE> _Medicines = null;
                 List<HIS_MATERIAL> _Materials = null;
                 List<HIS_BLOOD> _Bloods = null;
@@ -3514,7 +3566,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     bool lao = mediTs.Exists(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__LAO);
                     bool tc = mediTs.Exists(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__TC);
                     bool hcgn = mediTs.Exists(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCGN);
-                    bool hcht = mediTs.Exists(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCHT);  
+                    bool hcht = mediTs.Exists(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCHT);
                     var mediTypes = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
                     foreach (var item in this._ExpMestMetyReqs_Print)
                     {
@@ -3574,7 +3626,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             {
                                 _ExpMestMetyReq_HCHTs.Add(item);
                             }
-                            
+
                             else
                             {
                                 _ExpMestMetyReq_Ts.Add(item);
@@ -4109,7 +4161,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     result = MPS.MpsPrinter.Run(PrintData);
                 }
                 #endregion
-             
+
             }
             catch (Exception ex)
             {
