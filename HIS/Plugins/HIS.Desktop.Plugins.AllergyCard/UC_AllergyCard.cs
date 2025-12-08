@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.AllergyCard
     public partial class UC_AllergyCard : UserControl
     {
         long treatmentID;
+        private bool _canEditDeleteAllergyCard = false;
         Inventec.Desktop.Common.Modules.Module currentModule;
         V_HIS_TREATMENT currentTreatment;
         V_HIS_ALLERGY_CARD allergyCard;
@@ -95,8 +96,22 @@ namespace HIS.Desktop.Plugins.AllergyCard
             {
                 WaitingManager.Show();
 
+                if (GlobalVariables.AcsAuthorizeSDO != null)
+                {
+                    var controlAcs = GlobalVariables.AcsAuthorizeSDO.ControlInRoles;
+                    _canEditDeleteAllergyCard = controlAcs != null
+                        && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000048") != null;
+                }
                 loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 SetCaptionByLanguageKey();
+                if(this.currentPatient != null)
+                {
+                    txtTreatmentCode.Text = this.currentPatient.PATIENT_CODE;
+                }    
+                else if(this.currentTreatment != null)
+                {
+                    txtTreatmentCode.Text = this.currentTreatment.TDL_PATIENT_CODE;
+                }
                 FillDataTreatmentToForm(this.currentTreatment);
                 FillDataTreatmentToForm(this.currentPatient);
                 LoadDataGridAllergyCard();
@@ -218,6 +233,14 @@ namespace HIS.Desktop.Plugins.AllergyCard
                                 Btn_Print_Enable_ButtonClick(row);
                             }
                         }
+                        else if (hi.Column.FieldName == "Delete")
+                        {
+                            var row = (V_HIS_ALLERGY_CARD)gridViewTheDiUng.GetRow(hi.RowHandle);
+                            if (row != null)
+                            {
+                                Btn_Delete_Enable_ButtonClick(row);
+                            }
+                        }    
                     }
                 }
             }
@@ -271,35 +294,38 @@ namespace HIS.Desktop.Plugins.AllergyCard
             }
 
         }
-
+        private bool CanEditOrDelete(V_HIS_ALLERGY_CARD data)
+        {
+            if (data == null) return false;
+            return (data.DIAGNOSE_LOGINNAME == loginName
+                    || data.CREATOR == loginName
+                    || _canEditDeleteAllergyCard);
+        }
         private void gridViewTheDiUng_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
         {
             try
             {
-                if (e.RowHandle >= 0)
-                {
-                    var data = (V_HIS_ALLERGY_CARD)gridViewTheDiUng.GetRow(e.RowHandle);
+                if (e.RowHandle < 0) return;
 
-                    if (e.Column.FieldName == "Edit")//duyệt
-                    {
-                        if (data.DIAGNOSE_LOGINNAME == loginName || data.CREATOR == loginName)
-                        {
-                            e.RepositoryItem = Btn_Edit_Enable;
-                        }
-                        else
-                        {
-                            e.RepositoryItem = Btn_Edit_Disable;
-                        }
-                    }
+                var data = (V_HIS_ALLERGY_CARD)gridViewTheDiUng.GetRow(e.RowHandle);
+                if (data == null) return;
+
+                bool canEditOrDelete = (data.CREATOR == loginName || _canEditDeleteAllergyCard);
+
+                if (e.Column.FieldName == "Edit")
+                {
+                    e.RepositoryItem = canEditOrDelete ? Btn_Edit_Enable : Btn_Edit_Disable;
+                }
+                else if (e.Column.FieldName == "Delete")
+                {
+                    e.RepositoryItem = canEditOrDelete ? Btn_Delete_Enable : Btn_Delete_Disable;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-
         }
-
         private void gridViewTheDiUng_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -331,7 +357,7 @@ namespace HIS.Desktop.Plugins.AllergyCard
         {
             try
             {
-                if (row != null && (row.DIAGNOSE_LOGINNAME == loginName || row.CREATOR == loginName))
+                if (row != null && (row.DIAGNOSE_LOGINNAME == loginName || row.CREATOR == loginName || _canEditDeleteAllergyCard))
                 {
                     List<object> listObj = new List<object>();
                     listObj.Add(row);
@@ -362,6 +388,96 @@ namespace HIS.Desktop.Plugins.AllergyCard
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        private void Btn_Delete_Enable_ButtonClick(V_HIS_ALLERGY_CARD row)
+        {
+            try
+            {
+                if (row == null)
+                    return;
+
+                if (!CanEditOrDelete(row))
+                {
+                    //DevExpress.XtraEditors.XtraMessageBox.Show(
+                    //    "Bạn không có quyền xóa thẻ dị ứng này.",
+                    //    "Thông báo",
+                    //    MessageBoxButtons.OK,
+                    //    MessageBoxIcon.Warning
+                    //);
+                    return;
+                }
+
+                // Xác nhận xóa bằng XtraMessageBox
+                var dialogResult = DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Bạn có chắc chắn muốn xóa thẻ dị ứng này không?",
+                    "Xác nhận",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (dialogResult == DialogResult.No)
+                    return;
+
+                CommonParam param = new CommonParam();
+
+                // Gọi API Delete
+                var result = new BackendAdapter(param).Post<bool>(
+                    HisRequestUriStore.HIS_ALLERGY_CARD_DELETE,
+                    ApiConsumer.ApiConsumers.MosConsumer,
+                    row.ID,
+                    param
+                );
+
+                if (result)
+                {
+                    // Thông báo thành công
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Xóa thẻ dị ứng thành công!",
+                        "Thành công",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+
+                    LoadDataGridAllergyCard();  // Refresh danh sách
+
+                    // Popup hiển thị sau khi xóa
+                    ShowAfterDeleteWindow(row);
+                }
+                else
+                {
+                    // Nếu BE trả lỗi
+                    if (param.Messages != null && param.Messages.Count > 0)
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            string.Join("\n", param.Messages),
+                            "Không thể xóa",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning
+                        );
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void ShowAfterDeleteWindow(V_HIS_ALLERGY_CARD row)
+        {
+            string info = string.Format(
+                "Thẻ dị ứng đã được xóa thành công.\n\n" +
+                "• ID thẻ: {0}\n" +
+                "• Mã bệnh nhân: {1}\n",
+                row.ID,
+                row.TDL_PATIENT_CODE
+            );
+
+            DevExpress.XtraEditors.XtraMessageBox.Show(
+                info,
+                "Thông tin thẻ đã xóa",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
         }
 
         #endregion
@@ -486,7 +602,7 @@ namespace HIS.Desktop.Plugins.AllergyCard
             {
                 if (data != null)
                 {
-                    txtTreatmentCode.Text = data.TREATMENT_CODE;
+                    txtTreatmentCode.Text = data.TDL_PATIENT_CODE;
                     txtTreatmentCode.Enabled = false;
                     lblPatientCode.Text = data.TDL_PATIENT_CODE;
                     lblTenBenhNhan.Text = data.TDL_PATIENT_NAME;
@@ -524,27 +640,16 @@ namespace HIS.Desktop.Plugins.AllergyCard
             }
 
         }
-
         private void SetFilterAllergyCard(ref HisAllergyCardViewFilter filter)
         {
             try
             {
                 filter.ORDER_DIRECTION = "ASC";
                 filter.ORDER_FIELD = "ISSUE_TIME";
-                if (this.currentPatient != null)
-                {
-                    filter.PATIENT_ID = this.currentPatient.ID;
-                }
-
+             
                 if (!string.IsNullOrEmpty(txtTreatmentCode.Text))
                 {
-                    string code = txtTreatmentCode.Text.Trim();
-                    if (code.Length < 12 && checkDigit(code))
-                    {
-                        code = string.Format("{0:000000000000}", Convert.ToInt64(code));
-                        txtTreatmentCode.Text = code;
-                    }
-                    filter.TREATMENT_CODE__EXACT = code;
+                    filter.TDL_PATIENT_CODE__EXACT = txtTreatmentCode.Text.Trim();
                 }
                 else
                 {
@@ -555,7 +660,6 @@ namespace HIS.Desktop.Plugins.AllergyCard
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-
         }
 
         private bool checkDigit(string s)
@@ -640,7 +744,7 @@ namespace HIS.Desktop.Plugins.AllergyCard
             {
                 CommonParam param = new CommonParam();
                 HisTreatmentFilter filter = new HisTreatmentFilter();
-                filter.TREATMENT_CODE__EXACT = treatmentCode;
+                filter.TDL_PATIENT_CODE__EXACT = treatmentCode;
 
                 var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param);
                 if (treatment != null && treatment.Count > 0)

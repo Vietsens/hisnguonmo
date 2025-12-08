@@ -30,5 +30,6 @@ namespace HIS.Desktop.Plugins.AllergyCard
         internal const string HIS_ALLERGEIC_GET = "api/HisAllergenic/Get";
         internal const string HIS_ALLERGEIC_GETVIEW = "api/HisAllergenic/GetView";
         internal const string HIS_PATIENT_GETVIEW = "api/HisPatient/GetView";
+        internal const string HIS_ALLERGY_CARD_DELETE = "api/HisAllergyCard/Delete";
     }
 }
