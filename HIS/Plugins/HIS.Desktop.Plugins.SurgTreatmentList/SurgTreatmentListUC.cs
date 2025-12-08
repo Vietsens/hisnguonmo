@@ -25,6 +25,7 @@ using HIS.Desktop.Library.CacheClient;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Utilities.Extensions;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -893,68 +894,76 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
 
         private void GridViewSereServ_MouseDown(object sender, MouseEventArgs e)
         {
-            DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-            GridHitInfo hi = view.CalcHitInfo(e.Location);
-            var listData = GridControlSereServ.DataSource as List<ADO.SereServADO>;
-            if (!toggleSwitch1.IsOn)
+            try
             {
-                this.GvSS_GcGatherData.Image = null;
-                this.GvSS_GcFee.Image = null;
-                return;
-            }
-            if (hi.HitTest == GridHitTest.Column)
-            {
-                if (hi.Column.FieldName == GvSS_GcGatherData.FieldName)
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                GridHitInfo hi = view.CalcHitInfo(e.Location);
+                var listData = GridControlSereServ.DataSource as List<ADO.SereServADO>;
+                if (!toggleSwitch1.IsOn)
                 {
-                    if (listData != null && listData.Count > 0)
+                    this.GvSS_GcGatherData.Image = null;
+                    this.GvSS_GcFee.Image = null;
+                    return;
+                }
+                if (hi.HitTest == GridHitTest.Column)
+                {
+                    if (hi.Column.FieldName == GvSS_GcGatherData.FieldName)
                     {
-                        GridViewSereServ.BeginUpdate();
-                        if (isCheckAllGatherData)
+                        if (listData != null && listData.Count > 0)
                         {
-                            isCheckAllGatherData = false;
-                            foreach (var item in listData)
+                            GridViewSereServ.BeginUpdate();
+                            if (isCheckAllGatherData)
                             {
-                                item.GatherData = true;
+                                isCheckAllGatherData = false;
+                                foreach (var item in listData)
+                                {
+                                    item.GatherData = true;
+                                }
+                                this.GvSS_GcGatherData.Image = this.imageListCheck.Images[3];
                             }
-                            this.GvSS_GcGatherData.Image = this.imageListCheck.Images[3];
-                        }
-                        else
-                        {
-                            isCheckAllGatherData = true;
-                            foreach (var item in listData)
+                            else
                             {
-                                item.GatherData = false;
+                                isCheckAllGatherData = true;
+                                foreach (var item in listData)
+                                {
+                                    item.GatherData = false;
+                                }
+                                this.GvSS_GcGatherData.Image = this.imageListCheck.Images[4];
                             }
-                            this.GvSS_GcGatherData.Image = this.imageListCheck.Images[4];
+                            GridViewSereServ.EndUpdate();
                         }
-                        GridViewSereServ.EndUpdate();
                     }
-                }else if (hi.Column.FieldName == GvSS_GcFee.FieldName)
-                {
-                    if (listData != null && listData.Count > 0)
+                    else if (hi.Column.FieldName == GvSS_GcFee.FieldName)
                     {
-                        GridViewSereServ.BeginUpdate();
-                        if (isCheckAllFee)
+                        if (listData != null && listData.Count > 0)
                         {
-                            isCheckAllFee = false;
-                            foreach (var item in listData)
+                            GridViewSereServ.BeginUpdate();
+                            if (isCheckAllFee)
                             {
-                                item.Fee = true;
+                                isCheckAllFee = false;
+                                foreach (var item in listData)
+                                {
+                                    item.Fee = true;
+                                }
+                                this.GvSS_GcFee.Image = this.imageListCheck.Images[3];
                             }
-                            this.GvSS_GcFee.Image = this.imageListCheck.Images[3];
-                        }
-                        else
-                        {
-                            isCheckAllFee = true;
-                            foreach (var item in listData)
+                            else
                             {
-                                item.Fee = false;
+                                isCheckAllFee = true;
+                                foreach (var item in listData)
+                                {
+                                    item.Fee = false;
+                                }
+                                this.GvSS_GcFee.Image = this.imageListCheck.Images[4];
                             }
-                            this.GvSS_GcFee.Image = this.imageListCheck.Images[4];
+                            GridViewSereServ.EndUpdate();
                         }
-                        GridViewSereServ.EndUpdate();
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -982,58 +991,106 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
                 WaitingManager.Hide();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            bool success = false;
-            CommonParam param = new CommonParam();
-            //var listData = GridControlSereServ.DataSource as List<ADO.SereServADO>;
-            var gatherDatas = listData.Where(x => x.GatherData).Select(x => x.ID).ToList();
-            var unGatherDatas = listData.Where(x => !x.GatherData).Select(x => x.ID).ToList();
-            var fees = listData.Where(x => x.Fee).Select(x => x.ID).ToList();
-            var unFees = listData.Where(x => !x.Fee).Select(x => x.ID).ToList();
+            try
+            {
+                CommonParam param = new CommonParam();
+                bool success = false;
+                if (listData != null && listData.Count > 0)
+                {
+                    WaitingManager.Show();
+                    
+                    bool isChanged(ADO.SereServADO x)
+                    {
+                        return 
+                            x.GatherData != (x.IS_GATHER_DATA_DEFAULT.HasValue && x.IS_GATHER_DATA_DEFAULT.Value == 1 ? true : false)
+                            || 
+                            x.Fee != (x.IS_FEE_DEFAULT.HasValue && x.IS_FEE_DEFAULT.Value == 1 ? true : false);
+                    }
+                    ;
+                    var gatherDatas = listData.Where(x => x.GatherData && isChanged(x)).Select(x => x.ID).ToList();
+                    var unGatherDatas = listData.Where(x => !x.GatherData && isChanged(x)).Select(x => x.ID).ToList();
+                    var fees = listData.Where(x => x.Fee && isChanged(x)).Select(x => x.ID).ToList();
+                    var unFees = listData.Where(x => !x.Fee && isChanged(x)).Select(x => x.ID).ToList();
 
-            SetFeeAndGatherDataSDO sdo = new SetFeeAndGatherDataSDO
-            {
-                GatherDatas = gatherDatas,
-                Fees = fees,
-                UnGatherDatas = unGatherDatas,
-                UnFees = unFees
-            };
+                    if (gatherDatas.Count > 0 || unGatherDatas.Count > 0 || fees.Count > 0 || unFees.Count > 0)
+                    {
+                        SetFeeAndGatherDataSDO sdo = new SetFeeAndGatherDataSDO
+                        {
+                            GatherDatas = gatherDatas,
+                            Fees = fees,
+                            UnGatherDatas = unGatherDatas,
+                            UnFees = unFees
+                        };
+                        var apiResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/SetFeeAndGatherData", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
+                        if (apiResult != null && apiResult.Count > 0)
+                        {
+                            success = true;
+                                // update lai IS_GATHER_DATA_DEFAULT và IS_FEE_DEFAULT trong listData
+                                foreach (var ext in apiResult)
+                                {
+                                    var item = listData.FirstOrDefault(x => x.ID == ext.SERE_SERV_ID);
+                                    if (item != null)
+                                    {
+                                        item.IS_GATHER_DATA_DEFAULT = ext.IS_GATHER_DATA;
+                                        item.IS_FEE_DEFAULT = ext.IS_FEE;
+                                    }
+                                }
+                        }
+                        else
+                            success = false;
 
-            var apiResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/SetFeeAndGatherData", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
-            if (apiResult != null && apiResult.Count > 0)
-            {
-                success = true;
+                        WaitingManager.Hide();
+                        MessageManager.Show(this.ParentForm, param, success);
+                    }
+                    else
+                    {
+                        WaitingManager.Hide();
+                        XtraMessageBox.Show("Không có dữ liệu thay đổi để lưu. Vui lòng kiểm tra lại dữ liệu.","Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                else
+                {
+                    XtraMessageBox.Show("Không có dữ liệu để lưu. Vui lòng kiểm tra lại dữ liệu.","Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                success = false;
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            MessageManager.Show(this.ParentForm, param, success);
         }
+
         private void toggleChanged()
         {
-            toggleTooltip();
-            if (toggleSwitch1.IsOn)
+            try
             {
-                btnSave.Enabled = true;
-                toggleOnGatherData();
-                toggleOnFee();
+                toggleTooltip();
+                if (toggleSwitch1.IsOn)
+                {
+                    btnSave.Enabled = true;
+                    toggleOnGatherData();
+                    toggleOnFee();
+                }
+                else
+                {
+                    this.GvSS_GcGatherData.Image = null;
+                    this.GvSS_GcFee.Image = null;
+                    btnSave.Enabled = false;
+                    btnSave.AppearanceDisabled.BackColor = Color.LightGray;
+                    FillDataToCotrol();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                this.GvSS_GcGatherData.Image = null;
-                this.GvSS_GcFee.Image = null;
-                btnSave.Enabled = false;
-                btnSave.AppearanceDisabled.BackColor = Color.LightGray;
-                FillDataToCotrol();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
         private void toggleTooltip()
@@ -1045,76 +1102,102 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
         }
         private void toggleOnFee()
         {
-            var listData = GridControlSereServ.DataSource as List<ADO.SereServADO>;
-            bool hasCheck = false;
-            bool isAll = false;
-
-            if (listData != null && listData.Count > 0)
+            try
             {
-                var listCheck = listData.Where(o => o.Fee).ToList();
-                if (listCheck != null && listCheck.Count > 0)
+                var listData = GridControlSereServ.DataSource as List<ADO.SereServADO>;
+                bool hasCheck = false;
+                bool isAll = false;
+
+                if (listData != null && listData.Count > 0)
                 {
-                    if (listCheck.Count == listData.Count)
+                    var listCheck = listData.Where(o => o.Fee).ToList();
+                    if (listCheck != null && listCheck.Count > 0)
                     {
-                        isAll = true;
+                        if (listCheck.Count == listData.Count)
+                        {
+                            isAll = true;
+                        }
+                        else
+                        {
+                            hasCheck = true;
+                        }
                     }
-                    else
-                    {
-                        hasCheck = true;
-                    }
-                } 
-            }
+                }
 
-            if (isAll)
-            {
-                isCheckAllFee = false;
-                this.GvSS_GcFee.Image = this.imageListCheck.Images[3];
+                if (isAll)
+                {
+                    isCheckAllFee = false;
+                    this.GvSS_GcFee.Image = this.imageListCheck.Images[3];
+                }
+                else if (hasCheck)
+                {
+                    //this.GvSS_GcFee.Image = this.imageListCheck.Images[5];
+                    this.GvSS_GcFee.Image = this.imageListCheck.Images[4];
+                }
+                else
+                {
+                    isCheckAllFee = true;
+                    this.GvSS_GcFee.Image = this.imageListCheck.Images[4];
+                }
             }
-            else if (hasCheck)
+            catch (Exception ex)
             {
-                //this.GvSS_GcFee.Image = this.imageListCheck.Images[5];
-                this.GvSS_GcFee.Image = this.imageListCheck.Images[4];
-            }
-            else
-            {
-                isCheckAllFee = true;
-                this.GvSS_GcFee.Image = this.imageListCheck.Images[4];
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
         private void toggleOnGatherData()
         {
-            var listData = GridControlSereServ.DataSource as List<ADO.SereServADO>;
-            bool hasCheck = false;
-            bool isAll = false;
-            if (listData != null && listData.Count > 0)
+            try
             {
-                var listCheck = listData.Where(o => o.GatherData).ToList();
-                if (listCheck != null && listCheck.Count > 0)
+                var listData = GridControlSereServ.DataSource as List<ADO.SereServADO>;
+                bool hasCheck = false;
+                bool isAll = false;
+                if (listData != null && listData.Count > 0)
                 {
-                    if (listCheck.Count == listData.Count)
+                    var listCheck = listData.Where(o => o.GatherData).ToList();
+                    if (listCheck != null && listCheck.Count > 0)
                     {
-                        isAll = true;
-                    }
-                    else
-                    {
-                        hasCheck = true;
+                        if (listCheck.Count == listData.Count)
+                        {
+                            isAll = true;
+                        }
+                        else
+                        {
+                            hasCheck = true;
+                        }
                     }
                 }
+                if (isAll)
+                {
+                    isCheckAllGatherData = false;
+                    this.GvSS_GcGatherData.Image = this.imageListCheck.Images[3];
+                }
+                else if (hasCheck)
+                {
+                    //this.GvSS_GcGatherData.Image = this.imageListCheck.Images[5];
+                    this.GvSS_GcGatherData.Image = this.imageListCheck.Images[4];
+                }
+                else
+                {
+                    isCheckAllGatherData = true;
+                    this.GvSS_GcGatherData.Image = this.imageListCheck.Images[4];
+                }
             }
-            if (isAll)
+            catch (Exception ex)
             {
-                isCheckAllGatherData = false;
-                this.GvSS_GcGatherData.Image = this.imageListCheck.Images[3];
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            else if (hasCheck)
+        }
+
+        private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
             {
-                //this.GvSS_GcGatherData.Image = this.imageListCheck.Images[5];
-                this.GvSS_GcGatherData.Image = this.imageListCheck.Images[4];
+                btnSave_Click(null, null);
             }
-            else
+            catch (Exception ex)
             {
-                isCheckAllGatherData = true;
-                this.GvSS_GcGatherData.Image = this.imageListCheck.Images[4];
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

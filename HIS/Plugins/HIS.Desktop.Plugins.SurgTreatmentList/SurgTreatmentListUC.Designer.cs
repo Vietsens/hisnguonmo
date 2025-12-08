@@ -155,6 +155,13 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.imageListCheck = new System.Windows.Forms.ImageList();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.bar1 = new DevExpress.XtraBars.Bar();
+            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).BeginInit();
@@ -237,6 +244,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -255,17 +263,17 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControl1.Controls.Add(this.cboIs_Gather_Data);
             this.layoutControl1.Controls.Add(this.cboIs_Fee);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(600, 402, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1320, 600);
+            this.layoutControl1.Size = new System.Drawing.Size(1320, 571);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // toggleSwitch1
             // 
-            this.toggleSwitch1.Location = new System.Drawing.Point(32, 548);
+            this.toggleSwitch1.Location = new System.Drawing.Point(32, 519);
             this.toggleSwitch1.Name = "toggleSwitch1";
             this.toggleSwitch1.Properties.OffText = "";
             this.toggleSwitch1.Properties.OnText = "";
@@ -276,7 +284,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(120, 548);
+            this.btnSave.Location = new System.Drawing.Point(120, 519);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(128, 22);
             this.btnSave.StyleController = this.layoutControl1;
@@ -339,7 +347,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // 
             // ucPaging
             // 
-            this.ucPaging.Location = new System.Drawing.Point(252, 576);
+            this.ucPaging.Location = new System.Drawing.Point(252, 547);
             this.ucPaging.Name = "ucPaging";
             this.ucPaging.Size = new System.Drawing.Size(1066, 22);
             this.ucPaging.TabIndex = 10;
@@ -359,7 +367,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.navBarControl1.Location = new System.Drawing.Point(2, 146);
             this.navBarControl1.Name = "navBarControl1";
             this.navBarControl1.OptionsNavPane.ExpandedWidth = 246;
-            this.navBarControl1.Size = new System.Drawing.Size(246, 398);
+            this.navBarControl1.Size = new System.Drawing.Size(246, 369);
             this.navBarControl1.TabIndex = 9;
             this.navBarControl1.Text = "navBarControl1";
             // 
@@ -869,7 +877,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // 
             // BtnRefresh
             // 
-            this.BtnRefresh.Location = new System.Drawing.Point(120, 576);
+            this.BtnRefresh.Location = new System.Drawing.Point(120, 547);
             this.BtnRefresh.Name = "BtnRefresh";
             this.BtnRefresh.Size = new System.Drawing.Size(128, 22);
             this.BtnRefresh.StyleController = this.layoutControl1;
@@ -879,7 +887,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // 
             // BtnSearch
             // 
-            this.BtnSearch.Location = new System.Drawing.Point(2, 576);
+            this.BtnSearch.Location = new System.Drawing.Point(2, 547);
             this.BtnSearch.Name = "BtnSearch";
             this.BtnSearch.Size = new System.Drawing.Size(114, 22);
             this.BtnSearch.StyleController = this.layoutControl1;
@@ -896,7 +904,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.repositoryItemChkFee,
             this.repositoryItemChkGatherData,
             this.repositoryItemChkDisable});
-            this.GridControlSereServ.Size = new System.Drawing.Size(1066, 570);
+            this.GridControlSereServ.Size = new System.Drawing.Size(1066, 541);
             this.GridControlSereServ.TabIndex = 5;
             this.GridControlSereServ.ToolTipController = this.toolTipController;
             this.GridControlSereServ.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1294,7 +1302,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1320, 600);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1320, 571);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -1311,14 +1319,14 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem2.Control = this.GridControlSereServ;
             this.layoutControlItem2.Location = new System.Drawing.Point(250, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(1070, 574);
+            this.layoutControlItem2.Size = new System.Drawing.Size(1070, 545);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.BtnSearch;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 574);
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 545);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(118, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
@@ -1327,7 +1335,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.BtnRefresh;
-            this.layoutControlItem5.Location = new System.Drawing.Point(118, 574);
+            this.layoutControlItem5.Location = new System.Drawing.Point(118, 545);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Size = new System.Drawing.Size(132, 26);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
@@ -1338,14 +1346,14 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem6.Control = this.navBarControl1;
             this.layoutControlItem6.Location = new System.Drawing.Point(0, 144);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(250, 402);
+            this.layoutControlItem6.Size = new System.Drawing.Size(250, 373);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.ucPaging;
-            this.layoutControlItem14.Location = new System.Drawing.Point(250, 574);
+            this.layoutControlItem14.Location = new System.Drawing.Point(250, 545);
             this.layoutControlItem14.Name = "layoutControlItem14";
             this.layoutControlItem14.Size = new System.Drawing.Size(1070, 26);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
@@ -1419,7 +1427,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // layoutControlItem20
             // 
             this.layoutControlItem20.Control = this.btnSave;
-            this.layoutControlItem20.Location = new System.Drawing.Point(118, 546);
+            this.layoutControlItem20.Location = new System.Drawing.Point(118, 517);
             this.layoutControlItem20.Name = "layoutControlItem20";
             this.layoutControlItem20.Size = new System.Drawing.Size(132, 28);
             this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
@@ -1428,7 +1436,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // layoutControlItem21
             // 
             this.layoutControlItem21.Control = this.toggleSwitch1;
-            this.layoutControlItem21.Location = new System.Drawing.Point(0, 546);
+            this.layoutControlItem21.Location = new System.Drawing.Point(0, 517);
             this.layoutControlItem21.Name = "layoutControlItem21";
             this.layoutControlItem21.Padding = new DevExpress.XtraLayout.Utils.Padding(32, 2, 2, 2);
             this.layoutControlItem21.Size = new System.Drawing.Size(118, 28);
@@ -1462,11 +1470,73 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.imageListCheck.Images.SetKeyName(4, "uncheck.png");
             this.imageListCheck.Images.SetKeyName(5, "Select.png");
             // 
+            // barManager1
+            // 
+            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
+            this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
+            this.barManager1.Form = this;
+            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+            this.barButtonItem1});
+            this.barManager1.MaxItemId = 1;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1320, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 600);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 571);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 571);
+            // 
+            // bar1
+            // 
+            this.bar1.BarName = "Tools";
+            this.bar1.DockCol = 0;
+            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
+            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem1)});
+            this.bar1.Text = "Tools";
+            // 
+            // barButtonItem1
+            // 
+            this.barButtonItem1.Caption = "Ctrl S";
+            this.barButtonItem1.Id = 0;
+            this.barButtonItem1.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
+            this.barButtonItem1.Name = "barButtonItem1";
+            this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
+            // 
             // SurgTreatmentListUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl1);
+            this.Controls.Add(this.barDockControlLeft);
+            this.Controls.Add(this.barDockControlRight);
+            this.Controls.Add(this.barDockControlBottom);
+            this.Controls.Add(this.barDockControlTop);
             this.Name = "SurgTreatmentListUC";
             this.Size = new System.Drawing.Size(1320, 600);
             this.Load += new System.EventHandler(this.SurgTreatmentListUC_Load);
@@ -1552,7 +1622,9 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -1667,5 +1739,12 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
         private System.Windows.Forms.ImageList imageListCheck;
+        private DevExpress.XtraBars.BarManager barManager1;
+        private DevExpress.XtraBars.Bar bar1;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
+        private DevExpress.XtraBars.BarDockControl barDockControlTop;
+        private DevExpress.XtraBars.BarDockControl barDockControlBottom;
+        private DevExpress.XtraBars.BarDockControl barDockControlLeft;
+        private DevExpress.XtraBars.BarDockControl barDockControlRight;
     }
 }

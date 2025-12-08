@@ -50,6 +50,8 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList.ADO
         public string REMUNERATION_PRICE_8 { get; set; }
         public string REMUNERATION_PRICE_9 { get; set; }
         public string REMUNERATION_PRICE_10 { get; set; }
+        public short? IS_FEE_DEFAULT { get; set; }
+        public short? IS_GATHER_DATA_DEFAULT { get; set; }
 
         public SereServADO() { }
 
