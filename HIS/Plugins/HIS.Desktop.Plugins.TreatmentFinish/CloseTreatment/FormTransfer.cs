@@ -1089,7 +1089,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
         }
         private void barButtonItemShowSurgMisu_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            try
+             try
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ListSurgMisuByTreatment").FirstOrDefault();
                 if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.ListSurgMisuByTreatment'");
@@ -1127,9 +1127,17 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 {
                     dtStart.DateTime = startTime ?? DateTime.MinValue;
                 }
+                else
+                {
+                    dtStart.EditValue = null;
+                }
                 if (finishTime != null)
                 {
                     dtFinish.DateTime = finishTime ?? DateTime.MinValue;
+                }
+                else
+                {
+                    dtFinish.EditValue = null;
                 }
             }
             catch (Exception ex)
