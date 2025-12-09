@@ -666,6 +666,9 @@ namespace HIS.Desktop.Plugins.BidCreate
                         this.medicineType = row;
                         txtActiveBhyt.Text = row.ACTIVE_INGR_BHYT_NAME ?? "";
                         //cboDosageForm.EditValue = row.DOSAGE_FORM ?? "";
+                        txtMaDT.Text = row.JOIN_BID_MEDICINE_TYPE_CODE;
+                        txtMaTT.Text = row.BID_MEDICINE_TYPE_CODE;
+                        txtTenTT.Text = row.BID_MEDICINE_TYPE_NAME;
                         var dosageItem = dataDosageForm.FirstOrDefault(o => o.DOSAGE_FORM_NAME == row.DOSAGE_FORM);
                         if (this.medicineType.MEDICINE_LINE_ID.Value != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
                         {
