@@ -628,7 +628,12 @@ namespace Inventec.Common.Print
                 if (this.showTutorialModule != null)
                     frmPrintPreview.SetTutorialModule(this.showTutorialModule);
 
-                frmPrintPreview.Show(frmPrintPreview.ParentForm);
+                //frmPrintPreview.Show(frmPrintPreview.ParentForm);
+                //frmPrintPreview.FocusOnLoad();
+                //frmPrintPreview.Activate();
+                //frmPrintPreview.FormClosed += FormClosed;
+                Form mainForm2 = Application.OpenForms.Cast<Form>().FirstOrDefault(f => f.Name == "frmMain");
+                frmPrintPreview.ShowDialog(mainForm2 ?? frmPrintPreview.ParentForm);
                 frmPrintPreview.FocusOnLoad();
                 frmPrintPreview.Activate();
                 frmPrintPreview.FormClosed += FormClosed;
