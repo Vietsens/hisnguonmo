@@ -2,6 +2,7 @@
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,11 +39,11 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
             {
                 Inventec.Common.Logging.LogSystem.Info("ConnectWhoCndProcessor CheckData");
                 //không có só thẻ BHYT, CCCD thì không đẩy
-                if (data == null || String.IsNullOrWhiteSpace(data.TDL_PATIENT_CCCD_NUMBER) || String.IsNullOrWhiteSpace(data.TDL_HEIN_CARD_NUMBER))
-                {
-                    Inventec.Common.Logging.LogSystem.Info(string.Format("không có só thẻ BHYT, CCCD. CCCD:{0}, BHYT:{1}", data.TDL_PATIENT_CCCD_NUMBER, data.TDL_HEIN_CARD_NUMBER));
-                    return result;
-                }
+                //if (data == null || String.IsNullOrWhiteSpace(data.TDL_PATIENT_CCCD_NUMBER) || String.IsNullOrWhiteSpace(data.TDL_HEIN_CARD_NUMBER))
+                //{
+                //    Inventec.Common.Logging.LogSystem.Info(string.Format("không có só thẻ BHYT, CCCD. CCCD:{0}, BHYT:{1}", data.TDL_PATIENT_CCCD_NUMBER, data.TDL_HEIN_CARD_NUMBER));
+                //    return result;
+                //}
 
 
                 Configs.LoadConfig();
@@ -72,10 +73,14 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 //không có bệnh tương ứng thì bỏ qua
                 if (!Utilities.IsBADTD(totalIcds) && !Utilities.IsBATHA(totalIcds))
                 {
+                    UpdateNcdWhoStatus(data.ID, 2, "Hồ sơ không có thông tin mã bệnh DTD và THA");
                     Inventec.Common.Logging.LogSystem.Info("NOT IN ICD");
                     return result;
                 }
-
+                if (data == null || String.IsNullOrWhiteSpace(data.TDL_PATIENT_CCCD_NUMBER) || String.IsNullOrWhiteSpace(data.TDL_HEIN_CARD_NUMBER))
+                {
+                    message += "Bệnh nhân thiếu thông tin CCCD hoặc số thẻ BHYT";
+                }
                 var t1 = Task.Run(() => GetDhst(data, dhst));
                 var t2 = Task.Run(() => GetSereServ(data));
                 var t3 = Task.Run(() => GetMedicine(data, medicine));
@@ -132,14 +137,27 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 {
                     result = false;
                     HasData = false;
+                    bool continueAnyway = false; 
                     if (Configs.IS_WARNING == "1")
                     {
                         if (XtraMessageBox.Show(string.Format("{0}. Bạn có muốn tiếp tục?", message.Trim()), "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
                         {
                             result = true;
+                            continueAnyway = true;
+                            HasData = true; 
                         }
                     }
-                    else
+                    //else
+                    //{
+                    //    XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK);
+                    //}
+                    // qtcode
+                    if (!continueAnyway)
+                    {
+                        UpdateNcdWhoStatus(data.ID, 2, message.Trim());
+                    }
+
+                    if (!continueAnyway && Configs.IS_WARNING != "1")
                     {
                         XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK);
                     }
@@ -304,15 +322,26 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                     }
 
                     Model.OImport rsData = ApiConsumers.CreateRequest<Model.OImport>("POST", Configs.API_NCD, "/api/v1/import", sendData);
+                    //qtcode
+                    if (rsData != null)
+                    {
+                        UpdateNcdWhoStatus(data.ID, 1, null);  // Thành công
+                    }
+                    else
+                    {
+                        UpdateNcdWhoStatus(data.ID, 2, "Gửi dữ liệu lên cổng thất bại");
+                    }
                 }
                 else
                 {
-                    Inventec.Common.Logging.LogSystem.Error("Đăng nhập thát bại!");
+                    Inventec.Common.Logging.LogSystem.Error("Đăng nhập thất bại!");
+                    UpdateNcdWhoStatus(data.ID, 2, "Đăng nhập thất bại");
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                UpdateNcdWhoStatus(data.ID, 2, ex.Message);
             }
         }
 
@@ -388,5 +417,31 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
             return ssTein;
         }
         #endregion
+
+
+        private void UpdateNcdWhoStatus(long treatmentId, short ncdWhoResult, string description)
+        {
+            try
+            {
+                NcdWhoStatusSDO sdo = new NcdWhoStatusSDO
+                {
+                    TreatmentId = treatmentId,
+                    NcdWhoResult = ncdWhoResult,
+                    NcdWhoDescription = description
+                };
+                CommonParam param = new CommonParam();
+                var apiResult = new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Post<HIS_TREATMENT>("api/HisTreatment/UpdateNcdWhoStatus", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
+
+                if (apiResult == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Cập nhật trạng thái đồng bộ thất bại: " + param.GetMessage());
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
