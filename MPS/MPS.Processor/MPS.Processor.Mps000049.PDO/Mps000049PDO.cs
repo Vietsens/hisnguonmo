@@ -28,6 +28,7 @@ namespace MPS.Processor.Mps000049.PDO
     public class Mps000049PDO : RDOBase
     {
         public List<Mps000049ADO> listAdo = new List<Mps000049ADO>();
+        public List<Mps000049ADO> listAdoArrangeM_T_N = new List<Mps000049ADO>();
         public V_HIS_EXP_MEST AggrExpMest { get; set; }
         public List<V_HIS_EXP_MEST> ListAggrExpMest { get; set; }
         public HIS_DEPARTMENT Department { get; set; }
