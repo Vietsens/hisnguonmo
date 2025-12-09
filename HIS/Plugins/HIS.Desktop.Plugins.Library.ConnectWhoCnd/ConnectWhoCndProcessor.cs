@@ -73,7 +73,6 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 //không có bệnh tương ứng thì bỏ qua
                 if (!Utilities.IsBADTD(totalIcds) && !Utilities.IsBATHA(totalIcds))
                 {
-                    UpdateNcdWhoStatus(data.ID, 2, "Hồ sơ không có thông tin mã bệnh DTD và THA");
                     Inventec.Common.Logging.LogSystem.Info("NOT IN ICD");
                     return result;
                 }
