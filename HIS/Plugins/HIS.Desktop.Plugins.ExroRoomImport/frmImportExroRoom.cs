@@ -246,7 +246,7 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
 
                     if (!string.IsNullOrEmpty(item.ROOM_CODE))
                     {
-                        if (item.ROOM_CODE.Length > 10)
+                        if (item.ROOM_CODE.Length > 15)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, item.ROOM_CODE);
                         }
@@ -258,7 +258,7 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
                     }
                     if (!string.IsNullOrEmpty(item.EXECUTE_ROOM_CODE))
                     {
-                        if (item.EXECUTE_ROOM_CODE.Length > 10)
+                        if (item.EXECUTE_ROOM_CODE.Length > 15)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, item.EXECUTE_ROOM_CODE);
                         }
@@ -411,8 +411,8 @@ namespace HIS.Desktop.Plugins.ExroRoomImport
                         {
                             //var checkExroRoom = BackendDataWorker.Get<HIS_EXRO_ROOM>().FirstOrDefault(p => p.ROOM_ID == room.ID && p.EXECUTE_ROOM_ID == exeRoom.ID);
 
-                            CommonParam paramCommon = new CommonParam();
-                            HisExroRoomFilter filter = new HisExroRoomFilter();
+                            //CommonParam paramCommon = new CommonParam();
+                            //HisExroRoomFilter filter = new HisExroRoomFilter();
                             filter.IS_ACTIVE = 1;
                              
 
