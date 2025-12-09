@@ -382,6 +382,9 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidMedicineType.MEDICINE_USE_FORM_ID = item.MEDICINE_USE_FORM_ID;
                         bidMedicineType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
                         bidMedicineType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE ?? null;
+                        bidMedicineType.BID_MEDICINE_TYPE_CODE = txtMaTT.Text;
+                        bidMedicineType.BID_MEDICINE_TYPE_NAME = txtTenTT.Text;
+                        bidMedicineType.JOIN_BID_MEDICINE_TYPE_CODE = txtMaDT.Text;
 
                         this.bidModel.HIS_BID_MEDICINE_TYPE.Add(bidMedicineType);
 
