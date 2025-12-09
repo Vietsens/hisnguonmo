@@ -1806,9 +1806,9 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
 
                     if (!string.IsNullOrEmpty(item.CONCENTRA))
                     {
-                        if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.CONCENTRA, 500))
+                        if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.CONCENTRA, 1000))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Hàm lượng nồng độ", 500);
+                            error += string.Format(Message.MessageImport.Maxlength, "Hàm lượng nồng độ", 1000);
                             mediAdo.CONCENTRA_ERROR = 1;
                         }
                     }
