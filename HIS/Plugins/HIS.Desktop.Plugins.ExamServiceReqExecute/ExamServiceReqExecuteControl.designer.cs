@@ -46,7 +46,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExamServiceReqExecuteControl));
             DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
@@ -106,8 +105,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject54 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject55 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject56 = new DevExpress.Utils.SerializableAppearanceObject();
-            this.dxValidationProviderForLeftPanel = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProviderForSpinVat = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProviderForLeftPanel = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProviderForSpinVat = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnFastTrackingCreate = new DevExpress.XtraEditors.SimpleButton();
@@ -127,12 +126,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.btnPrint_ExamService = new DevExpress.XtraEditors.DropDownButton();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.chkIsPartExamAbnormal = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             this.chkIsFullExamAbnormal = new DevExpress.XtraEditors.CheckEdit();
             this.chkIsHistoryRelated = new DevExpress.XtraEditors.CheckEdit();
             this.chkIsHistoryAllergyRelated = new DevExpress.XtraEditors.CheckEdit();
@@ -151,7 +150,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.btnLyDoKham = new DevExpress.XtraEditors.SimpleButton();
             this.btnKhamBoPhan = new DevExpress.XtraEditors.SimpleButton();
             this.btnKhamToanThan = new DevExpress.XtraEditors.SimpleButton();
-            this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer();
             this.layoutControl21 = new DevExpress.XtraLayout.LayoutControl();
             this.customGridControlSubIcdName = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.customGridViewSubIcdName = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
@@ -161,19 +160,19 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup22 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem103 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.popupControlContainer2 = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainer2 = new DevExpress.XtraBars.PopupControlContainer();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtInfomationExecute = new DevExpress.XtraEditors.SimpleButton();
             this.btnConnectBloodPressure = new DevExpress.XtraEditors.SimpleButton();
-            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer();
             this.layoutControl19 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControlIcdCode = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewIcdCode = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup19 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem60 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.popupControlContainerTutorial = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerTutorial = new DevExpress.XtraBars.PopupControlContainer();
             this.gridControlTutorial = new DevExpress.XtraGrid.GridControl();
             this.gridViewTutorial = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.lblBMI = new DevExpress.XtraEditors.LabelControl();
@@ -207,7 +206,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.xtraTabControlInfo = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPageDiUng = new DevExpress.XtraTab.XtraTabPage();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
             this.layoutControl22 = new DevExpress.XtraLayout.LayoutControl();
             this.gcIcdSubCode = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gvIcdSubCode = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
@@ -662,8 +661,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.customGridViewWithFilterMultiColumn3 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.timerInitForm = new System.Windows.Forms.Timer(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
+            this.timerInitForm = new System.Windows.Forms.Timer();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderForLeftPanel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderForSpinVat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -2400,9 +2399,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // labelControl4
             // 
             this.labelControl4.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl4.Location = new System.Drawing.Point(627, 79);
+            this.labelControl4.Location = new System.Drawing.Point(641, 79);
             this.labelControl4.Name = "labelControl4";
-            this.labelControl4.Size = new System.Drawing.Size(45, 13);
+            this.labelControl4.Size = new System.Drawing.Size(31, 13);
             this.labelControl4.StyleController = this.layoutControl3;
             this.labelControl4.TabIndex = 49;
             this.labelControl4.Text = "mmHG";
@@ -3763,7 +3762,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             0,
             0,
             0});
-            this.spinBloodPressureMin.Location = new System.Drawing.Point(593, 79);
+            this.spinBloodPressureMin.Location = new System.Drawing.Point(609, 79);
             this.spinBloodPressureMin.Name = "spinBloodPressureMin";
             this.spinBloodPressureMin.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinBloodPressureMin.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -3777,7 +3776,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             0,
             0});
             this.spinBloodPressureMin.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinBloodPressureMin.Size = new System.Drawing.Size(30, 20);
+            this.spinBloodPressureMin.Size = new System.Drawing.Size(28, 20);
             this.spinBloodPressureMin.StyleController = this.layoutControl3;
             this.spinBloodPressureMin.TabIndex = 10;
             this.spinBloodPressureMin.KeyUp += new System.Windows.Forms.KeyEventHandler(this.spinBloodPressureMin_KeyUp);
@@ -3815,7 +3814,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             0,
             0});
             this.spinBloodPressureMax.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinBloodPressureMax.Size = new System.Drawing.Size(22, 20);
+            this.spinBloodPressureMax.Size = new System.Drawing.Size(38, 20);
             this.spinBloodPressureMax.StyleController = this.layoutControl3;
             this.spinBloodPressureMax.TabIndex = 9;
             this.spinBloodPressureMax.KeyUp += new System.Windows.Forms.KeyEventHandler(this.spinBloodPressureMax_KeyUp);
@@ -6920,7 +6919,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.lciBloodPressure.MinSize = new System.Drawing.Size(100, 24);
             this.lciBloodPressure.Name = "lciBloodPressure";
             this.lciBloodPressure.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciBloodPressure.Size = new System.Drawing.Size(109, 24);
+            this.lciBloodPressure.Size = new System.Drawing.Size(125, 24);
             this.lciBloodPressure.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciBloodPressure.Text = "Huyết áp:";
             this.lciBloodPressure.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -7023,12 +7022,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // layoutControlItem51
             // 
             this.layoutControlItem51.Control = this.spinBloodPressureMin;
-            this.layoutControlItem51.Location = new System.Drawing.Point(109, 48);
+            this.layoutControlItem51.Location = new System.Drawing.Point(125, 48);
             this.layoutControlItem51.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem51.MinSize = new System.Drawing.Size(30, 24);
             this.layoutControlItem51.Name = "layoutControlItem51";
             this.layoutControlItem51.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem51.Size = new System.Drawing.Size(32, 24);
+            this.layoutControlItem51.Size = new System.Drawing.Size(30, 24);
             this.layoutControlItem51.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem51.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem51.TextVisible = false;
@@ -7058,9 +7057,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // layoutControlItem53
             // 
             this.layoutControlItem53.Control = this.labelControl4;
-            this.layoutControlItem53.Location = new System.Drawing.Point(141, 48);
+            this.layoutControlItem53.Location = new System.Drawing.Point(155, 48);
             this.layoutControlItem53.Name = "layoutControlItem53";
-            this.layoutControlItem53.Size = new System.Drawing.Size(49, 24);
+            this.layoutControlItem53.Size = new System.Drawing.Size(35, 24);
             this.layoutControlItem53.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem53.TextVisible = false;
             // 

@@ -207,6 +207,7 @@ namespace HIS.Desktop.Modules.Main
                     InitDefaultSelectRoom();
                     InitWcfAssignPrescriptionByCFG();
                     DevExpress.XtraEditors.XtraMessageBox.AllowHtmlText = true;
+                    DevExpress.XtraEditors.Repository.RepositoryItemTextEdit.MaxToolTipTextLength = 4000;
                     SetDefaultTabpageFocus();
                 }
             }

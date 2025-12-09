@@ -82,10 +82,10 @@ namespace HIS.Desktop.Plugins.CallPatientTP
                 lblSrollText.Text = "";
                 organizationName = WaitingScreenCFG.ORGANIZATION_NAME;
                 SetIcon();
-                this.WindowState = FormWindowState.Maximized;
-                this.BringToFront();
-                this.TopMost = true;
-                this.Focus();
+                //this.WindowState = FormWindowState.Maximized;
+                //this.BringToFront();
+                //this.TopMost = true;
+                //this.Focus();
             }
             catch (Exception ex)
             {
