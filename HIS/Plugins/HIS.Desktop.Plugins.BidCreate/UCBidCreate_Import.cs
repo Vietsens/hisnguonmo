@@ -408,7 +408,35 @@ namespace HIS.Desktop.Plugins.BidCreate
                             medicineType.ErrorDescriptions.Add("Tên BHYT vượt quá độ dài cho phép (500)");
                         }
                     }
+                    medicineType.BID_MATERIAL_TYPE_CODE = medicineTypeImport.BID_MEDICINE_TYPE_CODE;
+                    //if (String.IsNullOrWhiteSpace(medicineType.BID_MATERIAL_TYPE_CODE))
+                    //{
+                    //    medicineType.ErrorDescriptions.Add("Không có mã trúng thầu");
+                    //}
+                    if (Encoding.UTF8.GetByteCount(medicineType.BID_MEDICINE_TYPE_CODE) > 50)
+                    {
+                        medicineType.ErrorDescriptions.Add("Mã trúng thầu vượt quá độ dài cho phép (50)");
+                    }
 
+                    medicineType.BID_MATERIAL_TYPE_NAME = medicineTypeImport.BID_MEDICINE_TYPE_NAME;
+                    //if (String.IsNullOrWhiteSpace(medicineType.BID_MATERIAL_TYPE_NAME))
+                    //{
+                    //    medicineType.ErrorDescriptions.Add("Không có tên trúng thầu");
+                    //}
+                    if (Encoding.UTF8.GetByteCount(medicineType.BID_MEDICINE_TYPE_NAME) > 500)
+                    {
+                        medicineType.ErrorDescriptions.Add("Tên trúng thầu vượt quá độ dài cho phép (500)");
+                    }
+
+                    medicineType.JOIN_BID_MATERIAL_TYPE_CODE = medicineTypeImport.JOIN_BID_MEDICINE_TYPE_CODE;
+                    //if (String.IsNullOrWhiteSpace(medicineType.JOIN_BID_MATERIAL_TYPE_CODE))
+                    //{
+                    //    medicineType.ErrorDescriptions.Add("Không có mã dự thầu");
+                    //}
+                    if (Encoding.UTF8.GetByteCount(medicineType.JOIN_BID_MEDICINE_TYPE_CODE) > 50)
+                    {
+                        medicineType.ErrorDescriptions.Add("Mã dự thầu vượt quá độ dài cho phép (50)");
+                    }
                     medicineType.CONCENTRA = medicineTypeImport.CONCENTRA;
                     medicineType.HEIN_LIMIT_PRICE = medicineTypeImport.HEIN_LIMIT_PRICE;
                     medicineType.DOSAGE_FORM = medicineTypeImport.DOSAGE_FORM;

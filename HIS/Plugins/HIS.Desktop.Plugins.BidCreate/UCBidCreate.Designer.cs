@@ -844,7 +844,6 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // txtMaDT
             // 
-            this.txtMaDT.Enabled = false;
             this.txtMaDT.Location = new System.Drawing.Point(461, 418);
             this.txtMaDT.Name = "txtMaDT";
             this.txtMaDT.Size = new System.Drawing.Size(118, 20);
@@ -854,7 +853,6 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // txtTenTT
             // 
-            this.txtTenTT.Enabled = false;
             this.txtTenTT.Location = new System.Drawing.Point(275, 418);
             this.txtTenTT.Name = "txtTenTT";
             this.txtTenTT.Size = new System.Drawing.Size(107, 20);
@@ -864,7 +862,6 @@ namespace HIS.Desktop.Plugins.BidCreate
             // 
             // txtMaTT
             // 
-            this.txtMaTT.Enabled = false;
             this.txtMaTT.Location = new System.Drawing.Point(92, 418);
             this.txtMaTT.Name = "txtMaTT";
             this.txtMaTT.Size = new System.Drawing.Size(94, 20);
