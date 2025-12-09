@@ -1122,6 +1122,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     
                     string autoCreateOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TRAN_REQ.AUTO_CREATE.OPTION");
                     decimal totalPatientPrice = data.listVHisSereServ.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0);
+                    HIS_TRANS_REQ transReqResult = null; 
                     if (autoCreateOption == "1")
                     {
                         CommonParam param = new CommonParam();
@@ -1150,6 +1151,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         var listA = data.listVHisSereServ
                                         .Where(o => !billIds.Contains(o.ID) && !depositIds.Contains(o.ID))
                                         .ToList();
+                     
                         decimal totalPatientPriceA = listA.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0);
                         // Tạo yêu cầu thanh toán
                         if (listA.Any() && totalPatientPriceA > 0)
@@ -1159,12 +1161,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             transReqSDO.TransReqType = IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_SERVICE;
                             transReqSDO.RequestRoomId = currentModule != null ? currentModule.RoomId : 0;
                             transReqSDO.SereServIds = listA.Select(o => o.ID).ToList();
-                            var transReqResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>("api/HisTransReq/CreateSDO", ApiConsumers.MosConsumer, transReqSDO, param);
+                            transReqResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>("api/HisTransReq/CreateSDO", ApiConsumers.MosConsumer, transReqSDO, param);
                             if (transReqResult == null)
                             {
                                 MessageManager.Show(this, param, false);
                                 Inventec.Common.Logging.LogSystem.Warn("Goi API tao yeu cau thanh toan that bai: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => transReqSDO), transReqSDO));
-                                return;
                             }
                         }
                     }
@@ -1216,7 +1217,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         HisTreatment.TREATMENT_TYPE_CODE = data.vHisPatientTypeAlter.TREATMENT_TYPE_CODE;
                     }
 
-                    var PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(HisServiceReqSDO, HisTreatment, listBedLogs, currentModule != null ? currentModule.RoomId : 0);
+                    var PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(transReqResult, HisServiceReqSDO, HisTreatment, listBedLogs, currentModule != null ? currentModule.RoomId : 0);
                     PrintServiceReqProcessor.listSereNmseData = allSereNmse;
                     PrintServiceReqProcessor.Print(printTypeCode, false);
                 }
