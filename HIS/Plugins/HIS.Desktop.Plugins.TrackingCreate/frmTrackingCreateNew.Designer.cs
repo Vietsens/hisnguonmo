@@ -137,6 +137,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.barLuuKy = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem7 = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnSearchNew = new DevExpress.XtraEditors.SimpleButton();
             this.dtTimeToNew = new DevExpress.XtraEditors.DateEdit();
             this.dtTimeFromNew = new DevExpress.XtraEditors.DateEdit();
@@ -348,10 +352,6 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.emptySpaceItem10 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem11 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem70 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.imageListIcon = new System.Windows.Forms.ImageList();
@@ -942,6 +942,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItemSave,
@@ -1052,6 +1056,34 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.barButtonItem7.Caption = "barButtonItem7";
             this.barButtonItem7.Id = 6;
             this.barButtonItem7.Name = "barButtonItem7";
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1263, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 684);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1263, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 655);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1263, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 655);
             // 
             // btnSearchNew
             // 
@@ -3488,34 +3520,6 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             this.layoutControlItem70.Size = new System.Drawing.Size(80, 26);
             this.layoutControlItem70.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem70.TextVisible = false;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1263, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 684);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1263, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 655);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1263, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 655);
             // 
             // imageCollection1
             // 
