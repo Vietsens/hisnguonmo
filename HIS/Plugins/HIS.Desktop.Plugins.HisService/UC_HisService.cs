@@ -22,6 +22,7 @@ using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraTreeList;
 using EMR.EFMODEL.DataModels;
 using HIS.Desktop.ApiConsumer;
@@ -93,6 +94,44 @@ namespace HIS.Desktop.Plugins.HisService
         List<SAR.EFMODEL.DataModels.SAR_PRINT_TYPE> ListPrintType;
         List<MOS.EFMODEL.DataModels.HIS_EMR_FORM> listEmrType;
         private System.Windows.Forms.SaveFileDialog SaveFileExportExcel = new SaveFileDialog();
+        public class CauHinhItem
+        {
+            public int Id { get; set; }
+            public string Code { get; set; }
+            public string Name { get; set; }
+
+            public CauHinhItem(int id, string code, string name)
+            {
+                Id = id;
+                Code = code;
+                Name = name;
+            }
+        }
+
+        public static List<CauHinhItem> CauHinh = new List<CauHinhItem>
+        {
+            new CauHinhItem(1, "CHAY_THAN", "Chạy thận"),
+            new CauHinhItem(2, "KHANG_SINH_DO", "Kháng sinh đồ"),
+            new CauHinhItem(3, "CHAN_KHONG_THUC_HIEN", "Chặn không thực hiện"),
+            new CauHinhItem(4, "CHI_DINH_KHAC_1", "Chỉ định khác 1"),
+            new CauHinhItem(5, "TACH_Y_LENH", "Tách y lệnh"),
+            new CauHinhItem(6, "TACH_DICH_VU", "Tách dịch vụ"),
+            new CauHinhItem(7, "CHI_PHI_NGOAI_GOI", "Chi phí ngoài gói"),
+            new CauHinhItem(8, "CHO_PHEP_HAO_PHI", "Cho phép hao phí"),
+            new CauHinhItem(9, "TU_DONG_HAO_PHI", "Tự động hao phí"),
+            new CauHinhItem(10, "NGOAI_DINH_SUAT_DRG", "Ngoài định suất / DRG"),
+            new CauHinhItem(11, "DICH_VU_QUAN_LY_NGOAI", "Là dịch vụ quản lý ngoài"),
+            new CauHinhItem(12, "CO_NGUON_CHI_TRA_KHAC", "Có nguồn chi trả khác"),
+            new CauHinhItem(13, "CHO_CHI_DINH_GIA", "Cho chỉ định giá"),
+            new CauHinhItem(14, "KHONG_HIEN_THI_TREN_TO_DIEU_TRI", "Không hiển thị trên tờ điều trị"),
+            new CauHinhItem(15, "BAT_BUOC_BIEN_BAN_HOI_CHAN", "Bắt buộc có biên bản hội chẩn"),
+            new CauHinhItem(16, "CHAN_CHUYEN_KHOA", "Chặn chuyển khoa"),
+            new CauHinhItem(17, "KHONG_CHAN_THUC_HIEN_CUNG_LUC", "Không chặn thực hiện cùng lúc"),
+            new CauHinhItem(18, "KHONG_BAT_BUOC_HOAN_THANH", "Không bắt buộc hoàn thành"),
+            new CauHinhItem(19, "KHONG_HUONG_BHYT", "Không hưởng BHYT"),
+            new CauHinhItem(20, "CHO_PHEP_GUI_SANG_PACS", "Cho phép gửi sang PACS"),
+            new CauHinhItem(21, "XU_LY_NHIEU_LAN", "Xử lý nhiều lần")
+        };
         #endregion
 
         #region Construct
@@ -219,16 +258,11 @@ namespace HIS.Desktop.Plugins.HisService
                 this.txtKeyword.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UC_HisService.txtKeyword.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcEditorInfo.Text = Inventec.Common.Resource.Get.Value("UC_HisService.lcEditorInfo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboPackage.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboPackage.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkChiDinh.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkChiDinh.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsKidney.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkIsKidney.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsAntibioticResistance.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkIsAntibioticResistance.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkAllowExpend.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkAllowExpend.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkUpdateOnly.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkUpdateOnly.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkUpdateAll.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkUpdateAll.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboServiceType.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboServiceType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboIcdCm.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboIcdCm.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboGroup.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboGroup.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkCPNgoaiGoi.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkCPNgoaiGoi.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboMethod.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboMethod.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboParent.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboParent.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboPatientType.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboPatientType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -282,8 +316,6 @@ namespace HIS.Desktop.Plugins.HisService
                 this.Text = Inventec.Common.Resource.Get.Value("frmHisService.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
                 this.dtInTime.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.dtInTime.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsOtherSourcePaid.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkIsOtherSourcePaid.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsBlockDepartment.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkIsBlockDepartment.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //this.chkTachdichvu.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkTachdichvu.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //this.lcDiimType.Text = Inventec.Common.Resource.Get.Value("UC_HisService.lcDiimType.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //this.lcDiimType.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.lcDiimType.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -399,54 +431,30 @@ namespace HIS.Desktop.Plugins.HisService
                 this.treeListColumn43.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.treeListColumn43.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtKeyword.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UC_HisService.txtKeyword.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcEditorInfo.Text = Inventec.Common.Resource.Get.Value("UC_HisService.lcEditorInfo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsBlockDepartment.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkIsBlockDepartment.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsBlockDepartment.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.chkIsBlockDepartment.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkAllowSimultaneity.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkAllowSimultaneity.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkAllowSimultaneity.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.chkAllowSimultaneity.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIS_AUTO_EXPEND.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkIS_AUTO_EXPEND.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIS_AUTO_EXPEND.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.chkIS_AUTO_EXPEND.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboFILM_SIZE.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboFILM_SIZE.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboFILM_SIZE.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.cboFILM_SIZE.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIS_NOT_SHOW_TRACKING.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkIS_NOT_SHOW_TRACKING.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsDisAllowanceNoExecute.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkIsDisAllowanceNoExecute.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsDisAllowanceNoExecute.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.chkIsDisAllowanceNoExecute.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboAttachAssignPrintTypeCode.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboAttachAssignPrintTypeCode.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboChiSo.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboChiSo.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIS_OUT_OF_MANAGEMENT.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkIS_OUT_OF_MANAGEMENT.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkMUST_BE_CONSULTED.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkMUST_BE_CONSULTED.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkNgoaiDinhSuat.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkNgoaiDinhSuat.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboOTHER_PAY_SOURCE.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboOTHER_PAY_SOURCE.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsAntibioticResistance.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkIsAntibioticResistance.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsOtherSourcePaid.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkIsOtherSourcePaid.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkTachdichvu.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkTachdichvu.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkTachdichvu.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.chkTachdichvu.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkNotChangePaty.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkNotChangePaty.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkNotChangePaty.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.chkNotChangePaty.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.CboTestType.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.CboTestType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkForPrice.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkForPrice.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkForPrice.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.chkForPrice.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkSplitTreatment.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkSplitTreatment.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkSplitTreatment.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.chkSplitTreatment.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboTaxRateType.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboTaxRateType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboRationGroup.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboRationGroup.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lbCapacity.Text = Inventec.Common.Resource.Get.Value("UC_HisService.lbCapacity.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lbCapacity.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.lbCapacity.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsKidney.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkIsKidney.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnEditServiceType.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.btnEditServiceType.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkAllowExpend.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkAllowExpend.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboGender.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboGender.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboExeServiceModule.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboExeServiceModule.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnMayCuaToi.Text = Inventec.Common.Resource.Get.Value("UC_HisService.btnMayCuaToi.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.simpleButton2.Text = Inventec.Common.Resource.Get.Value("UC_HisService.simpleButton2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboPackage.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboPackage.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkChiDinh.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkChiDinh.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkUpdateOnly.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkUpdateOnly.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkUpdateAll.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkUpdateAll.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboServiceType.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboServiceType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboIcdCm.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboIcdCm.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboGroup.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboGroup.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.dtInTime.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.dtInTime.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkCPNgoaiGoi.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkCPNgoaiGoi.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboMethod.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboMethod.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboParent.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboParent.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboPatientType.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboPatientType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -489,7 +497,6 @@ namespace HIS.Desktop.Plugins.HisService
                 this.layoutControlItem13.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem13.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem37.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem37.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem37.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem37.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem16.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem16.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem55.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem55.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.spCogss.Text = Inventec.Common.Resource.Get.Value("UC_HisService.spCogss.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciNumOrder.Text = Inventec.Common.Resource.Get.Value("UC_HisService.lciNumOrder.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -498,7 +505,6 @@ namespace HIS.Desktop.Plugins.HisService
                 this.layoutControlItem49.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem49.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem26.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem26.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem29.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem29.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem48.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem48.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem23.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem23.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem23.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem23.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem24.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem24.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -511,23 +517,17 @@ namespace HIS.Desktop.Plugins.HisService
                 this.emptySpaceItem5.Text = Inventec.Common.Resource.Get.Value("UC_HisService.emptySpaceItem5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem50.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem50.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem47.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem47.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem54.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem54.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem30.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem30.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem46.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem46.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.emptySpaceItem2.Text = Inventec.Common.Resource.Get.Value("UC_HisService.emptySpaceItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem51.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem51.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem61.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem61.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem61.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem61.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem44.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem44.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem44.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem44.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsAntibioticResistanc_Lay.Text = Inventec.Common.Resource.Get.Value("UC_HisService.chkIsAntibioticResistanc_Lay.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem59.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem59.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem59.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem59.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem64.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem64.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem65.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem65.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem66.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem66.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem66.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem66.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem68.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem68.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciAttachAssignPrintTypeCode.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.lciAttachAssignPrintTypeCode.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciAttachAssignPrintTypeCode.Text = Inventec.Common.Resource.Get.Value("UC_HisService.lciAttachAssignPrintTypeCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem45.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem45.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -546,15 +546,6 @@ namespace HIS.Desktop.Plugins.HisService
                 this.emptySpaceItem6.Text = Inventec.Common.Resource.Get.Value("UC_HisService.emptySpaceItem6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcCapacity.Text = Inventec.Common.Resource.Get.Value("UC_HisService.lcCapacity.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem69.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem69.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem63.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem63.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem52.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem52.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem73.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem73.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem67.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem67.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem67.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem67.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem74.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem74.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem74.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem74.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem75.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem75.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem75.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem75.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem76.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem76.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem76.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem76.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem77.Text = Inventec.Common.Resource.Get.Value("UC_HisService.layoutControlItem77.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -600,7 +591,6 @@ namespace HIS.Desktop.Plugins.HisService
             try
             {
                 //dangth
-                chkExcuteMore.Checked = false;
                 currentData = null;
                 this.ActionType = GlobalVariables.ActionAdd;
                 txtNotice.EditValue = null;
@@ -651,29 +641,9 @@ namespace HIS.Desktop.Plugins.HisService
                 spHeinNew.EditValue = null;
                 spHeinOld.EditValue = null;
                 dtInTime.EditValue = null;
-                chkIsDisAllowanceNoExecute.EditValue = null;
-                chkCPNgoaiGoi.EditValue = null;
-                chkChiDinh.EditValue = null;
-                chkIsKidney.EditValue = null;
                 spinMaxAmount.EditValue = null;
-                chkIsAntibioticResistance.EditValue = null;
-                chkIsOtherSourcePaid.EditValue = null;
-                chkIsBlockDepartment.EditValue = null;
-                chkAllowSimultaneity.EditValue = null;
-                chkTachdichvu.EditValue = null;
-                chkAllowExpend.EditValue = true;
-                chkMUST_BE_CONSULTED.EditValue = null;
-                chkNOT_REQUIRED_COMPLETE.EditValue = null;
-                chkNOT_REQUIRED_COMPLETE.Checked = false;
-                chkIS_OUT_OF_MANAGEMENT.EditValue = null;
-                chkNotUseBHYT.EditValue = null;
-                chkNotUseBHYT.Checked = false;
-                chkIS_NOT_SHOW_TRACKING.EditValue = null;
-                chkIS_NOT_SHOW_TRACKING.Checked = false;
                 chkUpdateAll.EditValue = null;
                 chkUpdateOnly.EditValue = null;
-                chkAllowSendPacs.EditValue = null;
-                chkAllowSendPacs.Checked = false;
                 SetEnablePTTT(true, true);
                 txtSpecialityCode.EditValue = null;
                 txtSpecialityCode.Enabled = true;
@@ -697,13 +667,6 @@ namespace HIS.Desktop.Plugins.HisService
                 cboDiimType.Enabled = false;
                 cboFuexType.Enabled = false;
                 cboFuexType.EditValue = null;
-                chkSplitTreatment.EditValue = null;
-                chkSplitTreatment.Checked = false;
-                chkIS_AUTO_EXPEND.EditValue = null;
-                chkIS_AUTO_EXPEND.Checked = false;
-                chkIS_AUTO_EXPEND.Enabled = false;
-                chkTachdichvu.Enabled = false;
-                chkTachdichvu.EditValue = null;
                 CboTestType.EditValue = null;
 
                 CboTestType.Enabled = false;
@@ -711,7 +674,6 @@ namespace HIS.Desktop.Plugins.HisService
                 cboOTHER_PAY_SOURCE.EditValue = null;
                 txtOTHER_PAY_SOURCE.Enabled = false;
                 txtOTHER_PAY_SOURCE.Text = "";
-                chkNgoaiDinhSuat.EditValue = null;
                 GridCheckMarksSelection gridCheckChiSo = cboChiSo.Properties.Tag as GridCheckMarksSelection;
                 gridCheckChiSo.ClearSelection(cboChiSo.Properties.View);
                 cboChiSo.Text = "";
@@ -742,6 +704,10 @@ namespace HIS.Desktop.Plugins.HisService
                 GridCheckMarksSelection gridCheckPhieuBA = cboPhieuBA.Properties.Tag as GridCheckMarksSelection;
                 gridCheckPhieuBA.ClearSelection(cboPhieuBA.Properties.View);
                 cboPhieuBA.Text = "";
+
+                GridCheckMarksSelection gridcboCauHinh = cboCauHinh.Properties.Tag as GridCheckMarksSelection;
+                gridcboCauHinh.ClearSelection(cboCauHinh.Properties.View);
+                cboCauHinh.Text = "";
 
                 cboAttachAssignPrintTypeCode.EditValue = null;
                 cboFILM_SIZE.EditValue = null;
@@ -2228,28 +2194,8 @@ namespace HIS.Desktop.Plugins.HisService
                     cboDefaultPatientType.EditValue = data.DEFAULT_PATIENT_TYPE_ID;
                     chkNotChangePaty.Checked = (data.IS_NOT_CHANGE_BILL_PATY == (short)1);
                     chkNotChangePaty.Checked = data.IS_NOT_CHANGE_BILL_PATY == (short)1;
-                    chkCPNgoaiGoi.Checked = data.IS_OUT_PARENT_FEE == 1 ? true : false;
-                    chkChiDinh.Checked = data.IS_MULTI_REQUEST == 1 ? true : false;
-                    chkTachdichvu.Checked = data.IS_SPLIT_SERVICE == 1 ? true : false;
-                    chkIsKidney.Checked = data.IS_KIDNEY == 1 ? true : false;
-                    chkAllowExpend.Checked = data.IS_ALLOW_EXPEND == 1 ? true : false;
-                    chkIsAntibioticResistance.Checked = data.IS_ANTIBIOTIC_RESISTANCE == 1 ? true : false;
-                    chkSplitTreatment.Checked = data.IS_SPLIT_SERVICE_REQ == 1 ? true : false;
-                    chkIS_AUTO_EXPEND.Checked = data.IS_AUTO_EXPEND == 1 ? true : false;
-                    chkForPrice.Checked = data.IS_ENABLE_ASSIGN_PRICE == 1 ? true : false;
-                    chkNgoaiDinhSuat.Checked = data.IS_OUT_OF_DRG == 1 ? true : false;
-                    chkIsOtherSourcePaid.Checked = data.IS_OTHER_SOURCE_PAID == 1 ? true : false;
-                    chkIsBlockDepartment.Checked = data.IS_BLOCK_DEPARTMENT_TRAN == 1 ? true : false;
-                    chkNotUseBHYT.Checked = data.DO_NOT_USE_BHYT == 1 ? true : false;
-                    chkAllowSimultaneity.Checked = data.ALLOW_SIMULTANEITY == 1 ? true : false;
-                    chkMUST_BE_CONSULTED.Checked = data.MUST_BE_CONSULTED == 1 ? true : false;
-                    chkIS_OUT_OF_MANAGEMENT.Checked = data.IS_OUT_OF_MANAGEMENT == 1 ? true : false;
-                    chkIS_NOT_SHOW_TRACKING.Checked = data.IS_NOT_SHOW_TRACKING == 1 ? true : false;
-                    chkNOT_REQUIRED_COMPLETE.Checked = data.IS_NOT_REQUIRED_COMPLETE == 1 ? true : false;
+                    SetCauHinhFromData(data);
                     //dangth
-                    chkExcuteMore.Checked = data.IS_MULTIPLE_EXECUTE == 1 ? true : false;
-                    chkIsDisAllowanceNoExecute.Checked = data.IS_DISALLOWANCE_NO_EXECUTE == 1 ? true : false;
-                    chkAllowSendPacs.Checked = data.ALLOW_SEND_PACS == 1 ? true : false;
                     cboExeServiceModule.EditValue = data.EXE_SERVICE_MODULE_ID;
                     cboDiimType.EditValue = data.DIIM_TYPE_ID;
                     if (data.DIIM_TYPE_ID.HasValue)
@@ -2686,17 +2632,6 @@ namespace HIS.Desktop.Plugins.HisService
                 layoutControlItem35.Enabled = false;
                 setEnableSpinHein(true);
                 cboChiSo.Enabled = false;
-                if (chkAllowExpend.Checked)
-                {
-                    chkIS_AUTO_EXPEND.Enabled = true;
-                }
-                else
-                {
-                    chkIS_AUTO_EXPEND.Enabled = false;
-                }
-                chkIsBlockDepartment.Checked = false;
-                chkAllowSimultaneity.Checked = false;
-                chkNotUseBHYT.Checked = false;
                 this.EMR_FORM_CODES = null;
             }
             catch (Exception ex)
@@ -2829,10 +2764,10 @@ namespace HIS.Desktop.Plugins.HisService
                 }
 
                 ValidationSingleControl(txtMisuSerTypeCode);
-                ValidationControlMaxLength(txtMisuSerTypeCode, 25, true);
+                ValidationControlMaxLength(txtMisuSerTypeCode, 100, true);
                 ValidationControlMaxLength(txtTestingTechnique, 500, false);
                 ValidationSingleControl(txtMisuSerTypeName);
-                ValidationControlMaxLength(txtMisuSerTypeName, 1500, true);
+                ValidationControlMaxLength(txtMisuSerTypeName, 3000, true);
                 ValidationControlMaxLength(txtBHYTName, 1500, false);
                 if (txtRatioSymbol.Enabled)
                     ValidationControlMaxLength(txtRatioSymbol, 10, false);
@@ -2947,7 +2882,7 @@ namespace HIS.Desktop.Plugins.HisService
                 currentDTO.RATION_SYMBOL = !String.IsNullOrEmpty(txtRatioSymbol.Text.Trim()) ? txtRatioSymbol.Text.Trim() : null;
                 currentDTO.TESTING_TECHNIQUE = !String.IsNullOrEmpty(txtTestingTechnique.Text.Trim()) ? txtTestingTechnique.Text.Trim() : null;
                 currentDTO.EMR_FORM_CODES = this.EMR_FORM_CODES;
-                if (chkIS_AUTO_EXPEND.Checked == true)
+                if (IsItemSelected("TU_DONG_HAO_PHI") == true)
                 {
                     currentDTO.IS_AUTO_EXPEND = 1;
                 }
@@ -2975,23 +2910,7 @@ namespace HIS.Desktop.Plugins.HisService
                         currentDTO.HIS_SUIM_SETY_SUIN.Add(new HIS_SUIM_SETY_SUIN() { SUIM_INDEX_ID = rv.ID });
                     }
                 }
-                if (chkNOT_REQUIRED_COMPLETE.Checked == true)
-                {
-                    currentDTO.IS_NOT_REQUIRED_COMPLETE = 1;
-                }
-                else
-                {
-                    currentDTO.IS_NOT_REQUIRED_COMPLETE = null;
-                }
-                if(chkExcuteMore.Checked == true)
-                {
-                    currentDTO.IS_MULTIPLE_EXECUTE = 1;
-                }
-                else
-                {
-                    currentDTO.IS_MULTIPLE_EXECUTE = null;
-                }
-
+               
                 if (cboPart.EditValue != null)
                 {
                     GridCheckMarksSelection gridCheckMarkBusiness = cboPart.Properties.Tag as GridCheckMarksSelection;
@@ -3158,7 +3077,7 @@ namespace HIS.Desktop.Plugins.HisService
                 else
                     currentDTO.ESTIMATE_DURATION = null;
 
-                currentDTO.IS_OUT_PARENT_FEE = (short)(chkCPNgoaiGoi.Checked ? 1 : 0);
+                currentDTO.IS_OUT_PARENT_FEE = (short)(IsItemSelected("CHI_PHI_NGOAI_GOI") ? 1 : 0);
                 currentDTO.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
 
                 if (cboGroup.EditValue != null) currentDTO.PTTT_GROUP_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboGroup.EditValue ?? "0").ToString());
@@ -3278,16 +3197,16 @@ namespace HIS.Desktop.Plugins.HisService
                 else
                     currentDTO.EXE_SERVICE_MODULE_ID = null;
 
-                currentDTO.IS_MULTI_REQUEST = (short)(chkChiDinh.Checked ? 1 : 0);
-                currentDTO.IS_ALLOW_EXPEND = (short)(chkAllowExpend.Checked ? 1 : 0);
-                currentDTO.IS_KIDNEY = (short)(chkIsKidney.Checked ? 1 : 0);
-                currentDTO.IS_ANTIBIOTIC_RESISTANCE = (short)(chkIsAntibioticResistance.Checked ? 1 : 0);
-                currentDTO.IS_OTHER_SOURCE_PAID = (short)(chkIsOtherSourcePaid.Checked ? 1 : 0);
-                currentDTO.MUST_BE_CONSULTED = (short)(chkMUST_BE_CONSULTED.Checked ? 1 : 0);
-                currentDTO.IS_OUT_OF_MANAGEMENT = (short)(chkIS_OUT_OF_MANAGEMENT.Checked ? 1 : 0);
-                currentDTO.IS_BLOCK_DEPARTMENT_TRAN = (short)(chkIsBlockDepartment.Checked ? 1 : 0);
-                currentDTO.ALLOW_SIMULTANEITY = (short)(chkAllowSimultaneity.Checked ? 1 : 0);
-                if (chkNotUseBHYT.Checked)
+                currentDTO.IS_MULTI_REQUEST = (short)(IsItemSelected("CHI_DINH_KHAC_1") ? 1 : 0);
+                currentDTO.IS_ALLOW_EXPEND = (short)(IsItemSelected("CHO_PHEP_HAO_PHI") ? 1 : 0);
+                currentDTO.IS_KIDNEY = (short)(IsItemSelected("CHAY_THAN") ? 1 : 0);
+                currentDTO.IS_ANTIBIOTIC_RESISTANCE = (short)(IsItemSelected("KHANG_SINH_DO") ? 1 : 0);
+                currentDTO.IS_OTHER_SOURCE_PAID = (short)(IsItemSelected("CO_NGUON_CHI_TRA_KHAC") ? 1 : 0);
+                currentDTO.MUST_BE_CONSULTED = (short)(IsItemSelected("BAT_BUOC_BIEN_BAN_HOI_CHAN") ? 1 : 0);
+                currentDTO.IS_OUT_OF_MANAGEMENT = (short)(IsItemSelected("DICH_VU_QUAN_LY_NGOAI") ? 1 : 0);
+                currentDTO.IS_BLOCK_DEPARTMENT_TRAN = (short)(IsItemSelected("CHAN_CHUYEN_KHOA") ? 1 : 0);
+                currentDTO.ALLOW_SIMULTANEITY = (short)(IsItemSelected("KHONG_CHAN_THUC_HIEN_CUNG_LUC") ? 1 : 0);
+                if (IsItemSelected("KHONG_HUONG_BHYT"))
                 {
                     currentDTO.DO_NOT_USE_BHYT = 1;
                 }
@@ -3295,7 +3214,7 @@ namespace HIS.Desktop.Plugins.HisService
                 {
                     currentDTO.DO_NOT_USE_BHYT = null;
                 }
-                if (chkIS_NOT_SHOW_TRACKING.Checked)
+                if (IsItemSelected("KHONG_HIEN_THI_TREN_TO_DIEU_TRI"))
                 {
                     currentDTO.IS_NOT_SHOW_TRACKING = 1;
                 }
@@ -3303,7 +3222,7 @@ namespace HIS.Desktop.Plugins.HisService
                 {
                     currentDTO.IS_NOT_SHOW_TRACKING = null;
                 }
-                if (chkNOT_REQUIRED_COMPLETE.Checked)
+                if (IsItemSelected("KHONG_BAT_BUOC_HOAN_THANH"))
                 {
                     currentDTO.IS_NOT_REQUIRED_COMPLETE = 1;
                 }
@@ -3311,7 +3230,7 @@ namespace HIS.Desktop.Plugins.HisService
                 {
                     currentDTO.IS_NOT_REQUIRED_COMPLETE = null;
                 }
-                if (chkExcuteMore.Checked)
+                if (IsItemSelected("XU_LY_NHIEU_LAN"))
                 {
                     currentDTO.IS_MULTIPLE_EXECUTE = 1;
                 }
@@ -3319,7 +3238,7 @@ namespace HIS.Desktop.Plugins.HisService
                 {
                     currentDTO.IS_MULTIPLE_EXECUTE = null;
                 }
-                if (chkAllowSendPacs.Checked)
+                if (IsItemSelected("CHO_PHEP_GUI_SANG_PACS"))
                 {
                     currentDTO.ALLOW_SEND_PACS = 1;
                 }
@@ -3330,11 +3249,11 @@ namespace HIS.Desktop.Plugins.HisService
 
                 //  Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentDTO.IS_AUTO_EXPEND), currentDTO.IS_AUTO_EXPEND));
                 // currentDTO.IS_NOT_SHOW_TRACKING = (short)(chkIS_NOT_SHOW_TRACKING.Checked ? 1 : null ); 
-                currentDTO.IS_SPLIT_SERVICE = (short)(chkTachdichvu.Checked ? 1 : 0);
-                currentDTO.IS_SPLIT_SERVICE_REQ = (short)(chkSplitTreatment.Checked ? 1 : 0);
-                currentDTO.IS_ENABLE_ASSIGN_PRICE = (short)(chkForPrice.Checked ? 1 : 0);
-                currentDTO.IS_OUT_OF_DRG = (short)(chkNgoaiDinhSuat.Checked ? 1 : 0);
-                currentDTO.IS_DISALLOWANCE_NO_EXECUTE = (short)(chkIsDisAllowanceNoExecute.Checked ? 1 : 0);
+                currentDTO.IS_SPLIT_SERVICE = (short)(IsItemSelected("TACH_DICH_VU") ? 1 : 0);
+                currentDTO.IS_SPLIT_SERVICE_REQ = (short)(IsItemSelected("TACH_Y_LENH") ? 1 : 0);
+                currentDTO.IS_ENABLE_ASSIGN_PRICE = (short)(IsItemSelected("CHO_CHI_DINH_GIA") ? 1 : 0);
+                currentDTO.IS_OUT_OF_DRG = (short)(IsItemSelected("NGOAI_DINH_SUAT_DRG") ? 1 : 0);
+                currentDTO.IS_DISALLOWANCE_NO_EXECUTE = (short)(IsItemSelected("CHAN_KHONG_THUC_HIEN") ? 1 : 0);
 
                 if (cboGender.EditValue != null)
                 {
@@ -3442,9 +3361,9 @@ namespace HIS.Desktop.Plugins.HisService
             try
             {
                 ValidationSingleControl(txtMisuSerTypeCode);
-                ValidationControlMaxLength(txtMisuSerTypeCode, 25, true);
+                ValidationControlMaxLength(txtMisuSerTypeCode, 100, true);
                 ValidationSingleControl(txtMisuSerTypeName);
-                ValidationControlMaxLength(txtMisuSerTypeName, 1500, true);
+                ValidationControlMaxLength(txtMisuSerTypeName, 3000, true);
                 ValidationControlMaxLength(txtBHYTName, 1500, false);
                 ValidationControlMaxLength(txtTestingTechnique, 500, false);
                 ValidationControlMaxLength(txtProcessCode, 50, false);
@@ -3627,15 +3546,8 @@ namespace HIS.Desktop.Plugins.HisService
                 //Focus default
                 SetDefaultFocus();
 
-                if (chkAllowExpend.Checked)
-                {
-                    chkIS_AUTO_EXPEND.Enabled = true;
-                }
-                else
-                {
-                    chkIS_AUTO_EXPEND.Enabled = false;
-                }
                 LoadDataCboPhieuBA();
+                LoadDataCboCauHinh();
             }
             catch (Exception ex)
             {
@@ -4499,25 +4411,6 @@ namespace HIS.Desktop.Plugins.HisService
             }
         }
 
-        private void chkCPNgoaiGoi_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkAllowExpend.Focus();
-                }
-                if (e.KeyCode == Keys.Space)
-                {
-                    chkAllowExpend.Checked = !chkAllowExpend.Checked;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         private void txtBHYTCode_KeyUp(object sender, KeyEventArgs e)
         {
             try
@@ -4749,27 +4642,6 @@ namespace HIS.Desktop.Plugins.HisService
             }
         }
 
-        private void chkAllowExpend_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkForPrice.Focus();
-                }
-
-                if (e.KeyCode == Keys.Space)
-                {
-                    chkUpdateOnly.Checked = !chkUpdateOnly.Checked;
-                }
-                e.Handled = true;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         private void cboServiceType_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -4855,26 +4727,31 @@ namespace HIS.Desktop.Plugins.HisService
                             || servicceType == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS
                             || servicceType == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA)
                         {
-                            chkAllowSendPacs.Checked = true;
+                            //chkAllowSendPacs.Checked = true;
+                            SetAllowSendPacsSelection(true);
                         }
                         else
-                            chkAllowSendPacs.Checked = false;
+                            //chkAllowSendPacs.Checked = false;
+                            SetAllowSendPacsSelection(false);
                     }
                     if (servicceType == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
                             || servicceType == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G
                             || servicceType == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
                             || servicceType == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN)
                     {
-                        chkAllowSendPacs.Enabled = false;
+                        //chkAllowSendPacs.Enabled = false;
+                        SetAllowSendPacsSelection(false);
                     }
                     else
-                        chkAllowSendPacs.Enabled = true;
+                        //chkAllowSendPacs.Enabled = true;
+                        SetAllowSendPacsSelection(true);
                 }
                 else
                 {
                     SetEnablePTTT(true, true);
                     txtSpecialityCode.Enabled = true;
-                    chkAllowSendPacs.Checked = false;
+                    //chkAllowSendPacs.Checked = false;
+                    SetAllowSendPacsSelection(false);
                 }
 
             }
@@ -4916,30 +4793,9 @@ namespace HIS.Desktop.Plugins.HisService
                 cboFuexType.EditValue = null;
                 CboTestType.EditValue = null;
                 cboDiimType.Enabled = false;
-                chkForPrice.Enabled = true;
+                //chkForPrice.Enabled = true;
+                SetForPriceSelection(true);
                 CboTestType.Enabled = false;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void chkChiDinh_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    if (chkSplitTreatment.Enabled == true)
-                    {
-                        chkSplitTreatment.Focus();
-                    }
-                    else
-                    {
-                        chkCPNgoaiGoi.Focus();
-                    }
-                }
             }
             catch (Exception ex)
             {
@@ -5814,21 +5670,6 @@ namespace HIS.Desktop.Plugins.HisService
             }
         }
 
-        private void chkIsKidney_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkIsAntibioticResistance.Focus();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         private void cboSearchType_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
@@ -5841,21 +5682,6 @@ namespace HIS.Desktop.Plugins.HisService
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void txtCapacity_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkIsKidney.Focus();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -5948,21 +5774,6 @@ namespace HIS.Desktop.Plugins.HisService
                 {
                     spNumOrder.Focus();
                     spNumOrder.SelectAll();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void chkIsAntibioticResistance_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkIsOtherSourcePaid.Focus();
                 }
             }
             catch (Exception ex)
@@ -6181,29 +5992,6 @@ namespace HIS.Desktop.Plugins.HisService
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
                     cboTaxRateType.EditValue = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void chkChiDinh_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (chkChiDinh.Checked)
-                {
-                    chkTachdichvu.Enabled = true;
-                }
-                else
-                {
-                    chkTachdichvu.Enabled = false;
-                    chkSplitTreatment.EditValue = null;
-                    chkTachdichvu.EditValue = null;
-                    chkTachdichvu.Checked = false;
-                    chkSplitTreatment.Checked = false;
                 }
             }
             catch (Exception ex)
@@ -6454,50 +6242,6 @@ namespace HIS.Desktop.Plugins.HisService
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void chkIsKidney_KeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    if (chkChiDinh.Enabled == true)
-                    {
-                        chkChiDinh.Focus();
-                    }
-                    else
-                    {
-                        chkCPNgoaiGoi.Focus();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void chkIsAntibioticResistance_KeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    if (chkSplitTreatment.Enabled == true)
-                    {
-                        chkSplitTreatment.Focus();
-                    }
-                    else
-                    {
-                        chkAllowExpend.Focus();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -6785,29 +6529,6 @@ namespace HIS.Desktop.Plugins.HisService
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
-
-        private void chkAllowExpend_CheckedChanged(object sender, EventArgs e)
-        {
-
-            try
-            {
-                if (chkAllowExpend.Checked)
-                {
-                    chkIS_AUTO_EXPEND.Enabled = true;
-                }
-                else
-                {
-                    chkIS_AUTO_EXPEND.Enabled = false;
-                    chkIS_AUTO_EXPEND.Checked = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-
-
         }
 
         private void spinWARNING_KeyUp(object sender, KeyEventArgs e)
@@ -7314,6 +7035,661 @@ namespace HIS.Desktop.Plugins.HisService
         private void cboPhieuBA_Closed(object sender, ClosedEventArgs e)
         {
             btnAdd.Focus();
+        }
+        private void LoadDataCboCauHinh()
+        {
+            try
+            {
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                //columnInfos.Add(new ColumnInfo("EMR_FORM_CODE", "Mã", 100, 1));
+                columnInfos.Add(new ColumnInfo("Name", "Tên", 200, 1));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("Name", "CODE", columnInfos, false, 300);
+                ControlEditorLoader.Load(cboCauHinh, CauHinh, controlEditorADO);
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboCauHinh.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_Check_CauHinh);
+                cboCauHinh.Properties.Tag = gridCheck;
+                cboCauHinh.Properties.View.OptionsSelection.MultiSelect = true;
+                cboCauHinh.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboCauHinh.Properties.View.CustomColumnDisplayText += View_CustomDisplayText; 
+                cboCauHinh.Properties.View.RowStyle += View_RowStyle; 
+                cboCauHinh.Properties.View.MouseDown += View_MouseDown; 
+                cboCauHinh.Closed += cboCauHinh_Closed;
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        List<CauHinhItem> CauHinhSelected = new List<CauHinhItem>();
+        public string cauHinhCodes { get; set; }
+        
+        private void Event_Check_CauHinh(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    // Lấy selection hiện tại
+                    var currentSelection = gridCheckMark.Selection.OfType<CauHinhItem>().ToList();
+
+                    // Định nghĩa ràng buộc
+                    Dictionary<string, string> dependencies = new Dictionary<string, string>
+            {
+                {"Tách dịch vụ", "Chỉ định khác 1"},
+                {"Tự động hao phí", "Cho phép hao phí"}
+            };
+
+                    // Validate và loại bỏ selection không hợp lệ
+                    var validSelection = new List<CauHinhItem>();
+                    var itemsToRemove = new List<CauHinhItem>();
+
+                    foreach (var item in currentSelection)
+                    {
+                        bool isValid = true;
+
+                        // Kiểm tra ràng buộc
+                        if (dependencies.ContainsKey(item.Name))
+                        {
+                            string parentName = dependencies[item.Name];
+                            bool parentExists = currentSelection.Any(x => x.Name == parentName);
+                            if (!parentExists)
+                            {
+                                isValid = false;
+                                itemsToRemove.Add(item);
+                            }
+                        }
+
+                        if (isValid)
+                        {
+                            validSelection.Add(item);
+                        }
+                    }
+
+                    // Remove invalid items từ GridCheckMarksSelection
+                    foreach (var item in itemsToRemove)
+                    {
+                        gridCheckMark.Selection.Remove(item);
+                    }
+
+                    // Clear và rebuild CauHinhSelected
+                    this.CauHinhSelected.Clear();
+                    foreach (var er in validSelection)
+                    {
+                        if (sb.Length > 0) { sb.Append(", "); }
+                        sb.Append(er.Name);
+                        CauHinhSelected.Add(er);
+                    }
+
+                    cauHinhCodes = string.Join(",", CauHinhSelected.Select(s => s.Code));
+                    cboCauHinh.EditValue = CauHinhSelected;
+                }
+
+                // FORCE UPDATE TEXT - Sử dụng nhiều cách
+                string displayText = sb.ToString();
+
+                // Cách 1: Set trực tiếp
+                cboCauHinh.Text = displayText;
+
+                // Cách 2: BeginInvoke để chạy sau khi events khác hoàn thành
+                this.BeginInvoke(new Action(() =>
+                {
+                    cboCauHinh.Text = displayText;
+                }));
+
+                // Force refresh để update UI
+                if (cboCauHinh.Properties.View != null)
+                {
+                    cboCauHinh.Properties.View.RefreshData();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboCauHinh_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
+                {
+
+                    cboCauHinh.ShowPopup();
+                }
+                else if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+
+                    cboCauHinh.EditValue = null;
+                    if (CauHinhSelected == null)
+                        CauHinhSelected = new List<CauHinhItem>();
+                    else
+                        CauHinhSelected.Clear();
+
+                    GridCheckMarksSelection gridCheckMark = cboCauHinh.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboCauHinh.Properties.View);
+                    }
+                    this.cboCauHinh.Focus();
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboCauHinh_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = string.Join(",", CauHinhSelected.Select(s => s.Name).ToList());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void View_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                var hitInfo = view.CalcHitInfo(new Point(e.X, e.Y));
+
+                if (hitInfo.InRow && hitInfo.Column != null)
+                {
+                    var row = view.GetRow(hitInfo.RowHandle) as CauHinhItem;
+                    if (row == null) return;
+
+                    // Định nghĩa ràng buộc
+                    Dictionary<string, string> dependencies = new Dictionary<string, string>
+            {
+                {"Tách dịch vụ", "Chỉ định khác 1"},
+                {"Tự động hao phí", "Cho phép hao phí"}
+            };
+
+                    // Kiểm tra nếu click vào item phụ thuộc
+                    if (dependencies.ContainsKey(row.Name))
+                    {
+                        string parentName = dependencies[row.Name];
+                        bool parentSelected = CauHinhSelected.Any(x => x.Name == parentName);
+
+                        if (!parentSelected)
+                        {
+                            // Chặn sự kiện click - không cho phép chọn
+                            ((Control)sender).Capture = false;
+
+                            // Có thể hiện thông báo nếu muốn
+                            // MessageBox.Show($"Bạn cần chọn '{parentName}' trước!");
+
+                            return;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void View_CustomDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                var row = view.GetRow(e.ListSourceRowIndex) as CauHinhItem;
+                if (row == null) return;
+
+                // Đảm bảo text luôn hiển thị cho cột Name
+                if (e.Column.FieldName == "Name" || e.Column.FieldName == "CAU_HINH_NAME")
+                {
+                    e.DisplayText = row.Name; // Force hiển thị tên
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void View_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                var row = view.GetRow(e.RowHandle) as CauHinhItem;
+                if (row == null) return;
+
+                // Định nghĩa các ràng buộc
+                Dictionary<string, string> dependencies = new Dictionary<string, string>
+        {
+            {"Tách dịch vụ", "Chỉ định khác 1"},
+            {"Tự động hao phí", "Cho phép hao phí"}
+        };
+
+                // Kiểm tra từng ràng buộc
+                foreach (var dependency in dependencies)
+                {
+                    string childName = dependency.Key;
+                    string parentName = dependency.Value;
+
+                    if (row.Name == childName)
+                    {
+                        bool parentChosen = CauHinhSelected.Any(x => x.Name == parentName);
+
+                        if (!parentChosen)
+                        {
+                            // Đổi màu toàn bộ row thành xám
+                            e.Appearance.ForeColor = System.Drawing.Color.Gray;
+                            e.Appearance.BackColor = System.Drawing.Color.WhiteSmoke;
+                            break; // Thoát sau khi xử lý
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboCauHinh_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                // Update text khi đóng popup
+                if (CauHinhSelected != null && CauHinhSelected.Count > 0)
+                {
+                    string displayText = string.Join(", ", CauHinhSelected.Select(s => s.Name));
+                    cboCauHinh.Text = displayText;
+                }
+                else
+                {
+                    cboCauHinh.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void SetCauHinhFromData(MOS.EFMODEL.DataModels.V_HIS_SERVICE data)
+        {
+            try
+            {
+                // Tạm thời disable events để tránh conflict
+                var gridCheck = cboCauHinh.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheck != null)
+                {
+                    gridCheck.SelectionChanged -= Event_Check_CauHinh; // Tạm bỏ event
+                }
+
+                var allItems = cboCauHinh.Properties.DataSource as List<CauHinhItem>;
+                var gridView = cboCauHinh.Properties.View as GridView;
+
+                if (allItems == null || gridCheck == null) return;
+
+                // Clear và add
+                CauHinhSelected.Clear();
+                gridCheck.ClearSelection(gridView);
+
+                // Add items
+                if (data.IS_KIDNEY == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "CHAY_THAN");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.IS_ANTIBIOTIC_RESISTANCE == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "KHANG_SINH_DO");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if(data.IS_DISALLOWANCE_NO_EXECUTE == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "CHAN_KHONG_THUC_HIEN");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+               
+                if (data.IS_MULTI_REQUEST == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "CHI_DINH_KHAC_1");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.IS_SPLIT_SERVICE_REQ == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "TACH_Y_LENH");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if(data.IS_SPLIT_SERVICE == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "TACH_DICH_VU");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if(data.IS_OUT_PARENT_FEE == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "CHI_PHI_NGOAI_GOI");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.IS_ALLOW_EXPEND == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "CHO_PHEP_HAO_PHI");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.IS_AUTO_EXPEND == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "TU_DONG_HAO_PHI");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.IS_OUT_OF_DRG == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "NGOAI_DINH_SUAT_DRG");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.IS_OUT_OF_MANAGEMENT == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "DICH_VU_QUAN_LY_NGOAI");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if(data.IS_OTHER_SOURCE_PAID == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "CO_NGUON_CHI_TRA_KHAC");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.IS_ENABLE_ASSIGN_PRICE == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "CHO_CHI_DINH_GIA");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.IS_NOT_SHOW_TRACKING == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "KHONG_HIEN_THI_TREN_TO_DIEU_TRI");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.MUST_BE_CONSULTED == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "BAT_BUOC_BIEN_BAN_HOI_CHAN");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.IS_BLOCK_DEPARTMENT_TRAN == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "CHAN_CHUYEN_KHOA");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.ALLOW_SIMULTANEITY == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "KHONG_CHAN_THUC_HIEN_CUNG_LUC");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.IS_NOT_REQUIRED_COMPLETE == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "KHONG_BAT_BUOC_HOAN_THANH");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.DO_NOT_USE_BHYT == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "KHONG_HUONG_BHYT");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.ALLOW_SEND_PACS == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "CHO_PHEP_GUI_SANG_PACS");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+
+                if (data.IS_MULTIPLE_EXECUTE == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.Code == "XU_LY_NHIEU_LAN");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        CauHinhSelected.Add(item);
+                    }
+                }
+                // Update UI manually
+                cboCauHinh.EditValue = CauHinhSelected;
+                cboCauHinh.Text = string.Join(", ", CauHinhSelected.Select(s => s.Name));
+                cauHinhCodes = string.Join(",", CauHinhSelected.Select(s => s.Code));
+
+                // Re-enable event
+                if (gridCheck != null)
+                {
+                    gridCheck.SelectionChanged += Event_Check_CauHinh; // Đăng ký lại event
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private bool IsItemSelected(string code)
+        {
+            return CauHinhSelected?.Any(x => x.Code == code) ?? false;
+        }
+        private void SetAllowSendPacsSelection(bool shouldSelect)
+        {
+            try
+            {
+                // Đảm bảo CauHinhSelected được khởi tạo
+                if (CauHinhSelected == null)
+                    CauHinhSelected = new List<CauHinhItem>();
+
+                var allItems = cboCauHinh.Properties.DataSource as List<CauHinhItem>;
+                if (allItems == null) return;
+
+                // Tìm item "CHO_PHEP_GUI_SANG_PACS"
+                var pacsItem = allItems.FirstOrDefault(x => x.Code == "CHO_PHEP_GUI_SANG_PACS");
+                if (pacsItem == null) return;
+
+                var gridCheck = cboCauHinh.Properties.Tag as GridCheckMarksSelection;
+                var gridView = cboCauHinh.Properties.View as GridView;
+
+                if (shouldSelect)
+                {
+                    // Tick checkbox - Add vào selection nếu chưa có
+                    if (!CauHinhSelected.Any(x => x.Code == "CHO_PHEP_GUI_SANG_PACS"))
+                    {
+                        CauHinhSelected.Add(pacsItem);
+                        if (gridCheck != null)
+                            gridCheck.Selection.Add(pacsItem);
+
+                        LogSystem.Debug("Selected CHO_PHEP_GUI_SANG_PACS");
+                    }
+                }
+                else
+                {
+                    // Untick checkbox - Remove khỏi selection nếu có
+                    var existingItem = CauHinhSelected.FirstOrDefault(x => x.Code == "CHO_PHEP_GUI_SANG_PACS");
+                    if (existingItem != null)
+                    {
+                        CauHinhSelected.Remove(existingItem);
+                        if (gridCheck != null)
+                            gridCheck.Selection.Remove(pacsItem);
+
+                        LogSystem.Debug("Deselected CHO_PHEP_GUI_SANG_PACS");
+                    }
+                }
+
+                // Update UI
+                UpdateComboBoxDisplay();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // Helper method để update display
+        private void UpdateComboBoxDisplay()
+        {
+            try
+            {
+                string text = string.Join(", ", CauHinhSelected.Select(s => s.Name));
+                string codes = string.Join(",", CauHinhSelected.Select(s => s.Code));
+
+                cboCauHinh.Text = text;
+                cauHinhCodes = codes;
+                cboCauHinh.EditValue = CauHinhSelected;
+
+                LogSystem.Debug("Updated display - Text: " + text);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void SetForPriceSelection(bool shouldSelect)
+        {
+            try
+            {
+                // Đảm bảo CauHinhSelected được khởi tạo
+                if (CauHinhSelected == null)
+                    CauHinhSelected = new List<CauHinhItem>();
+
+                var allItems = cboCauHinh.Properties.DataSource as List<CauHinhItem>;
+                if (allItems == null) return;
+
+                // Tìm item "CHO_CHI_DINH_GIA" (tương ứng với ForPrice)
+                var forPriceItem = allItems.FirstOrDefault(x => x.Code == "CHO_CHI_DINH_GIA");
+                if (forPriceItem == null) return;
+
+                var gridCheck = cboCauHinh.Properties.Tag as GridCheckMarksSelection;
+                var gridView = cboCauHinh.Properties.View as GridView;
+
+                if (shouldSelect)
+                {
+                    // Tick checkbox - Add vào selection nếu chưa có
+                    if (!CauHinhSelected.Any(x => x.Code == "CHO_CHI_DINH_GIA"))
+                    {
+                        CauHinhSelected.Add(forPriceItem);
+                        if (gridCheck != null)
+                            gridCheck.Selection.Add(forPriceItem);
+
+                        LogSystem.Debug("Selected CHO_CHI_DINH_GIA");
+                    }
+                }
+                else
+                {
+                    // Untick checkbox - Remove khỏi selection nếu có
+                    var existingItem = CauHinhSelected.FirstOrDefault(x => x.Code == "CHO_CHI_DINH_GIA");
+                    if (existingItem != null)
+                    {
+                        CauHinhSelected.Remove(existingItem);
+                        if (gridCheck != null)
+                            gridCheck.Selection.Remove(forPriceItem);
+
+                        LogSystem.Debug("Deselected CHO_CHI_DINH_GIA");
+                    }
+                }
+
+                // Update UI
+                UpdateComboBoxDisplay();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

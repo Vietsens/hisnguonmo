@@ -51,7 +51,7 @@ namespace HIS.Desktop.Plugins.Bordereau
 {
     public partial class frmBordereau : FormBase
     {
-
+       
         private void FillDataToButtonPrint()
         {
             try
@@ -61,6 +61,8 @@ namespace HIS.Desktop.Plugins.Bordereau
                 initData.PatientTypeAlter = currentHisPatientTypeAlters != null ? currentHisPatientTypeAlters.OrderByDescending(o => o.LOG_TIME).ThenByDescending(o => o.ID).FirstOrDefault() : null;
                 initData.UserNameReturnResult = cboLoginName.Text;
                 //initData.TreatmentFees = this.treatmentFees;
+                initData.FromDateReq = this._fromDateReq;
+                initData.ToDateReq = this._toDateReq;
                 ReloadMenuOption reloadMenu = new ReloadMenuOption();
                 reloadMenu.ReloadMenu = ReloadMenu;
                 reloadMenu.Type = ReloadMenuOption.MenuType.DYNAMIC;
@@ -110,8 +112,33 @@ namespace HIS.Desktop.Plugins.Bordereau
                 }
             }
         }
+        //public void ReloadMenuFilter(object data, long fromDateReq, long toDateReq)
+        //{
+        //    if (data != null)
+        //    {
+        //        if (data is List<MenuPrintADO>)
+        //        {
+        //            MenuPrintProcessor menuPrintProcessor = new MenuPrintProcessor();
+
+        //            var menuPrintInitADO = new MenuPrintInitADO(
+        //                data as List<MenuPrintADO>,
+        //                BackendDataWorker.Get<SAR_PRINT_TYPE>(false, true)
+        //            );
+
+        //            menuPrintInitADO.ControlContainer = pnlPrint;
+
+        //            menuPrintInitADO.FromDateReq = fromDateReq;   
+        //            menuPrintInitADO.ToDateReq = toDateReq;
+
+        //            var uc = menuPrintProcessor.Run(menuPrintInitADO);
+        //            if (uc == null)
+        //            {
+        //                LogSystem.Warn("ReloadMenuFilter failed...");
+        //            }
+        //        }
+        //    }
+        //}
+
 
     }
-
-
 }

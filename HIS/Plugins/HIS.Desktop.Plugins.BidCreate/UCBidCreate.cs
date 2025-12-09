@@ -1726,12 +1726,6 @@ namespace HIS.Desktop.Plugins.BidCreate
                     EnableLeftControl(true);
                     if (spinImpMoreRatio.EditValue == null)
                         spinImpMoreRatio.EditValue = 0;
-                    txtMaTT.Text = "";
-                    txtMaTT.Enabled = false;
-                    txtTenTT.Text = "";
-                    txtTenTT.Enabled = false;
-                    txtMaDT.Text = "";
-                    txtMaDT.Enabled = false;
                     cboDosageForm.Enabled = true;
                     cboInformationBid.SelectedIndex = -1;
                     ValidDosageForm();

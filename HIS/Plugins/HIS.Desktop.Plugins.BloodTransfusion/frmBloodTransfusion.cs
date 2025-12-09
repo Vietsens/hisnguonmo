@@ -140,6 +140,9 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
                     this.currentTreatment = GetTreatmentByCode(this.currentTreatmentCode, null, null);
                     LoadDataToGridExpMestBlood();
                     FillDataTreatmentToControl();
+
+                    this.currentTransfusionSums = GetTransfusionSum(null, this.currentTreatment);
+                    gridViewExpMestBlood.RefreshData();
                 }
 
 

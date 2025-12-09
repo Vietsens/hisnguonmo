@@ -58,6 +58,14 @@ namespace HIS.Desktop.Plugins.AllergyCard
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
@@ -89,6 +97,8 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.gridViewTheDiUng = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Btn_Edit_Enable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gridColumnDelete = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Btn_Delete_Enable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Btn_Print_Enable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -99,6 +109,7 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Btn_Edit_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.Btn_Delete_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -129,8 +140,10 @@ namespace HIS.Desktop.Plugins.AllergyCard
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTheDiUng)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTheDiUng)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Edit_Enable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Btn_Delete_Enable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Print_Enable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Edit_Disable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Btn_Delete_Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
@@ -154,10 +167,11 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.layoutControl1.Controls.Add(this.gridControlTheDiUng);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(166, 131, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1250, 445);
+            this.layoutControl1.Size = new System.Drawing.Size(1667, 548);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -165,9 +179,11 @@ namespace HIS.Desktop.Plugins.AllergyCard
             // 
             this.groupBox1.Controls.Add(this.layoutControl2);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.groupBox1.Location = new System.Drawing.Point(2, 2);
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1246, 84);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Size = new System.Drawing.Size(1661, 102);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Thông tin bệnh nhân";
@@ -180,55 +196,61 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.layoutControl2.Controls.Add(this.lblTenBenhNhan);
             this.layoutControl2.Controls.Add(this.lblPatientCode);
             this.layoutControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl2.Location = new System.Drawing.Point(3, 17);
+            this.layoutControl2.Location = new System.Drawing.Point(4, 22);
+            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.layoutControlGroup2;
-            this.layoutControl2.Size = new System.Drawing.Size(1240, 64);
+            this.layoutControl2.Size = new System.Drawing.Size(1653, 76);
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // lblDiaChi
             // 
             this.lblDiaChi.Font = new System.Drawing.Font("Tahoma", 9.25F);
-            this.lblDiaChi.Location = new System.Drawing.Point(997, 2);
+            this.lblDiaChi.Location = new System.Drawing.Point(1298, 3);
+            this.lblDiaChi.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDiaChi.Name = "lblDiaChi";
-            this.lblDiaChi.Size = new System.Drawing.Size(241, 60);
+            this.lblDiaChi.Size = new System.Drawing.Size(352, 70);
             this.lblDiaChi.TabIndex = 8;
             this.lblDiaChi.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblNgaySinh
             // 
             this.lblNgaySinh.Font = new System.Drawing.Font("Tahoma", 9.25F);
-            this.lblNgaySinh.Location = new System.Drawing.Point(793, 2);
+            this.lblNgaySinh.Location = new System.Drawing.Point(1026, 3);
+            this.lblNgaySinh.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNgaySinh.Name = "lblNgaySinh";
-            this.lblNgaySinh.Size = new System.Drawing.Size(105, 60);
+            this.lblNgaySinh.Size = new System.Drawing.Size(171, 70);
             this.lblNgaySinh.TabIndex = 7;
             this.lblNgaySinh.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblGioiTinh
             // 
             this.lblGioiTinh.Font = new System.Drawing.Font("Tahoma", 9.25F);
-            this.lblGioiTinh.Location = new System.Drawing.Point(637, 2);
+            this.lblGioiTinh.Location = new System.Drawing.Point(818, 3);
+            this.lblGioiTinh.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblGioiTinh.Name = "lblGioiTinh";
-            this.lblGioiTinh.Size = new System.Drawing.Size(57, 60);
+            this.lblGioiTinh.Size = new System.Drawing.Size(107, 70);
             this.lblGioiTinh.TabIndex = 6;
             this.lblGioiTinh.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblTenBenhNhan
             // 
             this.lblTenBenhNhan.Font = new System.Drawing.Font("Tahoma", 9.25F);
-            this.lblTenBenhNhan.Location = new System.Drawing.Point(321, 2);
+            this.lblTenBenhNhan.Location = new System.Drawing.Point(397, 3);
+            this.lblTenBenhNhan.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTenBenhNhan.Name = "lblTenBenhNhan";
-            this.lblTenBenhNhan.Size = new System.Drawing.Size(217, 60);
+            this.lblTenBenhNhan.Size = new System.Drawing.Size(320, 70);
             this.lblTenBenhNhan.TabIndex = 5;
             this.lblTenBenhNhan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblPatientCode
             // 
             this.lblPatientCode.Font = new System.Drawing.Font("Tahoma", 9.25F);
-            this.lblPatientCode.Location = new System.Drawing.Point(97, 2);
+            this.lblPatientCode.Location = new System.Drawing.Point(98, 3);
+            this.lblPatientCode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPatientCode.Name = "lblPatientCode";
-            this.lblPatientCode.Size = new System.Drawing.Size(125, 60);
+            this.lblPatientCode.Size = new System.Drawing.Size(198, 70);
             this.lblPatientCode.TabIndex = 4;
             this.lblPatientCode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -245,7 +267,7 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(1240, 64);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(1653, 76);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem8
@@ -255,7 +277,7 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.layoutControlItem8.Control = this.lblPatientCode;
             this.layoutControlItem8.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(224, 64);
+            this.layoutControlItem8.Size = new System.Drawing.Size(299, 76);
             this.layoutControlItem8.Text = "Mã bệnh nhân:";
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(90, 20);
@@ -266,9 +288,9 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.layoutControlItem9.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem9.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem9.Control = this.lblTenBenhNhan;
-            this.layoutControlItem9.Location = new System.Drawing.Point(224, 0);
+            this.layoutControlItem9.Location = new System.Drawing.Point(299, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(316, 64);
+            this.layoutControlItem9.Size = new System.Drawing.Size(421, 76);
             this.layoutControlItem9.Text = "Tên bệnh nhân:";
             this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem9.TextSize = new System.Drawing.Size(90, 20);
@@ -279,9 +301,9 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.layoutControlItem10.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem10.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem10.Control = this.lblGioiTinh;
-            this.layoutControlItem10.Location = new System.Drawing.Point(540, 0);
+            this.layoutControlItem10.Location = new System.Drawing.Point(720, 0);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(156, 64);
+            this.layoutControlItem10.Size = new System.Drawing.Size(208, 76);
             this.layoutControlItem10.Text = "Giới tính:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem10.TextSize = new System.Drawing.Size(90, 20);
@@ -292,9 +314,9 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem11.Control = this.lblNgaySinh;
-            this.layoutControlItem11.Location = new System.Drawing.Point(696, 0);
+            this.layoutControlItem11.Location = new System.Drawing.Point(928, 0);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(204, 64);
+            this.layoutControlItem11.Size = new System.Drawing.Size(272, 76);
             this.layoutControlItem11.Text = "Ngày sinh:";
             this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem11.TextSize = new System.Drawing.Size(90, 20);
@@ -305,9 +327,9 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.layoutControlItem12.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem12.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem12.Control = this.lblDiaChi;
-            this.layoutControlItem12.Location = new System.Drawing.Point(900, 0);
+            this.layoutControlItem12.Location = new System.Drawing.Point(1200, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(340, 64);
+            this.layoutControlItem12.Size = new System.Drawing.Size(453, 76);
             this.layoutControlItem12.Text = "Địa chỉ:";
             this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem12.TextSize = new System.Drawing.Size(90, 20);
@@ -315,44 +337,48 @@ namespace HIS.Desktop.Plugins.AllergyCard
             // 
             // txtKeyWord
             // 
-            this.txtKeyWord.Location = new System.Drawing.Point(231, 90);
+            this.txtKeyWord.Location = new System.Drawing.Point(308, 111);
+            this.txtKeyWord.Margin = new System.Windows.Forms.Padding(4);
             this.txtKeyWord.Name = "txtKeyWord";
             this.txtKeyWord.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtKeyWord.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtKeyWord.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtKeyWord.Size = new System.Drawing.Size(311, 20);
+            this.txtKeyWord.Size = new System.Drawing.Size(414, 22);
             this.txtKeyWord.StyleController = this.layoutControl1;
             this.txtKeyWord.TabIndex = 17;
             this.txtKeyWord.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtKeyWord_KeyUp);
             // 
             // txtTreatmentCode
             // 
-            this.txtTreatmentCode.Location = new System.Drawing.Point(2, 90);
+            this.txtTreatmentCode.Location = new System.Drawing.Point(3, 111);
+            this.txtTreatmentCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtTreatmentCode.Name = "txtTreatmentCode";
             this.txtTreatmentCode.Properties.NullValuePrompt = "Mã điều trị";
             this.txtTreatmentCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtTreatmentCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtTreatmentCode.Size = new System.Drawing.Size(225, 20);
+            this.txtTreatmentCode.Size = new System.Drawing.Size(299, 22);
             this.txtTreatmentCode.StyleController = this.layoutControl1;
             this.txtTreatmentCode.TabIndex = 16;
             this.txtTreatmentCode.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtTreatmentCode_KeyUp);
             // 
             // toggleSwitchGomNhom
             // 
-            this.toggleSwitchGomNhom.Location = new System.Drawing.Point(1108, 88);
+            this.toggleSwitchGomNhom.Location = new System.Drawing.Point(1478, 108);
+            this.toggleSwitchGomNhom.Margin = new System.Windows.Forms.Padding(4);
             this.toggleSwitchGomNhom.Name = "toggleSwitchGomNhom";
             this.toggleSwitchGomNhom.Properties.OffText = "Gom nhóm";
             this.toggleSwitchGomNhom.Properties.OnText = "Gom nhóm";
-            this.toggleSwitchGomNhom.Size = new System.Drawing.Size(142, 24);
+            this.toggleSwitchGomNhom.Size = new System.Drawing.Size(189, 26);
             this.toggleSwitchGomNhom.StyleController = this.layoutControl1;
             this.toggleSwitchGomNhom.TabIndex = 15;
             this.toggleSwitchGomNhom.Toggled += new System.EventHandler(this.toggleSwitchGomNhom_Toggled);
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(1135, 421);
+            this.btnCreate.Location = new System.Drawing.Point(1514, 518);
+            this.btnCreate.Margin = new System.Windows.Forms.Padding(4);
             this.btnCreate.Name = "btnCreate";
-            this.btnCreate.Size = new System.Drawing.Size(113, 22);
+            this.btnCreate.Size = new System.Drawing.Size(150, 27);
             this.btnCreate.StyleController = this.layoutControl1;
             this.btnCreate.TabIndex = 12;
             this.btnCreate.Text = "Tạo thẻ";
@@ -360,12 +386,14 @@ namespace HIS.Desktop.Plugins.AllergyCard
             // 
             // gridControlAllergenic
             // 
-            this.gridControlAllergenic.Location = new System.Drawing.Point(546, 114);
+            this.gridControlAllergenic.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
+            this.gridControlAllergenic.Location = new System.Drawing.Point(728, 139);
             this.gridControlAllergenic.MainView = this.gridViewAllergenic;
+            this.gridControlAllergenic.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlAllergenic.Name = "gridControlAllergenic";
             this.gridControlAllergenic.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.Res_Check});
-            this.gridControlAllergenic.Size = new System.Drawing.Size(702, 303);
+            this.gridControlAllergenic.Size = new System.Drawing.Size(936, 373);
             this.gridControlAllergenic.TabIndex = 7;
             this.gridControlAllergenic.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewAllergenic});
@@ -460,14 +488,18 @@ namespace HIS.Desktop.Plugins.AllergyCard
             // 
             // gridControlTheDiUng
             // 
-            this.gridControlTheDiUng.Location = new System.Drawing.Point(2, 114);
+            this.gridControlTheDiUng.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
+            this.gridControlTheDiUng.Location = new System.Drawing.Point(3, 139);
             this.gridControlTheDiUng.MainView = this.gridViewTheDiUng;
+            this.gridControlTheDiUng.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlTheDiUng.Name = "gridControlTheDiUng";
             this.gridControlTheDiUng.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.Btn_Edit_Enable,
             this.Btn_Print_Enable,
-            this.Btn_Edit_Disable});
-            this.gridControlTheDiUng.Size = new System.Drawing.Size(540, 303);
+            this.Btn_Edit_Disable,
+            this.Btn_Delete_Enable,
+            this.Btn_Delete_Disable});
+            this.gridControlTheDiUng.Size = new System.Drawing.Size(719, 373);
             this.gridControlTheDiUng.TabIndex = 6;
             this.gridControlTheDiUng.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewTheDiUng});
@@ -476,6 +508,7 @@ namespace HIS.Desktop.Plugins.AllergyCard
             // 
             this.gridViewTheDiUng.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn1,
+            this.gridColumnDelete,
             this.gridColumn5,
             this.gridColumn2,
             this.gridColumn3,
@@ -507,7 +540,7 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.gridColumn1.ToolTip = "Sửa";
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 1;
-            this.gridColumn1.Width = 20;
+            this.gridColumn1.Width = 25;
             // 
             // Btn_Edit_Enable
             // 
@@ -516,6 +549,26 @@ namespace HIS.Desktop.Plugins.AllergyCard
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Edit_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Sửa", null, null, true)});
             this.Btn_Edit_Enable.Name = "Btn_Edit_Enable";
             this.Btn_Edit_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // gridColumnDelete
+            // 
+            this.gridColumnDelete.Caption = "Xóa";
+            this.gridColumnDelete.ColumnEdit = this.Btn_Delete_Enable;
+            this.gridColumnDelete.FieldName = "Delete";
+            this.gridColumnDelete.Name = "gridColumnDelete";
+            this.gridColumnDelete.OptionsColumn.ShowCaption = false;
+            this.gridColumnDelete.ToolTip = "Xóa";
+            this.gridColumnDelete.Visible = true;
+            this.gridColumnDelete.VisibleIndex = 2;
+            this.gridColumnDelete.Width = 20;
+            // 
+            // Btn_Delete_Enable
+            // 
+            this.Btn_Delete_Enable.AutoHeight = false;
+            this.Btn_Delete_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.AllergyCard.Properties.Resources.delete_16x16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Xóa", null, null, true)});
+            this.Btn_Delete_Enable.Name = "Btn_Delete_Enable";
+            this.Btn_Delete_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // gridColumn5
             // 
@@ -526,14 +579,14 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.gridColumn5.OptionsColumn.ShowCaption = false;
             this.gridColumn5.ToolTip = "In";
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 2;
-            this.gridColumn5.Width = 20;
+            this.gridColumn5.VisibleIndex = 3;
+            this.gridColumn5.Width = 28;
             // 
             // Btn_Print_Enable
             // 
             this.Btn_Print_Enable.AutoHeight = false;
             this.Btn_Print_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Print_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "In", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Print_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "In", null, null, true)});
             this.Btn_Print_Enable.Name = "Btn_Print_Enable";
             this.Btn_Print_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -546,8 +599,8 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.gridColumn2.ToolTip = "Ngày ban hành";
             this.gridColumn2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 3;
-            this.gridColumn2.Width = 114;
+            this.gridColumn2.VisibleIndex = 4;
+            this.gridColumn2.Width = 164;
             // 
             // gridColumn3
             // 
@@ -558,8 +611,8 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.gridColumn3.ToolTip = "Bác sĩ chẩn đoán";
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 4;
-            this.gridColumn3.Width = 184;
+            this.gridColumn3.VisibleIndex = 5;
+            this.gridColumn3.Width = 266;
             // 
             // gridColumn4
             // 
@@ -569,8 +622,8 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.ToolTip = "SĐT";
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 5;
-            this.gridColumn4.Width = 124;
+            this.gridColumn4.VisibleIndex = 6;
+            this.gridColumn4.Width = 184;
             // 
             // gridColumn10
             // 
@@ -609,9 +662,17 @@ namespace HIS.Desktop.Plugins.AllergyCard
             // 
             this.Btn_Edit_Disable.AutoHeight = false;
             this.Btn_Edit_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Edit_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Sửa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_Edit_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Sửa", null, null, true)});
             this.Btn_Edit_Disable.Name = "Btn_Edit_Disable";
             this.Btn_Edit_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // Btn_Delete_Disable
+            // 
+            this.Btn_Delete_Disable.AutoHeight = false;
+            this.Btn_Delete_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.AllergyCard.Properties.Resources.delete_16x16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Xóa", null, null, true)});
+            this.Btn_Delete_Disable.Name = "Btn_Delete_Disable";
+            this.Btn_Delete_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // layoutControlGroup1
             // 
@@ -630,68 +691,68 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1250, 445);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1667, 548);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.gridControlTheDiUng;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 112);
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 136);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(544, 307);
+            this.layoutControlItem3.Size = new System.Drawing.Size(725, 379);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.gridControlAllergenic;
-            this.layoutControlItem4.Location = new System.Drawing.Point(544, 112);
+            this.layoutControlItem4.Location = new System.Drawing.Point(725, 136);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(706, 307);
+            this.layoutControlItem4.Size = new System.Drawing.Size(942, 379);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnCreate;
-            this.layoutControlItem7.Location = new System.Drawing.Point(1133, 419);
+            this.layoutControlItem7.Location = new System.Drawing.Point(1511, 515);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(117, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(156, 33);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 419);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 515);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(1133, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(1511, 33);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.toggleSwitchGomNhom;
-            this.layoutControlItem2.Location = new System.Drawing.Point(1108, 88);
+            this.layoutControlItem2.Location = new System.Drawing.Point(1478, 108);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem2.Size = new System.Drawing.Size(142, 24);
+            this.layoutControlItem2.Size = new System.Drawing.Size(189, 28);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(544, 88);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(725, 108);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(564, 24);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(753, 28);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.txtTreatmentCode;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 88);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 108);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(229, 24);
+            this.layoutControlItem5.Size = new System.Drawing.Size(305, 28);
             this.layoutControlItem5.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextToControlDistance = 0;
@@ -700,9 +761,9 @@ namespace HIS.Desktop.Plugins.AllergyCard
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.txtKeyWord;
-            this.layoutControlItem6.Location = new System.Drawing.Point(229, 88);
+            this.layoutControlItem6.Location = new System.Drawing.Point(305, 108);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(315, 24);
+            this.layoutControlItem6.Size = new System.Drawing.Size(420, 28);
             this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextToControlDistance = 0;
@@ -713,17 +774,18 @@ namespace HIS.Desktop.Plugins.AllergyCard
             this.layoutControlItem1.Control = this.groupBox1;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1250, 88);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1667, 108);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // UC_AllergyCard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl1);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "UC_AllergyCard";
-            this.Size = new System.Drawing.Size(1250, 445);
+            this.Size = new System.Drawing.Size(1667, 548);
             this.Load += new System.EventHandler(this.UC_AllergyCard_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
@@ -745,8 +807,10 @@ namespace HIS.Desktop.Plugins.AllergyCard
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTheDiUng)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTheDiUng)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Edit_Enable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Btn_Delete_Enable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Print_Enable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Edit_Disable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Btn_Delete_Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
@@ -814,5 +878,8 @@ namespace HIS.Desktop.Plugins.AllergyCard
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnDelete;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit Btn_Delete_Enable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit Btn_Delete_Disable;
     }
 }

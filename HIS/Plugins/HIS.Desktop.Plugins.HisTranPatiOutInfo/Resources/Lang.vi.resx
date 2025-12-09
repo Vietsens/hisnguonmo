@@ -285,4 +285,7 @@
   <data name="frmHisTranPatiOut.txtSurgeryName.Properties.NullText" xml:space="preserve">
     <value>Nhấn F1 để chọn dịch vụ</value>
   </data>
+  <data name="frmHisTranPatiOut.txtSurgeryName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhấn F1 để chọn dịch vụ</value>
+  </data>
 </root>

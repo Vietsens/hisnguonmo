@@ -115,8 +115,12 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 }
 
                 //cao huyết áp: I10-I15, khi lưu bắt buộc phải có thông tin huyết áp
-                if (Utilities.IsBATHA(totalIcds) && (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue))
+                //if (Utilities.IsBATHA(totalIcds) && (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue))
+
+                if (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue)
                 {
+                    //cổng bắt lỗi nên check huyết áp với cả 2 bệnh
+                    //{"validate":{"ncdData.0.DU_LIEU.DTD.HA_TAM_THU":"Path `HA_TAM_THU` is required.","ncdData.0.DU_LIEU.DTD.HA_TAM_TRUONG":"Path `HA_TAM_TRUONG` is required."}}
                     message += "Bệnh nhân thiếu thông tin huyết áp. ";
                 }
 
@@ -188,10 +192,10 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Info("SendDataWithoutCheck");
+
                 if (Configs.CheckConnect())
                 {
-                    Inventec.Common.Logging.LogSystem.Info("SendDataWithoutCheck");
-
                     List<string> totalIcds = new List<string>();
                     if (!String.IsNullOrWhiteSpace(data.ICD_CODE))
                     {
@@ -224,6 +228,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                     }
 
                     string thuoc = "";
+                    List<long> numberUseDay = new List<long>();
                     CommonParam medicineParam = new CommonParam();
                     if (medicine != null && medicine.Count > 0)
                     {
@@ -255,6 +260,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                                     if (NUMBER_USE_DAY > 0)
                                     {
                                         sb.AppendFormat(" - {0} ngày", NUMBER_USE_DAY);
+                                        numberUseDay.Add(NUMBER_USE_DAY);
                                     }
                                 }
                                 catch (Exception ex)
@@ -275,6 +281,10 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                         long startTimeMin = examServiceReq.Min(m => m.START_TIME ?? 99999999999999);
                         ncdData.DU_LIEU.THA.NGAY_KHAM = DateTime.ParseExact(startTimeMin + "", "yyyyMMddHHmmss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                         ncdData.DU_LIEU.THA.THUOC = thuoc;
+                        if (numberUseDay != null && numberUseDay.Count > 0)
+                        {
+                            ncdData.DU_LIEU.THA.SO_NGAY_NHAN_THUOC = numberUseDay.Max();
+                        }
                         if (dhst != null)
                         {
                             ncdData.DU_LIEU.THA.HA_TAM_THU = dhst.BLOOD_PRESSURE_MAX + "";
@@ -290,6 +300,10 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                         long startTimeMin = examServiceReq.Min(m => m.START_TIME ?? 99999999999999);
                         ncdData.DU_LIEU.DTD.NGAY_KHAM = DateTime.ParseExact(startTimeMin + "", "yyyyMMddHHmmss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                         ncdData.DU_LIEU.DTD.THUOC = thuoc;
+                        if (numberUseDay != null && numberUseDay.Count > 0)
+                        {
+                            ncdData.DU_LIEU.DTD.SO_NGAY_NHAN_THUOC = numberUseDay.Max();
+                        }
                         if (dhst != null)
                         {
                             ncdData.DU_LIEU.DTD.HA_TAM_THU = dhst.BLOOD_PRESSURE_MAX + "";
@@ -374,20 +388,23 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 if (HIS_DHSTs != null && HIS_DHSTs.Count > 0)
                 {
                     dhst = HIS_DHSTs.Where(o => o.BLOOD_PRESSURE_MAX.HasValue && o.BLOOD_PRESSURE_MIN.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).FirstOrDefault();
-                    if (!dhst.WEIGHT.HasValue)
+                    if (dhst != null)
                     {
-                        var weight = HIS_DHSTs.Where(o => o.WEIGHT.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).ToList();
-                        if (weight != null && weight.Count > 0)
+                        if (!dhst.WEIGHT.HasValue)
                         {
-                            dhst.WEIGHT = weight.FirstOrDefault().WEIGHT;
+                            var weight = HIS_DHSTs.Where(o => o.WEIGHT.HasValue).ToList();
+                            if (weight != null && weight.Count > 0)
+                            {
+                                dhst.WEIGHT = weight.OrderByDescending(o => o.EXECUTE_TIME ?? 0).FirstOrDefault().WEIGHT;
+                            }
                         }
-                    }
-                    if (!dhst.HEIGHT.HasValue)
-                    {
-                        var height = HIS_DHSTs.Where(o => o.HEIGHT.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).ToList();
-                        if (height != null && height.Count > 0)
+                        if (!dhst.HEIGHT.HasValue)
                         {
-                            dhst.HEIGHT = height.FirstOrDefault().HEIGHT;
+                            var height = HIS_DHSTs.Where(o => o.HEIGHT.HasValue).ToList();
+                            if (height != null && height.Count > 0)
+                            {
+                                dhst.HEIGHT = height.OrderByDescending(o => o.EXECUTE_TIME ?? 0).FirstOrDefault().HEIGHT;
+                            }
                         }
                     }
                 }

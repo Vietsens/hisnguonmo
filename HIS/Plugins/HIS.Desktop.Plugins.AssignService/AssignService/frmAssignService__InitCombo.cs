@@ -35,6 +35,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
 {
@@ -759,10 +760,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     if (serviceGroups != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_SERVICE_GROUP), serviceGroups, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                 }
 
-                serviceGroups = (serviceGroups != null && serviceGroups.Count > 0) ?
-                    serviceGroups.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE &&
-                        ((o.IS_PUBLIC ?? -1) == 1 || o.CREATOR.ToLower() == loginName.ToLower()))
-                        .ToList()
+                serviceGroups = (serviceGroups != null && serviceGroups.Count > 0)
+                ? serviceGroups.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    && ((o.IS_PUBLIC ?? -1) == 1
+                        || (!string.IsNullOrEmpty(o.CREATOR)
+                            && !string.IsNullOrEmpty(loginName)
+                            && o.CREATOR.Equals(loginName, StringComparison.OrdinalIgnoreCase)))).ToList()
                 : serviceGroups;
 
                 // order tăng dần theo num_order
@@ -897,13 +900,41 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
         private async void PackageAutoRefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            await RefreshPackageCounterData();
+            try
+            {
+                // Kiểm tra form có đang bị dispose không
+                if (this.IsDisposed || this.Disposing)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Form is disposing/disposed. Stopping timer.");
+                    StopPackageAutoRefresh();
+                    return;
+                }
+
+                // Kiểm tra timer còn tồn tại không
+                if (packageAutoRefreshTimer == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Timer is null. Stopping execution.");
+                    return;
+                }
+
+                await RefreshPackageCounterData();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error("Error in PackageAutoRefreshTimer_Elapsed:", ex);
+            }
         }
 
         private async Task RefreshPackageCounterData()
         {
             try
             {
+                // Kiểm tra form trước khi refresh
+                if (this.IsDisposed || this.Disposing)
+                {
+                    return;
+                }
+
                 Inventec.Common.Logging.LogSystem.Debug("RefreshPackageCounterData - Start");
 
                 CommonParam paramCommon = new CommonParam();
@@ -916,6 +947,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         ApiConsumers.MosConsumer,
                         filter,
                         paramCommon);
+
+                // Kiểm tra lại sau khi await
+                if (this.IsDisposed || this.Disposing)
+                {
+                    return;
+                }
 
                 if (sdos != null && sdos.Count > 0)
                 {
@@ -930,26 +967,28 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
 
                     // Cập nhật ComboBox trên UI thread
-                    if (this.InvokeRequired)
+                    if (!this.IsDisposed && !this.Disposing)
                     {
-                        this.Invoke(new Action(() => UpdatePackageComboBoxUI()));
-                    }
-                    else
-                    {
-                        UpdatePackageComboBoxUI();
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => UpdatePackageComboBoxUI()));
+                        }
+                        else
+                        {
+                            UpdatePackageComboBoxUI();
+                        }
                     }
                 }
                 else
                 {
-                    Inventec.Common.Logging.LogSystem.Warn(
-                        "RefreshPackageCounterData - No data returned from API");
+                    Inventec.Common.Logging.LogSystem.Warn("RefreshPackageCounterData - No data returned from API");
                 }
 
                 Inventec.Common.Logging.LogSystem.Debug("RefreshPackageCounterData - End");
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error("Error in RefreshPackageCounterData:", ex);
             }
         }
 
@@ -957,6 +996,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
+                // Kiểm tra form trước khi update UI
+                if (this.IsDisposed || this.Disposing || cboPackage == null || cboPackage.IsDisposed)
+                {
+                    return;
+                }
+
                 List<HisPackageCounterSDO> data = null;
                 lock (packageLockObject)
                 {
@@ -968,11 +1013,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     cboPackage.Properties.DataSource = null; // Clear trước
                     cboPackage.Properties.DataSource = data;
                     cboPackage.Properties.View.RefreshData();
+
+                    Inventec.Common.Logging.LogSystem.Debug($"UpdatePackageComboBoxUI - Updated {data.Count} items");
                 }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error("Error in UpdatePackageComboBoxUI:", ex);
             }
         }
 
@@ -1094,6 +1141,24 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 e.Appearance.ForeColor = Color.Black;
             }
         }
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("OnFormClosing - Start cleanup");
+
+                // Dừng timer trước khi đóng form
+                StopPackageAutoRefresh();
+
+                base.OnFormClosing(e);
+
+                Inventec.Common.Logging.LogSystem.Debug("OnFormClosing - Cleanup completed");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private void StopPackageAutoRefresh()
         {
@@ -1101,16 +1166,30 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             {
                 if (packageAutoRefreshTimer != null)
                 {
+                    Inventec.Common.Logging.LogSystem.Info("Stopping package auto refresh timer...");
+
+                    // Bước 1: Dừng timer
                     packageAutoRefreshTimer.Stop();
+
+                    // Bước 2: Hủy đăng ký event handler
                     packageAutoRefreshTimer.Elapsed -= PackageAutoRefreshTimer_Elapsed;
+
+                    // Bước 3: Dispose timer để giải phóng tài nguyên
                     packageAutoRefreshTimer.Dispose();
+
+                    // Bước 4: Set null để tránh memory leak
                     packageAutoRefreshTimer = null;
-                    Inventec.Common.Logging.LogSystem.Info("Package auto refresh timer stopped");
+
+                    Inventec.Common.Logging.LogSystem.Info("Package auto refresh timer stopped and disposed successfully");
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Info("Package auto refresh timer is already null");
                 }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error("Error stopping package auto refresh timer:", ex);
             }
         }
 

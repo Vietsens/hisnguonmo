@@ -86,5 +86,6 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
         internal const string PRINT_TYPE_CODE___YEU_CAU_THANH_TOAN = "Mps000446";
 
         internal const string PRINT_TYPE_CODE___BANG_KE_6556_THEO_LOAI_DICH_VU = "Mps000463";
+        internal const string PRINT_TYPE_CODE___BANG_KE_CHI_PHI_LOC = "Mps000504";
     }
 }

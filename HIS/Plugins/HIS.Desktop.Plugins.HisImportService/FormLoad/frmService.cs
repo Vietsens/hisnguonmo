@@ -549,7 +549,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
 
                     if (!string.IsNullOrEmpty(item.SERVICE_CODE))
                     {
-                        if (item.SERVICE_CODE.Length > 25)
+                        if (Encoding.UTF8.GetByteCount(item.SERVICE_CODE.Trim()) > 100)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Mã dịch vụ");
                         }
@@ -567,7 +567,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
 
                     if (!string.IsNullOrEmpty(item.SERVICE_NAME))
                     {
-                        if (Encoding.UTF8.GetByteCount(item.SERVICE_NAME.Trim()) > 1500)
+                        if (Encoding.UTF8.GetByteCount(item.SERVICE_NAME.Trim()) > 3000)
                         {
                             error += string.Format(Message.MessageImport.Maxlength, "Tên dịch vụ");
                         }
