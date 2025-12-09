@@ -1726,17 +1726,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                     EnableLeftControl(true);
                     if (spinImpMoreRatio.EditValue == null)
                         spinImpMoreRatio.EditValue = 0;
-                    txtMaTT.Text = "";
-                    txtMaTT.Enabled = false;
-                    txtTenTT.Text = "";
-                    txtTenTT.Enabled = false;
-                    txtMaDT.Text = "";
-                    txtMaDT.Enabled = false;
                     cboDosageForm.Enabled = true;
                     cboInformationBid.SelectedIndex = -1;
-                    txtMaTT.Enabled = true;
-                    txtTenTT.Enabled = true;
-                    txtMaDT.Enabled = true;
                     ValidDosageForm();
                     //layoutControlItem21.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 
@@ -1764,9 +1755,6 @@ namespace HIS.Desktop.Plugins.BidCreate
                     cboMediUserForm.EditValue = null;
                     cboDosageForm.EditValue = null;
                     cboDosageForm.Enabled = false;
-                    txtMaTT.Enabled = false;
-                    txtTenTT.Enabled = false;
-                    txtMaDT.Enabled = false;
                     //layoutControlItem21.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     if (tabMaterial)
                     {
@@ -1802,9 +1790,6 @@ namespace HIS.Desktop.Plugins.BidCreate
                     cboMediUserForm.EditValue = null;
                     cboDosageForm.EditValue = null;
                     cboDosageForm.Enabled = false;
-                    txtMaTT.Enabled = false;
-                    txtTenTT.Enabled = false;
-                    txtMaDT.Enabled = false;
                     //layoutControlItem21.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     if (tabBlood)
                     {

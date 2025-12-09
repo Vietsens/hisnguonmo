@@ -53,7 +53,9 @@ namespace HIS.Desktop.Plugins.BidCreate.ADO
         public string BID_MATERIAL_TYPE_NAME { get; set; }
         public string JOIN_BID_MATERIAL_TYPE_CODE { get; set; }
 
-
+        public string BID_MEDICINE_TYPE_CODE { get; set; }
+        public string BID_MEDICINE_TYPE_NAME { get; set; }
+        public string JOIN_BID_MEDICINE_TYPE_CODE { get; set; }
         public string MATERIAL_TYPE_MAP_CODE { get; set; }
 
         public List<string> ErrorDescriptions = new List<string>();
