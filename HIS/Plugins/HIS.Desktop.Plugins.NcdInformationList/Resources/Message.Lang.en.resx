@@ -117,27 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="Btn_ErrorLine.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
-        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAALdEVYdFRpdGxlAEluZm87bRIthgAAAJtJREFUOE+t
-        k8ENgCAMRRnFabx1qZ51CpfoBq5j4gCYRzSBRiKKh5dAf/tDCwRRC45R1GZRW0VtO2FNDK3IzzeDqE2i
-        totarIBGDrmFAYHlpqAGucnkMsDVJz1BTTKgr9tjxxgD+PgJNSMiw/FiiwHMiEzYC62sGHBNXkg0nGD7
-        xaDaQoNBaqF7iN3XCF0PCbqf8mXy+TPlvPrOB0ynVNG/VjQvAAAAAElFTkSuQmCC
-</value>
+  <data name="ChuaDongBo" xml:space="preserve">
+    <value>Not in sync</value>
   </data>
-  <data name="Btn_Delete.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
-        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAApdEVYdFRpdGxlAFJlbW92ZTtEZWxldGU7QmFycztS
-        aWJib247U3RhbmRhcmQ7Y1ZIMAAAAKdJREFUOE+Nk0sKwlAMRbu4QEe6iWxA/CBUrNvMShRHTy68wGua
-        j4MLIbnn0A7e1FqbhOkgTAvmfyJMDzCYFf4KUxOmpy3bCNOrd8Ecsbj1hSaUDLDmrId7JXHgK/ZjIZRE
-        8EYQSNYM3gkCSQi7gkSygzOB/WxktT1XEMChpIIvzu9sJCk83EJJCVcSHPAwUjiRLFjOwvSuYEfyAatL
-        SE62HKU/wBnzD9JAnMxlnre0AAAAAElFTkSuQmCC
-</value>
+  <data name="KhongLayDuocThongTinChungThuHoacChungThuKhongHopLe" xml:space="preserve">
+    <value>Unable to get certificate information or invalid certificate</value>
   </data>
-  <metadata name="barManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="TatCa" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="ThanhCong" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="ThatBai" xml:space="preserve">
+    <value>Failure</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="TiepTucHSM" xml:space="preserve">
+    <value>The certificate information is not obtained or the certificate is invalid.</value>
+  </data>
 </root>

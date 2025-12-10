@@ -71,5 +71,16 @@ namespace MPS.Processor.Mps000007
         internal const string SERVICE_REQ__NOTE = "SERVICE_REQ__NOTE";
         internal const string PATIENT__NOTE = "PATIENT__NOTE";
 
+        internal const string SICK_HOUR = "SICK_HOUR";
+        internal const string IS_HISTORY_RELATED = "IS_HISTORY_RELATED";
+        internal const string IS_HISTORY_FAMILY_RELATED = "IS_HISTORY_FAMILY_RELATED";
+        internal const string IS_HISTORY_ALLERGY_RELATED = "IS_HISTORY_ALLERGY_RELATED";
+        internal const string HISTORY_ALLERGY = "HISTORY_ALLERGY";
+        internal const string IS_FULL_EXAM_ABNORMAL = "IS_FULL_EXAM_ABNORMAL";
+        internal const string IS_PART_EXAM_ABNORMAL = "IS_PART_EXAM_ABNORMAL";
+        internal const string EXECUTED_SERVICES = "EXECUTED_SERVICES";
+        internal const string SPECIALIST_NOTE = "SPECIALIST_NOTE";
+
+
     }
 }

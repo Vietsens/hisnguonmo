@@ -138,7 +138,7 @@ namespace MPS.Processor.Mps000387
                     SetSingleKey(new KeyValue(Mps000387ExtendSingleKey.DEBATE_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo.CurrentHisDebate.DEBATE_TIME ?? 0)));
                     AddObjectKeyIntoListkey<V_HIS_DEBATE>(rdo.CurrentHisDebate, false);
                     SetSingleKey(new KeyValue(Mps000387ExtendSingleKey.SERVICE_CODE, rdo.CurrentHisDebate.SERVICE_CODE));
-                    SetSingleKey(new KeyValue(Mps000387ExtendSingleKey.SERVICE_NAME, rdo.CurrentHisDebate.SERVICE_NAME));
+                    SetSingleKey(new KeyValue(Mps000387ExtendSingleKey.SERVICE_NAME, rdo.CurrentHisDebate.SERVICE_NAME));                 
                 }
 
                 if (rdo.Treatment != null)
