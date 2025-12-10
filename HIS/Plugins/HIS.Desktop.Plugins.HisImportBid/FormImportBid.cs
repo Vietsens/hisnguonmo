@@ -600,9 +600,9 @@ namespace HIS.Desktop.Plugins.HisImportBid
                     }
 
                     medicineType.MATERIAL_TYPE_MAP_CODE = medicineTypeImport.MATERIAL_TYPE_MAP_CODE;
-                    medicineType.JOIN_BID_MATERIAL_TYPE_CODE = medicineTypeImport.JOIN_BID_MATERIAL_TYPE_CODE;
-                    medicineType.BID_MATERIAL_TYPE_CODE = medicineTypeImport.BID_MATERIAL_TYPE_CODE;
-                    medicineType.BID_MATERIAL_TYPE_NAME = medicineTypeImport.BID_MATERIAL_TYPE_NAME;
+                    //medicineType.JOIN_BID_MATERIAL_TYPE_CODE = medicineTypeImport.JOIN_BID_MATERIAL_TYPE_CODE;
+                    //medicineType.BID_MATERIAL_TYPE_CODE = medicineTypeImport.BID_MATERIAL_TYPE_CODE;
+                    //medicineType.BID_MATERIAL_TYPE_NAME = medicineTypeImport.BID_MATERIAL_TYPE_NAME;
                     medicineType.PACKING_TYPE_NAME = medicineTypeImport.PACKING_TYPE_NAME;
                     medicineType.HEIN_SERVICE_BHYT_NAME = medicineTypeImport.HEIN_SERVICE_BHYT_NAME;
 
