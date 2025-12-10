@@ -1764,7 +1764,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        List<HIS_CONFIG> listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+        //List<HIS_CONFIG> listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+        List<HIS_CONFIG> listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY != null && o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && o.KEY.IndexOf("Info", StringComparison.OrdinalIgnoreCase) > 0).ToList();
         List<HIS_CONFIG> listConfigEncode = new List<HIS_CONFIG>();
         private void InitComboControlConfig()
         {
