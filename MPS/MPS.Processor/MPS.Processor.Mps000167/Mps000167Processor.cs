@@ -122,6 +122,10 @@ namespace MPS.Processor.Mps000167
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
                 //SetBarcodeKey();
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
+                //ghi đè PrintLogData và UniqueCodeData
+                ProcessPrintLogData();
+                //lấy số lần in
+                SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
                 ProcessSingleKey();
 
                 SetBarcodeKey();
@@ -268,6 +272,9 @@ namespace MPS.Processor.Mps000167
                 SetSingleKey(new KeyValue("PAY_FORM_CODE", payFormCode));
                 if (rdo.transReq != null)
                     SetSingleKey(new KeyValue(Mps000167ExtendSingleKey.PAYMENT_AMOUNT, rdo.transReq.AMOUNT));
+                SetSingleKey(new KeyValue(Mps000167ExtendSingleKey.PARENT_ID, rdo.Mps000167ADO.PARENT_ID));
+                SetSingleKey(new KeyValue(Mps000167ExtendSingleKey.PARENT_CODE, rdo.Mps000167ADO.PARENT_CODE));
+                SetSingleKey(new KeyValue(Mps000167ExtendSingleKey.PARENT_NAME, rdo.Mps000167ADO.PARENT_NAME));
             }
             catch (Exception ex)
             {
@@ -333,6 +340,77 @@ namespace MPS.Processor.Mps000167
                 isPaid = "0";
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        public override string ProcessPrintLogData()
+        {
+            string log = "";
+            try
+            {
+                log = "Mã điều trị: " + rdo._PaanServiceReq.TREATMENT_CODE;
+                log += " , Mã yêu cầu: " + rdo._PaanServiceReq.SERVICE_REQ_CODE;
+            }
+            catch (Exception ex)
+            {
+                log = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return log;
+        }
+
+        public override string ProcessUniqueCodeData()
+        {
+            string result = "";
+            try
+            {
+                if (rdo != null && rdo._PaanServiceReq != null)
+                {
+                    string treatmentCode = "TREATMENT_CODE:" + rdo._PaanServiceReq.TREATMENT_CODE;
+                    string serviceReqCode = "SERVICE_REQ_CODE:" + rdo._PaanServiceReq.SERVICE_REQ_CODE;
+                    string serviceCode = "";
+                    string parentName = "";
+                    if (rdo._SereServ != null )
+                    {
+                        serviceCode = "SERVICE_CODE:" + rdo._SereServ.TDL_SERVICE_CODE;
+                    }
+
+                    if (rdo.Mps000167ADO != null && !String.IsNullOrWhiteSpace(rdo.Mps000167ADO.PARENT_NAME))
+                    {
+                        parentName = ProcessParentName(rdo.Mps000167ADO.PARENT_NAME);
+                    }
+
+                    result = String.Format("{0} {1} {2} {3} {4}", printTypeCode, treatmentCode, serviceReqCode, serviceCode, parentName);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+        private string ProcessParentName(string name)
+        {
+            string result = "";
+            try
+            {
+                if (!String.IsNullOrWhiteSpace(name))
+                {
+                    List<string> word = name.Split(' ').ToList();
+                    foreach (string item in word)
+                    {
+                        if (!string.IsNullOrWhiteSpace(item))
+                        {
+                            result += char.ToUpper(item[0]);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
     }
 }
