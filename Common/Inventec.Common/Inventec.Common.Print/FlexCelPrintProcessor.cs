@@ -525,6 +525,12 @@ namespace Inventec.Common.Print
             }
         }
 
+        // Pseudocode plan:
+        // - To show the PrintPreview dialog on the main HIS.exe window, we need to get the main form of the application.
+        // - Use Application.OpenForms to find the main form (usually named "frmMain" or similar).
+        // - Pass the main form as the owner to ShowDialog(owner).
+        // - Replace frmPrintPreview.ShowDialog(frmPrintPreview.ParentForm) with frmPrintPreview.ShowDialog(mainForm).
+
         public void PrintPreview()
         {
             try
@@ -538,7 +544,10 @@ namespace Inventec.Common.Print
                         if (this.printMergeAdos[0].ShowTutorialModule != null)
                             frmPrintPreview.SetTutorialModule(this.printMergeAdos[0].ShowTutorialModule);
                         frmPrintPreview.SetPartialFileList(this.printMergeAdos);
-                        frmPrintPreview.ShowDialog(frmPrintPreview.ParentForm);
+
+                        Form mainForm = Application.OpenForms.Cast<Form>().FirstOrDefault(f => f.Name == "frmMain");
+                        
+                        frmPrintPreview.ShowDialog(mainForm ?? frmPrintPreview.ParentForm);
                         frmPrintPreview.FocusOnLoad();
                         frmPrintPreview.Activate();
                         frmPrintPreview.FormClosed += FormClosed;
@@ -564,12 +573,13 @@ namespace Inventec.Common.Print
                 if (this.showTutorialModule != null)
                     frmPrintPreview.SetTutorialModule(this.showTutorialModule);
 
-                frmPrintPreview.ShowDialog(frmPrintPreview.Owner);
+                Form mainForm2 = Application.OpenForms.Cast<Form>().FirstOrDefault(f => f.Name == "frmMain");
+                frmPrintPreview.ShowDialog(mainForm2 ?? frmPrintPreview.ParentForm);
                 frmPrintPreview.FocusOnLoad();
                 frmPrintPreview.Activate();
-                frmPrintPreview.FormClosed += FormClosed;
+                frmPrintPreview.FormClosed += FormClosed; 
 
-                Inventec.Common.Logging.LogSystem.Debug("PrintPreview end");
+                Inventec.Common.Logging.LogSystem.Debug("PrintPreview end: " + (mainForm2 ?? frmPrintPreview.ParentForm));
             }
             catch (Exception ex)
             {
@@ -618,7 +628,12 @@ namespace Inventec.Common.Print
                 if (this.showTutorialModule != null)
                     frmPrintPreview.SetTutorialModule(this.showTutorialModule);
 
-                frmPrintPreview.Show(frmPrintPreview.ParentForm);
+                //frmPrintPreview.Show(frmPrintPreview.ParentForm);
+                //frmPrintPreview.FocusOnLoad();
+                //frmPrintPreview.Activate();
+                //frmPrintPreview.FormClosed += FormClosed;
+                Form mainForm2 = Application.OpenForms.Cast<Form>().FirstOrDefault(f => f.Name == "frmMain");
+                frmPrintPreview.ShowDialog(mainForm2 ?? frmPrintPreview.ParentForm);
                 frmPrintPreview.FocusOnLoad();
                 frmPrintPreview.Activate();
                 frmPrintPreview.FormClosed += FormClosed;

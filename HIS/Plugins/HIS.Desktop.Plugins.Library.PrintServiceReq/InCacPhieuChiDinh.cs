@@ -2853,7 +2853,23 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                         mps167ADO.PAAN_POSITION_CODE = paanPosition.PAAN_POSITION_CODE;
                         mps167ADO.PAAN_POSITION_NAME = paanPosition.PAAN_POSITION_NAME;
                     }
-
+                    List<long> _ssIds = dicSereServData[serviceReq.ID].Select(p => p.SERVICE_ID).Distinct().ToList();
+                    var dataSS = BackendDataWorker.Get<V_HIS_SERVICE>().Where(p => _ssIds.Contains(p.ID)).ToList();
+                    if (dataSS != null && dataSS.Count > 0)
+                    {
+                        var _service = dataSS.FirstOrDefault(p => p.PARENT_ID != null);
+                        if (_service != null)
+                        {
+                            var serviceN = ProcessDictionaryData.GetService(_service.PARENT_ID.Value);
+                            if(serviceN != null)
+                            {
+                                mps167ADO.PARENT_ID = serviceN.ID;
+                                mps167ADO.PARENT_NAME =  serviceN.SERVICE_NAME ;
+                                mps167ADO.PARENT_CODE =  serviceN.SERVICE_CODE ;
+                            }
+                          
+                        }
+                    }
                     var acsUser = ProcessDictionaryData.GetUserMobile(serviceReq.REQUEST_LOGINNAME);
                     mps167ADO.REQUEST_USER_MOBILE = acsUser != null ? acsUser.MOBILE : "";
 

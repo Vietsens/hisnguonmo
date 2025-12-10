@@ -112,6 +112,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
         List<V_HIS_MATERIAL_TYPE> listHisMaterialType = new List<V_HIS_MATERIAL_TYPE>();
         List<V_HIS_BLOOD_TYPE> listHisBloodType = new List<V_HIS_BLOOD_TYPE>();
         List<V_HIS_BID_MATERIAL_TYPE> bidMaty = new List<V_HIS_BID_MATERIAL_TYPE>();
+        List<V_HIS_BID_MEDICINE_TYPE> bidMety = new List<V_HIS_BID_MEDICINE_TYPE>();
         internal List<ADO.MedicineTypeADO> listErrorImport;
 
         #endregion
@@ -918,7 +919,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     xtraTabControl1.SelectedTabPageIndex = 0;
                     this.medicineType = data;
                     //this.medicineType.SERVICE_UNIT_NAME = data.IMP_UNIT_ID.HasValue ? data.IMP_UNIT_NAME : data.SERVICE_UNIT_NAME;
-
+                    txtMaTT.Text = this.medicineType.BID_MEDICINE_TYPE_CODE ?? "";
+                    txtTenTT.Text = this.medicineType.BID_MEDICINE_TYPE_NAME ?? "";
+                    txtMaDT.Text = this.medicineType.JOIN_BID_MEDICINE_TYPE_CODE;
                     txtTenBHYT.Text = this.medicineType.HEIN_SERVICE_BHYT_NAME;
                     txtPackingType.Text = this.medicineType.PACKING_TYPE_NAME;
                     txtActiveBhyt.Text = this.medicineType.ACTIVE_INGR_BHYT_NAME;
@@ -937,9 +940,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
 
                     cboDosageForm.Enabled = true;
                     EnableLeftControl(true);
-                    txtMaTT.Enabled = false;
-                    txtMaDT.Enabled = false;
-                    txtTenTT.Enabled = false;
+                    txtMaTT.Enabled = true;
+                    txtMaDT.Enabled = true;
+                    txtTenTT.Enabled = true;
                     var mt = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == medicineType.ID).MEDICINE_LINE_ID;
                     if (mt != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
                     {
@@ -1022,6 +1025,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 spinImpPrice.EditValue = data.IMP_PRICE;
                 spinImpVat.EditValue = data.IMP_VAT_RATIO * 100;
                 spinImpMoreRatio.EditValue = data.ImpMoreRatio;
+                //txtMaTT.Text = data.BID_MEDICINE_TYPE_CODE;
+                //txtTenTT.Text = data.BID_MEDICINE_TYPE_NAME;
+                //txtMaDT.Text = data.JOIN_BID_MEDICINE_TYPE_CODE;
                 txtBidNumOrder.Text = data.BID_NUM_ORDER;
                 txtBatchDivisionCode.Text = data.BATCH_DIVISION_CODE;
                 spinGiaTran.EditValue = data.HEIN_LIMIT_PRICE ?? null;
@@ -1860,6 +1866,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 txtBidNumOrder.Text = "";
                 txtNOTE.Text = null;
                 txtBatchDivisionCode.Text = "";
+                txtMaDT.Text = "";
+                txtTenTT.Text = "";
+                txtMaTT.Text = "";
                 if (chkClearToAdd.Checked)
                 {
                     txtBidPackageCode.Text = "";
@@ -1944,6 +1953,20 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     {
                         spinHourLifeSpan.EditValue = null;
                     }
+                    CommonParam paramCommon = new CommonParam();
+                    MOS.Filter.HisBidMedicineTypeViewFilter bidMetyFilter = new MOS.Filter.HisBidMedicineTypeViewFilter();
+                    bidMetyFilter.MEDICINE_TYPE_ID = medicineType.ID;
+                    //bidMety = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE>>("api/HisBidMedicineType/get", ApiConsumer.ApiConsumers.MosConsumer, bidMetyFilter, paramCommon);
+
+                    bidMety = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_BID_MEDICINE_TYPE>>(ApiConsumer.HisRequestUriStore.HIS_BID_MEDICINE_TYPE_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, bidMetyFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                    if (bidMety != null && bidMaty.Count > 0)
+                    {
+                        this.medicineType.BID_MEDICINE_TYPE_NAME = bidMety[0].BID_MEDICINE_TYPE_NAME;
+                        this.medicineType.BID_MEDICINE_TYPE_CODE = bidMety[0].BID_MEDICINE_TYPE_CODE;
+                        this.medicineType.JOIN_BID_MEDICINE_TYPE_CODE = bidMety[0].JOIN_BID_MEDICINE_TYPE_CODE;
+                    }
+                    txtTenTT.Text = this.medicineType.BID_MEDICINE_TYPE_NAME ?? "";
+                    txtMaTT.Text = this.medicineType.BID_MEDICINE_TYPE_CODE ?? "";
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 1 && this.materialType != null && !String.IsNullOrEmpty(this.materialType.MATERIAL_TYPE_CODE))
                 {
@@ -2045,6 +2068,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.medicineType.ImpVatRatio = spinImpVat.Value;
                 this.medicineType.ImpMoreRatio = spinImpMoreRatio.Value;
                 this.medicineType.AMOUNT = spinAmount.Value;
+                this.medicineType.BID_MEDICINE_TYPE_CODE = txtMaTT.Text;
+                this.medicineType.BID_MEDICINE_TYPE_NAME = txtTenTT.Text;
+                this.medicineType.JOIN_BID_MEDICINE_TYPE_CODE = txtMaDT.Text;
                 this.medicineType.BID_GROUP_CODE = txtBidGroupCode.Text;
                 this.medicineType.BID_PACKAGE_CODE = txtBidPackageCode.Text;
                 this.medicineType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
@@ -2571,6 +2597,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         spinImpVat.Value = 0;
                         spinImpMoreRatio.Value = 0;
                         txtBidNumOrder.Text = "";
+                        txtMaTT.Text = "";
+                        txtTenTT.Text = "";
+                        txtMaDT.Text = "";
                         txtBidGroupCode.Text = "";
                         txtBidPackageCode.Text = "";
                         txtNationalMainText.Text = "";
@@ -2678,6 +2707,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         {
                             bid_group_code = item.BID_GROUP_CODE;
                         }
+                        bidMedicineType.BID_MEDICINE_TYPE_CODE = item.BID_MEDICINE_TYPE_CODE;
+                        bidMedicineType.BID_MEDICINE_TYPE_NAME = item.BID_MEDICINE_TYPE_NAME;
+                        bidMedicineType.JOIN_BID_MEDICINE_TYPE_CODE = item.JOIN_BID_MEDICINE_TYPE_CODE;
                         bidMedicineType.BID_GROUP_CODE = bid_group_code;
                         bidMedicineType.BID_PACKAGE_CODE = item.BID_PACKAGE_CODE;
                         bidMedicineType.EXPIRED_DATE = item.EXPIRED_DATE;
@@ -3277,9 +3309,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     EnableLeftControl(true);
                     if (spinImpMoreRatio.EditValue == null)
                         spinImpMoreRatio.EditValue = 0;
-                    txtMaTT.Enabled = false;
-                    txtMaDT.Enabled = false;
-                    txtTenTT.Enabled = false;
+                    txtMaTT.Enabled = true;
+                    txtMaDT.Enabled = true;
+                    txtTenTT.Enabled = true;
                     layoutControlItem26.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
                     cboDosageForm.Enabled = true;

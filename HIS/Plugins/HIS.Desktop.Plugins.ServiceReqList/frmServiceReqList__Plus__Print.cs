@@ -299,7 +299,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     HisSereNmseFilter sereNmseFilter = new HisSereNmseFilter();
                     sereNmseFilter.SERVICE_REQ_ID = this.currentServiceReqPrint.ID;
                     var sereNmseList = new BackendAdapter(param).Get<List<HIS_SERE_NMSE>>("api/HisSereNmse/Get", ApiConsumers.MosConsumer, sereNmseFilter, param);
-                      
+
                     HisNoneMediServiceReqResultSDO hisNoneMediServiceReqResultSDO = new HisNoneMediServiceReqResultSDO(
                         new List<V_HIS_SERVICE_REQ> { serviceReq },
                         sereNmseList
@@ -1106,99 +1106,128 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             }
         }
 
-            private void InPhieuYeuCauChiDinhTongHop(string printTypeCode)
+        private void InPhieuYeuCauChiDinhTongHop(string printTypeCode)
+        {
+            try
             {
-                try
+                if (this.listServiceReq != null && this.listServiceReq.Count > 0)
                 {
-                    if (this.listServiceReq != null && this.listServiceReq.Count > 0)
-                    {
-                        ThreadChiDinhDichVuADO data = new ThreadChiDinhDichVuADO(this.listServiceReq.First());
-                        CreateThreadLoadDataForChiDinhTongHop(data);
+                    ThreadChiDinhDichVuADO data = new ThreadChiDinhDichVuADO(this.listServiceReq.First());
+                    CreateThreadLoadDataForChiDinhTongHop(data);
 
-                        HisServiceReqViewFilter serviceReqFilter = new HisServiceReqViewFilter();
-                        serviceReqFilter.IDs = listServiceReq.Select(o => o.ID).ToList();
-                        serviceReqFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                        List<V_HIS_SERVICE_REQ> lstSR = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GETVIEW, ApiConsumers.MosConsumer, serviceReqFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
-                    //
-                    //
+                    HisServiceReqViewFilter serviceReqFilter = new HisServiceReqViewFilter();
+                    serviceReqFilter.IDs = listServiceReq.Select(o => o.ID).ToList();
+                    serviceReqFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    List<V_HIS_SERVICE_REQ> lstSR = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GETVIEW, ApiConsumers.MosConsumer, serviceReqFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                    
                     string autoCreateOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TRAN_REQ.AUTO_CREATE.OPTION");
                     decimal totalPatientPrice = data.listVHisSereServ.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0);
-                    if (autoCreateOption == "1" && totalPatientPrice > 0)
+                    HIS_TRANS_REQ transReqResult = null; 
+                    if (autoCreateOption == "1")
                     {
                         CommonParam param = new CommonParam();
+
+                        var sereServIds = data.listVHisSereServ.Select(o => o.ID).ToList();
+
+                        HisSereServBillFilter billFilter = new HisSereServBillFilter();
+                        billFilter.SERE_SERV_IDs = sereServIds;
+                        billFilter.IS_NOT_CANCEL = true;
+
+                        var listBills = new BackendAdapter(param).Get<List<HIS_SERE_SERV_BILL>>("api/HisSereServBill/Get", ApiConsumers.MosConsumer, billFilter, param) ?? new List<HIS_SERE_SERV_BILL>();
+
+                        var billIds = listBills.Select(x => x.SERE_SERV_ID).Distinct().ToList();
+
+                        HisSereServDepositFilter depositFilter = new HisSereServDepositFilter();
+                        depositFilter.SERE_SERV_IDs = sereServIds;
+                        depositFilter.IS_CANCEL = false;
+
+                        var listDeposits = new BackendAdapter(param).Get<List<HIS_SERE_SERV_DEPOSIT>>(
+                            "api/HisSereServDeposit/Get", ApiConsumers.MosConsumer, depositFilter, param
+                        ) ?? new List<HIS_SERE_SERV_DEPOSIT>();
+
+                        var depositIds = listDeposits.Select(x => x.SERE_SERV_ID).Distinct().ToList();
+
+                        // Lọc ra danh sách dịch vụ chưa thanh toán và chưa tạm ứng 
+                        var listA = data.listVHisSereServ
+                                        .Where(o => !billIds.Contains(o.ID) && !depositIds.Contains(o.ID))
+                                        .ToList();
+                     
+                        decimal totalPatientPriceA = listA.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0);
                         // Tạo yêu cầu thanh toán
-                        TransReqCreateSDO transReqSDO = new TransReqCreateSDO();
-                        transReqSDO.TreatmentId = listServiceReq.First().TREATMENT_ID;
-                        transReqSDO.TransReqType = IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_SERVICE;
-                        transReqSDO.RequestRoomId = currentModule != null ? currentModule.RoomId : 0;
-                        transReqSDO.SereServIds = data.listVHisSereServ.Select(o => o.ID).ToList();
-                        var transReqResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>("api/HisTransReq/CreateSDO", ApiConsumers.MosConsumer, transReqSDO, param);
-                        if (transReqResult == null)
+                        if (listA.Any() && totalPatientPriceA > 0)
                         {
-                            MessageManager.Show(this, param, false);
-                            Inventec.Common.Logging.LogSystem.Warn("Goi API tao yeu cau thanh toan that bai: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => transReqSDO), transReqSDO));
-                            return;
+                            TransReqCreateSDO transReqSDO = new TransReqCreateSDO();
+                            transReqSDO.TreatmentId = listServiceReq.First().TREATMENT_ID;
+                            transReqSDO.TransReqType = IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_SERVICE;
+                            transReqSDO.RequestRoomId = currentModule != null ? currentModule.RoomId : 0;
+                            transReqSDO.SereServIds = listA.Select(o => o.ID).ToList();
+                            transReqResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>("api/HisTransReq/CreateSDO", ApiConsumers.MosConsumer, transReqSDO, param);
+                            if (transReqResult == null)
+                            {
+                                MessageManager.Show(this, param, false);
+                                Inventec.Common.Logging.LogSystem.Warn("Goi API tao yeu cau thanh toan that bai: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => transReqSDO), transReqSDO));
+                            }
                         }
                     }
                     //qtcode
                     List<HIS_SERE_NMSE> allSereNmse = new List<HIS_SERE_NMSE>();
-                        var type18Request = lstSR.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__OT).ToList();
-                        if (type18Request.Any())
+                    var type18Request = lstSR.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__OT).ToList();
+                    if (type18Request.Any())
+                    {
+                        CommonParam param = new CommonParam();
+                        foreach (var req in type18Request)
                         {
-                            CommonParam param = new CommonParam();
-                            foreach (var req in type18Request)
+                            HisSereNmseFilter nmseFilter = new HisSereNmseFilter();
+                            nmseFilter.SERVICE_REQ_ID = req.ID;
+                            var sereNmseList = new BackendAdapter(param).Get<List<HIS_SERE_NMSE>>(
+                                "api/HisSereNmse/Get", ApiConsumers.MosConsumer, nmseFilter, param);
+                            if (sereNmseList != null && sereNmseList.Count > 0)
                             {
-                                HisSereNmseFilter nmseFilter = new HisSereNmseFilter();
-                                nmseFilter.SERVICE_REQ_ID = req.ID; 
-                                var sereNmseList = new BackendAdapter(param).Get<List<HIS_SERE_NMSE>>(
-                                    "api/HisSereNmse/Get", ApiConsumers.MosConsumer, nmseFilter, param);
-                                if (sereNmseList != null && sereNmseList.Count > 0)
-                                {
-                                    allSereNmse.AddRange(sereNmseList);
-                                }
+                                allSereNmse.AddRange(sereNmseList);
                             }
                         }
+                    }
 
                     HisServiceReqListResultSDO HisServiceReqSDO = new HisServiceReqListResultSDO();
-                        HisServiceReqSDO.SereServs = data.listVHisSereServ;
-                        HisServiceReqSDO.ServiceReqs = lstSR;
+                    HisServiceReqSDO.SereServs = data.listVHisSereServ;
+                    HisServiceReqSDO.ServiceReqs = lstSR;
 
-                        List<V_HIS_BED_LOG> listBedLogs = new List<V_HIS_BED_LOG>();
+                    List<V_HIS_BED_LOG> listBedLogs = new List<V_HIS_BED_LOG>();
 
-                        HisBedLogViewFilter bedLogFilter = new HisBedLogViewFilter();
-                        bedLogFilter.TREATMENT_ID = data.hisTreatment.ID;
-                        var resultBedlog = new BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumers.MosConsumer, bedLogFilter, param);
-                        if (resultBedlog != null)
-                        {
-                            listBedLogs = resultBedlog;
-                        }
+                    HisBedLogViewFilter bedLogFilter = new HisBedLogViewFilter();
+                    bedLogFilter.TREATMENT_ID = data.hisTreatment.ID;
+                    var resultBedlog = new BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumers.MosConsumer, bedLogFilter, param);
+                    if (resultBedlog != null)
+                    {
+                        listBedLogs = resultBedlog;
+                    }
 
-                        HisTreatmentWithPatientTypeInfoSDO HisTreatment = new HisTreatmentWithPatientTypeInfoSDO();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<HisTreatmentWithPatientTypeInfoSDO>(HisTreatment, data.hisTreatment);
-                        if (data.vHisPatientTypeAlter != null)
-                        {
-                            HisTreatment.PATIENT_TYPE_CODE = data.vHisPatientTypeAlter.PATIENT_TYPE_CODE;
-                            HisTreatment.HEIN_CARD_FROM_TIME = data.vHisPatientTypeAlter.HEIN_CARD_FROM_TIME ?? 0;
-                            HisTreatment.HEIN_CARD_NUMBER = data.vHisPatientTypeAlter.HEIN_CARD_NUMBER;
-                            HisTreatment.HEIN_CARD_TO_TIME = data.vHisPatientTypeAlter.HEIN_CARD_TO_TIME ?? 0;
-                            HisTreatment.HEIN_MEDI_ORG_CODE = data.vHisPatientTypeAlter.HEIN_MEDI_ORG_CODE;
-                            HisTreatment.LEVEL_CODE = data.vHisPatientTypeAlter.LEVEL_CODE; 
-                            HisTreatment.RIGHT_ROUTE_CODE = data.vHisPatientTypeAlter.RIGHT_ROUTE_CODE;
-                            HisTreatment.RIGHT_ROUTE_TYPE_CODE = data.vHisPatientTypeAlter.RIGHT_ROUTE_TYPE_CODE;
-                            HisTreatment.TREATMENT_TYPE_CODE = data.vHisPatientTypeAlter.TREATMENT_TYPE_CODE;
-                        }
+                    HisTreatmentWithPatientTypeInfoSDO HisTreatment = new HisTreatmentWithPatientTypeInfoSDO();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HisTreatmentWithPatientTypeInfoSDO>(HisTreatment, data.hisTreatment);
+                    if (data.vHisPatientTypeAlter != null)
+                    {
+                        HisTreatment.PATIENT_TYPE_CODE = data.vHisPatientTypeAlter.PATIENT_TYPE_CODE;
+                        HisTreatment.HEIN_CARD_FROM_TIME = data.vHisPatientTypeAlter.HEIN_CARD_FROM_TIME ?? 0;
+                        HisTreatment.HEIN_CARD_NUMBER = data.vHisPatientTypeAlter.HEIN_CARD_NUMBER;
+                        HisTreatment.HEIN_CARD_TO_TIME = data.vHisPatientTypeAlter.HEIN_CARD_TO_TIME ?? 0;
+                        HisTreatment.HEIN_MEDI_ORG_CODE = data.vHisPatientTypeAlter.HEIN_MEDI_ORG_CODE;
+                        HisTreatment.LEVEL_CODE = data.vHisPatientTypeAlter.LEVEL_CODE;
+                        HisTreatment.RIGHT_ROUTE_CODE = data.vHisPatientTypeAlter.RIGHT_ROUTE_CODE;
+                        HisTreatment.RIGHT_ROUTE_TYPE_CODE = data.vHisPatientTypeAlter.RIGHT_ROUTE_TYPE_CODE;
+                        HisTreatment.TREATMENT_TYPE_CODE = data.vHisPatientTypeAlter.TREATMENT_TYPE_CODE;
+                    }
 
-                    var PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(HisServiceReqSDO, HisTreatment, listBedLogs, currentModule != null ? currentModule.RoomId : 0);
+                    var PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(transReqResult, HisServiceReqSDO, HisTreatment, listBedLogs, currentModule != null ? currentModule.RoomId : 0);
                     PrintServiceReqProcessor.listSereNmseData = allSereNmse;
                     PrintServiceReqProcessor.Print(printTypeCode, false);
                 }
-                }
-                catch (Exception ex)
-                {
-                    WaitingManager.Hide();
-                    Inventec.Common.Logging.LogSystem.Error(ex);
-                }
             }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private void InDonThuocTongHop(string printTypeCode)
         {

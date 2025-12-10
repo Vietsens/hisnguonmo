@@ -49,11 +49,19 @@
     <Reference Include="DevExpress.Office.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.RichEdit.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraRichEdit.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="HIS.Desktop.LocalStorage.LocalData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Location">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.UCRelativeInfo\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -134,6 +142,10 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
@@ -203,7 +215,9 @@
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
     <None Include="Properties\Settings.settings">
@@ -244,10 +258,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
       <Name>HIS.Desktop.LocalStorage.BackendData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>

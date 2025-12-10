@@ -133,7 +133,7 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                                     expMedi.SERVICE_UNIT_CODE = itemGroups[0].SERVICE_UNIT_CODE;
                                     expMedi.SERVICE_UNIT_ID = itemGroups[0].SERVICE_UNIT_ID;
                                     expMedi.SERVICE_UNIT_NAME = itemGroups[0].SERVICE_UNIT_NAME;
-                                    expMedi.INTRUCTION_DATE = ConvertToOutputFormat(dicServiceReq[_expMest.SERVICE_REQ_ID ?? 0].USE_TIME) ?? _expMest.TDL_INTRUCTION_DATE ?? 0;
+                                    expMedi.INTRUCTION_DATE = ConvertToOutputFormat(dicServiceReq[_expMest.SERVICE_REQ_ID ?? 0].USE_TIME) ?? ConvertToOutputFormat(_expMest.TDL_INTRUCTION_DATE) ?? 0;
                                     expMedi.IS_EXPEND = itemGroups[0].IS_EXPEND;
                                     expMedi.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
                                     expMedi.AMOUNT = _AMOUNT;

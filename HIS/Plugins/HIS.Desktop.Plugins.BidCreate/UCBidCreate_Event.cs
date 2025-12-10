@@ -382,9 +382,9 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidMedicineType.MEDICINE_USE_FORM_ID = item.MEDICINE_USE_FORM_ID;
                         bidMedicineType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
                         bidMedicineType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE ?? null;
-                        bidMedicineType.BID_MEDICINE_TYPE_CODE = txtMaTT.Text;
-                        bidMedicineType.BID_MEDICINE_TYPE_NAME = txtTenTT.Text;
-                        bidMedicineType.JOIN_BID_MEDICINE_TYPE_CODE = txtMaDT.Text;
+                        bidMedicineType.BID_MEDICINE_TYPE_CODE = item.BID_MEDICINE_TYPE_CODE;
+                        bidMedicineType.BID_MEDICINE_TYPE_NAME = item.BID_MEDICINE_TYPE_NAME;
+                        bidMedicineType.JOIN_BID_MEDICINE_TYPE_CODE = item.JOIN_BID_MEDICINE_TYPE_CODE;
 
                         this.bidModel.HIS_BID_MEDICINE_TYPE.Add(bidMedicineType);
 
@@ -666,6 +666,9 @@ namespace HIS.Desktop.Plugins.BidCreate
                         this.medicineType = row;
                         txtActiveBhyt.Text = row.ACTIVE_INGR_BHYT_NAME ?? "";
                         //cboDosageForm.EditValue = row.DOSAGE_FORM ?? "";
+                        txtMaDT.Text = row.JOIN_BID_MEDICINE_TYPE_CODE;
+                        txtMaTT.Text = row.BID_MEDICINE_TYPE_CODE;
+                        txtTenTT.Text = row.BID_MEDICINE_TYPE_NAME;
                         var dosageItem = dataDosageForm.FirstOrDefault(o => o.DOSAGE_FORM_NAME == row.DOSAGE_FORM);
                         if (this.medicineType.MEDICINE_LINE_ID.Value != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
                         {
@@ -1041,7 +1044,9 @@ namespace HIS.Desktop.Plugins.BidCreate
                 }
 
 
-
+                this.medicineType.BID_MEDICINE_TYPE_CODE = txtMaTT.Text;
+                this.medicineType.BID_MEDICINE_TYPE_NAME = txtTenTT.Text;
+                this.medicineType.JOIN_BID_MEDICINE_TYPE_CODE = txtMaDT.Text;
 
                 //this.medicineType.DOSAGE_FORM = txtDosageForm.Text.Trim();
                 if (cboMediUserForm.EditValue != null)

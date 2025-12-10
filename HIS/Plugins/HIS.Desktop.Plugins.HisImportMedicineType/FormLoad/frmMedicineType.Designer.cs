@@ -189,23 +189,26 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.layoutControl1.Controls.Add(this.btnShowLineError);
             this.layoutControl1.Controls.Add(this.btnSave);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 29);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 38);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1236, 482);
+            this.layoutControl1.Size = new System.Drawing.Size(1648, 591);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // gridControlMedicineType
             // 
-            this.gridControlMedicineType.Location = new System.Drawing.Point(2, 28);
+            this.gridControlMedicineType.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlMedicineType.Location = new System.Drawing.Point(3, 36);
             this.gridControlMedicineType.MainView = this.gridViewMedicineType;
+            this.gridControlMedicineType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gridControlMedicineType.Name = "gridControlMedicineType";
             this.gridControlMedicineType.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.Btn_ErrorLine,
             this.Btn_Delete,
             this.Item_Check});
-            this.gridControlMedicineType.Size = new System.Drawing.Size(1232, 452);
+            this.gridControlMedicineType.Size = new System.Drawing.Size(1642, 552);
             this.gridControlMedicineType.TabIndex = 4;
             this.gridControlMedicineType.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewMedicineType});
@@ -1090,9 +1093,10 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             // 
             // BtnExportErrorLine
             // 
-            this.BtnExportErrorLine.Location = new System.Drawing.Point(552, 2);
+            this.BtnExportErrorLine.Location = new System.Drawing.Point(737, 3);
+            this.BtnExportErrorLine.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnExportErrorLine.Name = "BtnExportErrorLine";
-            this.BtnExportErrorLine.Size = new System.Drawing.Size(106, 22);
+            this.BtnExportErrorLine.Size = new System.Drawing.Size(141, 27);
             this.BtnExportErrorLine.StyleController = this.layoutControl1;
             this.BtnExportErrorLine.TabIndex = 10;
             this.BtnExportErrorLine.Text = "Xuất dữ liệu lỗi";
@@ -1101,9 +1105,10 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             // btnRefresh
             // 
             this.btnRefresh.Enabled = false;
-            this.btnRefresh.Location = new System.Drawing.Point(442, 2);
+            this.btnRefresh.Location = new System.Drawing.Point(591, 3);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(106, 22);
+            this.btnRefresh.Size = new System.Drawing.Size(140, 27);
             this.btnRefresh.StyleController = this.layoutControl1;
             this.btnRefresh.TabIndex = 9;
             this.btnRefresh.Text = "Refresh";
@@ -1111,9 +1116,10 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             // 
             // btnDownload
             // 
-            this.btnDownload.Location = new System.Drawing.Point(2, 2);
+            this.btnDownload.Location = new System.Drawing.Point(3, 3);
+            this.btnDownload.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnDownload.Name = "btnDownload";
-            this.btnDownload.Size = new System.Drawing.Size(106, 22);
+            this.btnDownload.Size = new System.Drawing.Size(141, 27);
             this.btnDownload.StyleController = this.layoutControl1;
             this.btnDownload.TabIndex = 8;
             this.btnDownload.Text = "Tải file mẫu";
@@ -1121,9 +1127,10 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(112, 2);
+            this.btnImport.Location = new System.Drawing.Point(150, 3);
+            this.btnImport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(106, 22);
+            this.btnImport.Size = new System.Drawing.Size(141, 27);
             this.btnImport.StyleController = this.layoutControl1;
             this.btnImport.TabIndex = 7;
             this.btnImport.Text = "Import";
@@ -1131,9 +1138,10 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             // 
             // btnShowLineError
             // 
-            this.btnShowLineError.Location = new System.Drawing.Point(222, 2);
+            this.btnShowLineError.Location = new System.Drawing.Point(297, 3);
+            this.btnShowLineError.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnShowLineError.Name = "btnShowLineError";
-            this.btnShowLineError.Size = new System.Drawing.Size(106, 22);
+            this.btnShowLineError.Size = new System.Drawing.Size(141, 27);
             this.btnShowLineError.StyleController = this.layoutControl1;
             this.btnShowLineError.TabIndex = 6;
             this.btnShowLineError.Text = "Dòng lỗi";
@@ -1141,9 +1149,10 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(332, 2);
+            this.btnSave.Location = new System.Drawing.Point(444, 3);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(106, 22);
+            this.btnSave.Size = new System.Drawing.Size(141, 27);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 5;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -1165,50 +1174,50 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1236, 482);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1648, 591);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.gridControlMedicineType;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 26);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 33);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1236, 456);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1648, 558);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.btnSave;
-            this.layoutControlItem2.Location = new System.Drawing.Point(330, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(441, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem2.Size = new System.Drawing.Size(147, 33);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnShowLineError;
-            this.layoutControlItem3.Location = new System.Drawing.Point(220, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(294, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(147, 33);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(660, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(881, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(576, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(767, 33);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnImport;
-            this.layoutControlItem4.Location = new System.Drawing.Point(110, 0);
+            this.layoutControlItem4.Location = new System.Drawing.Point(147, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem4.Size = new System.Drawing.Size(147, 33);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -1217,25 +1226,25 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.layoutControlItem5.Control = this.btnDownload;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem5.Size = new System.Drawing.Size(147, 33);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnRefresh;
-            this.layoutControlItem6.Location = new System.Drawing.Point(440, 0);
+            this.layoutControlItem6.Location = new System.Drawing.Point(588, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem6.Size = new System.Drawing.Size(146, 33);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.BtnExportErrorLine;
-            this.layoutControlItem7.Location = new System.Drawing.Point(550, 0);
+            this.layoutControlItem7.Location = new System.Drawing.Point(734, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(147, 33);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
@@ -1243,10 +1252,6 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1});
@@ -1275,40 +1280,45 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1236, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlTop.Size = new System.Drawing.Size(1648, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1236, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 629);
+            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1648, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 482);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 591);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1236, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 482);
+            this.barDockControlRight.Location = new System.Drawing.Point(1648, 38);
+            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 591);
             // 
             // frmMedicineType
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1236, 511);
+            this.ClientSize = new System.Drawing.Size(1648, 629);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmMedicineType";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Import";

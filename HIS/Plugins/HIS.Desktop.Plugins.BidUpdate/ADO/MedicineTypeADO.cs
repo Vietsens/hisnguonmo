@@ -25,6 +25,9 @@ namespace HIS.Desktop.Plugins.BidUpdate.ADO
 {
     public class MedicineTypeADO : MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE
     {
+        public string BID_MEDICINE_TYPE_CODE { get; set; }
+        public string BID_MEDICINE_TYPE_NAME { get; set; }
+        public string JOIN_BID_MEDICINE_TYPE_CODE { get; set; }
         public double IdRow { get; set; }
         public decimal? AMOUNT { get; set; }
         public long Type { get; set; }
@@ -86,6 +89,9 @@ namespace HIS.Desktop.Plugins.BidUpdate.ADO
                    
                     string.IsNullOrEmpty(HEIN_SERVICE_BHYT_NAME) &&
                      string.IsNullOrEmpty(PACKING_TYPE_NAME) &&
+                    string.IsNullOrEmpty(BID_MEDICINE_TYPE_CODE) &&
+                    string.IsNullOrEmpty(BID_MEDICINE_TYPE_NAME) &&
+                    string.IsNullOrEmpty(JOIN_BID_MEDICINE_TYPE_CODE) &&
                     string.IsNullOrEmpty(BID_MATERIAL_TYPE_CODE) &&
                     string.IsNullOrEmpty(BID_MATERIAL_TYPE_NAME) &&
                     string.IsNullOrEmpty(JOIN_BID_MATERIAL_TYPE_CODE) &&

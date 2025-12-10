@@ -65,8 +65,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
             ElectronicBillResult result = new ElectronicBillResult();
             try
             {
-                bool hasConfigV2 = false;
-                string apiV2 = null; 
+                string apiChuyenDoiHoaDon = null; 
                 if (this.Check(electronicBillType, ref result))
                 {
                     this.TempType = _templateType;
@@ -78,9 +77,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                         ElectronicBillResultUtil.Set(ref result, false, "Không tìm thấy địa chỉ Webservice URL");
                         return result;
                     }
-                    if (configArr.Count() >= 4)
+                    if (configArr.Count() >= 5 && configArr[4] == "1")
                     {
-                        apiV2 = configArr[3]; 
+                        apiChuyenDoiHoaDon = configArr[3]; 
                     }
                     string[] accountConfigArr = accountConfig.Split('|');
                     adoLogin = new LoginDataCyberbill();
@@ -114,7 +113,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                             }
                             break;
                         case ElectronicBillType.ENUM.GET_INVOICE_LINK:
-                            ChuyenDoiHoaDon(ref result);
+                            ChuyenDoiHoaDon(ref result, apiChuyenDoiHoaDon);
                             break;
                         case ElectronicBillType.ENUM.DELETE_INVOICE:
                             break;
@@ -122,7 +121,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                             HuyHoaDon(ref result);
                             break;
                         case ElectronicBillType.ENUM.CONVERT_INVOICE:
-                            CyberbillChuyenDoiHoaDon(ref result, apiV2);
+                            CyberbillChuyenDoiHoaDon(ref result, apiChuyenDoiHoaDon);
                             break;
                         case ElectronicBillType.ENUM.CREATE_INVOICE_DATA:
                             break;
@@ -551,7 +550,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
             return input;
 
         }
-        private void ChuyenDoiHoaDon(ref ElectronicBillResult result)
+        private void ChuyenDoiHoaDon(ref ElectronicBillResult result, string apiChuyenDoiHoaDon)
         {
 
             try
@@ -559,7 +558,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                 if (ElectronicBillDataInput == null || string.IsNullOrEmpty(ElectronicBillDataInput.InvoiceCode))
                     return;
                 string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(ICoEBill());
-                OCoEBill = Base.ApiConsumerV2.CreateRequest<OutputConvertElectronicBill>(System.Net.WebRequestMethods.Http.Post, serviceUrl, Base.RequestUriStore.CyberbillTaiHoaDon, login.result.access_token, sendJsonData);
+                string curentApi = Base.RequestUriStore.CyberbillTaiHoaDon;
+                if (!string.IsNullOrWhiteSpace(apiChuyenDoiHoaDon))
+                    curentApi = apiChuyenDoiHoaDon.Trim(); 
+                OCoEBill = Base.ApiConsumerV2.CreateRequest<OutputConvertElectronicBill>(System.Net.WebRequestMethods.Http.Post, serviceUrl, curentApi, login.result.access_token, sendJsonData);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"CyberbillChuyenDoiHoaDon", sendJsonData));
                 result.InvoiceSys = ProviderType.CYBERBILL;
                 if (OCoEBill != null && OCoEBill.result != null)
@@ -593,7 +595,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
 
         }
 
-        private void CyberbillChuyenDoiHoaDon(ref ElectronicBillResult result, string apiV2)
+        private void CyberbillChuyenDoiHoaDon(ref ElectronicBillResult result, string apiChuyenDoiHoaDon)
         {
 
             try
@@ -601,12 +603,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                 if (ElectronicBillDataInput == null || string.IsNullOrEmpty(ElectronicBillDataInput.InvoiceCode))
                     return;
                 string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(ICoEBill());
-                string apiCurrent = Base.RequestUriStore.CyberbillChuyenDoiHoaDon; 
-                if (!string.IsNullOrWhiteSpace(apiV2))
+                string curentApi = Base.RequestUriStore.CyberbillChuyenDoiHoaDon; 
+                if (!string.IsNullOrWhiteSpace(apiChuyenDoiHoaDon))
                 {
-                    apiCurrent = apiV2.Trim();
+                    curentApi = apiChuyenDoiHoaDon.Trim();
                 }
-                OCoEBill = Base.ApiConsumerV2.CreateRequest<OutputConvertElectronicBill>(System.Net.WebRequestMethods.Http.Post, serviceUrl, apiCurrent, login.result.access_token, sendJsonData);
+                OCoEBill = Base.ApiConsumerV2.CreateRequest<OutputConvertElectronicBill>(System.Net.WebRequestMethods.Http.Post, serviceUrl, curentApi, login.result.access_token, sendJsonData);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"CyberbillChuyenDoiHoaDon", sendJsonData));
 
                 result.InvoiceSys = ProviderType.CYBERBILL;

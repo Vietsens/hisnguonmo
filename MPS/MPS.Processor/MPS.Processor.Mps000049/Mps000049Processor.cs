@@ -111,7 +111,7 @@ namespace MPS.Processor.Mps000049
                 GetOtherPaySourceGroup();
                 objectTag.AddObjectData(store, "OtherPaySourceGroup", listOtherPaySource);
                 List<Mps000049ADO> listAdoFilter = new List<Mps000049ADO>();
-                foreach (var item in rdo.listAdo)
+                foreach (var item in rdo.listAdoArrangeM_T_N)
                 {
                     // Kiểm tra nếu MEDICINE_GROUP_NAME là null hoặc không chứa các từ khóa cụ thể
                     string name = item.MEDICINE_GROUP_NAME?.Trim().ToUpper();
@@ -160,47 +160,39 @@ namespace MPS.Processor.Mps000049
 
                     }
                     listParentFilter.Add(item);
-                    //string name = item.MEDICINE_GROUP_NAME?.Trim().ToUpper() ?? "";
-
-                    //// Chỉ gán nhóm "THƯỜNG" nếu:
-                    //// - Không phải nhóm đặc biệt (Gây nghiện, Hướng thần, Lao)
-                    //// - Và KHÔNG phải là kháng sinh cần in riêng (needSeparate == true)
-                    //bool isSpecialGroup = name.Contains("GÂY NGHIỆN") || name.Contains("HƯỚNG THẦN") || name.Contains("LAO");
-                    //bool isAntibiotic = name.Contains("KHÁNG SINH");
-                    //bool needSeparate = item.MEDICINE_GROUP_ID.HasValue && CheckSaperate(item.MEDICINE_GROUP_ID.Value);
-
-                    //if (!isSpecialGroup && !(isAntibiotic && needSeparate))
-                    //{
-                    //    var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
-                    //    if (commonMedicineType != null)
-                    //    {
-                    //        item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
-                    //    }
-                    //}
-
-                    //listParentFilter.Add(item);
                 }
-                objectTag.AddObjectData(store, "ExpMestAggregates", listAdoFilter.OrderBy(o => o.MEDICINE_TYPE_NAME).ToList());
+                objectTag.AddObjectData(store, "ExpMestAggregates", rdo.listAdo);
+                objectTag.AddObjectData(store, "ExpMestAggregates1", listAdoFilter.OrderBy(o => o.MEDICINE_TYPE_NAME).ToList());
                 objectTag.AddObjectData(store, "ExpMests", this.ExpMestADOs);
                 //Bổ sung key gom theo lô
                 objectTag.AddObjectData(store, "ExpMestsSplit", this.ExpMestADOsSplit);
                 objectTag.AddObjectData(store, "MedicineUseForms", medicineUseForms);
                 objectTag.AddObjectData(store, "MedicineGroup", listMedicineType);
                 objectTag.AddObjectData(store, "MedicineParent", listParentFilter);
-                Inventec.Common.Logging.LogSystem.Debug("listMedicineType: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", listMedicineType));
-                Inventec.Common.Logging.LogSystem.Debug("ExpMestAggregates: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", listAdoFilter.Select(o => o.MEDICINE_GROUP_ID)));
-                Inventec.Common.Logging.LogSystem.Debug("MedicineParent: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", listParentFilter.Select(o => o.MEDICINE_GROUP_ID)));
+                
                 objectTag.AddRelationship(store, "ExpMestAggregates", "ExpMests", new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" }, new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" });
+                objectTag.AddRelationship(store, "ExpMestAggregates1", "ExpMests", new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" }, new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" });
 
                 objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMestsSplit", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
+
                 objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMestAggregates", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
+                objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMestAggregates1", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
+
                 objectTag.AddRelationship(store, "OtherPaySourceGroup", "ExpMests", "OTHER_PAY_SOURCE_ID", "OTHER_PAY_SOURCE_ID");
                 objectTag.AddRelationship(store, "MedicineGroup", "MedicineParent", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
                 objectTag.AddRelationship(store, "MedicineUseForms", "ExpMests", "MEDICINE_USE_FORM_CODE", "MEDICINE_USE_FORM_CODE");
+
                 objectTag.AddRelationship(store, "MedicineUseForms", "ExpMestAggregates", "MEDICINE_USE_FORM_CODE", "MEDICINE_USE_FORM_CODE");
+                objectTag.AddRelationship(store, "MedicineUseForms", "ExpMestAggregates1", "MEDICINE_USE_FORM_CODE", "MEDICINE_USE_FORM_CODE");
+
                 objectTag.AddRelationship(store, "MedicineGroup", "ExpMestAggregates", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
+                objectTag.AddRelationship(store, "MedicineGroup", "ExpMestAggregates1", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
+
                 objectTag.AddRelationship(store, "MedicineGroup", "ExpMests", "MEDICINE_GROUP_ID", "MEDICINE_GROUP_ID");
+
                 objectTag.AddRelationship(store, "MedicineParent", "ExpMestAggregates", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
+                objectTag.AddRelationship(store, "MedicineParent", "ExpMestAggregates1", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
+
                 objectTag.AddRelationship(store, "MedicineParent", "ExpMests", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
 
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
@@ -611,6 +603,7 @@ namespace MPS.Processor.Mps000049
                                 break;
                         }
                         rdo.listAdo.AddRange(dataMedis);
+                        rdo.listAdoArrangeM_T_N.AddRange(dataMedis);
                     }
 
                     #region Group Split
@@ -697,6 +690,7 @@ namespace MPS.Processor.Mps000049
                     {
                         dataMates = dataMates.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
                         rdo.listAdo.AddRange(dataMates);
+                        rdo.listAdoArrangeM_T_N.AddRange(dataMates);
                     }
 
                     var GroupsSplit = query.GroupBy(g => new { g.MATERIAL_ID, g.IS_CHEMICAL_SUBSTANCE }).Select(p => p.ToList()).ToList();
