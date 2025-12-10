@@ -117,27 +117,133 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="Btn_ErrorLine.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
-        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAALdEVYdFRpdGxlAEluZm87bRIthgAAAJtJREFUOE+t
-        k8ENgCAMRRnFabx1qZ51CpfoBq5j4gCYRzSBRiKKh5dAf/tDCwRRC45R1GZRW0VtO2FNDK3IzzeDqE2i
-        totarIBGDrmFAYHlpqAGucnkMsDVJz1BTTKgr9tjxxgD+PgJNSMiw/FiiwHMiEzYC62sGHBNXkg0nGD7
-        xaDaQoNBaqF7iN3XCF0PCbqf8mXy+TPlvPrOB0ynVNG/VjQvAAAAAElFTkSuQmCC
-</value>
+  <data name="UCNcdWhoInformationList.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
   </data>
-  <data name="Btn_Delete.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
-        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAApdEVYdFRpdGxlAFJlbW92ZTtEZWxldGU7QmFycztS
-        aWJib247U3RhbmRhcmQ7Y1ZIMAAAAKdJREFUOE+Nk0sKwlAMRbu4QEe6iWxA/CBUrNvMShRHTy68wGua
-        j4MLIbnn0A7e1FqbhOkgTAvmfyJMDzCYFf4KUxOmpy3bCNOrd8Ecsbj1hSaUDLDmrId7JXHgK/ZjIZRE
-        8EYQSNYM3gkCSQi7gkSygzOB/WxktT1XEMChpIIvzu9sJCk83EJJCVcSHPAwUjiRLFjOwvSuYEfyAatL
-        SE62HKU/wBnzD9JAnMxlnre0AAAAAElFTkSuQmCC
-</value>
+  <data name="UCNcdWhoInformationList.bbtnRefresh.Caption" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
   </data>
-  <metadata name="barManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="UCNcdWhoInformationList.bbtnSearch.Caption" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="UCNcdWhoInformationList.btnDongBo.Text" xml:space="preserve">
+    <value>Data synchronization</value>
+  </data>
+  <data name="UCNcdWhoInformationList.btnDongBo.ToolTip" xml:space="preserve">
+    <value>Sync data to the Ministry of Health portal</value>
+  </data>
+  <data name="UCNcdWhoInformationList.btnRefresh.Text" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
+  </data>
+  <data name="UCNcdWhoInformationList.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="UCNcdWhoInformationList.chkSignFileCertUtil.Properties.Caption" xml:space="preserve">
+    <value>Digitally sign</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn10.Caption" xml:space="preserve">
+    <value>Medical record code</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn11.Caption" xml:space="preserve">
+    <value>Discharge date</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn12.Caption" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn13.Caption" xml:space="preserve">
+    <value>Hospitalization date</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn14.Caption" xml:space="preserve">
+    <value>Hospital discharge date</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn15.Caption" xml:space="preserve">
+    <value>Issuance date</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn16.Caption" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn17.Caption" xml:space="preserve">
+    <value>Social insurance book</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn19.Caption" xml:space="preserve">
+    <value>Synchronized time</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn2.Caption" xml:space="preserve">
+    <value>Diagnosis</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn20.Caption" xml:space="preserve">
+    <value>Sync error reason</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn3.Caption" xml:space="preserve">
+    <value>Health insurance card number</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn4.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn5.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn6.Caption" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn7.Caption" xml:space="preserve">
+    <value>Patient's name</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn8.Caption" xml:space="preserve">
+    <value>Date of birth</value>
+  </data>
+  <data name="UCNcdWhoInformationList.gridColumn9.Caption" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="UCNcdWhoInformationList.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCNcdWhoInformationList.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCNcdWhoInformationList.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCNcdWhoInformationList.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="UCNcdWhoInformationList.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
+  <data name="UCNcdWhoInformationList.layoutControl6.Text" xml:space="preserve">
+    <value>layoutControl6</value>
+  </data>
+  <data name="UCNcdWhoInformationList.layoutControlItem8.Text" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="UCNcdWhoInformationList.layoutControlItem9.Text" xml:space="preserve">
+    <value>Arrive:</value>
+  </data>
+  <data name="UCNcdWhoInformationList.navBarControl1.Text" xml:space="preserve">
+    <value>navBarControl1</value>
+  </data>
+  <data name="UCNcdWhoInformationList.navBarGroup1.Caption" xml:space="preserve">
+    <value>Discharge date</value>
+  </data>
+  <data name="UCNcdWhoInformationList.navBarGroup2.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UCNcdWhoInformationList.navBarGroup3.Caption" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="UCNcdWhoInformationList.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="UCNcdWhoInformationList.txtPatientName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Patient's name</value>
+  </data>
+  <data name="UCNcdWhoInformationList.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="UCNcdWhoInformationList.txtTreatmentCode.Properties.NullValuePrompt1" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
 </root>

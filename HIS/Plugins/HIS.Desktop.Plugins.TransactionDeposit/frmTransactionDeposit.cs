@@ -517,13 +517,15 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 this.ResetDefaultValueControl();
                 this.GeneratePrintMenu();
                 this.ValidControlDescription();
-                if (isShowMess == true) 
+                if (this.treatment != null && this.treatment.ID > 0)
                 {
-                    if (this.treatment != null && this.treatment.ID > 0)
-                    {
-                        FillDataToCommon(this.treatment);
-                        txtTreatmenCode.Text = this.treatment.TREATMENT_CODE;
-                    }
+                    FillDataToCommon(this.treatment);
+                    txtTreatmenCode.Text = this.treatment.TREATMENT_CODE;
+                }
+                else if (this.depositReq != null)
+                {
+                    FillDataToCommon(this.depositReq);
+                    txtDepositReqCode.Text = this.depositReq.DEPOSIT_REQ_CODE;
                 }
                 if (HisConfigCFG.MinimumDepositAmount > 0)
                 {
@@ -531,12 +533,12 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 }
                 else
                 {
-                    if (isShowMess == true)
+                    if (isShowMess == true && this.depositReq != null)
                     {
-                        FillDataToCommon(this.depositReq);
-                        txtDepositReqCode.Text = this.depositReq != null ? this.depositReq.DEPOSIT_REQ_CODE : "";
+                        txtDepositReqCode.Text = this.depositReq.DEPOSIT_REQ_CODE;
                     }
                 }
+
                 if (this.treatment != null)
                 {
                     txtTotalAmount.Focus();

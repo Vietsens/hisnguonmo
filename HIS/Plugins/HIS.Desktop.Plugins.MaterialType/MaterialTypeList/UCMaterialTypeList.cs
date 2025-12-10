@@ -441,10 +441,9 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                     if (materialTypeData.IS_STOP_IMP == 1)
                     {
                         // Đặt màu chữ thành màu đỏ
-                        appearanceObject.ForeColor = System.Drawing.Color.Maroon;
+                        appearanceObject.ForeColor = System.Drawing.Color.Red;
                     }
 
-                    // Giữ lại logic in đậm cho các node không phải node lá
                     if (materialTypeData.IS_LEAF != 1)
                     {
                         appearanceObject.FontStyleDelta = System.Drawing.FontStyle.Bold;
