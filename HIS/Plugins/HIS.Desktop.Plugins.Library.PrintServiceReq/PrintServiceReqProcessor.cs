@@ -75,14 +75,40 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
         private List<HisServiceReqMaxNumOrderSDO> ReqMaxNumOrderSDO;
         public List<HIS_SERE_NMSE> listSereNmseData;
         private Action<Inventec.Common.SignLibrary.DTO.DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned { get; set; }
+        public PrintServiceReqProcessor(HIS_TRANS_REQ _transReq, HisServiceReqListResultSDO _ServiceReqResult,
+           HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_LOG> _bedLogs)
+            : this(_transReq ,_ServiceReqResult, TreatmentWithPatientTypeInfo, _bedLogs, null)
+        {
+        }
+
+
         public PrintServiceReqProcessor(HisServiceReqListResultSDO _ServiceReqResult,
            HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_LOG> _bedLogs)
             : this(_ServiceReqResult, TreatmentWithPatientTypeInfo, _bedLogs, null)
         {
         }
 
-        public PrintServiceReqProcessor(HisServiceReqListResultSDO _ServiceReqResult,
+        public PrintServiceReqProcessor(HIS_TRANS_REQ _transReq, HisServiceReqListResultSDO _ServiceReqResult,
             HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_LOG> _bedLogs, long? roomId)
+        {
+            try
+            {
+                this.transReqMPS37 = _transReq; 
+                this.HisServiceReqListResultSDO = _ServiceReqResult;
+                this.HisTreatmentWithPatientTypeInfoSDO = TreatmentWithPatientTypeInfo;
+                this.BedLogs = _bedLogs;
+                this.roomId = roomId;
+                Config.LoadConfig();
+                ProcessDictionaryData.Reload();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public PrintServiceReqProcessor(HisServiceReqListResultSDO _ServiceReqResult,
+         HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_LOG> _bedLogs, long? roomId)
         {
             try
             {
@@ -219,6 +245,7 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                         filter.IDs = HisServiceReqListResultSDO.ServiceReqs.Select(o => o.TRANS_REQ_ID ?? 0).ToList();
                         transReq = new Inventec.Common.Adapter.BackendAdapter(param)
                           .Get<List<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>>("api/HisTransReq/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                   
                     }
                 }
                 else
@@ -230,12 +257,12 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                         filter.TREATMENT_ID = HisServiceReqListResultSDO.ServiceReqs[0].TREATMENT_ID;
                         transReq = new Inventec.Common.Adapter.BackendAdapter(param)
                           .Get<List<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>>("api/HisTransReq/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                        Inventec.Common.Logging.LogSystem.Debug("thangdq key != 1");
+                        Inventec.Common.Logging.LogSystem.Debug("transReq thangdq: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", transReq));
                         if (transReq != null && transReq.Count > 0)
-                        { 
+                        {
                             transReq = transReq.Where(o => o.TRANS_REQ_TYPE == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_SERVICE).ToList();
-                            transReqMPS37 = transReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault();
                         }
-
                     }
                 }
             }
@@ -963,6 +990,7 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                 threadSereServ.Start();
                 threadMaxNumOrder.Start();
                 threadQrCode.Start();
+
                 threadCard.Join();
                 threadTreatment.Join();
                 threadSereServ.Join();

@@ -523,5 +523,10 @@ namespace HIS.Desktop
 #endif
 
         }
+
+        public static string GetCurrentAupVersion()
+        {
+            return aupVersion;
+        }
     }
 }

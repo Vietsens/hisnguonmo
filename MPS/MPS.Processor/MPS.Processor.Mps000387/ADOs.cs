@@ -25,10 +25,14 @@ namespace MPS.Processor.Mps000387
 {
     public class ADOs
     {
+       
         public string Data { get; set; }
+        public string USERNAME { get; set; }
         public ADOs(string data)
         {
-            Data = data;
+          
+        Data = data;
+            USERNAME = data;
         }
     }
 }

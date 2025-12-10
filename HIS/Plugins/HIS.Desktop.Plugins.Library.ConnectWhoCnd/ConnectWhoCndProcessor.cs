@@ -2,6 +2,7 @@
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,11 +39,11 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
             {
                 Inventec.Common.Logging.LogSystem.Info("ConnectWhoCndProcessor CheckData");
                 //không có só thẻ BHYT, CCCD thì không đẩy
-                if (data == null || String.IsNullOrWhiteSpace(data.TDL_PATIENT_CCCD_NUMBER) || String.IsNullOrWhiteSpace(data.TDL_HEIN_CARD_NUMBER))
-                {
-                    Inventec.Common.Logging.LogSystem.Info(string.Format("không có só thẻ BHYT, CCCD. CCCD:{0}, BHYT:{1}", data.TDL_PATIENT_CCCD_NUMBER, data.TDL_HEIN_CARD_NUMBER));
-                    return result;
-                }
+                //if (data == null || String.IsNullOrWhiteSpace(data.TDL_PATIENT_CCCD_NUMBER) || String.IsNullOrWhiteSpace(data.TDL_HEIN_CARD_NUMBER))
+                //{
+                //    Inventec.Common.Logging.LogSystem.Info(string.Format("không có só thẻ BHYT, CCCD. CCCD:{0}, BHYT:{1}", data.TDL_PATIENT_CCCD_NUMBER, data.TDL_HEIN_CARD_NUMBER));
+                //    return result;
+                //}
 
 
                 Configs.LoadConfig();
@@ -75,7 +76,10 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                     Inventec.Common.Logging.LogSystem.Info("NOT IN ICD");
                     return result;
                 }
-
+                if (data == null || String.IsNullOrWhiteSpace(data.TDL_PATIENT_CCCD_NUMBER) || String.IsNullOrWhiteSpace(data.TDL_HEIN_CARD_NUMBER))
+                {
+                    message += "Bệnh nhân thiếu thông tin CCCD hoặc số thẻ BHYT";
+                }
                 var t1 = Task.Run(() => GetDhst(data, dhst));
                 var t2 = Task.Run(() => GetSereServ(data));
                 var t3 = Task.Run(() => GetMedicine(data, medicine));
@@ -110,8 +114,12 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 }
 
                 //cao huyết áp: I10-I15, khi lưu bắt buộc phải có thông tin huyết áp
-                if (Utilities.IsBATHA(totalIcds) && (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue))
+                //if (Utilities.IsBATHA(totalIcds) && (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue))
+
+                if (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue)
                 {
+                    //cổng bắt lỗi nên check huyết áp với cả 2 bệnh
+                    //{"validate":{"ncdData.0.DU_LIEU.DTD.HA_TAM_THU":"Path `HA_TAM_THU` is required.","ncdData.0.DU_LIEU.DTD.HA_TAM_TRUONG":"Path `HA_TAM_TRUONG` is required."}}
                     message += "Bệnh nhân thiếu thông tin huyết áp. ";
                 }
 
@@ -132,14 +140,27 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 {
                     result = false;
                     HasData = false;
+                    bool continueAnyway = false; 
                     if (Configs.IS_WARNING == "1")
                     {
                         if (XtraMessageBox.Show(string.Format("{0}. Bạn có muốn tiếp tục?", message.Trim()), "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
                         {
                             result = true;
+                            continueAnyway = true;
+                            HasData = true; 
                         }
                     }
-                    else
+                    //else
+                    //{
+                    //    XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK);
+                    //}
+                    // qtcode
+                    if (!continueAnyway)
+                    {
+                        UpdateNcdWhoStatus(data.ID, 2, message.Trim());
+                    }
+
+                    if (!continueAnyway && Configs.IS_WARNING != "1")
                     {
                         XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK);
                     }
@@ -170,10 +191,10 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Info("SendDataWithoutCheck");
+
                 if (Configs.CheckConnect())
                 {
-                    Inventec.Common.Logging.LogSystem.Info("SendDataWithoutCheck");
-
                     List<string> totalIcds = new List<string>();
                     if (!String.IsNullOrWhiteSpace(data.ICD_CODE))
                     {
@@ -206,6 +227,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                     }
 
                     string thuoc = "";
+                    List<long> numberUseDay = new List<long>();
                     CommonParam medicineParam = new CommonParam();
                     if (medicine != null && medicine.Count > 0)
                     {
@@ -237,6 +259,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                                     if (NUMBER_USE_DAY > 0)
                                     {
                                         sb.AppendFormat(" - {0} ngày", NUMBER_USE_DAY);
+                                        numberUseDay.Add(NUMBER_USE_DAY);
                                     }
                                 }
                                 catch (Exception ex)
@@ -257,6 +280,10 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                         long startTimeMin = examServiceReq.Min(m => m.START_TIME ?? 99999999999999);
                         ncdData.DU_LIEU.THA.NGAY_KHAM = DateTime.ParseExact(startTimeMin + "", "yyyyMMddHHmmss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                         ncdData.DU_LIEU.THA.THUOC = thuoc;
+                        if (numberUseDay != null && numberUseDay.Count > 0)
+                        {
+                            ncdData.DU_LIEU.THA.SO_NGAY_NHAN_THUOC = numberUseDay.Max();
+                        }
                         if (dhst != null)
                         {
                             ncdData.DU_LIEU.THA.HA_TAM_THU = dhst.BLOOD_PRESSURE_MAX + "";
@@ -272,6 +299,10 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                         long startTimeMin = examServiceReq.Min(m => m.START_TIME ?? 99999999999999);
                         ncdData.DU_LIEU.DTD.NGAY_KHAM = DateTime.ParseExact(startTimeMin + "", "yyyyMMddHHmmss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                         ncdData.DU_LIEU.DTD.THUOC = thuoc;
+                        if (numberUseDay != null && numberUseDay.Count > 0)
+                        {
+                            ncdData.DU_LIEU.DTD.SO_NGAY_NHAN_THUOC = numberUseDay.Max();
+                        }
                         if (dhst != null)
                         {
                             ncdData.DU_LIEU.DTD.HA_TAM_THU = dhst.BLOOD_PRESSURE_MAX + "";
@@ -304,15 +335,26 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                     }
 
                     Model.OImport rsData = ApiConsumers.CreateRequest<Model.OImport>("POST", Configs.API_NCD, "/api/v1/import", sendData);
+                    //qtcode
+                    if (rsData != null)
+                    {
+                        UpdateNcdWhoStatus(data.ID, 1, null);  // Thành công
+                    }
+                    else
+                    {
+                        UpdateNcdWhoStatus(data.ID, 2, "Gửi dữ liệu lên cổng thất bại");
+                    }
                 }
                 else
                 {
-                    Inventec.Common.Logging.LogSystem.Error("Đăng nhập thát bại!");
+                    Inventec.Common.Logging.LogSystem.Error("Đăng nhập thất bại!");
+                    UpdateNcdWhoStatus(data.ID, 2, "Đăng nhập thất bại");
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                UpdateNcdWhoStatus(data.ID, 2, ex.Message);
             }
         }
 
@@ -345,20 +387,23 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 if (HIS_DHSTs != null && HIS_DHSTs.Count > 0)
                 {
                     dhst = HIS_DHSTs.Where(o => o.BLOOD_PRESSURE_MAX.HasValue && o.BLOOD_PRESSURE_MIN.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).FirstOrDefault();
-                    if (!dhst.WEIGHT.HasValue)
+                    if (dhst != null)
                     {
-                        var weight = HIS_DHSTs.Where(o => o.WEIGHT.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).ToList();
-                        if (weight != null && weight.Count > 0)
+                        if (!dhst.WEIGHT.HasValue)
                         {
-                            dhst.WEIGHT = weight.FirstOrDefault().WEIGHT;
+                            var weight = HIS_DHSTs.Where(o => o.WEIGHT.HasValue).ToList();
+                            if (weight != null && weight.Count > 0)
+                            {
+                                dhst.WEIGHT = weight.OrderByDescending(o => o.EXECUTE_TIME ?? 0).FirstOrDefault().WEIGHT;
+                            }
                         }
-                    }
-                    if (!dhst.HEIGHT.HasValue)
-                    {
-                        var height = HIS_DHSTs.Where(o => o.HEIGHT.HasValue).OrderByDescending(o => o.EXECUTE_TIME ?? 0).ToList();
-                        if (height != null && height.Count > 0)
+                        if (!dhst.HEIGHT.HasValue)
                         {
-                            dhst.HEIGHT = height.FirstOrDefault().HEIGHT;
+                            var height = HIS_DHSTs.Where(o => o.HEIGHT.HasValue).ToList();
+                            if (height != null && height.Count > 0)
+                            {
+                                dhst.HEIGHT = height.OrderByDescending(o => o.EXECUTE_TIME ?? 0).FirstOrDefault().HEIGHT;
+                            }
                         }
                     }
                 }
@@ -388,5 +433,31 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
             return ssTein;
         }
         #endregion
+
+
+        private void UpdateNcdWhoStatus(long treatmentId, short ncdWhoResult, string description)
+        {
+            try
+            {
+                NcdWhoStatusSDO sdo = new NcdWhoStatusSDO
+                {
+                    TreatmentId = treatmentId,
+                    NcdWhoResult = ncdWhoResult,
+                    NcdWhoDescription = description
+                };
+                CommonParam param = new CommonParam();
+                var apiResult = new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Post<HIS_TREATMENT>("api/HisTreatment/UpdateNcdWhoStatus", ApiConsumer.ApiConsumers.MosConsumer, sdo, param);
+
+                if (apiResult == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Cập nhật trạng thái đồng bộ thất bại: " + param.GetMessage());
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

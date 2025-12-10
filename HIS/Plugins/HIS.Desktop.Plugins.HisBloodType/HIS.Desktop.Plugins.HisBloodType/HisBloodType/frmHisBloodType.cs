@@ -1013,8 +1013,10 @@ namespace HIS.Desktop.Plugins.HisBloodType
         {
             try
             {
-                ValidationSingleControl(txtBloodTypeCode);
-                ValidationSingleControl(txtBloodTypeName);
+                this.ValidateTextEdit(this.txtBloodTypeCode, 100);
+                this.ValidateTextEdit(this.txtBloodTypeName, 3000);
+                //ValidationSingleControl(txtBloodTypeCode);
+                //ValidationSingleControl(txtBloodTypeName);
 
                 ValidationSingleControl(cboDVT);
                 ValidationSingleControl(cboVolume);
@@ -1056,6 +1058,23 @@ namespace HIS.Desktop.Plugins.HisBloodType
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        //private void ValidateTextEdit(DevExpress.XtraEditors.TextEdit txtEdit, int maxlength)
+        //{
+        //    ValidTextMaxLength _rule = new ValidTextMaxLength();
+        //    _rule.maxlength = maxlength;
+        //    _rule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+
+        //    this.dxValidationProviderEditorInfo.SetValidationRule(txtEdit, _rule);
+        //}
+        private void ValidateTextEdit(DevExpress.XtraEditors.TextEdit txtEdit, int maxlength)
+        {
+            ValidTextMaxLength _rule = new ValidTextMaxLength();
+            _rule.txtEdit = txtEdit;
+            _rule.maxlength = maxlength;
+            _rule.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+            _rule.ErrorType = ErrorType.Warning;
+            this.dxValidationProviderEditorInfo.SetValidationRule(txtEdit, _rule);
         }
 
         private void ValidateGridLookupWithTextEdit(GridLookUpEdit cbo, TextEdit textEdit)

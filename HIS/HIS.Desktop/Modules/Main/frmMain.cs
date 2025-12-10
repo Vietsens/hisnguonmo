@@ -207,6 +207,7 @@ namespace HIS.Desktop.Modules.Main
                     InitDefaultSelectRoom();
                     InitWcfAssignPrescriptionByCFG();
                     DevExpress.XtraEditors.XtraMessageBox.AllowHtmlText = true;
+                    DevExpress.XtraEditors.Repository.RepositoryItemTextEdit.MaxToolTipTextLength = 4000;
                     SetDefaultTabpageFocus();
                 }
             }
@@ -1391,17 +1392,39 @@ namespace HIS.Desktop.Modules.Main
             bool success = true;
             try
             {
-                string aupVersion = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__RUN_AUP_VERSION);
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => aupVersion), aupVersion));
-                if (String.IsNullOrWhiteSpace(aupVersion) || aupVersion == "v1")
+                // Dùng version AUP mà Program đã lấy từ API
+                string aupVersion = HIS.Desktop.Program.GetCurrentAupVersion();
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => aupVersion), aupVersion));
+
+                // Nếu đang chạy với AUP v2 thì bỏ qua kiểm tra readme.txt / readmebk.txt
+                if (aupVersion == "v2")
                 {
-                    if (File.Exists(System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, "readme.txt")) && File.Exists(System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, "readmebk.txt")))
-                    {
-                        string readmeContent = System.IO.File.ReadAllText(System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, "readme.txt"));
-                        string readmeBKContent = System.IO.File.ReadAllText(System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, "readmebk.txt"));
-                        success = readmeContent == readmeBKContent;
-                    }
+                    return true; // luôn coi là OK, chỉ hiện thông tin từ readme.txt
                 }
+
+                // Còn lại (v1 hoặc lỗi) thì giữ nguyên hành vi cũ
+                if (File.Exists(System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, "readme.txt"))
+                    && File.Exists(System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, "readmebk.txt")))
+                {
+                    string readmeContent = System.IO.File.ReadAllText(
+                        System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, "readme.txt"));
+                    string readmeBKContent = System.IO.File.ReadAllText(
+                        System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, "readmebk.txt"));
+                    success = readmeContent == readmeBKContent;
+                }
+                //string aupVersion = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__RUN_AUP_VERSION);
+                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => aupVersion), aupVersion));
+                //if (String.IsNullOrWhiteSpace(aupVersion) || aupVersion == "v1")
+                //{
+                //    if (File.Exists(System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, "readme.txt")) && File.Exists(System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, "readmebk.txt")))
+                //    {
+                //        string readmeContent = System.IO.File.ReadAllText(System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, "readme.txt"));
+                //        string readmeBKContent = System.IO.File.ReadAllText(System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, "readmebk.txt"));
+                //        success = readmeContent == readmeBKContent;
+                //    }
+                //}
             }
             catch (Exception ex)
             {

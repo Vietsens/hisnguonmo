@@ -36,6 +36,8 @@ namespace MPS.Processor.Mps000387
         List<ADOs> InternalMedicineStates = new List<ADOs>();
         List<ADOs> Prognosiss = new List<ADOs>();
         List<ADOs> SubclinicalProcessess = new List<ADOs>();
+        List<ADOs> InvitedParticipants = new List<ADOs>();
+
         public Mps000387Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -63,6 +65,8 @@ namespace MPS.Processor.Mps000387
                 objectTag.AddObjectData(store, "InternalMedicineStates", InternalMedicineStates);
                 objectTag.AddObjectData(store, "Prognosiss", Prognosiss);
                 objectTag.AddObjectData(store, "SubclinicalProcessess", SubclinicalProcessess);
+                
+                objectTag.AddObjectData(store, "InvitedParticipants", InvitedParticipants);
 
                 result = true;
             }
@@ -103,6 +107,20 @@ namespace MPS.Processor.Mps000387
                     if (!String.IsNullOrEmpty(rdo.CurrentHisDebate.SUBCLINICAL_PROCESSES))
                     {
                         rdo.CurrentHisDebate.SUBCLINICAL_PROCESSES.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList().ForEach(o => SubclinicalProcessess.Add(new ADOs(o.Trim())));
+                    }
+                    if (rdo.CurrentHisDebate != null && !string.IsNullOrEmpty(rdo.CurrentHisDebate.INVITE_USER_USERNAME))
+                    {
+                        var usernames = rdo.CurrentHisDebate.INVITE_USER_USERNAME
+                            .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(u => u.Trim())
+                            .Where(u => !string.IsNullOrEmpty(u))
+                            .ToList();
+
+                        foreach (var username in usernames)
+                        {
+                            InvitedParticipants.Add(new ADOs(username));
+                        }
+                        //rdo.CurrentHisDebate.INVITE_USER_USERNAME.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList().ForEach(o => InvitedParticipants.Add(new ADOs(o.Trim())));
                     }
                 }
             }

@@ -69,8 +69,9 @@
     <Reference Include="HIS.Desktop.LibraryMessage">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCPatientRaw\HIS.Desktop.LibraryMessage.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.PrintBordereau">
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintBordereau\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintBordereau, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
@@ -394,7 +395,9 @@
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Lang.my.resx" />
+    <EmbeddedResource Include="Resources\Lang.my.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.vi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

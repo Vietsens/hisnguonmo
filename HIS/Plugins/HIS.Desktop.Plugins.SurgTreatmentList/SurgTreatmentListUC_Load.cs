@@ -154,7 +154,8 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                 if (!toggleSwitch1.IsOn)
                 {
                     this.GvSS_GcGatherData.Image = null;
-                    this.GvSS_GcFee.Image = null; 
+                    this.GvSS_GcFee.Image = null;
+                    btnSave.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -224,6 +225,11 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
 
                     if (listData != null && listData.Count > 0)
                     {
+                        foreach (var item in listData)
+                        {
+                            item.IS_FEE_DEFAULT = item.IS_FEE; //lay gia tri ban dau de so sanh khi luu du lieu
+                            item.IS_GATHER_DATA_DEFAULT = item.IS_GATHER_DATA; //chi luu dong du lieu co thay doi
+                        }
                         GridControlSereServ.DataSource = listData;
                         rowCount = (listData == null ? 0 : listData.Count);
                         dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);

@@ -28,7 +28,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
         public string DIA_CHI { get; set; }
         public string MA_NGHE_NGHIEP { get; set; }
         public string MA_CSKCB { get; set; }
-        public string MA_CSYT_BHYT { get; set; }
+        public string MA_CSKCB_BHXH { get; set; }
         public string MA_CSKCB_BHYT { get; set; }
         public string MA_LK { get; set; }
         public BENH_NHAN(HIS_TREATMENT data)
@@ -36,7 +36,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
             this.DIA_CHI = data.TDL_PATIENT_ADDRESS;
             this.DIEN_THOAI = data.TDL_PATIENT_MOBILE ?? data.TDL_PATIENT_PHONE;
             this.GIOI_TINH = data.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE ? "01" : "02";
-            this.HO_TEN = data.TDL_PATIENT_NAME;
+            this.HO_TEN = data.TDL_PATIENT_NAME.Trim();
             this.MA_LK = data.TREATMENT_CODE;
             this.MA_NGHE_NGHIEP = data.TDL_PATIENT_CAREER_NAME;
             this.MA_THE_BHYT = data.TDL_HEIN_CARD_NUMBER;
@@ -48,7 +48,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd.Model
             if (branch != null)
             {
                 this.MA_CSKCB = branch.HEIN_MEDI_ORG_CODE;
-                this.MA_CSYT_BHYT = branch.HEIN_MEDI_ORG_CODE;
+                this.MA_CSKCB_BHXH = branch.HEIN_MEDI_ORG_CODE;
             }
         }
     }

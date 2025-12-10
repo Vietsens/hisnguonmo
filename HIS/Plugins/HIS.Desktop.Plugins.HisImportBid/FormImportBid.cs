@@ -676,7 +676,29 @@ namespace HIS.Desktop.Plugins.HisImportBid
                     }
                     medicineType.HEIN_LIMIT_PRICE = medicineTypeImport.HEIN_LIMIT_PRICE;
                     medicineType.DOSAGE_FORM = medicineTypeImport.DOSAGE_FORM;
+                    if (!String.IsNullOrWhiteSpace(medicineType.IS_MEDICINE))
+                    {
+                        medicineType.BID_MEDICINE_TYPE_CODE = medicineTypeImport.BID_MATERIAL_TYPE_CODE;
 
+                        if (Encoding.UTF8.GetByteCount(medicineType.BID_MEDICINE_TYPE_CODE) > 50)
+                        {
+                            medicineType.ERROR = "Mã trúng thầu vượt quá độ dài cho phép (50)";
+                        }
+
+                        medicineType.BID_MEDICINE_TYPE_NAME = medicineTypeImport.BID_MATERIAL_TYPE_NAME;
+
+                        if (Encoding.UTF8.GetByteCount(medicineType.BID_MEDICINE_TYPE_NAME) > 500)
+                        {
+                            medicineType.ERROR = "Tên trúng thầu vượt quá độ dài cho phép (500)";
+                        }
+
+                        medicineType.JOIN_BID_MEDICINE_TYPE_CODE = medicineTypeImport.JOIN_BID_MATERIAL_TYPE_CODE;
+
+                        if (Encoding.UTF8.GetByteCount(medicineType.JOIN_BID_MEDICINE_TYPE_CODE) > 50)
+                        {
+                            medicineType.ERROR = "Mã dự thầu vượt quá độ dài cho phép (50)";
+                        }
+                    }
                     this.ListDataImport.Add(medicineType);
                 }
             }
@@ -813,11 +835,13 @@ namespace HIS.Desktop.Plugins.HisImportBid
                         medicineType.BID_TYPE_ID = bidType.ID;
                         medicineType.BID_TYPE_NAME = bidType.BID_TYPE_NAME;
                     }
-
+                    if (String.IsNullOrWhiteSpace(medicineType.IS_MEDICINE))
+                    {
+                        medicineType.JOIN_BID_MATERIAL_TYPE_CODE = materialTypeImport.JOIN_BID_MATERIAL_TYPE_CODE;
+                        medicineType.BID_MATERIAL_TYPE_CODE = materialTypeImport.BID_MATERIAL_TYPE_CODE;
+                        medicineType.BID_MATERIAL_TYPE_NAME = materialTypeImport.BID_MATERIAL_TYPE_NAME;
+                    }
                     medicineType.MATERIAL_TYPE_MAP_CODE = materialTypeImport.MATERIAL_TYPE_MAP_CODE;
-                    medicineType.JOIN_BID_MATERIAL_TYPE_CODE = materialTypeImport.JOIN_BID_MATERIAL_TYPE_CODE;
-                    medicineType.BID_MATERIAL_TYPE_CODE = materialTypeImport.BID_MATERIAL_TYPE_CODE;
-                    medicineType.BID_MATERIAL_TYPE_NAME = materialTypeImport.BID_MATERIAL_TYPE_NAME;
                     medicineType.PACKING_TYPE_NAME = materialTypeImport.PACKING_TYPE_NAME;
                     medicineType.HEIN_SERVICE_BHYT_NAME = materialTypeImport.HEIN_SERVICE_BHYT_NAME;
 
@@ -1063,20 +1087,20 @@ namespace HIS.Desktop.Plugins.HisImportBid
                         messageErr.Add(Resources.ResourceLanguageManager.KhongDuocNhapMaVatTuTuongDuong);
                     }
 
-                    if (!string.IsNullOrEmpty(item.JOIN_BID_MATERIAL_TYPE_CODE))
-                    {
-                        messageErr.Add(Resources.ResourceLanguageManager.KhongDuocNhapMaDuThau);
-                    }
+                    //if (!string.IsNullOrEmpty(item.JOIN_BID_MATERIAL_TYPE_CODE))
+                    //{
+                    //    messageErr.Add(Resources.ResourceLanguageManager.KhongDuocNhapMaDuThau);
+                    //}
 
-                    if (!string.IsNullOrEmpty(item.BID_MATERIAL_TYPE_CODE))
-                    {
-                        messageErr.Add(Resources.ResourceLanguageManager.KhongDuocNhapMaTrungThau);
-                    }
+                    //if (!string.IsNullOrEmpty(item.BID_MATERIAL_TYPE_CODE))
+                    //{
+                    //    messageErr.Add(Resources.ResourceLanguageManager.KhongDuocNhapMaTrungThau);
+                    //}
 
-                    if (!string.IsNullOrEmpty(item.BID_MATERIAL_TYPE_NAME))
-                    {
-                        messageErr.Add(Resources.ResourceLanguageManager.KhongDuocNhapTenTrungThau);
-                    }
+                    //if (!string.IsNullOrEmpty(item.BID_MATERIAL_TYPE_NAME))
+                    //{
+                    //    messageErr.Add(Resources.ResourceLanguageManager.KhongDuocNhapTenTrungThau);
+                    //}
                 }
 
                 if (item.Type == THUOC)
@@ -1370,6 +1394,10 @@ namespace HIS.Desktop.Plugins.HisImportBid
                                 bidMedicineType.HOUR_LIFESPAN = item.HOUR_LIFESPAN;
                                 bidMedicineType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
                                 bidMedicineType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE;
+
+                                bidMedicineType.BID_MEDICINE_TYPE_CODE = item.BID_MEDICINE_TYPE_CODE;
+                                bidMedicineType.BID_MEDICINE_TYPE_NAME = item.BID_MEDICINE_TYPE_NAME;
+                                bidMedicineType.JOIN_BID_MEDICINE_TYPE_CODE = item.JOIN_BID_MEDICINE_TYPE_CODE;
                                 bidModel.HIS_BID_MEDICINE_TYPE.Add(bidMedicineType);
                             }
                             else if (item.Type == VATTU)

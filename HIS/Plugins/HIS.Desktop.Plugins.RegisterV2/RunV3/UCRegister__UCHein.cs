@@ -81,7 +81,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 }
                 this.ucAddressCombo1.SetValue(null);
                 //Kiem tra cau hinh co tu dong fill du lieu dia chi ghi tren the vao o dia chi benh nhan, co thi fill du lieu, khong thi bo qua
-                if (HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1)
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 1 || (dt.HisPatientSDO == null || dt.HisPatientSDO.TreatmentId == null || dt.HisPatientSDO.TreatmentId <= 0))
                 {
                     Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.5");
                     dataAddressPatient = this.ucAddressCombo1.GetValue() ?? new HIS.UC.AddressCombo.ADO.UCAddressADO();
@@ -103,7 +103,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     this.ucAddressCombo1.SetValue(dataAddressPatient);
                     Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.6");
                 }
-                else if (dt.HisPatientSDO != null && HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
+                else if (dt.HisPatientSDO != null && dt.HisPatientSDO.TreatmentId != null && dt.HisPatientSDO.TreatmentId > 0 &&  HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
                 {
                     HisTreatmentFilter filter = new HisTreatmentFilter();
                     filter.ID = dt.HisPatientSDO.TreatmentId;

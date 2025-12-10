@@ -1368,7 +1368,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
             catch (Exception ex)
             {
-                this.panel1.Controls.Clear(); 
+                this.panel1.Controls.Clear();
                 this.panel1 = new Panel();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -2507,6 +2507,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 if (!Config.ConfigKey.IsHasConnectionEmr)
                     return;
+                IsMergeDocument = chkMergeDoc.Checked || chkMerge.Checked;
                 if (IsMergeDocument)
                 {
                     loadDictionary();
@@ -3011,6 +3012,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                 if (openFolder.ShowDialog() == DialogResult.OK)
                 {
+                    IsMergeDocument = chkMergeDoc.Checked || chkMerge.Checked;
                     if (IsMergeDocument)
                     {
                         loadDictionary();
@@ -3329,6 +3331,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             Directory.CreateDirectory(directoryPath);
                         }
                         int count = 1;
+
+                        Dictionary<long, string> lstURL = new Dictionary<long, string>();
                         foreach (var item in documents)
                         {
                             string safeFileName = string.Join("_", item.DocumentName.Split(Path.GetInvalidFileNameChars()));
@@ -3347,20 +3351,11 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                 MemoryStream pdfStream = new MemoryStream(Convert.FromBase64String(item.Base64Data));
                                 pdfStream.Position = 0;
 
-                                if (chkDowloadGroup.Checked)
-                                {
-                                    InsertPage1(pdfStream, null, null, filePath, null, 0); 
-
-                                }
-                                else
-                                {
-                                    InsertPageOne(pdfStream, null, filePath, null, 0); 
-                                }
+                                InsertPageOne(pdfStream, null, filePath, null, 0);
                             }
 
                             count++;
                         }
-
                         MessageManager.ShowAlert(this, ResourceMessage.ThongBao, ResourceMessage.TaiVeThanhCong);
 
                     }

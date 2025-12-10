@@ -1583,16 +1583,18 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
         {
             try
             {
-                txtSurgeryName.Text = namePTTT;
+                txtSurgeryName.Text = namePTTT ?? string.Empty;
                 //dtStart.DateTime = startTime ?? DateTime.MinValue;
-                if (startTime != null)
-                {
-                    dtStart.DateTime = startTime ?? DateTime.MinValue;
-                }
-                if (finishTime != null)
-                {
-                    dtFinish.DateTime = finishTime ?? DateTime.MinValue;
-                }
+                dtStart.EditValue = startTime != null ? startTime : null;
+                dtFinish.EditValue = finishTime != null ? finishTime : null;
+                //if (startTime != null)
+                //{
+                //    dtStart.DateTime = startTime ?? DateTime.MinValue;
+                //}
+                //if (finishTime != null)
+                //{
+                //    dtFinish.DateTime = finishTime ?? DateTime.MinValue;
+                //}
             }
             catch (Exception ex)
             {

@@ -48,6 +48,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormHisBedRoomIn));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.cboBedRoom = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnHospitalizeReason = new DevExpress.XtraEditors.ButtonEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
@@ -67,7 +69,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.chkAutoOutBed = new DevExpress.XtraEditors.CheckEdit();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
-            this.cboBedRoom = new DevExpress.XtraEditors.LookUpEdit();
             this.cboDepartment = new DevExpress.XtraEditors.LookUpEdit();
             this.txtBedRoomCode = new DevExpress.XtraEditors.TextEdit();
             this.txtDepartmentCode = new DevExpress.XtraEditors.TextEdit();
@@ -77,7 +78,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciAutoOut = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciBedService = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciPatientType = new DevExpress.XtraLayout.LayoutControlItem();
@@ -88,6 +88,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -96,6 +97,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBedRoom.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnHospitalizeReason.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
@@ -111,7 +114,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             ((System.ComponentModel.ISupportInitialize)(this.CboBedService.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoOutBed.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboBedRoom.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBedRoomCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDepartmentCode.Properties)).BeginInit();
@@ -122,7 +124,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAutoOut)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciBedService)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciPatientType)).BeginInit();
@@ -133,12 +134,14 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.cboBedRoom);
             this.layoutControl1.Controls.Add(this.panel1);
             this.layoutControl1.Controls.Add(this.cboBed);
             this.layoutControl1.Controls.Add(this.SpNamGhep);
@@ -148,7 +151,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             this.layoutControl1.Controls.Add(this.CboBedService);
             this.layoutControl1.Controls.Add(this.chkAutoOutBed);
             this.layoutControl1.Controls.Add(this.btnSave);
-            this.layoutControl1.Controls.Add(this.cboBedRoom);
             this.layoutControl1.Controls.Add(this.cboDepartment);
             this.layoutControl1.Controls.Add(this.txtBedRoomCode);
             this.layoutControl1.Controls.Add(this.txtDepartmentCode);
@@ -160,6 +162,28 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             this.layoutControl1.Size = new System.Drawing.Size(597, 268);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // cboBedRoom
+            // 
+            this.cboBedRoom.Location = new System.Drawing.Point(188, 50);
+            this.cboBedRoom.Margin = new System.Windows.Forms.Padding(0);
+            this.cboBedRoom.Name = "cboBedRoom";
+            this.cboBedRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBedRoom.Properties.NullText = "";
+            this.cboBedRoom.Properties.View = this.gridView2;
+            this.cboBedRoom.Size = new System.Drawing.Size(407, 20);
+            this.cboBedRoom.StyleController = this.layoutControl1;
+            this.cboBedRoom.TabIndex = 23;
+            this.cboBedRoom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboBedRoom_Closed_1);
+            this.cboBedRoom.EditValueChanged += new System.EventHandler(this.cboBedRoom_EditValueChanged_1);
+            // 
+            // gridView2
+            // 
+            this.gridView2.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView2.Name = "gridView2";
+            this.gridView2.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView2.OptionsView.ShowGroupPanel = false;
             // 
             // panel1
             // 
@@ -385,23 +409,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             this.btnSave.Text = "Lưu (Ctrl S)";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // cboBedRoom
-            // 
-            this.cboBedRoom.Location = new System.Drawing.Point(188, 50);
-            this.cboBedRoom.Margin = new System.Windows.Forms.Padding(0);
-            this.cboBedRoom.Name = "cboBedRoom";
-            this.cboBedRoom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboBedRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboBedRoom.Properties.NullText = "";
-            this.cboBedRoom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboBedRoom.Size = new System.Drawing.Size(407, 20);
-            this.cboBedRoom.StyleController = this.layoutControl1;
-            this.cboBedRoom.TabIndex = 10;
-            this.cboBedRoom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboBedRoom_Closed);
-            this.cboBedRoom.EditValueChanged += new System.EventHandler(this.cboBedRoom_EditValueChanged);
-            this.cboBedRoom.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboBedRoom_KeyUp);
-            // 
             // cboDepartment
             // 
             this.cboDepartment.Location = new System.Drawing.Point(188, 26);
@@ -468,7 +475,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             this.layoutControlItem2,
             this.layoutControlItem3,
             this.layoutControlItem6,
-            this.layoutControlItem7,
             this.lciAutoOut,
             this.LciBedService,
             this.LciPatientType,
@@ -478,7 +484,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             this.layoutControlItem10,
             this.layoutControlItem4,
             this.layoutControlItem8,
-            this.emptySpaceItem1});
+            this.emptySpaceItem1,
+            this.layoutControlItem5});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -541,16 +548,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             this.layoutControlItem6.Size = new System.Drawing.Size(409, 24);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
-            // 
-            // layoutControlItem7
-            // 
-            this.layoutControlItem7.Control = this.cboBedRoom;
-            this.layoutControlItem7.Location = new System.Drawing.Point(188, 48);
-            this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem7.Size = new System.Drawing.Size(409, 24);
-            this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem7.TextVisible = false;
             // 
             // lciAutoOut
             // 
@@ -678,6 +675,16 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             this.emptySpaceItem1.Size = new System.Drawing.Size(260, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
+            // layoutControlItem5
+            // 
+            this.layoutControlItem5.Control = this.cboBedRoom;
+            this.layoutControlItem5.Location = new System.Drawing.Point(188, 48);
+            this.layoutControlItem5.Name = "layoutControlItem5";
+            this.layoutControlItem5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
+            this.layoutControlItem5.Size = new System.Drawing.Size(409, 24);
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem5.TextVisible = false;
+            // 
             // barDockControlTop
             // 
             this.barDockControlTop.CausesValidation = false;
@@ -738,6 +745,8 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cboBedRoom.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.btnHospitalizeReason.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
@@ -753,7 +762,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             ((System.ComponentModel.ISupportInitialize)(this.CboBedService.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoOutBed.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboBedRoom.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBedRoomCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDepartmentCode.Properties)).EndInit();
@@ -764,7 +772,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAutoOut)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciBedService)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciPatientType)).EndInit();
@@ -775,6 +782,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
@@ -787,7 +795,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
         private DevExpress.XtraLayout.LayoutControl layoutControl1;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
         private DevExpress.XtraEditors.SimpleButton btnSave;
-        private DevExpress.XtraEditors.LookUpEdit cboBedRoom;
         private DevExpress.XtraEditors.LookUpEdit cboDepartment;
         private DevExpress.XtraEditors.TextEdit txtBedRoomCode;
         private DevExpress.XtraEditors.TextEdit txtDepartmentCode;
@@ -796,7 +803,6 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
@@ -831,6 +837,9 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
         private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
         private DevExpress.XtraEditors.ButtonEdit btnHospitalizeReason;
+        private DevExpress.XtraEditors.GridLookUpEdit cboBedRoom;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
     }
 }
 

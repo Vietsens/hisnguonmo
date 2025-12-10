@@ -33,6 +33,7 @@ using LIS.Filter;
 using LIS.SDO;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MPS.ProcessorBase.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -1069,7 +1070,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 #region
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
                 if (printTypeCode == "Mps000096")  
-                {
+                { 
 
                     #region Mps000096
                     List<LIS_SAMPLE_TYPE> listSampleType = new List<LIS_SAMPLE_TYPE>();
@@ -1087,8 +1088,14 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     var lstService = BackendDataWorker.Get<V_HIS_SERVICE>();
 
                     // Gom nhóm theo cha (PARENT_ID)
-                    var groupByParent = lstService.Where(o => serviceCodes.Contains(o.SERVICE_CODE)).GroupBy(o => o.PARENT_ID).FirstOrDefault();
-                    V_HIS_SERVICE parent = groupByParent.Key != null ? BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(x => x.ID == groupByParent.Key) : null;
+                    var groupByParent = lstService.Where(o => serviceCodes.Contains(o.SERVICE_CODE) && o.PARENT_ID != null).GroupBy(o => o.PARENT_ID).FirstOrDefault();
+
+                    V_HIS_SERVICE parent = null;
+                    if (groupByParent != null && groupByParent.Key != null)
+                    {
+                        parent = BackendDataWorker.Get<V_HIS_SERVICE>()
+                            .FirstOrDefault(x => x.ID == groupByParent.Key);
+                    }
 
                     MPS.Processor.Mps000096.PDO.Mps000096PDO mps000096RDO = new MPS.Processor.Mps000096.PDO.Mps000096PDO(
                           currentPatientTypeAlter,
@@ -1101,7 +1108,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                           genderId,
                           BackendDataWorker.Get<V_HIS_SERVICE>(),
                           currentPatient,
-                         null,
+                         parent,
                          TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
                          SereServList,
                          listSampleType,
@@ -1997,96 +2004,69 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             {
                 if (printTypeCode == "Mps000096")
                 {
-                    #region Mps000096
+
+                    #region
                     List<V_HIS_SERVICE> services = BackendDataWorker.Get<V_HIS_SERVICE>();
                     if (services == null)
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay danh sach dich vu");
                         return;
                     }
-
                     List<LIS_SAMPLE_TYPE> listSampleType = new List<LIS_SAMPLE_TYPE>();
                     List<HIS_TEST_SAMPLE_TYPE> listTestSampleType = new List<HIS_TEST_SAMPLE_TYPE>();
-
-                    if ((PacsCFG.MosLisInterGrationVersion == "1" && PacsCFG.MosLisInterGrationOption == "1") ||
-                        (PacsCFG.MosLisInterGrationVersion == "2" && PacsCFG.MosLisInterGrationType == "1"))
+                    if ((PacsCFG.MosLisInterGrationVersion == "1" && PacsCFG.MosLisInterGrationOption == "1") || (PacsCFG.MosLisInterGrationVersion == "2" && PacsCFG.MosLisInterGrationType == "1"))
                     {
-                        listSampleType = BackendDataWorker.Get<LIS_SAMPLE_TYPE>()
-                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                            .ToList();
+                        listSampleType = BackendDataWorker.Get<LIS_SAMPLE_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                     }
                     else
                     {
-                        listTestSampleType = BackendDataWorker.Get<HIS_TEST_SAMPLE_TYPE>()
-                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                            .ToList();
+                        listTestSampleType = BackendDataWorker.Get<HIS_TEST_SAMPLE_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                     }
-
-                    // Tạo dictionary để tra cứu nhanh _LisResults theo SERVICE_CODE
-                    var lisResultsByServiceCode = _LisResults
-                        .GroupBy(r => r.SERVICE_CODE)
-                        .ToDictionary(g => g.Key, g => g.ToList());
-
-                    // Lấy tất cả service codes từ dicServiceTest
-                    var allServiceCodes = new HashSet<string>(dicServiceTest.Values.SelectMany(v => v.Select(s => s.SERVICE_CODE)).Distinct()); // HashSet để tra cứu O(1)
-
-                    // Lọc _LisResults một lần duy nhất cho tất cả các nhóm
-                    var relevantLisResults = _LisResults
-                        .Where(r => allServiceCodes.Contains(r.SERVICE_CODE))
-                        .ToList();
-
-                    // Tạo dictionary để nhóm results theo service code
-                    var groupedLisResults = relevantLisResults
-                        .GroupBy(r => r.SERVICE_CODE)
-                        .ToDictionary(g => g.Key, g => g.ToList());
-
-                    // Xử lý từng nhóm service
                     foreach (var item in dicServiceTest)
                     {
-                        inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
-                            .GenerateInputADOWithPrintTypeCode(
-                                (currentTreatment != null ? currentTreatment.TREATMENT_CODE : ""),
-                                printTypeCode,
-                                this.currentModule.RoomId);
-
+                        inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((currentTreatment != null ? currentTreatment.TREATMENT_CODE : ""), printTypeCode, this.currentModule.RoomId);
                         V_HIS_SERVICE service = services.FirstOrDefault(o => o.ID == item.Key);
-
-                        // Lấy kết quả test cho nhóm này - tra cứu nhanh từ dictionary
                         List<V_LIS_RESULT> testLisResults = new List<V_LIS_RESULT>();
                         if (item.Value != null && item.Value.Count > 0)
                         {
-                            var serviceCodes = item.Value.Select(p => p.SERVICE_CODE).ToList();
+                            testLisResults = _LisResults.Where(o => item.Value.Select(p => p.SERVICE_CODE).Contains(o.SERVICE_CODE)).ToList();
+                        }
 
-                            // Tra cứu từ dictionary thay vì filter toàn bộ _LisResults
-                            testLisResults = serviceCodes
-                                .Where(sc => groupedLisResults.ContainsKey(sc))
-                                .SelectMany(sc => groupedLisResults[sc])
-                                .ToList();
+                        var serviceCodes = testLisResults.Select(o => o.SERVICE_CODE).Distinct().ToList();
+                        var lstService = BackendDataWorker.Get<V_HIS_SERVICE>();
+
+                        // Gom nhóm theo cha (PARENT_ID)
+                        var groupByParent = lstService.Where(o => serviceCodes.Contains(o.SERVICE_CODE) && o.PARENT_ID != null).GroupBy(o => o.PARENT_ID).FirstOrDefault();
+
+                        V_HIS_SERVICE parent = null;
+                        if (groupByParent != null && groupByParent.Key != null)
+                        {
+                            parent = BackendDataWorker.Get<V_HIS_SERVICE>()
+                                .FirstOrDefault(x => x.ID == groupByParent.Key);
                         }
 
                         MPS.ProcessorBase.Core.PrintData PrintData = null;
 
                         MPS.Processor.Mps000096.PDO.Mps000096PDO mps000096RDO = new MPS.Processor.Mps000096.PDO.Mps000096PDO(
-                            currentPatientTypeAlter,
-                            currentTreatment,
-                            samplePrint,
-                            currentServiceReq,
-                            this.currentTestIndexs,
-                            testLisResults,
-                            BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
-                            genderId,
-                            services,
-                            currentPatient,
-                            service, // Truyền service parent
-                            TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
-                            SereServList,
-                            listSampleType,
-                            listTestSampleType
-                        );
+                           currentPatientTypeAlter,
+                           currentTreatment,
+                           samplePrint,
+                           currentServiceReq,
+                           this.currentTestIndexs,
+                           testLisResults,
+                           BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>(),
+                           genderId,
+                           lstService,
+                           currentPatient,
+                         parent,
+                         TreatmentBedRoomList != null && TreatmentBedRoomList.Count > 0 ? TreatmentBedRoomList.FirstOrDefault() : null,
+                         SereServList,
+                         listSampleType,
+                         listTestSampleType
+                           );
 
                         mps000096RDO.mLCTADOs = mlctado;
 
-                        // Xử lý các tùy chọn in và ký
                         if (checkPrintNow.Checked)
                         {
                             PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
@@ -2099,13 +2079,12 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (chkSignProcess.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSignProcess(inputADO, PrintData, sample, ref result, ref errorMessage, ref isPrint);
                             ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                             txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
-
                             if (isPrint == 1)
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
                             else if (isPrint == 2)
@@ -2118,7 +2097,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             if (chkSign.Checked)
                             {
                                 LIS_SAMPLE sample = new LIS_SAMPLE();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                                Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
                                 string errorMessage = "";
                                 PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, printerName);
                                 SetUpSignAndPrintPreview(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -2130,7 +2109,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         else if (chkSign.Checked)
                         {
                             LIS_SAMPLE sample = new LIS_SAMPLE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(sample, rowSample);
+                            Inventec.Common.Mapper.DataObjectMapper.Map<LIS_SAMPLE>(rowSample, sample);
                             string errorMessage = "";
                             PrintData = new MPS.ProcessorBase.Core.PrintData(MPS.Processor.Mps000096.PDO.PrintTypeCode.Mps000096, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.SaveFile, "");
                             SetUpSignAndPrint(inputADO, PrintData, sample, ref result, ref errorMessage);
@@ -3187,7 +3166,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (item.Value != null && item.Value.Count > 0)
                         {
                             var serviceCodes = item.Value.Select(p => p.SERVICE_CODE).ToList();
-
+                             
                             // Tra cứu từ dictionary đã group sẵn - nhanh hơn rất nhiều
                             testLisResults = serviceCodes
                                 .Where(sc => groupedLisResults.ContainsKey(sc))
