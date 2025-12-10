@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -51,6 +51,28 @@ namespace Inventec.Common.FlexCellExport
                 if (speechFull=="1")
                 {
                     result = Inventec.Common.String.Convert.CurrencyToVneseString(vString);
+                }
+                else if (speechFull == "2")  
+                {
+                    decimal number;
+
+                    // Chỉ đọc phần nguyên, đã làm tròn  
+                    if (decimal.TryParse(vString, out number))
+                    {
+                        // Làm tròn đến đơn vị: 1.4 -> 1 ; 1.5 -> 2 
+                        number = Math.Round(number, 0, MidpointRounding.AwayFromZero);
+
+                        // Chuyển lại về chuỗi, không có phần thập phân
+                        string roundedString = number.ToString("0");
+
+                        // Gọi lại hàm đọc số
+                        result = Inventec.Common.String.Convert.CurrencyToVneseString(roundedString);
+                    }
+                    else
+                    {
+                        // Trường hợp parse lỗi
+                        result = "";
+                    }
                 }
                 else
                 {
