@@ -444,8 +444,11 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                         appearanceObject.FontStyleDelta = System.Drawing.FontStyle.Bold;
                     }
 
-                    // Mới: loại vật tư dừng nhập thì hiển thị màu đỏ
-                    if (material.IS_STOP_IMP.HasValue && material.IS_STOP_IMP.Value == 1)
+                    if (material.IS_ACTIVE != 1)
+                    {
+                        appearanceObject.ForeColor = System.Drawing.ColorTranslator.FromHtml("#CC6633");
+                    }
+                    else if (material.IS_STOP_IMP == 1)
                     {
                         appearanceObject.ForeColor = System.Drawing.Color.Maroon;
                     }
