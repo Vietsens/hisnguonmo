@@ -15,9 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Utils;
 using DevExpress.XtraTreeList;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.MaterialType.Properties;
 using HIS.UC.MaterialType;
 using HIS.UC.MaterialType.ADO;
 using Inventec.Common.Adapter;
@@ -25,20 +31,15 @@ using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Resources;
-using HIS.Desktop.Plugins.MaterialType.Properties;
 using System.ComponentModel;
-using HIS.Desktop.Common;
-using HIS.Desktop.LocalStorage.BackendData;
-using HIS.Desktop.ADO;
-using HIS.Desktop.LocalStorage.LocalData;
-using MOS.SDO;
-using DevExpress.Utils;
+using System.Drawing;
+using System.Linq;
+using System.Resources;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
 {
@@ -441,6 +442,15 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                     {
                         appearanceObject.FontStyleDelta = System.Drawing.FontStyle.Bold;
                     }
+
+                    if (((HIS.UC.MaterialType.ADO.MaterialTypeADO)data).IS_ACTIVE != 1)
+                    {
+                        appearanceObject.ForeColor = ColorTranslator.FromHtml("#CC6633");
+                    }
+                    else if (((HIS.UC.MaterialType.ADO.MaterialTypeADO)data).IS_STOP_IMP == 1)
+                    {
+                        appearanceObject.ForeColor = Color.Red;
+                    }
                 }
             }
             catch (Exception ex)
@@ -693,7 +703,7 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 List<String> ColnParams = new List<string> { "ID", "MATERIAL_TYPE_CODE", "MATERIAL_TYPE_NAME", "SERVICE_UNIT_NAME", "CONCENTRA",
                     "NATIONAL_NAME", "MANUFACTURER_NAME", "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO",
                     "LAST_EXP_PRICE","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME", "LAST_EXP_VAT_RATIO", "IS_LEAF", "PARENT_ID", "IS_ACTIVE", "REGISTER_NUMBER",
-                    "IMP_VAT_RATIO","IMP_PRICE","PACKING_TYPE_NAME","IS_BUSINESS", "IS_DRUG_STORE", "LOCKING_REASON", "IS_REUSABLE", "MODEL_CODE"};
+                    "IMP_VAT_RATIO","IMP_PRICE","PACKING_TYPE_NAME","IS_BUSINESS", "IS_DRUG_STORE", "LOCKING_REASON", "IS_REUSABLE", "MODEL_CODE", "IS_STOP_IMP"};
                 filter.ColumnParams = ColnParams;
                 this.materialTypes = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_TYPE>>(HisRequestUri.HIS_MATERIAL_TYPE_GETVIEWDynamic, ApiConsumers.MosConsumer, filter, param);
                 if (currentMediStock != null && currentMediStock.IS_BUSINESS == 1 && currentMediStock.IS_SHOW_DRUG_STORE == 1)
