@@ -56,11 +56,13 @@ using System.Text;
 using System.Windows.Forms;
 using System.Windows.Markup;
 using static DevExpress.XtraPrinting.Native.ExportOptionsPropertiesNames;
+using static HIS.Desktop.Plugins.HisExecuteRoom.RoomConfigOption.RoomConfigOption;
 
 namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
 {
     public partial class frmHisExecuteRoom : HIS.Desktop.Utility.FormBase
     {
+
         #region Declare
         //qtcode
         private List<HIS_BANK> listBanks = new List<HIS_BANK>();
@@ -261,7 +263,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 this.grdColIsSpeciality.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.grdColIsSpeciality.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIsSurgery.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.grdColIsSurgery.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIsSurgery.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.grdColIsSurgery.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grclKiosk.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.grclKiosk.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.grclKiosk.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.grclKiosk.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIsExam.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.grdColIsExam.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIsExam.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.grdColIsExam.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -294,51 +296,51 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 this.bbtnReset.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.bbtnReset.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnFocusDefault.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.bbtnFocusDefault.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.barButtonItem1.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.barButtonItem1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.checkVitaminA.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.checkVitaminA.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkVaccine2.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkVaccine2.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkKhongCanChonDV.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkKhongCanChonDV.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.checkVitaminA.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.checkVitaminA.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkVaccine2.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkVaccine2.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkKhongCanChonDV.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkKhongCanChonDV.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciIsKidney.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsKidney.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsPauseEnclitic.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsPauseEnclitic.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsPauseEnclitic.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsPauseEnclitic.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkIsPauseEnclitic.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsPauseEnclitic.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkIsPauseEnclitic.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsPauseEnclitic.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboChuyenKhoa.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.cboChuyenKhoa.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkRestrictExecuteRoom.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkRestrictExecuteRoom.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkRestrictExecuteRoom.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkRestrictExecuteRoom.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkRestrictMedicineType.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkRestrictMedicineType.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkRestrictMedicineType.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkRestrictMedicineType.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkRestrictTime.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkRestrictTime.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkRestrictTime.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkRestrictTime.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.checkEdit1.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.checkEdit1.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkRestrictExecuteRoom.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkRestrictExecuteRoom.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkRestrictExecuteRoom.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkRestrictExecuteRoom.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkRestrictMedicineType.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkRestrictMedicineType.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkRestrictMedicineType.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkRestrictMedicineType.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkRestrictTime.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkRestrictTime.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkRestrictTime.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkRestrictTime.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.checkEdit1.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.checkEdit1.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cbbRoomGroup.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.cbbRoomGroup.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lkRoomId.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lkRoomId.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsSpeciality.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsSpeciality.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsPause.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsPause.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkIsSpeciality.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsSpeciality.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkIsPause.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsPause.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnCancel.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.btnCancel.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnAdd.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.btnAdd.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.dnNavigation.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.dnNavigation.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.btnEdit.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsEmergency.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsEmergency.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsSurgery.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsSurgery.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsExam.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsExam.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkIsEmergency.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsEmergency.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkIsSurgery.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsSurgery.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkIsExam.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.chkIsExam.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciExecuteRoomCode.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciExecuteRoomCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciExecuteRoomName.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciExecuteRoomName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIsEmergency.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsEmergency.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIsSpeciality.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsSpeciality.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciIsEmergency.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsEmergency.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciIsSpeciality.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsSpeciality.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem7.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem9.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem10.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem11.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem11.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem11.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem11.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem13.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem13.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem13.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem13.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem10.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem11.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem11.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem11.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem11.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem13.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem13.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem13.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem13.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem14.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem14.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem14.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem14.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIsSurgery.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsSurgery.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIsExam.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsExam.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciIsSurgery.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsSurgery.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciIsExam.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsExam.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciIsKidney.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsKidney.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciKidneyCount.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciKidneyCount.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIsPause.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsPause.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem12.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem12.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem12.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem12.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciIsPause.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsPause.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem12.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem12.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem12.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem12.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem6.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciMaxRequestByDay.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciMaxRequestByDay.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem15.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem15.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -347,22 +349,22 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 this.layoutControlItem19.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem19.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem21.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem21.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem21.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem21.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIsPauseEnclitic.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsPauseEnclitic.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIsPauseEnclitic.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsPauseEnclitic.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem23.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem23.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem23.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem23.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem24.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem24.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciIsPauseEnclitic.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsPauseEnclitic.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciIsPauseEnclitic.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsPauseEnclitic.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem23.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem23.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem23.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem23.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem24.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem24.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem25.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem25.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem25.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem25.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem28.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem28.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem28.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem28.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem28.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem28.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem28.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.layoutControlItem28.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcArea.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lcArea.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColArea.Caption = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.grdColArea.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColArea.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.grdColArea.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcTestTypeCode.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lcTestTypeCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcTestTypeCode.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("lcTestTypeCode.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIsBlockNumOrder.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsBlockNumOrder.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIsBlockNumOrder.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsBlockNumOrder.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciIsBlockNumOrder.Text = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsBlockNumOrder.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciIsBlockNumOrder.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisExecuteRoom.lciIsBlockNumOrder.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
                 if (this.moduleData != null && !String.IsNullOrEmpty(this.moduleData.text))
                 {
@@ -1041,25 +1043,25 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     GridCheckMarksSelection gridCheckMarkPart = cboDefaultDrug.Properties.Tag as GridCheckMarksSelection;
                     gridCheckMarkPart.ClearSelection(cboDefaultDrug.Properties.View);
 
-                    chkIsEmergency.Checked = (data.IS_EMERGENCY == 1 ? true : false);
-                    chkIsSpeciality.Checked = (data.IS_SPECIALITY == 1 ? true : false);
-                    chkIsSurgery.Checked = (data.IS_SURGERY == 1 ? true : false);
-                    chkIsPause.Checked = (data.IS_PAUSE == 1 ? true : false);
-                    chkRestrictTime.Checked = (data.IS_RESTRICT_TIME == 1 ? true : false);
-                    chkIsPauseEnclitic.Checked = (data.IS_PAUSE_ENCLITIC == 1 ? true : false);
-                    chkRestrictMedicineType.Checked = (data.IS_RESTRICT_MEDICINE_TYPE == 1 ? true : false);
-                    chkRestrictPatientType.Checked = (data.IS_RESTRICT_PATIENT_TYPE == 1 ? true : false);
-                    c.Checked = (data.IS_RESTRICT_REQ_SERVICE == 1 ? true : false);
-                    chkKhongCanChonDV.Checked = (data.ALLOW_NOT_CHOOSE_SERVICE == 1 ? true : false);
-                    chkRestrictExecuteRoom.Checked = (data.IS_RESTRICT_EXECUTE_ROOM == 1 ? true : false);
+                    //chkIsEmergency.Checked = (data.IS_EMERGENCY == 1 ? true : false);
+                    //chkIsSpeciality.Checked = (data.IS_SPECIALITY == 1 ? true : false);
+                    //chkIsSurgery.Checked = (data.IS_SURGERY == 1 ? true : false);
+                    //chkIsPause.Checked = (data.IS_PAUSE == 1 ? true : false);
+                    //chkRestrictTime.Checked = (data.IS_RESTRICT_TIME == 1 ? true : false);
+                    //chkIsPauseEnclitic.Checked = (data.IS_PAUSE_ENCLITIC == 1 ? true : false);
+                    //chkRestrictMedicineType.Checked = (data.IS_RESTRICT_MEDICINE_TYPE == 1 ? true : false);
+                    //chkRestrictPatientType.Checked = (data.IS_RESTRICT_PATIENT_TYPE == 1 ? true : false);
+                    //c.Checked = (data.IS_RESTRICT_REQ_SERVICE == 1 ? true : false);
+                    //chkKhongCanChonDV.Checked = (data.ALLOW_NOT_CHOOSE_SERVICE == 1 ? true : false);
+                    //chkRestrictExecuteRoom.Checked = (data.IS_RESTRICT_EXECUTE_ROOM == 1 ? true : false);
                     spMaxRequestByDay.EditValue = data.MAX_REQUEST_BY_DAY;
                     spinMaxAppointment.EditValue = data.MAX_APPOINTMENT_BY_DAY;
                     txtTestTypeCode.Text = data.TEST_TYPE_CODE;
                     spHoldOrder.EditValue = data.HOLD_ORDER;
-                    chkIsExam.Checked = (data.IS_EXAM == 1 ? true : false);
-                    chkIsExamPlus.Checked = (data.IS_AUTO_EXPEND_ADD_EXAM == 1 ? true : false);
-                    chkVaccine2.Checked = (data.IS_VACCINE == 1 ? true : false);
-                    chkIsAllowNoICD.Checked = (data.IS_ALLOW_NO_ICD == 1 ? true : false);
+                    //chkIsExam.Checked = (data.IS_EXAM == 1 ? true : false);
+                    //chkIsExamPlus.Checked = (data.IS_AUTO_EXPEND_ADD_EXAM == 1 ? true : false);
+                    //chkVaccine2.Checked = (data.IS_VACCINE == 1 ? true : false);
+                    //chkIsAllowNoICD.Checked = (data.IS_ALLOW_NO_ICD == 1 ? true : false);
                     if (data.IS_KIDNEY.HasValue && data.IS_KIDNEY.Value == 1)
                     {
                         spinKidneyCount.Enabled = true;
@@ -1072,13 +1074,13 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                         spinKidneyCount.EditValue = null;
                         chkIsKidney.CheckState = CheckState.Unchecked;
                     }
-                    checkVitaminA.Checked = (data.IS_VITAMIN_A == 1 ? true : false);
+                    //checkVitaminA.Checked = (data.IS_VITAMIN_A == 1 ? true : false);
                     //chkIsPause.Checked = (data.IS_PAUSE == 1 ? true : false);IS_USE_KIOSK
                     spSTT.EditValue = data.NUM_ORDER;
                     cbbRoomGroup.EditValue = data.ROOM_GROUP_ID;
                     cboChuyenKhoa.EditValue = data.SPECIALITY_ID;
                     txtAddress.Text = data.ADDRESS;
-                    checkEdit1.Checked = (data.IS_USE_KIOSK == 1 ? true : false);
+                    //checkEdit1.Checked = (data.IS_USE_KIOSK == 1 ? true : false);
                     txtOrderIssueCode.Text = data.ORDER_ISSUE_CODE;
                     spMaxReqBhytByDay.EditValue = data.MAX_REQ_BHYT_BY_DAY;
                     spAVERAGE_ETA.EditValue = data.AVERAGE_ETA;
@@ -1089,16 +1091,60 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     {
                         ProcessSelectBusiness(data.DEFAULT_DRUG_STORE_IDS, gridCheckMark);
                     }
+                    //
+                    List<RoomOptionItem> selectedOptions = new List<RoomOptionItem>();
+
+                    // Replace the block that adds RoomOptionItem to selectedOptions with the following:
+                    selectedOptions.Clear();
+                    if (data.IS_EMERGENCY == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsEmergency));
+                    if (data.IS_EXAM == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsExam));
+                    if (data.IS_AUTO_EXPEND_ADD_EXAM == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsAutoExpendAddExam));
+                    if (data.IS_SPECIALITY == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsSpeciality));
+                    if (data.IS_ALLOW_NO_ICD == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsAllowNoICD));
+                    if (data.IS_USE_KIOSK == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsUseKiosk));
+                    if (data.IS_PAUSE == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsPause));
+                    if (data.IS_RESTRICT_EXECUTE_ROOM == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsRestrictExecuteRoom));
+                    if (data.IS_RESTRICT_MEDICINE_TYPE == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsRestrictMedicineType));
+                    if (data.IS_RESTRICT_TIME == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsRestrictTime));
+                    if (data.IS_PAUSE_ENCLITIC == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsPauseEnclitic));
+                    if (data.IS_VACCINE == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsVaccine));
+                    if (data.IS_VITAMIN_A == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsVitaminA));
+                    if (data.IS_RESTRICT_REQ_SERVICE == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsRestrictReqService));
+                    if (data.IS_RESTRICT_PATIENT_TYPE == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsRestrictPatientType));
+                    if (data.ALLOW_NOT_CHOOSE_SERVICE == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.AllowNotChooseService));
+                    
+                    if (data.IS_SURGERY == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsSurgery));
+                    if (data.MUST_BE_APPROVED_SURGERY == 1)
+                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.MustBeApprovedSurgery));
+
 
                     var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == data.ROOM_ID);
                         if (room != null)
                     {
                         cboPayerBank.EditValue = room.PAYER_BANK_ID;
                         txtPayerAccount.Text = room.PAYER_ACCOUNT;
-                        chkIsBlockNumOrder.Enabled = (data.IS_EXAM == 1 ? true : false);
-                        chkIsBlockNumOrder.Checked = (room.IS_BLOCK_NUM_ORDER == 1 ? true : false);
-                        chkIsExam.Checked = (data.IS_EXAM == 1 ? true : false);
-
+                        //chkIsBlockNumOrder.Enabled = (data.IS_EXAM == 1 ? true : false);
+                        //chkIsBlockNumOrder.Checked = (room.IS_BLOCK_NUM_ORDER == 1 ? true : false);
+                        //chkIsExam.Checked = (data.IS_EXAM == 1 ? true : false);
+                        if (room != null && room.IS_BLOCK_NUM_ORDER == 1)
+                            selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsBlockNumOrder));
                         CboResponsible.EditValue = room.RESPONSIBLE_LOGINNAME;
                         cboWaitingScreen.EditValue = room.SCREEN_SAVER_MODULE_LINK;
                         cboWaitingScreen.Properties.Buttons[1].Visible = true;
@@ -1138,6 +1184,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     }
                     txtDirectorLoginName.Text = data.HOSP_SUBS_DIRECTOR_LOGINNAME;
                     cboDirectorUserName.EditValue = data.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                    SelectedOptions = selectedOptions;
+                    this.ProcessSelectDepartment(selectedOptions);
                 }
                 else
                 {
@@ -1340,8 +1388,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 }
                 if (executeRoomResultSDO != null && executeRoomResultSDO.HisExecuteRoom != null)
                 {
-                    checkEdit1.CheckState = CheckState.Unchecked;
-                    checkEdit1.Properties.FullFocusRect = false;
+                    //checkEdit1.CheckState = CheckState.Unchecked;
+                    //checkEdit1.Properties.FullFocusRect = false;
                     success = true;
                     FillDataToGridControl();
                     btnCancel_Click(null, null);
@@ -1401,11 +1449,15 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 currentDTO.ROOM_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__XL;
                 currentDTO.HOSP_SUBS_DIRECTOR_LOGINNAME = txtDirectorLoginName.Text;
                 currentDTO.HOSP_SUBS_DIRECTOR_USERNAME = cboDirectorUserName.Text;
-                currentDTO.IS_EMERGENCY = (short)(chkIsEmergency.Checked ? 1 : 0);
-                currentDTO.IS_PAUSE_ENCLITIC = (short)(chkIsPauseEnclitic.Checked ? 1 : 0);
-                currentDTO.IS_SPECIALITY = (short)(chkIsSpeciality.Checked ? 1 : 0);
-                currentDTO.IS_SURGERY = (short)(chkIsSurgery.Checked ? 1 : 0);
-                currentDTO.IS_PAUSE = (short)(chkIsPause.Checked ? 1 : 0);
+                if (SelectedOptions != null && SelectedOptions.Count > 0)
+                {
+                    currentDTO.IS_EMERGENCY = (short)(SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsEmergency) ? 1 : 0);
+                    currentDTO.IS_PAUSE_ENCLITIC = (short)(SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsPauseEnclitic) ? 1 : 0);
+                    currentDTO.IS_SPECIALITY = (short)(SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsSpeciality) ? 1 : 0);
+                    currentDTO.IS_SURGERY = (short)(SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsSurgery) ? 1 : 0);
+                    currentDTO.IS_PAUSE = (short)(SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsPause) ? 1 : 0);
+                    currentDTO.IS_EXAM = (short)(SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsExam) ? 1 : 0);
+                }
                 currentDTO.TEST_TYPE_CODE = txtTestTypeCode.Text.Trim();
                 if (spMaxReqBhytByDay.EditValue != null)
                 {
@@ -1453,7 +1505,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     currentDTO.MAX_APPOINTMENT_BY_DAY = null;
                 }
 
-                currentDTO.IS_EXAM = (short)(chkIsExam.Checked ? 1 : 0);
+                //currentDTO.IS_EXAM = (short)(chkIsExam.Checked ? 1 : 0);
                 if (spinKidneyCount.EditValue != null)
                 {
                     currentDTO.KIDNEY_SHIFT_COUNT = (long)spinKidneyCount.Value;
@@ -2105,141 +2157,141 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             }
         }
 
-        private void chkIsEmergency_KeyUp(object sender, KeyEventArgs e)
-        {
+        //private void chkIsEmergency_KeyUp(object sender, KeyEventArgs e)
+        //{
 
-        }
+        //}
 
-        private void chkIsSurgery_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkIsExam.Focus();
-                    //chkIsSpeciality.Focus();
-                    //cboChuyenKhoa.ShowPopup();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void chkIsSurgery_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            chkIsExam.Focus();
+        //            //chkIsSpeciality.Focus();
+        //            //cboChuyenKhoa.ShowPopup();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
-        private void chkIsSpeciality_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkIsAllowNoICD.Focus();
-                    //chkIsExam.Focus();
-                    //cboChuyenKhoa.ShowPopup();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void chkIsSpeciality_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            chkIsAllowNoICD.Focus();
+        //            //chkIsExam.Focus();
+        //            //cboChuyenKhoa.ShowPopup();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
-        private void chkIsExam_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkIsExamPlus.Focus();
-                    //checkEdit1.Focus();
-                    //cboChuyenKhoa.ShowPopup();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void chkIsExam_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            chkIsExamPlus.Focus();
+        //            //checkEdit1.Focus();
+        //            //cboChuyenKhoa.ShowPopup();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
-        private void checkEdit1_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkIsPause.Focus();
-                    //cboChuyenKhoa.ShowPopup();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void checkEdit1_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            chkIsPause.Focus();
+        //            //cboChuyenKhoa.ShowPopup();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
-        private void chkIsPause_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkRestrictExecuteRoom.Focus();
-                    //cboChuyenKhoa.ShowPopup();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void chkIsPause_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            chkRestrictExecuteRoom.Focus();
+        //            //cboChuyenKhoa.ShowPopup();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
-        private void chkRestrictExecuteRoom_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkRestrictMedicineType.Focus();
-                    //cboChuyenKhoa.ShowPopup();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void chkRestrictExecuteRoom_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            chkRestrictMedicineType.Focus();
+        //            //cboChuyenKhoa.ShowPopup();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
-        private void chkRestrictMedicineType_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkRestrictTime.Focus();
-                    //cboChuyenKhoa.ShowPopup();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void chkRestrictMedicineType_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            chkRestrictTime.Focus();
+        //            //cboChuyenKhoa.ShowPopup();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
-        private void chkRestrictTime_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkIsPauseEnclitic.Focus();
+        //private void chkRestrictTime_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            chkIsPauseEnclitic.Focus();
 
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
         private void txtAddress_KeyUp(object sender, KeyEventArgs e)
         {
@@ -2275,21 +2327,21 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             }
         }
 
-        private void chkIsPauseEnclitic_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkVaccine2.Focus();
-                    //cboChuyenKhoa.ShowPopup();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void chkIsPauseEnclitic_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            chkVaccine2.Focus();
+        //            //cboChuyenKhoa.ShowPopup();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
         private void spAVERAGE_ETA_KeyUp(object sender, KeyEventArgs e)
         {
@@ -2308,37 +2360,37 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             }
         }
 
-        private void chkVaccine2_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    checkVitaminA.Focus();
-                    //cboChuyenKhoa.ShowPopup();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void chkVaccine2_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            checkVitaminA.Focus();
+        //            //cboChuyenKhoa.ShowPopup();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
-        private void checkVitaminA_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    c.Focus();
-                    //cboChuyenKhoa.ShowPopup();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void checkVitaminA_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            c.Focus();
+        //            //cboChuyenKhoa.ShowPopup();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
         private void chkRestrictPatientType_KeyUp(object sender, KeyEventArgs e)
         {
@@ -2372,20 +2424,20 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             }
         }
 
-        private void chkRestrictReqService_KeyUp(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkRestrictPatientType.Focus();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void chkRestrictReqService_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            chkRestrictPatientType.Focus();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
         private void chkIsKidney_KeyUp(object sender, KeyEventArgs e)
         {
@@ -2653,43 +2705,45 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 cboArea.EditValue = null;
                 cboArea.Properties.Buttons[1].Visible = false;
                 spMaxRequestByDay.EditValue = null;
-                chkIsEmergency.CheckState = CheckState.Unchecked;
-                chkIsExamPlus.CheckState = CheckState.Unchecked;
-                chkIsExam.CheckState = CheckState.Unchecked;
-                chkIsPause.CheckState = CheckState.Unchecked;
-                chkIsSpeciality.CheckState = CheckState.Unchecked;
-                chkIsSurgery.CheckState = CheckState.Unchecked;
-                chkIsExamPlus.Properties.FullFocusRect = false;
-                chkIsEmergency.Properties.FullFocusRect = false;
-                chkIsExam.Properties.FullFocusRect = false;
-                chkIsPause.Properties.FullFocusRect = false;
-                chkIsSpeciality.Properties.FullFocusRect = false;
-                chkIsSurgery.Properties.FullFocusRect = false;
-                checkEdit1.CheckState = CheckState.Unchecked;
-                checkEdit1.Properties.FullFocusRect = false;
-                chkRestrictExecuteRoom.Checked = false;
-                chkRestrictMedicineType.Checked = false;
-                chkRestrictPatientType.Checked = false;
-                chkIsKidney.Checked = false;
-                c.Checked = false;
-                chkKhongCanChonDV.Checked = false;
-                chkRestrictTime.Checked = false;
-                chkVaccine2.Checked = false;
+                //chkIsEmergency.CheckState = CheckState.Unchecked;
+                //chkIsExamPlus.CheckState = CheckState.Unchecked;
+                //chkIsExam.CheckState = CheckState.Unchecked;
+                //chkIsPause.CheckState = CheckState.Unchecked;
+                //chkIsSpeciality.CheckState = CheckState.Unchecked;
+                //chkIsSurgery.CheckState = CheckState.Unchecked;
+                //chkIsExamPlus.Properties.FullFocusRect = false;
+                //chkIsEmergency.Properties.FullFocusRect = false;
+                //chkIsExam.Properties.FullFocusRect = false;
+                //chkIsPause.Properties.FullFocusRect = false;
+                //chkIsSpeciality.Properties.FullFocusRect = false;
+                //chkIsSurgery.Properties.FullFocusRect = false;
+                //checkEdit1.CheckState = CheckState.Unchecked;
+                //checkEdit1.Properties.FullFocusRect = false;
+                //chkRestrictExecuteRoom.Checked = false;
+                //chkRestrictMedicineType.Checked = false;
+                //chkRestrictPatientType.Checked = false;
+                //chkIsKidney.Checked = false;
+                //c.Checked = false;
+                //chkKhongCanChonDV.Checked = false;
+                //chkRestrictTime.Checked = false;
+                //chkVaccine2.Checked = false;
                 chkIsKidney.Checked = false;
                 spinKidneyCount.EditValue = null;
                 spinKidneyCount.Enabled = false;
-                checkVitaminA.Checked = false;
-                chkIsPauseEnclitic.CheckState = CheckState.Unchecked;
-                chkIsAllowNoICD.Checked = false;
+                //checkVitaminA.Checked = false;
+                //chkIsPauseEnclitic.CheckState = CheckState.Unchecked;
+                //chkIsAllowNoICD.Checked = false;
                 txtOrderIssueCode.Text = "";
                 txtAddress.Text = "";
                 //SetFocusEditor();
                 txtExecuteRoomCode.Focus();
                 cbbRoomGroup.EditValue = null;
                 spMaxReqBhytByDay.EditValue = null;
-                chkIsBlockNumOrder.Enabled = false;
-                chkIsBlockNumOrder.Checked = false;
+                //chkIsBlockNumOrder.Enabled = false;
+                //chkIsBlockNumOrder.Checked = false;
                 //qtcode
+                cboDepartment.EditValue = null;
+                //
                 cboPayerBank.EditValue = null;
                 txtPayerAccount.Text = "";
                 //qtcode
@@ -2698,6 +2752,9 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 GridCheckMarksSelection gridCheckMarkPart = cboDefaultDrug.Properties.Tag as GridCheckMarksSelection;
                 gridCheckMarkPart.ClearSelection(cboDefaultDrug.Properties.View);
                 cboDefaultDrug.Text = "";
+
+                //
+                this.cboClearSelection(cboDepartment);
 
             }
             catch (Exception ex)
@@ -3151,21 +3208,21 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
         #endregion
 
         #region ---PreviewKeyDown---
-        private void chkIsEmergency_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkIsSurgery.Focus();
-                    //cboChuyenKhoa.ShowPopup();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void chkIsEmergency_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            chkIsSurgery.Focus();
+        //            //cboChuyenKhoa.ShowPopup();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
         private void txtTestTypeCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -3237,6 +3294,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 LoadDirectorData();
                 //qtcode
                 InitComboPayerBank();
+
+                InitComboDepartment2();
 
             }
             catch (Exception ex)
@@ -3369,7 +3428,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 {
                     cboWaitingScreen.EditValue = null;
                     cboWaitingScreen.Properties.Buttons[1].Visible = false;
-                    chkIsEmergency.Focus();
+                    cboDepartment.Focus();
                 }
             }
             catch (Exception ex)
@@ -3388,7 +3447,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     if (cboWaitingScreen.EditValue != null)
                     {
                         cboWaitingScreen.Properties.Buttons[1].Visible = true;
-                        chkIsEmergency.Focus();
+                        cboDepartment.Focus();
                     }
                     else
                     {
@@ -3410,7 +3469,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsEmergency.Focus();
+                    cboDepartment.Focus();
                     //if (cboWaitingScreen.EditValue != null)
                     //{
                     //    cboWaitingScreen.Properties.Buttons[1].Visible = true;
@@ -3486,36 +3545,36 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             }
         }
 
-        private void chkIsExamPlus_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkIsSpeciality.Focus();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void chkIsExamPlus_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            chkIsSpeciality.Focus();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
-        private void chkRestrictReqService_KeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    chkKhongCanChonDV.Focus();
-                }
-            }
-            catch (Exception ex)
-            {
+        //private void chkRestrictReqService_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.KeyCode == Keys.Enter)
+        //        {
+        //            chkKhongCanChonDV.Focus();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
         private void InitComboDepositBook()
         {
@@ -3651,25 +3710,25 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             }
         }
 
-        private void chkIsExam_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (chkIsExam.CheckState == CheckState.Checked)
-                {
-                    chkIsBlockNumOrder.Enabled = true;
-                }
-                else
-                {
-                    chkIsBlockNumOrder.Enabled = false;
-                    chkIsBlockNumOrder.EditValue = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void chkIsExam_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (chkIsExam.CheckState == CheckState.Checked)
+        //        {
+        //            chkIsBlockNumOrder.Enabled = true;
+        //        }
+        //        else
+        //        {
+        //            chkIsBlockNumOrder.Enabled = false;
+        //            chkIsBlockNumOrder.EditValue = null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
         private void cboDefaultDrug_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
         {
@@ -3695,7 +3754,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
 
             try
             {
-                if (edit == GlobalVariables.ActionEdit && chkIsExam.Checked == true)
+                if (edit == GlobalVariables.ActionEdit && (SelectedOptions != null && SelectedOptions.Count > 0 && SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsExam)))
                 {
                     cboDefaultService.Enabled = true;
                 }
@@ -3773,7 +3832,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsEmergency.Focus();
+                    cboDepartment.Focus();
                 }
             }
             catch (Exception ex)
@@ -4068,8 +4127,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                                 cboDirectorUserName.Properties.Buttons[1].Visible = true;
                             }
 
-                            chkIsEmergency.Focus();
-                            chkIsEmergency.SelectAll();
+                            cboDepartment.Focus();
                         }
                     }
 
@@ -4147,8 +4205,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsEmergency.Focus();
-                    chkIsEmergency.SelectAll();
+                    cboDepartment.Focus();
                 }
             }
             catch (Exception ex)
@@ -4172,8 +4229,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                             txtDirectorLoginName.Text = data.LOGINNAME;
                             cboDirectorUserName.Properties.Buttons[1].Visible = true;
                         }
-                        chkIsEmergency.Focus();
-                        chkIsEmergency.SelectAll();
+                        cboDepartment.Focus();
                     }
 
                 }
