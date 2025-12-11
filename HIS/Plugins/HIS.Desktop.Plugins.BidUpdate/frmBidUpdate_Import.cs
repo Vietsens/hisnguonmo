@@ -224,14 +224,18 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     if (!String.IsNullOrWhiteSpace(medicineTypeImport.REGISTER_NUMBER))
                         medicineType.REGISTER_NUMBER = medicineTypeImport.REGISTER_NUMBER;
 
-                    if (!String.IsNullOrWhiteSpace(medicineTypeImport.BID_MEDICINE_TYPE_CODE))
-                        medicineType.BID_MEDICINE_TYPE_CODE = medicineTypeImport.BID_MEDICINE_TYPE_CODE;
+                   if(!String.IsNullOrWhiteSpace(medicineType.IS_MEDICINE))
+                    {
+                        if (!String.IsNullOrWhiteSpace(medicineTypeImport.BID_MATERIAL_TYPE_CODE))
+                            medicineType.BID_MEDICINE_TYPE_CODE = medicineTypeImport.BID_MATERIAL_TYPE_CODE;
 
-                    if (!String.IsNullOrWhiteSpace(medicineTypeImport.BID_MEDICINE_TYPE_NAME))
-                        medicineType.BID_MEDICINE_TYPE_NAME = medicineTypeImport.BID_MEDICINE_TYPE_NAME;
 
-                    if (!String.IsNullOrWhiteSpace(medicineTypeImport.JOIN_BID_MEDICINE_TYPE_CODE))
-                        medicineType.JOIN_BID_MEDICINE_TYPE_CODE = medicineTypeImport.JOIN_BID_MEDICINE_TYPE_CODE;
+                        if (!String.IsNullOrWhiteSpace(medicineTypeImport.BID_MATERIAL_TYPE_NAME))
+                            medicineType.BID_MEDICINE_TYPE_NAME = medicineTypeImport.BID_MATERIAL_TYPE_NAME;
+
+                        if (!String.IsNullOrWhiteSpace(medicineTypeImport.JOIN_BID_MATERIAL_TYPE_CODE))
+                            medicineType.JOIN_BID_MEDICINE_TYPE_CODE = medicineTypeImport.JOIN_BID_MATERIAL_TYPE_CODE;
+                    }    
 
                     if (!String.IsNullOrWhiteSpace(medicineTypeImport.CONCENTRA))
                         medicineType.CONCENTRA = medicineTypeImport.CONCENTRA;
