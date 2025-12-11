@@ -181,7 +181,6 @@
     <EmbeddedResource Include="frmWaitingScreen_V6.resx">
       <DependentUpon>frmWaitingScreen_V6.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

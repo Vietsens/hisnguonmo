@@ -374,7 +374,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MUST_BE_APPROVED_BEFORE_PROCESS_SURGERY") == "1")
                     hisServiceReqFilter.IS_NOT_SURGERY__OR__IS__APPROVED__OR__IS_EMERGENCY = true;
-
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MUST_BE_APPROVED_SURGERY") == "1")
+                {
+                    hisServiceReqFilter.IS__APPROVED_SURGERY__OR__IS_EMERGENCY = true;
+                }
                 Inventec.Common.Logging.LogSystem.Debug("HIS.Desktop.Plugins.ExecuteRoom FillDataToGridServiceReq hisServiceReqFilter" + Inventec.Common.Logging.LogUtil.TraceData("", hisServiceReqFilter));
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("hisServiceReqFilter  #######" + Inventec.Common.Logging.LogUtil.GetMemberName(() => hisServiceReqFilter), hisServiceReqFilter));
 
