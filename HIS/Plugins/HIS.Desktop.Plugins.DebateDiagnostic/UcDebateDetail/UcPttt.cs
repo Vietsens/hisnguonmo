@@ -81,6 +81,16 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
             try
             {
                 WaitingManager.Show();
+
+                if (HisConfigCFG.RequirePrepCleaningAndGrouping)
+                {
+                    lblPhannhom.AppearanceItemCaption.ForeColor = Color.Maroon;
+                }
+                else
+                {
+                    lblPhannhom.AppearanceItemCaption.ForeColor = Color.Black;
+                }
+
                 ComboEkipTemp(CboEkipTemp);
                 ComboExecuteRole();
                 ComboAcsUser();
@@ -1336,15 +1346,6 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.UcDebateDetail
                     chkBancap.Checked = (surgType == 2);
                     chkChuongtrinh.Checked = (surgType == 3);
                     isInitializing = false;
-
-                    if (HisConfigCFG.RequirePrepCleaningAndGrouping && lblPhannhom != null)
-                    {
-                        lblPhannhom.AppearanceItemCaption.ForeColor = Color.Maroon ;
-                    }
-                    else
-                    {
-                        lblPhannhom.AppearanceItemCaption.ForeColor = Color.Black;
-                    }
 
                 }
             }

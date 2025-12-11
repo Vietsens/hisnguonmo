@@ -184,6 +184,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
         {
             try
             {
+                listMediAcinCode = new Dictionary<string, List<HIS_MEDICINE_TYPE_ACIN>>();
                 addSuccess = false;
                 //WaitingManager.Show();
                 OpenFileDialog ofd = new OpenFileDialog();
@@ -816,6 +817,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     btnShowLineError.Enabled = true;
                     BtnExportErrorLine.Enabled = true;
                     medicineTypeAdos = new List<MedicineTypeImportADO>();
+                    listMediAcinCode = new Dictionary<string, List<HIS_MEDICINE_TYPE_ACIN>>();
                     addMedicineTypeToProcessList(currentAdos, ref medicineTypeAdos);
                     bool exist = (medicineTypeAdos.FirstOrDefault(o => o.IS_LESS_MANUFACTURER) != null);
                     if (medicineTypeAdos != null && medicineTypeAdos.Count > 0 && exist)
@@ -1648,9 +1650,9 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
 
                     if (!string.IsNullOrEmpty(item.MEDICINE_TYPE_CODE))
                     {
-                        if (!CheckMaxLenth(item.MEDICINE_TYPE_CODE, 25))
+                        if (!CheckMaxLenth(item.MEDICINE_TYPE_CODE, 100))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã loại thuốc", 25);
+                            error += string.Format(Message.MessageImport.Maxlength, "Mã loại thuốc", 100);
                             mediAdo.MEDICINE_TYPE_CODE_ERROR = 1;
                         }
 
@@ -1674,6 +1676,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             mediAdo.MEDICINE_TYPE_CODE_ERROR = 1;
                         }
                     }
+
                     else
                     {
                         error += string.Format(Message.MessageImport.ThieuTruongDL, "Mã loại thuốc");
@@ -1682,9 +1685,9 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
 
                     if (!string.IsNullOrEmpty(item.MEDICINE_TYPE_NAME))
                     {
-                        if (!CheckMaxLenth(item.MEDICINE_TYPE_NAME, 1500))
+                        if (!CheckMaxLenth(item.MEDICINE_TYPE_NAME, 3000))
                         {
-                            error += string.Format(Message.MessageImport.Maxlength, "Tên loại thuốc", 1500);
+                            error += string.Format(Message.MessageImport.Maxlength, "Tên loại thuốc", 3000);
                             mediAdo.MEDICINE_TYPE_NAME_ERROR = 1;
                         }
                     }

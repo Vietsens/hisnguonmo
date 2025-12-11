@@ -69,7 +69,9 @@ namespace HIS.Desktop.Plugins.HisImportBid.ADO
         public string ERROR { get; set; }
 
         public string ErrorDesc { get; set; }
-
+        public string BID_MEDICINE_TYPE_CODE { get; set; }
+        public string BID_MEDICINE_TYPE_NAME { get; set; }
+        public string JOIN_BID_MEDICINE_TYPE_CODE { get; set; }
         public bool IsNotNullRow{
             get {
                 bool valid = true;
