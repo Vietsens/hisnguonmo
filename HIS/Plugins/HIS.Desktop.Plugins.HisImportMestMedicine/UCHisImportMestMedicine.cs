@@ -15,46 +15,47 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Data;
+using DevExpress.Utils;
+using DevExpress.XtraBars;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using HIS.Desktop.ADO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.IsAdmin;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.HisImportMestMedicine.Base;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.RichEditor.Base;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using Inventec.UC.Paging;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Inventec.UC.Paging;
-using Inventec.Core;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using DevExpress.Data;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using DevExpress.Utils;
-using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.LibraryMessage;
-using System.Threading;
-using System.IO;
-using Inventec.Common.RichEditor.Base;
-using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraEditors;
-using HIS.Desktop.LocalStorage.BackendData;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.Utilities.Extensions;
-using HIS.Desktop.LocalStorage.LocalData;
-using DevExpress.XtraBars;
-using HIS.Desktop.Utility;
-using HIS.Desktop.ADO;
-using MOS.Filter;
-using Inventec.Common.Adapter;
-using Inventec.Desktop.Common.LanguageManager;
-using System.Resources;
-using HIS.Desktop.LocalStorage.ConfigSystem;
-using HIS.Desktop.Plugins.HisImportMestMedicine.Base;
-using HIS.Desktop.IsAdmin;
-using HIS.Desktop.LocalStorage.HisConfig;
+using static DevExpress.XtraPrinting.Native.ExportOptionsPropertiesNames;
 
 namespace HIS.Desktop.Plugins.HisImportMestMedicine
 {
@@ -1942,7 +1943,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 switch (type)
                 {
                     case RightMouseClickProcessor.ModuleType.PrintMps000505:
-                        PrintMps000505();   // Hàm sẽ viết ở phần 2
+                        PrintProcess(null, null);
                         break;
                 }
             }
@@ -2446,111 +2447,128 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void PrintMps000505()
+        private void PrintProcess(object sender, EventArgs e)
         {
             try
             {
-                if (selectedImpMests == null || selectedImpMests.Count == 0)
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate("Mps000505", deletePrintTemplate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private bool deletePrintTemplate(string printTypeCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                if (!String.IsNullOrEmpty(printTypeCode) && !String.IsNullOrEmpty(fileName))
+                {
+                    switch (printTypeCode)
+                    {
+                        case "Mps000505":
+                            PrintMps000505(ref result, printTypeCode, fileName);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+        private void PrintMps000505(ref bool result, string printTypeCode, string fileName)
+        {
+            try
+            {
+                var currentImpMest = gridViewImportMestList.GetFocusedRow() as V_HIS_IMP_MEST;
+                if (currentImpMest == null)
                     return;
 
-                WaitingManager.Show();
                 CommonParam param = new CommonParam();
 
-                // 1. Lấy danh sách ID phiếu nhập
-                var impMestIds = selectedImpMests
-                    .Select(o => o.ID)
-                    .Distinct()
-                    .ToList();
+                // ========== 1. V_HIS_IMP_MEST ==========
+                List<V_HIS_IMP_MEST> listImpMest = new List<V_HIS_IMP_MEST>();
+                listImpMest.Add(currentImpMest);
 
-                // 2. V_HIS_IMP_MEST: mình đã có từ grid
-                List<V_HIS_IMP_MEST> listImpMest = selectedImpMests;
+                long impMestId = currentImpMest.ID;
 
-                // 3. V_HIS_IMP_MEST_USER
+                // ========== 2. V_HIS_IMP_MEST_USER ==========
                 List<V_HIS_IMP_MEST_USER> listImpMestUser = new List<V_HIS_IMP_MEST_USER>();
-                foreach (var id in impMestIds)
                 {
-                    var filter = new HisImpMestUserViewFilter();
-                    filter.IMP_MEST_ID = id;
-                    var tmp = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_USER>>(
-                        "api/HisImpMestUser/GetView",           // anh đổi sang Uri chuẩn của project
-                        ApiConsumer.ApiConsumers.MosConsumer,
-                        filter,
-                        param);
-                    if (tmp != null && tmp.Count > 0)
-                        listImpMestUser.AddRange(tmp);
+                    HisImpMestUserViewFilter userFilter = new HisImpMestUserViewFilter();
+                    userFilter.IMP_MEST_ID = impMestId;
+                    listImpMestUser = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_USER>>(
+                        "/api/HisImpMestUser/GetView",
+                        ApiConsumers.MosConsumer,
+                        userFilter,
+                        param
+                    ) ?? new List<V_HIS_IMP_MEST_USER>();
+                    listImpMestUser = listImpMestUser.OrderBy(p => p.ID).ToList();
                 }
 
-                // 4. V_HIS_IMP_MEST_BLOOD
+                // ========== 3. V_HIS_IMP_MEST_BLOOD ==========
                 List<V_HIS_IMP_MEST_BLOOD> listImpMestBlood = new List<V_HIS_IMP_MEST_BLOOD>();
-                foreach (var id in impMestIds)
                 {
-                    var filter = new HisImpMestBloodViewFilter();
-                    filter.IMP_MEST_ID = id;
-                    var tmp = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>(
-                        HisRequestUriStore.HIS_IMP_MEST_BLOOD_GETVIEW,
-                        ApiConsumer.ApiConsumers.MosConsumer,
-                        filter,
-                        param);
-                    if (tmp != null && tmp.Count > 0)
-                        listImpMestBlood.AddRange(tmp);
+                    HisImpMestBloodFilter bloodFilter = new HisImpMestBloodFilter();
+                    bloodFilter.IMP_MEST_ID = impMestId;
+                    listImpMestBlood = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>(
+                        "/api/HisImpMestBlood/GetView",
+                        ApiConsumers.MosConsumer,
+                        bloodFilter,
+                        param
+                    ) ?? new List<V_HIS_IMP_MEST_BLOOD>();
+                    listImpMestBlood = listImpMestBlood.OrderBy(o => o.ID).ToList();
                 }
 
-                // 5. V_HIS_IMP_MEST_MEDICINE
-                List<V_HIS_IMP_MEST_MEDICINE> listImpMestMedicine = new List<V_HIS_IMP_MEST_MEDICINE>();
-                foreach (var id in impMestIds)
-                {
-                    var filter = new HisImpMestMedicineViewFilter();
-                    filter.IMP_MEST_ID = id;
-                    var tmp = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MEDICINE>>(
-                        HisRequestUriStore.HIS_IMP_MEST_MEDICINE_GETVIEW,
-                        ApiConsumer.ApiConsumers.MosConsumer,
-                        filter,
-                        param);
-                    if (tmp != null && tmp.Count > 0)
-                        listImpMestMedicine.AddRange(tmp);
-                }
-
-                // 6. V_HIS_IMP_MEST_MATERIAL
-                List<V_HIS_IMP_MEST_MATERIAL> listImpMestMaterial = new List<V_HIS_IMP_MEST_MATERIAL>();
-                foreach (var id in impMestIds)
-                {
-                    var filter = new HisImpMestMaterialViewFilter();
-                    filter.IMP_MEST_ID = id;
-                    var tmp = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MATERIAL>>(
-                        HisRequestUriStore.HIS_IMP_MEST_MATERIAL_GETVIEW,
-                        ApiConsumer.ApiConsumers.MosConsumer,
-                        filter,
-                        param);
-                    if (tmp != null && tmp.Count > 0)
-                        listImpMestMaterial.AddRange(tmp);
-                }
-
-                // 7. HIS_SUPPLIER từ SUPPLIER_ID của listImpMest
-                List<long> supplierIds = listImpMest
-                    .Where(x => x.SUPPLIER_ID.HasValue)
-                    .Select(x => x.SUPPLIER_ID.Value)
-                    .Distinct()
-                    .ToList();
-
+                // ========== 4. HIS_SUPPLIER ==========
                 List<HIS_SUPPLIER> listSupplier = new List<HIS_SUPPLIER>();
-                if (supplierIds.Count > 0)
+                if (currentImpMest.SUPPLIER_ID.HasValue)
                 {
-                    var filter = new HisSupplierFilter();
-                    filter.IDs = supplierIds;
-                    listSupplier = new BackendAdapter(param).Get<List<HIS_SUPPLIER>>(
-                        "api/HisSupplier/Get",
-                        ApiConsumer.ApiConsumers.MosConsumer,
-                        filter,
-                        param);
+                    var sup = BackendDataWorker.Get<HIS_SUPPLIER>()
+                        .FirstOrDefault(o => o.ID == currentImpMest.SUPPLIER_ID.Value);
+                    if (sup != null)
+                        listSupplier.Add(sup);
                 }
 
-                // 8. HIS_MEDICINE, V_HIS_MEDICINE_PATY
+                // ========== 5. V_HIS_IMP_MEST_MEDICINE ==========
+                List<V_HIS_IMP_MEST_MEDICINE> listImpMestMedicine = new List<V_HIS_IMP_MEST_MEDICINE>();
+                {
+                    HisImpMestMedicineViewFilter filter = new HisImpMestMedicineViewFilter();
+                    filter.IMP_MEST_ID = impMestId;
+                    listImpMestMedicine = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MEDICINE>>(
+                        HisRequestUriStore.HIS_IMP_MEST_MEDICINE_GETVIEW,
+                        ApiConsumers.MosConsumer,
+                        filter,
+                        param
+                    ) ?? new List<V_HIS_IMP_MEST_MEDICINE>();
+                }
+
+                // ========== 6. V_HIS_IMP_MEST_MATERIAL ==========
+                List<V_HIS_IMP_MEST_MATERIAL> listImpMestMaterial = new List<V_HIS_IMP_MEST_MATERIAL>();
+                {
+                    HisImpMestMaterialViewFilter filter = new HisImpMestMaterialViewFilter();
+                    filter.IMP_MEST_ID = impMestId;
+                    listImpMestMaterial = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MATERIAL>>(
+                        HisRequestUriStore.HIS_IMP_MEST_MATERIAL_GETVIEW,
+                        ApiConsumers.MosConsumer,
+                        filter,
+                        param
+                    ) ?? new List<V_HIS_IMP_MEST_MATERIAL>();
+                }
+
+                // ========== 7. HIS_MEDICINE ==========
+                List<HIS_MEDICINE> listMedicine = new List<HIS_MEDICINE>();
                 List<long> medicineIds = listImpMestMedicine
                     .Select(o => o.MEDICINE_ID)
                     .Distinct()
                     .ToList();
-
-                List<HIS_MEDICINE> listMedicine = new List<HIS_MEDICINE>();
                 if (medicineIds.Count > 0)
                 {
                     int skip = 0;
@@ -2559,37 +2577,25 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                         var ids = medicineIds.Skip(skip).Take(500).ToList();
                         skip += 500;
 
-                        var filter = new HisMedicineFilter();
-                        filter.IDs = ids;
+                        HisMedicineFilter mFilter = new HisMedicineFilter();
+                        mFilter.IDs = ids;
                         var tmp = new BackendAdapter(param).Get<List<HIS_MEDICINE>>(
                             "/api/HisMedicine/Get",
-                            ApiConsumer.ApiConsumers.MosConsumer,
-                            filter,
-                            param);
+                            ApiConsumers.MosConsumer,
+                            mFilter,
+                            param
+                        );
                         if (tmp != null && tmp.Count > 0)
                             listMedicine.AddRange(tmp);
                     }
                 }
 
-                List<V_HIS_MEDICINE_PATY> listMedicinePaty = new List<V_HIS_MEDICINE_PATY>();
-                if (listMedicine.Count > 0)
-                {
-                    var filterPaty = new HisMedicinePatyViewFilter();
-                    filterPaty.MEDICINE_IDs = listMedicine.Select(o => o.ID).Distinct().ToList();
-                    listMedicinePaty = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_PATY>>(
-                        "api/HisMedicinePaty/GetView",   // hoặc "/api/HisMedicinePaty/GetView"
-                        ApiConsumer.ApiConsumers.MosConsumer,
-                        filterPaty,
-                        param);
-                }
-
-                // 9. HIS_MATERIAL, V_HIS_MATERIAL_PATY
+                // ========== 8. HIS_MATERIAL ==========
+                List<HIS_MATERIAL> listMaterial = new List<HIS_MATERIAL>();
                 List<long> materialIds = listImpMestMaterial
                     .Select(o => o.MATERIAL_ID)
                     .Distinct()
                     .ToList();
-
-                List<HIS_MATERIAL> listMaterial = new List<HIS_MATERIAL>();
                 if (materialIds.Count > 0)
                 {
                     int skip = 0;
@@ -2598,60 +2604,190 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                         var ids = materialIds.Skip(skip).Take(500).ToList();
                         skip += 500;
 
-                        var filter = new HisMaterialFilter();
-                        filter.IDs = ids;
+                        HisMaterialFilter maFilter = new HisMaterialFilter();
+                        maFilter.IDs = ids;
                         var tmp = new BackendAdapter(param).Get<List<HIS_MATERIAL>>(
                             "/api/HisMaterial/Get",
-                            ApiConsumer.ApiConsumers.MosConsumer,
-                            filter,
-                            param);
+                            ApiConsumers.MosConsumer,
+                            maFilter,
+                            param
+                        );
                         if (tmp != null && tmp.Count > 0)
                             listMaterial.AddRange(tmp);
                     }
                 }
 
-                List<V_HIS_MATERIAL_PATY> listMaterialPaty = new List<V_HIS_MATERIAL_PATY>();
-                if (listMaterial.Count > 0)
-                {
-                    var filterPaty = new HisMaterialPatyViewFilter();
-                    filterPaty.MATERIAL_IDs = listMaterial.Select(o => o.ID).Distinct().ToList();
-                    listMaterialPaty = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_PATY>>(
-                        "api/HisMaterialPaty/GetView",
-                        ApiConsumer.ApiConsumers.MosConsumer,
-                        filterPaty,
-                        param);
-                }
-
-                // 10. V_HIS_MEDICAL_CONTRACT + MedicalContractADO
+                // ========== 9. V_HIS_MEDICAL_CONTRACT ==========
+                List<V_HIS_MEDICAL_CONTRACT> listMedicalContract = new List<V_HIS_MEDICAL_CONTRACT>();
                 List<long> medicalContractIds = new List<long>();
 
-                medicalContractIds.AddRange(
-                    listMedicine.Where(x => x.MEDICAL_CONTRACT_ID.HasValue)
-                                .Select(x => x.MEDICAL_CONTRACT_ID.Value));
+                if (listMedicine != null && listMedicine.Count > 0)
+                {
+                    var medicineContract = listMedicine
+                        .Where(o => o.MEDICAL_CONTRACT_ID.HasValue)
+                        .Select(p => p.MEDICAL_CONTRACT_ID.Value)
+                        .Distinct()
+                        .ToList();
+                    medicalContractIds.AddRange(medicineContract);
+                }
 
-                medicalContractIds.AddRange(
-                    listMaterial.Where(x => x.MEDICAL_CONTRACT_ID.HasValue)
-                                .Select(x => x.MEDICAL_CONTRACT_ID.Value));
+                if (listMaterial != null && listMaterial.Count > 0)
+                {
+                    var materialContract = listMaterial
+                        .Where(o => o.MEDICAL_CONTRACT_ID.HasValue)
+                        .Select(p => p.MEDICAL_CONTRACT_ID.Value)
+                        .Distinct()
+                        .ToList();
+                    medicalContractIds.AddRange(materialContract);
+                }
 
                 medicalContractIds = medicalContractIds.Distinct().ToList();
 
-                List<V_HIS_MEDICAL_CONTRACT> listMedicalContract = new List<V_HIS_MEDICAL_CONTRACT>();
-                if (medicalContractIds.Count > 0)
+
+                // ========== 10. List<MedicalContractADO> ==========
+                List<MPS.Processor.Mps000505.PDO.MedicalContractADO> listMedicalContractADO
+                    = new List<MPS.Processor.Mps000505.PDO.MedicalContractADO>();
+
+                if (listMedicalContract != null && listMedicalContract.Count > 0)
                 {
-                    var filter = new HisMedicalContractViewFilter();
-                    filter.IDs = medicalContractIds;
-                    listMedicalContract = new BackendAdapter(param).Get<List<V_HIS_MEDICAL_CONTRACT>>(
-                        "api/HisMedicalContract/GetView",
-                        ApiConsumer.ApiConsumers.MosConsumer,
-                        filter,
-                        param);
+                    // Map cho thuốc
+                    foreach (var item in listMedicine)
+                    {
+                        if (!item.MEDICAL_CONTRACT_ID.HasValue)
+                            continue;
+
+                        var contract = listMedicalContract
+                            .FirstOrDefault(o => o.ID == item.MEDICAL_CONTRACT_ID.Value);
+                        if (contract == null) continue;
+
+                        var ado = new MPS.Processor.Mps000505.PDO.MedicalContractADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<
+                            MPS.Processor.Mps000505.PDO.MedicalContractADO
+                        >(ado, contract);
+                        ado.MEDICINE_ID = item.ID;
+                        listMedicalContractADO.Add(ado);
+                    }
+
+                    // Map cho vật tư
+                    foreach (var item in listMaterial)
+                    {
+                        if (!item.MEDICAL_CONTRACT_ID.HasValue)
+                            continue;
+
+                        var contract = listMedicalContract
+                            .FirstOrDefault(o => o.ID == item.MEDICAL_CONTRACT_ID.Value);
+                        if (contract == null) continue;
+
+                        var ado = new MPS.Processor.Mps000505.PDO.MedicalContractADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<
+                            MPS.Processor.Mps000505.PDO.MedicalContractADO
+                        >(ado, contract);
+                        ado.MATERIAL_ID = item.ID;
+                        listMedicalContractADO.Add(ado);
+                    }
                 }
+
+                // ========== 11. V_HIS_MEDICINE_PATY ==========
+                List<V_HIS_MEDICINE_PATY> listMedicinePaty = new List<V_HIS_MEDICINE_PATY>();
+                if (listMedicine.Count > 0)
+                {
+                    HisMedicinePatyViewFilter filterMediPaty = new HisMedicinePatyViewFilter();
+                    filterMediPaty.MEDICINE_IDs = listMedicine.Select(o => o.ID).Distinct().ToList();
+                    listMedicinePaty = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_PATY>>(
+                        "/api/HisMedicinePaty/GetView",
+                        ApiConsumers.MosConsumer,
+                        filterMediPaty,
+                        param
+                    ) ?? new List<V_HIS_MEDICINE_PATY>();
+                }
+
+                // ========== 12. V_HIS_MATERIAL_PATY ==========
+                List<V_HIS_MATERIAL_PATY> listMaterialPaty = new List<V_HIS_MATERIAL_PATY>();
+                if (listMaterial.Count > 0)
+                {
+                    HisMaterialPatyViewFilter filterMaterialPaty = new HisMaterialPatyViewFilter();
+                    filterMaterialPaty.MATERIAL_IDs = listMaterial.Select(o => o.ID).Distinct().ToList();
+                    listMaterialPaty = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_PATY>>(
+                        "/api/HisMaterialPaty/GetView",
+                        ApiConsumers.MosConsumer,
+                        filterMaterialPaty,
+                        param
+                    ) ?? new List<V_HIS_MATERIAL_PATY>();
+                }
+
+                // ========== 13. InputADO (EMR) ==========
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                string treatmentCode = !string.IsNullOrWhiteSpace(currentImpMest.TDL_TREATMENT_CODE)
+                    ? currentImpMest.TDL_TREATMENT_CODE
+                    : printTypeCode;
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO =
+                    new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                        .GenerateInputADOWithPrintTypeCode(
+                            treatmentCode,
+                            printTypeCode,
+                            currentModule != null ? currentModule.RoomId : 0
+                        );
+
+                // ========== 14. Tạo PDO cho MPS000505 ==========
+                var pdo = new MPS.Processor.Mps000505.PDO.Mps000505PDO(
+                    listImpMest,
+                    listImpMestMedicine,
+                    listImpMestMaterial,
+                    listImpMestBlood,
+                    listMedicine,
+                    listMaterial,
+                    listImpMestUser,
+                    listMedicinePaty,
+                    listMaterialPaty,
+                    listSupplier,
+                    listMedicalContractADO
+                );
+
+                WaitingManager.Hide();
+
+                // ========== 15. In ==========
+                MPS.ProcessorBase.Core.PrintData printData;
+                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    printData = new MPS.ProcessorBase.Core.PrintData(
+                        printTypeCode,
+                        fileName,
+                        pdo,
+                        MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow,
+                        printerName
+                    )
+                    {
+                        EmrInputADO = inputADO
+                    };
+                }
+                else
+                {
+                    printData = new MPS.ProcessorBase.Core.PrintData(
+                        printTypeCode,
+                        fileName,
+                        pdo,
+                        MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog,
+                        printerName
+                    )
+                    {
+                        EmrInputADO = inputADO
+                    };
+                }
+
+                result = MPS.MpsPrinter.Run(printData);
             }
             catch (Exception ex)
             {
-
-                throw;
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+
         }
     }
 }
