@@ -417,6 +417,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 subIcdPbProcessor = new SecondaryIcdProcessor(new CommonParam(), icdYhct);
                 HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
                 ado.DelegateNextFocus = NextForcusSubIcdToDo;
+                ado.DelegateGetIcdMain = GetIcdMainCode;
+                ado.DelegateGetIcdSub = GetIcdSubCode;
                 //ado.DelegateGetIcdMain = GetIcdMainCodeYhct;
                 //ado.delegateCheckICD = CheckICDSecondYHCT;
                 Rectangle activeScreenDimensions = Screen.FromControl(this).Bounds;
@@ -445,6 +447,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             bool result = true;
             try
             {
+                if (ucSecondaryIcdPb != null)
+                {
+                    dxErrorProvider1.SetError(ucSecondaryIcdPb, string.Empty);
+                }
                 result = (this.ucSecondaryIcdPb != null && (bool)this.subIcdPbProcessor.GetValidate(this.ucSecondaryIcdPb)) && result;
                 if (this.icdProcessor != null && this.ucIcd != null || (this.subIcdProcessor != null && this.ucSecondaryIcd != null)
                     || (this.subIcdPbProcessor != null && this.ucSecondaryIcdPb != null))
@@ -485,12 +491,15 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         if (commonValues != null && commonValues.Count() > 0)
                         {
                             error += string.Format("Mã bệnh phân biệt {0} đã sử dụng cho mã bệnh chính và phụ. Vui lòng kiểm tra lại", string.Join(",", commonValues.ToList()));
+                            LogSystem.Debug("SetError: " + error);
+                            dxErrorProvider1.SetError(ucSecondaryIcdPb, error, ErrorType.Warning);
 
                             result = false;
                         }
-                        LogSystem.Debug("SetError: " + error);
-                        //this.subIcdPbProcessor.SetError(ucSecondaryIcdPb, error);
-                        dxErrorProvider1.SetError(ucSecondaryIcdPb, error);
+                        //this.subIcdPbProcessor.SetError(
+                        //
+                        //, error);
+                        //dxErrorProvider1.SetError(ucSecondaryIcdPb, error);
                     }
 
                 }
@@ -3545,6 +3554,23 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             }
             return mainCode;
         }
+        private string GetIcdSubCode()
+        {
+            string subCode = "";
+            try
+            {
+                var icdValue = this.SubUcIcdGetValue();
+                if (icdValue != null && icdValue is UC.Icd.ADO.IcdInputADO)
+                {
+                    subCode = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return subCode;
+        }
         public object UcIcdGetValue()
         {
             object result = null;
@@ -3910,7 +3936,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                             (trackingSDOs.Tracking.ICD_CODE ?? "") +
                             (trackingSDOs.Tracking.ICD_SUB_CODE ?? "");
 
-                        if (icdCodeAll.Length > 100)
+                        if (icdCodeAll.Length >= 100)
                         {
                             XtraMessageBox.Show(this,
                                 "Mã chẩn đoán phụ nhập quá 100 ký tự",
@@ -4099,6 +4125,22 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         {
             try
             {
+                if (ucIcd != null && icdProcessor != null)
+                {
+                    icdProcessor.Reload(ucIcd, null);
+                }
+
+                // Clear ICD YHCT
+                if (ucIcdYhct != null && icdYhctProcessor != null)
+                {
+                    icdYhctProcessor.Reload(ucIcdYhct, null);
+                }
+
+                // Clear ICD phụ
+                if (ucSecondaryIcd != null && subIcdProcessor != null)
+                {
+                    subIcdProcessor.Reload(ucSecondaryIcd, null);
+                }
                 positionHandleControl = -1;
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError
                 (dxValidationProvider1, dxErrorProvider1);
