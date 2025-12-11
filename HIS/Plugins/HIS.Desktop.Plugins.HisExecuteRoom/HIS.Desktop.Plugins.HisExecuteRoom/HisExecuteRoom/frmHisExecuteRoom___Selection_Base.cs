@@ -30,80 +30,6 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
         {
             try
             {
-                //cbo.Properties.View.RowClick += (s, e) =>
-                //{
-                //    try
-                //    {
-                //        var view = s as DevExpress.XtraGrid.Views.Grid.GridView;
-                //        if (view == null) return;
-                //        RoomOptionItem row = view.GetRow(e.RowHandle) as RoomOptionItem;
-                //        if (row == null) return;
-                //        if (view.FocusedColumn.FieldName == "CheckMarkSelection")
-                //        {
-                //            if (row.Option == Option.MustBeApprovedSurgery)
-                //            {
-                //                if (SelectedOptions == null || !SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsSurgery))
-                //                {
-                //                    GridCheckMarksSelection gridCheckMark = cboDepartment.Properties.Tag as GridCheckMarksSelection;
-                //                    if (gridCheckMark != null)
-                //                    {
-                //                        gridCheckMark.SelectRow(view, e.RowHandle, false);
-                //                    }
-                //                }
-                //            }
-                //            else if (row.Option == Option.IsSurgery)
-                //            {
-                //                if (SelectedOptions != null 
-                //                && SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.MustBeApprovedSurgery)
-                //                && !SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsSurgery)
-                //                )
-                //                {
-                //                    GridCheckMarksSelection gridCheckMark = cboDepartment.Properties.Tag as GridCheckMarksSelection;
-                //                    if (gridCheckMark != null)
-                //                    {
-                //                        for (int i = 0; i < view.DataRowCount; i++)
-                //                        {
-                //                            var r = view.GetRow(i) as RoomOptionItem;
-                //                            if (r != null && r.Option == RoomConfigOption.RoomConfigOption.Option.MustBeApprovedSurgery)
-                //                            {
-                //                                gridCheckMark.SelectRow(view, i, false);
-                //                                break;
-                //                            }
-                //                        }
-                //                    }
-                //                }
-                //            }
-                //        }
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        Inventec.Common.Logging.LogSystem.Warn(ex);
-                //    }
-                //};
-
-                //cbo.Properties.View.RowStyle += (s, e) =>
-                //{
-                //    try
-                //    {
-                //        var view = s as DevExpress.XtraGrid.Views.Grid.GridView;
-                //        if (view == null) return;
-                //        RoomOptionItem row = view.GetRow(e.RowHandle) as RoomOptionItem;
-                //        if (row == null) return;
-                //        if (row != null && row.Option == Option.MustBeApprovedSurgery)
-                //        {
-                //            if (SelectedOptions == null || !SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsSurgery))
-                //            {
-                //                e.Appearance.ForeColor = System.Drawing.Color.Gray;
-                //                e.Appearance.BackColor = System.Drawing.Color.WhiteSmoke;
-                //            }
-                //        }
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        Inventec.Common.Logging.LogSystem.Warn(ex);
-                //    }
-                //};
-
                 // Marks selection
                 GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cbo.Properties);
                 gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(eventHandlerMarksSelection);
@@ -119,7 +45,6 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     var view = s as DevExpress.XtraGrid.Views.Grid.GridView;
                     if (view == null) return;
 
-                    // Lấy filter text của cột đầu tiên có filter (hoặc tuỳ ý)
                     string filterText = null;
                     foreach (var col in view.Columns)
                     {
@@ -130,14 +55,12 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                             break;
                         }
                     }
-                    // Gán filterText cho FindPanelText để highlight
                     view.ApplyFindFilter(!string.IsNullOrEmpty(filterText) ? $"\"{filterText}\"" : string.Empty);
                 };
                 // Combo properties
                 cbo.Properties.Closed += (s, e) =>
                 {
                     GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
-                    //cbo.Properties.Buttons[1].Visible = gridCheckMark != null && gridCheckMark.Selection.Count > 0;
                     if (cbo.Properties.Buttons.Count > 0 && gridCheckMark != null && gridCheckMark.Selection.Count > 0)
                     {
                         foreach (EditorButton item in cbo.Properties.Buttons)
@@ -180,7 +103,6 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 col2.ColumnEdit = memoEdit;
                 col2.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
 
-
                 cbo.Properties.PopupFormWidth = 500;
                 cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
                 cbo.Properties.View.OptionsSelection.MultiSelect = true;
@@ -215,24 +137,22 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 if (e.Column.FieldName == "CheckMarkSelection")
                 {
                     var row = view.GetRow(e.RowHandle) as RoomOptionItem;
-                    // Điều kiện để Indeterminate
                     if (row != null)
                     {
-                        if (row != null && row.Option == Option.MustBeApprovedSurgery)
+                        if (row.Option == Option.MustBeApprovedSurgery)
                         {
                             if (SelectedOptions == null || !SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsSurgery))
                             {
-                                int boxSize = 12; // Đặt kích thước mong muốn
-                                int x = e.Bounds.Left + (e.Bounds.Width - boxSize) / 2;
-                                int y = e.Bounds.Top + (e.Bounds.Height - boxSize) / 2;
-                                var boxRect = new System.Drawing.Rectangle(x, y, boxSize, boxSize);
-                                // Vẽ nền xám nhạt cho ô vuông nhỏ
-                                e.Graphics.FillRectangle(System.Drawing.Brushes.LightGray, boxRect);
-                                // Vẽ viền ô vuông
-                                e.Graphics.DrawRectangle(System.Drawing.Pens.Gray, boxRect);
-                                // Vẽ dấu gạch ngang ở giữa ô vuông nhỏ
-                                int lineY = y + boxSize / 2;
-                                e.Graphics.DrawLine(System.Drawing.Pens.Gray, x + 3, lineY, x + boxSize - 3, lineY);
+                                DrawIndeterminateCheckBox(e.Graphics, e.Bounds);
+                                e.Handled = true;
+                                return;
+                            }
+                        }
+                        else if (row.Option == Option.IsBlockNumOrder)
+                        {
+                            if (SelectedOptions == null || !SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsExam))
+                            {
+                                DrawIndeterminateCheckBox(e.Graphics, e.Bounds);
                                 e.Handled = true;
                                 return;
                             }
@@ -241,6 +161,21 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 }
             }
         }
+
+        private void DrawIndeterminateCheckBox(System.Drawing.Graphics graphics, System.Drawing.Rectangle bounds)
+        {
+            int boxSize = 12;
+            int x = bounds.Left + (bounds.Width - boxSize) / 2;
+            int y = bounds.Top + (bounds.Height - boxSize) / 2;
+            var boxRect = new System.Drawing.Rectangle(x, y, boxSize, boxSize);
+
+            graphics.FillRectangle(System.Drawing.Brushes.LightGray, boxRect);
+            graphics.DrawRectangle(System.Drawing.Pens.Gray, boxRect);
+
+            int lineY = y + boxSize / 2;
+            graphics.DrawLine(System.Drawing.Pens.Gray, x + 3, lineY, x + boxSize - 3, lineY);
+        }
+
         private void cboClearSelection(GridLookUpEdit gridLookUpEdit)
         {
             try
