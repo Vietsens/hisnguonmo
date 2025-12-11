@@ -450,6 +450,21 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
 
                             CheckChangeAndUpdateForChangeHeinData(dataHein, rsData, ref isShowErrorMessage);
                         }
+                        else if(rsData.ResultHistoryLDO.maKetQua.Equals(GOV_API_RESULT_004) && dtHanTheTu.Date <= dtIntructionTime.Date && dtHanTheDen.Date >= dtIntructionTime.Date)
+                        {
+                            //Trường hợp thế hết hạn nhưng ngày đăng ký nằm trong hạn thẻ cũ thì phải hiển thị thông tin thẻ cũ
+                            rsData.HeinCardData.HeinCardNumber = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheCu) ? rsData.ResultHistoryLDO.maTheCu : rsData.ResultHistoryLDO.maTheMoi;
+                            rsData.HeinCardData.FromDate = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.gtTheTu) ? rsData.ResultHistoryLDO.gtTheTu : rsData.ResultHistoryLDO.gtTheTuMoi;
+                            rsData.HeinCardData.ToDate = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.gtTheDen) ? rsData.ResultHistoryLDO.gtTheDen : rsData.ResultHistoryLDO.gtTheDenMoi;
+                            rsData.HeinCardData.Address = rsData.ResultHistoryLDO.diaChi;
+                            rsData.HeinCardData.MediOrgCode = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.maDKBD) ? rsData.ResultHistoryLDO.maDKBD : rsData.ResultHistoryLDO.maDKBDMoi;
+                            rsData.HeinCardData.Gender = HIS.Desktop.Plugins.Library.RegisterConfig.GenderConvert.TextToNumber(rsData.ResultHistoryLDO.gioiTinh);
+                            rsData.HeinCardData.PatientName = rsData.ResultHistoryLDO.hoTen;
+                            rsData.HeinCardData.Address = rsData.ResultHistoryLDO.diaChi;
+                            rsData.HeinCardData.Dob = rsData.ResultHistoryLDO.ngaySinh;
+                            rsData.HeinCardData.LiveAreaCode = rsData.ResultHistoryLDO.maKV;
+                            rsData.IsShowQuestionWhileChangeHeinTime__Choose = true;
+                        }
                     }
                     if (rsData.ResultHistoryLDO != null && rsData.ResultHistoryLDO.dsLichSuKCB2018 == null)
                     {
@@ -1291,6 +1306,20 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
 
                             rsData.ResultHistoryLDO.success = true;
                             rsData.ResultHistoryLDO.message = "";
+                        }
+                        else if (rsData.ResultHistoryLDO.maKetQua.Equals(GOV_API_RESULT_004) && dtHanTheTu.Date <= dtIntructionTime.Date && dtHanTheDen.Date >= dtIntructionTime.Date)
+                        {
+                            //Trường hợp thế hết hạn nhưng ngày đăng ký nằm trong hạn thẻ cũ thì phải hiển thị thông tin thẻ cũ
+                            rsData.HeinCardData.HeinCardNumber = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.maTheCu) ? rsData.ResultHistoryLDO.maTheCu : rsData.ResultHistoryLDO.maTheMoi;
+                            rsData.HeinCardData.FromDate = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.gtTheTu) ? rsData.ResultHistoryLDO.gtTheTu : rsData.ResultHistoryLDO.gtTheTuMoi;
+                            rsData.HeinCardData.ToDate = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.gtTheDen) ? rsData.ResultHistoryLDO.gtTheDen : rsData.ResultHistoryLDO.gtTheDenMoi;
+                            rsData.HeinCardData.Address = rsData.ResultHistoryLDO.diaChi;
+                            rsData.HeinCardData.MediOrgCode = !string.IsNullOrEmpty(rsData.ResultHistoryLDO.maDKBD) ? rsData.ResultHistoryLDO.maDKBD : rsData.ResultHistoryLDO.maDKBDMoi;
+                            rsData.HeinCardData.Gender = HIS.Desktop.Plugins.Library.RegisterConfig.GenderConvert.TextToNumber(rsData.ResultHistoryLDO.gioiTinh);
+                            rsData.HeinCardData.PatientName = rsData.ResultHistoryLDO.hoTen;
+                            rsData.HeinCardData.Address = rsData.ResultHistoryLDO.diaChi;
+                            rsData.HeinCardData.Dob = rsData.ResultHistoryLDO.ngaySinh;
+                            rsData.HeinCardData.LiveAreaCode = rsData.ResultHistoryLDO.maKV;
                         }
                         if (rsData.ResultHistoryLDO.dsLichSuKCB2018 == null)
                         {
