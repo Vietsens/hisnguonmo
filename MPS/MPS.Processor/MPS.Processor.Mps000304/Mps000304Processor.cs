@@ -188,6 +188,11 @@ namespace MPS.Processor.Mps000304
                 if (sereServADOs == null || sereServADOs.Count == 0)
                     return false;
 
+                //ghi đè PrintLogData và UniqueCodeData
+                ProcessPrintLogData();
+                //lấy số lần in
+                SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
+
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
                 objectTag.AddObjectData(store, "HeinServiceType", heinServiceTypeADOs);
@@ -809,6 +814,41 @@ namespace MPS.Processor.Mps000304
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        public override string ProcessPrintLogData()
+        {
+            string log = "";
+            try
+            {
+                if (rdo != null && rdo.Treatment != null)
+                {
+                    string treatmentCode = rdo.Treatment.TREATMENT_CODE;
+                    log = String.Format("HIS_TREATMENT: {0}", treatmentCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                log = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return log;
+        }
+
+        public override string ProcessUniqueCodeData()
+        {
+            string result = "";
+            try
+            {
+                if (rdo != null && rdo.Treatment != null && rdo.Treatment != null)
+                    result = String.Format("PRINT_TYPE_CODE:{0} TREATMENT_CODE:{1}", printTypeCode, rdo.Treatment.TREATMENT_CODE);
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
     }
 }
