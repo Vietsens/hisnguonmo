@@ -187,7 +187,8 @@ namespace MPS.Processor.Mps000302
                 objectTag.AddRelationship(store, "HeinServiceTypeBed", "ServiceSA", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
 
                 objectTag.SetUserFunction(store, "ReplaceValue", new ReplaceValueFunction());
-
+                ProcssGroupHeinType(objectTag, store);
+               
                 ProcessNoExamZero(objectTag, store);
 
                 result = true;
@@ -199,6 +200,111 @@ namespace MPS.Processor.Mps000302
             }
 
             return result;
+        }
+
+        private static void AggregateTotals(IEnumerable<HeinServiceTypeADO> sourceItems, HeinServiceTypeADO target)
+        {
+            try
+            {
+                if (sourceItems == null || target == null) return;
+
+                var props = typeof(HeinServiceTypeADO)
+                    .GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
+                    .Where(p => p.CanRead && p.CanWrite && p.Name.StartsWith("TOTAL", StringComparison.OrdinalIgnoreCase))
+                    .ToArray();
+
+                foreach (var prop in props)
+                {
+                    Type pt = prop.PropertyType;
+                    // Normalize nullable types
+                    var underlying = Nullable.GetUnderlyingType(pt) ?? pt;
+
+                    // Sum supported numeric types
+                    if (underlying == typeof(decimal))
+                    {
+                        decimal sum = 0m;
+                        foreach (var it in sourceItems)
+                        {
+                            var val = prop.GetValue(it);
+                            if (val != null) sum += (decimal)val;
+                        }
+                        prop.SetValue(target, pt == underlying ? (object)sum : (object)(decimal?)sum);
+                    }
+                    else if (underlying == typeof(double))
+                    {
+                        double sum = 0d;
+                        foreach (var it in sourceItems)
+                        {
+                            var val = prop.GetValue(it);
+                            if (val != null) sum += (double)val;
+                        }
+                        prop.SetValue(target, pt == underlying ? (object)sum : (object)(double?)sum);
+                    }
+                    else if (underlying == typeof(float))
+                    {
+                        float sum = 0f;
+                        foreach (var it in sourceItems)
+                        {
+                            var val = prop.GetValue(it);
+                            if (val != null) sum += (float)val;
+                        }
+                        prop.SetValue(target, pt == underlying ? (object)sum : (object)(float?)sum);
+                    }
+                    else if (underlying == typeof(long))
+                    {
+                        long sum = 0L;
+                        foreach (var it in sourceItems)
+                        {
+                            var val = prop.GetValue(it);
+                            if (val != null) sum += (long)val;
+                        }
+                        prop.SetValue(target, pt == underlying ? (object)sum : (object)(long?)sum);
+                    }
+                    else if (underlying == typeof(int))
+                    {
+                        int sum = 0;
+                        foreach (var it in sourceItems)
+                        {
+                            var val = prop.GetValue(it);
+                            if (val != null) sum += (int)val;
+                        }
+                        prop.SetValue(target, pt == underlying ? (object)sum : (object)(int?)sum);
+                    }
+                    // Extend if other numeric types are needed
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ProcssGroupHeinType(Inventec.Common.FlexCellExport.ProcessObjectTag objectTag, Inventec.Common.FlexCellExport.Store store)
+        {
+            try
+            {
+                objectTag.AddObjectData(
+                    store,
+                    "HeinServiceTypeOnly",
+                    heinServiceTypeADOs
+                        .GroupBy(o => new { o.NUM_ORDER, o.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER })
+                        .Select(g =>
+                        {
+                            var first = g.First();
+                            AggregateTotals(g, first);
+                            return first;
+                        })
+                        .ToList()
+                );
+
+                objectTag.AddRelationship(store, "HeinServiceTypeOnly", "Service", "ID", "HEIN_SERVICE_TYPE_ID");
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private void ProcessNoExamZero(Inventec.Common.FlexCellExport.ProcessObjectTag objectTag, Inventec.Common.FlexCellExport.Store store)
