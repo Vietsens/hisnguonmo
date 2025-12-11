@@ -116,8 +116,9 @@
     <Reference Include="Inventec.Desktop.CustomControl">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>..\..\..\..\LIB\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
@@ -196,6 +197,7 @@
     <Compile Include="Validation\GoodUnitNameValidationRule.cs" />
     <Compile Include="Validation\GoodNameValidationRule.cs" />
     <Compile Include="Validation\PayFormValidationRule.cs" />
+    <Compile Include="Validation\SpinToTalAmountValidationRule.cs" />
     <Compile Include="Validation\TransactionTimeValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
