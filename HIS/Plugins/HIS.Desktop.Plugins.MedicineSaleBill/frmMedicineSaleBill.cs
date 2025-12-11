@@ -3169,5 +3169,31 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void spinQrMoney_EditValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboPayFrom_EditValueChanged(object sender, EventArgs e)
+        {
+            if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 3)
+            {
+                layoutControlItem27.Enabled = true;
+            }
+            else if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 6)
+            {
+                layoutControlItem27.Enabled = true;
+                layoutControlItem27.Text = "Số tiền QT:";
+                layoutControlItem27.OptionsToolTip.ToolTip = "Số tiền quẹt thẻ";
+            }
+            else
+            {
+                layoutControlItem27.Enabled = false;
+                layoutControlItem27.Text = "Số tiền CK:";
+                layoutControlItem27.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+            } 
+                
+        }
     }
 }
