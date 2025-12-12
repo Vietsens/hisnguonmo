@@ -93,7 +93,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         private List<HisMedicineTypeInStockSDO> mediInStocks;
         private List<HisMaterialTypeInStockSDO> mateInStocks;
         private List<V_HIS_SERVICE_REQ_11> serviceReq { get; set; }
-        private HisExpMestSaleListResultSDO resultSDO { get; set; }
+        private HisExpMestSaleListResultSDO resultSDO { get; set; } 
         private List<HisExpMestSaleListResultSDO> ListResultSDO { get; set; }
         private string clientSessionKey { get; set; }
         //private RefreshCheckPrint _RefreshCheckPrint;
