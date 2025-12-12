@@ -1092,59 +1092,34 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                         ProcessSelectBusiness(data.DEFAULT_DRUG_STORE_IDS, gridCheckMark);
                     }
                     //
-                    List<RoomOptionItem> selectedOptions = new List<RoomOptionItem>();
-
-                    // Replace the block that adds RoomOptionItem to selectedOptions with the following:
-                    selectedOptions.Clear();
-                    if (data.IS_EMERGENCY == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsEmergency));
-                    if (data.IS_EXAM == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsExam));
-                    if (data.IS_AUTO_EXPEND_ADD_EXAM == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsAutoExpendAddExam));
-                    if (data.IS_SPECIALITY == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsSpeciality));
-                    if (data.IS_ALLOW_NO_ICD == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsAllowNoICD));
-                    if (data.IS_USE_KIOSK == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsUseKiosk));
-                    if (data.IS_PAUSE == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsPause));
-                    if (data.IS_RESTRICT_EXECUTE_ROOM == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsRestrictExecuteRoom));
-                    if (data.IS_RESTRICT_MEDICINE_TYPE == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsRestrictMedicineType));
-                    if (data.IS_RESTRICT_TIME == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsRestrictTime));
-                    if (data.IS_PAUSE_ENCLITIC == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsPauseEnclitic));
-                    if (data.IS_VACCINE == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsVaccine));
-                    if (data.IS_VITAMIN_A == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsVitaminA));
-                    if (data.IS_RESTRICT_REQ_SERVICE == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsRestrictReqService));
-                    if (data.IS_RESTRICT_PATIENT_TYPE == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsRestrictPatientType));
-                    if (data.ALLOW_NOT_CHOOSE_SERVICE == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.AllowNotChooseService));
-                    
-                    if (data.IS_SURGERY == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsSurgery));
-                    if (data.MUST_BE_APPROVED_SURGERY == 1)
-                        selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.MustBeApprovedSurgery));
-
-
+                    var selectedOptions = new List<RoomOptionItem>();
+                    selectedOptions.Add(Option.IsEmergency, data.IS_EMERGENCY);
+                    selectedOptions.Add(Option.IsExam, data.IS_EXAM);
+                    selectedOptions.Add(Option.IsAutoExpendAddExam, data.IS_AUTO_EXPEND_ADD_EXAM);
+                    selectedOptions.Add(Option.IsSpeciality, data.IS_SPECIALITY);
+                    selectedOptions.Add(Option.IsAllowNoICD, data.IS_ALLOW_NO_ICD);
+                    selectedOptions.Add(Option.IsUseKiosk, data.IS_USE_KIOSK);
+                    selectedOptions.Add(Option.IsPause, data.IS_PAUSE);
+                    selectedOptions.Add(Option.IsRestrictExecuteRoom, data.IS_RESTRICT_EXECUTE_ROOM);
+                    selectedOptions.Add(Option.IsRestrictMedicineType, data.IS_RESTRICT_MEDICINE_TYPE);
+                    selectedOptions.Add(Option.IsRestrictTime, data.IS_RESTRICT_TIME);
+                    selectedOptions.Add(Option.IsPauseEnclitic, data.IS_PAUSE_ENCLITIC);
+                    selectedOptions.Add(Option.IsVaccine, data.IS_VACCINE);
+                    selectedOptions.Add(Option.IsVitaminA, data.IS_VITAMIN_A);
+                    selectedOptions.Add(Option.IsRestrictReqService, data.IS_RESTRICT_REQ_SERVICE);
+                    selectedOptions.Add(Option.IsRestrictPatientType, data.IS_RESTRICT_PATIENT_TYPE);
+                    selectedOptions.Add(Option.AllowNotChooseService, data.ALLOW_NOT_CHOOSE_SERVICE);
+                    selectedOptions.Add(Option.IsSurgery, data.IS_SURGERY);
+                    selectedOptions.Add(Option.MustBeApprovedSurgery, data.MUST_BE_APPROVED_SURGERY);
                     var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == data.ROOM_ID);
-                        if (room != null)
+                    if (room != null)
                     {
                         cboPayerBank.EditValue = room.PAYER_BANK_ID;
                         txtPayerAccount.Text = room.PAYER_ACCOUNT;
                         //chkIsBlockNumOrder.Enabled = (data.IS_EXAM == 1 ? true : false);
                         //chkIsBlockNumOrder.Checked = (room.IS_BLOCK_NUM_ORDER == 1 ? true : false);
                         //chkIsExam.Checked = (data.IS_EXAM == 1 ? true : false);
-                        if (room != null && room.IS_BLOCK_NUM_ORDER == 1)
-                            selectedOptions.Add(new RoomOptionItem(RoomConfigOption.RoomConfigOption.Option.IsBlockNumOrder));
+                        selectedOptions.Add(Option.IsBlockNumOrder, room.IS_BLOCK_NUM_ORDER);
                         CboResponsible.EditValue = room.RESPONSIBLE_LOGINNAME;
                         cboWaitingScreen.EditValue = room.SCREEN_SAVER_MODULE_LINK;
                         cboWaitingScreen.Properties.Buttons[1].Visible = true;
@@ -1449,15 +1424,12 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 currentDTO.ROOM_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__XL;
                 currentDTO.HOSP_SUBS_DIRECTOR_LOGINNAME = txtDirectorLoginName.Text;
                 currentDTO.HOSP_SUBS_DIRECTOR_USERNAME = cboDirectorUserName.Text;
-                if (SelectedOptions != null && SelectedOptions.Count > 0)
-                {
-                    currentDTO.IS_EMERGENCY = (short)(SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsEmergency) ? 1 : 0);
-                    currentDTO.IS_PAUSE_ENCLITIC = (short)(SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsPauseEnclitic) ? 1 : 0);
-                    currentDTO.IS_SPECIALITY = (short)(SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsSpeciality) ? 1 : 0);
-                    currentDTO.IS_SURGERY = (short)(SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsSurgery) ? 1 : 0);
-                    currentDTO.IS_PAUSE = (short)(SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsPause) ? 1 : 0);
-                    currentDTO.IS_EXAM = (short)(SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsExam) ? 1 : 0);
-                }
+                currentDTO.IS_EMERGENCY = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsEmergency);
+                currentDTO.IS_PAUSE_ENCLITIC = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsPauseEnclitic);
+                currentDTO.IS_SPECIALITY = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsSpeciality);
+                currentDTO.IS_SURGERY = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsSurgery);
+                currentDTO.IS_PAUSE = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsPause);
+                currentDTO.IS_EXAM = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsExam);
                 currentDTO.TEST_TYPE_CODE = txtTestTypeCode.Text.Trim();
                 if (spMaxReqBhytByDay.EditValue != null)
                 {
@@ -1648,9 +1620,9 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                             { e.Value = room.PAYER_ACCOUNT; }
                             else
                             {
-                                e.Value = null; 
+                                e.Value = null;
                             }
-                            
+
                         }
                         catch (Exception ex)
                         {
@@ -3754,7 +3726,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
 
             try
             {
-                if (edit == GlobalVariables.ActionEdit && (SelectedOptions != null && SelectedOptions.Count > 0 && SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsExam)))
+                if (edit == GlobalVariables.ActionEdit && SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsExam) == 1)
                 {
                     cboDefaultService.Enabled = true;
                 }
