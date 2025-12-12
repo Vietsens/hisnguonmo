@@ -72,6 +72,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         HIS_EXP_MEST prescriptionPrint;
         HIS_SERVICE_REQ currentServiceReqPrint;
         Inventec.Desktop.Common.Modules.Module currentModule;
+        MPS.ProcessorBase.PrintConfig.PreviewType previewType;
+        internal V_HIS_TREATMENT VHistreatment;
         private void InitMenuPrint(MOS.EFMODEL.DataModels.V_HIS_EXP_MEST expMest, bool? isListResult = null)
         {
             try
@@ -147,7 +149,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                     //lấy đơn thuốc tư phiếu xuất
 
-                    List<long> serviceReqId = listExpMest.Select(s => s.SERVICE_REQ_ID ?? 0).ToList();
+                    List<long> serviceReqId = listExpMest.Select(s => s.PRESCRIPTION_ID ?? 0).ToList();
                     if (serviceReqId != null && serviceReqId.Count() > 0)
                     {
                         CommonParam parama = new CommonParam();
@@ -392,6 +394,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             {
                 if (!String.IsNullOrEmpty(printTypeCode) && !String.IsNullOrEmpty(fileName))
                 {
+                    onClickCheckSignature();
                     switch (printTypeCode)
                     {
                         case PrintTypeCodeWorker.PRINT_TYPE_CODE__PhieuXuatBan_MPS000092:
@@ -438,7 +441,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 var hisCashierRoom = BackendDataWorker.Get<V_HIS_CASHIER_ROOM>();
                 CommonParam param = new CommonParam();
                 V_HIS_TREATMENT treatment = new V_HIS_TREATMENT();
-                if (_ExpMest_Sale_Print__One.FirstOrDefault().TDL_TREATMENT_ID.HasValue)
+                if (_ExpMest_Sale_Print__One.FirstOrDefault().TDL_TREATMENT_ID.HasValue) 
                 {
                     HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
                     filter.ID = _ExpMest_Sale_Print__One.FirstOrDefault().TDL_TREATMENT_ID;
@@ -458,27 +461,39 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         treatment = listTreatment.OrderByDescending(o => o.TREATMENT_CODE).FirstOrDefault();
                     }
                 }
-
                 MPS.Processor.Mps000092.PDO.Mps000092PDO rdo = new MPS.Processor.Mps000092.PDO.Mps000092PDO(_ExpMest_Sale_Print__One, _ExpMestMedicine_Sale_Prints, _ExpMestMaterial_Sale_Prints, _Transaction_Sale_Print, hisCashierRoom, treatment);
                 Inventec.Common.Logging.LogSystem.Debug("End onClickInPhieuXuatBan (before ShowDialog)");
-                if (this.savePrint)
+
+                if (previewType != null)
                 {
-                    if (chkPrintNow.CheckState == CheckState.Checked)
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
-                    else
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatment != null ? treatment.TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, previewType, "") { EmrInputADO = inputADO });
                 }
-                else
-                {
-                    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
-                    }
-                    else
-                    {
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
-                    }
-                }
+                //if (this.savePrint)
+                //{
+                //    if (previewType != null)
+                //    {
+                //        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatment != null ? treatment.TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, previewType, "") { EmrInputADO = inputADO });
+                //    }
+                //    //if (chkPrintNow.CheckState == CheckState.Checked)
+                //    //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                //    //else
+                //    //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                //}
+                //else
+                //{
+                //    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                //    {
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                //    }
+                //    else
+                //    {
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                //    }
+                //}
 
                 Inventec.Common.Logging.LogSystem.Debug("End onClickInPhieuXuatBan (after ShowDialog)");
             }
@@ -494,25 +509,70 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             bool result = false;
             try
             {
+                CommonParam param = new CommonParam();
+                V_HIS_TREATMENT treatment = new V_HIS_TREATMENT();
+                if (_ExpMest_Sale_Print__One.FirstOrDefault().TDL_TREATMENT_ID.HasValue)
+                {
+                    HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                    filter.ID = _ExpMest_Sale_Print__One.FirstOrDefault().TDL_TREATMENT_ID;
+                    var listTreatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, param);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                        treatment = listTreatment.FirstOrDefault();
+                }
+                if ((treatment == null || treatment.ID == 0) && _ExpMestMedi_Sale__GNs.FirstOrDefault().TDL_PATIENT_ID.HasValue)
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    HisTreatmentViewFilter filterView = new HisTreatmentViewFilter();
+                    filterView.PATIENT_ID = _ExpMestMedi_Sale__GNs.FirstOrDefault().TDL_PATIENT_ID;
+                    var listTreatment = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filterView, paramCommon);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                    {
+                        treatment = listTreatment.OrderByDescending(o => o.TREATMENT_CODE).FirstOrDefault();
+                    }
+                }
+                if ((treatment == null || treatment.ID == 0) && _Transaction_Sale_Print.TDL_PATIENT_ID.HasValue)
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    HisTreatmentViewFilter filterView = new HisTreatmentViewFilter();
+                    filterView.PATIENT_ID = _Transaction_Sale_Print.TDL_PATIENT_ID;
+                    var listTreatment = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filterView, paramCommon);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                    {
+                        treatment = listTreatment.OrderByDescending(o => o.TREATMENT_CODE).FirstOrDefault();
+                    }
+                }
                 MPS.Processor.Mps000349.PDO.Mps000349PDO rdo = new MPS.Processor.Mps000349.PDO.Mps000349PDO(_ExpMest_Sale_Print__One, _ExpMestMedi_Sale__GNs, _Transaction_Sale_Print);
-                if (this.savePrint)
+
+                if (previewType != null)
                 {
-                    if (chkPrintNow.CheckState == CheckState.Checked)
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
-                    else
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatment != null ? treatment.TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, previewType, "") { EmrInputADO = inputADO });
                 }
-                else
-                {
-                    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
-                    }
-                    else
-                    {
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
-                    }
-                }
+                //if (this.savePrint)
+                //{
+                //    if (previewType != null)
+                //    {
+                //        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatment != null ? treatment.TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, previewType, "") { EmrInputADO = inputADO });
+                //    }
+                //    //if (chkPrintNow.CheckState == CheckState.Checked)
+                //    //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                //    //else
+                //    //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                //}
+                //else
+                //{
+                //    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                //    {
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                //    }
+                //    else
+                //    {
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -617,25 +677,71 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             bool result = false;
             try
             {
+                CommonParam param = new CommonParam();
+                V_HIS_TREATMENT treatment = new V_HIS_TREATMENT();
+                if (_ExpMest_Sale_Print__One.FirstOrDefault().TDL_TREATMENT_ID.HasValue)
+                {
+                    HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                    filter.ID = _ExpMest_Sale_Print__One.FirstOrDefault().TDL_TREATMENT_ID;
+                    var listTreatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, param);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                        treatment = listTreatment.FirstOrDefault();
+                }
+                if ((treatment == null || treatment.ID == 0) && _ExpMestMedi_Sale__HTs.FirstOrDefault().TDL_PATIENT_ID.HasValue)
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    HisTreatmentViewFilter filterView = new HisTreatmentViewFilter();
+                    filterView.PATIENT_ID = _ExpMestMedi_Sale__HTs.FirstOrDefault().TDL_PATIENT_ID;
+                    var listTreatment = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filterView, paramCommon);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                    {
+                        treatment = listTreatment.OrderByDescending(o => o.TREATMENT_CODE).FirstOrDefault();
+                    }
+                }
+                if ((treatment == null || treatment.ID == 0) && _Transaction_Sale_Print.TDL_PATIENT_ID.HasValue)
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    HisTreatmentViewFilter filterView = new HisTreatmentViewFilter();
+                    filterView.PATIENT_ID = _Transaction_Sale_Print.TDL_PATIENT_ID;
+                    var listTreatment = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filterView, paramCommon);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                    {
+                        treatment = listTreatment.OrderByDescending(o => o.TREATMENT_CODE).FirstOrDefault();
+                    }
+                }
                 MPS.Processor.Mps000350.PDO.Mps000350PDO rdo = new MPS.Processor.Mps000350.PDO.Mps000350PDO(_ExpMest_Sale_Print__One, _ExpMestMedi_Sale__HTs, _Transaction_Sale_Print);
-                if (this.savePrint)
+
+                if (previewType != null)
                 {
-                    if (chkPrintNow.CheckState == CheckState.Checked)
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
-                    else
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatment != null ? treatment.TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, previewType, "") { EmrInputADO = inputADO });
                 }
-                else
-                {
-                    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
-                    }
-                    else
-                    {
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
-                    }
-                }
+
+                //if (this.savePrint)
+                //{
+                //    if (previewType != null)
+                //    {
+                //        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatment != null ? treatment.TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, previewType, "") { EmrInputADO = inputADO });
+                //    }
+                //    //if (chkPrintNow.CheckState == CheckState.Checked)
+                //    //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                //    //else
+                //    //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                //}
+                //else
+                //{
+                //    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                //    {
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                //    }
+                //    else
+                //    {
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -649,25 +755,70 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             bool result = false;
             try
             {
+                CommonParam param = new CommonParam();
+                V_HIS_TREATMENT treatment = new V_HIS_TREATMENT();
+                if (_ExpMest_Sale_Print__One.FirstOrDefault().TDL_TREATMENT_ID.HasValue)
+                {
+                    HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                    filter.ID = _ExpMest_Sale_Print__One.FirstOrDefault().TDL_TREATMENT_ID;
+                    var listTreatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, param);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                        treatment = listTreatment.FirstOrDefault();
+                }
+                if ((treatment == null || treatment.ID == 0) && _ExpMestMedi_Sale__TPCNs.FirstOrDefault().TDL_PATIENT_ID.HasValue)
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    HisTreatmentViewFilter filterView = new HisTreatmentViewFilter();
+                    filterView.PATIENT_ID = _ExpMestMedi_Sale__TPCNs.FirstOrDefault().TDL_PATIENT_ID;
+                    var listTreatment = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filterView, paramCommon);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                    {
+                        treatment = listTreatment.OrderByDescending(o => o.TREATMENT_CODE).FirstOrDefault();
+                    }
+                }
+                if ((treatment == null || treatment.ID == 0) && _Transaction_Sale_Print.TDL_PATIENT_ID.HasValue)
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    HisTreatmentViewFilter filterView = new HisTreatmentViewFilter();
+                    filterView.PATIENT_ID = _Transaction_Sale_Print.TDL_PATIENT_ID;
+                    var listTreatment = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filterView, paramCommon);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                    {
+                        treatment = listTreatment.OrderByDescending(o => o.TREATMENT_CODE).FirstOrDefault();
+                    }
+                }
                 MPS.Processor.Mps000351.PDO.Mps000351PDO rdo = new MPS.Processor.Mps000351.PDO.Mps000351PDO(_ExpMest_Sale_Print__One, _ExpMestMedi_Sale__TPCNs, _ExpMestMaterial_Sale_Prints, _Transaction_Sale_Print);
-                if (this.savePrint)
+                
+                if (previewType != null)
                 {
-                    if (chkPrintNow.CheckState == CheckState.Checked)
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
-                    else
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatment != null ? treatment.TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, previewType, "") { EmrInputADO = inputADO });
                 }
-                else
-                {
-                    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    {
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
-                    }
-                    else
-                    {
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
-                    }
-                }
+                //if (this.savePrint)
+                //{
+                //    if (previewType != null)
+                //    {
+                //        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatment != null ? treatment.TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, previewType, "") { EmrInputADO = inputADO });
+                //    }
+                //    //if (chkPrintNow.CheckState == CheckState.Checked)
+                //    //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                //    //else
+                //    //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                //}
+                //else
+                //{
+                //    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                //    {
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                //    }
+                //    else
+                //    {
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -681,26 +832,71 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             bool result = false;
             try
             {
-                MPS.Processor.Mps000352.PDO.Mps000352PDO rdo = new MPS.Processor.Mps000352.PDO.Mps000352PDO(_ExpMest_Sale_Print__One, _ExpMestMedi_Sale__Ts, _Transaction_Sale_Print);
+                CommonParam param = new CommonParam();
+                V_HIS_TREATMENT treatment = new V_HIS_TREATMENT();
+                if (_ExpMest_Sale_Print__One.FirstOrDefault().TDL_TREATMENT_ID.HasValue)
+                {
+                    HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                    filter.ID = _ExpMest_Sale_Print__One.FirstOrDefault().TDL_TREATMENT_ID;
+                    var listTreatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, param);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                        treatment = listTreatment.FirstOrDefault();
+                }
 
-                if (this.savePrint)
+                if ((treatment == null || treatment.ID == 0) && _ExpMestMedi_Sale__Ts.FirstOrDefault().TDL_PATIENT_ID.HasValue)
                 {
-                    if (chkPrintNow.CheckState == CheckState.Checked)
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
-                    else
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
-                }
-                else
-                {
-                    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                    CommonParam paramCommon = new CommonParam();
+                    HisTreatmentViewFilter filterView = new HisTreatmentViewFilter();
+                    filterView.PATIENT_ID = _ExpMestMedi_Sale__Ts.FirstOrDefault().TDL_PATIENT_ID;
+                    var listTreatment = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filterView, paramCommon);
+                    if (listTreatment != null && listTreatment.Count > 0)
                     {
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
-                    }
-                    else
-                    {
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                        treatment = listTreatment.OrderByDescending(o => o.TREATMENT_CODE).FirstOrDefault();
                     }
                 }
+                if ((treatment == null || treatment.ID == 0) && _Transaction_Sale_Print.TDL_PATIENT_ID.HasValue)
+                {
+                    CommonParam paramCommon = new CommonParam();
+                    HisTreatmentViewFilter filterView = new HisTreatmentViewFilter();
+                    filterView.PATIENT_ID = _Transaction_Sale_Print.TDL_PATIENT_ID;
+                    var listTreatment = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filterView, paramCommon);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                    {
+                        treatment = listTreatment.OrderByDescending(o => o.TREATMENT_CODE).FirstOrDefault();
+                    }
+                }
+                MPS.Processor.Mps000352.PDO.Mps000352PDO rdo = new MPS.Processor.Mps000352.PDO.Mps000352PDO(_ExpMest_Sale_Print__One, _ExpMestMedi_Sale__Ts, _Transaction_Sale_Print);
+               
+                if (previewType != null)
+                {
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatment != null ? treatment.TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, previewType, "") { EmrInputADO = inputADO });
+                }
+                //if (this.savePrint)
+                //{
+                //    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatment != null ? treatment.TREATMENT_CODE : printTypeCode, printTypeCode, this.currentModuleBase.RoomId);
+
+                //    if (previewType != null)
+                //    {
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, previewType, "") { EmrInputADO = inputADO });
+                //    }
+                //    //if (chkPrintNow.CheckState == CheckState.Checked)
+                //    //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                //    //else
+                //    //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                //}
+                //else
+                //{
+                //    if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                //    {
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                //    }
+                //    else
+                //    {
+                //        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -904,11 +1100,65 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         {
                             Mps000044(this.resultSDO);
                         }
-                    }
+                    } 
                 }
                 else if (!isTwoPatient)
                 {
-                    Mps000044(this.resultSDO);
+                    Mps000044(this.resultSDO); 
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void onClickCheckSignature()
+        {
+            try
+            {
+                if (this.savePrint)
+                {
+                    if (chkSign.Checked && (chkPrintNow.Checked || this.IsCheckPrint))
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
+                        this.IsCheckPrint = false;
+                    }
+                    else if (chkSign.Checked && !chkPrintNow.Checked)
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
+                    }
+                    else if (chkPrintNow.CheckState == CheckState.Checked)
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
+                    }
+                    else
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
+                    }
+                }
+                else
+                {
+                    if (chkSign.Checked && (chkPrintNow.Checked || (!chkPrintNow.Checked && ConfigApplications.CheDoInChoCacChucNangTrongPhanMem != 2)))
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
+                        this.IsCheckPrint = false;
+                    }
+                    else if (chkSign.Checked && !chkPrintNow.Checked && ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
+                    }
+                    else if (chkPrintNow.CheckState == CheckState.Checked)
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
+                    }
+                    else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
+                    }
+                    else
+                    {
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
+                    }
                 }
             }
             catch (Exception ex)
