@@ -56,13 +56,16 @@ namespace MPS.Processor.Mps000241.PDO
                     Inventec.Common.Mapper.DataObjectMapper.Map<Mps000241ADO>(this, datas[0]);
                     this.IS_MEDICINE = true;
                     this.AMOUNT = datas.Sum(p => p.AMOUNT);
+                    this.REQ_AMOUNT = datas.Sum(p => p.REQ_AMOUNT);
                     if (_impMestSttId == HisImpMestSttId__Imported)
                     {
                         this.AMOUNT_IMPORTED = this.AMOUNT;
+                        this.AMOUNT_IMPORTED = this.REQ_AMOUNT ?? 0;
                     }
                     if (_impMestSttId == HisImpMestSttId__Imported || _impMestSttId == HisImpMestSttId__Approved)
                     {
                         this.AMOUNT_APPROVED = this.AMOUNT;
+                        this.AMOUNT_IMPORTED = this.REQ_AMOUNT ?? 0;
                     }
                     this.AMOUNT_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(this.AMOUNT)));
                     this.AMOUNT_IMPORTED_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(this.AMOUNT_IMPORTED)));
@@ -88,13 +91,17 @@ namespace MPS.Processor.Mps000241.PDO
                     this.MEDICINE_ID = datas[0].MATERIAL_ID;
                     this.IS_MEDICINE = false;
                     this.AMOUNT = datas.Sum(p => p.AMOUNT);
+                    this.REQ_AMOUNT = datas.Sum(p => p.REQ_AMOUNT);
+
                     if (_impMestSttId == HisImpMestSttId__Imported)
                     {
                         this.AMOUNT_IMPORTED = this.AMOUNT;
+                        this.AMOUNT_IMPORTED = this.REQ_AMOUNT ?? 0;
                     }
                     if (_impMestSttId == HisImpMestSttId__Imported || _impMestSttId == HisImpMestSttId__Approved)
                     {
                         this.AMOUNT_APPROVED = this.AMOUNT;
+                        this.AMOUNT_IMPORTED = this.REQ_AMOUNT ?? 0;
                     }
                     this.AMOUNT_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(this.AMOUNT)));
                     this.AMOUNT_IMPORTED_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(this.AMOUNT_IMPORTED)));
