@@ -31,11 +31,13 @@ namespace HIS.UC.SecondaryIcd.Validate.ValidateRule
     class BenhPhuValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
         internal DevExpress.XtraEditors.TextEdit maBenhPhuTxt;
+        internal DevExpress.XtraEditors.TextEdit subCodeTxt;
         internal DevExpress.XtraEditors.TextEdit tenBenhPhuTxt;
         private string[] icdSeparators = new string[] { ";" };
         internal List<HIS_ICD> listIcd;
         internal List<V_HIS_ICD> listViewIcd;
         internal DelegateGetIcdMain getIcdMain;
+        internal DelegateGetIcdSub getIcdSub;
 
         public override bool Validate(Control control, object value)
         {
@@ -46,6 +48,7 @@ namespace HIS.UC.SecondaryIcd.Validate.ValidateRule
                 valid = valid && ValidMaBenhPhu(maBenhPhuTxt);
                 valid = valid && ValidIcdWrongCode(maBenhPhuTxt);
                 valid = valid && ValidDuplicateWithIcdMain(getIcdMain, maBenhPhuTxt.Text.Trim());
+                valid = valid && ValidDuplicateWithIcdSub(getIcdSub, maBenhPhuTxt.Text.Trim());
             }
             catch (Exception ex)
             {
@@ -165,6 +168,56 @@ namespace HIS.UC.SecondaryIcd.Validate.ValidateRule
                 else
                 {
                     Inventec.Common.Logging.LogSystem.Debug("getIcdMain is null hoac icdmainCode is null" + ", icdSubCode=" + icdSubCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                valid = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+        bool ValidDuplicateWithIcdSub(DelegateGetIcdSub getIcdSub, string icdCode)
+        {
+            bool valid = true;
+            try
+            {
+                if (getIcdSub != null && !String.IsNullOrEmpty(getIcdSub()) && !String.IsNullOrEmpty(icdCode))
+                {
+                    string icdSubCode = getIcdSub();
+                    Inventec.Common.Logging.LogSystem.Debug("ValidDuplicateWithIcdSub. 2__icdSubCode=" + icdSubCode + ", icdCode=" + icdCode);
+                    //string icdSubCode = getIcdSub();
+                    //Inventec.Common.Logging.LogSystem.Debug("ValidDuplicateWithIcdSub. 2__icdSubCode=" + icdSubCode + ", icdCode=" + icdCode);
+                    var arrIcdExtraCodes = icdCode
+                    .Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(p => p.Trim())
+                    .ToArray();
+
+                    // Tách ICD phân biệt (sub) thành list
+                    var arrIcdSubCodes = icdSubCode
+                        .Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(p => p.Trim())
+                        .ToArray();
+                    //List<string> arrWrongCodes = new List<string>();
+                    //string[] arrIcdExtraCodes = icdCode.Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("ValidDuplicateWithIcdSub. 3__valid=" + valid);
+                        //if (arrIcdExtraCodes.Any(o => o.Equals(icdSubCode)))
+                        //{
+
+                            // Kiểm tra xem có mã nào trùng nhau không
+                            if (arrIcdExtraCodes.Intersect(arrIcdSubCodes, StringComparer.OrdinalIgnoreCase).Any())
+                            {
+                                this.ErrorText = String.Format(Resources.ResourceMessage.MaBenhPhanBietDaDuocSuDungChoMaBenhChinhHoacPhu, icdCode);
+                            return false;
+                            }
+                        //}
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug("getIcdSub is null hoac icdmainCode is null" + ", icdCode=" + icdCode);
+                        }
+                    }
                 }
             }
             catch (Exception ex)

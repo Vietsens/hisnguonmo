@@ -1430,7 +1430,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 tranSdo.HisTransaction = new HIS_TRANSACTION();
                 if (chkCheckXD.Checked == false)
                 {
-                    if (this.treatment != null)
+                    if (this.treatment != null && this.treatmentId > 0)
                         tranSdo.HisTransaction.TREATMENT_ID = this.treatment.ID;
                     else
                         tranSdo.HisTransaction.TREATMENT_ID = null;
@@ -1613,6 +1613,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 chkCheckXD.Checked = false;
                 spinSoTienCK.Value = 0;
                 this.LoadDataToComboAccountBook();
+                this.treatment = null;
+                this.treatmentId = 0;
                 WaitingManager.Hide();
             }
             catch (Exception ex)

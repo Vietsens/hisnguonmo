@@ -417,6 +417,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 subIcdPbProcessor = new SecondaryIcdProcessor(new CommonParam(), icdYhct);
                 HIS.UC.SecondaryIcd.ADO.SecondaryIcdInitADO ado = new UC.SecondaryIcd.ADO.SecondaryIcdInitADO();
                 ado.DelegateNextFocus = NextForcusSubIcdToDo;
+                ado.DelegateGetIcdMain = GetIcdMainCode;
+                ado.DelegateGetIcdSub = GetIcdSubCode;
                 //ado.DelegateGetIcdMain = GetIcdMainCodeYhct;
                 //ado.delegateCheckICD = CheckICDSecondYHCT;
                 Rectangle activeScreenDimensions = Screen.FromControl(this).Bounds;
@@ -485,12 +487,15 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         if (commonValues != null && commonValues.Count() > 0)
                         {
                             error += string.Format("Mã bệnh phân biệt {0} đã sử dụng cho mã bệnh chính và phụ. Vui lòng kiểm tra lại", string.Join(",", commonValues.ToList()));
+                            LogSystem.Debug("SetError: " + error);
+                            dxErrorProvider1.SetError(ucSecondaryIcdPb, error, ErrorType.Warning);
 
                             result = false;
                         }
-                        LogSystem.Debug("SetError: " + error);
-                        //this.subIcdPbProcessor.SetError(ucSecondaryIcdPb, error);
-                        dxErrorProvider1.SetError(ucSecondaryIcdPb, error);
+                        //this.subIcdPbProcessor.SetError(
+                        //
+                        //, error);
+                        //dxErrorProvider1.SetError(ucSecondaryIcdPb, error);
                     }
 
                 }
@@ -3545,6 +3550,23 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             }
             return mainCode;
         }
+        private string GetIcdSubCode()
+        {
+            string subCode = "";
+            try
+            {
+                var icdValue = this.SubUcIcdGetValue();
+                if (icdValue != null && icdValue is UC.SecondaryIcd.ADO.SecondaryIcdDataADO)
+                    {
+                    subCode = ((UC.SecondaryIcd.ADO.SecondaryIcdDataADO)icdValue).ICD_SUB_CODE;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return subCode;
+        }
         public object UcIcdGetValue()
         {
             object result = null;
@@ -3904,22 +3926,96 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     if (result && ServiceReqIcdOption == "1")
                     {
                         WaitingManager.Hide();
-                        if (Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.ICD_CODE ?? "") + (trackingSDOs.Tracking.ICD_SUB_CODE ?? "")) > 100 && XtraMessageBox.Show(this, "Mã chẩn đoán phụ nhập quá 100 ký tự", "Thông Báo", MessageBoxButtons.OK) == DialogResult.OK)
+
+                        // 1. Mã CĐ chính + mã CĐ phụ
+                        string icdCodeAll =
+                            (trackingSDOs.Tracking.ICD_CODE ?? "") +
+                            (trackingSDOs.Tracking.ICD_SUB_CODE ?? "");
+
+                        if (icdCodeAll.Length >= 100)
+                        {
+                            XtraMessageBox.Show(this,
+                                "Mã chẩn đoán phụ nhập quá 100 ký tự",
+                                "Thông Báo",
+                                MessageBoxButtons.OK);
                             result = false;
-                        if (result && Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.TRADITIONAL_ICD_CODE ?? "") + (trackingSDOs.Tracking.TRADITIONAL_ICD_SUB_CODE ?? "")) > 255 && XtraMessageBox.Show(this, "Mã chẩn đoán YHCT phụ nhập quá 255 ký tự", "Thông Báo", MessageBoxButtons.OK) == DialogResult.OK)
-                            result = false;
-                        if (result && Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.ICD_NAME ?? "") + (trackingSDOs.Tracking.ICD_TEXT ?? "")) > 1500 && XtraMessageBox.Show(this, "Tên chẩn đoán phụ nhập quá 1500 ký tự", "Thông Báo", MessageBoxButtons.OK) == DialogResult.OK)
-                            result = false;
-                        if (result && (IsCheckSubIcdExceedLimit == "1" || IsCheckSubIcdExceedLimit == "2") && !string.IsNullOrEmpty(trackingSDOs.Tracking.ICD_SUB_CODE) && trackingSDOs.Tracking.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Count() > 12)
+                        }
+
+                        // 2. Mã CĐ YHCT chính + mã CĐ YHCT phụ
+                        if (result)
+                        {
+                            string yhctCodeAll =
+                                (trackingSDOs.Tracking.TRADITIONAL_ICD_CODE ?? "") +
+                                (trackingSDOs.Tracking.TRADITIONAL_ICD_SUB_CODE ?? "");
+
+                            if (yhctCodeAll.Length > 255)
+                            {
+                                XtraMessageBox.Show(this,
+                                    "Mã chẩn đoán YHCT phụ nhập quá 255 ký tự",
+                                    "Thông Báo",
+                                    MessageBoxButtons.OK);
+                                result = false;
+                            }
+                        }
+
+                        // 3. Tên CĐ chính + tên CĐ phụ
+                        if (result)
+                        {
+                            string icdNameAll =
+                                (trackingSDOs.Tracking.ICD_NAME ?? "") +
+                                (trackingSDOs.Tracking.ICD_TEXT ?? "");
+
+                            if (icdNameAll.Length > 1500)
+                            {
+                                XtraMessageBox.Show(this,
+                                    "Tên chẩn đoán phụ nhập quá 1500 ký tự",
+                                    "Thông Báo",
+                                    MessageBoxButtons.OK);
+                                result = false;
+                            }
+                        }
+
+                        // 4. Check số lượng mã CĐ phụ > 12 (đoạn này của anh hiện đang OK)
+                        if (result
+                            && (IsCheckSubIcdExceedLimit == "1" || IsCheckSubIcdExceedLimit == "2")
+                            && !string.IsNullOrEmpty(trackingSDOs.Tracking.ICD_SUB_CODE)
+                            && trackingSDOs.Tracking.ICD_SUB_CODE
+                                .Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries)
+                                .Count() > 12)
                         {
                             if (IsCheckSubIcdExceedLimit == "1")
                             {
-                                XtraMessageBox.Show(this, "Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông Báo", MessageBoxButtons.OK);
+                                XtraMessageBox.Show(this,
+                                    "Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.",
+                                    "Thông Báo",
+                                    MessageBoxButtons.OK);
                                 result = false;
                             }
-                            else if (XtraMessageBox.Show(this, "Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                            else if (XtraMessageBox.Show(this,
+                                "Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?",
+                                "Thông Báo",
+                                MessageBoxButtons.YesNo) != DialogResult.Yes)
+                            {
                                 result = false;
+                            }
                         }
+                        //WaitingManager.Hide();
+                        //if (Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.ICD_CODE ?? "") + (trackingSDOs.Tracking.ICD_SUB_CODE ?? "")) > 100 && XtraMessageBox.Show(this, "Mã chẩn đoán phụ nhập quá 100 ký tự", "Thông Báo", MessageBoxButtons.OK) == DialogResult.OK)
+                        //    result = false;
+                        //if (result && Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.TRADITIONAL_ICD_CODE ?? "") + (trackingSDOs.Tracking.TRADITIONAL_ICD_SUB_CODE ?? "")) > 255 && XtraMessageBox.Show(this, "Mã chẩn đoán YHCT phụ nhập quá 255 ký tự", "Thông Báo", MessageBoxButtons.OK) == DialogResult.OK)
+                        //    result = false;
+                        //if (result && Encoding.UTF8.GetByteCount((trackingSDOs.Tracking.ICD_NAME ?? "") + (trackingSDOs.Tracking.ICD_TEXT ?? "")) > 1500 && XtraMessageBox.Show(this, "Tên chẩn đoán phụ nhập quá 1500 ký tự", "Thông Báo", MessageBoxButtons.OK) == DialogResult.OK)
+                        //    result = false;
+                        //if (result && (IsCheckSubIcdExceedLimit == "1" || IsCheckSubIcdExceedLimit == "2") && !string.IsNullOrEmpty(trackingSDOs.Tracking.ICD_SUB_CODE) && trackingSDOs.Tracking.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Count() > 12)
+                        //{
+                        //    if (IsCheckSubIcdExceedLimit == "1")
+                        //    {
+                        //        XtraMessageBox.Show(this, "Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại.", "Thông Báo", MessageBoxButtons.OK);
+                        //        result = false;
+                        //    }
+                        //    else if (XtraMessageBox.Show(this, "Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?", "Thông Báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        //        result = false;
+                        //}
 
 
                     }
@@ -4025,6 +4121,22 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         {
             try
             {
+                if (ucIcd != null && icdProcessor != null)
+                {
+                    icdProcessor.Reload(ucIcd, null);
+                }
+
+                // Clear ICD YHCT
+                if (ucIcdYhct != null && icdYhctProcessor != null)
+                {
+                    icdYhctProcessor.Reload(ucIcdYhct, null);
+                }
+
+                // Clear ICD phụ
+                if (ucSecondaryIcd != null && subIcdProcessor != null)
+                {
+                    subIcdProcessor.Reload(ucSecondaryIcd, null);
+                }
                 positionHandleControl = -1;
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError
                 (dxValidationProvider1, dxErrorProvider1);

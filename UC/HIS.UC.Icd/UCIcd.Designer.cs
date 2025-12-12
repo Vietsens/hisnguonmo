@@ -46,7 +46,6 @@ namespace HIS.UC.Icd
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.cboIcds = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
@@ -58,8 +57,8 @@ namespace HIS.UC.Icd
             this.lciIcdText = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
@@ -157,6 +156,7 @@ namespace HIS.UC.Icd
             // 
             this.txtIcdCode.Location = new System.Drawing.Point(97, 2);
             this.txtIcdCode.Name = "txtIcdCode";
+            this.txtIcdCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtIcdCode.Size = new System.Drawing.Size(163, 20);
             this.txtIcdCode.StyleController = this.layoutControl1;
             this.txtIcdCode.TabIndex = 0;

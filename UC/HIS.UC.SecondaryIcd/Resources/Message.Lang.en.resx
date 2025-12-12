@@ -120,6 +120,9 @@
   <data name="KhongTimThayIcdTuongUngVoiCacMaSau" xml:space="preserve">
     <value>The following ICD code does not exist or is formatted incorrectly: {0}. The software only accepts a semicolon separated list of ICD codes. Please check again</value>
   </data>
+  <data name="MaBenhPhanBietDaDuocSuDungChoMaBenhChinhHoacPhu" xml:space="preserve">
+    <value>Mã bệnh phân biệt {0} đã được sử dụng cho mã bệnh chính và phụ. Vui lòng kiểm tra lại</value>
+  </data>
   <data name="MabenhPhuDaDuocSuDungChoMaBenhChinh" xml:space="preserve">
     <value>Sub-code {0} has been used for primary code, please check again.</value>
   </data>

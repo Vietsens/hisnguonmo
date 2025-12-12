@@ -42,6 +42,7 @@ namespace HIS.UC.SecondaryIcd
                 mainRule.maBenhPhuTxt = txtIcdSubCode;
                 mainRule.tenBenhPhuTxt = txtIcdText;
                 mainRule.getIcdMain = this.GetIcdMain;
+                mainRule.getIcdSub = this.GetIcdSub;
                 mainRule.ErrorType = ErrorType.Warning;
                 mainRule.listIcd = this.ListHisIcds;
                 mainRule.listViewIcd = this.ListViewHisIcds;

@@ -13,6 +13,7 @@ namespace MPS.Processor.Mps000505.PDO
     }
     public class Mps000505ADO
     {
+        public string IMP_DATE_STR { get; set; } //ngày nhập IMP_DATE (V_HIS_IMP_MEST)
         public long? IMP_DATE { get; set; } //ngày nhập IMP_DATE (V_HIS_IMP_MEST)
         public string DOCUMENT_NUMBER { get; set; } //số chứng từ DOCUMENT_NUMBER (V_HIS_IMP_MEST)
         public long? SUPPLIER_ID { get; set; } //id nhà cung cấp SUPPLIER_ID (V_HIS_IMP_MEST)

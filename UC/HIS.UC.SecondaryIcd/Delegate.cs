@@ -28,6 +28,7 @@ namespace HIS.UC.SecondaryIcd
     public delegate void DelegateNextFocus();
     public delegate void DelegateRefeshIcdChandoanphu(string icdCodes, string icdNames);
     public delegate string DelegateGetIcdMain();
+    public delegate string DelegateGetIcdSub();
     public delegate void DelegateCheckICD();
     public delegate void DelegateSetError(string error);
 }
