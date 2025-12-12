@@ -23,7 +23,7 @@ namespace MPS.Processor.Mps000505
             {
                 Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag(); 
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
-                Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
+                Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag(); 
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 ProcessSingleKey();
@@ -48,10 +48,10 @@ namespace MPS.Processor.Mps000505
             {
                 if (rdo.listAdo != null && rdo.listAdo.Count > 0)
                 {
-                     var group = rdo.listAdo.GroupBy(o => o.IMP_DATE);
+                    var group = rdo.listAdo.GroupBy(o => o.IMP_DATE);
                     foreach (var item in group)
-                    { 
-                        result.AddRange(item.ToList());
+                    {
+                        result.Add(item.ToList().First());
                     }
                 }
                 return result;
@@ -78,7 +78,7 @@ namespace MPS.Processor.Mps000505
                         ado.NATIONAL_NAME = item.NATIONAL_NAME;
                         ado.BATCH_REGISTER_NUMBER = item.REGISTER_NUMBER;
                         ado.PACKAGE_NUMBER = item.PACKAGE_NUMBER;
-                        ado.EXPIRED_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(item.EXPIRED_DATE ?? 0);
+                        ado.EXPIRED_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(item.EXPIRED_DATE ?? 0);
                         ado.PRICE = item.PRICE ?? 0;
                         ado.AMOUNT = item.AMOUNT;
                         ado.BATCH_REGISTER_NUMBER = item.MEDICINE_REGISTER_NUMBER;
@@ -154,7 +154,7 @@ namespace MPS.Processor.Mps000505
                             if (impMest != null) 
                             {
                                 ado.IMP_DATE = impMest.IMP_DATE;
-                                ado.IMP_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(impMest.IMP_DATE ?? 0);
+                                ado.IMP_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(impMest.IMP_DATE ?? 0);
                                 ado.DOCUMENT_NUMBER = impMest.DOCUMENT_NUMBER;
                                 ado.SUPPLIER_ID = impMest.SUPPLIER_ID;
                                 ado.MEDI_STOCK_ID = impMest.CHMS_MEDI_STOCK_ID ?? 0;
@@ -184,7 +184,7 @@ namespace MPS.Processor.Mps000505
                         ado.NATIONAL_NAME = item.NATIONAL_NAME;
                         //ado.BATCH_REGISTER_NUMBER = item.REGISTER_NUMBER;
                         ado.PACKAGE_NUMBER = item.PACKAGE_NUMBER;
-                        ado.EXPIRED_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(item.EXPIRED_DATE ?? 0);
+                        ado.EXPIRED_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(item.EXPIRED_DATE ?? 0);
                         ado.PRICE = item.PRICE ?? 0;
                         ado.AMOUNT = item.AMOUNT;
                         ado.BATCH_REGISTER_NUMBER = item.MATERIAL_REGISTER_NUMBER;
@@ -261,7 +261,7 @@ namespace MPS.Processor.Mps000505
                             {
                                 
                                 ado.IMP_DATE = impMest.IMP_DATE;
-                                ado.IMP_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(impMest.IMP_DATE ?? 0);
+                                ado.IMP_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(impMest.IMP_DATE ?? 0);
                                 ado.DOCUMENT_NUMBER = impMest.DOCUMENT_NUMBER;
                                 ado.SUPPLIER_ID = impMest.SUPPLIER_ID;
                                 ado.MEDI_STOCK_ID = impMest.CHMS_MEDI_STOCK_ID ?? 0;
