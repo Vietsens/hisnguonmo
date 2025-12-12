@@ -190,7 +190,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         if (currentOutPresSDO.ServiceReqs != null &&
                             currentOutPresSDO.ServiceReqs.Count > 0)
                         {
-                            HisPrescriptionSDOPrintPlus = currentOutPresSDO.ServiceReqs.FirstOrDefault(o => o.ID == item.SERVICE_REQ_ID);
+                            HisPrescriptionSDOPrintPlus = currentOutPresSDO.ServiceReqs.FirstOrDefault(o => o.ID == item.PRESCRIPTION_ID);
                         }
                         if (HisPrescriptionSDOPrintPlus == null) continue;
                         if (_lstTransReq != null && _lstTransReq.Count > 0)

@@ -236,7 +236,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                 if (Config.IsmergePrint)
                 {
                     Inventec.Common.Logging.LogSystem.Info("PrintServiceReq IsmergePrint");
-                    this.GroupStreamPrint = new List<Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo>();
+                    this.GroupStreamPrint = new List<Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo>(); 
                     //this.TotalMediMatePrint = HisServiceReqListResultSDO != null && HisServiceReqListResultSDO.SereServs != null ? HisServiceReqListResultSDO.SereServs.Count : 0;
                 }
 
