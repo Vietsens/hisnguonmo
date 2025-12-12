@@ -1374,7 +1374,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                         && currentTransaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR
                         && currentTransaction.IS_ACTIVE == 0)
                     {
-                        CreateQR(currentTransaction, false); 
+                        CreateQR(currentTransaction, false);
                     }
                 }
 
@@ -1472,7 +1472,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 tranSdo.HisTransaction.BUYER_ADDRESS = txtBuyerAddress.Text;
                 tranSdo.HisTransaction.BUYER_NAME = txtPatientName.Text;
                 tranSdo.HisTransaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text;
-                tranSdo.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;               
+                tranSdo.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
 
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param)
                     .Post<V_HIS_TRANSACTION>("api/HisTransaction/CreateOtherBill", ApiConsumers.MosConsumer, tranSdo, param);
@@ -1612,6 +1612,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 txtDescription.Text = "";
                 chkCheckXD.Checked = false;
                 spinSoTienCK.Value = 0;
+                btnQR.Enabled = false;
                 this.LoadDataToComboAccountBook();
                 this.treatment = null;
                 this.treatmentId = 0;
@@ -2942,8 +2943,9 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             {
 
                 listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
-                if (listConfig == null || listConfig.Count == 0) lciQR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                else lciQR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                //if (listConfig == null || listConfig.Count == 0) lciQR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                //else lciQR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                lciQR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             }
             catch (Exception ex)
             {
@@ -2966,7 +2968,14 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     //co cau hinh QR o buong benh
                     List<object> listArgs = new List<object>();
                     TransReqQRADO adoqr = new TransReqQRADO();
-                    adoqr.TreatmentId = this.treatment.ID;
+                    if (this.treatment != null && this.treatment.ID > 0)
+                    {
+                        adoqr.TreatmentId = this.treatment.ID;
+                    }    
+                    else
+                    {
+                        adoqr.TreatmentId = 0;
+                    }    
                     adoqr.ConfigValue = _cf;
                     adoqr.TransReqId = CreateReqType.Transaction;
                     AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
@@ -3005,7 +3014,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                                     string[] parts = shotkey.Split('.');
                                     if (parts.Length > 0)
                                     {
-                                        key = parts[parts.Length - 1]; 
+                                        key = parts[parts.Length - 1];
                                     }
                                 }
                                 else
@@ -3020,7 +3029,15 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                                     selectedConfig = item;
                                     List<object> listArgs = new List<object>();
                                     TransReqQRADO adoqr = new TransReqQRADO();
-                                    adoqr.TreatmentId = this.treatment.ID;
+                                    //adoqr.TreatmentId = this.treatment.ID;
+                                    if (this.treatment != null && this.treatment.ID > 0)
+                                    {
+                                        adoqr.TreatmentId = this.treatment.ID;
+                                    }
+                                    else
+                                    {
+                                        adoqr.TreatmentId = 0;
+                                    }
                                     adoqr.ConfigValue = selectedConfig;
                                     adoqr.TransReqId = CreateReqType.Transaction;
                                     AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
@@ -3046,7 +3063,15 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                             selectedConfig = listConfig[0];
                             List<object> listArgs = new List<object>();
                             TransReqQRADO adoqr = new TransReqQRADO();
-                            adoqr.TreatmentId = this.treatment.ID;
+                            //adoqr.TreatmentId = this.treatment.ID;
+                            if (this.treatment != null && this.treatment.ID > 0)
+                            {
+                                adoqr.TreatmentId = this.treatment.ID;
+                            }
+                            else
+                            {
+                                adoqr.TreatmentId = 0;
+                            }
                             adoqr.ConfigValue = selectedConfig;
                             adoqr.TransReqId = CreateReqType.Transaction;
                             AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
@@ -3097,6 +3122,10 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     lciSoTienCK.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
                     spinSoTienCK.Value = 0;
                 }
+                if (payFormId != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                {
+                    btnQR.Enabled = false;
+                }
                 ValidControlSoTienCk();
                 UpdateCanThu();
             }
@@ -3124,7 +3153,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             if (e.KeyChar == '-')
             {
                 e.Handled = true;
-            }    
+            }
         }
 
         private void spinSoTienCK_Validating(object sender, CancelEventArgs e)
@@ -3132,7 +3161,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             if (spinSoTienCK.Value < 0)
             {
                 spinSoTienCK.Value = 0;
-            }    
+            }
         }
     }
 }
