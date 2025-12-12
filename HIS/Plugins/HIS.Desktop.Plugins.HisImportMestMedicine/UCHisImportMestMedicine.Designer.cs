@@ -1858,6 +1858,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCModifier});
             this.gridViewImportMestList.GridControl = this.gridControlImportMestList;
             this.gridViewImportMestList.Name = "gridViewImportMestList";
+            this.gridViewImportMestList.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDown;
             this.gridViewImportMestList.OptionsFind.AllowFindPanel = false;
             this.gridViewImportMestList.OptionsSelection.CheckBoxSelectorColumnWidth = 30;
             this.gridViewImportMestList.OptionsSelection.MultiSelect = true;

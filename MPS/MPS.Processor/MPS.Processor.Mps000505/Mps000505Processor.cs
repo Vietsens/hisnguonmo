@@ -5,8 +5,6 @@ using MPS.ProcessorBase.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MPS.Processor.Mps000505
 {
@@ -23,14 +21,17 @@ namespace MPS.Processor.Mps000505
             bool result = false;
             try
             {
-                Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
+                Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag(); 
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 ProcessSingleKey();
 
-                objectTag.AddObjectData(store, "Mps000505ADO", rdo.listAdo);
+                objectTag.AddObjectData(store, "MediMate", rdo.listAdo);
+                objectTag.AddObjectData(store, "MediMateGroupImpDate", GetResultData());
+
+                objectTag.AddRelationship(store, "MediMateGroupImpDate", "MediMate", "IMP_DATE_STR", "IMP_DATE_STR");
                 result = true;
             }
             catch (Exception ex)
@@ -40,10 +41,32 @@ namespace MPS.Processor.Mps000505
             return result;
         }
 
+        public List<Mps000505ADO> GetResultData()
+        {
+            List<Mps000505ADO> result = new List<Mps000505ADO>();
+            try
+            {
+                if (rdo.listAdo != null && rdo.listAdo.Count > 0)
+                {
+                     var group = rdo.listAdo.GroupBy(o => o.IMP_DATE);
+                    foreach (var item in group)
+                    { 
+                        result.AddRange(item.ToList());
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return null;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         void ProcessSingleKey()
         {
             try
-            {
+            {  
                 if (this.rdo.vHisImpMestMedicines != null && this.rdo.vHisImpMestMedicines.Count > 0)
                 {
                     this.rdo.vHisImpMestMedicines = this.rdo.vHisImpMestMedicines.OrderBy(o => o.ID).ToList();
@@ -131,6 +154,7 @@ namespace MPS.Processor.Mps000505
                             if (impMest != null) 
                             {
                                 ado.IMP_DATE = impMest.IMP_DATE;
+                                ado.IMP_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(impMest.IMP_DATE ?? 0);
                                 ado.DOCUMENT_NUMBER = impMest.DOCUMENT_NUMBER;
                                 ado.SUPPLIER_ID = impMest.SUPPLIER_ID;
                                 ado.MEDI_STOCK_ID = impMest.CHMS_MEDI_STOCK_ID ?? 0;
@@ -141,6 +165,9 @@ namespace MPS.Processor.Mps000505
                                     ado.SUPPLIER_CODE = supplier.SUPPLIER_CODE;
                                     ado.SUPPLIER_NAME = supplier.SUPPLIER_NAME;
                                 }
+
+                                ado.MEDI_STOCK_CODE = impMest.MEDI_STOCK_CODE;
+                                ado.MEDI_STOCK_NAME = impMest.MEDI_STOCK_NAME;
                             }
                         }
                         this.rdo.listAdo.Add(ado);
@@ -232,7 +259,9 @@ namespace MPS.Processor.Mps000505
                             var impMest = this.rdo.vHisImpMests.FirstOrDefault(o => o.ID == item.IMP_MEST_ID);
                             if (impMest != null)
                             {
+                                
                                 ado.IMP_DATE = impMest.IMP_DATE;
+                                ado.IMP_DATE_STR = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(impMest.IMP_DATE ?? 0);
                                 ado.DOCUMENT_NUMBER = impMest.DOCUMENT_NUMBER;
                                 ado.SUPPLIER_ID = impMest.SUPPLIER_ID;
                                 ado.MEDI_STOCK_ID = impMest.CHMS_MEDI_STOCK_ID ?? 0;
@@ -243,6 +272,9 @@ namespace MPS.Processor.Mps000505
                                     ado.SUPPLIER_CODE = supplier.SUPPLIER_CODE;
                                     ado.SUPPLIER_NAME = supplier.SUPPLIER_NAME;
                                 }
+
+                                ado.MEDI_STOCK_CODE = impMest.MEDI_STOCK_CODE;
+                                ado.MEDI_STOCK_NAME = impMest.MEDI_STOCK_NAME;
                             }
                         }
                         this.rdo.listAdo.Add(ado);

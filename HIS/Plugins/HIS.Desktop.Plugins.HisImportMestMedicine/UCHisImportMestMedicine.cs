@@ -1667,47 +1667,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         {
             try
             {
-                if ((Control.ModifierKeys & Keys.Control) != Keys.Control)
-                {
-                    GridView view = sender as GridView;
-                    GridHitInfo hi = view.CalcHitInfo(e.Location);
-                    if (hi.InRowCell)
-                    {
-                        if (hi.Column.RealColumnEdit.GetType() == typeof(DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit))
-                        {
-                            view.FocusedRowHandle = hi.RowHandle;
-                            view.FocusedColumn = hi.Column;
-                            view.ShowEditor();
-                            DevExpress.XtraEditors.CheckEdit checkEdit = view.ActiveEditor as DevExpress.XtraEditors.CheckEdit;
-                            DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo checkInfo = (DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo)checkEdit.GetViewInfo();
-                            Rectangle glyphRect = checkInfo.CheckInfo.GlyphRect;
-                            GridViewInfo viewInfo = view.GetViewInfo() as GridViewInfo;
-                            Rectangle gridGlyphRect =
-                                new Rectangle(viewInfo.GetGridCellInfo(hi).Bounds.X + glyphRect.X,
-                                 viewInfo.GetGridCellInfo(hi).Bounds.Y + glyphRect.Y,
-                                 glyphRect.Width,
-                                 glyphRect.Height);
-                            if (!gridGlyphRect.Contains(e.Location))
-                            {
-                                view.CloseEditor();
-                                if (!view.IsCellSelected(hi.RowHandle, hi.Column))
-                                {
-                                    view.SelectCell(hi.RowHandle, hi.Column);
-                                }
-                                else
-                                {
-                                    view.UnselectCell(hi.RowHandle, hi.Column);
-                                }
-                            }
-                            else
-                            {
-                                checkEdit.Checked = !checkEdit.Checked;
-                                view.CloseEditor();
-                            }
-                            (e as DevExpress.Utils.DXMouseEventArgs).Handled = true;
-                        }
-                    }
-                }
+                // Chỉ xử lý khi click chuột trái
+                if (e.Button != MouseButtons.Left)
+                    return;
             }
             catch (Exception ex)
             {
@@ -1802,6 +1764,45 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         {
             try
             {
+                var view = sender as GridView;
+                if (view == null) return;
+
+                // Chỉ xử lý khi click chuột trái 1 lần
+                if (e.Button == MouseButtons.Left && e.Clicks == 1)
+                {
+                    // Các cột đang dùng ButtonEdit (enable/disable) theo FieldName trong CustomRowCellEdit
+                    bool isButtonColumn =
+                           e.Column.FieldName == "DETAIL_DATA_DISPLAY"   // Duyệt
+                        || e.Column.FieldName == "DISCARD_DISPLAY"    // Hủy
+                        || e.Column.FieldName == "DIS_APPROVAL"       // Không duyệt / hủy từ chối
+                        || e.Column.FieldName == "IMPORT_DISPLAY"     // Thực nhập / Hủy thực nhập
+                        || e.Column.FieldName == "REQUEST_DISPLAY"    // Hủy duyệt
+                        || e.Column.FieldName == "EDIT"               // Sửa
+                        || e.Column.FieldName == "EditNCC"            // Sửa thông tin NCC
+                        || e.Column.FieldName == "CreateExpNCC"       // Xuất trả NCC
+                        || e.Column.FieldName == "DONE"            // nếu cột lịch sử log đặt field name như vậy
+                        || e.Column.FieldName == "APPROVAL_DISPLAY"; // nếu anh dùng field này cho nút log
+
+                    if (isButtonColumn)
+                    {
+                        // Focus đúng dòng/ô
+                        view.FocusedRowHandle = e.RowHandle;
+                        view.FocusedColumn = e.Column;
+
+                        // Hiển thị editor (RepositoryItemButtonEdit)
+                        view.ShowEditor();
+
+                        // Lấy editor hiện tại và bấm luôn button đầu tiên
+                        var editor = view.ActiveEditor as ButtonEdit;
+                        if (editor != null && editor.Properties.Buttons.Count > 0)
+                        {
+                            editor.PerformClick(editor.Properties.Buttons[0]);
+                        }
+
+                        // Không chạy LoadInfoClick nữa với các cột nút
+                        return;
+                    }
+                }
                 var rowFocus = (V_HIS_IMP_MEST)gridViewImportMestList.GetFocusedRow();
                 if (rowFocus != null)
                 {
@@ -2194,6 +2195,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             try
             {
                 if (e.KeyCode == Keys.Enter)
+
                     FillDataImportMestDetailList();
             }
             catch (Exception ex)
@@ -2379,44 +2381,96 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
 
         private void gridViewImportMestList_PopupMenuShowing(object sender, PopupMenuShowingEventArgs e)
         {
+            //try
+            //{
+            //    var view = sender as GridView;
+            //    if (view == null)
+            //        return;
+
+            //    // Chỉ xử lý khi popup trên dòng (row/cell), không xử lý header, filter, group…
+            //    if (e.MenuType != GridMenuType.Row)
+            //        return;
+
+            //    // Đảm bảo dòng dưới chuột cũng nằm trong selection
+            //    if (e.HitInfo != null && e.HitInfo.RowHandle >= 0 && !view.IsRowSelected(e.HitInfo.RowHandle))
+            //    {
+            //        view.ClearSelection();
+            //        view.SelectRow(e.HitInfo.RowHandle);
+            //        view.FocusedRowHandle = e.HitInfo.RowHandle;
+            //    }
+
+            //    // Nếu không có phiếu nào đang chọn → không cho menu chuột phải
+            //    if (selectedImpMests == null || selectedImpMests.Count == 0)
+            //    {
+            //        e.Allow = false;
+            //        return;
+            //    }
+
+            //    // Không dùng menu mặc định của DevExpress nữa
+            //    e.Allow = false;
+
+            //    // Gọi menu chuột phải riêng (PopupMenu của BarManager)
+            //    var processor = new RightMouseClickProcessor(
+            //        null,                              // không cần ImpMestRightClick nữa
+            //        RightMouse_Click,                  // delegate xử lý click
+            //        this.barManager1,                  // BarManager của UserControl
+            //        this.roomId,                // roomId anh đang có
+            //        this.LoggingName                   // loginName
+            //    );
+
+            //    processor.InitMenu();                  // trong này menu.ShowPopup(Cursor.Position);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Warn(ex);
+            //}
             try
             {
+                // Tắt menu mặc định của DevExpress
+                e.Allow = false;
+
                 var view = sender as GridView;
                 if (view == null)
                     return;
 
-                // Chỉ xử lý khi popup trên dòng (row/cell), không xử lý header, filter, group…
+                // Chỉ xử lý popup trên row
                 if (e.MenuType != GridMenuType.Row)
                     return;
 
-                // Đảm bảo dòng dưới chuột cũng nằm trong selection
-                if (e.HitInfo != null && e.HitInfo.RowHandle >= 0 && !view.IsRowSelected(e.HitInfo.RowHandle))
-                {
-                    view.ClearSelection();
-                    view.SelectRow(e.HitInfo.RowHandle);
-                    view.FocusedRowHandle = e.HitInfo.RowHandle;
-                }
+                if (e.HitInfo == null || e.HitInfo.RowHandle < 0)
+                    return;
 
-                // Nếu không có phiếu nào đang chọn → không cho menu chuột phải
-                if (selectedImpMests == null || selectedImpMests.Count == 0)
+                // Chỉ cho mở menu nếu dòng dưới chuột đã được chọn (tích)
+                if (!view.IsRowSelected(e.HitInfo.RowHandle))
                 {
-                    e.Allow = false;
+                    // Không auto ClearSelection / SelectRow nữa
                     return;
                 }
 
-                // Không dùng menu mặc định của DevExpress nữa
-                e.Allow = false;
+                // Cập nhật lại danh sách phiếu đang được chọn
+                selectedImpMests.Clear();
+                int[] selectedHandles = view.GetSelectedRows();
+                foreach (int handle in selectedHandles)
+                {
+                    var row = view.GetRow(handle) as V_HIS_IMP_MEST;
+                    if (row != null)
+                        selectedImpMests.Add(row);
+                }
+
+                // Nếu thực sự không có dòng nào được chọn thì thôi
+                if (selectedImpMests.Count == 0)
+                    return;
 
                 // Gọi menu chuột phải riêng (PopupMenu của BarManager)
                 var processor = new RightMouseClickProcessor(
-                    null,                              // không cần ImpMestRightClick nữa
-                    RightMouse_Click,                  // delegate xử lý click
-                    this.barManager1,                  // BarManager của UserControl
-                    this.roomId,                // roomId anh đang có
-                    this.LoggingName                   // loginName
+                    null,               // không dùng currentImpMestRightClick nữa
+                    RightMouse_Click,   // delegate xử lý click
+                    this.barManager1,   // BarManager của UserControl
+                    this.roomId,        // roomId
+                    this.LoggingName    // loginName
                 );
 
-                processor.InitMenu();                  // trong này menu.ShowPopup(Cursor.Position);
+                processor.InitMenu();  // trong này menu.ShowPopup(Cursor.Position);
             }
             catch (Exception ex)
             {
@@ -2487,88 +2541,109 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         {
             try
             {
-                var currentImpMest = gridViewImportMestList.GetFocusedRow() as V_HIS_IMP_MEST;
-                if (currentImpMest == null)
+                // 1. Lấy danh sách phiếu nhập được chọn
+                List<V_HIS_IMP_MEST> listImpMest = new List<V_HIS_IMP_MEST>();
+
+                if (selectedImpMests != null && selectedImpMests.Count > 0)
+                {
+                    listImpMest.AddRange(selectedImpMests);
+                }
+                else
+                {
+                    var currentImpMest = gridViewImportMestList.GetFocusedRow() as V_HIS_IMP_MEST;
+                    if (currentImpMest != null)
+                        listImpMest.Add(currentImpMest);
+                }
+
+                if (listImpMest.Count == 0)
                     return;
 
+                WaitingManager.Show();
+
                 CommonParam param = new CommonParam();
-
-                // ========== 1. V_HIS_IMP_MEST ==========
-                List<V_HIS_IMP_MEST> listImpMest = new List<V_HIS_IMP_MEST>();
-                listImpMest.Add(currentImpMest);
-
-                long impMestId = currentImpMest.ID;
+                var impMestIds = listImpMest.Select(o => o.ID).Distinct().ToList();
 
                 // ========== 2. V_HIS_IMP_MEST_USER ==========
                 List<V_HIS_IMP_MEST_USER> listImpMestUser = new List<V_HIS_IMP_MEST_USER>();
+                foreach (var id in impMestIds)
                 {
                     HisImpMestUserViewFilter userFilter = new HisImpMestUserViewFilter();
-                    userFilter.IMP_MEST_ID = impMestId;
-                    listImpMestUser = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_USER>>(
+                    userFilter.IMP_MEST_ID = id;
+                    var tmp = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_USER>>(
                         "/api/HisImpMestUser/GetView",
                         ApiConsumers.MosConsumer,
                         userFilter,
                         param
-                    ) ?? new List<V_HIS_IMP_MEST_USER>();
-                    listImpMestUser = listImpMestUser.OrderBy(p => p.ID).ToList();
+                    );
+                    if (tmp != null && tmp.Count > 0)
+                        listImpMestUser.AddRange(tmp);
                 }
+                listImpMestUser = listImpMestUser.OrderBy(p => p.ID).ToList();
 
                 // ========== 3. V_HIS_IMP_MEST_BLOOD ==========
                 List<V_HIS_IMP_MEST_BLOOD> listImpMestBlood = new List<V_HIS_IMP_MEST_BLOOD>();
+                foreach (var id in impMestIds)
                 {
                     HisImpMestBloodFilter bloodFilter = new HisImpMestBloodFilter();
-                    bloodFilter.IMP_MEST_ID = impMestId;
-                    listImpMestBlood = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>(
+                    bloodFilter.IMP_MEST_ID = id;
+                    var tmp = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>(
                         "/api/HisImpMestBlood/GetView",
                         ApiConsumers.MosConsumer,
                         bloodFilter,
                         param
-                    ) ?? new List<V_HIS_IMP_MEST_BLOOD>();
-                    listImpMestBlood = listImpMestBlood.OrderBy(o => o.ID).ToList();
+                    );
+                    if (tmp != null && tmp.Count > 0)
+                        listImpMestBlood.AddRange(tmp);
                 }
+                listImpMestBlood = listImpMestBlood.OrderBy(o => o.ID).ToList();
 
                 // ========== 4. HIS_SUPPLIER ==========
                 List<HIS_SUPPLIER> listSupplier = new List<HIS_SUPPLIER>();
-                if (currentImpMest.SUPPLIER_ID.HasValue)
+                var supplierIds = listImpMest.Where(o => o.SUPPLIER_ID.HasValue)
+                                             .Select(o => o.SUPPLIER_ID.Value)
+                                             .Distinct()
+                                             .ToList();
+                if (supplierIds.Count > 0)
                 {
-                    var sup = BackendDataWorker.Get<HIS_SUPPLIER>()
-                        .FirstOrDefault(o => o.ID == currentImpMest.SUPPLIER_ID.Value);
-                    if (sup != null)
-                        listSupplier.Add(sup);
+                    var allSup = BackendDataWorker.Get<HIS_SUPPLIER>();
+                    listSupplier = allSup.Where(o => supplierIds.Contains(o.ID)).ToList();
                 }
 
                 // ========== 5. V_HIS_IMP_MEST_MEDICINE ==========
                 List<V_HIS_IMP_MEST_MEDICINE> listImpMestMedicine = new List<V_HIS_IMP_MEST_MEDICINE>();
+                foreach (var id in impMestIds)
                 {
                     HisImpMestMedicineViewFilter filter = new HisImpMestMedicineViewFilter();
-                    filter.IMP_MEST_ID = impMestId;
-                    listImpMestMedicine = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MEDICINE>>(
+                    filter.IMP_MEST_ID = id;
+                    var tmp = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MEDICINE>>(
                         HisRequestUriStore.HIS_IMP_MEST_MEDICINE_GETVIEW,
                         ApiConsumers.MosConsumer,
                         filter,
                         param
-                    ) ?? new List<V_HIS_IMP_MEST_MEDICINE>();
+                    );
+                    if (tmp != null && tmp.Count > 0)
+                        listImpMestMedicine.AddRange(tmp);
                 }
 
                 // ========== 6. V_HIS_IMP_MEST_MATERIAL ==========
                 List<V_HIS_IMP_MEST_MATERIAL> listImpMestMaterial = new List<V_HIS_IMP_MEST_MATERIAL>();
+                foreach (var id in impMestIds)
                 {
                     HisImpMestMaterialViewFilter filter = new HisImpMestMaterialViewFilter();
-                    filter.IMP_MEST_ID = impMestId;
-                    listImpMestMaterial = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MATERIAL>>(
+                    filter.IMP_MEST_ID = id;
+                    var tmp = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MATERIAL>>(
                         HisRequestUriStore.HIS_IMP_MEST_MATERIAL_GETVIEW,
                         ApiConsumers.MosConsumer,
                         filter,
                         param
-                    ) ?? new List<V_HIS_IMP_MEST_MATERIAL>();
+                    );
+                    if (tmp != null && tmp.Count > 0)
+                        listImpMestMaterial.AddRange(tmp);
                 }
 
                 // ========== 7. HIS_MEDICINE ==========
                 List<HIS_MEDICINE> listMedicine = new List<HIS_MEDICINE>();
-                List<long> medicineIds = listImpMestMedicine
-                    .Select(o => o.MEDICINE_ID)
-                    .Distinct()
-                    .ToList();
+                List<long> medicineIds = listImpMestMedicine.Select(o => o.MEDICINE_ID).Distinct().ToList();
                 if (medicineIds.Count > 0)
                 {
                     int skip = 0;
@@ -2592,10 +2667,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
 
                 // ========== 8. HIS_MATERIAL ==========
                 List<HIS_MATERIAL> listMaterial = new List<HIS_MATERIAL>();
-                List<long> materialIds = listImpMestMaterial
-                    .Select(o => o.MATERIAL_ID)
-                    .Distinct()
-                    .ToList();
+                List<long> materialIds = listImpMestMaterial.Select(o => o.MATERIAL_ID).Distinct().ToList();
                 if (materialIds.Count > 0)
                 {
                     int skip = 0;
@@ -2617,7 +2689,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                     }
                 }
 
-                // ========== 9. V_HIS_MEDICAL_CONTRACT ==========
+                // ========== 9. V_HIS_MEDICAL_CONTRACT & 10. MedicalContractADO ==========
                 List<V_HIS_MEDICAL_CONTRACT> listMedicalContract = new List<V_HIS_MEDICAL_CONTRACT>();
                 List<long> medicalContractIds = new List<long>();
 
@@ -2643,14 +2715,14 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
 
                 medicalContractIds = medicalContractIds.Distinct().ToList();
 
+                // Nếu muốn đầy đủ có thể load thêm listMedicalContract ở đây (nếu hệ thống có API)
+                // (Giữ nguyên như code cũ nếu anh không muốn thay đổi behavior)
 
-                // ========== 10. List<MedicalContractADO> ==========
                 List<MPS.Processor.Mps000505.PDO.MedicalContractADO> listMedicalContractADO
                     = new List<MPS.Processor.Mps000505.PDO.MedicalContractADO>();
 
                 if (listMedicalContract != null && listMedicalContract.Count > 0)
                 {
-                    // Map cho thuốc
                     foreach (var item in listMedicine)
                     {
                         if (!item.MEDICAL_CONTRACT_ID.HasValue)
@@ -2668,7 +2740,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                         listMedicalContractADO.Add(ado);
                     }
 
-                    // Map cho vật tư
                     foreach (var item in listMaterial)
                     {
                         if (!item.MEDICAL_CONTRACT_ID.HasValue)
@@ -2722,8 +2793,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
 
-                string treatmentCode = !string.IsNullOrWhiteSpace(currentImpMest.TDL_TREATMENT_CODE)
-                    ? currentImpMest.TDL_TREATMENT_CODE
+                var firstImpMest = listImpMest.First();
+                string treatmentCode = !string.IsNullOrWhiteSpace(firstImpMest.TDL_TREATMENT_CODE)
+                    ? firstImpMest.TDL_TREATMENT_CODE
                     : printTypeCode;
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO =
@@ -2734,7 +2806,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                             currentModule != null ? currentModule.RoomId : 0
                         );
 
-                // ========== 14. Tạo PDO cho MPS000505 ==========
+                // ========== 14. Tạo PDO ==========
                 var pdo = new MPS.Processor.Mps000505.PDO.Mps000505PDO(
                     listImpMest,
                     listImpMestMedicine,
