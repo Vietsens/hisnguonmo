@@ -62,8 +62,9 @@ namespace HIS.Desktop.Plugins.CallPatientV6
         List<V_HIS_EXECUTE_ROOM> roomSelecteds;
         long planTimeFrom, planTimeTo;
         const string moduleLink = "HIS.Desktop.Plugins.CallPatientV6";
+        Inventec.Desktop.Common.Modules.Module module;
 
-        public frmWaitingScreen_V48(MOS.EFMODEL.DataModels.HIS_SERVICE_REQ HisServiceReq, List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT> ServiceReqStts, List<V_HIS_EXECUTE_ROOM> roomSelecteds, long planTimeFrom, long planTimeTo)
+        public frmWaitingScreen_V48(MOS.EFMODEL.DataModels.HIS_SERVICE_REQ HisServiceReq, List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_STT> ServiceReqStts, List<V_HIS_EXECUTE_ROOM> roomSelecteds, long planTimeFrom, long planTimeTo, Inventec.Desktop.Common.Modules.Module module) : base(module)
         {
             InitializeComponent();
             this.hisServiceReq = HisServiceReq;
@@ -71,6 +72,7 @@ namespace HIS.Desktop.Plugins.CallPatientV6
             this.roomSelecteds = roomSelecteds;
             this.planTimeFrom = planTimeFrom;
             this.planTimeTo = planTimeTo;
+            this.module = module;
         }
 
         private void frmWaitingScreen_QY_Load(object sender, EventArgs e)
@@ -580,7 +582,8 @@ namespace HIS.Desktop.Plugins.CallPatientV6
                     List<long> lstServiceReqSTTFilter = serviceReqStts.Select(o => o.ID).ToList();
                     hisServiceReqFilter.SERVICE_REQ_STT_IDs = lstServiceReqSTTFilter;
                 }
-                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MUST_BE_APPROVED_SURGERY") == "1")
+                var currentRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.module.RoomId);
+                if (currentRoom != null && currentRoom.MUST_BE_APPROVED_SURGERY == 1)
                 {
                     hisServiceReqFilter.IS__APPROVED_SURGERY__OR__IS_EMERGENCY = true;
                 }

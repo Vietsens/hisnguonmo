@@ -121,7 +121,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     CommonParam param = new CommonParam();
                     HisServiceReqLViewFilter filter = new HisServiceReqLViewFilter();
                     filter.TREATMENT_ID = this.currentHisServiceReq.TREATMENT_ID;
-                    if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MUST_BE_APPROVED_SURGERY") == "1")
+                    var executeRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.roomId);
+                    if (executeRoom != null && executeRoom.MUST_BE_APPROVED_SURGERY == 1)
                     {
                         filter.IS__APPROVED_SURGERY__OR__IS_EMERGENCY = true;
                     }

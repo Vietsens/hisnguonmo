@@ -465,7 +465,8 @@ namespace HIS.Desktop.Plugins.CallPatientV8
                     List<long> lstServiceReqSTTFilter = serviceReqStts.Select(o => o.ID).ToList();
                     hisServiceReqFilter.SERVICE_REQ_STT_IDs = lstServiceReqSTTFilter;
                 }
-                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MUST_BE_APPROVED_SURGERY") == "1")
+                var currentRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.module.RoomId);
+                if (currentRoom != null && currentRoom.MUST_BE_APPROVED_SURGERY == 1)
                 {
                     hisServiceReqFilter.IS__APPROVED_SURGERY__OR__IS_EMERGENCY = true;
                 }

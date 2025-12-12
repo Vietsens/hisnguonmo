@@ -52,6 +52,7 @@ namespace HIS.Desktop.Plugins.CallPatientV6
         MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM currentRoom;
         long roomId = 0;
         List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM> roomSelecteds;
+        Inventec.Desktop.Common.Modules.Module module;
 
         public frmChooseRoomForWaitingScreen(Inventec.Desktop.Common.Modules.Module module)
             : base(module)
@@ -66,6 +67,7 @@ namespace HIS.Desktop.Plugins.CallPatientV6
                 }
             }
             InitializeComponent();
+            this.module = module;
             this.roomId = module.RoomId;
         }
 
@@ -270,7 +272,7 @@ namespace HIS.Desktop.Plugins.CallPatientV6
                 this.positionHandleControl = -1;
                 if (!dxValidationProviderControl.Validate())
                     return;
-                aFrmWaitingScreenQy = new frmWaitingScreen_V48(HisServiceReq, serviceReqStts, this.roomSelecteds, planTimeFrom, planTimeTo);
+                aFrmWaitingScreenQy = new frmWaitingScreen_V48(HisServiceReq, serviceReqStts, this.roomSelecteds, planTimeFrom, planTimeTo, module);
                 //if (this.currentRoom != null)
                 //{
                 //    aFrmWaitingScreenQy.room = this.currentRoom;
