@@ -48,14 +48,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Users\minhp\Desktop\New folder\EMR.EFMODEL.dll</HintPath>
     </Reference>
-<<<<<<< Updated upstream
-    <Reference Include="EMR.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\minhp\Desktop\New folder\EMR.Filter.dll</HintPath>
-=======
     <Reference Include="EMR.Filter">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR.Filter.dll</HintPath>
->>>>>>> Stashed changes
     </Reference>
     <Reference Include="EMR.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
