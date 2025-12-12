@@ -55,6 +55,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
 
         private const string ElectronicInvoicePublishingDelayTimeCFG = "HIS.Desktop.Plugins.TransactionBill.ElectronicInvoicePublishingDelayTime";
 
+        private const string SelectPayFormByAccountBook = "HIS.Desktop.Plugins.TransactionTwoBill.SelectPayFormByAccountBook";
+
         internal static int E_BILL__PRINT_NUM_COPY;
         internal static int PlatformOption;
 
@@ -66,6 +68,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
         }
 
         internal static string PatientTypeCode__BHYT;
+        internal static string SelectPayForm;
         internal static long PatientTypeId__BHYT;
         internal static string IsketChuyenCFG;
         internal static string IsEditTransactionBillCFG;
@@ -129,6 +132,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
                 PATIENT_TYPE_ID__SERVICE = GetPatientTypeByCode(GetValue(MOS_CONFIG__PATIENT_TYPE_CODE__SERVICE)).ID;
                 IsUsingPaylater = GetValue(CONFIG__IS_USING_PAYLATER) == "1";
                 IsCheckAutoRepayAsDefault = GetValue(HIS_IS_CHECK_AUTO_REPAY_AS_DEFAULT) == "1";
+
+                SelectPayForm = GetValue(SelectPayFormByAccountBook);
 
                 E_BILL__PRINT_NUM_COPY = HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplicationWorker.Get<int>(ELECTRONIC_BILL__PRINT_NUM_COPY);
                 PlatformOption = HisConfigs.Get<int>(PlatformOptionCFG);
