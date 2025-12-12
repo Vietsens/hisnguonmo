@@ -116,5 +116,21 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.RoomConfigOption
             else
                 return null;
         }
+        public static short? Any(this List<RoomOptionItem> list, Option option)
+        {
+            if (list == null || list.Count == 0) return null;
+            return list.Any(x => x.Option == option) ? (short)1 : (short?)null;
+        }
+        public static void Add(this List<RoomOptionItem> list, RoomConfigOption.Option option, short? value)
+        {
+            if (value.HasValue && value.Value == 1)
+            {
+                if (list == null)
+                {
+                    list = new List<RoomOptionItem>();
+                }
+                list.Add(new RoomOptionItem(option));
+            }
+        }
     }
 }
