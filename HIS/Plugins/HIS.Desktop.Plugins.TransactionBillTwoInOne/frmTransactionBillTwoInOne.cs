@@ -114,8 +114,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
         private int positionHandleControl = -1;
 
-        decimal totalReciept = 0;
-        decimal totalInvoice = 0;
+        public decimal totalReciept = 0;
+        public decimal totalInvoice = 0;
         bool? isDirectlyBilling = null;
 
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -295,6 +295,40 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.timerInitForm.Stop();
 
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 2");
+                if (HisConfig.SelectPayForm == "1")
+                {
+                    layoutControlItem77.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutControlItem78.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutControlItem79.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutControlItem80.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutControlItem81.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutControlItem82.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+
+                    //lciTransactionTime.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem70.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem50.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem57.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    emptySpaceItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+                else
+                {
+                    layoutControlItem77.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem78.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem79.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem80.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                    //lciTransactionTime.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutControlItem70.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutControlItem50.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                    layoutControlItem57.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                    emptySpaceItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                    layoutControlItem81.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem82.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
                 this.LoadListSereServ();
                 this.LoadAccountBookToLocal();
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 3");
@@ -343,7 +377,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.FillDataToGirdTransaction();
                 if (this.isDirectlyBilling.HasValue && HisConfig.IsketChuyenCFG != null && HisConfig.IsketChuyenCFG.Equals("4"))
                     checkIsKC.Checked = !this.isDirectlyBilling.Value;
-
                 Inventec.Common.Logging.LogSystem.Debug("frmTransactionBillTwoInOne_Load. 3");
                 this.GeneratePopupMenu();
                 if (this.treatment.TREATMENT_CODE != null)
@@ -530,7 +563,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 ControlEditorADO controlEditorADO = new ControlEditorADO("BANK_NAME", "ID", columnInfos, false, 350);
 
                 ControlEditorLoader.Load(cboBank, data, controlEditorADO);
+                ControlEditorLoader.Load(cboBankInvoice, data, controlEditorADO);
+                ControlEditorLoader.Load(cboBankReceipt, data, controlEditorADO);
+
                 cboBank.Properties.ImmediatePopup = true;
+                cboBankInvoice.Properties.ImmediatePopup = true;
+                cboBankReceipt.Properties.ImmediatePopup = true;
             }
             catch (Exception ex)
             {
@@ -860,10 +898,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     hisBankList = hisBankList.Where(o => o.IS_CARD_PAYMENT_ACCEPTED == (short)1 && o.IS_ACTIVE == (short)1).ToList();
                 }
 
-
-
-
-
                 if (lData != null && lData.Count > 0)
                 {
              
@@ -916,13 +950,16 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 ControlEditorADO controlEditorADO = new ControlEditorADO("PAY_FORM_NAME", "ID", columnInfos, false, 350);
                 ControlEditorLoader.Load(cboPayForm, payFormList, controlEditorADO);
-
+                ControlEditorLoader.Load(cboPayFormInvoice, payFormList, controlEditorADO);
+                ControlEditorLoader.Load(cboPayformReceipt, payFormList, controlEditorADO);
 
                 if (payFormList.Count > 0)
                 {
                     //cboPayForm.EditValue = payFormList.First().ID;
                     payFormList = payFormList.OrderBy(x => x.ID).ToList();
                     cboPayForm.EditValue = payFormList.First().ID;
+                    cboPayFormInvoice.EditValue = payFormList.First().ID;
+                    cboPayformReceipt.EditValue = payFormList.First().ID;
                 }
             }
             catch (Exception ex)
@@ -1341,8 +1378,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             try
             {
                 totalPatientPrice = 0;
-                decimal totalInvoice = 0;
-                decimal totalReciept = 0;
+                totalInvoice = 0;
+                totalReciept = 0;
                 if (!checkNotReciept.Checked && listRecieptData != null && listRecieptData.Count > 0)
                 {
                     totalReciept = listRecieptData.Sum(o => (o.RecieptPrice ?? 0));
@@ -1410,6 +1447,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                cboPayFormInvoice.EditValue = IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TM;
+                cboPayformReceipt.EditValue = IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TM;
+
                 string code = String.IsNullOrEmpty(ConfigApplicationWorker.Get<string>(HFS_KEY__PAY_FORM_CODE)) ? GlobalVariables.HIS_PAY_FORM_CODE__CONSTANT : ConfigApplicationWorker.Get<string>(HFS_KEY__PAY_FORM_CODE);
                 var data = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.PAY_FORM_CODE == code);
                 if (data != null)
@@ -1661,21 +1701,34 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 if (isUpdateLbl)
                 {
-                    if (checkIsKC.CheckState == CheckState.Checked)
+                    if(HisConfig.SelectPayForm == "1")
                     {
-                        if (totalHienDu >= (totalPatientPrice - totalFund - discount))
-                        {
-                            lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString(0);
-                        }
-                        else
-                        {
-                            lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString((totalPatientPrice - totalFund - discount) - totalHienDu, ConfigApplications.NumberSeperator);
-                        }
+                        lblCanThu.Text = (
+                            totalInvoice
+                            + totalReciept
+                            - spinInvoiceCK.Value
+                            - spinSoTienReceipt.Value
+                        ).ToString();
                     }
                     else
                     {
-                        lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString((totalPatientPrice - totalFund - discount), ConfigApplications.NumberSeperator);
+                        if (checkIsKC.CheckState == CheckState.Checked)
+                        {
+                            if (totalHienDu >= (totalPatientPrice - totalFund - discount))
+                            {
+                                lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString(0);
+                            }
+                            else
+                            {
+                                lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString((totalPatientPrice - totalFund - discount) - totalHienDu, ConfigApplications.NumberSeperator);
+                            }
+                        }
+                        else
+                        {
+                            lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString((totalPatientPrice - totalFund - discount), ConfigApplications.NumberSeperator);
+                        }
                     }
+
                 }
 
             }
@@ -1739,8 +1792,16 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 ValidControlBuyerTaxCode();
                 ValidControlDescription();
                 checkValidateCboBank();
-
-
+                if(cboBankReceipt.Enabled)
+                    checkValidateCboBankReceipt();
+                if (cboBankInvoice.Enabled)
+                {
+                    checkValidateCboBankInvoice();
+                }
+                if(spinSoTienReceipt.Enabled)
+                    ValidSpinSoTienReceipt(spinSoTienReceipt, totalReciept, true);
+                if(spinInvoiceCK.Enabled)
+                    ValidSpinSoTien(spinInvoiceCK, totalInvoice, false);
 
             }
             catch (Exception ex)
@@ -1784,7 +1845,37 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
+        private void ValidSpinSoTien(SpinEdit spinSoTien, decimal soTienThu, bool isReceipt)
+        {
+            try
+            {
+                SpinSoTienCKValidationRule recieptAccBookRule = new SpinSoTienCKValidationRule();
+                recieptAccBookRule.spinSoTienCK = spinSoTien;
+                recieptAccBookRule.soTienThu = soTienThu;
+                recieptAccBookRule.isReceipt = isReceipt;
+                dxValidationProvider1.SetValidationRule(spinInvoiceCK, recieptAccBookRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
+        private void ValidSpinSoTienReceipt(SpinEdit spinSoTien, decimal soTienThu, bool isReceipt)
+        {
+            try
+            {
+                SpinSoTienCKValidationRule recieptAccBookRule = new SpinSoTienCKValidationRule();
+                recieptAccBookRule.spinSoTienCK = spinSoTien;
+                recieptAccBookRule.soTienThu = soTienThu;
+                recieptAccBookRule.isReceipt = isReceipt;
+                dxValidationProvider1.SetValidationRule(spinSoTienReceipt, recieptAccBookRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private void ValidControlInvoiceAccountBook()
         {
@@ -1964,11 +2055,17 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.ResetFillPatientDefault();
                 this.ResetData();
                 this.ClearValidate();
-                this.LoadSearch();
                 this.FillInfoPatient(treatment);
                 this.LoadAccountBookToLocal();
                 this.FillDataToGirdTransaction();
                 this.GeneratePopupMenu();
+                if (this.treatment != null)
+                {
+                    this.txtSearch.Text = this.treatment.TREATMENT_CODE;
+                    this.btnSavePrint.Focus();
+
+                }
+                this.LoadSearch();
                 this.LoadListSereServ();
                 this.ProcessDataByCheckNot();
                 this.ResetControlValue();
@@ -1981,13 +2078,17 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.FillDataToTongChiPhi();
                 this.LoadConfigPrinter();
                 this.checkValidateCboBank();
-                WaitingManager.Hide();
-                if (this.treatment != null)
+                if (cboBankReceipt.Enabled)
                 {
-                    this.txtSearch.Text = this.treatment.TREATMENT_CODE;
-                    this.btnSavePrint.Focus();
-
+                    this.checkValidateCboBankReceipt();
                 }
+                if (cboBankInvoice.Enabled)
+                {
+                    this.checkValidateCboBankInvoice();
+                }
+
+                WaitingManager.Hide();
+
                 this.isInit = false;
             }
             catch (Exception ex)
@@ -2019,8 +2120,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 lblHeinRatio.Text = "";
                 lblRightRoute.Text = "";
                 //qtcode
-                txtBuyerEmail.Text = ""; 
+                txtBuyerEmail.Text = "";
                 //qtcode
+                cboBankReceipt.EditValue = null;
+                cboBankInvoice.EditValue = null;
+                spinInvoiceCK.EditValue = null;
+                spinSoTienReceipt.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -2301,6 +2406,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 dxValidationProvider1.RemoveControlError(txtBuyerTaxCode2);
                 dxValidationProvider1.RemoveControlError(txtBuyerOrganization2);
                 dxValidationProvider1.RemoveControlError(cboBank);
+                dxValidationProvider1.RemoveControlError(cboBankReceipt);
+                dxValidationProvider1.RemoveControlError(cboBankInvoice);
+                dxValidationProvider1.RemoveControlError(spinSoTienReceipt);
+                dxValidationProvider1.RemoveControlError(spinInvoiceCK);
+
             }
             catch (Exception ex)
             {
@@ -2872,10 +2982,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private void loadConfig()
         {
             try
-            {
-                
+            {                
                 listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
-                if (listConfig == null || listConfig.Count == 0) lciQR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == this.currentModule.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
+                if ((listConfig == null || listConfig.Count == 0) && currentRoom == null) lciQR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 else lciQR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             }
             catch (Exception ex)
@@ -3123,6 +3233,241 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboPayformReceipt_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboPayformReceipt.EditValue != null)
+                {
+                    var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayformReceipt.EditValue));
+                    if (payFormL != null)
+                    {
+                        var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayformReceipt.Text);
+                        if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                        {
+                            layoutControlItem80.Text = "Số tiền CK:";
+                            layoutControlItem80.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+                            spinSoTienReceipt.Enabled = true;
+                        }
+                        else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+                        {
+                            layoutControlItem80.Text = "Số tiền QT:";
+                            layoutControlItem80.OptionsToolTip.ToolTip = "Số tiền quẹt thẻ";
+                            spinSoTienReceipt.Enabled = true;
+                        }
+                        else
+                        {
+                            layoutControlItem80.Text = "Số tiền CK:";
+                            layoutControlItem80.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+                            spinSoTienReceipt.Enabled = false;
+                            dxValidationProvider1.SetValidationRule(cboPayformReceipt, null);
+                        }
+                        if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
+                        {
+                            cboBankReceipt.EditValue = payForm.BANK_ID;
+                            cboBankReceipt.Enabled = false;
+                        }
+                        else
+                        {
+                            cboBankReceipt.EditValue = null;
+                            cboBankReceipt.Enabled = true;
+                        }
+                        if (payForm.IS_REQUIRED_BANK == 1)
+                        {
+                            layoutControlItem81.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        }
+                        else
+                        {
+                            layoutControlItem81.AppearanceItemCaption.ForeColor = Color.Black;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboPayFormInvoice_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboPayFormInvoice.EditValue != null)
+                {
+                    var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayFormInvoice.EditValue));
+                    if (payFormL != null)
+                    {
+                        var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayFormInvoice.Text);
+                        if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                        {
+                            layoutControlItem77.Text = "Số tiền CK:";
+                            layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+                            spinInvoiceCK.Enabled = true;
+                            //ValidSpinSoTien(spinInvoiceCK, totalInvoice);
+                        }
+                        else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+                        {
+                            layoutControlItem77.Text = "Số tiền QT:";
+                            layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền quẹt thẻ";
+                            spinInvoiceCK.Enabled = true;
+                            //ValidSpinSoTien(spinInvoiceCK, totalInvoice);
+                        }
+                        else
+                        {
+                            dxValidationProvider1.RemoveControlError(spinInvoiceCK);
+                            layoutControlItem77.Text = "Số tiền CK:";
+                            layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+                            spinInvoiceCK.Enabled = false;
+                        }
+                        if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
+                        {
+                            cboBankInvoice.EditValue = payForm.BANK_ID;
+                            cboBankInvoice.Enabled = false;
+                        }
+                        else
+                        {
+                            cboBankInvoice.EditValue = null;
+                            cboBankInvoice.Enabled = true;
+                        }
+                        if (payForm.IS_REQUIRED_BANK == 1)
+                        {
+                            layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        }
+                        else
+                        {
+                            layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Black;
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinSoTienReceipt_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CalcuCanThu(true);
+                if (spinSoTienReceipt.Value < 0)
+                    spinSoTienReceipt.Value = 0;
+            }
+            catch (Exception ex)
+            {
+                
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinInvoiceCK_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CalcuCanThu(true);
+                if (spinInvoiceCK.Value < 0)
+                    spinInvoiceCK.Value = 0;
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboPayFormInvoice_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    HIS_PAY_FORM payForm = null;
+                    if (cboPayFormInvoice.EditValue != null)
+                    {
+                        var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayFormInvoice.EditValue));
+                        if (payFormL != null)
+                        {
+                            var payFormI = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayFormInvoice.Text);
+
+
+                            if (payFormI.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payFormI.BANK_ID != null)
+                            {
+                                cboBankInvoice.EditValue = payFormI.BANK_ID;
+                                cboBankInvoice.Enabled = false;
+                            }
+                            else
+                            {
+                                cboBankInvoice.EditValue = null;
+                                cboBankInvoice.Enabled = true;
+                            }
+
+                        }
+                        else
+                        {
+                            cboBankInvoice.EditValue = null;
+                            cboBankInvoice.Enabled = true;
+
+                        }
+
+
+                    }
+                    CheckRecieptPayFormKEYPAY(payForm);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboPayformReceipt_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    HIS_PAY_FORM payForm = null;
+                    if (cboPayformReceipt.EditValue != null)
+                    {
+                        var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayformReceipt.EditValue));
+                        if (payFormL != null)
+                        {
+                            var payFormI = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayformReceipt.Text);
+
+
+                            if (payFormI.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payFormI.BANK_ID != null)
+                            {
+                                cboBankReceipt.EditValue = payFormI.BANK_ID;
+                                cboBankReceipt.Enabled = false;
+                            }
+                            else
+                            {
+                                cboBankReceipt.EditValue = null;
+                                cboBankReceipt.Enabled = true;
+                            }
+
+                        }
+                        else
+                        {
+                            cboBankReceipt.EditValue = null;
+                            cboBankReceipt.Enabled = true;
+
+                        }
+
+
+                    }
+                    CheckRecieptPayFormKEYPAY(payForm);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }
