@@ -363,6 +363,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         MOS.Filter.HisServiceReqLViewFilter hisServiceReqFilter = new HisServiceReqLViewFilter();
                         hisServiceReqFilter.IDs = id.ToList();
                         CommonParam param = new CommonParam();
+                        if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MUST_BE_APPROVED_SURGERY") == "1")
+                        {
+                            hisServiceReqFilter.IS__APPROVED_SURGERY__OR__IS_EMERGENCY = true;
+                        }
                         apiResult = new BackendAdapter(param).Get<List<ServiceReqADO>>("api/HisServiceReq/GetLView", ApiConsumers.MosConsumer, hisServiceReqFilter, param);
                         foreach (var item in apiResult)
                         {

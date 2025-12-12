@@ -1034,9 +1034,10 @@ namespace HIS.UC.UCHeniInfo
                     {
                         this.dtHeinCardToTime.EditValue = dt;
                         this.dtHeinCardToTime.Update();
+
+                        if (!String.IsNullOrEmpty(this.txtHeinCardToTime.Text) && !(this.txtHeinCardToTime.EditValue.Equals(this.txtHeinCardToTime.OldEditValue == null ? "" : this.txtHeinCardToTime.OldEditValue)))
+                            this.CheckExamHistoryFromBHXHApi(FocusOutOfUc);
                     }
-                    this.CheckExamHistoryFromBHXHApi(FocusOutOfUc);//xuandv
-                                                                   //SendKeys.Send("{TAB}");
                     this.txtAddress.Focus();
                     this.txtAddress.SelectAll();
                 }

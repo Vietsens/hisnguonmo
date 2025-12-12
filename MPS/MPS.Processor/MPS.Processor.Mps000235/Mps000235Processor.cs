@@ -208,6 +208,12 @@ namespace MPS.Processor.Mps000235
                     SetSingleKey(new KeyValue(Mps000235ExtendSingleKey.ICD_NAME, rdo._Treatment.ICD_NAME));
                     SetSingleKey(new KeyValue(Mps000235ExtendSingleKey.ICD_SUB_CODE, rdo._Treatment.ICD_SUB_CODE));
                     SetSingleKey(new KeyValue(Mps000235ExtendSingleKey.ICD_TEXT, rdo._Treatment.ICD_TEXT));
+
+                    SetSingleKey(new KeyValue(Mps000235ExtendSingleKey.TRADITIONAL_ICD_CODE, rdo._Treatment.TRADITIONAL_ICD_CODE));
+                    SetSingleKey(new KeyValue(Mps000235ExtendSingleKey.TRADITIONAL_ICD_NAME, rdo._Treatment.TRADITIONAL_ICD_NAME));
+                    SetSingleKey(new KeyValue(Mps000235ExtendSingleKey.TRADITIONAL_ICD_SUB_CODE, rdo._Treatment.TRADITIONAL_ICD_SUB_CODE));
+                    SetSingleKey(new KeyValue(Mps000235ExtendSingleKey.TRADITIONAL_ICD_TEXT, rdo._Treatment.TRADITIONAL_ICD_TEXT));
+
                 }
 
                 string totalMediStockName = "";

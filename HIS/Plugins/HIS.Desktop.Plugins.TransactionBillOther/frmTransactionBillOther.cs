@@ -87,6 +87,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
         public frmTransactionBillOther(Module moduleData)
             : base(moduleData)
         {
+            this.moduleData = moduleData;
             InitializeComponent();
             Base.ResourceLangManager.InitResourceLanguageManager();
             this.SetResourceKeyLanguage();
@@ -448,6 +449,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 ValidControlBuyerAddress();
                 ValidControlBuyerOrganization();
                 ValidControlBuyerTaxCode();
+                ValidControlSoTienCk();
             }
             catch (Exception ex)
             {
@@ -1231,6 +1233,35 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     spinExemption.Value = spinExemptionRation.Value * totalPrice / 100;
                 }
                 spinTotalAmount.Value = totalPrice - spinExemption.Value;
+                UpdateCanThu();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void ValidControlSoTienCk()
+        {
+            try
+            {
+                SpinToTalAmountValidationRule rule = new SpinToTalAmountValidationRule();
+                rule.spinTotalAmount = spinTotalAmount;
+                rule.cboPayForm = cboPayForm;
+                dxValidationProvider2.SetValidationRule(spinSoTienCK, rule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void UpdateCanThu()
+        {
+            try
+            {
+                decimal soTienCk = spinSoTienCK.Value;
+                decimal canThu = spinTotalAmount.Value - soTienCk;
+                if (canThu < 0) canThu = 0;
+                lblCanThu.Text = canThu.ToString("#,0.##");
             }
             catch (Exception ex)
             {
@@ -1399,7 +1430,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 tranSdo.HisTransaction = new HIS_TRANSACTION();
                 if (chkCheckXD.Checked == false)
                 {
-                    if (this.treatment != null)
+                    if (this.treatment != null && this.treatmentId > 0)
                         tranSdo.HisTransaction.TREATMENT_ID = this.treatment.ID;
                     else
                         tranSdo.HisTransaction.TREATMENT_ID = null;
@@ -1422,6 +1453,11 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
 
                 tranSdo.HisTransaction.PAY_FORM_ID = Convert.ToInt64(cboPayForm.EditValue);
                 tranSdo.HisTransaction.AMOUNT = this.totalPrice;
+                long payFormId = Convert.ToInt64(cboPayForm.EditValue);
+                if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                    tranSdo.HisTransaction.TRANSFER_AMOUNT = spinSoTienCK.Value;
+                else if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+                    tranSdo.HisTransaction.SWIPE_AMOUNT = spinSoTienCK.Value;
                 if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
                     tranSdo.HisTransaction.TRANSACTION_TIME = Convert.ToInt64(dtTransactionTime.DateTime.ToString("yyyyMMddHHmmss"));
 
@@ -1436,7 +1472,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 tranSdo.HisTransaction.BUYER_ADDRESS = txtBuyerAddress.Text;
                 tranSdo.HisTransaction.BUYER_NAME = txtPatientName.Text;
                 tranSdo.HisTransaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text;
-                tranSdo.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
+                tranSdo.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;               
 
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param)
                     .Post<V_HIS_TRANSACTION>("api/HisTransaction/CreateOtherBill", ApiConsumers.MosConsumer, tranSdo, param);
@@ -1575,7 +1611,10 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 txtBuyerAddress.Text = "";
                 txtDescription.Text = "";
                 chkCheckXD.Checked = false;
+                spinSoTienCK.Value = 0;
                 this.LoadDataToComboAccountBook();
+                this.treatment = null;
+                this.treatmentId = 0;
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -2218,7 +2257,6 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
 
         private void cboPayForm_EditValueChanged(object sender, ChangingEventArgs e)
         {
-
         }
 
         private void spinTotalAmount_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -3034,6 +3072,67 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
 
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        private void cboPayForm_EditValueChanged_1(object sender, EventArgs e)
+        {
+            try
+            {
+                long payFormId = Convert.ToInt64(cboPayForm.EditValue);
+                if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                {
+                    spinSoTienCK.Enabled = true;
+                    lciSoTienCK.Text = "Số tiền CK";
+                    lciSoTienCK.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+                }
+                else if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+                {
+                    spinSoTienCK.Enabled = true;
+                    lciSoTienCK.Text = "Số tiền QT";
+                    lciSoTienCK.OptionsToolTip.ToolTip = "Số tiền quẹt thẻ";
+                }
+                else
+                {
+                    spinSoTienCK.Enabled = false;
+                    lciSoTienCK.Text = "Số tiền CK";
+                    lciSoTienCK.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+                    spinSoTienCK.Value = 0;
+                }
+                ValidControlSoTienCk();
+                UpdateCanThu();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void spinSoTienCK_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                UpdateCanThu();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinSoTienCK_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '-')
+            {
+                e.Handled = true;
+            }    
+        }
+
+        private void spinSoTienCK_Validating(object sender, CancelEventArgs e)
+        {
+            if (spinSoTienCK.Value < 0)
+            {
+                spinSoTienCK.Value = 0;
+            }    
         }
     }
 }

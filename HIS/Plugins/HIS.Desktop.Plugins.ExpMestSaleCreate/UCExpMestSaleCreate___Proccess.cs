@@ -1635,6 +1635,10 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         {
                             ChkKetNoiPOS.Checked = item.VALUE == "1";
                         }
+                        else if (item.KEY == ControlStateConstant.CHK_Sign)
+                        {
+                            chkSign.Checked = item.VALUE == "1";
+                        }
                     }
                 }
 

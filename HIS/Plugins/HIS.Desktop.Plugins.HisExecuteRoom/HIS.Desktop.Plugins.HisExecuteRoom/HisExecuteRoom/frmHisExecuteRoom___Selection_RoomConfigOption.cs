@@ -113,6 +113,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 if (row == null) return;
                 if (view.FocusedColumn.FieldName == "CheckMarkSelection")
                 {
+                    // Duyệt mổ
                     if (row.Option == Option.MustBeApprovedSurgery)
                     {
                         if (SelectedOptions == null || !SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsSurgery))
@@ -146,6 +147,40 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                             }
                         }
                     }
+                    // 
+                    if (row.Option == Option.IsBlockNumOrder)
+                    {
+                        if (SelectedOptions == null || !SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsExam))
+                        {
+                            GridCheckMarksSelection gridCheckMark = cboDepartment.Properties.Tag as GridCheckMarksSelection;
+                            if (gridCheckMark != null)
+                            {
+                                gridCheckMark.SelectRow(view, e.RowHandle, false);
+                            }
+                        }
+                    }
+                    else if (row.Option == Option.IsExam)
+                    {
+                        if (SelectedOptions != null
+                        && SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsBlockNumOrder)
+                        && !SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsExam)
+                        )
+                        {
+                            GridCheckMarksSelection gridCheckMark = cboDepartment.Properties.Tag as GridCheckMarksSelection;
+                            if (gridCheckMark != null)
+                            {
+                                for (int i = 0; i < view.DataRowCount; i++)
+                                {
+                                    var r = view.GetRow(i) as RoomOptionItem;
+                                    if (r != null && r.Option == RoomConfigOption.RoomConfigOption.Option.IsBlockNumOrder)
+                                    {
+                                        gridCheckMark.SelectRow(view, i, false);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -162,9 +197,17 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 if (view == null) return;
                 RoomOptionItem row = view.GetRow(e.RowHandle) as RoomOptionItem;
                 if (row == null) return;
-                if (row != null && row.Option == Option.MustBeApprovedSurgery)
+                if (row.Option == Option.MustBeApprovedSurgery)
                 {
                     if (SelectedOptions == null || !SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsSurgery))
+                    {
+                        e.Appearance.ForeColor = System.Drawing.Color.Gray;
+                        e.Appearance.BackColor = System.Drawing.Color.WhiteSmoke;
+                    }
+                }
+                else if (row.Option == Option.IsBlockNumOrder)
+                {
+                    if (SelectedOptions == null || !SelectedOptions.Any(o => o.Option == RoomConfigOption.RoomConfigOption.Option.IsExam))
                     {
                         e.Appearance.ForeColor = System.Drawing.Color.Gray;
                         e.Appearance.BackColor = System.Drawing.Color.WhiteSmoke;

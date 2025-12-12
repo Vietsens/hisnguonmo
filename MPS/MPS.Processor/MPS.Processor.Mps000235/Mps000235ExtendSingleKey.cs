@@ -56,5 +56,14 @@ namespace MPS.Processor.Mps000235
 
         internal const string BED_ROOM_NAME = "BED_ROOM_NAME";
         internal const string BED_NAME = "BED_NAME";
+
+        internal const string TRADITIONAL_ICD_CODE = "TRADITIONAL_ICD_CODE";
+        internal const string TRADITIONAL_ICD_NAME = "TRADITIONAL_ICD_NAME";
+        internal const string TRADITIONAL_ICD_SUB_CODE = "TRADITIONAL_ICD_SUB_CODE ";
+        internal const string TRADITIONAL_ICD_TEXT = "TRADITIONAL_ICD_TEXT";
+
+
+
+
     }
 }
