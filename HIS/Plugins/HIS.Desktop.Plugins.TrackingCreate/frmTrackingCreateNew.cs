@@ -447,10 +447,6 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             bool result = true;
             try
             {
-                if (ucSecondaryIcdPb != null)
-                {
-                    dxErrorProvider1.SetError(ucSecondaryIcdPb, string.Empty);
-                }
                 result = (this.ucSecondaryIcdPb != null && (bool)this.subIcdPbProcessor.GetValidate(this.ucSecondaryIcdPb)) && result;
                 if (this.icdProcessor != null && this.ucIcd != null || (this.subIcdProcessor != null && this.ucSecondaryIcd != null)
                     || (this.subIcdPbProcessor != null && this.ucSecondaryIcdPb != null))
@@ -3560,9 +3556,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             try
             {
                 var icdValue = this.SubUcIcdGetValue();
-                if (icdValue != null && icdValue is UC.Icd.ADO.IcdInputADO)
-                {
-                    subCode = ((UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                if (icdValue != null && icdValue is UC.SecondaryIcd.ADO.SecondaryIcdDataADO)
+                    {
+                    subCode = ((UC.SecondaryIcd.ADO.SecondaryIcdDataADO)icdValue).ICD_SUB_CODE;
                 }
             }
             catch (Exception ex)

@@ -186,21 +186,38 @@ namespace HIS.UC.SecondaryIcd.Validate.ValidateRule
                 {
                     string icdSubCode = getIcdSub();
                     Inventec.Common.Logging.LogSystem.Debug("ValidDuplicateWithIcdSub. 2__icdSubCode=" + icdSubCode + ", icdCode=" + icdCode);
-                    List<string> arrWrongCodes = new List<string>();
-                    string[] arrIcdExtraCodes = icdCode.Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    //string icdSubCode = getIcdSub();
+                    //Inventec.Common.Logging.LogSystem.Debug("ValidDuplicateWithIcdSub. 2__icdSubCode=" + icdSubCode + ", icdCode=" + icdCode);
+                    var arrIcdExtraCodes = icdCode
+                    .Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(p => p.Trim())
+                    .ToArray();
+
+                    // Tách ICD phân biệt (sub) thành list
+                    var arrIcdSubCodes = icdSubCode
+                        .Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(p => p.Trim())
+                        .ToArray();
+                    //List<string> arrWrongCodes = new List<string>();
+                    //string[] arrIcdExtraCodes = icdCode.Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
                     if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
                     {
                         Inventec.Common.Logging.LogSystem.Debug("ValidDuplicateWithIcdSub. 3__valid=" + valid);
-                        if (arrIcdExtraCodes.Any(o => o.Equals(icdSubCode)))
-                        {
-                            this.ErrorText = String.Format(Resources.ResourceMessage.MabenhPhuDaDuocSuDungChoMaBenhChinh, icdSubCode);
+                        //if (arrIcdExtraCodes.Any(o => o.Equals(icdSubCode)))
+                        //{
+
+                            // Kiểm tra xem có mã nào trùng nhau không
+                            if (arrIcdExtraCodes.Intersect(arrIcdSubCodes, StringComparer.OrdinalIgnoreCase).Any())
+                            {
+                                this.ErrorText = String.Format(Resources.ResourceMessage.MaBenhPhanBietDaDuocSuDungChoMaBenhChinhHoacPhu, icdCode);
                             return false;
+                            }
+                        //}
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug("getIcdSub is null hoac icdmainCode is null" + ", icdCode=" + icdCode);
                         }
                     }
-                }
-                else
-                {
-                    Inventec.Common.Logging.LogSystem.Debug("getIcdSub is null hoac icdmainCode is null" + ", icdCode=" + icdCode);
                 }
             }
             catch (Exception ex)

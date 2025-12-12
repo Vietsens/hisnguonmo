@@ -120,6 +120,9 @@
   <data name="KhongTimThayIcdTuongUngVoiCacMaSau" xml:space="preserve">
     <value>အောက်ပါ ICD ကုဒ် မရှိပါ သို့မဟုတ် ဖော်မတ်မှားယွင်းနေသည်- {0}။ ဆော့ဖ်ဝဲလ်သည် ICD ကုဒ်များစာရင်းကို ပိုင်းခြားထားသော semicolon တစ်ခုကိုသာ လက်ခံသည်။ ထပ်မံစစ်ဆေးပါ။</value>
   </data>
+  <data name="MaBenhPhanBietDaDuocSuDungChoMaBenhChinhHoacPhu" xml:space="preserve">
+    <value>Mã bệnh phân biệt {0} đã được sử dụng cho mã bệnh chính và phụ. Vui lòng kiểm tra lại</value>
+  </data>
   <data name="MabenhPhuDaDuocSuDungChoMaBenhChinh" xml:space="preserve">
     <value>နံပါတ်ခွဲကုဒ် {0} ကို အဓိကကုဒ်အတွက် အသုံးပြုထားပြီး၊ ကျေးဇူးပြု၍ ထပ်မံစစ်ဆေးပါ။</value>
   </data>

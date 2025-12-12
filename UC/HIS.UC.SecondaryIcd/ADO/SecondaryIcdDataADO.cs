@@ -28,5 +28,6 @@ namespace HIS.UC.SecondaryIcd.ADO
     {
         public string ICD_SUB_CODE { get; set; }
         public string ICD_TEXT { get; set; }
+        public List<string> IcdSubCodes;
     }
 }
