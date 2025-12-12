@@ -287,7 +287,7 @@ namespace MPS.Processor.Mps000302
                     store,
                     "HeinServiceTypeOnly",
                     heinServiceTypeADOs
-                        .GroupBy(o => new { o.NUM_ORDER, o.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER })
+                        .GroupBy(o => new { o.NUM_ORDER, o.HEIN_SERVICE_TYPE_NAME, o.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER })
                         .Select(g =>
                         {
                             var first = g.First();
