@@ -3846,7 +3846,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             {
                 listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
 
-                lciQr.Visibility = listConfig != null && listConfig.Count > 0 ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                //lciQr.Visibility = listConfig != null && listConfig.Count > 0 ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 btnQr.Enabled = false;
             }
             catch (Exception ex)
@@ -3872,7 +3872,31 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-       
+
+        private List<HIS_TRANSACTION> GetListTransactionForQR(V_HIS_TRANSACTION resultTranBill)
+        {
+            List<V_HIS_TRANSACTION> lstTranForQR = null;
+
+            if (resultTranBill != null && resultTranBill.TREATMENT_ID != null)
+            {
+                var fl = new HisTransactionViewFilter();
+                fl.TREATMENT_ID = resultTranBill.TREATMENT_ID.Value;
+                lstTranForQR = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>(
+                    "api/HisTransaction/GetView",
+                    ApiConsumer.ApiConsumers.MosConsumer,
+                    fl,
+                    null
+                );
+            }
+
+            var dataFilter = lstTranForQR != null
+                ? lstTranForQR.Where(tran => tran.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR
+                                          && tran.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                             .ToList()
+                : new List<V_HIS_TRANSACTION>();
+
+            return AutoMapper.Mapper.Map<List<V_HIS_TRANSACTION>, List<HIS_TRANSACTION>>(dataFilter);
+        }
         private void btnQrXuLy(bool isLuuKy)
         {
             try
@@ -3885,13 +3909,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     ConfigInfo _config = Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigInfo>(currentRoom.FirstOrDefault().QR_CONFIG_JSON);
                     HIS_CONFIG _cf = new HIS_CONFIG();
-                    Inventec.Common.Logging.LogSystem.Info("_config123: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _config), _config));
 
                     if (string.IsNullOrWhiteSpace(_config.BANK)) MessageBox.Show(this, "Cấu hình thiếu thông tin ngân hàng.", "Thông báo", MessageBoxButtons.OK);
                     _cf.KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", _config.BANK.Trim());
                     _cf.VALUE = _config.VALUE;
-                    //_cf.KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.VietinbankInfo");
-                    //_cf.VALUE = "{\"payLoad\":\"01\", \"pointOTMethod\":\"12\", \"masterMerchant\":\"970489\", \"merchantCode\":\"2900621130\", \"merchantCC\":\"8062\", \"merchantName\":\"BVDK TINH NGHE AN\", \"merchantCity\":\"NGHEAN\", \"ccy\":\"704\", \"CounttryCode\":\"VN\", \"terminalId\":\"0134\", \"storeID\":\"4BCH\", \"expDate\":\"10\"}";
                     //co cau hinh QR o buong benh
                     List<object> listArgs = new List<object>();
                     TransReqQRADO adoqr = new TransReqQRADO();
@@ -3899,19 +3920,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     adoqr.ConfigValue = _cf;
                     adoqr.TransReqId = CreateReqType.Transaction;
                     AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
-                    Inventec.Common.Logging.LogSystem.Info("lstTranForQR: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstTranForQR), lstTranForQR));
-                    if (this.resultTranBill != null)
-                    {
-                        HisTransactionViewFilter fl = new HisTransactionViewFilter();
-                        fl.TREATMENT_ID = this.resultTranBill.TREATMENT_ID.Value;
-                        lstTranForQR = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/Get", ApiConsumer.ApiConsumers.MosConsumer, fl, null);
-                    }
-                    var dataFilter = lstTranForQR
-                    .Where(tran => tran.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && tran.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
-                    .ToList();
-                    Inventec.Common.Logging.LogSystem.Info("dataFilterBot: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dataFilter), dataFilter));
-                    List<HIS_TRANSACTION> lstTran = AutoMapper.Mapper.Map<List<V_HIS_TRANSACTION>, List<HIS_TRANSACTION>>(dataFilter);
-                    adoqr.Transactions = lstTran;
+                    adoqr.Transactions = this.GetListTransactionForQR(resultTranBill);
                     if (isLuuKy)
                         adoqr.IssueInvoice = true;
                     if (chkHideHddt.Checked)
@@ -3950,8 +3959,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                 BarButtonItem btnOption = new BarButtonItem(null, key);
                                 btnOption.ItemClick += (s, args) =>
                                 {
-                                    Inventec.Common.Logging.LogSystem.Info("selectedConfig1: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => selectedConfig), selectedConfig));
-
                                     selectedConfig = item;
                                     List<object> listArgs = new List<object>();
                                     TransReqQRADO adoqr = new TransReqQRADO();
@@ -3961,9 +3968,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                     adoqr.PrintInvoice = (chkPrintHddt != null && chkPrintHddt.Checked);
                                     adoqr.IssueInvoice = isSaveAndSignSuccess;
                                     adoqr.NotDisplayedInvoice = (chkHideHddt != null && chkHideHddt.Checked);
-                                    HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, TransactionQr);
-                                    adoqr.Transaction = tran;
+                                    AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
+                                    adoqr.Transactions = this.GetListTransactionForQR(resultTranBill);
                                     listArgs.Add(adoqr);
                                     LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
 
@@ -3978,8 +3984,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         else
                         {
                             selectedConfig = listConfig[0];
-                            Inventec.Common.Logging.LogSystem.Info("selectedConfig2: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => selectedConfig), selectedConfig));
-
                             List<object> listArgs = new List<object>();
                             TransReqQRADO adoqr = new TransReqQRADO();
                             adoqr.TreatmentId = this.treatmentId ?? 0;
@@ -3988,9 +3992,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             adoqr.PrintInvoice = (chkPrintHddt != null && chkPrintHddt.Checked);
                             adoqr.IssueInvoice = isSaveAndSignSuccess;
                             adoqr.NotDisplayedInvoice = chkHideHddt.Checked;
-                            HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, TransactionQr);
-                            adoqr.Transaction = tran;
+                            AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
+                            adoqr.Transactions = this.GetListTransactionForQR(resultTranBill);
                             listArgs.Add(adoqr);
                             LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
                             HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);

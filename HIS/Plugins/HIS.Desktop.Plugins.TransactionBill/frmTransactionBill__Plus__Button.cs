@@ -131,11 +131,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     return;
                 if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show("Thanh toán QR chưa thể tự động tạo hóa đơn điện tử bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                     return;
-                if (cboPayForm.EditValue != null && Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
-                {
-                    btnQr.Enabled = true;
-                    btnQrXuLy(true);
-                }
+                //if (cboPayForm.EditValue != null && Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                //{
+                //    btnQr.Enabled = true;
+                //    btnQrXuLy(true);
+                //}
                 SetEnableButtonSave(false);
                 if (HisConfigCFG.AutoCreateDepositTransaction && decimal.Parse(lblReceiveAmount.Text) > 0 && cboDepositBook.Enabled && cboDepositBook.EditValue == null)
                 {
@@ -287,12 +287,21 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             TransactionQr = TransactionBillResultSDO.TransactionDeposit;
                         if (TransactionBillResultSDO.TransactionBill != null && TransactionBillResultSDO.TransactionBill.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
                             TransactionQr = TransactionBillResultSDO.TransactionBill;
-                        if(listConfig != null)
+                        var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == this.currentModule.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
+
+                        if (currentRoom != null && currentRoom.Count() > 0)
                         {
-                            if (listConfig.Count > 1)
-                                XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
-                            else
-                                btnQrXuLy(true);
+                            btnQrXuLy(true);
+                        }
+                        else
+                        {
+                            if (listConfig != null && listConfig.Count > 0)
+                            {
+                                if (listConfig.Count > 1)
+                                    XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
+                                else
+                                    btnQrXuLy(true);
+                            }
                         }
                     }
 
@@ -413,12 +422,21 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             TransactionQr = TransactionBillResultSDO.TransactionDeposit;
                         if (TransactionBillResultSDO.TransactionBill != null && TransactionBillResultSDO.TransactionBill.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
                             TransactionQr = TransactionBillResultSDO.TransactionBill;
-                        if (listConfig != null)
+                        var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == this.currentModule.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
+
+                        if (currentRoom != null && currentRoom.Count() > 0)
                         {
-                            if (listConfig.Count > 1)
-                                XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
-                            else
-                                btnQrXuLy(false);
+                            btnQrXuLy(false);
+                        }
+                        else
+                        {
+                            if (listConfig != null && listConfig.Count > 0)
+                            {
+                                if (listConfig.Count > 1)
+                                    XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
+                                else
+                                    btnQrXuLy(false);
+                            }
                         }
                     }
                     if (chkAutoClose.CheckState == CheckState.Checked)
@@ -746,12 +764,21 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             TransactionQr = TransactionBillResultSDO.TransactionDeposit;
                         if (TransactionBillResultSDO.TransactionBill != null && TransactionBillResultSDO.TransactionBill.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
                             TransactionQr = TransactionBillResultSDO.TransactionBill;
-                        if (listConfig != null)
+                        var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == this.currentModule.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
+
+                        if (currentRoom != null && currentRoom.Count() > 0)
                         {
-                            if (listConfig.Count > 1)
-                                XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
-                            else
-                                btnQrXuLy(false);
+                            btnQrXuLy(false);
+                        }
+                        else
+                        {
+                            if (listConfig != null && listConfig.Count > 0)
+                            {
+                                if (listConfig.Count > 1)
+                                    XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
+                                else
+                                    btnQrXuLy(false);
+                            }    
                         }
                     }
                     MessageManager.Show(this, param, success);
