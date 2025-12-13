@@ -42,6 +42,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnCCCD = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -211,6 +212,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             this.gridColumn9,
             this.gridColumn3,
             this.gridColumn17,
+            this.gridColumnCCCD,
             this.gridColumn16,
             this.gridColumn13,
             this.gridColumn14,
@@ -335,6 +337,16 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             this.gridColumn17.VisibleIndex = 10;
             this.gridColumn17.Width = 100;
             // 
+            // gridColumnCCCD
+            // 
+            this.gridColumnCCCD.Caption = "Căn cước công dân";
+            this.gridColumnCCCD.FieldName = "CCCD_HIENTHI_AO";
+            this.gridColumnCCCD.Name = "gridColumnCCCD";
+            this.gridColumnCCCD.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnCCCD.Visible = true;
+            this.gridColumnCCCD.VisibleIndex = 11;
+            this.gridColumnCCCD.Width = 110;
+            // 
             // gridColumn16
             // 
             this.gridColumn16.Caption = "Địa chỉ";
@@ -342,7 +354,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             this.gridColumn16.Name = "gridColumn16";
             this.gridColumn16.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 11;
+            this.gridColumn16.VisibleIndex = 12;
             this.gridColumn16.Width = 200;
             // 
             // gridColumn13
@@ -352,7 +364,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 12;
+            this.gridColumn13.VisibleIndex = 13;
             this.gridColumn13.Width = 150;
             // 
             // gridColumn14
@@ -362,7 +374,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 13;
+            this.gridColumn14.VisibleIndex = 14;
             this.gridColumn14.Width = 150;
             // 
             // gridColumn19
@@ -372,7 +384,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             this.gridColumn19.Name = "gridColumn19";
             this.gridColumn19.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 18;
+            this.gridColumn19.VisibleIndex = 19;
             this.gridColumn19.Width = 150;
             // 
             // grdColCreateTime
@@ -382,7 +394,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             this.grdColCreateTime.Name = "grdColCreateTime";
             this.grdColCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColCreateTime.Visible = true;
-            this.grdColCreateTime.VisibleIndex = 14;
+            this.grdColCreateTime.VisibleIndex = 15;
             this.grdColCreateTime.Width = 150;
             // 
             // grdColCreate
@@ -392,7 +404,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             this.grdColCreate.Name = "grdColCreate";
             this.grdColCreate.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColCreate.Visible = true;
-            this.grdColCreate.VisibleIndex = 15;
+            this.grdColCreate.VisibleIndex = 16;
             this.grdColCreate.Width = 150;
             // 
             // grdColModifyTime
@@ -402,7 +414,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             this.grdColModifyTime.Name = "grdColModifyTime";
             this.grdColModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColModifyTime.Visible = true;
-            this.grdColModifyTime.VisibleIndex = 16;
+            this.grdColModifyTime.VisibleIndex = 17;
             this.grdColModifyTime.Width = 150;
             // 
             // grdColModifier
@@ -412,7 +424,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             this.grdColModifier.Name = "grdColModifier";
             this.grdColModifier.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColModifier.Visible = true;
-            this.grdColModifier.VisibleIndex = 17;
+            this.grdColModifier.VisibleIndex = 18;
             this.grdColModifier.Width = 150;
             // 
             // barManager1
@@ -1049,12 +1061,13 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn16;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit chkCap;
         private DevExpress.Utils.ImageCollection imageCollection1;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1; 
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit red_tickxanh;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit rep_tickdo;
         private DevExpress.XtraGrid.Columns.GridColumn grdColCreateTime;
         private DevExpress.XtraGrid.Columns.GridColumn grdColCreate;
         private DevExpress.XtraGrid.Columns.GridColumn grdColModifyTime;
         private DevExpress.XtraGrid.Columns.GridColumn grdColModifier;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnCCCD;
     }
 }

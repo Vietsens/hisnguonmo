@@ -8,6 +8,7 @@ using DevExpress.XtraGrid.Views.Base;
 using DevExpress.Data;
 using System.Resources;
 using System.Collections;
+using System.Threading;
 
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
@@ -36,6 +37,8 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
         int pageSize;
         Inventec.Desktop.Common.Modules.Module currentModule { get; set; }
         List<HIS_DEPARTMENT> listDepartment = null;
+
+        List<HIS_PATIENT> listPatients = null;
         #endregion
 
         #region Constructor & Load
@@ -51,7 +54,29 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             {
                 SetCaptionByLanguageKey();
                 SetDefaultControl();
-                FillDataToGrid();
+
+                gridView1.DoubleClick += gridView1_DoubleClick;
+
+                gridView1.OptionsBehavior.Editable = true;
+                gridView1.OptionsBehavior.ReadOnly = true;
+
+                var columnsToCopy = new List<string> { "TREATMENT_CODE", "TDL_PATIENT_CODE","CCCD_HIENTHI_AO","TDL_PATIENT_CCCD_NUMBER","TDL_HEIN_CARD_NUMBER","TDL_SOCIAL_INSURANCE_NUMBER","TDL_SOCIAL_INSURANCE_NUMBER_STR"};
+
+                foreach (DevExpress.XtraGrid.Columns.GridColumn col in gridView1.Columns)
+                {
+                    if (columnsToCopy.Contains(col.FieldName))
+                    {
+                        col.OptionsColumn.AllowEdit = true;
+                        col.OptionsColumn.ReadOnly = true; // Chỉ đọc
+                    }
+                    else
+                    {
+                        col.OptionsColumn.AllowEdit = false;
+                        col.OptionsColumn.ReadOnly = true;
+                    }
+                }
+
+                FillDataToGrid();             
             }
             catch (Exception ex)
             {
@@ -109,7 +134,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
 
                 gridView1.BeginUpdate();
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<HIS_TREATMENT>>(
-                    "api/HisTreatment/Get",
+                    "api/HisTreatment/GetView",
                     ApiConsumers.MosConsumer,
                     filter,
                     paramCommon);
@@ -117,6 +142,48 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
                 if (apiResult != null)
                 {
                     var data = apiResult.Data;
+
+                    if (data != null && data.Count > 0)
+                    {
+                        if (cboSYNC_RESULT_TYPE.SelectedIndex == 1) // Chọn "Chưa đồng bộ"
+                        {
+                            data = data.Where(o => o.NCD_WHO_RESULT == null || o.NCD_WHO_RESULT == 0).ToList();
+                        }
+                        else if (cboSYNC_RESULT_TYPE.SelectedIndex == 2) // Chọn "Đã đồng bộ"
+                        {
+                            data = data.Where(o => o.NCD_WHO_RESULT == 1).ToList();
+                        }
+                        else if (cboSYNC_RESULT_TYPE.SelectedIndex == 3) // Chọn "Thất bại"
+                        {
+                            data = data.Where(o => o.NCD_WHO_RESULT == 2).ToList();
+                        }
+                    }
+                    if (data != null && data.Count > 0)
+                    {
+                        try
+                        {
+                            var listPatientIds = data.Select(o => o.PATIENT_ID).Distinct().ToList();
+                            if (listPatientIds.Count > 0)
+                            {
+                                HisPatientFilter patientFilter = new HisPatientFilter();
+                                patientFilter.IDs = listPatientIds;
+                                listPatients = new BackendAdapter(paramCommon).Get<List<HIS_PATIENT>>(
+                                    "api/HisPatient/Get",
+                                    ApiConsumers.MosConsumer,
+                                    patientFilter,
+                                    paramCommon);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error("Lỗi tải thông tin bệnh nhân kèm theo: ", ex);
+                        }
+                    }
+                    else
+                    {
+                        listPatients = null;
+                    }
+
                     gridControl1.DataSource = (data != null && data.Count > 0) ? data : null;
                     rowCount = (data == null ? 0 : data.Count);
                     dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
@@ -126,6 +193,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
                     rowCount = 0;
                     dataTotal = 0;
                     gridControl1.DataSource = null;
+                    listPatients = null;
                 }
                 gridView1.EndUpdate();
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(paramCommon);
@@ -137,28 +205,26 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
         {
             try
             {
-                // 1. MÃ ĐIỀU TRỊ: Tự động điền đủ 12 ký tự
+                // 1. MÃ ĐIỀU TRỊ
                 if (!string.IsNullOrEmpty(txtTreatmentCode.Text))
                 {
                     string treatmentCode = txtTreatmentCode.Text.Trim();
-                    // Nếu độ dài < 12 thì thêm số 0 vào đầu
                     if (treatmentCode.Length < 12)
                     {
                         treatmentCode = treatmentCode.PadLeft(12, '0');
-                        txtTreatmentCode.Text = treatmentCode; // Cập nhật lại lên ô nhập liệu cho người dùng thấy
+                        txtTreatmentCode.Text = treatmentCode;
                     }
                     filter.TREATMENT_CODE__EXACT = treatmentCode;
                 }
 
-                // 2. MÃ BỆNH NHÂN: Tự động điền đủ 10 ký tự
+                // 2. MÃ BỆNH NHÂN
                 if (!string.IsNullOrEmpty(txtPatientCode.Text))
                 {
                     string patientCode = txtPatientCode.Text.Trim();
-                    // Nếu độ dài < 10 thì thêm số 0 vào đầu
                     if (patientCode.Length < 10)
                     {
                         patientCode = patientCode.PadLeft(10, '0');
-                        txtPatientCode.Text = patientCode; // Cập nhật lại lên ô nhập liệu
+                        txtPatientCode.Text = patientCode;
                     }
                     filter.TDL_PATIENT_CODE__EXACT = patientCode;
                 }
@@ -174,7 +240,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
                 if (dtBornTimeTo.EditValue != null && dtBornTimeTo.DateTime != DateTime.MinValue)
                     filter.OUT_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtBornTimeTo.EditValue).ToString("yyyyMMdd") + "235959");
 
-                // 5. Trạng thái NCD
+                // 5. Trạng thái NCD (SỬA LẠI LOGIC CHUẨN)
                 if (cboSYNC_RESULT_TYPE.EditValue != null)
                 {
                     switch (cboSYNC_RESULT_TYPE.SelectedIndex)
@@ -183,7 +249,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
                             filter.HAS_NCD_WHO_RESULT = false;
                             break;
                         case 2: // Đã đồng bộ
-                            filter.HAS_NCD_WHO_RESULT = true;
+                            filter.NCD_WHO_RESULT = 1;
                             break;
                         case 3: // Thất bại
                             filter.NCD_WHO_RESULT = 2;
@@ -193,7 +259,6 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
                     }
                 }
 
-                // Sắp xếp
                 filter.ORDER_FIELD = "OUT_TIME";
                 filter.ORDER_DIRECTION = "DESC";
             }
@@ -230,9 +295,9 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
 
         private void Control_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter) btnSearch_Click(null, null); 
-        }    
-        
+            if (e.KeyCode == Keys.Enter) btnSearch_Click(null, null);
+        }
+
         private void txtPatientCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) { Control_PreviewKeyDown(sender, e); }
         private void txtTreatmentCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) { Control_PreviewKeyDown(sender, e); }
         private void btnSearch_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) { Control_PreviewKeyDown(sender, e); }
@@ -247,57 +312,87 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
                     var data = (HIS_TREATMENT)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (data != null)
                     {
-                        // 1. Số thứ tự
                         if (e.Column.FieldName == "STT")
                         {
                             e.Value = e.ListSourceRowIndex + 1 + startPage;
                         }
-                        // 2. Icon Trạng thái (Quan trọng: Logic dùng NCD_WHO_RESULT)
                         else if (e.Column.FieldName == "ICON_STR")
                         {
-                            if (data.NCD_WHO_RESULT != null) e.Value = 1; // 1: Kích hoạt hiện ảnh
-                            else e.Value = null; // Null: Ẩn ảnh
+                            if (data.NCD_WHO_RESULT != null) e.Value = 1;
+                            else e.Value = null;
                         }
-                        // 3. Lý do
                         else if (e.Column.FieldName == "REASON_STR")
                         {
-                            if (data.NCD_WHO_RESULT == 2) e.Value = "Đồng bộ thất bại";
-                            else if (data.NCD_WHO_RESULT != null) e.Value = "Đã đồng bộ";
-                            else e.Value = "";
-                        }
-                        // 4. [SỬA] Thời gian đồng bộ
-                        else if (e.Column.FieldName == "SYNC_TIME_STR")
-                        {
-                            // Logic: Nếu đã có kết quả (khác null) thì hiển thị thời gian sửa đổi
-                            if (data.NCD_WHO_RESULT != null)
+                            if (data.NCD_WHO_RESULT == 2)
                             {
-                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.MODIFY_TIME ?? 0);
+                                e.Value = !string.IsNullOrEmpty(data.NCD_WHO_DESCRIPTION)
+                                          ? data.NCD_WHO_DESCRIPTION
+                                          : "Đồng bộ thất bại (Không rõ lý do)";
+                            }
+                            else if (data.NCD_WHO_RESULT == 1)
+                            {
+                                e.Value = "Đã đồng bộ";
                             }
                             else
                             {
                                 e.Value = "";
                             }
                         }
-                        // --- CÁC CỘT THÔNG TIN KHÁC (Khắc phục lỗi ô trắng) ---
-                        else if (e.Column.FieldName == "IN_TIME_STR") // Ngày vào viện
+                        else if (e.Column.FieldName == "SYNC_TIME_STR")
+                        {
+                            if (data.NCD_WHO_RESULT != null)
+                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.MODIFY_TIME ?? 0);
+                            else
+                                e.Value = "";
+                        }
+                        else if (e.Column.FieldName == "IN_TIME_STR")
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.IN_TIME);
                         }
-                        else if (e.Column.FieldName == "OUT_TIME_STR") // Ngày ra viện
+                        else if (e.Column.FieldName == "OUT_TIME_STR")
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.OUT_TIME ?? 0);
                         }
-                        else if (e.Column.FieldName == "CREATE_TIME_DISPLAY") // Thời gian tạo
+                        else if (e.Column.FieldName == "CREATE_TIME_DISPLAY")
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.CREATE_TIME ?? 0);
                         }
-                        else if (e.Column.FieldName == "MODIFY_TIME_DISPLAY") // Thời gian sửa
+                        else if (e.Column.FieldName == "MODIFY_TIME_DISPLAY")
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.MODIFY_TIME ?? 0);
                         }
                         else if (e.Column.FieldName == "CREATOR") e.Value = data.CREATOR;
                         else if (e.Column.FieldName == "MODIFIER") e.Value = data.MODIFIER;
-                        else if (e.Column.FieldName == "TDL_PATIENT_DOB_STR") e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.TDL_PATIENT_DOB);
+                        else if (e.Column.FieldName == "TDL_PATIENT_DOB_STR")
+                        {
+                            if (data.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1)
+                            {
+                                if (data.TDL_PATIENT_DOB > 0) e.Value = data.TDL_PATIENT_DOB.ToString().Substring(0, 4);
+                            }
+                            else
+                            {
+                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.TDL_PATIENT_DOB);
+                            }
+                        }
+                        else if (e.Column.FieldName == "CCCD_HIENTHI_AO")
+                        {
+                            string cccd = data.TDL_PATIENT_CCCD_NUMBER;
+                            string cmnd = data.TDL_PATIENT_CMND_NUMBER;
+                            string finalVal = !string.IsNullOrEmpty(cccd) ? cccd : cmnd;
+
+                            if (string.IsNullOrEmpty(finalVal) && listPatients != null)
+                            {
+                                var patient = listPatients.FirstOrDefault(o => o.ID == data.PATIENT_ID);
+                                if (patient != null)
+                                {
+                                    finalVal = !string.IsNullOrEmpty(patient.CCCD_NUMBER)
+                                               ? patient.CCCD_NUMBER
+                                               : patient.CMND_NUMBER;
+                                }
+                            }
+                            e.Value = finalVal;
+
+                        }
                         else if (e.Column.FieldName == "TDL_SOCIAL_INSURANCE_NUMBER_STR") e.Value = !string.IsNullOrEmpty(data.TDL_SOCIAL_INSURANCE_NUMBER) ? data.TDL_SOCIAL_INSURANCE_NUMBER : data.TDL_HEIN_CARD_NUMBER;
                         else if (e.Column.FieldName == "DEPARTMENT_NAME")
                         {
@@ -316,12 +411,11 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        // --- HÀM 2: HIỂN THỊ ẢNH (Đã sửa FieldName chuẩn) ---
+
         private void gridView1_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
         {
             try
             {
-                // [ĐÃ SỬA CHUẨN]: Dùng ICON_STR
                 if (e.Column.FieldName == "ICON_STR" && e.RowHandle >= 0)
                 {
                     var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
@@ -329,18 +423,9 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
 
                     if (data != null)
                     {
-                        if (data.NCD_WHO_RESULT == 2)
-                        {
-                            e.RepositoryItem = this.rep_tickdo; // Thất bại
-                        }
-                        else if (data.NCD_WHO_RESULT != null)
-                        {
-                            e.RepositoryItem = this.red_tickxanh; // Thành công
-                        }
-                        else
-                        {
-                            e.RepositoryItem = null; // Chưa làm
-                        }
+                        if (data.NCD_WHO_RESULT == 2) e.RepositoryItem = this.rep_tickdo;
+                        else if (data.NCD_WHO_RESULT != null) e.RepositoryItem = this.red_tickxanh;
+                        else e.RepositoryItem = null;
                     }
                 }
             }
@@ -367,9 +452,12 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
                 }
 
                 WaitingManager.Show();
+
+                int totalSelected = rowHandles.Length; // Tổng số đã chọn
                 int successCount = 0;
-                int failCount = 0;
-                List<string> listErrors = new List<string>();
+                int failCount = 0; // Đếm số lượng hồ sơ NCD nhưng bị lỗi (thiếu data hoặc lỗi mạng)
+
+                List<string> listIgnoredCodes = new List<string>();
                 CommonParam param = new CommonParam();
 
                 foreach (var i in rowHandles)
@@ -379,51 +467,82 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
                     {
                         try
                         {
-                            // [SỬA QUAN TRỌNG]: Dùng trực tiếp dữ liệu từ lưới (row) thay vì gọi API lại.
-                            // Vì gọi API Get/ID đang bị lỗi trả về null.
-                            var treatment = row;
-
-                            if (treatment != null)
+                            if (string.IsNullOrEmpty(row.TDL_PATIENT_CCCD_NUMBER) && listPatients != null)
                             {
-                                var dhst = GetDhst(treatment.ID, param);
-                                var medicines = GetMedicines(treatment.ID, param);
-                                var processor = new ConnectWhoCndProcessor(treatment, dhst, medicines);
+                                var p = listPatients.FirstOrDefault(o => o.ID == row.PATIENT_ID);
+                                if (p != null) row.TDL_PATIENT_CCCD_NUMBER = p.CCCD_NUMBER ?? p.CMND_NUMBER;
+                            }
+                            var dhst = GetDhst(row.ID, param);
+                            var medicines = GetMedicines(row.ID, param);
+                            var processor = new ConnectWhoCndProcessor(row, dhst, medicines);
 
-                                if (processor.CheckData())
-                                {
-                                    processor.SendData();
-                                    successCount++;
-                                }
-                                else
-                                {
-                                    failCount++;
-                                 listErrors.Add($"Mã {row.TREATMENT_CODE}: Thiếu thông tin hoặc sai ICD.");
-                                }
+                            processor.CheckData();
+
+                            if (processor.isNotInIcd)
+                            {
+                                listIgnoredCodes.Add(row.TREATMENT_CODE);
+                                continue;
+                            }
+
+                            if (!processor.HasData)
+                            {
+                                failCount++; // Tính vào thất bại
+                                continue;
+                            }
+
+                            Inventec.Common.Logging.LogSystem.Info("Bắt đầu gửi hồ sơ: " + row.TREATMENT_CODE);
+                            processor.SendDataForCND();
+
+                            if (processor.HasData)
+                            {
+                                successCount++; 
+                            }
+                            else
+                            {
+                                failCount++;
                             }
                         }
                         catch (Exception exRow)
                         {
-                            failCount++;
-                            listErrors.Add($"Mã {row.TREATMENT_CODE}: Lỗi hệ thống.");
+                            failCount++; 
                             Inventec.Common.Logging.LogSystem.Error("Lỗi đồng bộ HS: " + row.TREATMENT_CODE, exRow);
                         }
                     }
                 }
                 WaitingManager.Hide();
 
-                string msg = string.Format("Kết quả xử lý:\n- Thành công: {0}\n- Thất bại: {1}", successCount, failCount);
-                if (listErrors.Count > 0) msg += "\n\nChi tiết: \n" + string.Join("\n", listErrors);
+                string msg = string.Format("Kết quả xử lý {0} hồ sơ:\n- Thành công: {1}\n- Thất bại: {2}\n- Bỏ qua (Không có bệnh huyết áp hoặc đái tháo đường): {3}", totalSelected,successCount,failCount,listIgnoredCodes.Count);
+
+                if (listIgnoredCodes.Count > 0)
+                {
+                    string strCodes = string.Join(", ", listIgnoredCodes);
+                    msg += string.Format("\n\nCác hồ sơ {0} không có mã bệnh huyết áp hoặc đái tháo đường.", strCodes);
+                }
 
                 XtraMessageBox.Show(msg, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                System.Threading.Thread.Sleep(1000);
                 FillDataToGrid();
+                gridView1.RefreshData();
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                XtraMessageBox.Show("Có lỗi xảy ra trong quá trình đồng bộ.", "Lỗi");
+                XtraMessageBox.Show("Có lỗi xảy ra trong quá trình đồng bộ.", "Lỗi hệ thống");
             }
         }
+        //private bool IsPotentialNcdWho(string icdMain, string icdSub)
+        //{
+        //    var keys = new List<string> { "E10", "E11", "E12", "E13", "E14", "I10", "I11", "I12", "I13", "I15" };
+        //    foreach (var k in keys) if (icdMain.StartsWith(k)) return true;
+        //    if (!string.IsNullOrEmpty(icdSub))
+        //    {
+        //        foreach (var k in keys) if (icdSub.Contains(k)) return true;
+        //    }
+
+        //    return false;
+        //}
 
         private HIS_DHST GetDhst(long treatmentId, CommonParam param)
         {
@@ -449,7 +568,49 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             }
             catch { }
             return new List<V_HIS_EXP_MEST_MEDICINE>();
-        }     
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.F))
+            {
+                btnSearch_Click(null, null);
+                return true;
+            }
+            if (keyData == (Keys.Control | Keys.R))
+            {
+                btnRefresh_Click(null, null);
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+        private void gridView1_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                var ea = e as DevExpress.Utils.DXMouseEventArgs;
+                var info = view.CalcHitInfo(ea.Location);
+
+                if (info.InRow || info.InRowCell)
+                {
+                    view.ShowEditor();
+                    if (view.ActiveEditor is DevExpress.XtraEditors.TextEdit editor)
+                    {
+                        editor.SelectAll();
+                    }
+                }
+            }
+            catch (Exception ex) { }
+        }
         #endregion
+    }
+
+    // Class SDO dùng cho việc update thủ công
+    public class NcdWhoStatusSDO
+    {
+        public long TreatmentId { get; set; }
+        public short NcdWhoResult { get; set; }
+        public string NcdWhoDescription { get; set; }
     }
 }
