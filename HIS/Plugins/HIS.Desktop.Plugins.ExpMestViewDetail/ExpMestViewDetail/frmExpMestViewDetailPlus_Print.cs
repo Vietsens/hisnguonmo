@@ -1573,13 +1573,13 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 CommonParam param = new CommonParam();
                 //ProcessPrint(printTypeCode);
                 //Thong tin thuoc / vat tu
-                if (this._CurrentExpMest != null && this._CurrentExpMest.SERVICE_REQ_ID > 0)
+                if (this._CurrentExpMest != null && this._CurrentExpMest.PRESCRIPTION_ID > 0)
                 {
                     HIS_EXP_MEST _expMest = new HIS_EXP_MEST();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EXP_MEST>(_expMest, this._CurrentExpMest);
 
                     MOS.Filter.HisServiceReqFilter reqFilter = new HisServiceReqFilter();
-                    reqFilter.ID = this._CurrentExpMest.SERVICE_REQ_ID;
+                    reqFilter.ID = this._CurrentExpMest.PRESCRIPTION_ID;
                     var _serviceReq = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, reqFilter, null).FirstOrDefault();
                     Library.PrintPrescription.PrintPrescriptionProcessor processPress;
 

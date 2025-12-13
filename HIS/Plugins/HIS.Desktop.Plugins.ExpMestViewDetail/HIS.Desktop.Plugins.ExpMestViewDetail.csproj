@@ -265,7 +265,7 @@
     </Reference>
     <Reference Include="MPS.Processor.Mps000107.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000107.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\Test_New\x64\ReferencedAssemblies\MPS.Processor.Mps000107.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000108.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000108.PDO.dll</HintPath>
