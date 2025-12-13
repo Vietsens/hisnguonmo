@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.Utils;
-using DevExpress.XtraBars;  
+using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.ViewInfo;
@@ -28,6 +28,8 @@ using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.Library.ElectronicBill;
+using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
 using HIS.Desktop.Plugins.Transaction.ADO;
 using HIS.Desktop.Plugins.Transaction.Base;
 using HIS.Desktop.Plugins.Transaction.Config;
@@ -35,6 +37,7 @@ using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
 using HIS.UC.SereServTree;
 using HIS.UC.TotalPriceInfo;
+using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.ThreadCustom;
 using Inventec.Core;
@@ -92,12 +95,12 @@ namespace HIS.Desktop.Plugins.Transaction
         PopupItemStatusAdo PopupItemStatusAdo = new PopupItemStatusAdo();
 
         CPA.WCFClient.CallPatientClient.CallPatientClientManager clienttManager = null;
-            
+
         int positionHandleControl = -1;
         private bool allowUnlock = false;
-        private string loginname = null;      
+        private string loginname = null;
         string configKeyCallPatientCPA;
-        string configKeyCallPatientByCPA;   
+        string configKeyCallPatientByCPA;
         #endregion
         public UCTransaction(long roomId, long roomTypeId)
         {
@@ -137,6 +140,7 @@ namespace HIS.Desktop.Plugins.Transaction
                 Inventec.Common.Logging.LogSystem.Debug("UCTransaction.InitializeComponent => 5");
                 this.RoomId = roomId;
                 this.RoomTypeId = roomTypeId;
+                
             }
             catch (Exception ex)
             {
@@ -390,6 +394,8 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 SetEnableButton(false);
                 Inventec.Common.Logging.LogSystem.Debug("UCTransaction.Load => 6");
                 HisConfigCFG.LoadConfig();
+                // qtcode
+                lciEbill.Visibility = HisConfigCFG.ShowElectronicNumorderCFG == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 Inventec.Common.Logging.LogSystem.Debug("UCTransaction.Load => 8");
                 InitCheck(cboTreatmentType, SelectionGrid__Status);
                 InitCheck(cboEndDepartment, SelectionGrid__EndDepartment);
@@ -742,7 +748,135 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        // qtcode
+        private async Task LoadElectronicInvoiceNumOrder()
+        {
+            try
+            {
+                lblEBill.Text = ""; 
+                await Task.Run(() =>
+                {
+                    if (this.currentTreatment == null) return;
+                    if (HisConfigCFG.ShowElectronicNumorderCFG != "1") return;
+                    
+                    CommonParam param = new CommonParam();
+                    HisTransactionViewFilter filter = new HisTransactionViewFilter();
+                    filter.TREATMENT_ID = this.currentTreatment.ID;
+                    filter.TRANSACTION_TYPE_IDs = new List<long> { IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT };
+                    filter.IS_CANCEL = false;
 
+                    var transactions = new BackendAdapter(param).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, filter, param);
+
+                    if (transactions == null || transactions.Count == 0) return;
+
+                    // Sắp xếp tăng dần theo thời gian giao dịch
+                    transactions = transactions.OrderBy(o => o.TRANSACTION_TIME).ToList();
+
+                    List<string> invoiceNumbers = new List<string>();
+
+                    foreach (var trans in transactions)
+                    {
+                        string invoiceNum = "";
+
+                        // Trường hợp đã có số HĐĐT
+                        if (!string.IsNullOrEmpty(trans.EINVOICE_NUM_ORDER))
+                        {
+                            invoiceNum = (trans.SYMBOL_CODE ?? "") + trans.EINVOICE_NUM_ORDER;
+                        }
+                        // Trường hợp chưa có EINVOICE_NUM_ORDER nhưng có INVOICE_CODE + hệ thống VNPT
+                        else if (!string.IsNullOrEmpty(trans.INVOICE_CODE) && trans.INVOICE_SYS == "VNPT")
+                        {
+                            try
+                            {
+                                Inventec.Common.Logging.LogSystem.Debug("Bat dau lay thong tin hoa don dien tu tu VNPT cho giao dich: " + trans.TRANSACTION_CODE);
+
+                                ElectronicBillResult result = null;
+
+                                ElectronicBillDataInput dataInput = new ElectronicBillDataInput();
+                                dataInput.InvoiceCode = trans.TRANSACTION_CODE;
+                                dataInput.Amount = trans.AMOUNT;
+                                dataInput.Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>()
+                                    .FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
+                                dataInput.Discount = trans.EXEMPTION;
+                                dataInput.DiscountRatio = trans.EXEMPTION.HasValue && trans.AMOUNT > 0 ? Math.Round((trans.EXEMPTION.Value / trans.AMOUNT) * 100, 2) : 0;
+                                dataInput.PaymentMethod = trans.PAY_FORM_NAME;
+                                dataInput.Treatment = this.currentTreatment;
+                                dataInput.Currency = "VND";
+                                dataInput.SymbolCode = trans.SYMBOL_CODE;
+                                dataInput.TemplateCode = trans.TEMPLATE_CODE;
+                                dataInput.TransactionTime = trans.EINVOICE_TIME ?? trans.TRANSACTION_TIME;
+                                dataInput.EinvoiceTypeId = trans.EINVOICE_TYPE_ID;
+                                dataInput.IsTransactionList = true;
+
+                                HIS_TRANSACTION tranMap = new HIS_TRANSACTION();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tranMap, trans);
+                                dataInput.Transaction = tranMap;
+
+                                // Cần danh sách SereServ để tạo đúng context (nếu có)
+                                // Vì đang ở màn hình viện phí, ta dùng listSereServ đã load trước đó
+                                dataInput.SereServs = this.listSereServ;
+
+                                if (trans.SALE_TYPE_ID == 1)
+                                {
+                                    ElectronicBillProcessor processor = new ElectronicBillProcessor(dataInput, Library.ElectronicBill.Template.TemplateEnum.TYPE.TemplateNhaThuoc);
+                                    result = processor.Run(ElectronicBillType.ENUM.GET_INVOICE_INFO);
+                                }
+                                else
+                                {
+                                    ElectronicBillProcessor processor = new ElectronicBillProcessor(dataInput);
+                                    result = processor.Run(ElectronicBillType.ENUM.GET_INVOICE_INFO);
+                                }
+
+                                if (result != null && result.Success)
+                                {
+                                    string numOrder = result.InvoiceNumOrder;
+
+                                    if (!string.IsNullOrEmpty(numOrder))
+                                    {
+                                        HisTransactionInvoiceInfoSDO updateSdo = new HisTransactionInvoiceInfoSDO();
+                                        updateSdo.Id = trans.ID;
+                                        updateSdo.EinvoiceNumOrder = numOrder;
+
+                                        bool updateSuccess = new BackendAdapter(new CommonParam())
+                                            .Post<bool>("api/HisTransaction/UpdateInvoiceInfo", ApiConsumers.MosConsumer, updateSdo, null);
+
+                                        if (updateSuccess)
+                                        {
+                                            Inventec.Common.Logging.LogSystem.Info("Cap nhat thanh cong EINVOICE_NUM_ORDER cho giao dich: " + trans.TRANSACTION_CODE);
+                                            trans.EINVOICE_NUM_ORDER = numOrder;
+                                        }
+                                        invoiceNum = (trans.SYMBOL_CODE ?? "") + numOrder;
+                                    }
+                                }
+                                else
+                                {
+                                    Inventec.Common.Logging.LogSystem.Warn("Lay thong tin hoa don dien tu that bai hoac khong co du lieu. TransactionCode: " + trans.TRANSACTION_CODE);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error("Loi khi lay thong tin hoa don dien tu VNPT cho giao dich: " + trans.TRANSACTION_CODE, ex);
+                            }
+                        }
+
+                        if (!string.IsNullOrEmpty(invoiceNum))
+                        {
+                            invoiceNumbers.Add(invoiceNum);
+                        }
+                    }
+
+                    if (invoiceNumbers.Count > 0)
+                    {
+                        this.lblEBill.Text = string.Join("; ", invoiceNumbers);
+                        this.lciEbill.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void InitCheck(GridLookUpEdit cbo, GridCheckMarksSelection.SelectionChangedEventHandler eventSelect)
         {
             try
@@ -2259,5 +2393,6 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
     }
 }
