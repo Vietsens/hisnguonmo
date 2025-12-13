@@ -519,12 +519,12 @@ namespace HIS.UC.ListDepositRequest
         private void gridViewDepositRequest_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
         {
             try
-            {       
+            {
                 GridView View = sender as GridView;
                 if (e.RowHandle >= 0)
                 {
-                var creator = gridViewDepositRequest.GetRowCellValue(e.RowHandle, "CREATOR");
-                var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    var creator = gridViewDepositRequest.GetRowCellValue(e.RowHandle, "CREATOR");
+                    var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                     if (e.Column.FieldName == "DELETE")
                     {
                         if (loginName.Equals(creator))
@@ -533,19 +533,31 @@ namespace HIS.UC.ListDepositRequest
                         }
                         else
                         {
-                        e.RepositoryItem = btnDeleteD;
+                            e.RepositoryItem = btnDeleteD;
                         }
                     }
                     if (e.Column.FieldName == "PRINT")
                     {
-                        
                         e.RepositoryItem = btnPrintE;
-                        
                     }
                     if (e.Column.FieldName == "QR")
                     {
-                        
-                        if(this.listConfig.Count > 0)
+                     
+                        var data = (V_HIS_DEPOSIT_REQ)gridViewDepositRequest.GetRow(e.RowHandle);
+                        bool hasRoomConfig = false;
+                        if (data != null && !string.IsNullOrEmpty(data.DEPARTMENT_CODE))
+                        {
+                            
+                            hasRoomConfig = this.listConfig.Any(cfg => cfg.KEY.Contains(data.DEPARTMENT_CODE));
+                        }
+
+                        bool hasSystemConfig = this.listConfig.Count > 0;
+
+                        if (hasRoomConfig)
+                        {
+                            e.RepositoryItem = btnQR_E;
+                        }
+                        else if (hasSystemConfig)
                         {
                             e.RepositoryItem = btnQR_E;
                         }
@@ -554,9 +566,8 @@ namespace HIS.UC.ListDepositRequest
                             e.RepositoryItem = btnQR_D;
                         }
                     }
-
                 }
-                }
+            }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);

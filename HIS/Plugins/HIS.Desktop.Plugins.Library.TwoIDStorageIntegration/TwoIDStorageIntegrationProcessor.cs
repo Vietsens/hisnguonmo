@@ -9,13 +9,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
 {
     public class TwoIDStorageIntegrationProcessor
     {
-        static void Main(string[] args)
-        {
-            // Example usage
-            var processor = new TwoIDStorageIntegrationProcessor();
-            // Call methods as needed
-            Console.WriteLine("App started.");
-        }
+      
         private readonly ConfigCFG.StorageConfig config;
         public TwoIDStorageIntegrationProcessor()
         {
@@ -89,5 +83,8 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 "application/json"
             );
         }
+
+
+      
     }
 }
