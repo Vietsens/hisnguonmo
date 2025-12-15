@@ -1314,7 +1314,16 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
 
                         if (transferAmount > totalPrice)
                         {
-                            string msg = "Số tiền chuyển khoản lớn hơn số tiền thanh toán của bệnh nhân";
+                            string msg = string.Empty;
+                            if (payForm.PAY_FORM_CODE == "03")
+                            { 
+                                 msg = "Số tiền chuyển khoản lớn hơn số tiền thanh toán của bệnh nhân";
+                            }
+                            else if (payForm.PAY_FORM_CODE == "06")
+                            {
+                                 msg = "Số tiền quẹt thẻ lớn hơn số tiền thanh toán của bệnh nhân";
+                            }
+
                             dxErrorProvider.SetError(spinTransferAmount, msg, ErrorType.Warning);
                             MessageBox.Show(msg, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             spinTransferAmount.Focus();
@@ -1325,6 +1334,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         {
                             dxErrorProvider.SetError(spinTransferAmount, string.Empty);
                         }
+                    }
+                }
 
                         WaitingManager.Show();
                         bool success = false;
@@ -1382,7 +1393,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                                     data.HisTransaction.PAY_FORM_ID = gt.ID;
 
                                     // NEW: Gán số tiền CK / QT theo cấu hình
-                                    value = 0;
+                                    decimal value = 0;
                                     if (spinTransferAmount.EditValue != null &&
                                         decimal.TryParse(spinTransferAmount.EditValue.ToString(), out value))
                                     {
@@ -1456,7 +1467,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                                     data.HisTransaction.PAY_FORM_ID = gt.ID;
 
                                     // NEW: Gán số tiền CK / QT theo cấu hình
-                                    value = 0;
+                                    decimal value = 0;
                                     if (spinTransferAmount.EditValue != null &&
                                         decimal.TryParse(spinTransferAmount.EditValue.ToString(), out value))
                                     {
@@ -1665,8 +1676,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         WaitingManager.Hide();
                         MessageManager.Show(this.ParentForm, param, success);
                         SessionManager.ProcessTokenLost(param);
-                    }
-                }
+                    
+                
             }
             catch (Exception ex)
             {
