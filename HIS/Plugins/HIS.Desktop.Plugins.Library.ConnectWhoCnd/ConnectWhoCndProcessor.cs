@@ -22,7 +22,9 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
         List<V_HIS_EXP_MEST_MEDICINE> medicine;
         List<HIS_SERE_SERV> V_HIS_SERE_SERVs;
         List<HIS_SERE_SERV_TEIN> ssTein;
-        bool HasData = false;
+        public bool HasData { get; set; } = false;
+        public bool continueAnyway { get; set; } = false;
+        public bool isNotInIcd { get; set; } = false;
 
         public ConnectWhoCndProcessor(HIS_TREATMENT _data, HIS_DHST _dhst, List<V_HIS_EXP_MEST_MEDICINE> _medicine)
         {
@@ -45,7 +47,12 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 //    return result;
                 //}
 
-
+                if (data == null || String.IsNullOrWhiteSpace(data.TDL_PATIENT_CCCD_NUMBER) || String.IsNullOrWhiteSpace(data.TDL_HEIN_CARD_NUMBER))
+                {
+                    //message += "";
+                    UpdateNcdWhoStatus(data.ID, 2, "Bệnh nhân thiếu thông tin CCCD hoặc số thẻ BHYT.");
+                    return result;
+                }
                 Configs.LoadConfig();
                 if (String.IsNullOrWhiteSpace(Configs.API_NCD))
                 {
@@ -73,13 +80,12 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 //không có bệnh tương ứng thì bỏ qua
                 if (!Utilities.IsBADTD(totalIcds) && !Utilities.IsBATHA(totalIcds))
                 {
+                    Inventec.Common.Logging.LogSystem.Info("Hồ sơ không có mã bệnh tương ứng");
                     Inventec.Common.Logging.LogSystem.Info("NOT IN ICD");
+                    isNotInIcd = true;
                     return result;
                 }
-                if (data == null || String.IsNullOrWhiteSpace(data.TDL_PATIENT_CCCD_NUMBER) || String.IsNullOrWhiteSpace(data.TDL_HEIN_CARD_NUMBER))
-                {
-                    message += "Bệnh nhân thiếu thông tin CCCD hoặc số thẻ BHYT";
-                }
+
                 var t1 = Task.Run(() => GetDhst(data, dhst));
                 var t2 = Task.Run(() => GetSereServ(data));
                 var t3 = Task.Run(() => GetMedicine(data, medicine));
@@ -108,10 +114,10 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 }
 
                 HasData = true;
-                if (medicine == null || medicine.Count <= 0)
-                {
-                    message += "Bệnh nhân chưa có thông tin đơn thuốc. ";
-                }
+                //if (medicine == null || medicine.Count <= 0)
+                //{
+                //    message += "Bệnh nhân chưa có thông tin đơn thuốc. ";
+                //}
 
                 //cao huyết áp: I10-I15, khi lưu bắt buộc phải có thông tin huyết áp
                 //if (Utilities.IsBATHA(totalIcds) && (dhst == null || !dhst.BLOOD_PRESSURE_MAX.HasValue || !dhst.BLOOD_PRESSURE_MIN.HasValue))
@@ -140,30 +146,29 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 {
                     result = false;
                     HasData = false;
-                    bool continueAnyway = false; 
+                    continueAnyway = false;
                     if (Configs.IS_WARNING == "1")
                     {
-                        if (XtraMessageBox.Show(string.Format("{0}. Bạn có muốn tiếp tục?", message.Trim()), "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        if (XtraMessageBox.Show(string.Format("{0} Bạn có muốn tiếp tục?", message.Trim()), "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
                         {
                             result = true;
                             continueAnyway = true;
-                            HasData = true; 
                         }
                     }
-                    //else
-                    //{
-                    //    XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK);
-                    //}
+                    else
+                    {
+                        XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK);
+                    }
                     // qtcode
-                    if (!continueAnyway)
+                    if (continueAnyway)
                     {
                         UpdateNcdWhoStatus(data.ID, 2, message.Trim());
                     }
 
-                    if (!continueAnyway && Configs.IS_WARNING != "1")
-                    {
-                        XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK);
-                    }
+                    //if (!continueAnyway && Configs.IS_WARNING != "1")
+                    //{
+                    //    XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK);
+                    //}
                 }
             }
             Inventec.Common.Logging.LogSystem.Info("ConnectWhoCndProcessor CheckData message: " + message);
@@ -187,6 +192,38 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
             }
         }
 
+        public void SendDataForCND()
+        {
+            try
+            {
+                if (HasData)
+                {
+                    SendDataWithoutCheck();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private short GetPhanLoaiBn()
+        {
+            if (data.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET)
+            {
+                return 4;
+            }
+            if (data.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
+            {
+                return 3;
+            }
+            bool hasMedicine = medicine != null && medicine.Any(m => (m.AMOUNT - (m.TH_AMOUNT ?? 0)) > 0);
+
+            if (!hasMedicine)
+            {
+                return 5;
+            }
+            return 2;
+        }
         private void SendDataWithoutCheck()
         {
             try
@@ -272,14 +309,17 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                         }
                         thuoc = sb.ToString();
                     }
-
+                    short phanLoaiBn = GetPhanLoaiBn();
+                    Inventec.Common.Logging.LogSystem.Debug("Phân loại bệnh nhân qtcode: " + Inventec.Common.Logging.LogUtil.TraceData("Data ", phanLoaiBn));
                     ncdData.DU_LIEU = new Model.DULIEU();
+
                     if (Utilities.IsBATHA(totalIcds))
                     {
                         ncdData.DU_LIEU.THA = new Model.THA(data);
                         long startTimeMin = examServiceReq.Min(m => m.START_TIME ?? 99999999999999);
                         ncdData.DU_LIEU.THA.NGAY_KHAM = DateTime.ParseExact(startTimeMin + "", "yyyyMMddHHmmss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                         ncdData.DU_LIEU.THA.THUOC = thuoc;
+                        ncdData.DU_LIEU.THA.PHAN_LOAI_BN = phanLoaiBn; 
                         if (numberUseDay != null && numberUseDay.Count > 0)
                         {
                             ncdData.DU_LIEU.THA.SO_NGAY_NHAN_THUOC = numberUseDay.Max();
@@ -299,6 +339,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                         long startTimeMin = examServiceReq.Min(m => m.START_TIME ?? 99999999999999);
                         ncdData.DU_LIEU.DTD.NGAY_KHAM = DateTime.ParseExact(startTimeMin + "", "yyyyMMddHHmmss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                         ncdData.DU_LIEU.DTD.THUOC = thuoc;
+                        ncdData.DU_LIEU.DTD.PHAN_LOAI_BN = phanLoaiBn;
                         if (numberUseDay != null && numberUseDay.Count > 0)
                         {
                             ncdData.DU_LIEU.DTD.SO_NGAY_NHAN_THUOC = numberUseDay.Max();
@@ -339,6 +380,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                     if (rsData != null)
                     {
                         UpdateNcdWhoStatus(data.ID, 1, null);  // Thành công
+
                     }
                     else
                     {
@@ -355,6 +397,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 UpdateNcdWhoStatus(data.ID, 2, ex.Message);
+                
             }
         }
 
