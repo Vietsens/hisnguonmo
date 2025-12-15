@@ -753,7 +753,7 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
         {
             try
             {
-                lblEBill.Text = ""; 
+                lblEBill.Text = "";
                 await Task.Run(() =>
                 {
                     if (this.currentTreatment == null) return;
@@ -812,9 +812,7 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tranMap, trans);
                                 dataInput.Transaction = tranMap;
 
-                                // Cần danh sách SereServ để tạo đúng context (nếu có)
-                                // Vì đang ở màn hình viện phí, ta dùng listSereServ đã load trước đó
-                                dataInput.SereServs = this.listSereServ;
+                                //dataInput.SereServs = this.listSereServ;
 
                                 if (trans.SALE_TYPE_ID == 1)
                                 {
@@ -831,8 +829,16 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                                 {
                                     string numOrder = result.InvoiceNumOrder;
 
+                                    if (!string.IsNullOrEmpty(numOrder) && numOrder.All(c => c == '0'))
+                                    {
+                                        Inventec.Common.Logging.LogSystem.Debug("numorder nhận được từ getinvoiceinfo qtcode : " + Inventec.Common.Logging.LogUtil.TraceData("Data:", numOrder));
+                                        numOrder = null;
+                                    }
+
                                     if (!string.IsNullOrEmpty(numOrder))
                                     {
+                                        Inventec.Common.Logging.LogSystem.Debug("API Create Result qtcode: " + Inventec.Common.Logging.LogUtil.TraceData("Data", numOrder));
+
                                         HisTransactionInvoiceInfoSDO updateSdo = new HisTransactionInvoiceInfoSDO();
                                         updateSdo.Id = trans.ID;
                                         updateSdo.EinvoiceNumOrder = numOrder;
@@ -865,10 +871,18 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                         }
                     }
 
+                    //if (invoiceNumbers.Count > 0)
+                    //{
+                    //    this.lblEBill.Text = string.Join("; ", invoiceNumbers);
+                    //    this.lciEbill.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    //}
+
                     if (invoiceNumbers.Count > 0)
                     {
-                        this.lblEBill.Text = string.Join("; ", invoiceNumbers);
-                        this.lciEbill.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                        this.Invoke(new Action(() =>
+                        {
+                            this.lblEBill.Text = string.Join("; ", invoiceNumbers);
+                        }));
                     }
                 });
             }
