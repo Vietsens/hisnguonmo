@@ -861,7 +861,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 int nextSheetOrder = Math.Max(lastSavedSheetOrder, currentInputSheetOrder);
                 nextSheetOrder++;
                 txtSheetOrder.Text = nextSheetOrder.ToString();
-
+                SetNextSheetOrder();
                 string configValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__MOS_HIS_TRACKING_IS_READ_ONLY_SHEET_ORDER);
                 bool isReadOnlySheetOrder = (configValue == "1");
                 txtSheetOrder.ReadOnly = isReadOnlySheetOrder;
@@ -3198,7 +3198,10 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     {
                         success = true;
                         this.action = GlobalVariables.ActionEdit;
-
+                        if (trackingOutSave.SHEET_ORDER.HasValue)
+                        {
+                            lastSavedSheetOrder = (int)trackingOutSave.SHEET_ORDER.Value;
+                        }
                         currentTracking = new HIS_TRACKING();
                         currentTracking = trackingOutSave;
                         btnPrint.Enabled = true;
@@ -5242,6 +5245,52 @@ namespace HIS.Desktop.Plugins.TrackingCreate
             long departmentId = BackendDataWorker.Get<HIS_ROOM>().Where(r => r.ID == this.currentModule.RoomId).Select(r => r.DEPARTMENT_ID).FirstOrDefault();
             frmAttach frm = new frmAttach(departmentId);
             frm.Show();
+        }
+        private void SetNextSheetOrder()
+        {
+            try
+            {
+                if (this.treatmentId > 0)
+                {
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisTrackingFilter filter = new MOS.Filter.HisTrackingFilter();
+                    filter.TREATMENT_ID = this.treatmentId;
+                    filter.ORDER_FIELD = "SHEET_ORDER";
+                    filter.ORDER_DIRECTION = "DESC";
+
+                    var trackings = new BackendAdapter(param).Get<List<HIS_TRACKING>>(
+                        HisRequestUriStore.HIS_TRACKING_GET,
+                        ApiConsumers.MosConsumer,
+                        filter,
+                        param);
+
+                    long nextSheetOrder = 1; // Mặc định là 1 nếu chưa có phiếu nào
+
+                    if (trackings != null && trackings.Count > 0)
+                    {
+                        // Lấy SHEET_ORDER lớn nhất
+                        var maxSheetOrder = trackings
+                            .Where(o => o.SHEET_ORDER.HasValue)
+                            .Select(o => o.SHEET_ORDER.Value)
+                            .DefaultIfEmpty(0)
+                            .Max();
+
+                        nextSheetOrder = maxSheetOrder + 1;
+                    }
+
+                    txtSheetOrder.Text = nextSheetOrder.ToString();
+                    lastSavedSheetOrder = (int)nextSheetOrder - 1; // Lưu lại giá trị max hiện tại
+                }
+                else
+                {
+                    txtSheetOrder.Text = "1";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                txtSheetOrder.Text = "1"; // Fallback về 1 nếu có lỗi
+            }
         }
     }
 }
