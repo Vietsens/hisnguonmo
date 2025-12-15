@@ -723,11 +723,11 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 }
 
                 //lấy đơn thuốc tư phiếu xuất
-                if (_CurrentExpMest != null && _CurrentExpMest.SERVICE_REQ_ID != null)
+                if (_CurrentExpMest != null && _CurrentExpMest.PRESCRIPTION_ID != null)
                 {
                     CommonParam parama = new CommonParam();
                     HisServiceReqFilter HisServiceReq = new HisServiceReqFilter();
-                    HisServiceReq.ID = _CurrentExpMest.SERVICE_REQ_ID;
+                    HisServiceReq.ID = _CurrentExpMest.PRESCRIPTION_ID;
                     serviceReqPrints = new BackendAdapter(parama).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, HisServiceReq, parama);
                 }
 
@@ -744,7 +744,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             item.SERVICE_REQ_ID = dem;
 
                             HIS_SERVICE_REQ req = new HIS_SERVICE_REQ();
-                            req.ID = item.SERVICE_REQ_ID ?? 0;
+                            req.ID = item.PRESCRIPTION_ID ?? 0;
                             req.TREATMENT_ID = item.TDL_TREATMENT_ID ?? 0;
                             req.PARENT_ID = item.TDL_PATIENT_ID;
                             serviceReqPrints.Add(req);
@@ -753,7 +753,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         {
                             //nếu có service_req_id mà không get được thông tin thì cũng tạo đơn giả để in
                             HIS_SERVICE_REQ req = new HIS_SERVICE_REQ();
-                            req.ID = item.SERVICE_REQ_ID ?? 0;
+                            req.ID = item.PRESCRIPTION_ID ?? 0;
                             req.TREATMENT_ID = item.TDL_TREATMENT_ID ?? 0;
                             req.PARENT_ID = item.TDL_PATIENT_ID;
                             serviceReqPrints.Add(req);
@@ -781,7 +781,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             result = false;
             try
             {
-                //Review
+                //Review;
                 // WaitingManager.Show();
                 HisExpMestViewFilter depaFilter = new HisExpMestViewFilter();
                 depaFilter.ID = _CurrentExpMest.ID;
