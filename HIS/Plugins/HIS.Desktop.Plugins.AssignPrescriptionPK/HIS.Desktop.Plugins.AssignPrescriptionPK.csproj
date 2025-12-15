@@ -108,6 +108,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.ConnectBloodPressure">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.ConnectBloodPressure\HIS.Desktop.Plugins.Library.ConnectBloodPressure.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.ConnectWhoCnd">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.ConnectWhoCnd.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.DrugInterventionInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.DrugInterventionInfo\HIS.Desktop.Plugins.Library.DrugInterventionInfo.dll</HintPath>
     </Reference>

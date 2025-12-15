@@ -552,10 +552,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     txtIcdText.EditValue as string             // Tên ICD phụ mới
                 );
                 checkTmWho.ICD_CODE = txtIcdCode.EditValue.ToString();
-
+                if(isHasTreatmentFinishChecked && treatUC != null)
+                {
+                    checkTmWho.TREATMENT_END_TYPE_ID = treatUC.TreatmentEndTypeId; 
+                }
                 checkTmWho.ICD_NAME = txtIcdMainText.EditValue.ToString();
+                var medicine = new List<V_HIS_EXP_MEST_MEDICINE>();
 
-                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(checkTmWho, currentDhst, null);
+                foreach (var item in this.mediMatyTypeADOs)
+                {
+                    var med = new V_HIS_EXP_MEST_MEDICINE();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MEDICINE>(med, item);
+                    medicine.Add(med);
+                }
+                Inventec.Common.Logging.LogSystem.Debug("Số thuốc được kê qtcode " + Inventec.Common.Logging.LogUtil.TraceData("DataA", medicine.Count()));
+                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(checkTmWho, currentDhst, medicine);
                 if (isHasTreatmentFinishChecked && treatUC != null)
                 {
                     if (!who.CheckData())

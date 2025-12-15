@@ -744,7 +744,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 }
                 valid = valid && isValid;
                 HIS_TREATMENT checkTmWho = new HIS_TREATMENT();
-
+                bool isHasUcTreatmentFinish = ((!GlobalStore.IsTreatmentIn) && this.treatmentFinishProcessor != null && this.ucTreatmentFinish != null);
+                var treatUC1 = isHasUcTreatmentFinish ? treatmentFinishProcessor.GetDataOutput(this.ucTreatmentFinish) : null;
+                bool isHasTreatmentFinishChecked = (treatUC1 != null && treatUC1.IsAutoTreatmentFinish);
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(checkTmWho, Histreatment);
                 // Append ICD_SUB_CODE
                 checkTmWho.ICD_SUB_CODE = AppendIcd(
@@ -760,10 +762,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     icdValueSecond.ICD_TEXT as string             // Tên ICD phụ mới
                 );
                 checkTmWho.ICD_CODE = icdValue.ICD_CODE.ToString();
-
+                if (isHasTreatmentFinishChecked && treatUC1 != null)
+                {
+                    checkTmWho.TREATMENT_END_TYPE_ID = treatUC1.TreatmentEndTypeId;
+                }
                 checkTmWho.ICD_NAME = icdValue.ICD_NAME.ToString();
+                var medicine = new List<V_HIS_EXP_MEST_MEDICINE>();
 
-                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(checkTmWho, currentDhst , null);
+                foreach (var item in this.mediMatyTypeADOs)
+                {
+                    var med = new V_HIS_EXP_MEST_MEDICINE();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MEDICINE>(med, item);
+                    medicine.Add(med);
+                }
+                Inventec.Common.Logging.LogSystem.Debug("Số thuốc được kê qtcode " + Inventec.Common.Logging.LogUtil.TraceData("DataA", medicine.Count()));
+                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(checkTmWho, currentDhst , medicine);
                 if (valid)
                 {
                     var uc = ucTreatmentFinish as HIS.UC.TreatmentFinish.Run.UCTreatmentFinish;
