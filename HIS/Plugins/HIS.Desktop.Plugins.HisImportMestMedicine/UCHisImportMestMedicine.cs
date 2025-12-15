@@ -2565,37 +2565,41 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
 
                 // ========== 2. V_HIS_IMP_MEST_USER ==========
                 List<V_HIS_IMP_MEST_USER> listImpMestUser = new List<V_HIS_IMP_MEST_USER>();
-                foreach (var id in impMestIds)
+                if (impMestIds.Count > 0)
                 {
-                    HisImpMestUserViewFilter userFilter = new HisImpMestUserViewFilter();
-                    userFilter.IMP_MEST_ID = id;
-                    var tmp = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_USER>>(
+                    var userFilter = new HisImpMestUserViewFilter
+                    {
+                        IMP_MEST_IDs = impMestIds
+                    };
+
+                    listImpMestUser = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_USER>>(
                         "/api/HisImpMestUser/GetView",
                         ApiConsumers.MosConsumer,
                         userFilter,
                         param
-                    );
-                    if (tmp != null && tmp.Count > 0)
-                        listImpMestUser.AddRange(tmp);
+                    ) ?? new List<V_HIS_IMP_MEST_USER>();
+
+                    listImpMestUser = listImpMestUser.OrderBy(p => p.ID).ToList();
                 }
-                listImpMestUser = listImpMestUser.OrderBy(p => p.ID).ToList();
 
                 // ========== 3. V_HIS_IMP_MEST_BLOOD ==========
                 List<V_HIS_IMP_MEST_BLOOD> listImpMestBlood = new List<V_HIS_IMP_MEST_BLOOD>();
-                foreach (var id in impMestIds)
+                if (impMestIds.Count > 0)
                 {
-                    HisImpMestBloodFilter bloodFilter = new HisImpMestBloodFilter();
-                    bloodFilter.IMP_MEST_ID = id;
-                    var tmp = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>(
+                    var bloodFilter = new HisImpMestBloodFilter
+                    {
+                        IMP_MEST_IDs = impMestIds
+                    };
+
+                    listImpMestBlood = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>(
                         "/api/HisImpMestBlood/GetView",
                         ApiConsumers.MosConsumer,
                         bloodFilter,
                         param
-                    );
-                    if (tmp != null && tmp.Count > 0)
-                        listImpMestBlood.AddRange(tmp);
+                    ) ?? new List<V_HIS_IMP_MEST_BLOOD>();
+
+                    listImpMestBlood = listImpMestBlood.OrderBy(o => o.ID).ToList();
                 }
-                listImpMestBlood = listImpMestBlood.OrderBy(o => o.ID).ToList();
 
                 // ========== 4. HIS_SUPPLIER ==========
                 List<HIS_SUPPLIER> listSupplier = new List<HIS_SUPPLIER>();
@@ -2611,34 +2615,36 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
 
                 // ========== 5. V_HIS_IMP_MEST_MEDICINE ==========
                 List<V_HIS_IMP_MEST_MEDICINE> listImpMestMedicine = new List<V_HIS_IMP_MEST_MEDICINE>();
-                foreach (var id in impMestIds)
+                if (impMestIds.Count > 0)
                 {
-                    HisImpMestMedicineViewFilter filter = new HisImpMestMedicineViewFilter();
-                    filter.IMP_MEST_ID = id;
-                    var tmp = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MEDICINE>>(
+                    var medFilter = new HisImpMestMedicineViewFilter
+                    {
+                        IMP_MEST_IDs = impMestIds
+                    };
+
+                    listImpMestMedicine = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MEDICINE>>(
                         HisRequestUriStore.HIS_IMP_MEST_MEDICINE_GETVIEW,
                         ApiConsumers.MosConsumer,
-                        filter,
+                        medFilter,
                         param
-                    );
-                    if (tmp != null && tmp.Count > 0)
-                        listImpMestMedicine.AddRange(tmp);
+                    ) ?? new List<V_HIS_IMP_MEST_MEDICINE>();
                 }
 
                 // ========== 6. V_HIS_IMP_MEST_MATERIAL ==========
                 List<V_HIS_IMP_MEST_MATERIAL> listImpMestMaterial = new List<V_HIS_IMP_MEST_MATERIAL>();
-                foreach (var id in impMestIds)
+                if (impMestIds.Count > 0)
                 {
-                    HisImpMestMaterialViewFilter filter = new HisImpMestMaterialViewFilter();
-                    filter.IMP_MEST_ID = id;
-                    var tmp = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MATERIAL>>(
+                    var matFilter = new HisImpMestMaterialViewFilter
+                    {
+                        IMP_MEST_IDs = impMestIds
+                    };
+
+                    listImpMestMaterial = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MATERIAL>>(
                         HisRequestUriStore.HIS_IMP_MEST_MATERIAL_GETVIEW,
                         ApiConsumers.MosConsumer,
-                        filter,
+                        matFilter,
                         param
-                    );
-                    if (tmp != null && tmp.Count > 0)
-                        listImpMestMaterial.AddRange(tmp);
+                    ) ?? new List<V_HIS_IMP_MEST_MATERIAL>();
                 }
 
                 // ========== 7. HIS_MEDICINE ==========
