@@ -3721,17 +3721,11 @@ namespace HIS.Desktop.Plugins.TransactionList
                 if (v_HIS_ROOM != null && !string.IsNullOrEmpty(v_HIS_ROOM.QR_CONFIG_JSON))
                 {
                     ItemConfig itemConfig = JsonConvert.DeserializeObject<ItemConfig>(v_HIS_ROOM.QR_CONFIG_JSON);
-                    string key = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", itemConfig.BANK);
-                    this.selectedConfig = (
-                        from o in this.listConfig
-                        where o.KEY == key
-                        select o).FirstOrDefault<HIS_CONFIG>();
-                    this.selectedConfig.VALUE = itemConfig.VALUE;
                     List<object> listArgs = new List<object>();
                     TransReqQRADO adoqr = new TransReqQRADO();
                     adoqr.TreatmentId = this.transactionPrint.TREATMENT_ID ?? 0;
                     adoqr.TransReqId = CreateReqType.Transaction;
-                    adoqr.ConfigValue = selectedConfig;
+                    adoqr.ConfigValue = new HIS_CONFIG() { VALUE = itemConfig.VALUE, KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", itemConfig.BANK) }; 
                     HIS_TRANSACTION tran = new HIS_TRANSACTION();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionPrint);
                     adoqr.Transaction = tran;
