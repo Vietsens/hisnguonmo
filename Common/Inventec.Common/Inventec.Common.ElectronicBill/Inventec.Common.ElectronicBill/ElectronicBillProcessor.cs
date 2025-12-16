@@ -117,7 +117,7 @@ namespace Inventec.Common.ElectronicBill
                         result = this.PublishInvFkey();
                         break;
                     case CmdType.ImportInv:
-                        result = this.ImportInv();
+                        result = this.ImportInvByPattern();
                         break;
                     default:
                         break;
@@ -329,9 +329,9 @@ namespace Inventec.Common.ElectronicBill
             }
             return result;
         }
-        private ElectronicBillResult ImportInv()
+        private ElectronicBillResult ImportInvByPattern()
         {
-            Inventec.Common.Logging.LogSystem.Info("Gọi api ImportInv");
+            Inventec.Common.Logging.LogSystem.Info("Gọi api ImportInvByPattern");
             ElectronicBillResult result = new ElectronicBillResult();
             result.Success = false;
             result.Messages = new List<string>();
@@ -417,23 +417,26 @@ namespace Inventec.Common.ElectronicBill
                         Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("xmlInvData TT78:", xmlInvData));
                     }
 
-                    ImportInvRequestBody body = new ImportInvRequestBody();
+                    ImportInvByPatternRequestBody body = new ImportInvByPatternRequestBody();
                     body.xmlInvData = xmlInvData;
                     body.username = electronicBillInput.userName;
                     body.password = electronicBillInput.passWord;
-                    body.convert = electronicBillInput.convert; 
-
+                    body.Account = electronicBillInput.account;
+                    body.ACpass = electronicBillInput.acPass; 
+                    body.convert = electronicBillInput.convert;
+                    body.serial = electronicBillInput.serial;
+                    body.pattern = electronicBillInput.pattern; 
                     BasicHttpBinding binding = new BasicHttpBinding();
                     binding.Security.Mode = BasicHttpSecurityMode.Transport;
-                    ImportInvRequest request = new ImportInvRequest(body);
+                    ImportInvByPatternRequest request = new ImportInvByPatternRequest(body);
                     EndpointAddress epAdd = new EndpointAddress(electronicBillInput.serviceUrl + "/PublishService.asmx");
                     PublishServiceSoap publishServiceSoap = new PublishServiceSoapClient(binding, epAdd);
-                    ImportInvResponse response = publishServiceSoap.ImportInv(request);
+                    ImportInvByPatternResponse response = publishServiceSoap.ImportInvByPattern(request);
 
                     string strResponse = "";
                     if (response != null)
                     {
-                        strResponse = response.Body.ImportInvResult;
+                        strResponse = response.Body.ImportInvByPatternResult;
                         if (strResponse.Contains("OK"))
                         {
                             result.Success = true;
@@ -474,23 +477,25 @@ namespace Inventec.Common.ElectronicBill
                     string xmlInvData = ConvertListInvoiceToStringXmlFormat(electronicBillInput.invoicesBm);
                     Inventec.Common.Logging.LogSystem.Info("xmlInvDataBM (ImportInv):\r\n" + xmlInvData);
 
-                    VNPTBachMai.ImportInvRequestBody body = new VNPTBachMai.ImportInvRequestBody();
+                    VNPTBachMai.ImportInvByPatternSerialRequestBody body = new VNPTBachMai.ImportInvByPatternSerialRequestBody();
                     body.xmlInvData = xmlInvData;
                     body.username = electronicBillInput.userName;
-                    body.password = electronicBillInput.passWord;
+                    body.pass = electronicBillInput.passWord;
                     body.convert = electronicBillInput.convert;
-
+                    body.pattern = electronicBillInput.pattern;
+                    body.serial = electronicBillInput.serial; 
+                    
                     BasicHttpBinding binding = new BasicHttpBinding();
                     binding.Security.Mode = BasicHttpSecurityMode.Transport;
-                    VNPTBachMai.ImportInvRequest request = new VNPTBachMai.ImportInvRequest(body);
+                    VNPTBachMai.ImportInvByPatternSerialRequest request = new VNPTBachMai.ImportInvByPatternSerialRequest(body);
                     EndpointAddress epAdd = new EndpointAddress(electronicBillInput.serviceUrl + "/PublishService.asmx");
                     VNPTBachMai.PublishServiceSoap publishServiceSoap = new VNPTBachMai.PublishServiceSoapClient(binding, epAdd);
-                    VNPTBachMai.ImportInvResponse response = publishServiceSoap.ImportInv(request);
+                    VNPTBachMai.ImportInvByPatternSerialResponse response = publishServiceSoap.ImportInvByPatternSerial(request);
 
                     string strResponse = "";
                     if (response != null)
                     {
-                        strResponse = response.Body.ImportInvResult;
+                        strResponse = response.Body.ImportInvByPatternSerialResult;
                         if (strResponse.Contains("OK"))
                         {
                             result.Success = true;
@@ -543,7 +548,7 @@ namespace Inventec.Common.ElectronicBill
                 vali = vali && !String.IsNullOrEmpty(electronicBillInput.serviceUrl);
                 vali = vali && !String.IsNullOrEmpty(electronicBillInput.userName);
                 vali = vali && !String.IsNullOrEmpty(electronicBillInput.passWord);
-                vali = vali && !String.IsNullOrEmpty(electronicBillInput.fKey); 
+                vali = vali && !String.IsNullOrEmpty(electronicBillInput.fKey);
 
                 if (!vali)
                 {
@@ -551,50 +556,83 @@ namespace Inventec.Common.ElectronicBill
                     return result;
                 }
 
-                // Gọi API publishInvFkey nằm ở businessservice.asmx
-                publishInvFkeyRequestBody body = new publishInvFkeyRequestBody(); 
+                PublishInvFkeyRequestBody body = new PublishInvFkeyRequestBody();
                 body.Account = electronicBillInput.account;
                 body.ACpass = electronicBillInput.acPass;
                 body.lsFkey = electronicBillInput.fKey;
-                body.userName = electronicBillInput.userName;
-                body.pass = electronicBillInput.passWord;
+                body.username = electronicBillInput.userName;
+                body.password = electronicBillInput.passWord;
                 body.pattern = electronicBillInput.pattern ?? "";
                 body.serial = electronicBillInput.serial ?? "";
 
                 BasicHttpBinding binding = new BasicHttpBinding();
                 binding.Security.Mode = BasicHttpSecurityMode.Transport;
-
-                publishInvFkeyRequest request = new publishInvFkeyRequest(body);
-                EndpointAddress epAdd = new EndpointAddress(electronicBillInput.serviceUrl + "/businessservice.asmx");
+                PublishInvFkeyRequest request = new PublishInvFkeyRequest(body);
+                EndpointAddress epAdd = new EndpointAddress(electronicBillInput.serviceUrl + "/PublishService.asmx");//+"/PublishService.asmx"
 
                 PublishServiceSoap publishServiceSoap = new PublishServiceSoapClient(binding, epAdd);
-                publishInvFkeyResponse response = publishServiceSoap.publishInvFkey(request);
+                PublishInvFkeyResponse response = publishServiceSoap.PublishInvFkey(request);
                 string strResponse = "";
                 if (response != null)
                 {
-                    strResponse = response.Body.publishInvFkeyResult ?? "";
+                    strResponse = response.Body.PublishInvFkeyResult ?? ""; //"ERR:6#||ERR:15#000000316010||OK:#"
                     Inventec.Common.Logging.LogSystem.Info("publishInvFkey response: " + strResponse);
 
-                    if (!String.IsNullOrWhiteSpace(strResponse) && strResponse.Contains("OK"))
+                    if (!String.IsNullOrWhiteSpace(strResponse))
                     {
-                        result.Success = true;
-                        result.Data = strResponse; // fkey123_0000123,fkey456_0000124
-                        Inventec.Common.Logging.LogSystem.Info("Phát hành hóa đơn thành công: " + strResponse);
+                        string[] parts = strResponse.Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        bool hasError = false;
+                        string errorMessage = "";
+                        string successData = "";
+
+                        foreach (string part in parts)
+                        {
+                            if (part.StartsWith("ERR:"))
+                            {
+                                // Lấy phần sau dấu #
+                                string errorPart = part.Substring(part.IndexOf('#') + 1).Trim();
+                                if (!String.IsNullOrWhiteSpace(errorPart)) // có dữ liệu lỗi
+                                {
+                                    hasError = true;
+                                    string code = part.Substring(0, part.IndexOf('#'));
+                                    string desc = mapError.dicMapping.ContainsKey(code)
+                                        ? mapError.dicMapping[code]
+                                        : "Có lỗi";
+
+                                    errorMessage += string.Format("{0}: {1} ({2}); ", code, errorPart, desc);
+                                }
+                            }
+                            else if (part.StartsWith("OK:"))
+                            {
+                                successData = part;
+                            }
+                        }
+
+                        if (hasError)
+                        {
+                            // Có lỗi => thất bại
+                            result.Success = false;
+                            result.Messages.Add("Có lỗi trong quá trình phát hành: " + errorMessage.TrimEnd(';'));
+                            Inventec.Common.Logging.LogSystem.Warn("Phát hành thất bại: " + strResponse);
+                        }
+                        else if (!String.IsNullOrWhiteSpace(successData) && successData.Length > 3) // "OK:" có dữ liệu sau
+                        {
+                            result.Success = true;
+                            result.Data = successData;
+                            Inventec.Common.Logging.LogSystem.Info("Phát hành hóa đơn thành công: " + successData);
+                        }
+                        else
+                        {
+                            result.Success = false;
+                            result.Messages.Add("Phát hành thất bại: Không có hóa đơn nào được xử lý thành công.");
+                            Inventec.Common.Logging.LogSystem.Warn("Phát hành thất bại: OK nhưng không có dữ liệu fkey.");
+                        }
                     }
                     else
                     {
-                        string message = strResponse;
-                        if (mapError.dicMapping.ContainsKey(strResponse))
-                        {
-                            message += string.Format(" ({0})", mapError.dicMapping[strResponse]);
-                        }
-                        result.Messages.Add(message);
-                        Inventec.Common.Logging.LogSystem.Warn("Phát hành thất bại: " + message);
+                        result.Messages.Add("Không nhận được phản hồi từ VNPT");
                     }
-                }
-                else
-                {
-                    result.Messages.Add("Không nhận được phản hồi từ VNPT");
                 }
             }
             catch (Exception ex)
@@ -879,25 +917,25 @@ namespace Inventec.Common.ElectronicBill
                 }
 
                 //Convert list invoice to string xml format
-                deleteInvFkeyRequestBody body = new deleteInvFkeyRequestBody();
+                deleteInvoiceByFkeyRequestBody body = new deleteInvoiceByFkeyRequestBody();
                 body.Account = electronicBillInput.account;
                 body.ACpass = electronicBillInput.acPass;
-                body.pattern = electronicBillInput.pattern;
-                body.userName = electronicBillInput.userName;
-                body.pass = electronicBillInput.passWord;
-                body.lsFkey = electronicBillInput.fKey;
+                //body.pattern = electronicBillInput.pattern;
+                body.username = electronicBillInput.userName;
+                body.password = electronicBillInput.passWord;
+                body.lstFkey = electronicBillInput.fKey;
 
                 BasicHttpBinding binding = new BasicHttpBinding();
                 binding.Security.Mode = BasicHttpSecurityMode.Transport;
-                deleteInvFkeyRequest request = new deleteInvFkeyRequest(body);
+                deleteInvoiceByFkeyRequest request = new deleteInvoiceByFkeyRequest(body);
                 EndpointAddress epAdd = new EndpointAddress(electronicBillInput.serviceUrl + "/PublishService.asmx");//+"/PublishService.asmx"
 
                 PublishServiceSoap publishServiceSoap = new PublishServiceSoapClient(binding, epAdd);
-                deleteInvFkeyResponse response = publishServiceSoap.deleteInvFkey(request);
+                deleteInvoiceByFkeyResponse response = publishServiceSoap.deleteInvoiceByFkey(request);
                 string strResponse = "";
                 if (response != null)
                 {
-                    strResponse = response.Body.deleteInvFkeyResult;
+                    strResponse = response.Body.deleteInvoiceByFkeyResult;
                     if (strResponse.Contains("OK"))
                     {
                         result.Success = true;
@@ -1619,7 +1657,7 @@ namespace Inventec.Common.ElectronicBill
 
         private ElectronicBillResult ListInvByCusFkey()
         {
-            Inventec.Common.Logging.LogSystem.Info("GetInvViewFkeyNoPay");
+            Inventec.Common.Logging.LogSystem.Info("GetInvViewFkeyNoPay QTCODE");
             ElectronicBillResult result = new ElectronicBillResult();
             result.Success = false;
             result.Messages = new List<string>();
@@ -1683,6 +1721,7 @@ namespace Inventec.Common.ElectronicBill
                 Inventec.Common.Logging.LogSystem.Debug(ex);
                 //result = null;
             }
+            Inventec.Common.Logging.LogSystem.Debug("API Create Result QTCODE RESULT: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", result));
 
             return result;
         }
