@@ -124,8 +124,10 @@ namespace HIS.Desktop.Plugins.ExpMestBCSCreate.Run
         {
             try
             {
+
                 #region TT Chung
                 WaitingManager.Show();
+                var configKeyOderOption = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.AggrExpMest.OderOption"));
                 HisExpMestViewFilter bcsFilter = new HisExpMestViewFilter();
                 bcsFilter.ID = this._ExpMestPrint.ID;
                 var listBcsExpMest = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST>>(HisRequestUriStore.HIS_EXP_MEST_GETVIEW, ApiConsumers.MosConsumer, bcsFilter, null);
@@ -299,7 +301,8 @@ namespace HIS.Desktop.Plugins.ExpMestBCSCreate.Run
                  BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                   MPS.Processor.Mps000215.PDO.keyTitles.vattu,
                   ListTreatment,
-                  MoreInfo
+                  MoreInfo,
+                  configKeyOderOption
                   );
                         WaitingManager.Hide();
                         MPS.ProcessorBase.Core.PrintData printData = PrintData(printTypeCode, fileName, mps000215PDO);
@@ -325,7 +328,8 @@ namespace HIS.Desktop.Plugins.ExpMestBCSCreate.Run
                  BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                   MPS.Processor.Mps000215.PDO.keyTitles.thuong,
                   ListTreatment,
-                  MoreInfo
+                  MoreInfo,
+                  configKeyOderOption
                   );
                         WaitingManager.Hide();
                         MPS.ProcessorBase.Core.PrintData printData = PrintData(printTypeCode, fileName, mps000215PDO);
@@ -350,7 +354,8 @@ namespace HIS.Desktop.Plugins.ExpMestBCSCreate.Run
                  BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
                   MPS.Processor.Mps000215.PDO.keyTitles.tienchat,
                   ListTreatment,
-                  MoreInfo
+                  MoreInfo,
+                  configKeyOderOption
                   );
                         WaitingManager.Hide();
                         MPS.ProcessorBase.Core.PrintData printData = PrintData(printTypeCode, fileName, mps000215PDO);

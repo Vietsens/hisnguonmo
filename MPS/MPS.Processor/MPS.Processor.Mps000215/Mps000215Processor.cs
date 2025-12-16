@@ -66,7 +66,7 @@ namespace MPS.Processor.Mps000215
                     switch (rdo.OderOptionKey)
                     {
                         case 1:
-                            listAdoPrint = listAdoPrint.OrderBy(p => p.TYPE_ID).ThenBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
+                            listAdoPrint = listAdoPrint.OrderBy(p => p.TYPE_ID).ThenBy(p => p.MEDI_MATE_NUM_ORDER??0).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
                             break;
                         case 2:
                             listAdoPrint = listAdoPrint.OrderBy(p => p.MEDICINE_USE_FORM_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
@@ -76,6 +76,10 @@ namespace MPS.Processor.Mps000215
                             break;
                         case 4:
                             listAdoPrint = listAdoPrint.OrderBy(p => p.SERVICE_UNIT_NAME).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
+                            break;
+                        case 6:
+                            listAdoPrint = listAdoPrint.OrderBy(p => p.MEDI_MATE_NUM_ORDER.HasValue ? p.MEDI_MATE_NUM_ORDER.Value : listAdoPrint.Max(s => s.MEDI_MATE_NUM_ORDER ?? 0) + 1).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
+
                             break;
                     }
 
@@ -97,7 +101,14 @@ namespace MPS.Processor.Mps000215
 
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
-                objectTag.AddObjectData(store, "ListMediMate1", listAdoPrint.OrderBy(x => x.MEDI_MATE_TYPE_NAME).ToList());
+                if (rdo.OderOptionKey > 0)
+                {
+                    objectTag.AddObjectData(store, "ListMediMate1", listAdoPrint);
+                }    
+                else
+                {
+                    objectTag.AddObjectData(store, "ListMediMate1", listAdoPrint.OrderBy(x => x.MEDI_MATE_TYPE_NAME).ToList());
+                }    
                 objectTag.AddObjectData(store, "ListMediMate2", listAdoPrint);
                 objectTag.AddObjectData(store, "ListMediMate3", listAdoPrint);
                 objectTag.AddObjectData(store, "ListMediMateSplitedByPackage", listAdoPrintGroup);
