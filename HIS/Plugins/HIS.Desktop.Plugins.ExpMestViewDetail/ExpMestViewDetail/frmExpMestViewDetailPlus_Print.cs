@@ -64,6 +64,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         string Exp_Department_Name = "";
         long roomIdByMediStockIdPrint = 0;
         long keyPhieuTra = 0;
+        long configKeyOderOption = 0;
         internal enum PrintType
         {
             PHIEU_XUAT_BAN,
@@ -2379,6 +2380,9 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
 
                 #region TT Chung
                 WaitingManager.Show();
+                this.configKeyOderOption = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.AggrExpMest.OderOption"));
+                MPS.Processor.Mps000086.PDO.Mps000086Config mpsConfig86 = new MPS.Processor.Mps000086.PDO.Mps000086Config();
+                mpsConfig86._ConfigKeyOderOption = this.configKeyOderOption;
                 _ExpMestMetyReq_GN_HTs = new List<HIS_EXP_MEST_METY_REQ>();
                 _ExpMestMetyReq_GNs = new List<HIS_EXP_MEST_METY_REQ>();
                 _ExpMestMetyReq_HTs = new List<HIS_EXP_MEST_METY_REQ>();
@@ -2713,7 +2717,8 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                              BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>(),
                              _Medicines_PATY,
                              _Materials_PATY,
-                             lstConfig
+                             lstConfig,
+                             mpsConfig86
                              );
                         if (lstConfig != null && lstConfig.Count > 0)
                         {

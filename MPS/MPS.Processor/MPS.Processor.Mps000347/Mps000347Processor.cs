@@ -102,7 +102,7 @@ namespace MPS.Processor.Mps000347
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rdo.OderOption), rdo.OderOption));
                         if (rdo.OderOption == 1)
                         {
-                            listAdoPrint = listAdoPrint.OrderBy(p => p.TYPE_ID).ThenBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
+                            listAdoPrint = listAdoPrint.OrderBy(p => p.TYPE_ID).ThenBy(p => p.MEDI_MATE_NUM_ORDER ?? 0).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
                         }
                         else if (rdo.OderOption == 2)
                         {
@@ -116,6 +116,10 @@ namespace MPS.Processor.Mps000347
                         else if (rdo.OderOption == 4)
                         {
                             listAdoPrint = listAdoPrint.OrderBy(p => p.SERVICE_UNIT_NAME).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
+                        }
+                        else if (rdo.OderOption == 6)
+                        {
+                            listAdoPrint = listAdoPrint.OrderBy(p => p.MEDI_MATE_NUM_ORDER.HasValue ? p.MEDI_MATE_NUM_ORDER.Value : listAdoPrint.Max(s => s.MEDI_MATE_NUM_ORDER ?? 0) + 1).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
                         }
                     }
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listAdoPrint), listAdoPrint));
@@ -304,6 +308,7 @@ namespace MPS.Processor.Mps000347
                                 ado.REGISTER_NUMBER = data.REGISTER_NUMBER;
                                 ado.SERVICE_UNIT_CODE = data.SERVICE_UNIT_CODE;
                                 ado.SERVICE_UNIT_NAME = data.SERVICE_UNIT_NAME;
+                                ado.MEDI_MATE_NUM_ORDER = data.MEDICINE_NUM_ORDER;
                                 ado.NATIONAL_NAME = data.NATIONAL_NAME;
                                 ado.PACKING_TYPE_NAME = data.PACKING_TYPE_NAME;
                                 ado.MEDICINE_USE_FORM_NAME = data.MEDICINE_USE_FORM_NAME;

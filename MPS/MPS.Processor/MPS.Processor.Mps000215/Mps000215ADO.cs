@@ -49,7 +49,7 @@ namespace MPS.Processor.Mps000215
         public string AMOUNT_EXPORT_STRING { get; set; }
         public string AMOUNT_EXECUTE_STRING { get; set; }
         public string AMOUNT_REQUEST_STRING { get; set; }
-        public long MEDI_MATE_NUM_ORDER { get; set; }
+        public long? MEDI_MATE_NUM_ORDER { get; set; }
         public long? NUM_ORDER { get; set; }
         public long? MEDICINE_USE_FORM_NUM_ORDER { get; set; }
         public string MEDICINE_TYPE_NAME { get; set; }
@@ -97,6 +97,7 @@ namespace MPS.Processor.Mps000215
                     this.REGISTER_NUMBER = data.REGISTER_NUMBER;
                     this.SERVICE_UNIT_CODE = data.SERVICE_UNIT_CODE;
                     this.SERVICE_UNIT_NAME = data.SERVICE_UNIT_NAME;
+                    this.MEDI_MATE_NUM_ORDER = data.MEDICINE_NUM_ORDER;
                     this.CONCENTRA = data.CONCENTRA;
                     this.ACTIVE_INGR_BHYT_CODE = data.ACTIVE_INGR_BHYT_CODE;
                     this.ACTIVE_INGR_BHYT_NAME = data.ACTIVE_INGR_BHYT_NAME;
