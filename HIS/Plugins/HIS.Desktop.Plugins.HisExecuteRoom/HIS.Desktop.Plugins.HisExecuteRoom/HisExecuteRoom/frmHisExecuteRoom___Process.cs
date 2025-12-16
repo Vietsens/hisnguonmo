@@ -47,6 +47,7 @@ using Inventec.Desktop.Common.Controls.ValidationRule;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.Utility;
 using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Plugins.HisExecuteRoom.RoomConfigOption;
 
 namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
 {
@@ -61,15 +62,16 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     executeRoom.EXECUTE_ROOM_CODE = txtExecuteRoomCode.Text;
                 if (!String.IsNullOrEmpty(txtExecuteRoomName.Text))
                     executeRoom.EXECUTE_ROOM_NAME = txtExecuteRoomName.Text;
-                executeRoom.IS_EMERGENCY = (short)(chkIsEmergency.Checked ? 1 : 0);
-                executeRoom.IS_PAUSE_ENCLITIC = (short)(chkIsPauseEnclitic.Checked ? 1 : 0);
-                executeRoom.IS_SPECIALITY = (short)(chkIsSpeciality.Checked ? 1 : 0);
-                executeRoom.IS_SURGERY = (short)(chkIsSurgery.Checked ? 1 : 0);
-                executeRoom.IS_EXAM = (short)(chkIsExam.Checked ? 1 : 0);
-                executeRoom.ALLOW_NOT_CHOOSE_SERVICE = (short)(chkKhongCanChonDV.Checked ? 1 : 0);
-                executeRoom.IS_AUTO_EXPEND_ADD_EXAM = (short)(chkIsExamPlus.Checked ? 1 : 0);
-                executeRoom.IS_VACCINE = (short)(chkVaccine2.Checked ? 1 : 0);
-                executeRoom.IS_VACCINE = (short)(chkVaccine2.Checked ? 1 : 0);
+                executeRoom.IS_EMERGENCY = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsEmergency);
+                executeRoom.IS_PAUSE_ENCLITIC = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsPauseEnclitic);
+                executeRoom.IS_SPECIALITY = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsSpeciality);
+                executeRoom.IS_SURGERY = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsSurgery);
+                executeRoom.MUST_BE_APPROVED_SURGERY = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.MustBeApprovedSurgery);
+                executeRoom.IS_EXAM = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsExam);
+                executeRoom.ALLOW_NOT_CHOOSE_SERVICE = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.AllowNotChooseService);
+                executeRoom.IS_AUTO_EXPEND_ADD_EXAM = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsAutoExpendAddExam);
+                executeRoom.IS_VACCINE = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsVaccine);
+                executeRoom.IS_VITAMIN_A = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsVitaminA);
                 executeRoom.TEST_TYPE_CODE = txtTestTypeCode.Text.Trim();
                 if (spSTT.EditValue != null)
                 {
@@ -166,15 +168,6 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     room.AREA_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboArea.EditValue ?? 0).ToString());
                 else
                     room.AREA_ID = null;
-                room.IS_PAUSE = (short)(chkIsPause.Checked ? 1 : 0);
-                if (checkEdit1.Checked)
-                {
-                    room.IS_USE_KIOSK = 1;
-                }
-                else
-                {
-                    room.IS_USE_KIOSK = null;
-                }
                 room.ORDER_ISSUE_CODE = txtOrderIssueCode.Text;
                 if (cbbRoomGroup.EditValue != null)
                     room.ROOM_GROUP_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cbbRoomGroup.EditValue.ToString());
@@ -183,36 +176,15 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 if (cboCashRoom.EditValue != null && !string.IsNullOrEmpty(cboCashRoom.EditValue.ToString()))
                     room.DEFAULT_CASHIER_ROOM_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboCashRoom.EditValue.ToString());
                 else room.DEFAULT_CASHIER_ROOM_ID = null;
-
-                if (chkRestrictTime.Checked)
-                    room.IS_RESTRICT_TIME = 1;
-                else
-                    room.IS_RESTRICT_TIME = null;
-                if (chkRestrictExecuteRoom.Checked)
-                    room.IS_RESTRICT_EXECUTE_ROOM = 1;
-                else
-                    room.IS_RESTRICT_EXECUTE_ROOM = null;
-                if (chkRestrictMedicineType.Checked)
-                    room.IS_RESTRICT_MEDICINE_TYPE = 1;
-                else
-                    room.IS_RESTRICT_MEDICINE_TYPE = null;
-                if (chkRestrictPatientType.Checked)
-                    room.IS_RESTRICT_PATIENT_TYPE = 1;
-                else
-                    room.IS_RESTRICT_PATIENT_TYPE = null;
-                if (c.Checked)
-                    room.IS_RESTRICT_REQ_SERVICE = 1;
-                else
-                    room.IS_RESTRICT_REQ_SERVICE = null;
-                if (chkIsAllowNoICD.Checked)
-                    room.IS_ALLOW_NO_ICD = 1;
-                else
-                    room.IS_ALLOW_NO_ICD = null;
-                if (chkIsBlockNumOrder.Checked)
-                    room.IS_BLOCK_NUM_ORDER = 1;
-                else
-                    room.IS_BLOCK_NUM_ORDER = null;
-
+                room.IS_PAUSE = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsPause);
+                room.IS_USE_KIOSK = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsUseKiosk);
+                room.IS_RESTRICT_TIME = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsRestrictTime);
+                room.IS_RESTRICT_EXECUTE_ROOM = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsRestrictExecuteRoom);
+                room.IS_RESTRICT_MEDICINE_TYPE = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsRestrictMedicineType);
+                room.IS_RESTRICT_PATIENT_TYPE = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsRestrictPatientType);
+                room.IS_RESTRICT_REQ_SERVICE = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsRestrictReqService);
+                room.IS_ALLOW_NO_ICD = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsAllowNoICD);
+                room.IS_BLOCK_NUM_ORDER = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsBlockNumOrder);
                 if (spHoldOrder.EditValue != null)
                 {
                     room.HOLD_ORDER = (long)spHoldOrder.Value;

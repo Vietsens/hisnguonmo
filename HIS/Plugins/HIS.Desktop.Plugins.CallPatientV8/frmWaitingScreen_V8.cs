@@ -465,7 +465,11 @@ namespace HIS.Desktop.Plugins.CallPatientV8
                     List<long> lstServiceReqSTTFilter = serviceReqStts.Select(o => o.ID).ToList();
                     hisServiceReqFilter.SERVICE_REQ_STT_IDs = lstServiceReqSTTFilter;
                 }
-
+                var currentRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.module.RoomId);
+                if (currentRoom != null && currentRoom.MUST_BE_APPROVED_SURGERY == 1)
+                {
+                    hisServiceReqFilter.IS__APPROVED_SURGERY__OR__IS_EMERGENCY = true;
+                }
                 var result = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_1>>("api/HisSereServ/GetView1", ApiConsumers.MosConsumer, hisServiceReqFilter, param);
                 Inventec.Common.Logging.LogSystem.Info("Du lieu dau vao serviceCheckeds__Send:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisServiceReqFilter), hisServiceReqFilter));
                 result = result != null && result.Count() > 0 ? result.OrderByDescending(o => o.PLAN_TIME_FROM).ToList() : result;

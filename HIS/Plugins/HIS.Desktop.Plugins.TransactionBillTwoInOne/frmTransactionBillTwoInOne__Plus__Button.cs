@@ -258,36 +258,39 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 }
                 if (listRecieptData != null && listRecieptData.Count > 0 && !checkNotReciept.Checked)
                 {
-                    if (cboRecieptAccountBook.EditValue == null || cboPayForm.EditValue == null) return;
+                    if (cboRecieptAccountBook.EditValue == null || cboPayForm.EditValue == null || cboPayformReceipt.EditValue == null) return;
                     if (!GetSdoReciept(param, ref billTwoBookSDO, ref recieptAccBook, listRecieptData))
                         return;
                 }
                   
                 if (listInvoiceData != null && listInvoiceData.Count > 0 && !checkNotInvoice.Checked)
                 {
-                    if (cboInvoiceAccountBook.EditValue == null || cboPayForm.EditValue == null) return;
+                    if (cboInvoiceAccountBook.EditValue == null || cboPayForm.EditValue == null || cboPayFormInvoice.EditValue == null) return;
                     if (!GetSdoInvoice(param, ref billTwoBookSDO, ref invoiceAccBook, listInvoiceData))
                         return;
                 }
                
                   
+                if (HisConfig.SelectPayForm != "1")
+                {
+                    if (billTwoBookSDO.RecieptTransaction != null)
+                    {
+                        if (payFormList != null && payFormList.Count > 0 && cboPayForm.EditValue != null)
+                        {
+                            var payForm = payFormList.FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue));
+                            billTwoBookSDO.RecieptTransaction.PAY_FORM_ID = payForm?.ID ?? 0;
+                        }
+                        if (cboBank.EditValue != null && !string.IsNullOrEmpty(cboBank.EditValue.ToString()))
+                            billTwoBookSDO.RecieptTransaction.BANK_ID = Convert.ToInt64(cboBank.EditValue);
+                        else
+                            billTwoBookSDO.RecieptTransaction.BANK_ID = null;
 
+                    }
+                }
         
    
 
-                if (billTwoBookSDO.RecieptTransaction != null)
-                {
-                    if (payFormList != null && payFormList.Count > 0 && cboPayForm.EditValue != null)
-                    {
-                        var payForm = payFormList.FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue));
-                        billTwoBookSDO.RecieptTransaction.PAY_FORM_ID = payForm?.ID ?? 0;
-                    }
-                    if (cboBank.EditValue != null && !string.IsNullOrEmpty(cboBank.EditValue.ToString()))
-                        billTwoBookSDO.RecieptTransaction.BANK_ID = Convert.ToInt64(cboBank.EditValue);
-                    else
-                        billTwoBookSDO.RecieptTransaction.BANK_ID = null;
 
-                }
                 //if (billTwoBookSDO.InvoiceTransaction != null)
                 //{
 
@@ -318,7 +321,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     }
                 }
 
-                if (Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__KEYPAY)
+                if (Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__KEYPAY || Convert.ToInt64(cboPayFormInvoice.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__KEYPAY || Convert.ToInt64(cboPayformReceipt.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__KEYPAY)
                 {
                     bool hasPaymentKEYPAY = false;
                     if (!this.CheckPayFormKEYPAY(billTwoBookSDO, ref param, ref hasPaymentKEYPAY))
@@ -373,7 +376,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         }
                         OpenAppPOS();
                         WcfRequest wc = new WcfRequest();
-                        if (Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && decimal.Parse(lblCanThu.Text) > 0)
+                        if ((Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || Convert.ToInt64(cboPayformReceipt.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || Convert.ToInt64(cboPayFormInvoice.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE) && decimal.Parse(lblCanThu.Text) > 0)
                         {
                             wc.AMOUNT = (long)decimal.Parse(lblCanThu.Text);
                         }
@@ -567,7 +570,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         var exits = rs.Where(s => s.PAY_FORM_ID == 8 && s.IS_ACTIVE == 0);
                         if(isLuuKy)
                         {
-                            if (isCreateQRContinue && cboPayForm.EditValue != null && Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                            if (isCreateQRContinue && (cboPayForm.EditValue != null || cboPayFormInvoice.EditValue != null || cboPayformReceipt.EditValue != null) && (Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || Convert.ToInt64(cboPayformReceipt.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || Convert.ToInt64(cboPayFormInvoice.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR))
                             {
 
                                 this.listTranToQR = exits.ToList();
@@ -578,7 +581,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         else
                         {
 
-                            if (exits != null && Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                            if (exits != null && (Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || Convert.ToInt64(cboPayformReceipt.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || Convert.ToInt64(cboPayFormInvoice.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR))
                             {
                                 this.listTranToQR = exits.ToList();
                                 btnQR.Enabled = true;
@@ -595,9 +598,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             {
                                 //Tao hoa don dien thu ben thu3
                                 ElectronicBillResult electronicBillResult = null;
-                                if ((long)cboPayForm.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                                if ((long)cboPayForm.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayformReceipt.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayFormInvoice.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
                                      electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(item);
-                                if ((long)cboPayForm.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && (electronicBillResult == null || !electronicBillResult.Success))
+                                if (((long)cboPayForm.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayFormInvoice.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayformReceipt.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR) && (electronicBillResult == null || !electronicBillResult.Success))
                                 {
                                     param.Messages.Add("Tạo hóa đơn điện tử thất bại");
                                     if (electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
@@ -926,11 +929,33 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 billTwoBookSDO.RecieptTransaction.CASHIER_ROOM_ID = this.cashierRoom.ID;
 
                 var payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue));
+                var payFormRecipt = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayformReceipt.EditValue));
+
                 if (payForm != null)
                 {
                     billTwoBookSDO.RecieptTransaction.PAY_FORM_ID = payForm.ID;
                 }
+                if (HisConfig.SelectPayForm == "1")
+                {
+                    if (payFormRecipt.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                    {
+                        billTwoBookSDO.RecieptTransaction.TRANSFER_AMOUNT = spinSoTienReceipt.Value;
+                    }
+                    if (payFormRecipt.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+                    {
+                        billTwoBookSDO.RecieptTransaction.SWIPE_AMOUNT = spinSoTienReceipt.Value;
+                    }
 
+                    if (payFormList != null && payFormList.Count > 0 && cboPayformReceipt.EditValue != null)
+                    {
+                        var payForm1 = payFormList.FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayformReceipt.EditValue));
+                        billTwoBookSDO.RecieptTransaction.PAY_FORM_ID = payForm1?.ID ?? 0;
+                    }
+                    if (cboBankReceipt.EditValue != null && !string.IsNullOrEmpty(cboBankReceipt.EditValue.ToString()))
+                        billTwoBookSDO.RecieptTransaction.BANK_ID = Convert.ToInt64(cboBankReceipt.EditValue);
+                    else
+                        billTwoBookSDO.RecieptTransaction.BANK_ID = null;
+                }
                 accountBook = listRecieptAccountBook.FirstOrDefault(o => o.ID == Convert.ToInt64(cboRecieptAccountBook.EditValue));
                 if (accountBook != null)
                 {
@@ -952,7 +977,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 billTwoBookSDO.RecieptTransaction.EXEMPTION_REASON = txtRecieptReason.Text;
                 billTwoBookSDO.RecieptTransaction.DESCRIPTION = txtRecieptDescription.Text;
                 billTwoBookSDO.RecieptTransaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountCode.Text;
-                
+
                 if (chkBuyerInfo.Checked)
                 {
                     billTwoBookSDO.RecieptTransaction.BUYER_ADDRESS = txtBuyerAddress.Text;
@@ -1066,11 +1091,33 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 billTwoBookSDO.InvoiceTransaction.CASHIER_ROOM_ID = this.cashierRoom.ID;
 
                 var payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue));
+                var payFormInvoice = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayFormInvoice.EditValue));
+
                 if (payForm != null)
                 {
                     billTwoBookSDO.InvoiceTransaction.PAY_FORM_ID = payForm.ID;
                 }
+                if (HisConfig.SelectPayForm == "1")
+                {
+                    if (payFormInvoice.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                    {
+                        billTwoBookSDO.InvoiceTransaction.TRANSFER_AMOUNT = spinInvoiceCK.Value;
+                    }
+                    if (payFormInvoice.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+                    {
+                        billTwoBookSDO.InvoiceTransaction.SWIPE_AMOUNT = spinInvoiceCK.Value;
+                    }
 
+                    if (payFormList != null && payFormList.Count > 0 && cboPayFormInvoice.EditValue != null)
+                    {
+                        var payForm1 = payFormList.FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayFormInvoice.EditValue));
+                        billTwoBookSDO.InvoiceTransaction.PAY_FORM_ID = payForm1?.ID ?? 0;
+                    }
+                    if (cboBankInvoice.EditValue != null && !string.IsNullOrEmpty(cboBankInvoice.EditValue.ToString()))
+                        billTwoBookSDO.InvoiceTransaction.BANK_ID = Convert.ToInt64(cboBankInvoice.EditValue);
+                    else
+                        billTwoBookSDO.InvoiceTransaction.BANK_ID = null;
+                }
                 accountBook = listInvoiceAccountBook.FirstOrDefault(o => o.ID == Convert.ToInt64(cboInvoiceAccountBook.EditValue));
                 if (accountBook != null)
                 {

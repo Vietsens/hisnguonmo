@@ -205,7 +205,11 @@ namespace MPS.Processor.Mps000325
                 if (rdo.listAdo != null && rdo.listAdo.Count > 0)
                 {
                     int index = 1;
-                    rdo.listAdo = rdo.listAdo.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
+                    rdo.listAdo = rdo.listAdo
+                                    .OrderBy(p => p.MEDI_MATE_NUM_ORDER == 0 ? 1 : 0)
+                                    .ThenBy(p => p.MEDI_MATE_NUM_ORDER)
+                                    .ThenBy(p => p.MEDICINE_TYPE_NAME)
+                                    .ToList();
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rdo.listAdo), rdo.listAdo));
                     for (int i = 0; i < rdo.listAdo.Count; i++)

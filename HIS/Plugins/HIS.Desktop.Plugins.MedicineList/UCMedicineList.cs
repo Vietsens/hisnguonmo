@@ -903,6 +903,12 @@ namespace HIS.Desktop.Plugins.MedicineList
                     if (string.IsNullOrEmpty(value))
                         e.Appearance.BackColor = Color.Red;
                 }
+                else if (e.Column.FieldName == "TT_THAU")
+                {
+                    string value = (view.GetRowCellValue(e.RowHandle, "TT_THAU") ?? "").ToString();
+                    if (string.IsNullOrEmpty(value))
+                        e.Appearance.BackColor = Color.Red;
+                }    
                 else if (e.Column.FieldName == "BID_NAME")
                 {
                     string value = (view.GetRowCellValue(e.RowHandle, "BID_NAME") ?? "").ToString();

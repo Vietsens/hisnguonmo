@@ -59,5 +59,8 @@ namespace MPS.Processor.Mps000167
         internal const string BANK_CARD_CODE = "BANK_CARD_CODE";
         internal const string PAYMENT_AMOUNT = "PAYMENT_AMOUNT";
 
+        internal const string PARENT_ID = "PARENT_ID";
+        internal const string PARENT_CODE = "PARENT_CODE";
+        internal const string PARENT_NAME = "PARENT_NAME";
     }
 }

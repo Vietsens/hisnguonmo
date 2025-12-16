@@ -168,7 +168,7 @@ namespace MPS.Processor.Mps000302.ADO
                             else
                             {
                                 this.HEIN_SERVICE_TYPE_ID = heinServiceType.ID;
-                                this.HEIN_SERVICE_TYPE_NUM_ORDER = heinServiceType.NUM_ORDER;
+                                this.HEIN_SERVICE_TYPE_NUM_ORDER = heinServiceType.VIR_PARENT_NUM_ORDER;
                                 this.HEIN_SERVICE_TYPE_CODE = heinServiceType.HEIN_SERVICE_TYPE_CODE;
                                 this.HEIN_SERVICE_TYPE_NAME = heinServiceType.HEIN_SERVICE_TYPE_NAME;
                             }

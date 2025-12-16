@@ -195,6 +195,86 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 }
             }
         }
+
+        private void checkValidateCboBankReceipt()
+        {
+            if (cboPayformReceipt.EditValue != null)
+            {
+                var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayformReceipt.EditValue));
+                if (payFormL != null)
+                {
+                    var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayformReceipt.Text);
+
+                    if (payForm.IS_REQUIRED_BANK == 1)
+                    {
+                        layoutControlItem81.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule bankRule = new Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule();
+                        bankRule.editor = cboBankReceipt;
+                        bankRule.ErrorText = "Trường dữ liệu bắt buộc nhập";
+                        bankRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+
+                        dxValidationProvider1.SetValidationRule(cboBankReceipt, bankRule);
+
+                        // Nếu chưa chọn ngân hàng thì validate sẽ báo lỗi
+                        if (cboBankReceipt.EditValue == null || string.IsNullOrEmpty(cboBankReceipt.EditValue.ToString()))
+                        {
+                            dxValidationProvider1.Validate();
+                        }
+                        else
+                        {
+                            dxValidationProvider1.SetValidationRule(cboBankReceipt, null);
+                            dxValidationProvider1.RemoveControlError(cboBankReceipt);
+                        }
+                    }
+                    else
+                    {
+                        layoutControlItem81.AppearanceItemCaption.ForeColor = Color.Black;
+                        dxValidationProvider1.SetValidationRule(cboBankReceipt, null);
+                        dxValidationProvider1.RemoveControlError(cboBankReceipt);
+                    }
+                }
+            }
+        }
+
+        private void checkValidateCboBankInvoice()
+        {
+            if (cboPayFormInvoice.EditValue != null)
+            {
+                var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayFormInvoice.EditValue));
+                if (payFormL != null)
+                {
+                    var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayFormInvoice.Text);
+
+                    if (payForm.IS_REQUIRED_BANK == 1)
+                    {
+                        layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule bankRule = new Inventec.Desktop.Common.Controls.ValidationRule.ControlEditValidationRule();
+                        bankRule.editor = cboBankInvoice;
+                        bankRule.ErrorText = "Trường dữ liệu bắt buộc nhập";
+                        bankRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+
+                        dxValidationProvider1.SetValidationRule(cboBankInvoice, bankRule);
+
+                        // Nếu chưa chọn ngân hàng thì validate sẽ báo lỗi
+                        if (cboBankInvoice.EditValue == null || string.IsNullOrEmpty(cboBankInvoice.EditValue.ToString()))
+                        {
+                            dxValidationProvider1.Validate();
+                        }
+                        else
+                        {
+                            dxValidationProvider1.SetValidationRule(cboBankInvoice, null);
+                            dxValidationProvider1.RemoveControlError(cboBankInvoice);
+                        }
+                    }
+                    else
+                    {
+                        layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Black;
+                        dxValidationProvider1.SetValidationRule(cboBankInvoice, null);
+                        dxValidationProvider1.RemoveControlError(cboBankInvoice);
+                    }
+                }
+            }
+        }
         private void txtPayForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
@@ -820,6 +900,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 cboRecieptAccountBook.Enabled = enable;
                 txtRecieptDescription.Enabled = enable;
                 txtRecieptReason.Enabled = enable;
+                cboPayformReceipt.Enabled = enable;
+                cboBankReceipt.Enabled = enable;
+                spinSoTienReceipt.EditValue = null;
                 var data = listRecieptAccountBook.FirstOrDefault(o => o.ID == Convert.ToInt64(cboRecieptAccountBook.EditValue));
                 if (data != null)
                 {
@@ -857,6 +940,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 cboInvoiceAccountBook.Enabled = enable;
                 txtInvoiceDescription.Enabled = enable;
                 txtInvoiceReason.Enabled = enable;
+                cboPayFormInvoice.Enabled = enable;
+                cboBankInvoice.Enabled = enable;
+                spinInvoiceCK.EditValue = null;
                 var data = listInvoiceAccountBook.FirstOrDefault(o => o.ID == Convert.ToInt64(cboInvoiceAccountBook.EditValue));
                 if (data != null)
                 {

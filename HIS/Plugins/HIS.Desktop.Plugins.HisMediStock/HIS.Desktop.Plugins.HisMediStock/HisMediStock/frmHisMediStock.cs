@@ -3007,8 +3007,11 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             {
                 lstKey.Clear();
                 lstValueQR.Clear();
-                CommonParam param = new CommonParam();
-                lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+                CommonParam param = new CommonParam();      
+                
+                lstConfig = BackendDataWorker.Get<HIS_CONFIG>()
+                    .Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && o.KEY.EndsWith("Info")).ToList();      
+                
                 if (lstConfig != null && lstConfig.Count > 0)
                 {
                     int count = 0;
@@ -3017,22 +3020,25 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                         HIS_CONFIG cf = new HIS_CONFIG();
                         cf.ID = count++;
 
-
                         string value = item.KEY;
                         int index = value.IndexOf("Info");
+
+                        // Logic tách chuỗi giữ nguyên
                         if (index > 0)
                         {
                             var shotkey = value.Substring(0, index);
                             string[] parts = shotkey.Split('.');
                             if (parts.Length > 0)
                             {
-                                cf.KEY = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                                cf.KEY = parts[parts.Length - 1]; // Lấy phần tên ngân hàng (VD: Vietinbank)
                             }
                         }
+
+                        // Gán Value, nếu null thì vẫn gán là null (không sao cả)
                         cf.VALUE = item.VALUE;
+
                         lstKey.Add(cf);
                     }
-
                 }
             }
             catch (Exception ex)

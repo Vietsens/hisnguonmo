@@ -138,6 +138,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
                     mediSdo.Medicine.IMP_VAT_RATIO = ado.IMP_VAT_RATIO;
                     mediSdo.Medicine.IMP_SOURCE_ID = this.ImpSourceId;
                     mediSdo.Medicine.SUPPLIER_ID = ado.SupplierId;
+                    mediSdo.Medicine.TT_THAU = ado.TT_THAU;
                     mediSdo.Medicine.PACKAGE_NUMBER = ado.PACKAGE_NUMBER;
                     mediSdo.Medicine.CONCENTRA = ado.CONCENTRA;
                     mediSdo.Medicine.MEDICINE_REGISTER_NUMBER = ado.REGISTER_NUMBER;
@@ -187,6 +188,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
                     // mateSdo.Material.DOCUMENT_PRICE = ado.DOCUMENT_PRICE;
                     mateSdo.Material.IMP_SOURCE_ID = this.ImpSourceId;
                     mateSdo.Material.SUPPLIER_ID = ado.SupplierId;
+                    mateSdo.Material.TT_THAU = ado.TT_THAU;
                     mateSdo.Material.PACKAGE_NUMBER = ado.PACKAGE_NUMBER;
                     mateSdo.Material.CONCENTRA = ado.CONCENTRA;
                     mateSdo.Material.MANUFACTURER_ID = ado.MANUFACTURER_ID;

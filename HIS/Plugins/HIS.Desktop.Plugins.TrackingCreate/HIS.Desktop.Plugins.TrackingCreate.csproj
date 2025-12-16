@@ -64,7 +64,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.HisRegimenTemp">
-      <HintPath>..\..\..\..\histest\x64\Plugins\Module\HIS.Desktop.Plugins.HisRegimenTemp.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\Plugins\Module\HIS.Desktop.Plugins.HisRegimenTemp.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.CheckIcd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -86,11 +86,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.DHST\HIS.UC.DHST.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.Icd">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Icd.dll</HintPath>
+    <Reference Include="HIS.UC.Icd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Icd.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.SecondaryIcd">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
+    <Reference Include="HIS.UC.SecondaryIcd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

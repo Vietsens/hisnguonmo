@@ -3993,7 +3993,13 @@ namespace HIS.Desktop.Plugins.TransactionList
             {
                 if (transactionBill == null) return result;
                 //không phải giao dịch thanh toán hoặc đã tạo hóa đơn điện tử thì bỏ qua.
-                if (transactionBill.TRANSACTION_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT || !String.IsNullOrWhiteSpace(transactionBill.INVOICE_CODE))
+                //bổ sung thêm nếu nhà cung cấp là VPNT và EINVOICE_NUM_ORDER null thì vẫn được xuất hóa đơn điện tử
+                if (transactionBill.TRANSACTION_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT
+                    || (
+                        !string.IsNullOrWhiteSpace(transactionBill.INVOICE_CODE) &&
+                        !(transactionBill.INVOICE_SYS == ProviderType.VNPT && string.IsNullOrEmpty(transactionBill.EINVOICE_NUM_ORDER))
+                    )
+                )
                 {
                     return result;
                 }

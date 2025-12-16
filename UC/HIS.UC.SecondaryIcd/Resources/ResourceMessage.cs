@@ -30,7 +30,22 @@ namespace HIS.UC.SecondaryIcd.Resources
                 return "";
             }
         }
-        
+        internal static string MaBenhPhanBietDaDuocSuDungChoMaBenhChinhHoacPhu
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("MaBenhPhanBietDaDuocSuDungChoMaBenhChinhHoacPhu", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string KhongTimThayIcdTuongUngVoiCacMaSau
         {
             get

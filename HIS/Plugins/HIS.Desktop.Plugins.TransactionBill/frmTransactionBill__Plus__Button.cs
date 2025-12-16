@@ -129,8 +129,13 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 this.positionHandleControl = -1;
                 if (!btnSaveAndSign.Enabled)
                     return;
-                //if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show("Thanh toán QR chưa thể tự động tạo hóa đơn điện tử bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
-                //    return;
+                if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show("Thanh toán QR chưa thể tự động tạo hóa đơn điện tử bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                    return;
+                //if (cboPayForm.EditValue != null && Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                //{
+                //    btnQr.Enabled = true;
+                //    btnQrXuLy(true);
+                //}
                 SetEnableButtonSave(false);
                 if (HisConfigCFG.AutoCreateDepositTransaction && decimal.Parse(lblReceiveAmount.Text) > 0 && cboDepositBook.Enabled && cboDepositBook.EditValue == null)
                 {
@@ -157,7 +162,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 gridViewBillFund.PostEditor();
-                ErrorElectronicBill = new List<string>();
+                ErrorElectronicBill = new List<string>();              
                 success = ProcessSave(ref param, true);
                 param.Messages = param.Messages.Distinct().ToList();
                 WaitingManager.Hide();
@@ -282,12 +287,21 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             TransactionQr = TransactionBillResultSDO.TransactionDeposit;
                         if (TransactionBillResultSDO.TransactionBill != null && TransactionBillResultSDO.TransactionBill.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
                             TransactionQr = TransactionBillResultSDO.TransactionBill;
-                        if(listConfig != null)
+                        var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == this.currentModule.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
+
+                        if (currentRoom != null && currentRoom.Count() > 0)
                         {
-                            if (listConfig.Count > 1)
-                                XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
-                            else
-                                btnQr_Click(null, null);
+                            btnQrXuLy(true);
+                        }
+                        else
+                        {
+                            if (listConfig != null && listConfig.Count > 0)
+                            {
+                                if (listConfig.Count > 1)
+                                    XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
+                                else
+                                    btnQrXuLy(true);
+                            }
                         }
                     }
 
@@ -408,12 +422,21 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             TransactionQr = TransactionBillResultSDO.TransactionDeposit;
                         if (TransactionBillResultSDO.TransactionBill != null && TransactionBillResultSDO.TransactionBill.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
                             TransactionQr = TransactionBillResultSDO.TransactionBill;
-                        if (listConfig != null)
+                        var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == this.currentModule.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
+
+                        if (currentRoom != null && currentRoom.Count() > 0)
                         {
-                            if (listConfig.Count > 1)
-                                XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
-                            else
-                                btnQr_Click(null, null);
+                            btnQrXuLy(false);
+                        }
+                        else
+                        {
+                            if (listConfig != null && listConfig.Count > 0)
+                            {
+                                if (listConfig.Count > 1)
+                                    XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
+                                else
+                                    btnQrXuLy(false);
+                            }
                         }
                     }
                     if (chkAutoClose.CheckState == CheckState.Checked)
@@ -741,12 +764,21 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             TransactionQr = TransactionBillResultSDO.TransactionDeposit;
                         if (TransactionBillResultSDO.TransactionBill != null && TransactionBillResultSDO.TransactionBill.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && TransactionBillResultSDO.TransactionBill.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
                             TransactionQr = TransactionBillResultSDO.TransactionBill;
-                        if (listConfig != null)
+                        var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == this.currentModule.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
+
+                        if (currentRoom != null && currentRoom.Count() > 0)
                         {
-                            if (listConfig.Count > 1)
-                                XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
-                            else
-                                btnQr_Click(null, null);
+                            btnQrXuLy(false);
+                        }
+                        else
+                        {
+                            if (listConfig != null && listConfig.Count > 0)
+                            {
+                                if (listConfig.Count > 1)
+                                    XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
+                                else
+                                    btnQrXuLy(false);
+                            }    
                         }
                     }
                     MessageManager.Show(this, param, success);
@@ -1505,7 +1537,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                     var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HisTransactionBillResultSDO>(UriStores.HIS_TRANSACTION_CREATE_BILL, ApiConsumers.MosConsumer, data, param);
-
+                    
                     if (rs != null)
                     {
                         Inventec.Common.Logging.LogSystem.Debug("HisTransaction/CreateBill rs != null");
@@ -3999,7 +4031,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             if (listConfig.Count > 1)
                                 XtraMessageBox.Show("Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo");
                             else
-                                btnQr_Click(null, null);
+                                btnQrXuLy(false);
                         }
                     }
                     if (chkAutoClose.CheckState == CheckState.Checked)

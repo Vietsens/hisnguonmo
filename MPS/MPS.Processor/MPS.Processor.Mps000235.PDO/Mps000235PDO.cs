@@ -46,7 +46,7 @@ namespace MPS.Processor.Mps000235.PDO
         public List<HIS_MEDI_STOCK> ListMediStock { get; set; }
 
         public Mps000235PDO() { }
-
+          
         public Mps000235PDO(
             List<V_HIS_EXP_MEST_MEDICINE> _expMestMedicines,
             List<V_HIS_EXP_MEST_MATERIAL> _expMestMaterials,

@@ -263,9 +263,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000099.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000107.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000107.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000107.PDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000107.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000108.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000108.PDO.dll</HintPath>
@@ -333,9 +332,6 @@
     <Reference Include="MPS.Processor.Mps000346.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000346.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000347.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000347.PDO.dll</HintPath>
-    </Reference>
     <Reference Include="MPS.Processor.Mps000349.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000349.PDO.dll</HintPath>
     </Reference>
@@ -349,7 +345,7 @@
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000352.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000421.PDO">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000421.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000421.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000422.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000422.PDO.dll</HintPath>
@@ -447,6 +443,10 @@
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000347.PDO\MPS.Processor.Mps000347.PDO.csproj">
+      <Project>{017023d0-9672-4726-b8c7-c534b5cd30be}</Project>
+      <Name>MPS.Processor.Mps000347.PDO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

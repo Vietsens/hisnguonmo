@@ -68,12 +68,13 @@ namespace Inventec.Common.Address
                     string[] splitA = result.Address
                         .Split(new string[] { ",", "-" }, StringSplitOptions.RemoveEmptyEntries)
                         .Select(s => s.Trim())
+                        .Distinct()
                         .ToArray();
                     string[] joinsAdd = new string[splitA.Length];
                     for (int i = splitA.Length - 1; i >= 0; i--)
                     {
                         string path = splitA[i];
-                        string checkData = string.Join(" ", path.Split(' ').Where(o => !String.IsNullOrWhiteSpace(o)));
+                        string checkData = string.Join(" ", path.ToLower().Replace("tp ","thành phố ").Replace("tp. ", "thành phố ").Split(' ').Where(o => !String.IsNullOrWhiteSpace(o)));
                         if (provinces == null)
                         {
                             //tỉnh không thêm dấu phẩy ở 2 đầu để so sánh dữ liệu
@@ -252,6 +253,24 @@ namespace Inventec.Common.Address
             }
             finally
             {
+                // Kiểm tra số lượng phần tử sau khi split để xác định có cần xóa thông tin district
+                if (!string.IsNullOrEmpty(result.Address) && !string.IsNullOrEmpty(result.CommuneName) && !string.IsNullOrEmpty(result.ProvinceName))
+                {
+                    List<string> resultParts = new List<string>();
+                    if (!string.IsNullOrEmpty(result.Address)) resultParts.Add(result.Address);
+                    if (!string.IsNullOrEmpty(result.CommuneName)) resultParts.Add(result.CommuneName);
+                    if (!string.IsNullOrEmpty(result.DistrictName)) resultParts.Add(result.DistrictName);
+                    if (!string.IsNullOrEmpty(result.ProvinceName)) resultParts.Add(result.ProvinceName);
+
+                    string joinedResult = string.Join(",", resultParts);
+                    int resultSplitCount = joinedResult.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).Distinct().ToArray().Length;
+                    int originalSplitCount = fullAddress.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).Distinct().ToArray().Length;
+
+                    if (resultSplitCount != originalSplitCount)
+                    {
+                        result = new AddressADO();
+                    }
+                }
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("____Address_Split____", result));
                 if(!IsAddressLv2 && string.IsNullOrEmpty(result.CommuneName) && string.IsNullOrEmpty(result.DistrictName) && string.IsNullOrEmpty(result.ProvinceName))
                 {

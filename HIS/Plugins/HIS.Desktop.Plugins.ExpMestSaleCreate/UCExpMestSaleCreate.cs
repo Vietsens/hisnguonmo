@@ -93,7 +93,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         private List<HisMedicineTypeInStockSDO> mediInStocks;
         private List<HisMaterialTypeInStockSDO> mateInStocks;
         private List<V_HIS_SERVICE_REQ_11> serviceReq { get; set; }
-        private HisExpMestSaleListResultSDO resultSDO { get; set; }
+        private HisExpMestSaleListResultSDO resultSDO { get; set; } 
         private List<HisExpMestSaleListResultSDO> ListResultSDO { get; set; }
         private string clientSessionKey { get; set; }
         //private RefreshCheckPrint _RefreshCheckPrint;
@@ -146,6 +146,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         private List<V_HIS_ACCOUNT_BOOK> listAccountBook = null;
         private bool IsShowDetails = false;
         bool IsDonCu = false;
+        bool IsCheckPrint = false;
         public UCExpMestSaleCreate(Inventec.Desktop.Common.Modules.Module moduleData, long? expMestId)
             : base(moduleData)
         {
@@ -3499,6 +3500,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             try
             {
                 ddBtnPrint.ShowDropDown();
+                this.IsCheckPrint = true;
             }
             catch (Exception ex)
             {
@@ -8149,6 +8151,40 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             }
         }
 
+        private void chkSign_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (UCExpMestSaleCreate.currentControlStateRDO != null && UCExpMestSaleCreate.currentControlStateRDO.Count > 0) ? UCExpMestSaleCreate.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.CHK_Sign && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkSign.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.CHK_Sign;
+                    csAddOrUpdate.VALUE = (chkSign.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (UCExpMestSaleCreate.currentControlStateRDO == null)
+                        UCExpMestSaleCreate.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    UCExpMestSaleCreate.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                UCExpMestSaleCreate.controlStateWorker.SetData(UCExpMestSaleCreate.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
     public class BankInfo
     {

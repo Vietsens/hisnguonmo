@@ -46,5 +46,9 @@ namespace MPS.Processor.Mps000167.PDO
         public string PAAN_POSITION_NAME { get; set; }
         public long? KSK_ORDER { get; set; }
         public string REQUEST_USER_MOBILE { get; set; }
+        public long? PARENT_ID { get; set; }
+        public string PARENT_CODE { get; set; }
+        public string PARENT_NAME { get; set; }
+
     }
 }

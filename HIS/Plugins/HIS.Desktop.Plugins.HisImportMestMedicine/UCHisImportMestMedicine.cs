@@ -15,46 +15,47 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Data;
+using DevExpress.Utils;
+using DevExpress.XtraBars;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using HIS.Desktop.ADO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.IsAdmin;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.HisImportMestMedicine.Base;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.RichEditor.Base;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using Inventec.UC.Paging;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Inventec.UC.Paging;
-using Inventec.Core;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using DevExpress.Data;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using DevExpress.Utils;
-using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.LibraryMessage;
-using System.Threading;
-using System.IO;
-using Inventec.Common.RichEditor.Base;
-using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraEditors;
-using HIS.Desktop.LocalStorage.BackendData;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.Utilities.Extensions;
-using HIS.Desktop.LocalStorage.LocalData;
-using DevExpress.XtraBars;
-using HIS.Desktop.Utility;
-using HIS.Desktop.ADO;
-using MOS.Filter;
-using Inventec.Common.Adapter;
-using Inventec.Desktop.Common.LanguageManager;
-using System.Resources;
-using HIS.Desktop.LocalStorage.ConfigSystem;
-using HIS.Desktop.Plugins.HisImportMestMedicine.Base;
-using HIS.Desktop.IsAdmin;
-using HIS.Desktop.LocalStorage.HisConfig;
+using static DevExpress.XtraPrinting.Native.ExportOptionsPropertiesNames;
 
 namespace HIS.Desktop.Plugins.HisImportMestMedicine
 {
@@ -90,6 +91,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         Inventec.Desktop.Common.Modules.Module currentModule;
         MOS.EFMODEL.DataModels.V_HIS_IMP_MEST VImportMest;
         public static long TimeImpFromMessage = 0;
+        List<V_HIS_IMP_MEST> selectedImpMests = new List<V_HIS_IMP_MEST>();
         #endregion
 
         #region Construct
@@ -1665,47 +1667,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         {
             try
             {
-                if ((Control.ModifierKeys & Keys.Control) != Keys.Control)
-                {
-                    GridView view = sender as GridView;
-                    GridHitInfo hi = view.CalcHitInfo(e.Location);
-                    if (hi.InRowCell)
-                    {
-                        if (hi.Column.RealColumnEdit.GetType() == typeof(DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit))
-                        {
-                            view.FocusedRowHandle = hi.RowHandle;
-                            view.FocusedColumn = hi.Column;
-                            view.ShowEditor();
-                            DevExpress.XtraEditors.CheckEdit checkEdit = view.ActiveEditor as DevExpress.XtraEditors.CheckEdit;
-                            DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo checkInfo = (DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo)checkEdit.GetViewInfo();
-                            Rectangle glyphRect = checkInfo.CheckInfo.GlyphRect;
-                            GridViewInfo viewInfo = view.GetViewInfo() as GridViewInfo;
-                            Rectangle gridGlyphRect =
-                                new Rectangle(viewInfo.GetGridCellInfo(hi).Bounds.X + glyphRect.X,
-                                 viewInfo.GetGridCellInfo(hi).Bounds.Y + glyphRect.Y,
-                                 glyphRect.Width,
-                                 glyphRect.Height);
-                            if (!gridGlyphRect.Contains(e.Location))
-                            {
-                                view.CloseEditor();
-                                if (!view.IsCellSelected(hi.RowHandle, hi.Column))
-                                {
-                                    view.SelectCell(hi.RowHandle, hi.Column);
-                                }
-                                else
-                                {
-                                    view.UnselectCell(hi.RowHandle, hi.Column);
-                                }
-                            }
-                            else
-                            {
-                                checkEdit.Checked = !checkEdit.Checked;
-                                view.CloseEditor();
-                            }
-                            (e as DevExpress.Utils.DXMouseEventArgs).Handled = true;
-                        }
-                    }
-                }
+                // Chỉ xử lý khi click chuột trái
+                if (e.Button != MouseButtons.Left)
+                    return;
             }
             catch (Exception ex)
             {
@@ -1800,6 +1764,45 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         {
             try
             {
+                var view = sender as GridView;
+                if (view == null) return;
+
+                // Chỉ xử lý khi click chuột trái 1 lần
+                if (e.Button == MouseButtons.Left && e.Clicks == 1)
+                {
+                    // Các cột đang dùng ButtonEdit (enable/disable) theo FieldName trong CustomRowCellEdit
+                    bool isButtonColumn =
+                           e.Column.FieldName == "DETAIL_DATA_DISPLAY"   // Duyệt
+                        || e.Column.FieldName == "DISCARD_DISPLAY"    // Hủy
+                        || e.Column.FieldName == "DIS_APPROVAL"       // Không duyệt / hủy từ chối
+                        || e.Column.FieldName == "IMPORT_DISPLAY"     // Thực nhập / Hủy thực nhập
+                        || e.Column.FieldName == "REQUEST_DISPLAY"    // Hủy duyệt
+                        || e.Column.FieldName == "EDIT"               // Sửa
+                        || e.Column.FieldName == "EditNCC"            // Sửa thông tin NCC
+                        || e.Column.FieldName == "CreateExpNCC"       // Xuất trả NCC
+                        || e.Column.FieldName == "DONE"            // nếu cột lịch sử log đặt field name như vậy
+                        || e.Column.FieldName == "APPROVAL_DISPLAY"; // nếu anh dùng field này cho nút log
+
+                    if (isButtonColumn)
+                    {
+                        // Focus đúng dòng/ô
+                        view.FocusedRowHandle = e.RowHandle;
+                        view.FocusedColumn = e.Column;
+
+                        // Hiển thị editor (RepositoryItemButtonEdit)
+                        view.ShowEditor();
+
+                        // Lấy editor hiện tại và bấm luôn button đầu tiên
+                        var editor = view.ActiveEditor as ButtonEdit;
+                        if (editor != null && editor.Properties.Buttons.Count > 0)
+                        {
+                            editor.PerformClick(editor.Properties.Buttons[0]);
+                        }
+
+                        // Không chạy LoadInfoClick nữa với các cột nút
+                        return;
+                    }
+                }
                 var rowFocus = (V_HIS_IMP_MEST)gridViewImportMestList.GetFocusedRow();
                 if (rowFocus != null)
                 {
@@ -1919,20 +1922,30 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         {
             try
             {
-                if (e.Item is BarButtonItem && this.currentImpMestRightClick != null)
-                {
-                    var bbtnItem = sender as BarButtonItem;
-                    RightMouseClickProcessor.ModuleType type = (RightMouseClickProcessor.ModuleType)(e.Item.Tag);
+                //if (e.Item is BarButtonItem && this.currentImpMestRightClick != null)
+                //{
+                //    var bbtnItem = sender as BarButtonItem;
+                //    RightMouseClickProcessor.ModuleType type = (RightMouseClickProcessor.ModuleType)(e.Item.Tag);
 
-                    switch (type)
-                    {
-                        case RightMouseClickProcessor.ModuleType.ManuExpMestCreate:
-                            ManuExpMestCreateClick(this.currentImpMestRightClick);
-                            break;
-                        case RightMouseClickProcessor.ModuleType.ManuImpMestEdit:
-                            EditInfoImportNCC(this.currentImpMestRightClick);
-                            break;
-                    }
+                //    switch (type)
+                //    {
+                //        case RightMouseClickProcessor.ModuleType.ManuExpMestCreate:
+                //            ManuExpMestCreateClick(this.currentImpMestRightClick);
+                //            break;
+                //        case RightMouseClickProcessor.ModuleType.ManuImpMestEdit:
+                //            EditInfoImportNCC(this.currentImpMestRightClick);
+                //            break;
+                //    }
+                //}
+                var item = e.Item as BarButtonItem;
+                if (item == null) return;
+
+                var type = (RightMouseClickProcessor.ModuleType)item.Tag;
+                switch (type)
+                {
+                    case RightMouseClickProcessor.ModuleType.PrintMps000505:
+                        PrintProcess(null, null);
+                        break;
                 }
             }
             catch (Exception ex)
@@ -2182,6 +2195,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             try
             {
                 if (e.KeyCode == Keys.Enter)
+
                     FillDataImportMestDetailList();
             }
             catch (Exception ex)
@@ -2342,6 +2356,128 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             }
         }
 
+        private void gridViewImportMestList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (view == null) return;
+
+                selectedImpMests.Clear();
+
+                int[] selectedHandles = view.GetSelectedRows();
+                foreach (int handle in selectedHandles)
+                {
+                    var row = view.GetRow(handle) as V_HIS_IMP_MEST;
+                    if (row != null)
+                        selectedImpMests.Add(row);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewImportMestList_PopupMenuShowing(object sender, PopupMenuShowingEventArgs e)
+        {
+            //try
+            //{
+            //    var view = sender as GridView;
+            //    if (view == null)
+            //        return;
+
+            //    // Chỉ xử lý khi popup trên dòng (row/cell), không xử lý header, filter, group…
+            //    if (e.MenuType != GridMenuType.Row)
+            //        return;
+
+            //    // Đảm bảo dòng dưới chuột cũng nằm trong selection
+            //    if (e.HitInfo != null && e.HitInfo.RowHandle >= 0 && !view.IsRowSelected(e.HitInfo.RowHandle))
+            //    {
+            //        view.ClearSelection();
+            //        view.SelectRow(e.HitInfo.RowHandle);
+            //        view.FocusedRowHandle = e.HitInfo.RowHandle;
+            //    }
+
+            //    // Nếu không có phiếu nào đang chọn → không cho menu chuột phải
+            //    if (selectedImpMests == null || selectedImpMests.Count == 0)
+            //    {
+            //        e.Allow = false;
+            //        return;
+            //    }
+
+            //    // Không dùng menu mặc định của DevExpress nữa
+            //    e.Allow = false;
+
+            //    // Gọi menu chuột phải riêng (PopupMenu của BarManager)
+            //    var processor = new RightMouseClickProcessor(
+            //        null,                              // không cần ImpMestRightClick nữa
+            //        RightMouse_Click,                  // delegate xử lý click
+            //        this.barManager1,                  // BarManager của UserControl
+            //        this.roomId,                // roomId anh đang có
+            //        this.LoggingName                   // loginName
+            //    );
+
+            //    processor.InitMenu();                  // trong này menu.ShowPopup(Cursor.Position);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Warn(ex);
+            //}
+            try
+            {
+                // Tắt menu mặc định của DevExpress
+                e.Allow = false;
+
+                var view = sender as GridView;
+                if (view == null)
+                    return;
+
+                // Chỉ xử lý popup trên row
+                if (e.MenuType != GridMenuType.Row)
+                    return;
+
+                if (e.HitInfo == null || e.HitInfo.RowHandle < 0)
+                    return;
+
+                // Chỉ cho mở menu nếu dòng dưới chuột đã được chọn (tích)
+                if (!view.IsRowSelected(e.HitInfo.RowHandle))
+                {
+                    // Không auto ClearSelection / SelectRow nữa
+                    return;
+                }
+
+                // Cập nhật lại danh sách phiếu đang được chọn
+                selectedImpMests.Clear();
+                int[] selectedHandles = view.GetSelectedRows();
+                foreach (int handle in selectedHandles)
+                {
+                    var row = view.GetRow(handle) as V_HIS_IMP_MEST;
+                    if (row != null)
+                        selectedImpMests.Add(row);
+                }
+
+                // Nếu thực sự không có dòng nào được chọn thì thôi
+                if (selectedImpMests.Count == 0)
+                    return;
+
+                // Gọi menu chuột phải riêng (PopupMenu của BarManager)
+                var processor = new RightMouseClickProcessor(
+                    null,               // không dùng currentImpMestRightClick nữa
+                    RightMouse_Click,   // delegate xử lý click
+                    this.barManager1,   // BarManager của UserControl
+                    this.roomId,        // roomId
+                    this.LoggingName    // loginName
+                );
+
+                processor.InitMenu();  // trong này menu.ShowPopup(Cursor.Position);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void dtCreateTimeTo_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -2364,6 +2500,372 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        private void PrintProcess(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate("Mps000505", deletePrintTemplate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private bool deletePrintTemplate(string printTypeCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                if (!String.IsNullOrEmpty(printTypeCode) && !String.IsNullOrEmpty(fileName))
+                {
+                    switch (printTypeCode)
+                    {
+                        case "Mps000505":
+                            PrintMps000505(ref result, printTypeCode, fileName);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+        private void PrintMps000505(ref bool result, string printTypeCode, string fileName)
+        {
+            try
+            {
+                // 1. Lấy danh sách phiếu nhập được chọn
+                List<V_HIS_IMP_MEST> listImpMest = new List<V_HIS_IMP_MEST>();
+
+                if (selectedImpMests != null && selectedImpMests.Count > 0)
+                {
+                    listImpMest.AddRange(selectedImpMests);
+                }
+                else
+                {
+                    var currentImpMest = gridViewImportMestList.GetFocusedRow() as V_HIS_IMP_MEST;
+                    if (currentImpMest != null)
+                        listImpMest.Add(currentImpMest);
+                }
+
+                if (listImpMest.Count == 0)
+                    return;
+
+                WaitingManager.Show();
+
+                CommonParam param = new CommonParam();
+                var impMestIds = listImpMest.Select(o => o.ID).Distinct().ToList();
+
+                // ========== 2. V_HIS_IMP_MEST_USER ==========
+                List<V_HIS_IMP_MEST_USER> listImpMestUser = new List<V_HIS_IMP_MEST_USER>();
+                if (impMestIds.Count > 0)
+                {
+                    var userFilter = new HisImpMestUserViewFilter
+                    {
+                        IMP_MEST_IDs = impMestIds
+                    };
+
+                    listImpMestUser = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_USER>>(
+                        "/api/HisImpMestUser/GetView",
+                        ApiConsumers.MosConsumer,
+                        userFilter,
+                        param
+                    ) ?? new List<V_HIS_IMP_MEST_USER>();
+
+                    listImpMestUser = listImpMestUser.OrderBy(p => p.ID).ToList();
+                }
+
+                // ========== 3. V_HIS_IMP_MEST_BLOOD ==========
+                List<V_HIS_IMP_MEST_BLOOD> listImpMestBlood = new List<V_HIS_IMP_MEST_BLOOD>();
+                if (impMestIds.Count > 0)
+                {
+                    var bloodFilter = new HisImpMestBloodFilter
+                    {
+                        IMP_MEST_IDs = impMestIds
+                    };
+
+                    listImpMestBlood = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_BLOOD>>(
+                        "/api/HisImpMestBlood/GetView",
+                        ApiConsumers.MosConsumer,
+                        bloodFilter,
+                        param
+                    ) ?? new List<V_HIS_IMP_MEST_BLOOD>();
+
+                    listImpMestBlood = listImpMestBlood.OrderBy(o => o.ID).ToList();
+                }
+
+                // ========== 4. HIS_SUPPLIER ==========
+                List<HIS_SUPPLIER> listSupplier = new List<HIS_SUPPLIER>();
+                var supplierIds = listImpMest.Where(o => o.SUPPLIER_ID.HasValue)
+                                             .Select(o => o.SUPPLIER_ID.Value)
+                                             .Distinct()
+                                             .ToList();
+                if (supplierIds.Count > 0)
+                {
+                    var allSup = BackendDataWorker.Get<HIS_SUPPLIER>();
+                    listSupplier = allSup.Where(o => supplierIds.Contains(o.ID)).ToList();
+                }
+
+                // ========== 5. V_HIS_IMP_MEST_MEDICINE ==========
+                List<V_HIS_IMP_MEST_MEDICINE> listImpMestMedicine = new List<V_HIS_IMP_MEST_MEDICINE>();
+                if (impMestIds.Count > 0)
+                {
+                    var medFilter = new HisImpMestMedicineViewFilter
+                    {
+                        IMP_MEST_IDs = impMestIds
+                    };
+
+                    listImpMestMedicine = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MEDICINE>>(
+                        HisRequestUriStore.HIS_IMP_MEST_MEDICINE_GETVIEW,
+                        ApiConsumers.MosConsumer,
+                        medFilter,
+                        param
+                    ) ?? new List<V_HIS_IMP_MEST_MEDICINE>();
+                }
+
+                // ========== 6. V_HIS_IMP_MEST_MATERIAL ==========
+                List<V_HIS_IMP_MEST_MATERIAL> listImpMestMaterial = new List<V_HIS_IMP_MEST_MATERIAL>();
+                if (impMestIds.Count > 0)
+                {
+                    var matFilter = new HisImpMestMaterialViewFilter
+                    {
+                        IMP_MEST_IDs = impMestIds
+                    };
+
+                    listImpMestMaterial = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MATERIAL>>(
+                        HisRequestUriStore.HIS_IMP_MEST_MATERIAL_GETVIEW,
+                        ApiConsumers.MosConsumer,
+                        matFilter,
+                        param
+                    ) ?? new List<V_HIS_IMP_MEST_MATERIAL>();
+                }
+
+                // ========== 7. HIS_MEDICINE ==========
+                List<HIS_MEDICINE> listMedicine = new List<HIS_MEDICINE>();
+                List<long> medicineIds = listImpMestMedicine.Select(o => o.MEDICINE_ID).Distinct().ToList();
+                if (medicineIds.Count > 0)
+                {
+                    int skip = 0;
+                    while (medicineIds.Count - skip > 0)
+                    {
+                        var ids = medicineIds.Skip(skip).Take(500).ToList();
+                        skip += 500;
+
+                        HisMedicineFilter mFilter = new HisMedicineFilter();
+                        mFilter.IDs = ids;
+                        var tmp = new BackendAdapter(param).Get<List<HIS_MEDICINE>>(
+                            "/api/HisMedicine/Get",
+                            ApiConsumers.MosConsumer,
+                            mFilter,
+                            param
+                        );
+                        if (tmp != null && tmp.Count > 0)
+                            listMedicine.AddRange(tmp);
+                    }
+                }
+
+                // ========== 8. HIS_MATERIAL ==========
+                List<HIS_MATERIAL> listMaterial = new List<HIS_MATERIAL>();
+                List<long> materialIds = listImpMestMaterial.Select(o => o.MATERIAL_ID).Distinct().ToList();
+                if (materialIds.Count > 0)
+                {
+                    int skip = 0;
+                    while (materialIds.Count - skip > 0)
+                    {
+                        var ids = materialIds.Skip(skip).Take(500).ToList();
+                        skip += 500;
+
+                        HisMaterialFilter maFilter = new HisMaterialFilter();
+                        maFilter.IDs = ids;
+                        var tmp = new BackendAdapter(param).Get<List<HIS_MATERIAL>>(
+                            "/api/HisMaterial/Get",
+                            ApiConsumers.MosConsumer,
+                            maFilter,
+                            param
+                        );
+                        if (tmp != null && tmp.Count > 0)
+                            listMaterial.AddRange(tmp);
+                    }
+                }
+
+                // ========== 9. V_HIS_MEDICAL_CONTRACT & 10. MedicalContractADO ==========
+                List<V_HIS_MEDICAL_CONTRACT> listMedicalContract = new List<V_HIS_MEDICAL_CONTRACT>();
+                List<long> medicalContractIds = new List<long>();
+
+                if (listMedicine != null && listMedicine.Count > 0)
+                {
+                    var medicineContract = listMedicine
+                        .Where(o => o.MEDICAL_CONTRACT_ID.HasValue)
+                        .Select(p => p.MEDICAL_CONTRACT_ID.Value)
+                        .Distinct()
+                        .ToList();
+                    medicalContractIds.AddRange(medicineContract);
+                }
+
+                if (listMaterial != null && listMaterial.Count > 0)
+                {
+                    var materialContract = listMaterial
+                        .Where(o => o.MEDICAL_CONTRACT_ID.HasValue)
+                        .Select(p => p.MEDICAL_CONTRACT_ID.Value)
+                        .Distinct()
+                        .ToList();
+                    medicalContractIds.AddRange(materialContract);
+                }
+
+                medicalContractIds = medicalContractIds.Distinct().ToList();
+
+                // Nếu muốn đầy đủ có thể load thêm listMedicalContract ở đây (nếu hệ thống có API)
+                // (Giữ nguyên như code cũ nếu anh không muốn thay đổi behavior)
+
+                List<MPS.Processor.Mps000505.PDO.MedicalContractADO> listMedicalContractADO
+                    = new List<MPS.Processor.Mps000505.PDO.MedicalContractADO>();
+
+                if (listMedicalContract != null && listMedicalContract.Count > 0)
+                {
+                    foreach (var item in listMedicine)
+                    {
+                        if (!item.MEDICAL_CONTRACT_ID.HasValue)
+                            continue;
+
+                        var contract = listMedicalContract
+                            .FirstOrDefault(o => o.ID == item.MEDICAL_CONTRACT_ID.Value);
+                        if (contract == null) continue;
+
+                        var ado = new MPS.Processor.Mps000505.PDO.MedicalContractADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<
+                            MPS.Processor.Mps000505.PDO.MedicalContractADO
+                        >(ado, contract);
+                        ado.MEDICINE_ID = item.ID;
+                        listMedicalContractADO.Add(ado);
+                    }
+
+                    foreach (var item in listMaterial)
+                    {
+                        if (!item.MEDICAL_CONTRACT_ID.HasValue)
+                            continue;
+
+                        var contract = listMedicalContract
+                            .FirstOrDefault(o => o.ID == item.MEDICAL_CONTRACT_ID.Value);
+                        if (contract == null) continue;
+
+                        var ado = new MPS.Processor.Mps000505.PDO.MedicalContractADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<
+                            MPS.Processor.Mps000505.PDO.MedicalContractADO
+                        >(ado, contract);
+                        ado.MATERIAL_ID = item.ID;
+                        listMedicalContractADO.Add(ado);
+                    }
+                }
+
+                // ========== 11. V_HIS_MEDICINE_PATY ==========
+                List<V_HIS_MEDICINE_PATY> listMedicinePaty = new List<V_HIS_MEDICINE_PATY>();
+                if (listMedicine.Count > 0)
+                {
+                    HisMedicinePatyViewFilter filterMediPaty = new HisMedicinePatyViewFilter();
+                    filterMediPaty.MEDICINE_IDs = listMedicine.Select(o => o.ID).Distinct().ToList();
+                    listMedicinePaty = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_PATY>>(
+                        "/api/HisMedicinePaty/GetView",
+                        ApiConsumers.MosConsumer,
+                        filterMediPaty,
+                        param
+                    ) ?? new List<V_HIS_MEDICINE_PATY>();
+                }
+
+                // ========== 12. V_HIS_MATERIAL_PATY ==========
+                List<V_HIS_MATERIAL_PATY> listMaterialPaty = new List<V_HIS_MATERIAL_PATY>();
+                if (listMaterial.Count > 0)
+                {
+                    HisMaterialPatyViewFilter filterMaterialPaty = new HisMaterialPatyViewFilter();
+                    filterMaterialPaty.MATERIAL_IDs = listMaterial.Select(o => o.ID).Distinct().ToList();
+                    listMaterialPaty = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_PATY>>(
+                        "/api/HisMaterialPaty/GetView",
+                        ApiConsumers.MosConsumer,
+                        filterMaterialPaty,
+                        param
+                    ) ?? new List<V_HIS_MATERIAL_PATY>();
+                }
+
+                // ========== 13. InputADO (EMR) ==========
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                var firstImpMest = listImpMest.First();
+                string treatmentCode = !string.IsNullOrWhiteSpace(firstImpMest.TDL_TREATMENT_CODE)
+                    ? firstImpMest.TDL_TREATMENT_CODE
+                    : printTypeCode;
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO =
+                    new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                        .GenerateInputADOWithPrintTypeCode(
+                            treatmentCode,
+                            printTypeCode,
+                            currentModule != null ? currentModule.RoomId : 0
+                        );
+
+                // ========== 14. Tạo PDO ==========
+                var pdo = new MPS.Processor.Mps000505.PDO.Mps000505PDO(
+                    listImpMest,
+                    listImpMestMedicine,
+                    listImpMestMaterial,
+                    listImpMestBlood,
+                    listMedicine,
+                    listMaterial,
+                    listImpMestUser,
+                    listMedicinePaty,
+                    listMaterialPaty,
+                    listSupplier,
+                    listMedicalContractADO
+                );
+
+                WaitingManager.Hide();
+
+                // ========== 15. In ==========
+                MPS.ProcessorBase.Core.PrintData printData;
+                if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    printData = new MPS.ProcessorBase.Core.PrintData(
+                        printTypeCode,
+                        fileName,
+                        pdo,
+                        MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow,
+                        printerName
+                    )
+                    {
+                        EmrInputADO = inputADO
+                    };
+                }
+                else
+                {
+                    printData = new MPS.ProcessorBase.Core.PrintData(
+                        printTypeCode,
+                        fileName,
+                        pdo,
+                        MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog,
+                        printerName
+                    )
+                    {
+                        EmrInputADO = inputADO
+                    };
+                }
+
+                result = MPS.MpsPrinter.Run(printData);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
         }
     }
 }

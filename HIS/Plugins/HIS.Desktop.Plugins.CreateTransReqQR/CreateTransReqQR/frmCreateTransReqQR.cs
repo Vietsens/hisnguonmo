@@ -1060,22 +1060,21 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 sdo.TransactionIds = inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0 ? inputTransReq.Transactions.Select(o => o.ID).Distinct().ToList() : null;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                 currentTransReq = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/CreateSDO", ApiConsumers.MosConsumer, sdo, param);
-                if (inputTransReq.TreatmentId <= 0)
-                {
-                    HisTransactionViewFilter tvf = new HisTransactionViewFilter();
-                    tvf.TRANS_REQ_CODE__EXACT = currentTransReq.TRANS_REQ_CODE;
-                    transactionPrint = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null).FirstOrDefault();
-
-                    lblPatientName.Text = transactionPrint.BUYER_NAME ?? transactionPrint.TDL_PATIENT_NAME;
-                    lblAddress.Text = transactionPrint.BUYER_ADDRESS ?? transactionPrint.TDL_PATIENT_ADDRESS;
-                }
-                InitPopupMenuOther();
                 if (currentTransReq == null)
                 {
                     XtraMessageBox.Show(string.Format("Tạo QR thất bại. {0}", param.GetMessage()));
                 }
                 else
                 {
+                    if (inputTransReq.TreatmentId <= 0)
+                    {
+                        HisTransactionViewFilter tvf = new HisTransactionViewFilter();
+                        tvf.TRANS_REQ_CODE__EXACT = currentTransReq.TRANS_REQ_CODE;
+                        transactionPrint = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, tvf, null).FirstOrDefault();
+
+                        lblPatientName.Text = transactionPrint.BUYER_NAME ?? transactionPrint.TDL_PATIENT_NAME;
+                        lblAddress.Text = transactionPrint.BUYER_ADDRESS ?? transactionPrint.TDL_PATIENT_ADDRESS;
+                    }
                     Amount = currentTransReq.AMOUNT;
                     lblAmount.Text = Inventec.Common.Number.Convert.NumberToString(Amount, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
                     btnNew.Enabled = true;
@@ -1085,6 +1084,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     timerReloadTransReq.Start();
                     ExportInvoiceIfNeeded();
                 }
+                
+                InitPopupMenuOther();
             }
             catch (Exception ex)
             {

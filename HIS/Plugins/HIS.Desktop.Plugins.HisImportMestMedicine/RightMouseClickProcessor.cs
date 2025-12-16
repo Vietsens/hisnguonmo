@@ -39,6 +39,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         {
             ManuExpMestCreate,
             ManuImpMestEdit,
+            PrintMps000505
         }
         internal ModuleType moduleType { get; set; }
 
@@ -60,23 +61,27 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 // Add item and show
                 menu.ItemLinks.Clear();
 
-                BarButtonItem itemManuExpMestCreate = new BarButtonItem(barManager, "Tạo phiếu xuất trả NCC", 1);
-                itemManuExpMestCreate.Tag = ModuleType.ManuExpMestCreate;
-                itemManuExpMestCreate.ItemClick += new ItemClickEventHandler(mouseRightClick);
+                BarButtonItem itemPrint = new BarButtonItem(barManager, "In gộp biên bản kiểm nhập từ nhà cung cấp", 1);
+                itemPrint.Tag = ModuleType.PrintMps000505;
+                itemPrint.ItemClick += new ItemClickEventHandler(mouseRightClick);
+                menu.AddItem(itemPrint);
+                //BarButtonItem itemManuExpMestCreate = new BarButtonItem(barManager, "Tạo phiếu xuất trả NCC", 1);
+                //itemManuExpMestCreate.Tag = ModuleType.ManuExpMestCreate;
+                //itemManuExpMestCreate.ItemClick += new ItemClickEventHandler(mouseRightClick);
 
-                BarButtonItem itemManuImpMestEdit = new BarButtonItem(barManager, "Sửa phiếu nhập NCC", 2);
-                itemManuImpMestEdit.Tag = ModuleType.ManuImpMestEdit;
-                itemManuImpMestEdit.ItemClick += new ItemClickEventHandler(mouseRightClick);
+                //BarButtonItem itemManuImpMestEdit = new BarButtonItem(barManager, "Sửa phiếu nhập NCC", 2);
+                //itemManuImpMestEdit.Tag = ModuleType.ManuImpMestEdit;
+                //itemManuImpMestEdit.ItemClick += new ItemClickEventHandler(mouseRightClick);
 
-                if (this.ImpMestRightClick.IMP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_STT.ID__IMPORT && this.ImpMestRightClick.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC)
-                {
-                    menu.AddItem(itemManuExpMestCreate);
-                }
+                //if (this.ImpMestRightClick.IMP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_STT.ID__IMPORT && this.ImpMestRightClick.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC)
+                //{
+                //    menu.AddItem(itemManuExpMestCreate);
+                //}
 
-                if (this.ImpMestRightClick.IMP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_STT.ID__REQUEST && this.ImpMestRightClick.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC && this.ImpMestRightClick.CREATOR == loginName)
-                {
-                    menu.AddItem(itemManuImpMestEdit);
-                }
+                //if (this.ImpMestRightClick.IMP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_STT.ID__REQUEST && this.ImpMestRightClick.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC && this.ImpMestRightClick.CREATOR == loginName)
+                //{
+                //    menu.AddItem(itemManuImpMestEdit);
+                //}
 
                 menu.ShowPopup(Cursor.Position);
 

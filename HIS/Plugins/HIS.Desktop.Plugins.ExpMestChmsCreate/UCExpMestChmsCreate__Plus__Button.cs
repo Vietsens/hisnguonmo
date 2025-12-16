@@ -2348,7 +2348,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
 
                     else
                     {
-                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(resultSdo.ExpMest.TDL_TREATMENT_CODE) ? resultSdo.ExpMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.roomId);
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(resultSdo?.ExpMest.TDL_TREATMENT_CODE) ? resultSdo.ExpMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.roomId);
                         PrintData.EmrInputADO = inputADO;
                         result = MPS.MpsPrinter.Run(PrintData);
                     }

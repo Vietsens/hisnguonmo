@@ -161,8 +161,21 @@ namespace MPS.Processor.Mps000049
                     }
                     listParentFilter.Add(item);
                 }
+                if (rdo.ConfigMps49._ConfigKeyOderOption != 6)
+                {
+                    listAdoFilter = listAdoFilter
+                                    .OrderBy(p => p.MEDI_MATE_NUM_ORDER == 0 ? 1 : 0)
+                                    .ThenBy(p => p.MEDI_MATE_NUM_ORDER)
+                                    .ThenBy(p => p.MEDICINE_TYPE_NAME)
+                                    .ToList();
+                }
+                else
+                {
+                    listAdoFilter.OrderBy(o => o.MEDICINE_TYPE_NAME).ToList();
+                }
+
                 objectTag.AddObjectData(store, "ExpMestAggregates", rdo.listAdo);
-                objectTag.AddObjectData(store, "ExpMestAggregates1", listAdoFilter.OrderBy(o => o.MEDICINE_TYPE_NAME).ToList());
+                objectTag.AddObjectData(store, "ExpMestAggregates1", listAdoFilter);
                 objectTag.AddObjectData(store, "ExpMests", this.ExpMestADOs);
                 //Bổ sung key gom theo lô
                 objectTag.AddObjectData(store, "ExpMestsSplit", this.ExpMestADOsSplit);
@@ -601,6 +614,13 @@ namespace MPS.Processor.Mps000049
                                     .ThenBy(p => p.MEDICINE_TYPE_NAME)
                                     .ToList();
                                 break;
+                            case 6:
+                                dataMedis = dataMedis
+                                    .OrderBy(p => p.MEDI_MATE_NUM_ORDER == 0 ? 1 : 0)
+                                    .ThenBy(p => p.MEDI_MATE_NUM_ORDER)
+                                    .ThenBy(p => p.MEDICINE_TYPE_NAME)
+                                    .ToList();
+                                break;
                         }
                         rdo.listAdo.AddRange(dataMedis);
                         rdo.listAdoArrangeM_T_N.AddRange(dataMedis);
@@ -688,7 +708,18 @@ namespace MPS.Processor.Mps000049
 
                     if (dataMates != null && dataMates.Count > 0)
                     {
-                        dataMates = dataMates.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
+                        if (rdo.ConfigMps49._ConfigKeyOderOption == 6)
+                        {
+                            dataMates = dataMates
+                                    .OrderBy(p => p.MEDI_MATE_NUM_ORDER == 0 ? 1 : 0)
+                                    .ThenBy(p => p.MEDI_MATE_NUM_ORDER)
+                                    .ThenBy(p => p.MEDICINE_TYPE_NAME)
+                                    .ToList();
+                        }
+                        else
+                        {
+                            dataMates = dataMates.OrderBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
+                        }
                         rdo.listAdo.AddRange(dataMates);
                         rdo.listAdoArrangeM_T_N.AddRange(dataMates);
                     }

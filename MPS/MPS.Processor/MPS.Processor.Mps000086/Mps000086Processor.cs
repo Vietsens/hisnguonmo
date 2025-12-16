@@ -145,7 +145,7 @@ namespace MPS.Processor.Mps000086
                         switch (rdo.OrderKey)
                         {
                             case 1:
-                                listAdoPrint = listAdoPrint.OrderBy(p => p.TYPE_ID).ThenBy(p => p.MEDI_MATE_NUM_ORDER).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
+                                listAdoPrint = listAdoPrint.OrderBy(p => p.TYPE_ID).ThenBy(p => p.MEDI_MATE_NUM_ORDER ?? 0).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
                                 break;
                             case 2:
                                 listAdoPrint = listAdoPrint.OrderBy(p => p.MEDICINE_USE_FORM_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
@@ -155,6 +155,9 @@ namespace MPS.Processor.Mps000086
                                 break;
                             case 4:
                                 listAdoPrint = listAdoPrint.OrderBy(p => p.SERVICE_UNIT_NAME).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
+                                break;
+                            case 6:
+                                listAdoPrint = listAdoPrint.OrderBy(p => p.MEDI_MATE_NUM_ORDER.HasValue ? p.MEDI_MATE_NUM_ORDER.Value : listAdoPrint.Max(s =>s.MEDI_MATE_NUM_ORDER ?? 0) + 1).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
                                 break;
                         }
                     }
@@ -282,7 +285,7 @@ namespace MPS.Processor.Mps000086
                                 adoMediGr.IMP_VAT_RATIO = mediGr.First().IMP_VAT_RATIO;
                                 adoMediGr.IMP_PRICE_RATIO = mediGr.First().IMP_PRICE + mediGr.First().IMP_PRICE * mediGr.First().IMP_VAT_RATIO;
                                 adoMediGr.DESCRIPTION = mediGr.First().DESCRIPTION;
-                                adoMediGr.MEDI_MATE_NUM_ORDER = mediGr.First().MEDICINE_NUM_ORDER ?? 0;
+                                adoMediGr.MEDI_MATE_NUM_ORDER = mediGr.First().MEDICINE_NUM_ORDER;
                                 adoMediGr.NUM_ORDER = mediGr.First().NUM_ORDER;
                                 adoMediGr.MEDICINE_TYPE_NAME = mediGr.First().MEDICINE_TYPE_NAME;
                                 adoMediGr.MEDICINE_USE_FORM_NUM_ORDER = mediGr.First().MEDICINE_USE_FORM_NUM_ORDER;
@@ -399,6 +402,7 @@ namespace MPS.Processor.Mps000086
                                 ado.REGISTER_NUMBER = data.REGISTER_NUMBER;
                                 ado.SERVICE_UNIT_CODE = data.SERVICE_UNIT_CODE;
                                 ado.SERVICE_UNIT_NAME = data.SERVICE_UNIT_NAME;
+                                ado.MEDI_MATE_NUM_ORDER = data.MEDICINE_NUM_ORDER;
                                 ado.NATIONAL_NAME = data.NATIONAL_NAME;
                                 ado.PACKING_TYPE_NAME = data.PACKING_TYPE_NAME;
                                 ado.MEDICINE_USE_FORM_NAME = data.MEDICINE_USE_FORM_NAME;

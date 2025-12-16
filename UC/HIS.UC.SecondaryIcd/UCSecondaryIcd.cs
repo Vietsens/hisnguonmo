@@ -44,7 +44,8 @@ namespace HIS.UC.SecondaryIcd
         private string[] icdSeparators = new string[] { ";" };
         int positionHandleControlLeft = -1;
         DelegateGetIcdMain GetIcdMain { get; set; }
-        
+        DelegateGetIcdSub GetIcdSub { get; set; }
+
 
         private List<HIS_ICD> ListHisIcds { get; set; }
         private List<V_HIS_ICD> ListViewHisIcds { get; set; }
@@ -82,6 +83,7 @@ namespace HIS.UC.SecondaryIcd
                     }
                     this.DelegateNextFocus = data.DelegateNextFocus;
                     this.GetIcdMain = data.DelegateGetIcdMain;
+                    this.GetIcdSub = data.DelegateGetIcdSub;
                     if (data.delegateCheckICD != null)
                     {
                         this.checkICD = data.delegateCheckICD;

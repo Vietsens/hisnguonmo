@@ -72,7 +72,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         V_HIS_TRANSACTION resultTranDeposit = null;
         List<V_HIS_ACCOUNT_BOOK> ListAccountBook = new List<V_HIS_ACCOUNT_BOOK>();
         List<PayFormADO> payFormList = new List<PayFormADO>();
-
+        bool isLuuKy = false;
         List<HIS_DEPOSIT_REASON> lstDepositReason = null;
 
         int positionHandleControl = -1;
@@ -136,7 +136,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 this.LoadKeyFrmLanguage();
                 ValidControl();
                 WaitingManager.Hide();
-
+                HisConfigCFG.LoadConfig();
                 InitLinkLabel();
                 LoadComboBank();
                 //SetValidate();
@@ -147,6 +147,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 btnSave.Enabled = is_true;
                 btnSavePrint.Enabled = is_true;
                 btnQR.Enabled = false;
+                loadConfig();
             }
             catch (Exception ex)
             {
@@ -1390,7 +1391,12 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 }
                 else
                 {
+                    
                     this.InPhieuThuTamUng(true);
+                    //if (resultTranDeposit != null && resultTranDeposit.PAY_FORM_ID == 8 && resultTranDeposit.IS_ACTIVE == 0)
+                    //{
+                    //    CreateQR(new List<V_HIS_TRANSACTION> { resultTranDeposit }, false);
+                    //}
                 }
                 SessionManager.ProcessTokenLost(param);
             }
@@ -1441,6 +1447,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 if (success)
                 {
                     MessageManager.Show(this, param, success);
+                    //if (resultTranDeposit != null && resultTranDeposit.PAY_FORM_ID == 8 && resultTranDeposit.IS_ACTIVE == 0)
+                    //{
+                    //    CreateQR(new List<V_HIS_TRANSACTION> { resultTranDeposit }, false);
+                    //}
                     if (chkAutoClose.Checked)
                     {
                         this.Close();
@@ -1483,6 +1493,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             {
                 if (!btnNew.Enabled)
                     return;
+                btnQR.Enabled = false;
                 WaitingManager.Show();
                 LoadAccountBookToLocal();
                 ResetDefaultValueControl();
@@ -1708,6 +1719,8 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     data.Transaction.NUM_ORDER = (long)(spinTongTuDen.Value);
                 }
                 var payFormer = payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue?.ToString());
+               
+
                 if (payFormer != null && payFormer.IS_REQUIRED_BANK == 1 && cboBank.EditValue == null)
                 {
                     param.Messages.Add("Vui lòng chọn ngân hàng cho hình thức thanh toán này.");
@@ -1910,13 +1923,35 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 {
                     success = true;
                     AddLastAccountToLocal();
-                    this.resultTranDeposit = rs;
+                   // this.resultTranDeposit = rs;
                     SetValueContronlDepositSuccess();
                     UpdateDictionaryNumOrderAccountBook(accountBook);
 
-                    if (rs.PAY_FORM_ID == 8) btnQR.Enabled = true;
-                    loadConfig();
-                    if (rs.PAY_FORM_ID == 8 && rs.IS_ACTIVE == 0) CreateQR(rs, false);
+                  
+
+                  
+                    if (isLuuKy)
+                    {
+                        if (isCreateQRContinue && cboPayForm.EditValue != null && Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                        {
+
+                            this.resultTranDeposit = rs;
+                            btnQR.Enabled = true;
+                            
+                            CreateQR(rs, false);
+                        }
+                    }
+                    else
+                    {
+
+                        if (rs != null && Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                        {
+                            this.resultTranDeposit = rs;
+                            btnQR.Enabled = true;
+                            
+                            CreateQR(rs, false);
+                        }
+                    }
 
                 }
                 else
@@ -1945,6 +1980,12 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         }
         List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
         HIS_CONFIG selectedConfig = new HIS_CONFIG();
+        //List<V_HIS_TRANSACTION> listTranToQR;
+        class ConfigInfo
+        {
+            public string BANK { get; set; }
+            public string VALUE { get; set; }
+        }
         private void loadConfig()
         {
             try
@@ -1962,80 +2003,128 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         {
             try
             {
-                if (listConfig != null)
+                //var allRooms = BackendDataWorker.Get<V_HIS_ROOM>();
+                //var roomId = this.currentModule.RoomId;
+
+                var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == this.currentModule.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
+                if (currentRoom != null && currentRoom.Count() > 0)
                 {
-                    if (listConfig.Count > 1)
+                    ConfigInfo _config = Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigInfo>(currentRoom.FirstOrDefault().QR_CONFIG_JSON);
+                    HIS_CONFIG _cf = new HIS_CONFIG();
+                    if (string.IsNullOrWhiteSpace(_config.BANK)) MessageBox.Show(this, "Cấu hình thiếu thông tin ngân hàng.", "Thông báo", MessageBoxButtons.OK);
+                    _cf.KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", _config.BANK.Trim());
+                    _cf.VALUE = _config.VALUE;
+                    //co cau hinh QR o buong benh
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO();
+                    adoqr.TreatmentId = this.treatment.ID;
+                    adoqr.ConfigValue = _cf;
+                    adoqr.TransReqId = CreateReqType.Transaction;
+                    AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
+                    HIS_TRANSACTION tran = AutoMapper.Mapper.Map<V_HIS_TRANSACTION, HIS_TRANSACTION>(data);
+                    adoqr.Transaction = tran;
+                    if (isLuuKy)
+                        adoqr.IssueInvoice = true;
+
+                    listArgs.Add(adoqr);
+
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+
+
+
+                     
+                }
+                else
+                {
+                    //listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+                    if (listConfig != null)
                     {
-                        if (!click)
+                        if ((listConfig == null || listConfig.Count == 0) && cboBank.EditValue == null)
                         {
-                            MessageBox.Show(this, "Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo", MessageBoxButtons.OK);
+                            btnQR.Enabled = false;
                             return;
                         }
-                        popupMenu1.ClearLinks();
-                        foreach (var item in listConfig)
+                        
+                        if (listConfig.Count > 1)
                         {
-                            string key = "";
-                            string value = item.KEY;
-                            int index = value.IndexOf("Info");
-                            if (index > 0)
+                            if (!click)
                             {
-                                var shotkey = value.Substring(0, index);
-                                string[] parts = shotkey.Split('.');
-                                if (parts.Length > 0)
+                                MessageBox.Show(this, "Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo", MessageBoxButtons.OK);
+                                return;
+                            }
+                            popupMenu1.ClearLinks();
+                            foreach (var item in listConfig)
+                            {
+                                string key = "";
+                                string value = item.KEY;
+                                int index = value.IndexOf("Info");
+                                if (index > 0)
                                 {
-                                    key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                                    var shotkey = value.Substring(0, index);
+                                    string[] parts = shotkey.Split('.');
+                                    if (parts.Length > 0)
+                                    {
+                                        key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                                    }
                                 }
+                                else
+                                {
+                                    key = item.KEY;
+                                }
+
+
+                                BarButtonItem btnOption = new BarButtonItem(null, key);
+                                btnOption.ItemClick += (s, args) =>
+                                {
+
+                                    selectedConfig = item;
+                                    List<object> listArgs = new List<object>();
+                                    TransReqQRADO adoqr = new TransReqQRADO();
+                                    adoqr.TreatmentId = this.treatment.ID;
+                                    adoqr.ConfigValue = selectedConfig;
+                                    adoqr.TransReqId = CreateReqType.Transaction;
+                                    HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
+                                    adoqr.Transaction = tran;
+                                    listArgs.Add(adoqr);
+                                    Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.KEY + " tran_id: " + adoqr.Transaction.ID);
+                                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+                                };
+                                popupMenu1.AddItem(btnOption);
                             }
-                            else
-                            {
-                                key = item.KEY;
-                            }
-
-
-                            BarButtonItem btnOption = new BarButtonItem(null, key);
-                            btnOption.ItemClick += (s, args) =>
-                            {
-
-                                selectedConfig = item;
-                                List<object> listArgs = new List<object>();
-                                TransReqQRADO adoqr = new TransReqQRADO();
-                                adoqr.TreatmentId = this.treatment.ID;
-                                adoqr.ConfigValue = selectedConfig;
-                                adoqr.TransReqId = CreateReqType.Transaction;
-                                HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
-                                adoqr.Transaction = tran;
-                                listArgs.Add(adoqr);
-                                Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.KEY + " tran_id: " + adoqr.Transaction.ID);
-                                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
-
-                            };
-                            popupMenu1.AddItem(btnOption);
+                            popupMenu1.Manager = barManager1;
+                            popupMenu1.ShowPopup(Control.MousePosition);
                         }
-                        popupMenu1.Manager = barManager1;
-                        popupMenu1.ShowPopup(Control.MousePosition);
-                    }
 
-                    else
-                    {
-                        selectedConfig = listConfig[0];
-                        List<object> listArgs = new List<object>();
-                        TransReqQRADO adoqr = new TransReqQRADO();
-                        adoqr.TreatmentId = this.treatment.ID;
-                        adoqr.ConfigValue = selectedConfig;
-                        adoqr.TransReqId = CreateReqType.Transaction;
-                        HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
-                        adoqr.Transaction = tran;
-                        listArgs.Add(adoqr);
-                        Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.KEY + " tran_id: " + adoqr.Transaction.ID);
-                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                        else
+                        {
+                            if (listConfig == null || !listConfig.Any())
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn("CreateQR: listConfig null hoặc rỗng");
+                                btnQR.Enabled = false;
+                                return;
+                            }
+                            selectedConfig = listConfig.First();
+                            List<object> listArgs = new List<object>();
+                            TransReqQRADO adoqr = new TransReqQRADO();
+                            adoqr.TreatmentId = this.treatment.ID;
+                            adoqr.ConfigValue = selectedConfig;
+                            adoqr.TransReqId = CreateReqType.Transaction;
+                            HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
+                            adoqr.Transaction = tran;
+                            listArgs.Add(adoqr);
+                            Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.KEY + " tran_id: " + adoqr.Transaction.ID);
+                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 
+
+                        }
 
                     }
 
                 }
-
             }
             catch (Exception ex)
             {
@@ -3033,7 +3122,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 XtraMessageBox.Show("Cấu hình thất bại", "Thông báo");
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
+        } 
 
         private void txtTransactionCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -3057,7 +3146,8 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         {
             try
             {
-                if (resultTranDeposit != null && resultTranDeposit.PAY_FORM_ID == 8 && resultTranDeposit.IS_ACTIVE == 0) CreateQR(resultTranDeposit, true);
+                //if (this.resultTranDeposit != null && this.resultTranDeposit.PAY_FORM_ID == 8 && resultTranDeposit.IS_ACTIVE == 0) CreateQR(this.resultTranDeposit, true);
+                if (this.resultTranDeposit != null) CreateQR(this.resultTranDeposit, true);
             }
             catch (Exception ex)
             {
@@ -3065,11 +3155,27 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        private bool IsPayFormQR()
+        {
+            
+            return cboPayForm.EditValue != null && Convert.ToInt64(cboPayForm.EditValue) == 8;
+        }
+        public bool isCreateQRContinue = true;
         private void btnSaveAndSign_Click(object sender, EventArgs e)
         {
             try
             {
+                if (IsPayFormQR())
+                {
+                    var result = MessageBox.Show(
+                        "Thanh toán QR chưa thể tự động tạo hóa đơn điện tử bạn có muốn tiếp tục?",
+                        "Thông báo",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question
+                    );
+                    if (result != DialogResult.Yes)
+                        return;
+                }
                 isSaveAndSign = true;
                 positionHandleControl = -1;
                 if (!btnSaveAndSign.Enabled || !dxValidationProvider1.Validate() || this.treatment == null)
@@ -3095,7 +3201,15 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 }
                 else
                 {
-                    this.InPhieuThuTamUng(true);
+                   
+                    //if (IsPayFormQR() && resultTranDeposit != null && resultTranDeposit.PAY_FORM_ID == 8 && resultTranDeposit.IS_ACTIVE == 0)
+                    //{
+                    //    CreateQR(new List<V_HIS_TRANSACTION> { resultTranDeposit }, false);
+                    //}
+                    //else
+                    //{
+                        this.InPhieuThuTamUng(true);
+                    //}
                 }
                 SessionManager.ProcessTokenLost(param);
             }
