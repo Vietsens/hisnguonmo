@@ -596,6 +596,160 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
             return valid;
         }
+        private bool CheckBedEndForSave(ValidationDataType validationDataType, ref List<WarningADO> listWarningADO)
+        {
+            bool valid = true;
+            try
+            {
+                if (validationDataType == ValidationDataType.PopupMessage && this._isSkipWarningForSave == true)
+                {
+                    return valid;
+                }
+                if (ConfigKey.CheckBedEnd == "1" && this.currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
+                {
+                    //danh sach vao buong benh
+                    HisTreatmentBedRoomViewFilter tbrFilter = new HisTreatmentBedRoomViewFilter();
+                    tbrFilter.TREATMENT_ID = treatmentId;
+                    var TreatmentBerRoom = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_BED_ROOM>>("api/HisTreatmentBedRoom/GetView", ApiConsumers.MosConsumer, tbrFilter, null);
+
+                    //danh sach y lenh giuong
+                    HisServiceReqFilter srFilter = new HisServiceReqFilter();
+                    srFilter.TREATMENT_ID = treatmentId;
+                    srFilter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G;
+                    List<HIS_SERVICE_REQ> serviceReqs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, srFilter, null);
+
+                    //danh sach lich su giuong theo TREATMENT_ID
+                    HisBedLogViewFilter filter = new HisBedLogViewFilter();
+                    filter.TREATMENT_ID = currentHisTreatment.ID;
+                    BedLogs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumers.MosConsumer, filter, null);
+
+                    if (serviceReqs != null && serviceReqs.Count > 0 && TreatmentBerRoom != null && TreatmentBerRoom.Count > 0 && BedLogs != null && BedLogs.Count > 0)
+                    {
+                        var bedRoomDict = TreatmentBerRoom.ToDictionary(b => b.ID, b => b);
+                        var bedLogDict = BedLogs.ToDictionary(b => b.ID, b => b);
+                        long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
+                        var listServiceReqCode = new List<string>();
+
+                        foreach (var item in serviceReqs)
+                        {
+                            if (item.BED_LOG_ID.HasValue && bedLogDict.ContainsKey(item.BED_LOG_ID.Value))
+                            {
+                                var bedLog = bedLogDict[item.BED_LOG_ID.Value];
+                                if (bedLog.TREATMENT_BED_ROOM_ID != 0 && bedRoomDict.ContainsKey(bedLog.TREATMENT_BED_ROOM_ID))
+                                {
+                                    if (bedLog.FINISH_TIME.HasValue && bedLog.FINISH_TIME.Value > endTime)
+                                    {
+                                        string finishTimeStr = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(bedLog.FINISH_TIME.Value)?.ToString("dd/MM/yyyy HH:mm:ss") ?? "";
+                                        listServiceReqCode.Add($"Y lệnh {item.SERVICE_REQ_CODE} có thời gian {finishTimeStr}");
+                                    }
+                                }
+                            }
+                        }
+
+                        if (listServiceReqCode.Count > 0)
+                        {
+                            string endTimeStr = dtEndTime.DateTime.ToString("dd/MM/yyyy HH:mm:ss");
+                            string message = $"Tồn tại y lệnh giường có thời gian kết thúc lớn hơn thời gian ra viện {endTimeStr}{Environment.NewLine}";
+                            message += string.Join(Environment.NewLine, listServiceReqCode);
+
+                            if (validationDataType == ValidationDataType.PopupMessage)
+                            {
+                                var result = DevExpress.XtraEditors.XtraMessageBox.Show(message, "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                                if (result != DialogResult.Yes)
+                                {
+                                    return false;
+                                }
+                            }
+                            else if (validationDataType == ValidationDataType.GetListMessage && listWarningADO != null)
+                            {
+                                WarningADO warning = new WarningADO();
+                                warning.IsSkippable = false;
+                                warning.Description = message;
+                                listWarningADO.Add(warning);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                valid = false;
+            }
+            return valid;
+        }
+        private bool CheckPrescriptionForSave(ValidationDataType validationDataType, ref List<WarningADO> listWarningADO)
+        {
+            bool valid = true;
+            try
+            {
+                if (validationDataType == ValidationDataType.PopupMessage && this._isSkipWarningForSave == true)
+                {
+                    return valid;
+                }
+                if (ConfigKey.CheckPrescriptionEnd == "1" && this.currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
+                {
+                    //danh sach dich vu thuoc vat tu
+                    HisSereServFilter ssFilter = new HisSereServFilter();
+                    ssFilter.TREATMENT_ID = treatmentId;
+                    ssFilter.TDL_SERVICE_TYPE_IDs = new List<long>() { IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC, IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT };
+                    var sereServs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, ssFilter, null);
+                    List<long> listServiceReqId = sereServs.Select(p => p.SERVICE_REQ_ID ?? 0).Distinct().ToList();
+
+                    if (listServiceReqId.Count > 0)
+                    {
+                        //danh sach y lenh thuoc/vat tu 
+                        HisServiceReqFilter srPreFilter = new HisServiceReqFilter();
+                        srPreFilter.IDs = listServiceReqId;
+                        List<HIS_SERVICE_REQ> serviceReqsPre = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, srPreFilter, null);
+
+                        if (serviceReqsPre != null && serviceReqsPre.Count > 0)
+                        {
+                            long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
+                            var listServiceReqCode = new List<string>();
+                            foreach (var item in serviceReqsPre)
+                            {
+                                if (item.FINISH_TIME.HasValue && item.FINISH_TIME > endTime)
+                                {
+                                    string finishTimeStr = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(item.FINISH_TIME.Value)?.ToString("dd/MM/yyyy HH:mm:ss") ?? "";
+                                    listServiceReqCode.Add($"Y lệnh {item.SERVICE_REQ_CODE} có thời gian {finishTimeStr}");
+                                }
+                            }
+
+                            if (listServiceReqCode.Count > 0)
+                            {
+                                string endTimeStr = dtEndTime.DateTime.ToString("dd/MM/yyyy HH:mm:ss");
+                                string message = $"Tồn tại y lệnh thuốc/vật tư có thời gian kết thúc lớn hơn thời gian ra viện {endTimeStr}{Environment.NewLine}";
+                                message += string.Join(Environment.NewLine, listServiceReqCode);
+
+
+                                if (validationDataType == ValidationDataType.PopupMessage)
+                                {
+                                    var result = DevExpress.XtraEditors.XtraMessageBox.Show(message, "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                                    if (result != DialogResult.Yes)
+                                    {
+                                        return false;
+                                    }
+                                }
+                                else if (validationDataType == ValidationDataType.GetListMessage && listWarningADO != null)
+                                {
+                                    WarningADO warning = new WarningADO();
+                                    warning.IsSkippable = false;
+                                    warning.Description = message;
+                                    listWarningADO.Add(warning);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                valid = false;
+            }
+            return valid;
+        }
 
         private bool CheckUnassignTrackingServiceReq_ForSave(ValidationDataType validationDataType, ref List<WarningADO> listWarningADO)
         {

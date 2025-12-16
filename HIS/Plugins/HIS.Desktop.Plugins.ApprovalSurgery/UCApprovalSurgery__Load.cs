@@ -151,9 +151,13 @@ namespace HIS.Desktop.Plugins.ApprovalSurgery
                 numPageSizeServiceReq = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(start, limit);
                 Inventec.Core.ApiResultObject<List<V_HIS_SERE_SERV_13>> apiResult = new ApiResultObject<List<V_HIS_SERE_SERV_13>>();
+                var roomExcute = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.roomId);
                 HisSereServView13Filter hisSereServFilter = new HisSereServView13Filter();
+                if (roomExcute == null || roomExcute.MUST_BE_APPROVED_SURGERY != 1)
                 hisSereServFilter.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT;
+
                 var room = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.roomId);
+                
 
                 if (cboStatus.EditValue != null && cboStatus.SelectedIndex != 0)
                 {
