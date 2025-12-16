@@ -332,9 +332,6 @@
     <Reference Include="MPS.Processor.Mps000346.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000346.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000347.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000347.PDO.dll</HintPath>
-    </Reference>
     <Reference Include="MPS.Processor.Mps000349.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000349.PDO.dll</HintPath>
     </Reference>
@@ -446,6 +443,10 @@
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000347.PDO\MPS.Processor.Mps000347.PDO.csproj">
+      <Project>{017023d0-9672-4726-b8c7-c534b5cd30be}</Project>
+      <Name>MPS.Processor.Mps000347.PDO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

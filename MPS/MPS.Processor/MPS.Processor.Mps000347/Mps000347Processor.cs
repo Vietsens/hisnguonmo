@@ -238,7 +238,7 @@ namespace MPS.Processor.Mps000347
                                 adoMediGr.IMP_VAT_RATIO = mediGr.First().IMP_VAT_RATIO;
                                 adoMediGr.IMP_PRICE_RATIO = mediGr.First().IMP_PRICE + mediGr.First().IMP_PRICE * mediGr.First().IMP_VAT_RATIO;
                                 adoMediGr.DESCRIPTION = mediGr.First().DESCRIPTION;
-                                adoMediGr.MEDI_MATE_NUM_ORDER = mediGr.First().MEDICINE_NUM_ORDER ?? 0;
+                                adoMediGr.MEDI_MATE_NUM_ORDER = mediGr.First().MEDICINE_NUM_ORDER;
                                 adoMediGr.NUM_ORDER = mediGr.First().NUM_ORDER;
                                 adoMediGr.VIR_PRICE = mediGr.Sum(p => p.VIR_PRICE);
                                 adoMediGr.MEDICINE_USE_FORM_NUM_ORDER = mediGr.First().MEDICINE_USE_FORM_NUM_ORDER;
