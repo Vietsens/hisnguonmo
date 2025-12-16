@@ -135,10 +135,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     //}
                     //qtcode
                     if (cmdType != Inventec.Common.ElectronicBill.CmdType.ImportAndPublishInv &&
-                        cmdType != Inventec.Common.ElectronicBill.CmdType.AdjustInvoiceAction && // Thêm điều kiện cho AdjustInvoiceAction
-                        this.ElectronicBillDataInput != null && !String.IsNullOrWhiteSpace(this.ElectronicBillDataInput.InvoiceCode))
+                        cmdType != Inventec.Common.ElectronicBill.CmdType.AdjustInvoiceAction &&
+                        //cmdType != Inventec.Common.ElectronicBill.CmdType.PublishInvFkey && // Thêm điều kiện cho AdjustInvoiceAction
+                        this.ElectronicBillDataInput != null && !String.IsNullOrWhiteSpace(this.ElectronicBillDataInput.Transaction.INVOICE_CODE))
                     {
-                        electronicBillInput.fKey = this.ElectronicBillDataInput.InvoiceCode;
+                        electronicBillInput.fKey = this.ElectronicBillDataInput.Transaction.INVOICE_CODE;
                     }
                     else
                     {
@@ -601,7 +602,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     case ElectronicBillType.ENUM.CREATE_INVOICE:
                         if (typeInvoice == "1")
                         {
-                            bool hasInvoiceCode = !string.IsNullOrWhiteSpace(this.ElectronicBillDataInput?.InvoiceCode);
+                            bool hasInvoiceCode = !string.IsNullOrWhiteSpace(this.ElectronicBillDataInput?.Transaction?.INVOICE_CODE);
                             bool hasNumOrder = !string.IsNullOrWhiteSpace(this.ElectronicBillDataInput?.Transaction?.EINVOICE_NUM_ORDER);
 
                             if (!hasInvoiceCode)
@@ -777,7 +778,6 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                 invoice.InvoiceDetail.CusAddress = adoInfo.BuyerAddress ?? " ";
                 invoice.InvoiceDetail.CusPhone = adoInfo.BuyerPhone ?? "";
                 invoice.InvoiceDetail.CusTaxCode = adoInfo.BuyerTaxCode ?? "";
-
                 string paymentName = electronicBillDataInput.PaymentMethod;
 
                 if (electronicBillDataInput.Transaction != null)
