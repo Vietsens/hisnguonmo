@@ -1449,7 +1449,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             ado.PATIENT_TYPE_NAME = item.PATIENT_TYPE_NAME;
                             ado.PATIENT_TYPE_ID = item.ID;
                             ado.PATIENT_TYPE_CODE = item.PATIENT_TYPE_CODE;
-                            ado.IsNotSell = true;
+                            if(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.NotAutoIsNotSell") == "1")
+                            {
+                                ado.IsNotSell = false;
+                            }else
+                            {
+                                ado.IsNotSell = true;
+                            }
                             ado.SERVICE_TYPE_ID = this.currrentServiceAdo.SERVICE_TYPE_ID;
                             ado.SERVICE_ID = this.currrentServiceAdo.SERVICE_ID;
                             if (listMedcinePaty != null && listMedcinePaty.Count > 0)
