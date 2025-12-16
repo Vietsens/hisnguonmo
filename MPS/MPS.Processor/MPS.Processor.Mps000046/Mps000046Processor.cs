@@ -276,6 +276,14 @@ namespace MPS.Processor.Mps000046
                         {
                             dataMedis = dataMedis.OrderByDescending(p => p.MEDICINE_USE_FORM_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
                         }
+                        else if (rdo._ConfigKeyOderOption == 6)
+                        {
+                            dataMedis = dataMedis
+                                    .OrderBy(p => p.MEDI_MATE_NUM_ORDER == 0 ? 1 : 0)
+                                    .ThenBy(p => p.MEDI_MATE_NUM_ORDER)
+                                    .ThenBy(p => p.MEDICINE_TYPE_NAME)
+                                    .ToList();
+                        }
                         rdo.listAdo.AddRange(dataMedis);
                         SetSingleKey(new KeyValue(Mps000046ExtendSingleKey.TOTAL_PRICE, dataMedis.Sum(o=>o.PRICE ?? 0)));
                         SetSingleKey(new KeyValue(Mps000046ExtendSingleKey.TOTAL_PRICE_VAT, dataMedis.Sum(o => (o.PRICE ?? 0) * (1 + (o.VAT_RATIO ?? 0)))));
@@ -455,6 +463,14 @@ namespace MPS.Processor.Mps000046
                         else if (rdo._ConfigKeyOderOption == 3)
                         {
                             dataMedis = dataMedis.OrderByDescending(p => p.MEDICINE_USE_FORM_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
+                        }
+                        else if (rdo._ConfigKeyOderOption == 6)
+                        {
+                            dataMedis = dataMedis
+                                    .OrderBy(p => p.MEDI_MATE_NUM_ORDER == 0 ? 1 : 0)
+                                    .ThenBy(p => p.MEDI_MATE_NUM_ORDER)
+                                    .ThenBy(p => p.MEDICINE_TYPE_NAME)
+                                    .ToList();
                         }
                         listAdo_Logins.AddRange(dataMedis);
                         SetSingleKey(new KeyValue(Mps000046ExtendSingleKey.TOTAL_PRICE_LOGIN, dataMedis.Sum(o => o.PRICE ?? 0)));
