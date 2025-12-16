@@ -2645,7 +2645,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     treatmentEndTypeId = temp;
 
                 }
-
                 //if (treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
                 //{
                 //    bool isBHYTPatient = currentHisTreatment.TDL_PATIENT_TYPE_ID == HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT;
@@ -2864,6 +2863,16 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 }
 
                 if (!this.CheckIsCheckServiceFollowWhenOut())
+                {
+                    return;
+                }
+
+                if (!this.CheckBedEndForSave(ValidationDataType.PopupMessage, ref warningADONew))
+                {
+                    return;
+                }
+
+                if (!this.CheckPrescriptionForSave(ValidationDataType.PopupMessage, ref warningADONew))
                 {
                     return;
                 }
@@ -5387,7 +5396,16 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     return;
                 }
+                if (!this.CheckBedEndForSave(ValidationDataType.GetListMessage, ref this.warningADOs))
+                {
+                    return;
+                }
 
+                if (!this.CheckPrescriptionForSave(ValidationDataType.GetListMessage, ref this.warningADOs))
+                {
+                    return;
+                }
+                
                 GetValueUC();
                 if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
                 {

@@ -86,6 +86,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         private const string KEY_WarnNotRequiredCompleteHasNoSample = "HIS.Desktop.Plugins.TreatmentFinish.WarnNotRequiredCompleteHasNoSample";
         private const string KEY_IsCheckServiceFollowWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
 
+        private const string KEY_CHECK_BED_END = "MOS.HIS_TREATMENT.IS_NOT_ALLOW_BED_END_GREATER_THAN_FINISHING_WITH_STAY_IN_PATIENT";
+        private const string KEY_CHECK_PRESCRIPTION_END = "MOS.HIS_TREATMENT.IS_NOT_ALLOW__PRESCRIPTION_END_GREATER_THAN_FINISHING_WITH_STAY_IN_PATIENT";
+
         internal static string OptionTreatmentEndTypeIsTransfer;
         internal static string MustChooseSeviceExamOption;
         internal static string WarningUnfinishedServiceOption;
@@ -128,7 +131,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         internal static string ENDDEAPRTMENTSUBSHEADOPTIOIN;
         internal static bool IsAutoMapIcd10WithIcdYhct;
 
-       
+        internal static string CheckBedEnd;
+        internal static string CheckPrescriptionEnd;
+
+
         internal static void GetConfigKey()
         {
             try
@@ -190,6 +196,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
                 ExportXml2076Option = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CONFIG_XML2076_EXPORT_OPTION);
                 IsAllowTreatmentFinishDepartmentIsActiveFee = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__IsAllowTreatmentFinishDepartmentIsActiveFee);
                 IsAutoMapIcd10WithIcdYhct = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__HIS_DESKTOP_PLUGINS_HISICD_AUTOMAPICD10WITHICDYHCT) == IS__TRUE;
+                CheckBedEnd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_BED_END);
+                CheckPrescriptionEnd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_PRESCRIPTION_END);
                 TreatmentEndCFG.GetConfig();
                 CheckFinishTimeCFG.GetConfig();
             }
