@@ -1562,7 +1562,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     }
                 }
 
-                if (hIS_MEDICINE_TYPE.IS_BUSINESS == 1)
+                var mediStock = BackendDataWorker.Get<HIS_MEDI_STOCK>().FirstOrDefault(o => o.ROOM_ID == this.module.RoomId);
+                if (hIS_MEDICINE_TYPE.IS_BUSINESS == 1 || mediStock.IS_BUSINESS == 1)
                 {
                     var item = allItems.FirstOrDefault(x => x.NAME == "Thuốc kinh doanh");
                     if (item != null)
