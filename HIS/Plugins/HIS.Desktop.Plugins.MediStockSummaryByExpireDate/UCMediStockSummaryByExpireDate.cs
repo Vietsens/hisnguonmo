@@ -101,6 +101,8 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 LoadDataGridMediStock();
               
                 ShowUCControl();
+                chkMediStock.CheckedChanged += chkMediStock_CheckedChanged;
+                cboExpriedDate.SelectedIndexChanged += cboExpriedDate_SelectedIndexChanged;
             }
             catch (Exception ex)
             {
@@ -143,11 +145,68 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
 
                             }
                         }
+                        if (item.KEY == chkMediStock.Name)
+                        {
+                            chkMediStock.Checked = item.VALUE == "1";
+                        }
                        
                     }
                 }
 
                 isNotLoadWhileChangeControlStateInFirst = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SaveControlState()
+        {
+            try
+            {
+                List<HIS.Desktop.Library.CacheClient.ControlStateRDO> controlStateRDOs = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO cboExpriedDateState = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                cboExpriedDateState.KEY = cboExpriedDate.Name;
+                cboExpriedDateState.VALUE = cboExpriedDate.SelectedIndex.ToString();
+                controlStateRDOs.Add(cboExpriedDateState);
+
+                HIS.Desktop.Library.CacheClient.ControlStateRDO chkMediStockState = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                chkMediStockState.KEY = chkMediStock.Name;
+                chkMediStockState.VALUE = chkMediStock.Checked ? "1" : "0";
+                controlStateRDOs.Add(chkMediStockState);
+
+                this.controlStateWorker.SetData(controlStateRDOs);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkMediStock_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!isNotLoadWhileChangeControlStateInFirst)
+                {
+                    SaveControlState();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboExpriedDate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!isNotLoadWhileChangeControlStateInFirst)
+                {
+                    SaveControlState();
+                }
             }
             catch (Exception ex)
             {
