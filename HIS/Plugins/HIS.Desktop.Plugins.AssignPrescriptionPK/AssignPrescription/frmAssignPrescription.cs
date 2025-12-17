@@ -5624,7 +5624,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         }
 
                         //Filter data
-                        gridViewMediMaty.ActiveFilterString = String.Format("[MEDICINE_TYPE_NAME] Like '%{0}%' OR [MEDICINE_TYPE_CODE] Like '%{0}%' OR [ACTIVE_INGR_BHYT_NAME] Like '%{0}%' OR [MEDICINE_TYPE_NAME__UNSIGN] Like '%{0}%' OR [MEDICINE_TYPE_CODE__UNSIGN] Like '%{0}%' OR [ACTIVE_INGR_BHYT_NAME__UNSIGN] Like '%{0}%' OR [PARENT_NAME] Like '%{0}%'" + (GetSelectedOpionGroup() == 3 ? " OR [SERIAL_NUMBER] Like '%{0}%'" : ""), txtMediMatyForPrescription.Text);
+                        gridViewMediMaty.ActiveFilterString = String.Format("[MEDICINE_TYPE_NAME] Like '%{0}%' OR [MEDICINE_TYPE_CODE] Like '%{0}%' OR [ACTIVE_INGR_BHYT_NAME] Like '%{0}%' OR [MEDICINE_TYPE_NAME__UNSIGN] Like '%{0}%' OR [MEDICINE_TYPE_CODE__UNSIGN] Like '%{0}%' OR [ACTIVE_INGR_BHYT_NAME__UNSIGN] Like '%{0}%' OR [PARENT_NAME] Like '%{0}%'" + "OR [DESCRIPTION] Like '%{0}%'" + (GetSelectedOpionGroup() == 3 ? " OR [SERIAL_NUMBER] Like '%{0}%'" : ""), txtMediMatyForPrescription.Text);
                         //+ " OR [CONCENTRA] Like '%" + txtMediMatyForPrescription.Text + "%'"
                         //+ " OR [MEDI_STOCK_NAME] Like '%" + txtMediMatyForPrescription.Text + "%'";
                         gridViewMediMaty.OptionsFilter.FilterEditorUseMenuForOperandsAndOperators = false;
