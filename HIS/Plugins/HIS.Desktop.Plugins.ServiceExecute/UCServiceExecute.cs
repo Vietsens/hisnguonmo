@@ -4612,10 +4612,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     {
                         PrintResult(printNow && !isPrintPreview);
                     }
-                    if (isPrintPreview && !chkSign.Checked)
-                    {
-                        PreviewResult(isPrintPreview);
-                    }
+                    
                 }
 
                 if (apiResult != null)
@@ -4636,6 +4633,31 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     {
                         TabControlBaseProcess.CloseSelectedTabPage(SessionManager.GetTabControlMain());
                     }
+                }
+
+                // BỔ SUNG ĐOẠN NÀY ĐỂ HIỂN THỊ LẠI KẾT QUẢ VÀ MẪU
+                // Giữ lại template đã chọn để tránh bị reset về template đầu khi reload
+                object prevTemplate = null;
+                try { prevTemplate = cboSereServTemp.EditValue; } catch { prevTemplate = null; }
+
+                ProcessDicParam();
+                ProcessDescriptionContent();
+                ProcessLoadTemplate(sereServ); // nếu muốn load lại mẫu
+
+                // Thử phục hồi template đã chọn trước khi reload (nếu còn tồn tại)
+                try
+                {
+                    if (prevTemplate != null)
+                    {
+                        cboSereServTemp.EditValue = prevTemplate;
+                        cboSereServTemp.Properties.Buttons[1].Visible = cboSereServTemp.EditValue != null;
+                    }
+                }
+                catch { }
+
+                if (isPrintPreview && !chkSign.Checked)
+                {
+                    PreviewResult(isPrintPreview);
                 }
 
                 #region Process has exception
@@ -7629,6 +7651,26 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     var edit = sender as GridLookUpEdit;
                     edit.EditValue = null;
                 }
+                // --- BỔ SUNG ĐOẠN NÀY ---
+                // Lấy dòng đang chọn
+                var asereServ = (ADO.ServiceADO)gridViewSereServ.GetFocusedRow();
+                if (asereServ != null)
+                {
+                    // Gán lại MACHINE_ID cho sereServExt (nếu có)
+                    if (dicSereServExt != null && dicSereServExt.ContainsKey(asereServ.ID))
+                    {
+                        dicSereServExt[asereServ.ID].MACHINE_ID = asereServ.MACHINE_ID;
+                    }
+                    // Nếu đang xử lý 1 dòng duy nhất
+                    if (sereServExt != null && sereServ != null && sereServ.ID == asereServ.ID)
+                    {
+                        sereServExt.MACHINE_ID = asereServ.MACHINE_ID;
+                    }
+                    // Cập nhật lại dữ liệu hiển thị
+                    ProcessDicParam();
+                    ProcessDescriptionContent();
+                }
+                // --- KẾT THÚC BỔ SUNG ---
             }
             catch (Exception ex)
             {
