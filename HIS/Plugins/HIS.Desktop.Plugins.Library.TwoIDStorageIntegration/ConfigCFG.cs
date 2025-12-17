@@ -1,4 +1,4 @@
-﻿using HIS.Desktop.LocalStorage.HisConfig;
+﻿//using HIS.Desktop.LocalStorage.HisConfig;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -50,18 +50,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
             }
             return "";
         }
-        private static string GetValue(string key)
-        {
-            try
-            {
-                return HisConfigs.Get<string>(key);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            return "";
-        }
+       
         public static StorageConfig GetStorageConfig()
         {
             if (string.IsNullOrEmpty(emr2IdStorageInfo))
