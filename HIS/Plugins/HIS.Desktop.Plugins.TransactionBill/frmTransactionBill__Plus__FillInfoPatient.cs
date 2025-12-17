@@ -84,6 +84,18 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             txtBuyerAddress.Text = resultPatientType.ADDRESS;
                         }
                         txtBuyerName.Text = data.TDL_PATIENT_NAME ?? "";
+                        if (data != null && !string.IsNullOrEmpty(data.TDL_PATIENT_BUD_REL_UNIT_CODE))
+                        {
+                            txtMaQH.Text = data.TDL_PATIENT_BUD_REL_UNIT_CODE;
+                        }
+                        else if (patient != null && patient.FirstOrDefault() != null && !string.IsNullOrEmpty(patient.FirstOrDefault().BUD_REL_UNIT_CODE))
+                        {
+                            txtMaQH.Text = patient.FirstOrDefault().BUD_REL_UNIT_CODE;
+                        }
+                        else
+                        {
+                            txtMaQH.Text = "";
+                        }
                         txtBuyerTaxCode.Text = data.TDL_PATIENT_TAX_CODE ?? "";
                         txtBuyerTaxCode2.Text =  data.TDL_PATIENT_TAX_CODE ?? "";
                         if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)
