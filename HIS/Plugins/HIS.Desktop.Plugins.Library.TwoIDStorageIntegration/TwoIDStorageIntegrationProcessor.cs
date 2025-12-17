@@ -13,6 +13,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         private readonly ConfigCFG.StorageConfig config;
         public TwoIDStorageIntegrationProcessor()
         {
+            HIS.Desktop.LocalStorage.EmrConfig.ConfigLoader.Refresh();
             config = ConfigCFG.GetStorageConfig();
         }
 
@@ -41,7 +42,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 apiKey,
                 transactionId,
                 hash,
-                 "x-www-form-urlencoded"
+                 "application/x-www-form-urlencoded"
             );
         }
         //Download dữ liệu file

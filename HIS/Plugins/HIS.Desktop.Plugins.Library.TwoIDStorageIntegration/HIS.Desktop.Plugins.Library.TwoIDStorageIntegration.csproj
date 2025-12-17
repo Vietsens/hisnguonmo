@@ -35,11 +35,24 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HIS.Desktop.LocalStorage.HisConfig">
+    <Reference Include="EMR.EFMODEL">
+      <HintPath>..\..\..\..\lib\EMR\EMR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.EmrConfig">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.EmrConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.HisConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.EMR_RS">
+      <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.EMR_RS\IMSys.DbConfig.EMR_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.SignLibrary">
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

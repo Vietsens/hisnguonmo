@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using HIS.Desktop.LocalStorage.EmrConfig;
+using Inventec.Common.SignLibrary;
 namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
 {
     internal class ConfigCFG
@@ -24,16 +26,30 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         {
             try
             {
-              
-                emr2IdStorageInfo = GetValue(CONFIG_KEY_EMR_2ID_STORAGE_INFO);
-               
+                HIS.Desktop.LocalStorage.EmrConfig.ConfigLoader.Refresh();
+                emr2IdStorageInfo = GetValueFromEmr(CONFIG_KEY_EMR_2ID_STORAGE_INFO);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("emr2IdStorageInfo  input:", emr2IdStorageInfo));
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        private static string GetValueFromEmr(string key)
+        {
+            try
+            {
+                return GlobalStore.EmrConfigs
+                    .FirstOrDefault(o => o.KEY == key)
+                    ?.VALUE ?? "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return "";
+        }
         private static string GetValue(string key)
         {
             try
