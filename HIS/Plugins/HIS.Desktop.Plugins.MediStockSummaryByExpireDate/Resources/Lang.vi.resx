@@ -153,6 +153,9 @@
   <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_PACKAGE_NUMBER" xml:space="preserve">
     <value>Số lô</value>
   </data>
+	<data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDI_STOCK" xml:space="preserve">
+    <value>Kho</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_REGISTER_NUMBER" xml:space="preserve">
     <value>Số đăng ký</value>
   </data>
