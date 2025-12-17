@@ -154,6 +154,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         //Inventec.Common.Logging.LogSystem.Debug("API Result Of list: " + Inventec.Common.Logging.LogUtil.TraceData("dangth:", saleSDO));
                     }
                 }
+
                 else if (moduleAction == GlobalDataStore.ModuleAction.EDIT)
                 {
                     isTwoPatient = false;
@@ -935,6 +936,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 if (this.Patient != null)
                 {
                     ado.PatientId = this.Patient.ID;
+                    ado.PatientBudRelUnitCode = this.Patient.BUD_REL_UNIT_CODE;
                 }
 
                 if (!String.IsNullOrWhiteSpace(this.txtPatientPhone.Text))
