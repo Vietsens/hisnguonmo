@@ -108,15 +108,25 @@ namespace MPS.Processor.Mps000135
 
         private List<Mps000135ADO> GroupMedicineParentCode()
         {
-            List<Mps000135ADO> lstResult = new List<Mps000135ADO>();
             try
             {
+                var lstResult = new List<Mps000135ADO>();
+
                 if (rdo.listAdo != null && rdo.listAdo.Count > 0)
                 {
                     var group = rdo.listAdo.GroupBy(o => o.MEDICINE_PARENT_CODE);
-                    foreach (var item in group)
+
+                    foreach (var g in group)
                     {
-                        lstResult.Add(item.ToList().First());
+                        var first = g.FirstOrDefault();
+                        if (first != null)
+                        {
+                            // IN HOA tên nhóm cha để template in HOA
+                            if (!string.IsNullOrEmpty(first.MEDICINE_PARENT_NAME))
+                                first.MEDICINE_PARENT_NAME = first.MEDICINE_PARENT_NAME.ToUpper();
+
+                            lstResult.Add(first);
+                        }
                     }
                 }
 
@@ -124,10 +134,11 @@ namespace MPS.Processor.Mps000135
             }
             catch (Exception ex)
             {
-                return null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
             }
         }
+
 
         private void GetMedicineGroup()
         {
