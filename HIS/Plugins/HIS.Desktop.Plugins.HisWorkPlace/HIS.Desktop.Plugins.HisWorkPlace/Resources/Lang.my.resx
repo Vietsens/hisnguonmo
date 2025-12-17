@@ -118,162 +118,162 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="frmHisWorkPlace.bar1.Text" xml:space="preserve">
-    <value>Tools</value>
+    <value>ကိရိယာများ</value>
   </data>
   <data name="frmHisWorkPlace.bbtnAdd.Caption" xml:space="preserve">
-    <value>Add (Ctrl N)</value>
+    <value>ထည့်ပါ (Ctrl N)</value>
   </data>
   <data name="frmHisWorkPlace.bbtnEdit.Caption" xml:space="preserve">
-    <value>Edit (Ctrl S)</value>
+    <value>တည်းဖြတ်ရန် (Ctrl S)</value>
   </data>
   <data name="frmHisWorkPlace.bbtnFocusDefault.Caption" xml:space="preserve">
     <value>F2</value>
   </data>
   <data name="frmHisWorkPlace.bbtnReset.Caption" xml:space="preserve">
-    <value>Redo (Ctrl R)</value>
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
   </data>
   <data name="frmHisWorkPlace.bbtnSearch.Caption" xml:space="preserve">
-    <value>Find (Ctrl + F)</value>
+    <value>ရှာပါ (Ctrl F)</value>
   </data>
   <data name="frmHisWorkPlace.btnAdd.Text" xml:space="preserve">
-    <value>Add (Ctrl N)</value>
+    <value>ထည့်ပါ (Ctrl N)</value>
   </data>
   <data name="frmHisWorkPlace.btnCancel.Text" xml:space="preserve">
-    <value>Redo (Ctrl R)</value>
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
   </data>
   <data name="frmHisWorkPlace.btnEdit.Text" xml:space="preserve">
-    <value>Edit (Ctrl S)</value>
+    <value>တည်းဖြတ်ရန် (Ctrl S)</value>
   </data>
   <data name="frmHisWorkPlace.btnSearch.Text" xml:space="preserve">
-    <value>Find (Ctrl + F)</value>
+    <value>ရှာပါ (Ctrl F)</value>
   </data>
   <data name="frmHisWorkPlace.dnNavigation.Text" xml:space="preserve">
-    <value>dataNavigator1</value>
+    <value>dataNavigator ၁</value>
   </data>
   <data name="frmHisWorkPlace.grdColAddress.Caption" xml:space="preserve">
-    <value>Address</value>
+    <value>လိပ်စာ</value>
   </data>
   <data name="frmHisWorkPlace.grdColAddress.ToolTip" xml:space="preserve">
-    <value>Address</value>
+    <value>လိပ်စာ</value>
   </data>
   <data name="frmHisWorkPlace.grdColBudRelUnitCode.Caption" xml:space="preserve">
-    <value>Mã ĐVQHNS</value>
+    <value>DVQHNS ကုဒ်</value>
   </data>
   <data name="frmHisWorkPlace.grdColBudRelUnitCode.ToolTip" xml:space="preserve">
-    <value>Mã ĐVQHNS</value>
+    <value>ဘတ်ဂျက်ဆက်စပ်ယူနစ်ကုဒ်</value>
   </data>
   <data name="frmHisWorkPlace.grdColCreateTime.Caption" xml:space="preserve">
-    <value>Time created</value>
+    <value>ဖန်တီးချိန်</value>
   </data>
   <data name="frmHisWorkPlace.grdColCreateTime.ToolTip" xml:space="preserve">
-    <value>Time correction</value>
+    <value>ဖန်တီးချိန်</value>
   </data>
   <data name="frmHisWorkPlace.grdColCreator.Caption" xml:space="preserve">
-    <value>creators</value>
+    <value>ဖန်ဆင်းရှင်</value>
   </data>
   <data name="frmHisWorkPlace.grdColCreator.ToolTip" xml:space="preserve">
-    <value>creators</value>
+    <value>ဖန်ဆင်းရှင်</value>
   </data>
   <data name="frmHisWorkPlace.grdColDirectorName.Caption" xml:space="preserve">
-    <value>Manager</value>
+    <value>မန်နေဂျာ</value>
   </data>
   <data name="frmHisWorkPlace.grdColModifier.Caption" xml:space="preserve">
-    <value>Repairer</value>
+    <value>ပီပြင်သည်</value>
   </data>
   <data name="frmHisWorkPlace.grdColModifier.ToolTip" xml:space="preserve">
-    <value>Repairer</value>
+    <value>ပီပြင်သည်</value>
   </data>
   <data name="frmHisWorkPlace.grdColModifyTime.Caption" xml:space="preserve">
-    <value>Time correction</value>
+    <value>ပြုပြင်ချိန်</value>
   </data>
   <data name="frmHisWorkPlace.grdColModifyTime.ToolTip" xml:space="preserve">
-    <value>Time correction</value>
+    <value>ပြုပြင်ချိန်</value>
   </data>
   <data name="frmHisWorkPlace.grdColWorkPlaceCode.Caption" xml:space="preserve">
-    <value>Code</value>
+    <value>ကုတ်</value>
   </data>
   <data name="frmHisWorkPlace.grdColWorkPlaceCode.ToolTip" xml:space="preserve">
-    <value>Code</value>
+    <value>ကုတ်</value>
   </data>
   <data name="frmHisWorkPlace.grdColWorkPlaceName.Caption" xml:space="preserve">
-    <value>Name</value>
+    <value>နာမည်</value>
   </data>
   <data name="frmHisWorkPlace.grdColWorkPlaceName.ToolTip" xml:space="preserve">
-    <value>Name</value>
+    <value>နာမည်</value>
   </data>
   <data name="frmHisWorkPlace.gridColumn1.Caption" xml:space="preserve">
-    <value>gridColumn1</value>
+    <value>ဇယားကွက် ၁</value>
   </data>
   <data name="frmHisWorkPlace.gridColumn1.ToolTip" xml:space="preserve">
-    <value>Lock</value>
+    <value>သော့ခတ်</value>
   </data>
   <data name="frmHisWorkPlace.gridColumn3.Caption" xml:space="preserve">
-    <value>Tax code</value>
+    <value>အခွန်ကုဒ်</value>
   </data>
   <data name="frmHisWorkPlace.gridColumn4.Caption" xml:space="preserve">
-    <value>Phone number</value>
+    <value>ဖုန်းနံပါတ်</value>
   </data>
   <data name="frmHisWorkPlace.gridColumn5.Caption" xml:space="preserve">
-    <value>Contact person</value>
+    <value>ဆက်သွယ်ရမည့်သူ</value>
   </data>
   <data name="frmHisWorkPlace.gridColumn6.Caption" xml:space="preserve">
-    <value>Contact phone number</value>
+    <value>ဆက်သွယ်ရန်ဖုန်းနံပါတ်</value>
   </data>
   <data name="frmHisWorkPlace.gridColumnEdit.ToolTip" xml:space="preserve">
-    <value>Erase</value>
+    <value>ဖျက်ပါ။</value>
   </data>
   <data name="frmHisWorkPlace.layoutControl4.Text" xml:space="preserve">
-    <value>layoutControl4</value>
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
   </data>
   <data name="frmHisWorkPlace.layoutControl7.Text" xml:space="preserve">
-    <value>layoutControl7</value>
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
   </data>
   <data name="frmHisWorkPlace.lcEditorInfo.Text" xml:space="preserve">
-    <value>layoutControl5</value>
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
   </data>
   <data name="frmHisWorkPlace.lciAddress.Text" xml:space="preserve">
-    <value>Address:</value>
+    <value>လိပ်စာ-</value>
   </data>
   <data name="frmHisWorkPlace.lciBudRelUnitCode.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Budget relationship unit code</value>
+    <value>ဘတ်ဂျက်ဆက်စပ်ယူနစ်ကုဒ်</value>
   </data>
   <data name="frmHisWorkPlace.lciBudRelUnitCode.Text" xml:space="preserve">
-    <value>Mã ĐVQHNS:</value>
+    <value>ယူနစ်ကုဒ်-</value>
   </data>
   <data name="frmHisWorkPlace.lciContactMobile.Text" xml:space="preserve">
-    <value>Contac phone:</value>
+    <value>ဆက်သွယ်ရန်နံပါတ်-</value>
   </data>
   <data name="frmHisWorkPlace.lciContactName.Text" xml:space="preserve">
-    <value>Contact:</value>
+    <value>ဆက်သွယ်ရမည့်သူ:</value>
   </data>
   <data name="frmHisWorkPlace.lciDirectorName.Text" xml:space="preserve">
-    <value>Director Name:</value>
+    <value>မန်နေဂျာ-</value>
   </data>
   <data name="frmHisWorkPlace.lciPhone.Text" xml:space="preserve">
-    <value>Phone:</value>
+    <value>ဖုန်းနံပါတ်-</value>
   </data>
   <data name="frmHisWorkPlace.lciTaxCode.Text" xml:space="preserve">
-    <value>Tax code:</value>
+    <value>အခွန်ကုဒ်-</value>
   </data>
   <data name="frmHisWorkPlace.lciWorkPlaceCode.Text" xml:space="preserve">
-    <value>Code:</value>
+    <value>ကုဒ်-</value>
   </data>
   <data name="frmHisWorkPlace.lciWorkPlaceName.Text" xml:space="preserve">
-    <value>Name:</value>
+    <value>အမည်-</value>
   </data>
   <data name="frmHisWorkPlace.STT.Caption" xml:space="preserve">
-    <value>STT</value>
+    <value>မရှိ</value>
   </data>
   <data name="frmHisWorkPlace.STT.ToolTip" xml:space="preserve">
-    <value>No</value>
+    <value>မရှိ</value>
   </data>
   <data name="frmHisWorkPlace.Text" xml:space="preserve">
-    <value> Category workplace</value>
+    <value>လုပ်ငန်းခွင်လမ်းညွှန်</value>
   </data>
   <data name="frmHisWorkPlace.txtBudRelUnitCode.ToolTip" xml:space="preserve">
-    <value>Budget relationship unit code</value>
+    <value>ဘတ်ဂျက်ဆက်စပ်ယူနစ်ကုဒ်</value>
   </data>
   <data name="frmHisWorkPlace.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Keyword search</value>
+    <value>အဓိကစကားလုံးများကို ရှာဖွေပါ။</value>
   </data>
 </root>

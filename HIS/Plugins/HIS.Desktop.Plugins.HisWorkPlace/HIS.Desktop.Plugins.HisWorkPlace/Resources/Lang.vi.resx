@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -156,17 +156,26 @@
   <data name="frmHisWorkPlace.grdColAddress.ToolTip" xml:space="preserve">
     <value>Địa chỉ</value>
   </data>
+  <data name="frmHisWorkPlace.grdColBudRelUnitCode.Caption" xml:space="preserve">
+    <value>Mã ĐVQHNS</value>
+  </data>
+  <data name="frmHisWorkPlace.grdColBudRelUnitCode.ToolTip" xml:space="preserve">
+    <value>Mã đơn vị quan hệ ngân sách</value>
+  </data>
   <data name="frmHisWorkPlace.grdColCreateTime.Caption" xml:space="preserve">
     <value>Thời gian tạo</value>
   </data>
   <data name="frmHisWorkPlace.grdColCreateTime.ToolTip" xml:space="preserve">
-    <value>Thời gian sửa</value>
+    <value>Thời gian tạo</value>
   </data>
   <data name="frmHisWorkPlace.grdColCreator.Caption" xml:space="preserve">
     <value>Người tạo</value>
   </data>
   <data name="frmHisWorkPlace.grdColCreator.ToolTip" xml:space="preserve">
     <value>Người tạo</value>
+  </data>
+  <data name="frmHisWorkPlace.grdColDirectorName.Caption" xml:space="preserve">
+    <value>Giám đốc</value>
   </data>
   <data name="frmHisWorkPlace.grdColModifier.Caption" xml:space="preserve">
     <value>Người sửa</value>
@@ -198,6 +207,18 @@
   <data name="frmHisWorkPlace.gridColumn1.ToolTip" xml:space="preserve">
     <value>Khóa</value>
   </data>
+  <data name="frmHisWorkPlace.gridColumn3.Caption" xml:space="preserve">
+    <value>Mã số thuế</value>
+  </data>
+  <data name="frmHisWorkPlace.gridColumn4.Caption" xml:space="preserve">
+    <value>Số điện thoại</value>
+  </data>
+  <data name="frmHisWorkPlace.gridColumn5.Caption" xml:space="preserve">
+    <value>Người liên hệ</value>
+  </data>
+  <data name="frmHisWorkPlace.gridColumn6.Caption" xml:space="preserve">
+    <value>SĐT liên hệ</value>
+  </data>
   <data name="frmHisWorkPlace.gridColumnEdit.ToolTip" xml:space="preserve">
     <value>Xóa</value>
   </data>
@@ -213,6 +234,27 @@
   <data name="frmHisWorkPlace.lciAddress.Text" xml:space="preserve">
     <value>Địa chỉ:</value>
   </data>
+  <data name="frmHisWorkPlace.lciBudRelUnitCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mã đơn vị quan hệ ngân sách</value>
+  </data>
+  <data name="frmHisWorkPlace.lciBudRelUnitCode.Text" xml:space="preserve">
+    <value>Mã ĐVQHNS:</value>
+  </data>
+  <data name="frmHisWorkPlace.lciContactMobile.Text" xml:space="preserve">
+    <value>SĐT liên hệ:</value>
+  </data>
+  <data name="frmHisWorkPlace.lciContactName.Text" xml:space="preserve">
+    <value>Người liên hệ:</value>
+  </data>
+  <data name="frmHisWorkPlace.lciDirectorName.Text" xml:space="preserve">
+    <value>Giám đốc:</value>
+  </data>
+  <data name="frmHisWorkPlace.lciPhone.Text" xml:space="preserve">
+    <value>Số điện thoại:</value>
+  </data>
+  <data name="frmHisWorkPlace.lciTaxCode.Text" xml:space="preserve">
+    <value>Mã số thuế:</value>
+  </data>
   <data name="frmHisWorkPlace.lciWorkPlaceCode.Text" xml:space="preserve">
     <value>Mã:</value>
   </data>
@@ -222,25 +264,16 @@
   <data name="frmHisWorkPlace.STT.Caption" xml:space="preserve">
     <value>STT</value>
   </data>
+  <data name="frmHisWorkPlace.STT.ToolTip" xml:space="preserve">
+    <value>STT</value>
+  </data>
   <data name="frmHisWorkPlace.Text" xml:space="preserve">
     <value>Danh mục nơi làm việc</value>
   </data>
+  <data name="frmHisWorkPlace.txtBudRelUnitCode.ToolTip" xml:space="preserve">
+    <value>Mã đơn vị quan hệ ngân sách</value>
+  </data>
   <data name="frmHisWorkPlace.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
     <value>Từ khóa tìm kiếm</value>
-  </data>
-  <data name="frmHisWorkPlace.lciContactMobile.Text" xml:space="preserve">
-    <value>Điện thoại liên hệ:</value>
-  </data>
-  <data name="frmHisWorkPlace.lciContactName.Text" xml:space="preserve">
-    <value>Người liên hệ:</value>
-  </data>
-  <data name="frmHisWorkPlace.lciDirectorName.Text" xml:space="preserve">
-    <value>Giám đốc:</value>
-  </data>
-  <data name="frmHisWorkPlace.lciPhone.Text" xml:space="preserve">
-    <value>Điện thoại:</value>
-  </data>
-  <data name="frmHisWorkPlace.lciTaxCode.Text" xml:space="preserve">
-    <value>Mã số thuế:</value>
   </data>
 </root>

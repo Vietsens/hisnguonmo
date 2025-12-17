@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Plugin_HisWorkPlace__KhoaDuLieu" xml:space="preserve">
-    <value>Are you sure you want to lock the data?</value>
+    <value>ဒေတာကို လော့ခ်ချလိုသည်မှာ သေချာပါသလား။</value>
   </data>
   <data name="Plugin_HisWorkPlace__MoKhoaDuLieu" xml:space="preserve">
-    <value>Are you sure you want to unlock data?</value>
+    <value>ဒေတာသော့ဖွင့်လိုသည်မှာ သေချာပါသလား။</value>
   </data>
   <data name="Plugin_HisWorkPlace__TruongDuLieuBatBuoc" xml:space="preserve">
-    <value>Required data field</value>
+    <value>လိုအပ်သောဒေတာအကွက်</value>
   </data>
 </root>

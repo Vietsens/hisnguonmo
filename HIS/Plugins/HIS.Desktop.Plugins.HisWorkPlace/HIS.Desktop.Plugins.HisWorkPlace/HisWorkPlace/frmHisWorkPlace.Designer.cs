@@ -46,24 +46,24 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SuperToolTip superToolTip3 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject37 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject38 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject39 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject40 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject41 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject44 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisWorkPlace));
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl7 = new DevExpress.XtraLayout.LayoutControl();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
@@ -81,6 +81,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColBudRelUnitCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColCreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColCreator = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColModifyTime = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -97,7 +98,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
-            this.txtContactMobile = new DevExpress.XtraEditors.TextEdit();
+            this.txtBudRelUnitCode = new DevExpress.XtraEditors.TextEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
@@ -105,10 +106,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnFocusDefault = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.txtContactMobile = new DevExpress.XtraEditors.TextEdit();
             this.txtContactName = new DevExpress.XtraEditors.TextEdit();
             this.txtPhone = new DevExpress.XtraEditors.TextEdit();
             this.txtTaxCode = new DevExpress.XtraEditors.TextEdit();
@@ -136,9 +134,14 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.lciPhone = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciContactName = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciContactMobile = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBudRelUnitCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
@@ -162,8 +165,9 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtContactMobile.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBudRelUnitCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtContactMobile.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtContactName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPhone.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTaxCode.Properties)).BeginInit();
@@ -187,6 +191,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             ((System.ComponentModel.ISupportInitialize)(this.lciPhone)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciContactName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciContactMobile)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBudRelUnitCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
@@ -275,6 +280,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.gridColumn4,
             this.gridColumn5,
             this.gridColumn6,
+            this.grdColBudRelUnitCode,
             this.grdColCreateTime,
             this.grdColCreator,
             this.grdColModifyTime,
@@ -417,6 +423,17 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 10;
             // 
+            // grdColBudRelUnitCode
+            // 
+            this.grdColBudRelUnitCode.Caption = "Mã ĐVQHNS";
+            this.grdColBudRelUnitCode.FieldName = "BUD_REL_UNIT_CODE";
+            this.grdColBudRelUnitCode.Name = "grdColBudRelUnitCode";
+            this.grdColBudRelUnitCode.OptionsColumn.AllowEdit = false;
+            this.grdColBudRelUnitCode.ToolTip = "Mã đơn vị quan hệ ngân sách";
+            this.grdColBudRelUnitCode.Visible = true;
+            this.grdColBudRelUnitCode.VisibleIndex = 11;
+            this.grdColBudRelUnitCode.Width = 100;
+            // 
             // grdColCreateTime
             // 
             this.grdColCreateTime.Caption = "Thời gian tạo";
@@ -426,7 +443,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.grdColCreateTime.ToolTip = "Thời gian tạo";
             this.grdColCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColCreateTime.Visible = true;
-            this.grdColCreateTime.VisibleIndex = 11;
+            this.grdColCreateTime.VisibleIndex = 12;
             this.grdColCreateTime.Width = 120;
             // 
             // grdColCreator
@@ -437,7 +454,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.grdColCreator.OptionsColumn.AllowEdit = false;
             this.grdColCreator.ToolTip = "Người tạo";
             this.grdColCreator.Visible = true;
-            this.grdColCreator.VisibleIndex = 12;
+            this.grdColCreator.VisibleIndex = 13;
             this.grdColCreator.Width = 100;
             // 
             // grdColModifyTime
@@ -449,7 +466,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.grdColModifyTime.ToolTip = "Thời gian sửa";
             this.grdColModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColModifyTime.Visible = true;
-            this.grdColModifyTime.VisibleIndex = 13;
+            this.grdColModifyTime.VisibleIndex = 14;
             this.grdColModifyTime.Width = 120;
             // 
             // grdColModifier
@@ -460,14 +477,14 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.grdColModifier.OptionsColumn.AllowEdit = false;
             this.grdColModifier.ToolTip = "Người sửa";
             this.grdColModifier.Visible = true;
-            this.grdColModifier.VisibleIndex = 14;
+            this.grdColModifier.VisibleIndex = 15;
             this.grdColModifier.Width = 100;
             // 
             // btnGEdit
             // 
             this.btnGEdit.AutoHeight = false;
             this.btnGEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGEdit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Xóa", null, superToolTip3, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGEdit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Xóa", null, superToolTip2, true)});
             this.btnGEdit.Name = "btnGEdit";
             this.btnGEdit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnGEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnGDelete_ButtonClick);
@@ -476,7 +493,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             // 
             this.btnGEdit_Disable.AutoHeight = false;
             this.btnGEdit_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGEdit_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGEdit_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
             this.btnGEdit_Disable.Name = "btnGEdit_Disable";
             this.btnGEdit_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -484,7 +501,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             // 
             this.btnLock.AutoHeight = false;
             this.btnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisWorkPlace.Properties.Resources.hmenu_unlock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "Khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisWorkPlace.Properties.Resources.hmenu_unlock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Khóa", null, null, true)});
             this.btnLock.Name = "btnLock";
             this.btnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnLock.Click += new System.EventHandler(this.btnLock_Click);
@@ -493,7 +510,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             // 
             this.btnUnlock.AutoHeight = false;
             this.btnUnlock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisWorkPlace.Properties.Resources.hmenu_lock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisWorkPlace.Properties.Resources.hmenu_lock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "", null, null, true)});
             this.btnUnlock.Name = "btnUnlock";
             this.btnUnlock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnUnlock.Click += new System.EventHandler(this.btnUnlock_Click);
@@ -570,6 +587,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             // 
             // lcEditorInfo
             // 
+            this.lcEditorInfo.Controls.Add(this.txtBudRelUnitCode);
             this.lcEditorInfo.Controls.Add(this.txtContactMobile);
             this.lcEditorInfo.Controls.Add(this.txtContactName);
             this.lcEditorInfo.Controls.Add(this.txtPhone);
@@ -590,27 +608,25 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.lcEditorInfo.TabIndex = 4;
             this.lcEditorInfo.Text = "layoutControl5";
             // 
-            // txtContactMobile
+            // txtBudRelUnitCode
             // 
-            this.txtContactMobile.Location = new System.Drawing.Point(97, 193);
-            this.txtContactMobile.MenuManager = this.barManager1;
-            this.txtContactMobile.Name = "txtContactMobile";
-            this.txtContactMobile.Properties.Mask.EditMask = "\\d+";
-            this.txtContactMobile.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
-            this.txtContactMobile.Properties.MaxLength = 12;
-            this.txtContactMobile.Size = new System.Drawing.Size(208, 20);
-            this.txtContactMobile.StyleController = this.lcEditorInfo;
-            this.txtContactMobile.TabIndex = 7;
-            this.txtContactMobile.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtContactMobile_KeyDown);
+            this.txtBudRelUnitCode.Location = new System.Drawing.Point(97, 217);
+            this.txtBudRelUnitCode.MenuManager = this.barManager1;
+            this.txtBudRelUnitCode.Name = "txtBudRelUnitCode";
+            this.txtBudRelUnitCode.Properties.Mask.EditMask = "[0-9]{0,7}";
+            this.txtBudRelUnitCode.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
+            this.txtBudRelUnitCode.Properties.Mask.PlaceHolder = ' ';
+            this.txtBudRelUnitCode.Properties.Mask.ShowPlaceHolders = false;
+            this.txtBudRelUnitCode.Size = new System.Drawing.Size(208, 20);
+            this.txtBudRelUnitCode.StyleController = this.lcEditorInfo;
+            this.txtBudRelUnitCode.TabIndex = 26;
+            this.txtBudRelUnitCode.ToolTip = "Mã đơn vị quan hệ ngân sách";
+            this.txtBudRelUnitCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBudRelUnitCode_KeyDown);
             // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSearch,
@@ -675,33 +691,18 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.bbtnFocusDefault.Name = "bbtnFocusDefault";
             this.bbtnFocusDefault.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnFocusDefault_ItemClick);
             // 
-            // barDockControlTop
+            // txtContactMobile
             // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1236, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1236, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 482);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1236, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 482);
+            this.txtContactMobile.Location = new System.Drawing.Point(97, 193);
+            this.txtContactMobile.MenuManager = this.barManager1;
+            this.txtContactMobile.Name = "txtContactMobile";
+            this.txtContactMobile.Properties.Mask.EditMask = "\\d+";
+            this.txtContactMobile.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
+            this.txtContactMobile.Properties.MaxLength = 12;
+            this.txtContactMobile.Size = new System.Drawing.Size(208, 20);
+            this.txtContactMobile.StyleController = this.lcEditorInfo;
+            this.txtContactMobile.TabIndex = 7;
+            this.txtContactMobile.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtContactMobile_KeyDown);
             // 
             // txtContactName
             // 
@@ -780,7 +781,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(226, 217);
+            this.btnCancel.Location = new System.Drawing.Point(226, 241);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(79, 26);
             this.btnCancel.StyleController = this.lcEditorInfo;
@@ -790,7 +791,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(145, 217);
+            this.btnAdd.Location = new System.Drawing.Point(145, 241);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(77, 26);
             this.btnAdd.StyleController = this.lcEditorInfo;
@@ -816,7 +817,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(64, 217);
+            this.btnEdit.Location = new System.Drawing.Point(64, 241);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(77, 26);
             this.btnEdit.StyleController = this.lcEditorInfo;
@@ -843,7 +844,8 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.lciTaxCode,
             this.lciPhone,
             this.lciContactName,
-            this.lciContactMobile});
+            this.lciContactMobile,
+            this.lciBudRelUnitCode});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -863,7 +865,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.btnEdit;
-            this.layoutControlItem17.Location = new System.Drawing.Point(62, 215);
+            this.layoutControlItem17.Location = new System.Drawing.Point(62, 239);
             this.layoutControlItem17.MaxSize = new System.Drawing.Size(0, 30);
             this.layoutControlItem17.MinSize = new System.Drawing.Size(69, 30);
             this.layoutControlItem17.Name = "layoutControlItem17";
@@ -875,7 +877,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.btnAdd;
-            this.layoutControlItem18.Location = new System.Drawing.Point(143, 215);
+            this.layoutControlItem18.Location = new System.Drawing.Point(143, 239);
             this.layoutControlItem18.MaxSize = new System.Drawing.Size(0, 30);
             this.layoutControlItem18.MinSize = new System.Drawing.Size(77, 30);
             this.layoutControlItem18.Name = "layoutControlItem18";
@@ -887,7 +889,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             // layoutControlItem20
             // 
             this.layoutControlItem20.Control = this.btnCancel;
-            this.layoutControlItem20.Location = new System.Drawing.Point(224, 215);
+            this.layoutControlItem20.Location = new System.Drawing.Point(224, 239);
             this.layoutControlItem20.MaxSize = new System.Drawing.Size(0, 30);
             this.layoutControlItem20.MinSize = new System.Drawing.Size(83, 30);
             this.layoutControlItem20.Name = "layoutControlItem20";
@@ -943,7 +945,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             // emptySpaceItem4
             // 
             this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 215);
+            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 239);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
             this.emptySpaceItem4.Size = new System.Drawing.Size(62, 30);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
@@ -959,9 +961,9 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 245);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 269);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(307, 223);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(307, 199);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciDirectorName
@@ -1029,6 +1031,20 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.lciContactMobile.TextSize = new System.Drawing.Size(90, 20);
             this.lciContactMobile.TextToControlDistance = 5;
             // 
+            // lciBudRelUnitCode
+            // 
+            this.lciBudRelUnitCode.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciBudRelUnitCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciBudRelUnitCode.Control = this.txtBudRelUnitCode;
+            this.lciBudRelUnitCode.Location = new System.Drawing.Point(0, 215);
+            this.lciBudRelUnitCode.Name = "lciBudRelUnitCode";
+            this.lciBudRelUnitCode.OptionsToolTip.ToolTip = "Mã đơn vị quan hệ ngân sách";
+            this.lciBudRelUnitCode.Size = new System.Drawing.Size(307, 24);
+            this.lciBudRelUnitCode.Text = "Mã ĐVQHNS:";
+            this.lciBudRelUnitCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBudRelUnitCode.TextSize = new System.Drawing.Size(90, 20);
+            this.lciBudRelUnitCode.TextToControlDistance = 5;
+            // 
             // layoutControlGroup3
             // 
             this.layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -1060,6 +1076,34 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1236, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1236, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 482);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1236, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 482);
+            // 
             // dxValidationProviderEditorInfo
             // 
             this.dxValidationProviderEditorInfo.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider_ValidationFailed);
@@ -1088,6 +1132,11 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Danh mục nơi làm việc";
             this.Load += new System.EventHandler(this.frmHisWorkPlace_Load);
+            this.Controls.SetChildIndex(this.barDockControlTop, 0);
+            this.Controls.SetChildIndex(this.barDockControlBottom, 0);
+            this.Controls.SetChildIndex(this.barDockControlRight, 0);
+            this.Controls.SetChildIndex(this.barDockControlLeft, 0);
+            this.Controls.SetChildIndex(this.layoutControl4, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
             this.layoutControl4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl7)).EndInit();
@@ -1108,8 +1157,9 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).EndInit();
             this.lcEditorInfo.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtContactMobile.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBudRelUnitCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtContactMobile.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtContactName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPhone.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTaxCode.Properties)).EndInit();
@@ -1133,6 +1183,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             ((System.ComponentModel.ISupportInitialize)(this.lciPhone)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciContactName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciContactMobile)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBudRelUnitCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
@@ -1227,5 +1278,8 @@ private DevExpress.XtraGrid.Columns.GridColumn grdColAddress;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColBudRelUnitCode;
+        private DevExpress.XtraEditors.TextEdit txtBudRelUnitCode;
+        private DevExpress.XtraLayout.LayoutControlItem lciBudRelUnitCode;
     }
 }
