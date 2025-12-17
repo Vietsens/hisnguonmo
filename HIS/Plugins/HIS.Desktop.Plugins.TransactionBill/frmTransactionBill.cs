@@ -3626,6 +3626,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganization.EditValue.ToString())).First();
                     txtBuyerAddress.Text = dt.ADDRESS;
+                    txtMaQH.Text = dt.BUD_REL_UNIT_CODE;
                     if (dt.TAX_CODE != null)
                     {
                         txtBuyerTaxCode.Text = dt.TAX_CODE;
@@ -4176,6 +4177,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     LogSystem.Debug("CBO: " + cboBuyerOrganzation2.EditValue.ToString());
                     var dt = dtWorkPlace.Where(o => o.ID == Int64.Parse(cboBuyerOrganzation2.EditValue.ToString())).First();
                     txtBuyerAddress.Text = dt.ADDRESS;
+                    txtMaQH.Text = dt.BUD_REL_UNIT_CODE;
                     if (dt.TAX_CODE != null)
                     {
                         txtBuyerTaxCode2.Text = dt.TAX_CODE;
