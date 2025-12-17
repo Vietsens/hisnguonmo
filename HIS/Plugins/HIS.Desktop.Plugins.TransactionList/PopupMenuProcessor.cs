@@ -19,6 +19,7 @@ using DevExpress.XtraBars;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
 using HIS.Desktop.Plugins.Library.PrintBordereau;
 using HIS.Desktop.Plugins.Library.PrintBordereau.ADO;
 using HIS.Desktop.Plugins.TransactionList.Base;
@@ -227,6 +228,15 @@ namespace HIS.Desktop.Plugins.TransactionList
                             btnChuyenDoiHoaDonDienTu.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                             this._PopupMenu.AddItems(new BarItem[] { btnChuyenDoiHoaDonDienTu });
                         }
+                    }
+
+                    if (this._Transaction.INVOICE_SYS == ProviderType.VNPT && string.IsNullOrEmpty(this._Transaction.EINVOICE_NUM_ORDER))
+                    {
+                        //xuất hóa đơn điện tủ
+                        BarButtonItem btnHoaDonDienTu = new BarButtonItem(this._BarManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_HOADONDIENTU", Base.ResourceLangManager.LanguageFrmTransactionList, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 5);
+                        btnHoaDonDienTu.Tag = ItemType.XuatHoaDonDienTu;
+                        btnHoaDonDienTu.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                        this._PopupMenu.AddItem(btnHoaDonDienTu);
                     }
 
                     //Bảng kê chi tiết thu viện phí theo hóa đơn

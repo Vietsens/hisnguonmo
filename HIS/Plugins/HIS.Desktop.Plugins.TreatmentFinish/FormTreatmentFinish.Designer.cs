@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTreatmentFinish));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -61,10 +60,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControlMain = new DevExpress.XtraLayout.LayoutControl();
             this.cboObjectCode = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -98,7 +97,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.txtMaBHXH = new DevExpress.XtraEditors.TextEdit();
             this.chkIsEmergency = new DevExpress.XtraEditors.CheckEdit();
-            this.popupControlContainerPrintConfig = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerPrintConfig = new DevExpress.XtraBars.PopupControlContainer();
             this.gridControlContainerPrintConfig = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewContainerPrintConfig = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.btnPrintConfig = new DevExpress.XtraEditors.SimpleButton();
@@ -256,9 +255,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.lciHosReason = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem47 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem48 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.dxValidationProvider_ForOutPatientDateFromTo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxValidationProvider_ForOutPatientDateFromTo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlMain)).BeginInit();
             this.layoutControlMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboObjectCode.Properties)).BeginInit();

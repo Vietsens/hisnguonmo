@@ -31,6 +31,7 @@ namespace HIS.Desktop.Plugins.Transaction.Config
     {
 
         private const string IsNotBillString = "HIS.Desktop.Plugins.TransactionRepay.IsNotBill";
+        private const string ShowElectronicNumorderString = "HIS.Desktop.Plugins.Transaction.ShowElectronicNumorder";
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__VP = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.HOSPITAL_FEE";//Doi tuong VP
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__KSK = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.KSK";//Doi tuong khám sức khỏe
@@ -53,6 +54,7 @@ namespace HIS.Desktop.Plugins.Transaction.Config
         internal static long PatientTypeId__KSK;
 
         internal static string IsNotBillCFG;
+        internal static string ShowElectronicNumorderCFG;
 
         internal static bool IsAllowAfterLocking;
         internal static string MustFinishedForBilling;
@@ -78,6 +80,7 @@ namespace HIS.Desktop.Plugins.Transaction.Config
                 LogSystem.Debug("LoadConfig => 1");
                 CallPatientFormat = GetValue(CONFIG_KEY__CALL_PATIENT_FORMAT);
                 IsNotBillCFG = GetValue(IsNotBillString);
+                ShowElectronicNumorderCFG = GetValue(ShowElectronicNumorderString);
                 DirectlyBillingOption = GetValue(CONFIG_KEY__DIRECTLY_BILLING_OPTION);
                 IsAllowAfterLocking = GetValue(CONFIG_KEY__ALLOWAFTERLOCKING) == "1";
                 PatientTypeCode__BHYT = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT);

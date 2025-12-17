@@ -65,6 +65,7 @@ using HIS.Desktop.LocalStorage.HisConfig;
 using System.Threading;
 using HIS.Desktop.Utilities.Extensions;
 using Inventec.Desktop.CustomControl;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.ImpMestCreate
 {

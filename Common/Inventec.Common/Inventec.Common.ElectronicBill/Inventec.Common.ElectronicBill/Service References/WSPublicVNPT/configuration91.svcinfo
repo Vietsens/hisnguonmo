@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="Q8yUexLrme2VmyV/7w+FJ5bkCUA=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="8+Um+Xxg6hFEvO9JZBONQUlqx5mY8ta6C7HaQ22K07w=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="PublishServiceSoap2">
       <properties>
@@ -221,10 +221,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="PublishServiceSoap1" contract="WSPublicVNPT.PublishServiceSoap" bindingType="basicHttpBinding" address="https://bvdkhunghaadmin.vnpt-invoice.com.vn/PublishService.asmx" bindingConfiguration="PublishServiceSoap2">
+    <endpoint name="PublishServiceSoap1" contract="WSPublicVNPT.PublishServiceSoap" bindingType="basicHttpBinding" address="https://dkhd-tt78admindemo.vnpt-invoice.com.vn/PublishService.asmx" bindingConfiguration="PublishServiceSoap2">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>https://bvdkhunghaadmin.vnpt-invoice.com.vn/PublishService.asmx</serializedValue>
+          <serializedValue>https://dkhd-tt78admindemo.vnpt-invoice.com.vn/PublishService.asmx</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

@@ -15,26 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Utils.Menu;
+using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraTreeList;
+using DevExpress.XtraTreeList.Columns;
+using DevExpress.XtraTreeList.Data;
+using DevExpress.XtraTreeList.Nodes;
+using HIS.UC.HisMateInStockByExpireDate.ADO;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MOS.SDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MOS.EFMODEL.DataModels;
-using Inventec.Core;
-using DevExpress.XtraTreeList.Columns;
-using DevExpress.XtraEditors.Repository;
-using DevExpress.XtraTreeList.Data;
-using System.Collections;
-using DevExpress.XtraTreeList;
-using DevExpress.Utils.Menu;
-using DevExpress.XtraTreeList.Nodes;
-using HIS.UC.HisMateInStockByExpireDate.ADO;
-using MOS.SDO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace HIS.UC.HisMateInStockByExpireDate.Run
 {
@@ -166,6 +167,14 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                                 HisMateInStockByExpireDateADO parentLevel1 = new HisMateInStockByExpireDateADO(parent);
                                 parentLevel1.CONCRETE_ID__IN_DATE = parentAdo.CONCRETE_ID__IN_DATE + "_" + parent.ID;
                                 parentLevel1.PARENT_ID__IN_DATE = parentAdo.CONCRETE_ID__IN_DATE;
+                                if (this.HisMateInStockByExpireDateADO.MediStocks != null && parent.MEDI_STOCK_ID.HasValue)
+                                {
+                                    var mediStock = this.HisMateInStockByExpireDateADO.MediStocks.FirstOrDefault(o => o.ID == parent.MEDI_STOCK_ID.Value);
+                                    if (mediStock != null)
+                                    {
+                                        parentLevel1.MEDI_STOCK_NAME = mediStock.MEDI_STOCK_NAME;
+                                    }
+                                }
                                 HisMateInStockByExpireDateADOs.Add(parentLevel1);
                                 CreateListChildByParent(parentLevel1, listItem);
 
@@ -189,6 +198,14 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                                 HisMateInStockByExpireDateADO parentLevel1 = new HisMateInStockByExpireDateADO(parent);
                                 parentLevel1.CONCRETE_ID__IN_DATE = parentAdo.CONCRETE_ID__IN_DATE + "_" + parent.ID;
                                 parentLevel1.PARENT_ID__IN_DATE = parentAdo.CONCRETE_ID__IN_DATE;
+                                if (this.HisMateInStockByExpireDateADO.MediStocks != null && parent.MEDI_STOCK_ID.HasValue)
+                                {
+                                    var mediStock = this.HisMateInStockByExpireDateADO.MediStocks.FirstOrDefault(o => o.ID == parent.MEDI_STOCK_ID.Value);
+                                    if (mediStock != null)
+                                    {
+                                        parentLevel1.MEDI_STOCK_NAME = mediStock.MEDI_STOCK_NAME;
+                                    }
+                                }
                                 HisMateInStockByExpireDateADOs.Add(parentLevel1);
                                 CreateListChildByParent(parentLevel1, listItem);
                             }
@@ -222,6 +239,14 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                         HisMateInStockByExpireDateADO childAdo = new HisMateInStockByExpireDateADO(listchild[child]);
                         childAdo.CONCRETE_ID__IN_DATE = parentLevel1.CONCRETE_ID__IN_DATE + "_" + listchild[child].ID;
                         childAdo.PARENT_ID__IN_DATE = parentLevel1.CONCRETE_ID__IN_DATE;
+                        if (this.HisMateInStockByExpireDateADO.MediStocks != null && listchild[child].MEDI_STOCK_ID.HasValue)
+                        {
+                            var mediStock = this.HisMateInStockByExpireDateADO.MediStocks.FirstOrDefault(o => o.ID == listchild[child].MEDI_STOCK_ID.Value);
+                            if (mediStock != null)
+                            {
+                                childAdo.MEDI_STOCK_NAME = mediStock.MEDI_STOCK_NAME;
+                            }
+                        }
                         //Inventec.Common.Mapper.DataObjectMapper.Map<HisMediInStockByExpireDateADO>(childAdo, child);
                         string[] str = childAdo.CONCRETE_ID__IN_DATE.Split('_');
                         if (str.Length == 3)

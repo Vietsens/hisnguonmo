@@ -620,19 +620,8 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         return;
                     }
                 }
-
-                sdo.RequestRoomId = this.currentModule.RoomId;
                 if (this.cboCancelReason.Text.Trim() != "")
                     sdo.CancelReasonId = Convert.ToInt64(cboCancelReason.EditValue);
-                if (dtCancelTime.EditValue != null)
-                {
-                    DateTime date = dtCancelTime.DateTime;
-                    sdo.CancelTime = Convert.ToInt64(date.ToString("yyyyMMddHHmmss"));
-                }
-                else
-                {
-                    sdo.CancelTime = 0; 
-                }
 
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANSACTION>("api/HisTransaction/Cancel", ApiConsumers.MosConsumer, sdo, param);
                 if (rs != null)

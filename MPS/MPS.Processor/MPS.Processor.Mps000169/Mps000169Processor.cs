@@ -264,6 +264,14 @@ namespace MPS.Processor.Mps000169
                     {
                         rdo.listAdo = rdo.listAdo.OrderByDescending(p => p.MEDICINE_USE_FORM_NUM_ORDER).ThenBy(p => p.MEDICINE_TYPE_NAME).ToList();
                     }
+                    else if (rdo.ConfigMps169._ConfigKeyOderOption == 6)
+                    {
+                        rdo.listAdo = rdo.listAdo
+                                    .OrderBy(p => p.MEDI_MATE_NUM_ORDER == 0 ? 1 : 0)
+                                    .ThenBy(p => p.MEDI_MATE_NUM_ORDER)
+                                    .ThenBy(p => p.MEDICINE_TYPE_NAME)
+                                    .ToList();
+                    }
                     SetSingleKey(new KeyValue(Mps000169ExtendSingleKey.TOTAL_PRICE, rdo.listAdo.Sum(o => o.PRICE ?? 0)));
                     SetSingleKey(new KeyValue(Mps000169ExtendSingleKey.TOTAL_PRICE_VAT, rdo.listAdo.Sum(o => (o.PRICE ?? 0) * (1 + (o.VAT_RATIO ?? 0)))));
                 }

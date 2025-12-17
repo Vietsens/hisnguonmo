@@ -923,6 +923,8 @@ namespace HIS.Desktop.Plugins.Transaction
                         GetPatientTypeAlter();
                         GetCurrentTreatmentRoom();
                         GetNextDepartment();
+                        // qtcode
+                        await LoadElectronicInvoiceNumOrder();
                     }
 
                 }

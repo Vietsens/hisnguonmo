@@ -147,6 +147,9 @@
   <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_PACKAGE_NUMBER" xml:space="preserve">
     <value>Lot number</value>
   </data>
+	<data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDI_STOCK" xml:space="preserve">
+    <value>Medi stock</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_REGISTER_NUMBER" xml:space="preserve">
     <value>Registered number</value>
   </data>

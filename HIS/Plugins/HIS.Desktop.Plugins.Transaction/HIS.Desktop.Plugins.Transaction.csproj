@@ -47,7 +47,7 @@
       <HintPath>..\..\..\..\LIB\WCF\CHC.WCF\Client\CHC.WCFClient.dll</HintPath>
     </Reference>
     <Reference Include="CPA.WCFClient.CallPatientClient">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\CPA.WCFClient.CallPatientClient.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\CPA.WCFClient.CallPatientClient.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Images.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -66,6 +66,9 @@
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.ElectronicBill">
+      <HintPath>..\HIS.Desktop.Plugins.Library.ElectronicBill\bin\Debug\HIS.Desktop.Plugins.Library.ElectronicBill.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
@@ -82,7 +85,7 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TotalPriceInfo">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.TotalPriceInfo.dll</HintPath>
+      <HintPath>..\..\..\UC\HIS.UC.TotalPriceInfo\bin\Debug\HIS.UC.TotalPriceInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreatmentInfo">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TreatmentInfo\HIS.UC.TreatmentInfo.dll</HintPath>

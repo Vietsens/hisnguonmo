@@ -64,6 +64,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         string Exp_Department_Name = "";
         long roomIdByMediStockIdPrint = 0;
         long keyPhieuTra = 0;
+        long configKeyOderOption = 0;
         internal enum PrintType
         {
             PHIEU_XUAT_BAN,
@@ -723,11 +724,11 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 }
 
                 //lấy đơn thuốc tư phiếu xuất
-                if (_CurrentExpMest != null && _CurrentExpMest.SERVICE_REQ_ID != null)
+                if (_CurrentExpMest != null && _CurrentExpMest.PRESCRIPTION_ID != null)
                 {
                     CommonParam parama = new CommonParam();
                     HisServiceReqFilter HisServiceReq = new HisServiceReqFilter();
-                    HisServiceReq.ID = _CurrentExpMest.SERVICE_REQ_ID;
+                    HisServiceReq.ID = _CurrentExpMest.PRESCRIPTION_ID;
                     serviceReqPrints = new BackendAdapter(parama).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, HisServiceReq, parama);
                 }
 
@@ -744,7 +745,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             item.SERVICE_REQ_ID = dem;
 
                             HIS_SERVICE_REQ req = new HIS_SERVICE_REQ();
-                            req.ID = item.SERVICE_REQ_ID ?? 0;
+                            req.ID = item.PRESCRIPTION_ID ?? 0;
                             req.TREATMENT_ID = item.TDL_TREATMENT_ID ?? 0;
                             req.PARENT_ID = item.TDL_PATIENT_ID;
                             serviceReqPrints.Add(req);
@@ -753,7 +754,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         {
                             //nếu có service_req_id mà không get được thông tin thì cũng tạo đơn giả để in
                             HIS_SERVICE_REQ req = new HIS_SERVICE_REQ();
-                            req.ID = item.SERVICE_REQ_ID ?? 0;
+                            req.ID = item.PRESCRIPTION_ID ?? 0;
                             req.TREATMENT_ID = item.TDL_TREATMENT_ID ?? 0;
                             req.PARENT_ID = item.TDL_PATIENT_ID;
                             serviceReqPrints.Add(req);
@@ -781,7 +782,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             result = false;
             try
             {
-                //Review
+                //Review;
                 // WaitingManager.Show();
                 HisExpMestViewFilter depaFilter = new HisExpMestViewFilter();
                 depaFilter.ID = _CurrentExpMest.ID;
@@ -2379,6 +2380,9 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
 
                 #region TT Chung
                 WaitingManager.Show();
+                this.configKeyOderOption = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.AggrExpMest.OderOption"));
+                MPS.Processor.Mps000086.PDO.Mps000086Config mpsConfig86 = new MPS.Processor.Mps000086.PDO.Mps000086Config();
+                mpsConfig86._ConfigKeyOderOption = this.configKeyOderOption;
                 _ExpMestMetyReq_GN_HTs = new List<HIS_EXP_MEST_METY_REQ>();
                 _ExpMestMetyReq_GNs = new List<HIS_EXP_MEST_METY_REQ>();
                 _ExpMestMetyReq_HTs = new List<HIS_EXP_MEST_METY_REQ>();
@@ -2713,7 +2717,8 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                              BackendDataWorker.Get<HIS_MEDICINE_USE_FORM>(),
                              _Medicines_PATY,
                              _Materials_PATY,
-                             lstConfig
+                             lstConfig,
+                             mpsConfig86
                              );
                         if (lstConfig != null && lstConfig.Count > 0)
                         {

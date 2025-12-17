@@ -552,10 +552,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     txtIcdText.EditValue as string             // Tên ICD phụ mới
                 );
                 checkTmWho.ICD_CODE = txtIcdCode.EditValue.ToString();
-
+                if(isHasTreatmentFinishChecked && treatUC != null)
+                {
+                    checkTmWho.TREATMENT_END_TYPE_ID = treatUC.TreatmentEndTypeId; 
+                }
                 checkTmWho.ICD_NAME = txtIcdMainText.EditValue.ToString();
+                var medicine = new List<V_HIS_EXP_MEST_MEDICINE>();
 
-                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(checkTmWho, currentDhst, null);
+                foreach (var item in this.mediMatyTypeADOs)
+                {
+                    var med = new V_HIS_EXP_MEST_MEDICINE();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MEDICINE>(med, item);
+                    medicine.Add(med);
+                }
+                Inventec.Common.Logging.LogSystem.Debug("Số thuốc được kê qtcode " + Inventec.Common.Logging.LogUtil.TraceData("DataA", medicine.Count()));
+                HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor who = new HIS.Desktop.Plugins.Library.ConnectWhoCnd.ConnectWhoCndProcessor(checkTmWho, currentDhst, medicine);
                 if (isHasTreatmentFinishChecked && treatUC != null)
                 {
                     if (!who.CheckData())
@@ -1168,7 +1179,52 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.patientSelectProcessor.ReloadStatePrescriptionPerious(this.ucPatientSelect);
                         this.OpionGroupSelectedChangedAsync();
                     }
+                    bool checkExistMediCode = currentTreatmentWithPatientType != null && BackendDataWorker.Get<HIS_MEDI_ORG>().FirstOrDefault(p => p.MEDI_ORG_CODE != currentTreatmentWithPatientType.MEDI_ORG_CODE) == null;
+                    int warnMonths;
 
+                    bool isWarnMonthsParsed = int.TryParse(HisConfigCFG.WarningOverMonthsInProgram, out warnMonths);
+                    bool isWarnMonthsValid = isWarnMonthsParsed && warnMonths > 0;
+                    bool isTreatUCNotNull = treatUC != null;
+                    bool isProgramIdNotNull = treatUC != null && treatUC.ProgramId != null;
+                    bool isTreatmentEndTypeMatched = treatUC != null && treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN;
+                    bool isCheckExistMediCode = checkExistMediCode;
+
+                    LogSystem.Debug($"isWarnMonthsParsed: {isWarnMonthsParsed}");
+                    LogSystem.Debug($"warnMonths: {warnMonths}");
+                    LogSystem.Debug($"isWarnMonthsValid: {isWarnMonthsValid}");
+                    LogSystem.Debug($"isTreatUCNotNull: {isTreatUCNotNull}");
+                    LogSystem.Debug($"isProgramIdNotNull: {isProgramIdNotNull}");
+                    LogSystem.Debug($"isTreatmentEndTypeMatched: {isTreatmentEndTypeMatched}");
+                    LogSystem.Debug($"isCheckExistMediCode: {isCheckExistMediCode}");
+
+                    if ((int.TryParse(HisConfigCFG.WarningOverMonthsInProgram, out warnMonths) && warnMonths > 0)
+                        && treatUC != null
+                        && treatUC.ProgramId != null
+                        && treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN
+                        && checkExistMediCode
+                        )
+                    {
+                        if (treatUC.SurgeryBeginTime.HasValue && treatUC.SurgeryBeginTime.Value > 0)
+                        {
+                            DateTime? surgeryBeginTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(treatUC.SurgeryBeginTime.Value);
+                            if (surgeryBeginTime.HasValue)
+                            {
+                                int monthDiff = (DateTime.Now.Year - surgeryBeginTime.Value.Year) * 12
+                                                + (DateTime.Now.Month - surgeryBeginTime.Value.Month);
+
+                                if (monthDiff >= warnMonths)
+                                {
+                                    string messErr = $"Thời gian chuyển tuyến của bệnh nhân đã được {monthDiff} tháng. Lưu ý bệnh nhân cần xin giấy chuyển tuyến mới";
+                                    if (DevExpress.XtraEditors.XtraMessageBox.Show(messErr + ". Bạn có muốn tiếp tục?",
+                                            HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                                            MessageBoxButtons.YesNo) == DialogResult.No)
+                                    {
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
                     this.FillDataToComboPriviousExpMest(this.currentTreatmentWithPatientType);
 
                     if (this.oldServiceReq != null)

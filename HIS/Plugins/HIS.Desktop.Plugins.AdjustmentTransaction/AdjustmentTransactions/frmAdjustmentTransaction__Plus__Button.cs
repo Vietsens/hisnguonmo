@@ -140,6 +140,7 @@ namespace HIS.Desktop.Plugins.AdjustmentTransaction.AdjustmentTransaction
                 Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_TRANSACTION>(data.Transaction, this.currentTransaction);
                 LogSystem.Info("this.currentTransaction: " + LogUtil.TraceData("", this.currentTransaction));
                 LogSystem.Info("data.Transaction: " + LogUtil.TraceData("", data.Transaction));
+                data.Transaction.KC_AMOUNT = null;
                 data.Transaction.ID = 0;
                 data.Transaction.INVOICE_CODE = null;
                 data.Transaction.INVOICE_SYS = null;

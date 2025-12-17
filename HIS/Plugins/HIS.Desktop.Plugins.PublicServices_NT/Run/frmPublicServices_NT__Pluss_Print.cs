@@ -128,10 +128,10 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                 __SingleKeys.LOGIN_NAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 __SingleKeys.USER_NAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
 
-                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((_Treatment != null ? _Treatment.TREATMENT_CODE : ""), printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
                 WaitingManager.Hide();
                 foreach (var mps in this._Mps000116ADOs)
                 {
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((_Treatment != null ? _Treatment.TREATMENT_CODE : ""), printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
                     List<MPS.Processor.Mps000225.PDO.Mps000225ADO> _Mps000116ADOsPrint = new List<MPS.Processor.Mps000225.PDO.Mps000225ADO>();
                     _Mps000116ADOsPrint.Add(mps);
 

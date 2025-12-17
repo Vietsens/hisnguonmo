@@ -73,7 +73,7 @@ namespace MPS.Processor.Mps000086.PDO
         public string AMOUNT_EXPORT_STRING { get; set; }
         public string AMOUNT_EXECUTE_STRING { get; set; }
         public string AMOUNT_REQUEST_STRING { get; set; }
-        public long MEDI_MATE_NUM_ORDER { get; set; }
+        public long? MEDI_MATE_NUM_ORDER { get; set; }
         public long? NUM_ORDER { get; set; }
         public string BLOOD_ADO_CODE { get; set; }
         public string BLOOD_RH_CODE { get; set; }
@@ -366,5 +366,10 @@ namespace MPS.Processor.Mps000086.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+    }
+
+    public class Mps000086Config
+    {
+        public long _ConfigKeyOderOption { get; set; }
     }
 }

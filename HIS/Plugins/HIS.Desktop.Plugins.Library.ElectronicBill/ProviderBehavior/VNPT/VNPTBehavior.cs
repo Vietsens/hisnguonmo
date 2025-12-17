@@ -88,9 +88,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     string pattern = configArr[4].Trim();
                     string serial = configArr[5].Trim();
                     int convert = Inventec.Common.TypeConvert.Parse.ToInt32(configArr[6].Trim());
+
+
                     string TypeStr = "";
                     string CancelFunc = "";
                     string version = "";
+                    //qtcode
+                    string typeInvoice = "";
                     if (configArr.Length > 7)
                     {
                         TypeStr = configArr[7].Trim();
@@ -105,13 +109,17 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     {
                         version = configArr[9].Trim();
                     }
+                    if (configArr.Length > 10)
+                    {
+                        typeInvoice = configArr[10].Trim();
+                    }
 
                     //Lấy thông tin tài khoản người dùng
                     string[] accountConfigArr = accountConfig.Split('|');
                     string account = accountConfigArr[0].Trim();
                     string acPass = accountConfigArr[1].Trim();
 
-                    int cmdType = GetCmdType(TypeStr, CancelFunc);
+                    int cmdType = GetCmdType(TypeStr, CancelFunc, typeInvoice);
 
                     string patientCode = this.ElectronicBillDataInput.Treatment.TDL_PATIENT_CODE;
                     string treatmentCode = this.ElectronicBillDataInput.Treatment.TREATMENT_CODE;
@@ -120,17 +128,18 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     electronicBillInput.account = account;
                     electronicBillInput.acPass = acPass;
                     electronicBillInput.convert = convert;
-                    
+
                     //if (cmdType != Inventec.Common.ElectronicBill.CmdType.ImportAndPublishInv && this.ElectronicBillDataInput != null && !String.IsNullOrWhiteSpace(this.ElectronicBillDataInput.InvoiceCode))
                     //{
                     //    electronicBillInput.fKey = this.ElectronicBillDataInput.InvoiceCode;
                     //}
                     //qtcode
                     if (cmdType != Inventec.Common.ElectronicBill.CmdType.ImportAndPublishInv &&
-                        cmdType != Inventec.Common.ElectronicBill.CmdType.AdjustInvoiceAction && // Thêm điều kiện cho AdjustInvoiceAction
-                        this.ElectronicBillDataInput != null && !String.IsNullOrWhiteSpace(this.ElectronicBillDataInput.InvoiceCode))
+                        cmdType != Inventec.Common.ElectronicBill.CmdType.AdjustInvoiceAction &&
+                        //cmdType != Inventec.Common.ElectronicBill.CmdType.PublishInvFkey && // Thêm điều kiện cho AdjustInvoiceAction
+                        this.ElectronicBillDataInput != null && !String.IsNullOrWhiteSpace(this.ElectronicBillDataInput.Transaction.INVOICE_CODE))
                     {
-                        electronicBillInput.fKey = this.ElectronicBillDataInput.InvoiceCode;
+                        electronicBillInput.fKey = this.ElectronicBillDataInput.Transaction.INVOICE_CODE;
                     }
                     else
                     {
@@ -371,12 +380,65 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
                         result.InvoiceSys = ProviderType.VNPT;
                         result.InvoiceLink = billResult.InvoiceLink;
-                        result.InvoiceNumOrder = GetNumOrder(billResult.Data);
+                        if (cmdType != Inventec.Common.ElectronicBill.CmdType.ImportInv)
+                        {
+                            result.InvoiceNumOrder = GetNumOrder(billResult.Data);
+                        }
+
                         result.InvoiceTime = Inventec.Common.DateTime.Get.Now();
                         result.InvoiceLoginname = username;
                     }
                     else
                     {
+                        if (typeInvoice == "1" && cmdType == Inventec.Common.ElectronicBill.CmdType.PublishInvFkey)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Phát hành nháp VNPT thất bại");
+
+                            Inventec.Common.ElectronicBill.Base.ElectronicBillResult fallbackResult = eHoaDon.Run(Inventec.Common.ElectronicBill.CmdType.ImportAndPublishInv);
+
+                            if (fallbackResult != null && fallbackResult.Success)
+                            {
+                                result.Success = true;
+                                //result.InvoiceCode = electronicBillInput.invoices?.FirstOrDefault()?.Key
+                                //                    ?? electronicBillInput.invoicesBm?.FirstOrDefault()?.Key
+                                //                    ?? electronicBillInput.invoiceTT78s?.FirstOrDefault()?.Key
+                                //                    ?? this.ElectronicBillDataInput?.InvoiceCode;
+
+                                if (electronicBillInput.invoices != null && electronicBillInput.invoices.Count > 0)
+                                {
+                                    result.InvoiceCode = electronicBillInput.invoices.First().Key;
+                                }
+                                else if (electronicBillInput.invoicesBm != null && electronicBillInput.invoicesBm.Count > 0)
+                                {
+                                    result.InvoiceCode = electronicBillInput.invoicesBm.First().Key;
+                                }
+                                else if (electronicBillInput.invoiceTT78s != null && electronicBillInput.invoiceTT78s.Count > 0)
+                                {
+                                    result.InvoiceCode = electronicBillInput.invoiceTT78s.First().Key;
+                                }
+                                else if (ElectronicBillTypeEnum == ElectronicBillType.ENUM.GET_INVOICE_INFO)
+                                {
+                                    result.InvoiceCode = this.ElectronicBillDataInput.InvoiceCode;
+                                }
+                                else if (electronicBillInput.replaceInvoice != null)
+                                {
+                                    result.InvoiceCode = electronicBillInput.replaceInvoice.key;
+                                }
+                                else if (electronicBillInput.adjustInvoice != null)
+                                {
+                                    result.InvoiceCode = electronicBillInput.adjustInvoice.key;
+                                }
+                                result.InvoiceSys = ProviderType.VNPT;
+                                result.InvoiceLink = fallbackResult.InvoiceLink;
+                                if (cmdType != Inventec.Common.ElectronicBill.CmdType.ImportInv)
+                                {
+                                    result.InvoiceNumOrder = GetNumOrder(fallbackResult.Data);
+                                }
+                                result.InvoiceTime = Inventec.Common.DateTime.Get.Now();
+                                result.InvoiceLoginname = username;
+                                return result;
+                            }
+                        }
                         if (cmdType == Inventec.Common.ElectronicBill.CmdType.ConvertForStoreFkey || cmdType == Inventec.Common.ElectronicBill.CmdType.downloadInvPDFFkeyNoPay)
                         {
                             Inventec.Common.Logging.LogSystem.Debug(String.Format("{0} ,{1}, {2}", serviceUrl, account, username));
@@ -423,7 +485,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
 
                                 result.InvoiceSys = ProviderType.VNPT;
                                 result.InvoiceLink = billResult1.InvoiceLink;
-                                result.InvoiceNumOrder = GetNumOrder(billResult1.Data);
+                                if (cmdType != Inventec.Common.ElectronicBill.CmdType.ImportInv)
+                                {
+                                    result.InvoiceNumOrder = GetNumOrder(billResult1.Data);
+                                }
                                 result.InvoiceTime = Inventec.Common.DateTime.Get.Now();
                                 result.InvoiceLoginname = username;
                             }
@@ -527,7 +592,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
             return result;
         }
 
-        private int GetCmdType(string TypeStr, string cancelFunc)
+        private int GetCmdType(string TypeStr, string cancelFunc, string typeInvoice)
         {
             int result = -1;
             try
@@ -535,17 +600,37 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                 switch (this.ElectronicBillTypeEnum)
                 {
                     case ElectronicBillType.ENUM.CREATE_INVOICE:
-                        result = Inventec.Common.ElectronicBill.CmdType.ImportAndPublishInv;
-                        if (ElectronicBillDataInput.Transaction != null &&
-                            ElectronicBillDataInput.Transaction.IS_ADJUSTMENT == 1)
+                        if (typeInvoice == "1")
                         {
-                            result = Inventec.Common.ElectronicBill.CmdType.AdjustInvoiceAction;
+                            bool hasInvoiceCode = !string.IsNullOrWhiteSpace(this.ElectronicBillDataInput?.Transaction?.INVOICE_CODE);
+                            bool hasNumOrder = !string.IsNullOrWhiteSpace(this.ElectronicBillDataInput?.Transaction?.EINVOICE_NUM_ORDER);
+
+                            if (!hasInvoiceCode)
+                            {
+                                // Chưa có invoice_code => tạo hóa đơn nháp
+                                result = Inventec.Common.ElectronicBill.CmdType.ImportInv;
+                            }
+                            else if (hasInvoiceCode && !hasNumOrder)
+                            {
+                                // Đã có invoice_code và chưa có số hóa đơn => Phát hành nháp
+                                result = Inventec.Common.ElectronicBill.CmdType.PublishInvFkey;
+                            }
                         }
-                        //thay thế hóa đơn
-                        else if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
+                        else
                         {
-                            result = Inventec.Common.ElectronicBill.CmdType.ReplaceInvoiceAction;
+                            result = Inventec.Common.ElectronicBill.CmdType.ImportAndPublishInv;
+                            if (ElectronicBillDataInput.Transaction != null &&
+                                ElectronicBillDataInput.Transaction.IS_ADJUSTMENT == 1)
+                            {
+                                result = Inventec.Common.ElectronicBill.CmdType.AdjustInvoiceAction;
+                            }
+                            //thay thế hóa đơn
+                            else if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue)
+                            {
+                                result = Inventec.Common.ElectronicBill.CmdType.ReplaceInvoiceAction;
+                            }
                         }
+
                         break;
                     case ElectronicBillType.ENUM.GET_INVOICE_LINK:
                         result = Inventec.Common.ElectronicBill.CmdType.downloadInvPDFFkeyNoPay;
@@ -693,7 +778,6 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                 invoice.InvoiceDetail.CusAddress = adoInfo.BuyerAddress ?? " ";
                 invoice.InvoiceDetail.CusPhone = adoInfo.BuyerPhone ?? "";
                 invoice.InvoiceDetail.CusTaxCode = adoInfo.BuyerTaxCode ?? "";
-
                 string paymentName = electronicBillDataInput.PaymentMethod;
 
                 if (electronicBillDataInput.Transaction != null)
