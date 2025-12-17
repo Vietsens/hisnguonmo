@@ -55,6 +55,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -3167,15 +3168,14 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             {
                 if (IsPayFormQR())
                 {
-                    var result = MessageBox.Show(
-                        "Thanh toán QR chưa thể tự động tạo hóa đơn điện tử bạn có muốn tiếp tục?",
+                    MessageBox.Show(
+                       "Không cho phép thanh toán QR với \"Lưu ký\".",
                         "Thông báo",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
                     );
-                    if (result != DialogResult.Yes)
-                        return;
-                }
+                    return;
+                } 
                 isSaveAndSign = true;
                 positionHandleControl = -1;
                 if (!btnSaveAndSign.Enabled || !dxValidationProvider1.Validate() || this.treatment == null)
