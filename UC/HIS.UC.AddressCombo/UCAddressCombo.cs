@@ -1371,18 +1371,19 @@ namespace HIS.UC.AddressCombo
                 IsInitForm = true;
                 this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
                 this.currentControlStateRDO = controlStateWorker.GetData(moduleLink);
+                bool IsState = true;
                 if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
                 {
                     foreach (var item_ in this.currentControlStateRDO)
                     {
                         if (item_.KEY == togChangeStructAdress.Name)
                         {
-                            //togChangeStructAdress.IsOn = item_.VALUE == "1";
+                            IsState = item_.VALUE == "1";
                         }
                     }
                 }
-                togChangeStructAdress.IsOn = true;
-                layoutControlItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                togChangeStructAdress.IsOn = HisConfigCFG.HideAddressLevel ? true : IsState;
+                layoutControlItem2.Visibility = HisConfigCFG.HideAddressLevel ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 
                 IsInitForm = false;
             }

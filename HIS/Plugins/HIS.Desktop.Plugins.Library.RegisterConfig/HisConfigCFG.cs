@@ -126,7 +126,9 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
 
         private const string CONFIG_KEY__CHECK_DUPLICATION = "MOS.HIS_PATIENT.CCCD_NUMBER.CHECK_DUPLICATION";
         //qtcode
-        private const string CONFIG_KEY__WarningHeinPatientTypeCode = "HIS.Desktop.Plugins.RegisterV2.WarningHeinPatientTypeCode";
+        private const string CONFIG_KEY__WarningHeinPatientTypeCode = "HIS.Desktop.Plugins.RegisterV2.WarningHeinPatientTypeCode"; 
+        private const string CONFIG_KEY__HideAddressLevel = "HIS.Desktop.Plugins.Register.HideAddressLevel";
+        public static bool HideAddressLevel;
         public static string CHECK_DUPLICATION;
         public static string MODULELINKS;
 
@@ -268,6 +270,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
                 LogSystem.Debug("LoadConfig => 1");
                 //Get BHYT
                 BHXHLoginCFG.LoadConfig();
+                HideAddressLevel = GetValue(CONFIG_KEY__HideAddressLevel) == valueString__true;
                 WarningHeinPatientTypeCode = GetValue(CONFIG_KEY__WarningHeinPatientTypeCode);
                 IsAllowProgramPatientOld = GetValue("HIS.Desktop.Plugins.RegisterV2.IsAllowProgramPatientOld");
                 PrimaryPatientTypeByService = GetValue(CONFIG_KEY_PrimaryPatientTypeByService);
