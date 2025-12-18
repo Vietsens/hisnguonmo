@@ -3220,11 +3220,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
-                var focus = (HIS_WORK_PLACE)cboBuyerOrganization.Properties.View.GetFocusedRow();
-                if (focus != null)
+                if (e.CloseMode == PopupCloseMode.Normal)
                 {
-                    txtBuyerTaxCode.Text = focus.TAX_CODE;
-                    txtBuyerSocialRelationsCode.Text = focus.BUD_REL_UNIT_CODE;
+                    var focus = (HIS_WORK_PLACE)cboBuyerOrganization.Properties.View.GetFocusedRow();
+                    if (focus != null)
+                    {
+                        txtBuyerTaxCode.Text = focus.TAX_CODE;
+                        txtBuyerSocialRelationsCode.Text = focus.BUD_REL_UNIT_CODE;
+                    }
                 }
             }
             catch (Exception ex)
@@ -3237,10 +3240,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
-                var focus = (HIS_WORK_PLACE)cboBuyerOrganization2.Properties.View.GetFocusedRow();
-                if (focus != null)
+                if (e.CloseMode == PopupCloseMode.Normal)
                 {
-                    txtBuyerTaxCode2.Text = focus.TAX_CODE;
+                    var focus = (HIS_WORK_PLACE)cboBuyerOrganization2.Properties.View.GetFocusedRow();
+                    if (focus != null)
+                    {
+                        txtBuyerTaxCode2.Text = focus.TAX_CODE;
+                    }
                 }
             }
             catch (Exception ex)
