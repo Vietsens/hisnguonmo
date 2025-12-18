@@ -40,6 +40,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Common;
 using HIS.Desktop.Plugins.Library.CheckHeinGOV;
 using HIS.Desktop.Plugins.CallPatientTypeAlter.Resources;
+using HIS.Desktop.Utility;
 
 namespace HIS.Desktop.Plugins.CallPatientTypeAlter
 {
@@ -96,8 +97,20 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                         string thongBao = "";
                         if (maKQ == "060" || maKQ == "061" || maKQ == "070" || maKQ == "051" || maKQ == "052" || maKQ == "053" || maKQ == "050" || isNotWrongAddress)
                         {
-                            
-                            if(string.IsNullOrEmpty(message)) message = ResultDataADO.ResultHistoryLDO.message;
+                            DateTime dtHanTheTu = DateTimeHelper.ConvertDateStringToSystemDate(dataHein.FromDate).Value;
+                            DateTime dtHanTheDen = (DateTimeHelper.ConvertDateStringToSystemDate(dataHein.ToDate) ?? DateTime.MinValue);
+                            if (maKQ == "004" && dtHanTheTu.Date <= dtLogTime.DateTime && dtHanTheDen.Date >= dtLogTime.DateTime)
+                            {
+                                dataHein.HeinCardNumber = ResultDataADO.ResultHistoryLDO.maThe;
+                                dataHein.Address = ResultDataADO.ResultHistoryLDO.diaChi ?? dataHein.Address;
+                                dataHein.FineYearMonthDate = ResultDataADO.ResultHistoryLDO.ngayDu5Nam;
+                                dataHein.FromDate = ResultDataADO.ResultHistoryLDO.gtTheTu ?? dataHein.FromDate;
+                                dataHein.ToDate = ResultDataADO.ResultHistoryLDO.gtTheDen ?? dataHein.ToDate;
+                                dataHein.LiveAreaCode = ResultDataADO.ResultHistoryLDO.maKV ?? dataHein.LiveAreaCode;
+                                ResultDataADO.IsThongTinNguoiDungThayDoiSoVoiCong__Choose = true;
+                                this.CheckTTProcessResultData(dataHein, ResultDataADO);
+                            }
+                            if (string.IsNullOrEmpty(message)) message = ResultDataADO.ResultHistoryLDO.message;
                             thongBao = message + ". Bạn có muốn sửa thông tin bệnh nhân?";
                             
                             DialogResult drReslt = DevExpress.XtraEditors.XtraMessageBox.Show(thongBao, "Thông báo!", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, DevExpress.Utils.DefaultBoolean.True);
