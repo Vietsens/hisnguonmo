@@ -1876,4 +1876,7 @@
   <data name="frmMissingIcd.labelControl2.Text" xml:space="preserve">
     <value>ဝန်ဆောင်မှုများကို အောက်ပါရောဂါရှာဖွေရေးကိစ္စများတွင် တားမြစ်ထားသည်။</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_DESCRIPTION" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
 </root>
