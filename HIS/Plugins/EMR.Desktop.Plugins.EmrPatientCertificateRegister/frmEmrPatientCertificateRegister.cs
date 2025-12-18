@@ -680,7 +680,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     return;
                 }
 
-                if (picSignPatient.Image == null)
+                if (picSignPatient.Image == null || isDefaultImageLoaded)
                 {
                     Inventec.Common.Logging.LogSystem.Warn("picSignPatient.Image == null");
                     param.Messages.Add("Vui lòng ký và lưu chữ ký trước khi phát hành chứng thư.");

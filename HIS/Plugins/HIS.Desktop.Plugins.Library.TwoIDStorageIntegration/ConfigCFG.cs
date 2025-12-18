@@ -40,9 +40,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         {
             try
             {
-                return GlobalStore.EmrConfigs
-                    .FirstOrDefault(o => o.KEY == key)
-                    ?.VALUE ?? "";
+                return HIS.Desktop.LocalStorage.EmrConfig.EmrConfigs.Get<string>(key);
             }
             catch (Exception ex)
             {

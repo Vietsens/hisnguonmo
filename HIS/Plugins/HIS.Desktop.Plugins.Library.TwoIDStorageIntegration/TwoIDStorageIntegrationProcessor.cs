@@ -37,7 +37,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
             return TwoIDApiRequestInput.CallTwoIDApi<TwoIDApiRequestInput>(
                 config.ApiBaseUrl,
                 "/api/v1/citizens",
-                null,
+                citizenNumber,
                 null, null, null,
                 apiKey,
                 transactionId,
