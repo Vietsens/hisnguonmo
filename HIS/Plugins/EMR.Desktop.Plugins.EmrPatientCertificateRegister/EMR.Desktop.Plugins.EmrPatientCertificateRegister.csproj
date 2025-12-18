@@ -83,6 +83,10 @@
     <Reference Include="HIS.Desktop.Plugins.Library.ResourceMessage">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.ResourceMessage.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.TwoIDStorageIntegration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\HIS.Desktop\bin\Debug\Plugins\Module\HIS.Desktop.Plugins.Library.TwoIDStorageIntegration.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Utility">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
@@ -156,9 +160,9 @@
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MOS.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Integrate\Inventec.FingerPrintManager\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
