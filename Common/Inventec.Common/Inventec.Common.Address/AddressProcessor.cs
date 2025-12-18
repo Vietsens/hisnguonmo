@@ -65,8 +65,15 @@ namespace Inventec.Common.Address
                     List<V_SDA_PROVINCE> provinces = null;
                     List<V_SDA_DISTRICT> district = null;
                     V_SDA_COMMUNE commune = null;
+                    // Đếm số lượng dấu phẩy và dấu gạch ngang
+                    int commaCount = result.Address.Count(c => c == ',');
+                    int hyphenCount = result.Address.Count(c => c == '-');
+
+                    // Xác định ký tự phân tách: ưu tiên dấu phẩy nếu có nhiều dấu phẩy hơn
+                    string[] delimiter = commaCount > 0 ? new string[] { "," } : new string[] { "-" };
+
                     string[] splitA = result.Address
-                        .Split(new string[] { ",", "-" }, StringSplitOptions.RemoveEmptyEntries)
+                        .Split(delimiter, StringSplitOptions.RemoveEmptyEntries)
                         .Select(s => s.Trim())
                         .Distinct()
                         .ToArray();
@@ -74,7 +81,7 @@ namespace Inventec.Common.Address
                     for (int i = splitA.Length - 1; i >= 0; i--)
                     {
                         string path = splitA[i];
-                        string checkData = string.Join(" ", path.ToLower().Replace("tp ","thành phố ").Replace("tp. ", "thành phố ").Split(' ').Where(o => !String.IsNullOrWhiteSpace(o)));
+                        string checkData = string.Join(" ", path.ToLower().Replace("tp ","thành phố ").Replace("tp. ", "thành phố ").Replace("-","").Replace(";", "").Split(' ').Where(o => !String.IsNullOrWhiteSpace(o)));
                         if (provinces == null)
                         {
                             //tỉnh không thêm dấu phẩy ở 2 đầu để so sánh dữ liệu
