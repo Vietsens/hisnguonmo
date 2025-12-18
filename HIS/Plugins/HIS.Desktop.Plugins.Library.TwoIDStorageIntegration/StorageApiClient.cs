@@ -27,7 +27,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                     string fullUrl = baseUri + requestUri;
 
                     client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Add("Accept", "application/json");
+                    client.DefaultRequestHeaders.Add("Accept", contentType);
                     client.Timeout = new TimeSpan(0, 0, 90);
 
                     string sendJsonData = JsonConvert.SerializeObject(sendData);

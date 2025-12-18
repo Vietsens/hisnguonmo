@@ -20,7 +20,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         // Upload danh sách file
         public TwoIDApiRequestInput UploadFiles(string citizenNumber, string apiKey, string transactionId, string hash)
         {
-            return TwoIDApiRequestInput.CallTwoIDApi<TwoIDApiRequestInput>(
+            return TwoIDApiRequestInput.CallTwoIDBasic<TwoIDApiRequestInput>(
                 config.ApiBaseUrl,
                 "/api/v1/files/uploads",
                 citizenNumber,
@@ -32,23 +32,39 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
             );
         }
         // Lấy thông tin CCCD
-        public TwoIDApiRequestInput GetCitizenInfo(string citizenNumber, string apiKey, string transactionId, string hash)
+        public TwoIDApiRequestInput GetCitizenInfo(
+     string citizenNumber,
+     string apiKey,
+     string transactionId,
+     string hash,
+     string residencePlace,
+     DateTime issueDate,
+     DateTime expiredDate,
+     List<string> idCardVerifyResult)
         {
+            var input = new TwoIDApiRequestInput
+            {
+                citizenNumber = citizenNumber,
+                residencePlace = residencePlace,
+                issueDate = issueDate,
+                expiredDate = expiredDate,
+                idCardVerifyResult = idCardVerifyResult ?? new List<string>(),
+                apiKey = apiKey,
+                transactionId = transactionId,
+                hash = hash
+            };
+
             return TwoIDApiRequestInput.CallTwoIDApi<TwoIDApiRequestInput>(
                 config.ApiBaseUrl,
                 "/api/v1/citizens",
-                citizenNumber,
-                null, null, null,
-                apiKey,
-                transactionId,
-                hash,
-                 "application/x-www-form-urlencoded"
+                input,
+                "application/x-www-form-urlencoded"
             );
         }
         //Download dữ liệu file
         public TwoIDApiRequestInput DownloadFile(string citizenNumber, string apiKey, string transactionId, string hash)
         {
-            return TwoIDApiRequestInput.CallTwoIDApi<TwoIDApiRequestInput>(
+            return TwoIDApiRequestInput.CallTwoIDBasic<TwoIDApiRequestInput>(
                 config.ApiBaseUrl,
                 "/api/v1/files/download",
                 citizenNumber,
@@ -71,7 +87,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
             string hash,
             string contentType)
         {
-            return TwoIDApiRequestInput.CallTwoIDApi<TwoIDApiRequestInput>(
+            return TwoIDApiRequestInput.CallTwoIDBasic<TwoIDApiRequestInput>(
                 config.ApiBaseUrl,
                 "/api/v1/citizens",
                 citizenNumber,
@@ -86,11 +102,38 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         }
 
         //check CCCD
-        public bool IsCitizenInfoExists(string citizenNumber, string apiKey, string transactionId, string hash)
+        public TwoIDApiRequestInput GetCitizenInfo(
+    string citizenNumber,
+    string apiKey,
+    string transactionId,
+    string hash)
+        {
+            return TwoIDApiRequestInput.CallTwoIDBasic<TwoIDApiRequestInput>(
+                config.ApiBaseUrl,
+                "/api/v1/citizens",
+                citizenNumber,
+                null, null, null,
+                apiKey,
+                transactionId,
+                hash,
+                "application/x-www-form-urlencoded"
+            );
+        }
+        public bool IsCitizenInfoExists(
+      string citizenNumber,
+      string apiKey,
+      string transactionId,
+      string hash)
         {
             try
             {
-                var info = GetCitizenInfo(citizenNumber, apiKey, transactionId, hash);
+                var info = GetCitizenInfo(
+                    citizenNumber,
+                    apiKey,
+                    transactionId,
+                    hash
+                );
+
                 return info != null && !string.IsNullOrEmpty(info.citizenNumber);
             }
             catch (Exception ex)
