@@ -125,7 +125,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
       string transactionId,
       string hash)
         {
-            try
+            try 
             {
                 var info = GetCitizenInfo(
                     citizenNumber,
@@ -133,7 +133,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                     transactionId,
                     hash
                 );
-
+                  
                 return info != null && !string.IsNullOrEmpty(info.citizenNumber);
             }
             catch (Exception ex)
