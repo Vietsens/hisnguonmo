@@ -89,7 +89,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+          
         private void UCMediStockSummaryByExpireDate_Load(object sender, EventArgs e)
         {
             try
@@ -101,6 +101,19 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 LoadDataGridMediStock();
               
                 ShowUCControl();
+                chkMediStock.CheckedChanged += chkMediStock_CheckedChanged;
+                cboExpriedDate.SelectedIndexChanged += cboExpriedDate_SelectedIndexChanged;
+                // Ensure control state is saved when the form is closing or this control is disposed
+                try
+                {
+                    var form = this.FindForm();
+                    if (form != null)
+                    {
+                        form.FormClosing += (s, ev) => { try { SaveControlState(); } catch { } };
+                    }
+                }
+                catch { }
+                this.Disposed += (s, ev) => { try { SaveControlState(); } catch { } };
             }
             catch (Exception ex)
             {
@@ -143,11 +156,68 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
 
                             }
                         }
+                        if (item.KEY == chkMediStock.Name)
+                        {
+                            chkMediStock.Checked = item.VALUE == "1";
+                        }
                        
                     }
                 }
 
                 isNotLoadWhileChangeControlStateInFirst = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SaveControlState()
+        {
+            try
+            {
+                List<HIS.Desktop.Library.CacheClient.ControlStateRDO> controlStateRDOs = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO cboExpriedDateState = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                cboExpriedDateState.KEY = cboExpriedDate.Name;
+                cboExpriedDateState.VALUE = cboExpriedDate.SelectedIndex.ToString();
+                controlStateRDOs.Add(cboExpriedDateState);
+
+                HIS.Desktop.Library.CacheClient.ControlStateRDO chkMediStockState = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                chkMediStockState.KEY = chkMediStock.Name;
+                chkMediStockState.VALUE = chkMediStock.Checked ? "1" : "0";
+                controlStateRDOs.Add(chkMediStockState);
+
+                this.controlStateWorker.SetData(controlStateRDOs);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkMediStock_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!isNotLoadWhileChangeControlStateInFirst)
+                {
+                    SaveControlState();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboExpriedDate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!isNotLoadWhileChangeControlStateInFirst)
+                {
+                    SaveControlState();
+                }
             }
             catch (Exception ex)
             {
@@ -532,6 +602,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                         {
                             mediFilter.INCLUDE_MEDI_STOCK = true;
                         }
+
                         mediFilter.INCLUDE_EMPTY = chkViewLineZero.Checked;
                         mediFilter.MEDI_STOCK_IDs = this.mediStockIds;
                         mediFilter.INCLUDE_BASE_AMOUNT = isIncludeBaseAmount;
@@ -722,8 +793,6 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                             this.mediStockIds.Add(data.ID);
                             int index = dataMediStocks.FindIndex(a => a.ID == data.ID);
                             gridViewMediStock.SelectRow(index);
-                        // Khi chỉ chọn 1 kho mặc định thì disable chkMediStock
-                        try { chkMediStock.Enabled = false; } catch { }
                         }
                     }
                 }
@@ -888,12 +957,6 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                             this.mediStockIds.Add(Inventec.Common.TypeConvert.Parse.ToInt64(gridViewMediStock.GetRowCellValue(gridViewMediStock.GetSelectedRows()[i], "ID").ToString()));
                         }
                     }
-                    // Enable chkMediStock only when more than one stock is selected
-                    try
-                    {
-                        chkMediStock.Enabled = gridViewMediStock.SelectedRowsCount > 1;
-                    }
-                    catch { }
                 }
             }
             catch (Exception ex)

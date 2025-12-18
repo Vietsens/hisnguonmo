@@ -27,7 +27,8 @@ namespace HIS.UC.HisMateInStockByExpireDate
     {
         public List<ColumnButtonEditADO> ColumnButtonEdits { get; set; }
         public List<HisMateInStockByExpireDateColumn> HisMateInStockByExpireDateColumns { get; set; }
-        public List<List<MOS.SDO.HisMaterialInStockSDO>> HisMateInStockByExpireDates { get; set; }      
+        public List<List<MOS.SDO.HisMaterialInStockSDO>> HisMateInStockByExpireDates { get; set; }
+        public List<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK> MediStocks { get; set; }
 
         public bool? IsShowSearchPanel { get; set; }
         public bool? IsShowButtonAdd { get; set; }
