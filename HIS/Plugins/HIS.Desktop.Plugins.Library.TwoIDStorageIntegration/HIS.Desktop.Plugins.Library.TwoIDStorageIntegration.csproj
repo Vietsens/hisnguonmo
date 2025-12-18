@@ -50,6 +50,10 @@
     <Reference Include="Inventec.Common.SignLibrary">
       <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.WCF.JsonConvert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\Inventec.WCF.JsonConvert.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
@@ -65,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigCFG.cs" />
+    <Compile Include="DateOnlyConverter.cs" />
     <Compile Include="StorageApiClient.cs" />
     <Compile Include="TwoIDApiRequestInput.cs" />
     <Compile Include="TwoIDStorageIntegrationProcessor.cs" />

@@ -1,13 +1,16 @@
-﻿using System;
+﻿using HIS.Desktop.Plugins.Library.TwoIDStorageIntegration;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using HIS.Desktop.Plugins.Library.TwoIDStorageIntegration;
 
 namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
 {
+
+
     public class TwoIDApiRequestInput
     {
 
@@ -21,9 +24,14 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         public string fileName { get; set; }
         public string type { get; set; }
         public string fullName { get; set; }
+        [JsonConverter(typeof(DateOnlyConverter))]
         public DateTime dateOfBirth { get; set; }
+        //public DateTime dateOfBirth { get; set; }
         public string residencePlace { get; set; }
+        [JsonConverter(typeof(DateOnlyConverter))]
         public DateTime issueDate { get; set; }
+
+        [JsonConverter(typeof(DateOnlyConverter))]
         public DateTime expiredDate { get; set; }
         public List<string> idCardVerifyResult { get; set; }
 
