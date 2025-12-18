@@ -136,7 +136,8 @@ namespace HIS.Desktop.Modules.Main
                             item.KeyCode == "KEY__ACS_BASE_URI" ||
                             item.KeyCode == "KEY__FSS_BASE_URI" ||
                             item.KeyCode == "KEY__LIS_BASE_URI" ||
-                            item.KeyCode == "KEY__SCN_BASE_URI")
+                            item.KeyCode == "KEY__SCN_BASE_URI" ||
+                            item.KeyCode == "KEY__MCH_BASE_URI")
                         {
                             var ado = new ServerInfoADO();
                             string serverAddress = (item.Value ?? "").ToString();

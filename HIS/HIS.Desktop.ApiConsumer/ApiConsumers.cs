@@ -27,7 +27,7 @@ namespace HIS.Desktop.ApiConsumer
         public static void SetConsunmer(string tokenCode)
         {
             try
-            {
+            { 
                 MosConsumer.SetTokenCode(tokenCode);
                 SdaConsumer.SetTokenCode(tokenCode);
                 SarConsumer.SetTokenCode(tokenCode);
@@ -42,6 +42,7 @@ namespace HIS.Desktop.ApiConsumer
                 QcsConsumer.SetTokenCode(tokenCode);
                 VvaConsumer.SetTokenCode(tokenCode);
                 CrmConsumer.SetTokenCode(tokenCode);
+                MchConsumer.SetTokenCode(tokenCode);
 
                 Inventec.Common.LocalStorage.SdaConfig.ApiConsumerConfig.SdaConsumer.SetTokenCode(tokenCode);
 
@@ -237,6 +238,23 @@ namespace HIS.Desktop.ApiConsumer
             set
             {
                 tytConsumer = value;
+            }
+        }
+
+        private static Inventec.Common.WebApiClient.ApiConsumer mchConsumer;
+        public static Inventec.Common.WebApiClient.ApiConsumer MchConsumer
+        {
+            get
+            {
+                if (mchConsumer == null)
+                {
+                    mchConsumer = new Inventec.Common.WebApiClient.ApiConsumer(ConfigSystems.URI_API_MCH, GlobalVariables.APPLICATION_CODE);
+                }
+                return mchConsumer;
+            }
+            set
+            {
+                mchConsumer = value; 
             }
         }
 
