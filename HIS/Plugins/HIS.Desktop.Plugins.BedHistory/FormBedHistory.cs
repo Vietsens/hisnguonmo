@@ -54,12 +54,15 @@ using HIS.Desktop.Common;
 using DevExpress.XtraPrinting.Native;
 using static DevExpress.Data.Helpers.ExpressiveSortInfo;
 using Inventec.Common.Logging;
+using DevExpress.XtraEditors.Controls;
 
 namespace HIS.Desktop.Plugins.BedHistory
 {
     public partial class FormBedHistory : HIS.Desktop.Utility.FormBase
     {
         #region Declare
+        List<V_HIS_EMPLOYEE> lstEmployee { get; set; }
+
         private System.Globalization.CultureInfo cultureLang;
         private L_HIS_TREATMENT_BED_ROOM _TreatmentBedRoom { get; set; }
         private List<V_HIS_BED_LOG> lstBedLogChecks { get; set; }
@@ -157,6 +160,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             try
             {
                 WaitingManager.Show();
+                InitComboEmployee();
                 CheckWarningOverTotalPatientPrice();
                 EnableControl();
                 LoadKeysFromlanguage();
@@ -4658,6 +4662,8 @@ namespace HIS.Desktop.Plugins.BedHistory
                         sdo.PrimaryPatientTypeId = bedService.PRIMARY_PATIENT_TYPE_ID;
                         sdo.OtherPaySourceId = bedService.OTHER_PAY_SOURCE_ID;
                         sdo.ServiceConditionId = bedService.SERVICE_CONDITION_ID;
+                        sdo.AssignedExecuteLoginName = cboEmployee.EditValue?.ToString();
+                        sdo.AssignedExecuteUserName = cboEmployee.Text;
                         bedSdo.ServiceReqDetails.Add(sdo);
                         HisServiceReqSDO.BedServices.Add(bedSdo);
                     }
@@ -5744,6 +5750,30 @@ namespace HIS.Desktop.Plugins.BedHistory
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return valid;
+        }
+
+        private void cboEmployee_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            var cbo = sender as DevExpress.XtraEditors.GridLookUpEdit;
+            if (cbo.EditValue != null && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+            {
+                cbo.EditValue = null;
+            }
+        }
+
+        private void cboEmployee_EditValueChanged(object sender, EventArgs e)
+        {
+            var cbo = sender as DevExpress.XtraEditors.GridLookUpEdit;
+            if (cbo.Properties.Buttons.Count > 0)
+            {
+                foreach (EditorButton item in cbo.Properties.Buttons)
+                {
+                    if (item != null && item.Kind == ButtonPredefines.Delete)
+                    {
+                        item.Visible = cbo.EditValue != null;
+                    }
+                }
+            }
         }
     }
 }
