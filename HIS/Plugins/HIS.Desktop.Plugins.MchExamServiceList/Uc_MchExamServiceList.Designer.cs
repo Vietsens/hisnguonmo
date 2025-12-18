@@ -28,20 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Uc_MchExamServiceList));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
             this.navBarGroup1 = new DevExpress.XtraNavBar.NavBarGroup();
             this.navBarGroupControlContainer1 = new DevExpress.XtraNavBar.NavBarGroupControlContainer();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
@@ -95,7 +94,7 @@
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRefresh = new DevExpress.XtraBars.BarButtonItem();
@@ -314,14 +313,14 @@
             // 
             // gridControlExamService
             // 
-            this.gridControlExamService.Location = new System.Drawing.Point(297, 2);
+            this.gridControlExamService.Location = new System.Drawing.Point(231, 2);
             this.gridControlExamService.MainView = this.gridViewExamService;
             this.gridControlExamService.Name = "gridControlExamService";
             this.gridControlExamService.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemButtonEditDeleteEnable,
             this.repositoryItemButtonEditDeleteDisable,
             this.repositoryItemButtonEditUpdate});
-            this.gridControlExamService.Size = new System.Drawing.Size(751, 491);
+            this.gridControlExamService.Size = new System.Drawing.Size(817, 491);
             this.gridControlExamService.TabIndex = 4;
             this.gridControlExamService.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewExamService});
@@ -383,7 +382,7 @@
             // 
             this.repositoryItemButtonEditDeleteEnable.AutoHeight = false;
             this.repositoryItemButtonEditDeleteEnable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditDeleteEnable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditDeleteEnable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.repositoryItemButtonEditDeleteEnable.Name = "repositoryItemButtonEditDeleteEnable";
             this.repositoryItemButtonEditDeleteEnable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEditDeleteEnable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEditDeleteEnable_ButtonClick);
@@ -404,7 +403,7 @@
             // 
             this.repositoryItemButtonEditUpdate.AutoHeight = false;
             this.repositoryItemButtonEditUpdate.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditUpdate.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditUpdate.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.repositoryItemButtonEditUpdate.Name = "repositoryItemButtonEditUpdate";
             this.repositoryItemButtonEditUpdate.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEditUpdate.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEditUpdate_ButtonClick);
@@ -492,7 +491,7 @@
             // 
             this.repositoryItemButtonEditDeleteDisable.AutoHeight = false;
             this.repositoryItemButtonEditDeleteDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditDeleteDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditDeleteDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
             this.repositoryItemButtonEditDeleteDisable.Name = "repositoryItemButtonEditDeleteDisable";
             this.repositoryItemButtonEditDeleteDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -508,15 +507,15 @@
             this.layoutControl2.Location = new System.Drawing.Point(2, 2);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(291, 521);
+            this.layoutControl2.Size = new System.Drawing.Size(225, 521);
             this.layoutControl2.TabIndex = 5;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(144, 497);
+            this.btnRefresh.Location = new System.Drawing.Point(112, 497);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(145, 22);
+            this.btnRefresh.Size = new System.Drawing.Size(111, 22);
             this.btnRefresh.StyleController = this.layoutControl2;
             this.btnRefresh.TabIndex = 10;
             this.btnRefresh.Text = "Làm lại (Ctrl R)";
@@ -526,7 +525,7 @@
             // 
             this.btnSearch.Location = new System.Drawing.Point(2, 497);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(138, 22);
+            this.btnSearch.Size = new System.Drawing.Size(106, 22);
             this.btnSearch.StyleController = this.layoutControl2;
             this.btnSearch.TabIndex = 9;
             this.btnSearch.Text = "Tìm (Ctrl F)";
@@ -536,7 +535,7 @@
             // 
             this.btnSynchronizatioon.Location = new System.Drawing.Point(2, 471);
             this.btnSynchronizatioon.Name = "btnSynchronizatioon";
-            this.btnSynchronizatioon.Size = new System.Drawing.Size(138, 22);
+            this.btnSynchronizatioon.Size = new System.Drawing.Size(106, 22);
             this.btnSynchronizatioon.StyleController = this.layoutControl2;
             this.btnSynchronizatioon.TabIndex = 8;
             this.btnSynchronizatioon.Text = "Đồng bộ dữ liệu";
@@ -552,8 +551,8 @@
             this.navBarGroup2});
             this.navBarControl1.Location = new System.Drawing.Point(2, 74);
             this.navBarControl1.Name = "navBarControl1";
-            this.navBarControl1.OptionsNavPane.ExpandedWidth = 287;
-            this.navBarControl1.Size = new System.Drawing.Size(287, 393);
+            this.navBarControl1.OptionsNavPane.ExpandedWidth = 221;
+            this.navBarControl1.Size = new System.Drawing.Size(221, 393);
             this.navBarControl1.TabIndex = 7;
             this.navBarControl1.Text = "navBarControl1";
             // 
@@ -562,7 +561,8 @@
             this.txtKeyWord.Location = new System.Drawing.Point(2, 50);
             this.txtKeyWord.Name = "txtKeyWord";
             this.txtKeyWord.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
-            this.txtKeyWord.Size = new System.Drawing.Size(287, 20);
+            this.txtKeyWord.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtKeyWord.Size = new System.Drawing.Size(221, 20);
             this.txtKeyWord.StyleController = this.layoutControl2;
             this.txtKeyWord.TabIndex = 6;
             // 
@@ -571,7 +571,8 @@
             this.txtPatientCode.Location = new System.Drawing.Point(2, 26);
             this.txtPatientCode.Name = "txtPatientCode";
             this.txtPatientCode.Properties.NullValuePrompt = "Mã bệnh nhân";
-            this.txtPatientCode.Size = new System.Drawing.Size(287, 20);
+            this.txtPatientCode.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtPatientCode.Size = new System.Drawing.Size(221, 20);
             this.txtPatientCode.StyleController = this.layoutControl2;
             this.txtPatientCode.TabIndex = 5;
             // 
@@ -580,7 +581,8 @@
             this.txtTreatmentCode.Location = new System.Drawing.Point(2, 2);
             this.txtTreatmentCode.Name = "txtTreatmentCode";
             this.txtTreatmentCode.Properties.NullValuePrompt = "Mã điều trị";
-            this.txtTreatmentCode.Size = new System.Drawing.Size(287, 20);
+            this.txtTreatmentCode.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtTreatmentCode.Size = new System.Drawing.Size(221, 20);
             this.txtTreatmentCode.StyleController = this.layoutControl2;
             this.txtTreatmentCode.TabIndex = 4;
             // 
@@ -600,7 +602,7 @@
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(291, 521);
+            this.Root.Size = new System.Drawing.Size(225, 521);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem3
@@ -608,7 +610,7 @@
             this.layoutControlItem3.Control = this.txtTreatmentCode;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(291, 24);
+            this.layoutControlItem3.Size = new System.Drawing.Size(225, 24);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -617,7 +619,7 @@
             this.layoutControlItem4.Control = this.txtPatientCode;
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(291, 24);
+            this.layoutControlItem4.Size = new System.Drawing.Size(225, 24);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -626,7 +628,7 @@
             this.layoutControlItem5.Control = this.txtKeyWord;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(291, 24);
+            this.layoutControlItem5.Size = new System.Drawing.Size(225, 24);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -635,7 +637,7 @@
             this.layoutControlItem6.Control = this.navBarControl1;
             this.layoutControlItem6.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(291, 397);
+            this.layoutControlItem6.Size = new System.Drawing.Size(225, 397);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -644,7 +646,7 @@
             this.layoutControlItem10.Control = this.btnSynchronizatioon;
             this.layoutControlItem10.Location = new System.Drawing.Point(0, 469);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(142, 26);
+            this.layoutControlItem10.Size = new System.Drawing.Size(110, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -653,32 +655,32 @@
             this.layoutControlItem11.Control = this.btnSearch;
             this.layoutControlItem11.Location = new System.Drawing.Point(0, 495);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(142, 26);
+            this.layoutControlItem11.Size = new System.Drawing.Size(110, 26);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.btnRefresh;
-            this.layoutControlItem12.Location = new System.Drawing.Point(142, 495);
+            this.layoutControlItem12.Location = new System.Drawing.Point(110, 495);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(149, 26);
+            this.layoutControlItem12.Size = new System.Drawing.Size(115, 26);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(142, 469);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(110, 469);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(149, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(115, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // ucPaging
             // 
-            this.ucPaging.Location = new System.Drawing.Point(297, 497);
+            this.ucPaging.Location = new System.Drawing.Point(231, 497);
             this.ucPaging.Name = "ucPaging";
-            this.ucPaging.Size = new System.Drawing.Size(751, 26);
+            this.ucPaging.Size = new System.Drawing.Size(817, 26);
             this.ucPaging.TabIndex = 6;
             // 
             // layoutControlGroup1
@@ -698,9 +700,9 @@
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.gridControlExamService;
-            this.layoutControlItem1.Location = new System.Drawing.Point(295, 0);
+            this.layoutControlItem1.Location = new System.Drawing.Point(229, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(755, 495);
+            this.layoutControlItem1.Size = new System.Drawing.Size(821, 495);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -709,16 +711,16 @@
             this.layoutControlItem2.Control = this.layoutControl2;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(295, 525);
+            this.layoutControlItem2.Size = new System.Drawing.Size(229, 525);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.ucPaging;
-            this.layoutControlItem13.Location = new System.Drawing.Point(295, 495);
+            this.layoutControlItem13.Location = new System.Drawing.Point(229, 495);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(755, 30);
+            this.layoutControlItem13.Size = new System.Drawing.Size(821, 30);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
@@ -759,6 +761,7 @@
             new DevExpress.XtraBars.LinkPersistInfo(this.bbtnSearch),
             new DevExpress.XtraBars.LinkPersistInfo(this.bbtnRefresh)});
             this.bar1.Text = "Tools";
+            this.bar1.Visible = false;
             // 
             // bbtnSearch
             // 
