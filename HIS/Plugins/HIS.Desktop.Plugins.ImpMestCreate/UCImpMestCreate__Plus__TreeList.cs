@@ -105,24 +105,27 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 MedicineTypeColumn colTenHoatChat = new MedicineTypeColumn("Tên hoạt chất", "ACTIVE_INGR_BHYT_NAME", 150, false);
                 colTenHoatChat.VisibleIndex = 6;
                 adoMe.MedicineTypeColumns.Add(colTenHoatChat);
-
+                //Ghi chú
+                MedicineTypeColumn colGhiChu = new MedicineTypeColumn("Ghi chú", "DESCRIPTION", 90, false);
+                colGhiChu.VisibleIndex = 7;
+                adoMe.MedicineTypeColumns.Add(colGhiChu);
                 //NationalName
                 MedicineTypeColumn colNationalName = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMP_MEST_CREATE__TREE_MEDICINE__COLUMN_NATIONAL_NAME", Base.ResourceLangManager.LanguageUCImpMestCreate, culture), "NATIONAL_NAME", 100, false);
-                colNationalName.VisibleIndex = 7;
+                colNationalName.VisibleIndex = 8;
                 adoMe.MedicineTypeColumns.Add(colNationalName);
 
                 //ManufactureName
                 MedicineTypeColumn colManufactureName = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMP_MEST_CREATE__TREE_MEDICINE__COLUMN_MANUFACTURE_NAME", Base.ResourceLangManager.LanguageUCImpMestCreate, culture), "MANUFACTURER_NAME", 120, false);
-                colManufactureName.VisibleIndex = 8;
+                colManufactureName.VisibleIndex = 9;
                 adoMe.MedicineTypeColumns.Add(colManufactureName);
 
                 //RegisterNumber
                 MedicineTypeColumn colRegisterNumber = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMP_MEST_CREATE__TREE_MEDICINE__COLUMN_REGISTER_NUMBER", Base.ResourceLangManager.LanguageUCImpMestCreate, culture), "REGISTER_NUMBER", 70, false);
-                colRegisterNumber.VisibleIndex = 9;
+                colRegisterNumber.VisibleIndex = 10;
                 adoMe.MedicineTypeColumns.Add(colRegisterNumber);
                 // Mã đường dùng
                 MedicineTypeColumn colMaduongdung = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMP_MEST_CREATE__TREE_MEDICINE__COLUMN_MEDICINE_LINE_NAME", Base.ResourceLangManager.LanguageUCImpMestCreate, culture), "MEDICINE_USE_FORM_NAME", 110, false);
-                colMaduongdung.VisibleIndex = 10;
+                colMaduongdung.VisibleIndex = 11;
                 adoMe.MedicineTypeColumns.Add(colMaduongdung);
 
                 // Số lượng (thầu)
@@ -262,15 +265,18 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 MaterialTypeColumn colQuyCachDongGoi = new MaterialTypeColumn("Quy cách đóng gói", "PACKING_TYPE_NAME", 100, false);
                 colQuyCachDongGoi.VisibleIndex = 4;
                 adoMa.MaterialTypeColumns.Add(colQuyCachDongGoi);
-
+                //Ghi chú
+                MaterialTypeColumn colGhiChu = new MaterialTypeColumn("Ghi chú", "DESCRIPTION", 90, false);
+                colGhiChu.VisibleIndex = 5;
+                adoMa.MaterialTypeColumns.Add(colGhiChu);
                 //NationalName
                 MaterialTypeColumn colNationalName = new MaterialTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMP_MEST_CREATE__TREE_MATERIAL__COLUMN_NATIONAL_NAME", Base.ResourceLangManager.LanguageUCImpMestCreate, culture), "NATIONAL_NAME", 120, false);
-                colServiceUnitName.VisibleIndex = 5;
+                colServiceUnitName.VisibleIndex = 6;
                 adoMa.MaterialTypeColumns.Add(colNationalName);
 
                 //ManufactureName
                 MaterialTypeColumn colManufactureName = new MaterialTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMP_MEST_CREATE__TREE_MATERIAL__COLUMN_MANUFACTURE_NAME", Base.ResourceLangManager.LanguageUCImpMestCreate, culture), "MANUFACTURER_NAME", 150, false);
-                colManufactureName.VisibleIndex = 6;
+                colManufactureName.VisibleIndex = 7;
                 adoMa.MaterialTypeColumns.Add(colManufactureName);
 
                 // Số lượng (thầu)
