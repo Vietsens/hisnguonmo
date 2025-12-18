@@ -27,7 +27,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         public DateTime expiredDate { get; set; }
         public List<string> idCardVerifyResult { get; set; }
 
-  
+
 
 
         public TwoIDApiRequestInput()
@@ -35,6 +35,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
             fingerprint = new List<string>();
             faceId = new List<string>();
             handSignature = new List<string>();
+            idCardVerifyResult = new List<string>();
         }
 
         public TwoIDApiRequestInput(TwoIDApiRequestInput data)
@@ -49,19 +50,74 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 this.transactionId = data.transactionId;
                 this.hash = data.hash;
 
+                this.fileName = data.fileName;
+                this.type = data.type;
+                this.fullName = data.fullName;
+                this.dateOfBirth = data.dateOfBirth;
+                this.residencePlace = data.residencePlace;
+                this.issueDate = data.issueDate;
+                this.expiredDate = data.expiredDate;
+                this.idCardVerifyResult = data.idCardVerifyResult ?? new List<string>();
+
             }
         }
         public static T CallTwoIDApi<T>(
-            string baseUri,
-            string requestUri,
-            string citizenNumber,
-            List<string> fingerprint,
-            List<string> faceId,
-            List<string> handSignature,
-            string apiKey,
-            string transactionId,
-            string hash,
-            string contentType)
+   string baseUri,
+   string requestUri,
+   string citizenNumber,
+   List<string> fingerprint,
+   List<string> faceId,
+   List<string> handSignature,
+   string apiKey,
+   string transactionId,
+   string hash,
+   string fileName,
+   string type,
+   string fullName,
+   DateTime dateOfBirth,
+   string residencePlace,
+   DateTime issueDate,
+   DateTime expiredDate,
+   List<string> idCardVerifyResult,
+   string contentType)
+        {
+            var input = new TwoIDApiRequestInput
+            {
+                citizenNumber = citizenNumber,
+                fingerprint = fingerprint ?? new List<string>(),
+                faceId = faceId ?? new List<string>(),
+                handSignature = handSignature ?? new List<string>(),
+                apiKey = apiKey,
+                transactionId = transactionId,
+                hash = hash,
+
+                fileName = fileName,
+                type = type,
+                fullName = fullName,
+                dateOfBirth = dateOfBirth,
+                residencePlace = residencePlace,
+                issueDate = issueDate,
+                expiredDate = expiredDate,
+                idCardVerifyResult = idCardVerifyResult ?? new List<string>()
+            };
+
+            return StorageApiClient.CreateRequest<T>(baseUri, requestUri, input, contentType);
+
+
+        }
+
+
+        public static T CallTwoIDBasic<T>(
+    string baseUri,
+    string requestUri,
+    string citizenNumber,
+    List<string> fingerprint,
+    List<string> faceId,
+    List<string> handSignature,
+    string apiKey,
+    string transactionId,
+    string hash,
+    string contentType)
         {
             var input = new TwoIDApiRequestInput
             {
@@ -74,10 +130,24 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 hash = hash
             };
 
-           
             return StorageApiClient.CreateRequest<T>(baseUri, requestUri, input, contentType);
+        
+        
         }
-      
+
+        public static T CallTwoIDApi<T>(
+    string baseUri,
+    string requestUri,
+    TwoIDApiRequestInput input,
+    string contentType)
+        {
+            return StorageApiClient.CreateRequest<T>(
+                baseUri,
+                requestUri,
+                input,
+                contentType
+            );
+        }
 
     }
 }
