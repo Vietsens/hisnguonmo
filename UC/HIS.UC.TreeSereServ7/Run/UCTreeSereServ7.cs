@@ -70,6 +70,7 @@ namespace HIS.UC.TreeSereServ7.Run
         const int GroupType__Group = 2;
         bool isCreateParentNodeWithSereServExpend = true;
         long _DepartmentInput = 0;
+        bool IsGetOtherData = false;
         #endregion
 
         #region Construct
@@ -110,6 +111,12 @@ namespace HIS.UC.TreeSereServ7.Run
                     this.isAutoWidth = sereServTreeADO.IsAutoWidth.Value;
                 }
                 this._DepartmentInput = sereServTreeADO.DepartmentID ?? 0;
+                if (sereServTreeADO.IsNotShowComboFilter)
+                {
+                    layoutControlItem2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;//Nút thu gọn, chi tiết
+                    layoutControlItem1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;//Combobox lọc theo khoa
+                }
+                this.IsGetOtherData = sereServTreeADO.IsGetOtherData;
                 // this.Size = new Size(762,613);
             }
             catch (Exception ex)
@@ -628,6 +635,11 @@ namespace HIS.UC.TreeSereServ7.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        HIS_TREATMENT Treatment;
+        public void SetTreatment(HIS_TREATMENT Treatment)
+        {
+            this.Treatment = Treatment;
+        }
         #endregion
 
         private void trvService_NodeCellStyle(object sender, DevExpress.XtraTreeList.GetCustomNodeCellStyleEventArgs e)
@@ -1035,7 +1047,6 @@ namespace HIS.UC.TreeSereServ7.Run
                             {
                                 text = Inventec.Common.Resource.Get.Value("INIT_LANGUAGE__UC_TREE_SERE_SERV_7__HOAN_THANH", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                             }
-                            //}
                         }
                         info = new DevExpress.Utils.ToolTipControlInfo(o, text);
                         e.Info = info;
@@ -1049,6 +1060,24 @@ namespace HIS.UC.TreeSereServ7.Run
                         string text = Inventec.Common.Resource.Get.Value("INIT_LANGUAGE__UC_TREE_SERE_SERV_7__KET_QUA_XET_NGHIEM", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                         info = new DevExpress.Utils.ToolTipControlInfo(o, text);
                         e.Info = info;
+                    }
+                    else if (hi.HitInfoType == HitInfoType.Cell)
+                    {
+                        var o = hi.Node;
+                        var data = (SereServADO)trvService.GetDataRecordByNode(o);
+                        if (data != null && data.Baby != null && data.Baby.ID > 0 && hi.Column.FieldName == "TDL_SERVICE_NAME")
+                        {
+                            string text = "";
+                            if (!string.IsNullOrEmpty(data.TDL_SERVICE_NAME))
+                            {
+                                text = "Họ tên - Giới tính";
+                            }
+                            if (!string.IsNullOrEmpty(text))
+                            {
+                                info = new DevExpress.Utils.ToolTipControlInfo(o, text);
+                                e.Info = info;
+                            }
+                        }
                     }
                 }
             }

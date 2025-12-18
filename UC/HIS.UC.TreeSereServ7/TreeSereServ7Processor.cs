@@ -24,6 +24,7 @@ using HIS.UC.TreeSereServ7.ReloadByDepartment;
 using HIS.UC.TreeSereServ7.Run;
 using HIS.UC.TreeSereServ7.Search;
 using Inventec.Core;
+using MOS.EFMODEL.DataModels;
 using MOS.SDO;
 using System;
 using System.Collections.Generic;
@@ -199,6 +200,18 @@ namespace HIS.UC.TreeSereServ7
             try
             {
                 IExpand behavior = ExpandFactory.MakeIExpand(param, (control == null ? (UserControl)uc : control), isExpand);
+                if (behavior != null) behavior.Run();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public void SetTreatment(UserControl control, HIS_TREATMENT Treatment)
+        {
+            try
+            {
+                ISetTreatment behavior = SetTreatmentFactory.MakeISetTreatment(param, (control == null ? (UserControl)uc : control), Treatment);
                 if (behavior != null) behavior.Run();
             }
             catch (Exception ex)
