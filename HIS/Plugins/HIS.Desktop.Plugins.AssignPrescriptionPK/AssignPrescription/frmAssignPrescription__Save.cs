@@ -1179,34 +1179,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.patientSelectProcessor.ReloadStatePrescriptionPerious(this.ucPatientSelect);
                         this.OpionGroupSelectedChangedAsync();
                     }
-                    bool checkExistMediCode = currentTreatmentWithPatientType != null && BackendDataWorker.Get<HIS_MEDI_ORG>().FirstOrDefault(p => p.MEDI_ORG_CODE != currentTreatmentWithPatientType.MEDI_ORG_CODE) == null;
+                    bool isDifferentExist = currentTreatmentWithPatientType != null && BackendDataWorker.Get<HIS_MEDI_ORG>().FirstOrDefault(p => p.MEDI_ORG_CODE != currentTreatmentWithPatientType.HEIN_MEDI_ORG_CODE) != null;
                     int warnMonths;
 
-                    bool isWarnMonthsParsed = int.TryParse(HisConfigCFG.WarningOverMonthsInProgram, out warnMonths);
-                    bool isWarnMonthsValid = isWarnMonthsParsed && warnMonths > 0;
-                    bool isTreatUCNotNull = treatUC != null;
-                    bool isProgramIdNotNull = treatUC != null && treatUC.ProgramId != null;
-                    bool isTreatmentEndTypeMatched = treatUC != null && treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN;
-                    bool isCheckExistMediCode = checkExistMediCode;
-
-                    LogSystem.Debug($"isWarnMonthsParsed: {isWarnMonthsParsed}");
-                    LogSystem.Debug($"warnMonths: {warnMonths}");
-                    LogSystem.Debug($"isWarnMonthsValid: {isWarnMonthsValid}");
-                    LogSystem.Debug($"isTreatUCNotNull: {isTreatUCNotNull}");
-                    LogSystem.Debug($"isProgramIdNotNull: {isProgramIdNotNull}");
-                    LogSystem.Debug($"isTreatmentEndTypeMatched: {isTreatmentEndTypeMatched}");
-                    LogSystem.Debug($"isCheckExistMediCode: {isCheckExistMediCode}");
-
-                    if ((int.TryParse(HisConfigCFG.WarningOverMonthsInProgram, out warnMonths) && warnMonths > 0)
-                        && treatUC != null
-                        && treatUC.ProgramId != null
-                        && treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN
-                        && checkExistMediCode
+                    if ((int.TryParse(HisConfigCFG.WarningOverTransfer, out warnMonths) && warnMonths > 0)
+                        && currentTreatmentWithPatientType != null
+                        && currentTreatmentWithPatientType.PROGRAM_ID != null
+                        && currentTreatmentWithPatientType.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN
+                        && isDifferentExist
                         )
                     {
-                        if (treatUC.SurgeryBeginTime.HasValue && treatUC.SurgeryBeginTime.Value > 0)
+                        if (currentTreatmentWithPatientType.TRANSFER_IN_TIME_FROM.HasValue && currentTreatmentWithPatientType.TRANSFER_IN_TIME_FROM.Value > 0)
                         {
-                            DateTime? surgeryBeginTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(treatUC.SurgeryBeginTime.Value);
+                            DateTime? surgeryBeginTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentTreatmentWithPatientType.TRANSFER_IN_TIME_FROM.Value);
                             if (surgeryBeginTime.HasValue)
                             {
                                 int monthDiff = (DateTime.Now.Year - surgeryBeginTime.Value.Year) * 12
