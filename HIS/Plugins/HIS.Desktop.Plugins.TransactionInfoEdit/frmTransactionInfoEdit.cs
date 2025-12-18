@@ -617,6 +617,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                     this.txtMaSoThue.Text = this._HisTransaction.BUYER_TAX_CODE;
                     this.txtDonVi.Text = this._HisTransaction.BUYER_ORGANIZATION;
                     this.txtBuyerEmail.Text = this._HisTransaction.BUYER_EMAIL;
+                    this.txtDvqhns.Text = this._HisTransaction.BUYER_SOCIAL_RELATIONS_CODE;
                     this.spinEditAmount.EditValue = Inventec.Common.Number.Convert.NumberToString(this._HisTransaction.AMOUNT, ConfigApplications.NumberSeperator);
                     //this.cboPayForm.EditValue = this._HisTransaction.PAY_FORM_ID;
                     PayFormADO payForm = null;
@@ -848,6 +849,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                 ado.BuyerOrganization = this.txtDonVi.Text;
                 ado.TransactionId = this._HisTransaction.ID;
                 ado.BuyerEmail = this.txtBuyerEmail.Text;
+                ado.BuyerSocailRelationscode = this.txtDvqhns.Text;
                 //ado.PayFormId = Convert.ToInt64(cboPayForm.EditValue);
                 //if (cboPayForm.EditValue != null)
                 //    ado.PayFormId = Convert.ToInt64(cboPayForm.EditValue);
