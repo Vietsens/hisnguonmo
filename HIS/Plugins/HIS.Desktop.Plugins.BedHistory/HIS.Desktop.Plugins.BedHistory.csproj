@@ -268,7 +268,6 @@ if "%25HISexe%25"=="%25ParentDir%25\histest\x64\HIS.exe" (
 	cscript //nologo %25temp%25\popup.vbs
 	del %25temp%25\popup.vbs
 ) else (
-	echo abc
 	if exist "%25x64vi%25" (
 		if exist "%25srcDirVi%25" xcopy "%25srcDirVi%25" "%25x64vi%25" /Y /I
 	)
