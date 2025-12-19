@@ -30,6 +30,7 @@ namespace HIS.UC.WorkPlace.Async
         WorkPlaceProcessor.Template template;
         DelegateFocusMoveout focusMoveout;
         HIS.UC.WorkPlace.DelegatePlusClick plusClick;
+        DelegateGetWorkPlaceId workId;
         bool CheckValidate;
 
         internal WorkPlaceGenerateBehavior(CommonParam param, WorkPlaceInitADO workPlaceInitADO)
@@ -39,6 +40,7 @@ namespace HIS.UC.WorkPlace.Async
             this.focusMoveout = workPlaceInitADO.FocusMoveout;
             this.plusClick = workPlaceInitADO.PlusClick;
             this.CheckValidate = workPlaceInitADO.SetValidateControl;
+            this.workId = workPlaceInitADO.GetWorkPlaceId;
         }
 
         async Task<System.Windows.Forms.UserControl> IWorkPlaceGenerate.Run()
@@ -64,11 +66,11 @@ namespace HIS.UC.WorkPlace.Async
                     case WorkPlaceProcessor.Template.Combo1:
                         if (this.CheckValidate)
                         {
-                            uc = new UCWorkPlaceCombo1(focusMoveout, this.plusClick, this.worlPlaces,this.CheckValidate);
+                            uc = new UCWorkPlaceCombo1(focusMoveout, this.plusClick,  this.worlPlaces, workId, this.CheckValidate);
                         }
                         else
                         {
-                            uc = new UCWorkPlaceCombo1(focusMoveout, this.plusClick, this.worlPlaces);
+                            uc = new UCWorkPlaceCombo1(focusMoveout, this.plusClick, workId, this.worlPlaces);
                         }
                         
                         break;

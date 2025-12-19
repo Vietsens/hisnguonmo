@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.RegisterV2
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnClose = new DevExpress.XtraEditors.SimpleButton();
             this.ucTransPati1 = new HIS.UC.UCTransPati.UCTransPati();
@@ -52,7 +53,7 @@ namespace HIS.Desktop.Plugins.RegisterV2
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.barManagerUCTransPati = new DevExpress.XtraBars.BarManager();
+            this.barManagerUCTransPati = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbntNhap = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
@@ -143,6 +144,10 @@ namespace HIS.Desktop.Plugins.RegisterV2
             // 
             this.barManagerUCTransPati.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManagerUCTransPati.DockControls.Add(this.barDockControlTop);
+            this.barManagerUCTransPati.DockControls.Add(this.barDockControlBottom);
+            this.barManagerUCTransPati.DockControls.Add(this.barDockControlLeft);
+            this.barManagerUCTransPati.DockControls.Add(this.barDockControlRight);
             this.barManagerUCTransPati.Form = this;
             this.barManagerUCTransPati.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbntNhap,
@@ -178,8 +183,8 @@ namespace HIS.Desktop.Plugins.RegisterV2
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(534, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(534, 29);
             // 
             // barDockControlBottom
             // 

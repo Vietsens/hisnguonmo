@@ -81,5 +81,6 @@ namespace HIS.UC.PlusInfo.ADO
         public string MPS_NATIONAL_CODE { get; set; }
         public bool IsCheckBoxCCCD { get; set; }
         public WorkPlaceADO workPlaceADO { get; set; }
+        public string BUD_REL_UNIT_CODE { get; set; }
     }
 }

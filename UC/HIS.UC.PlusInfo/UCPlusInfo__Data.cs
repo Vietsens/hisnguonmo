@@ -135,6 +135,9 @@ namespace HIS.UC.PlusInfo
                         case ChoiceControl.ucCmndPlace:
                             dataGet.CMND_PLACE = this.ucCMNDPlace1 != null ? this.ucCMNDPlace1.GetValue() : "";
                             break;
+                        case ChoiceControl.UCBudRelUnitCode:
+                            dataGet.BUD_REL_UNIT_CODE = this.UCBudRelUnitCode != null ? this.UCBudRelUnitCode.GetValue() : "";
+                            break;
                         case ChoiceControl.ucCommuneNow:
                             UCPlusInfoADO dataGetCommune = new UCPlusInfoADO();
                             dataGetCommune = this.ucCommuneNow1 != null ? this.ucCommuneNow1.GetValue() : new UCPlusInfoADO();
@@ -275,6 +278,9 @@ namespace HIS.UC.PlusInfo
                             case ChoiceControl.ucAddress:
                                 this.ucAddress1.SetValue(dataSet.HT_ADDRESS, dataSet.PATIENT_ID);
                                 break;
+                            case ChoiceControl.UCBudRelUnitCode:
+                                this.UCBudRelUnitCode.SetValue(dataSet, dataSet.PATIENT_ID);
+                                break;
                             case ChoiceControl.ucAddressOfBirth:
                                 this.ucAddressOfBirth1.SetValue(dataSet.ADDRESS_OfBIRTH, dataSet.PATIENT_ID);
                                 break;
@@ -287,7 +293,9 @@ namespace HIS.UC.PlusInfo
                                     {
                                         var workPlace = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_WORK_PLACE>().FirstOrDefault(o => o.ID == dataSet.workPlaceADO.WORK_PLACE_ID);
                                         if (workPlace != null)
+                                        {
                                             this.ucWorkPlace1.SetValue(this.ucWorkPlace1, workPlace);
+                                        }
                                         else
                                             this.ucWorkPlace1.SetValue(this.ucWorkPlace1, null);
                                     }

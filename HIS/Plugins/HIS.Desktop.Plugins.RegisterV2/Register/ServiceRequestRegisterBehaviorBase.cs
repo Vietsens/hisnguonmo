@@ -126,6 +126,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         protected string hoseHold_Relative { get; set; }
         protected long? houseHoldRelative_ID { get; set; }
         protected string maHoNgheo { get; set; }
+        protected string dvqhnsCode { get; set; }
         protected string patientStoreCode { get; set; }
         protected string taxCode { get; set; }
 
@@ -456,6 +457,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.houseHoldRelative_ID = this.patientPlusInformationInfoValue.HOUSEHOLD_RELATION_ID;
                 this.hoseHold_Relative = this.patientPlusInformationInfoValue.HOUSEHOLD_RELATION_NAME;
                 this.maHoNgheo = this.patientPlusInformationInfoValue.HONGHEO_CODE == "" ? "" : this.patientPlusInformationInfoValue.HONGHEO_CODE;
+                this.dvqhnsCode = this.patientPlusInformationInfoValue.BUD_REL_UNIT_CODE == "" ? "" : this.patientPlusInformationInfoValue.BUD_REL_UNIT_CODE;
+
                 this.patientStoreCode = this.patientPlusInformationInfoValue.PATIENT_STORE_CODE;
                 this.hrmKskCode = this.patientPlusInformationInfoValue.HRM_KSK_CODE;
                 this.taxCode = this.patientPlusInformationInfoValue.TAX_CODE;
@@ -602,6 +605,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
 
                 if (this.chkEmergency)
                     this.ProcessEmergency();
+
             }
             catch (Exception ex)
             {
@@ -618,7 +622,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 if (this.ucRequestService == null) throw new ArgumentNullException("ucRequestService is null");
 
                 //valid = CheckProfile();
-
                 if (CheckProfile())
                 {
                     this.ucRequestService.ucAddressCombo1.FocusToProvince();
@@ -734,6 +737,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                     this.patientProfile.HisPatient.WORK_PLACE_ID = (long?)this.workPlace;
                 else if (this.workPlace != null && this.workPlace is string)
                     this.patientProfile.HisPatient.WORK_PLACE = (string)this.workPlace;
+                else
+                {
+                    this.patientProfile.HisPatient.WORK_PLACE_ID = null;
+                    this.patientProfile.HisPatient.WORK_PLACE = null;
+                }
                 if (this.militaryId > 0)
                     this.patientProfile.HisPatient.MILITARY_RANK_ID = this.militaryId;
                 this.patientProfile.HisPatient.PHONE = this.phone;
@@ -748,12 +756,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.ImgCmndBeforeData = this.FileImageCMNDTruoc;//TODO
                 this.patientProfile.ImgCmndAfterData = this.FileImageCMNDSau;//TODO
 
+
                 this.patientProfile.HisPatient.HRM_EMPLOYEE_CODE = this.hrmEmployeeCode;
                 this.patientProfile.HisPatient.TAX_CODE = this.taxCode;
                 //this.patientProfile.HisPatient.MS_CODE = this.mSCode;//TODO
                 this.patientProfile.HisPatient.PATIENT_CLASSIFY_ID = this.patientClassifyId;
                 this.patientProfile.HisPatient.POSITION_ID = this.PositionId;
                 this.patientProfile.HisPatient.SOCIAL_INSURANCE_NUMBER = SocialInsuranceNumberPatient;
+                this.patientProfile.HisPatient.BUD_REL_UNIT_CODE = this.dvqhnsCode;
                 if (!string.IsNullOrEmpty(patientCode))
                 {
                     this.patientProfile.HisPatient.PATIENT_CODE = this.patientCode;

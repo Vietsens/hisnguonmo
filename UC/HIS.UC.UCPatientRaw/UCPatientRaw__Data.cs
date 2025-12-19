@@ -58,7 +58,11 @@ namespace HIS.UC.UCPatientRaw
                 {
 					dataGet.IsReadQrCccd = true;
                 }
-				dataGet.isKey6 = isKey6;
+                if (this.typeCodeFind == ResourceMessage.typeCodeFind__MaHK)
+                {
+					dataGet.isTypeHenKham = true;
+                }
+                dataGet.isKey6 = isKey6;
                 dataGet.PATIENT_NAME = this.txtPatientName.Text.Trim();
 				if (this.cboCareer.EditValue != null)
 				{

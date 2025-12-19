@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Config
 {
@@ -58,6 +59,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Config
         //qtcode
         private const string CONFIG_KEY__WarningHeinPatientTypeCode = "HIS.Desktop.Plugins.RegisterV2.WarningHeinPatientTypeCode";
 
+        private const string CONFIG_KEY__WarningOverMonth = "HIS.Desktop.Plugins.RegisterV2.WarningOverMonthsTransfer";
         const string valueString__true = "1";
         const int valueInt__true = 1;
 
@@ -85,6 +87,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Config
         internal static bool IsSetDefaultDepositPrice;
         internal static List<string> ExecuteRoomShow;
 
+        internal static long WarnOverMonthsTransfer;
         /// <summary>
         /// true - Bắt buộc nhập thông tin Người nhà, quan hệ, địa chỉ với trẻ em nhỏ hơn 6t
         /// false - Không bắt buộc nhập thông tin Người nhà, quan hệ, địa chỉ với mọi đối tượng
@@ -139,6 +142,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Config
                 IsSyncHID = (GetValue(CONFIG_KEY__IS_USE_HID_SYNC) == valueString__true);
                 IsWarningOverExamBhyt = (GetValue(CONFIG_KEY__WarningOverExamBhyt) == valueString__true);
 
+                WarnOverMonthsTransfer = HisConfigs.Get<long>(CONFIG_KEY__WarningOverMonth);
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)
