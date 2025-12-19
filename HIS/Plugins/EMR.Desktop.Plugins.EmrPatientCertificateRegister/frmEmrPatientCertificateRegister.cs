@@ -46,6 +46,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -774,6 +775,38 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 XtraMessageBox.Show("Có lỗi khi phát hành chứng thư: " + ex.Message, "Thông báo");
             }
         }
+
+        private DateTime? Parse2IDDate(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input)) return null;
+
+            input = input.Trim();
+
+            // Một số format hay gặp
+            string[] formats =
+            {
+        "yyyy-MM-dd",
+        "yyyy/MM/dd",
+        "dd/MM/yyyy",
+        "d/M/yyyy",
+        "yyyyMMdd",
+        "yyyy-MM-ddTHH:mm:ss",
+        "yyyy-MM-ddTHH:mm:ss.fff",
+        "o" // ISO 8601
+            };
+
+            if (DateTime.TryParseExact(input, formats, CultureInfo.InvariantCulture,
+                    DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal, out var dt))
+                return dt;
+
+            // fallback nếu input là kiểu "0001-01-01T00:00:00" hoặc format lạ
+            if (DateTime.TryParse(input, CultureInfo.InvariantCulture,
+                    DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal, out dt))
+                return dt;
+
+            return null;
+        }
+
         private void ProcessStore2IDStorage(EMR_PATIENT_CERTIFICATE certificate, EmrPatientCertificateRegisterSDO sdo)
         {
             try
@@ -876,12 +909,23 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 //        Inventec.Common.Logging.LogSystem.Debug("ProcessStore2IDStorage: Saved signature image to " + signaturePath);
                 //    }
                 //}
+                var dob = Parse2IDDate(sdo.dateOfBirth) ?? DateTime.MinValue;
+                var issue = Parse2IDDate(sdo.dateOfProvide) ?? DateTime.MinValue;
+                var exp = Parse2IDDate(sdo.dateOfExpired) ?? DateTime.MinValue;
 
-                // Gọi thư viện lưu trữ 2ID
-                Inventec.Common.Logging.LogSystem.Info(string.Format("ProcessStore2IDStorage: Calling StoreCitizenInfo for CCCD={0}", sdo.citizenIdentify));
-
+                var citizenInput = new HIS.Desktop.Plugins.Library.TwoIDStorageIntegration.TwoIDApiRequestInput()
+                {
+                    citizenNumber = sdo.citizenIdentify,
+                    fullName = sdo.fullName,
+                    dateOfBirth = dob,
+                    residencePlace = sdo.placeOfProvide,
+                    issueDate = issue,
+                    expiredDate = exp,
+                    idCardVerifyResult = "VERIFIED"
+                };
                 bool storeResult = processor.StoreCitizenInfo(
-                    sdo.citizenIdentify,
+                    storageUrl,
+                    citizenInput,
                     fingerprints,
                     faceImages,
                     handSignatures,
@@ -987,8 +1031,8 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 // String message = String.format("%s_%s", apiKey, transaction);
                 string message = string.Format("{0}_{1}", apiKey, transaction);
 
-                byte[] keyBytes = Encoding.UTF8.GetBytes(secretKey);  
-                byte[] dataBytes = Encoding.UTF8.GetBytes(message);    
+                byte[] keyBytes = Encoding.UTF8.GetBytes(secretKey);
+                byte[] dataBytes = Encoding.UTF8.GetBytes(message);
 
                 using (var hmac = new HMACSHA512(keyBytes))
                 {
