@@ -73,4 +73,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SAFECERT.A
         public string mcCQT { get; set; }
         public string moTaKetQua { get; set; }
     }
+
+    public class HoaDonMoRong
+    {
+        public string CCCDAN { get; set; }        
+        public string MDVQHNSACH { get; set; }  
+        public string SOHOCHIEU { get; set; }   
+
+    }
 }

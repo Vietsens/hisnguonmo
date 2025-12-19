@@ -373,9 +373,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     {
                         result.Success = true;
                         result.InvoiceNumOrder = OSEBill.result.sohoadon;
-                        result.InvoiceCode = OSEBill.result.magiaodich;
-                        result.InvoiceLookupCode = OSEBill.result.magiaodich;
                         result.InvoiceLoginname = adoLogin.username;
+                        result.InvoiceTime = Inventec.Common.DateTime.Get.Now();
                         result.InvoiceTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
                     }
                     else

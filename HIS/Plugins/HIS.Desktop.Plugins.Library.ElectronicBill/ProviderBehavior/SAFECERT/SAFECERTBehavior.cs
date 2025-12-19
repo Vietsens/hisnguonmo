@@ -23,6 +23,7 @@ using HIS.Desktop.Plugins.Library.ElectronicBill.Template;
 using Inventec.Common.Logging;
 using Inventec.Common.TypeConvert;
 using MOS.EFMODEL.DataModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -138,7 +139,55 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SAFECERT
                         }
                     }
                     invoice.hoaDonMoRong = "";
+                    string cccdAn = "";
+                    string soHoChieu = "";
+                    string maDvqhNsach = "";
+                    // lấy từ Transaction 
+                    if (this.ElectronicBillDataInput.Transaction != null)
+                    {
+                        var trans = this.ElectronicBillDataInput.Transaction;
 
+                        if (!string.IsNullOrWhiteSpace(trans.BUYER_SOCIAL_RELATIONS_CODE))
+                            maDvqhNsach = trans.BUYER_SOCIAL_RELATIONS_CODE;
+
+                        if (!string.IsNullOrWhiteSpace(trans.BUYER_IDENTITY_NUMBER))
+                        {
+                            if (trans.BUYER_IDENTITY_TYPE == 1 || trans.BUYER_IDENTITY_TYPE == 2 || trans.BUYER_IDENTITY_TYPE == null)
+                            {
+                                cccdAn = trans.BUYER_IDENTITY_NUMBER;
+                            }
+                            else if (trans.BUYER_IDENTITY_TYPE == 3) 
+                            {
+                                soHoChieu = trans.BUYER_IDENTITY_NUMBER;
+                            }
+                        }
+                    }
+                    var hoaDonMoRongOjb = new HoaDonMoRong
+                    {
+                        CCCDAN = cccdAn,
+                        SOHOCHIEU = soHoChieu,
+                        MDVQHNSACH = maDvqhNsach
+                    };
+                    invoice.hoaDonMoRong = JsonConvert.SerializeObject(hoaDonMoRongOjb); 
+                    //else if (this.ElectronicBillDataInput.Treatment != null)
+                    //{
+                    //    var treatment = this.ElectronicBillDataInput.Treatment;
+
+                    //    if (string.IsNullOrWhiteSpace(maDvqhNsach) && !string.IsNullOrWhiteSpace(treatment.TDL_PATIENT_BUD_REL_UNIT_CODE))
+                    //    {
+                    //        maDvqhNsach = treatment.TDL_PATIENT_BUD_REL_UNIT_CODE;
+                    //    }
+
+                    //    if (string.IsNullOrWhiteSpace(cccdAn) && !string.IsNullOrWhiteSpace(treatment.TDL_PATIENT_CCCD_NUMBER))
+                    //    {
+                    //        cccdAn = treatment.TDL_PATIENT_CCCD_NUMBER;
+                    //    }
+
+                    //    if (string.IsNullOrWhiteSpace(soHoChieu) && !string.IsNullOrWhiteSpace(treatment.TDL_PATIENT_PASSPORT_NUMBER))
+                    //    {
+                    //        soHoChieu = treatment.TDL_PATIENT_PASSPORT_NUMBER;
+                    //    }
+                    //}
                     invoice.loaiTienTe = "VND";
                     invoice.tyGia = 1m;
                     invoice.soHieuBangKe = "";
