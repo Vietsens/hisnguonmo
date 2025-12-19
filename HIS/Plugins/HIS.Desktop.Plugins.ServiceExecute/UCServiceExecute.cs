@@ -1982,27 +1982,74 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
-                if (data != null && data.SERVICE_ID > 0 && listTemplate != null && listTemplate.Count > 0)
-                {
-                    var temp = listTemplate.Where(o => ConvertServiceStrToLong(o.SERVICE_IDS).Contains(data.SERVICE_ID)).ToList();
+                if (data == null || data.SERVICE_ID <= 0 || listTemplate == null || listTemplate.Count == 0)
+                    return;
 
-                    var tempType = listTemplate.Where(o => o.SERVICE_TYPE_ID == data.TDL_SERVICE_TYPE_ID ||
-                            !o.SERVICE_TYPE_ID.HasValue).ToList();
-                    if (temp != null && temp.Count > 0)
+                // Tải lại danh sách mẫu để đảm bảo nhận được các mẫu mới nhất
+                try
+                {
+                    ProcessLoadListTemplate();
+                }
+                catch
+                {
+                    // tránh lỗi
+                }
+
+                var temp = listTemplate.Where(o => ConvertServiceStrToLong(o.SERVICE_IDS).Contains(data.SERVICE_ID)).ToList();
+                var tempType = listTemplate.Where(o => o.SERVICE_TYPE_ID == data.TDL_SERVICE_TYPE_ID || !o.SERVICE_TYPE_ID.HasValue).ToList();
+
+                // dữ lại mẫu hiện tại
+                long? prevSelectedId = null;
+                try
+                {
+                    if (cboSereServTemp.EditValue != null)
+                        prevSelectedId = Inventec.Common.TypeConvert.Parse.ToInt64((cboSereServTemp.EditValue ?? 0).ToString());
+                }
+                catch { prevSelectedId = null; }
+
+                if (temp != null && temp.Count > 0)
+                {
+                    InitComboSereServTemp(temp);
+
+                    if (prevSelectedId.HasValue && temp.Any(t => t.ID == prevSelectedId.Value))
                     {
-                        InitComboSereServTemp(temp);
+                        cboSereServTemp.EditValue = prevSelectedId.Value;
+                        cboSereServTemp.Properties.Buttons[1].Visible = true;
+                        ProcessChoiceSereServTempl(temp.FirstOrDefault(t => t.ID == prevSelectedId.Value));
+                    }
+                    else
+                    {
                         LoadSereServTempCombo(temp.FirstOrDefault().SERE_SERV_TEMP_CODE);
                     }
-                    else if (tempType != null && tempType.Count > 0)
+                }
+                else if (tempType != null && tempType.Count > 0)
+                {
+                    InitComboSereServTemp(tempType);
+
+                    if (prevSelectedId.HasValue && tempType.Any(t => t.ID == prevSelectedId.Value))
                     {
-                        InitComboSereServTemp(tempType);
+                        cboSereServTemp.EditValue = prevSelectedId.Value;
+                        cboSereServTemp.Properties.Buttons[1].Visible = true;
+                        ProcessChoiceSereServTempl(tempType.FirstOrDefault(t => t.ID == prevSelectedId.Value));
+                    }
+                    else
+                    {
                         if (tempType.Count == 1)
                         {
                             LoadSereServTempCombo(tempType.FirstOrDefault().SERE_SERV_TEMP_CODE);
                         }
                     }
-                    else
-                        InitComboSereServTemp(listTemplate);
+                }
+                else
+                {
+                    InitComboSereServTemp(listTemplate);
+
+                    if (prevSelectedId.HasValue && listTemplate.Any(t => t.ID == prevSelectedId.Value))
+                    {
+                        cboSereServTemp.EditValue = prevSelectedId.Value;
+                        cboSereServTemp.Properties.Buttons[1].Visible = true;
+                        ProcessChoiceSereServTempl(listTemplate.FirstOrDefault(t => t.ID == prevSelectedId.Value));
+                    }
                 }
             }
             catch (Exception ex)
@@ -4596,23 +4643,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     btnPrint.Enabled = true;
                     BtnEmr.Enabled = true;
                     ProcessLoadSereServFile(listServiceADO.Select(s => s.ID).Distinct().ToList());
-                    //ẩn trước khi lưu đóng tránh bị dừng pm
-                    Inventec.Desktop.Common.Message.WaitingManager.Hide();
-                    //lưu và ký và đóng
-                    if (chkSign.Checked)
-                    {
-                        BtnEmr_Click(null, null);
-                    }
-
-                    if (printNow && !chkSign.Checked)
-                    {
-                        PrintResult(printNow && !isPrintPreview);
-                    }
-                    else if (!printNow && !chkSign.Checked && isClose)
-                    {
-                        PrintResult(printNow && !isPrintPreview);
-                    }
                     
+
                 }
 
                 if (apiResult != null)
@@ -4636,15 +4668,36 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 }
 
                 // BỔ SUNG ĐOẠN NÀY ĐỂ HIỂN THỊ LẠI KẾT QUẢ VÀ MẪU
-                // Giữ lại template đã chọn để tránh bị reset về template đầu khi reload
+                // GIỮ NGUYÊN TEMPLATE HIỆN TẠI VÀ MÁY (NẾU NGƯỜI DÙNG ĐÃ THAY ĐỔI) SAU KHI RELOAD TEMPLATE
                 object prevTemplate = null;
-                try { prevTemplate = cboSereServTemp.EditValue; } catch { prevTemplate = null; }
+                long? prevSereServMachineId = null;
+                long? prevExtMachineId = null;
+                try
+                {
+                    prevTemplate = cboSereServTemp.EditValue;
+                }
+                catch { prevTemplate = null; }
+
+                try
+                {
+                    if (sereServ != null)
+                        prevSereServMachineId = sereServ.MACHINE_ID;
+                }
+                catch { prevSereServMachineId = null; }
+
+                try
+                {
+                    if (dicSereServExt != null && sereServ != null && dicSereServExt.ContainsKey(sereServ.ID))
+                        prevExtMachineId = dicSereServExt[sereServ.ID].MACHINE_ID;
+                }
+                catch { prevExtMachineId = null; }
 
                 ProcessDicParam();
                 ProcessDescriptionContent();
-                ProcessLoadTemplate(sereServ); // nếu muốn load lại mẫu
 
-                // Thử phục hồi template đã chọn trước khi reload (nếu còn tồn tại)
+                ProcessLoadTemplate(sereServ);
+
+                // lấy lại mẫu đang đc chọn
                 try
                 {
                     if (prevTemplate != null)
@@ -4655,6 +4708,52 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 }
                 catch { }
 
+                // lấy lại dữ liệu người dùng chọn máy (tránh mất dữ liệu)
+                try
+                {
+                    if (sereServ != null && prevSereServMachineId.HasValue)
+                    {
+                        sereServ.MACHINE_ID = prevSereServMachineId;
+                    }
+
+                    if (sereServ != null && prevExtMachineId.HasValue && dicSereServExt != null && dicSereServExt.ContainsKey(sereServ.ID))
+                    {
+                        dicSereServExt[sereServ.ID].MACHINE_ID = prevExtMachineId;
+                        var restoredMachine = ListMachine.FirstOrDefault(m => m.ID == prevExtMachineId.Value);
+                        if (restoredMachine != null)
+                        {
+                            dicSereServExt[sereServ.ID].MACHINE_CODE = restoredMachine.MACHINE_CODE;
+                        }
+                    }
+
+                    // load lại để lấy thông tin máy mới lưu nếu có
+                    try
+                    {
+                        gridControlSereServ.RefreshDataSource();
+                    }
+                    catch { }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+
+                //ẩn trước khi lưu đóng tránh bị dừng pm
+                Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                //lưu và ký và đóng mang xuống đây để khi tích ký và xem trc khi in sẽ lấy đc dữ liệu mới nhất
+                if (chkSign.Checked)
+                {
+                    BtnEmr_Click(null, null);
+                }
+
+                if (printNow && !chkSign.Checked)
+                {
+                    PrintResult(printNow && !isPrintPreview);
+                }
+                else if (!printNow && !chkSign.Checked && isClose)
+                {
+                    PrintResult(printNow && !isPrintPreview);
+                }
                 if (isPrintPreview && !chkSign.Checked)
                 {
                     PreviewResult(isPrintPreview);
