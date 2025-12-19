@@ -146,6 +146,30 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                     index++;
                 }
             }
+            else if (files is IEnumerable<string> base64Files)
+            {
+                int index = 0;
+                foreach (var base64 in base64Files)
+                {
+                    if (string.IsNullOrWhiteSpace(base64)) continue;
+                    byte[] file;
+                    try
+                    {
+                        file = Convert.FromBase64String(base64);
+                    }
+                    catch
+                    {
+                        continue; // skip invalid base64
+                    }
+                    var content = new ByteArrayContent(file);
+                    content.Headers.ContentType =
+                        new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                    string ext = paramName == "handSignature" ? ".png" : ".jpg";
+                    string fileName = paramName + "_" + index + ext;
+                    form.Add(content, paramName, fileName);
+                    index++;
+                }
+            }
         }
 
     }
