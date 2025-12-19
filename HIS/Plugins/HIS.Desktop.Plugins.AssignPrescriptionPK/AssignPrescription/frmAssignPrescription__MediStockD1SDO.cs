@@ -587,9 +587,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 gridViewMediMaty.Columns.Add(col16);
 
                 DevExpress.XtraGrid.Columns.GridColumn col15 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col15.FieldName = "MATERIAL_TYPE_MAP_NAME";
+                col15.FieldName = "DESCRIPTION";
                 col15.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MATERIAL_TYPE_MAP_NAME",
+                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_DESCRIPTION",
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col15.Width = 150;
