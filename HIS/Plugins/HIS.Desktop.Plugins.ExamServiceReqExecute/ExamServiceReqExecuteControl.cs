@@ -266,6 +266,38 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             InitializeComponent();
             try
             {
+                var screen = Screen.PrimaryScreen.Bounds;
+                Inventec.Common.Logging.LogSystem.Debug("1366x768 qtcode bên ngoài");
+                if (screen.Width <= 1368 && screen.Height <= 770)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("1366x768 qtcode");
+                    emptySpaceItem8.Visibility =
+                        DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    emptySpaceItem3.Visibility =
+                         DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    emptySpaceItem6.Visibility =
+                        DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciProvisionalDianosis.SizeConstraintsType =
+                        DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                    lciChuY.SizeConstraintsType =
+                        DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                    lblCaptionDiagnostic.SizeConstraintsType =
+                      DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                    lblCaptionConclude.SizeConstraintsType =
+                      DevExpress.XtraLayout.SizeConstraintsType.Custom;
+
+                    lciProvisionalDianosis.MinSize = new Size(0, 24);
+                    lciProvisionalDianosis.MaxSize = new Size(0, 24);
+
+                    lciChuY.MinSize = new Size(0, 24);
+                    lciChuY.MaxSize = new Size(0, 24);
+
+                    lblCaptionDiagnostic.MinSize = new Size(0, 24);
+                    lblCaptionDiagnostic.MaxSize = new Size(0, 24);
+
+                    lblCaptionConclude.MinSize = new Size(0, 24);
+                    lblCaptionConclude.MaxSize = new Size(0, 24);
+                }
                 this.SereServsCurrentTreatment = sereServCurrentTreatment;
                 this.HisServiceReqView = serviceReq;
                 this.moduleData = moduleData;
