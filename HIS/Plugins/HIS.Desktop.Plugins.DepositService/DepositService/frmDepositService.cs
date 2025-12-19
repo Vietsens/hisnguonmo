@@ -107,6 +107,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             Option2 = 2
         }
         bool IsChangeControl = false;
+        bool isShowTransationQR = false;
         #endregion
 
         #region Construct
@@ -2118,7 +2119,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                     SetEnableButtonSave(true);
                     return;
                 }
-
+                
 
                 UpdateDataFormTransactionDepositToDTO(ref this.hisDepositSDO, this.hisTreatment);
 
@@ -2332,9 +2333,14 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         FillDataToControl(this.hisDeposit);
                         RefreshDataAfterSave();
                         EnableButton(false);
-                        if(hisDeposit.PAY_FORM_ID == 8)btnQR.Enabled = true;
+                        if(hisDeposit.PAY_FORM_ID == 8)
+                        {
+                            btnQR.Enabled = true;
+                            isShowTransationQR = isShowTransation;
+                        }
+
                         loadConfig();
-                        if (hisDeposit.PAY_FORM_ID == 8 && hisDeposit.IS_ACTIVE == 0) CreateQR(hisDeposit, false);
+                        if (hisDeposit.PAY_FORM_ID == 8 && hisDeposit.IS_ACTIVE == 0) CreateQR(hisDeposit, false, isSaveAndSign);
                         V_HIS_ACCOUNT_BOOK accountBookDefault = null;
                         //chọn mặc định sổ nếu có sổ tương ứng
                         if (GlobalVariables.LastAccountBook != null && GlobalVariables.LastAccountBook.Count > 0)
@@ -2365,28 +2371,29 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         this.isPrintNow = true;
                         Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(HIS.Desktop.ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
                         richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000102, DelegateRunPrinter);
-                        if (isShowTransation)
+                        if (isShowTransation && !isShowTransationQR) // nếu thanh toán QR không tự động thì ko gọi màn thanh toán ngay, khi tắt QR mới gọi
                         {
-                            this.Close();
-                            WaitingManager.Show();
-                            List<object> listArgs = new List<object>();
-                            LoadTreatment(hisTreatment.ID);
-                            listArgs.Add(this.hisTreatment);
-                            listArgs.Add(this.sSByTreatment);
-                            V_HIS_PATIENT_TYPE_ALTER lastPatientType = new V_HIS_PATIENT_TYPE_ALTER();
-                            MOS.Filter.HisPatientTypeAlterViewFilter patientTypeFilter = new HisPatientTypeAlterViewFilter();
-                            patientTypeFilter.TREATMENT_ID = hisTreatment.ID;
-                            var patientTypeAlters = new BackendAdapter(new CommonParam()).Get<List<V_HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeALter/GetView", ApiConsumer.ApiConsumers.MosConsumer, patientTypeFilter, null);
-                            if (patientTypeAlters != null && patientTypeAlters.Count > 0)
-                            {
-                                var patientTypeBhytCFG = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT");
-                                lastPatientType = patientTypeAlters.OrderByDescending(o => o.LOG_TIME).FirstOrDefault();
-                            }
-                            listArgs.Add(lastPatientType);
-                            listArgs.Add(moduleData);
-                            listArgs.Add(false);
-                            WaitingManager.Hide();
-                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.TransactionBillSelect", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
+                            showTransation();
+                        //    this.Close();
+                        //    WaitingManager.Show();
+                        //    List<object> listArgs = new List<object>();
+                        //    LoadTreatment(hisTreatment.ID);
+                        //    listArgs.Add(this.hisTreatment);
+                        //    listArgs.Add(this.sSByTreatment);
+                        //    V_HIS_PATIENT_TYPE_ALTER lastPatientType = new V_HIS_PATIENT_TYPE_ALTER();
+                        //    MOS.Filter.HisPatientTypeAlterViewFilter patientTypeFilter = new HisPatientTypeAlterViewFilter();
+                        //    patientTypeFilter.TREATMENT_ID = hisTreatment.ID;
+                        //    var patientTypeAlters = new BackendAdapter(new CommonParam()).Get<List<V_HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeALter/GetView", ApiConsumer.ApiConsumers.MosConsumer, patientTypeFilter, null);
+                        //    if (patientTypeAlters != null && patientTypeAlters.Count > 0)
+                        //    {
+                        //        var patientTypeBhytCFG = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT");
+                        //        lastPatientType = patientTypeAlters.OrderByDescending(o => o.LOG_TIME).FirstOrDefault();
+                        //    }
+                        //    listArgs.Add(lastPatientType);
+                        //    listArgs.Add(moduleData);
+                        //    listArgs.Add(false);
+                        //    WaitingManager.Hide();
+                        //    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.TransactionBillSelect", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
                         }
                     }
                     if (success && isSaveAndSign)
@@ -2435,6 +2442,38 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Fatal(ex);
+            }
+        }
+
+        private void showTransation()
+        {
+            try
+            {
+                this.Close();
+                WaitingManager.Show();
+                List<object> listArgs = new List<object>();
+                LoadTreatment(hisTreatment.ID);
+                listArgs.Add(this.hisTreatment);
+                listArgs.Add(this.sSByTreatment);
+                V_HIS_PATIENT_TYPE_ALTER lastPatientType = new V_HIS_PATIENT_TYPE_ALTER();
+                MOS.Filter.HisPatientTypeAlterViewFilter patientTypeFilter = new HisPatientTypeAlterViewFilter();
+                patientTypeFilter.TREATMENT_ID = hisTreatment.ID;
+                var patientTypeAlters = new BackendAdapter(new CommonParam()).Get<List<V_HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeALter/GetView", ApiConsumer.ApiConsumers.MosConsumer, patientTypeFilter, null);
+                if (patientTypeAlters != null && patientTypeAlters.Count > 0)
+                {
+                    var patientTypeBhytCFG = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT");
+                    lastPatientType = patientTypeAlters.OrderByDescending(o => o.LOG_TIME).FirstOrDefault();
+                }
+                listArgs.Add(lastPatientType);
+                listArgs.Add(moduleData);
+                listArgs.Add(false);
+                WaitingManager.Hide();
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.TransactionBillSelect", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -2572,83 +2611,118 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void CreateQR(V_HIS_TRANSACTION data, bool click)
+        class ConfigInfo
+        {
+            public string BANK { get; set; }
+            public string VALUE { get; set; }
+        }
+        private void CreateQR(V_HIS_TRANSACTION data, bool click, bool isLuuKy)
         {
             try
             {
-                if (listConfig != null)
+                var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == this.moduleData.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
+                if (currentRoom != null && currentRoom.Count() > 0)
                 {
-                    if (listConfig.Count > 1)
-                    {
-                        if (!click)
-                        {
-                            MessageBox.Show(this, "Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo", MessageBoxButtons.OK);
-                            return;
-                        }
-                        popupMenu1.ClearLinks();
-                        foreach (var item in listConfig)
-                        {
-                            string key = "";
-                            string value = item.KEY;
-                            int index = value.IndexOf("Info");
-                            if (index > 0)
-                            {
-                                var shotkey = value.Substring(0, index);
-                                string[] parts = shotkey.Split('.');
-                                if (parts.Length > 0)
-                                {
-                                    key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
-                                }
-                            }
-                            else
-                            {
-                                key = item.KEY;
-                            }
-
-
-                            BarButtonItem btnOption = new BarButtonItem(null, key);
-                            btnOption.ItemClick += (s, args) =>
-                            {
-
-                                selectedConfig = item;
-                                List<object> listArgs = new List<object>();
-                                TransReqQRADO adoqr = new TransReqQRADO();
-                                adoqr.TreatmentId = this.hisTreatment.ID;
-                                adoqr.ConfigValue = selectedConfig;
-                                adoqr.TransReqId = CreateReqType.Transaction;
-                                HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
-                                adoqr.Transaction = tran;
-                                listArgs.Add(adoqr);
-                                Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.KEY + " tran_id: " + adoqr.Transaction.ID);
-                                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
-
-                            };
-                            popupMenu1.AddItem(btnOption);
-                        }
-                        popupMenu1.Manager = barManager1;
-                        popupMenu1.ShowPopup(Control.MousePosition);
-                    }
-                    else
-                    {
-                        selectedConfig = listConfig[0];
-                        List<object> listArgs = new List<object>();
-                        TransReqQRADO adoqr = new TransReqQRADO();
-                        adoqr.TreatmentId = this.hisTreatment.ID;
-                        adoqr.ConfigValue = selectedConfig;
-                        adoqr.TransReqId = CreateReqType.Transaction;
-                        HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
-                        adoqr.Transaction = tran;
-                        listArgs.Add(adoqr);
-                        Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.KEY + " tran_id: " + adoqr.Transaction.ID);
-                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
-
-
-                    }
-
+                    this.isShowTransationQR = false; // nếu có cấu hình QR tự động thì sẽ mở màn hinh Thanh toán sau khi in như luồng cũ
+                    ConfigInfo _config = Newtonsoft.Json.JsonConvert.DeserializeObject<ConfigInfo>(currentRoom.FirstOrDefault().QR_CONFIG_JSON);
+                    HIS_CONFIG _cf = new HIS_CONFIG();
+                    if (string.IsNullOrWhiteSpace(_config.BANK)) MessageBox.Show(this, "Cấu hình thiếu thông tin ngân hàng.", "Thông báo", MessageBoxButtons.OK);
+                    _cf.KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", _config.BANK.Trim());
+                    _cf.VALUE = _config.VALUE;
+                    //co cau hinh QR o buong benh
+                    List<object> listArgs = new List<object>();
+                    TransReqQRADO adoqr = new TransReqQRADO();
+                    adoqr.TreatmentId = this.hisTreatment.ID;
+                    adoqr.ConfigValue = _cf;
+                    adoqr.TransReqId = CreateReqType.Transaction;
+                    AutoMapper.Mapper.CreateMap<V_HIS_TRANSACTION, HIS_TRANSACTION>();
+                    HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
+                    adoqr.Transaction = tran;
+                    //if (isLuuKy)
+                    //    adoqr.IssueInvoice = true;
+                    //if (chkHideHddt.Checked)
+                    //    adoqr.NotDisplayedInvoice = true;
+                    listArgs.Add(adoqr);
+                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + LogUtil.TraceData("listArgs", listArgs));
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
                 }
+                else
+                {
+                    if (listConfig != null)
+                    {
+                        if (listConfig.Count > 1)
+                        {
+                            if (!click)
+                            {
+                                MessageBox.Show(this, "Vui lòng sử dụng nút tạo QR để thực hiện thanh toán", "Thông báo", MessageBoxButtons.OK);
+                                return;
+                            }
+                            popupMenu1.ClearLinks();
+                            foreach (var item in listConfig)
+                            {
+                                string key = "";
+                                string value = item.KEY;
+                                int index = value.IndexOf("Info");
+                                if (index > 0)
+                                {
+                                    var shotkey = value.Substring(0, index);
+                                    string[] parts = shotkey.Split('.');
+                                    if (parts.Length > 0)
+                                    {
+                                        key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                                    }
+                                }
+                                else
+                                {
+                                    key = item.KEY;
+                                }
 
+
+                                BarButtonItem btnOption = new BarButtonItem(null, key);
+                                btnOption.ItemClick += (s, args) =>
+                                {
+
+                                    selectedConfig = item;
+                                    List<object> listArgs = new List<object>();
+                                    TransReqQRADO adoqr = new TransReqQRADO();
+                                    adoqr.TreatmentId = this.hisTreatment.ID;
+                                    adoqr.ConfigValue = selectedConfig;
+                                    adoqr.TransReqId = CreateReqType.Transaction;
+                                    HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
+                                    adoqr.Transaction = tran;
+                                    adoqr.DelegteShow = this.isShowTransationQR ? (HIS.Desktop.Common.RefeshReference)showTransation : null;
+                                    listArgs.Add(adoqr);
+                                    Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.KEY + " tran_id: " + adoqr.Transaction.ID);
+                                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
+
+                                };
+                                popupMenu1.AddItem(btnOption);
+                            }
+                            popupMenu1.Manager = barManager1;
+                            popupMenu1.ShowPopup(Control.MousePosition);
+                        }
+                        else
+                        {
+                            selectedConfig = listConfig[0];
+                            List<object> listArgs = new List<object>();
+                            TransReqQRADO adoqr = new TransReqQRADO();
+                            adoqr.TreatmentId = this.hisTreatment.ID;
+                            adoqr.ConfigValue = selectedConfig;
+                            adoqr.TransReqId = CreateReqType.Transaction;
+                            HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, data);
+                            adoqr.Transaction = tran;
+                            listArgs.Add(adoqr);
+                            Inventec.Common.Logging.LogSystem.Debug("Goi den module CreateTransReqQR. TreatmentID:" + adoqr.TreatmentId + " config: " + adoqr.ConfigValue.KEY + " tran_id: " + adoqr.Transaction.ID);
+                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
+
+
+                        }
+
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -3760,7 +3834,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         {
             try
             {
-                if (hisDeposit != null && hisDeposit.PAY_FORM_ID == 8 && hisDeposit.IS_ACTIVE == 0) CreateQR(hisDeposit, true);
+                if (hisDeposit != null && hisDeposit.PAY_FORM_ID == 8 && hisDeposit.IS_ACTIVE == 0) CreateQR(hisDeposit, true, this.isSign);
             }
             catch (Exception ex)
             {
@@ -3774,7 +3848,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             if (!btnAddSign.Enabled) return;
             if (!CheckHolidayPoliciesBeforeSave())
                 return;
-            SaveProcess(false, true, true);
+            SaveProcess(false, false, true);
         }
 
         private void cboPayForm_EditValueChanged(object sender, EventArgs e)
