@@ -207,7 +207,6 @@ namespace HIS.UC.TreeSereServ7.Run
                 }
 
 
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => SereServADOs.Select(o => o.PARENT_ID__IN_SETY)), SereServADOs.Select(o => o.PARENT_ID__IN_SETY)));
                 SereServADOs = SereServADOs.OrderBy(p => p.IsLastLevel).ThenBy(o => o.PARENT_ID__IN_SETY).ThenBy(o=>o.TDL_SERVICE_CODE).ThenBy(o => o.TDL_SERVICE_NAME).ToList();
                 records = new BindingList<SereServADO>(SereServADOs);
                 trvService.DataSource = records;
