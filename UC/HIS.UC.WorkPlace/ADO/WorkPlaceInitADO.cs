@@ -50,12 +50,24 @@ namespace HIS.UC.WorkPlace
             this.SetValidateControl = validate;
         }
 
+        public WorkPlaceInitADO(List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE> WorlPlaces, WorkPlaceProcessor.Template Template, DelegateFocusMoveout FocusMoveout, HIS.UC.WorkPlace.DelegatePlusClick plusClick, DelegateGetWorkPlaceId getId,HIS.UC.WorkPlace.UCWorkPlaceCombo place, bool validate)
+        {
+            this.WorlPlaces = WorlPlaces;
+            this.Template = Template;
+            this.FocusMoveout = FocusMoveout;
+            this.PlusClick = plusClick;
+            this.GetWorkPlaceId = getId;
+            this.place = place;
+            this.SetValidateControl = validate;
+        }
+
         public HIS.UC.WorkPlace.UCWorkPlaceCombo place { get; set; }
         public List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE> WorlPlaces { get; set; }
         public MOS.EFMODEL.DataModels.HIS_WORK_PLACE thisWorkPlace { get; set; }
         public WorkPlaceProcessor.Template Template { get; set; }
         public DelegateFocusMoveout FocusMoveout { get; set; }
         public HIS.UC.WorkPlace.DelegatePlusClick PlusClick { get; set; }
+        public DelegateGetWorkPlaceId GetWorkPlaceId { get; set; }
         public bool SetValidateControl { get; set; }
     }
 }

@@ -15,31 +15,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using DevExpress.XtraLayout;
-using HIS.UC.WorkPlace;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.DelegateRegister;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Utility;
 using HIS.UC.PlusInfo.ADO;
-using HIS.UC.PlusInfo.ShareMethod;
 using HIS.UC.PlusInfo.Config;
-using HIS.Desktop.DelegateRegister;
-using Inventec.Core;
-using Inventec.Common.Adapter;
-using HIS.Desktop.ApiConsumer;
-using SDA.EFMODEL.DataModels;
 using HIS.UC.PlusInfo.Design;
-using System.Resources;
+using HIS.UC.PlusInfo.ShareMethod;
+using HIS.UC.WorkPlace;
+using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
+using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
+using SDA.EFMODEL.DataModels;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Resources;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.UC.PlusInfo
 {
@@ -56,7 +57,7 @@ namespace HIS.UC.PlusInfo
         WorkPlaceADO dataWorkPlaceADO = new ADO.WorkPlaceADO();
         DelegateFocusNextUserControl dlgFocusNextUserControl;
         DelegateReloadData dlgReloadControl;
-
+        DelegateGetWorkPlaceId dlgGetWorkPlaceId;
         int indexOfControlEnd = 0;
         int tagIndex = 0;
         int indexUCMaHoNgheo = 0;
@@ -103,6 +104,8 @@ namespace HIS.UC.PlusInfo
         internal Design.UCTaxCode ucTaxCode;
         internal Design.UCExamHistory ucExamHistory;
         internal Design.UCCheckBoxCCCD ucCheckBoxCCCD;
+        internal Design.UCBudRelUnitCode UCBudRelUnitCode;
+
         #endregion
 
         #region Constructor - Load
@@ -198,10 +201,25 @@ namespace HIS.UC.PlusInfo
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
+        }        
         public void SetDelegateInitTHX(DelegateReloadData dlg)
         {
             this.dlgReloadControl = dlg;
+        }
+
+        public void SetDelegateWorkPlaceUCPlusInfo(DelegateGetWorkPlaceId _dlgID)
+        {
+            try
+            {
+                if (_dlgID != null)
+                {
+                    dlgGetWorkPlaceId = _dlgID;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
         }
 
         /// <summary>
@@ -491,7 +509,7 @@ namespace HIS.UC.PlusInfo
                         this.listControl.Add(ucAddress1);
                         break;
                     case ChoiceControl.ucWorkPlace:
-                        ucWorkPlace1 = new Design.UCWorkPlace(HIS.UC.PlusInfo.ClassGlobal.GlobalStore.CurrentModule, FocusNext);
+                        ucWorkPlace1 = new Design.UCWorkPlace(HIS.UC.PlusInfo.ClassGlobal.GlobalStore.CurrentModule, FocusNext, dlgGetWorkPlaceId);
                         ucWorkPlace1.TabIndex = tagIndex;
                         ucWorkPlace1.PreviewKeyDown += FocusNextUserControl;
                         listControl.Add(ucWorkPlace1);
@@ -681,6 +699,12 @@ namespace HIS.UC.PlusInfo
                         ucCheckBoxCCCD.FocusNextControl(this.FocusNextUserControl);
                         this.listControl.Add(ucCheckBoxCCCD);
                         break;
+                    //    break;
+                    case ChoiceControl.UCBudRelUnitCode:
+                        UCBudRelUnitCode = new Design.UCBudRelUnitCode();
+                        UCBudRelUnitCode.TabIndex = tagIndex;
+                        listControl.Add(UCBudRelUnitCode);
+                        break;
                     default:
                         break;
 
@@ -711,25 +735,25 @@ namespace HIS.UC.PlusInfo
         {
             try
             {
-                foreach (LayoutControlItem col in layoutControlGroup1.Items)
-                {
-                    if (col != null && col.Control.TabIndex == ucWorkPlace1.TabIndex + 1)
-                    {
-                        UserControl uc = null;
-                        foreach (UserControl item in listControl)
-                        {
-                            if (item == col.Control)
-                            {
-                                uc = item;
-                                break;
-                            }
-                        }
-                        if (uc != null)
-                        {
-                            FocusControl(uc);
-                        }
-                    }
-                }
+                //foreach (LayoutControlItem col in layoutControlGroup1.Items)
+                //{
+                //    if (col != null && col.Control.TabIndex == ucWorkPlace1.TabIndex + 1)
+                //    {
+                //        UserControl uc = null;
+                //        foreach (UserControl item in listControl)
+                //        {
+                //            if (item == col.Control)
+                //            {
+                //                uc = item;
+                //                break;
+                //            }
+                //        }
+                //        if (uc != null)
+                //        {
+                //            FocusControl(uc);
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {

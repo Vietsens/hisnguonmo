@@ -324,6 +324,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.ucAddressCombo1.SetDelegateSendCardSDO(SendCardSDO, SendStateStrucAddress);
                 this.ucPlusInfo1.SetDelegateInitTHX(result => { if (result) this.ucAddressCombo1.InitControlState(); });
                 this.ucPlusInfo1.InitFieldFromAsync();
+                this.ucPlusInfo1.SetDelegateWorkPlaceUCPlusInfo(this.SetDelegateSetWorkPlace);
                 this.ucOtherServiceReqInfo1.InitFieldFromAsync();
                 this.ucRelativeInfo1.InitFieldFromAsync();
                 this.ucPatientRaw1.FocusUserControl();

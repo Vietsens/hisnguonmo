@@ -64,5 +64,6 @@ namespace HIS.UC.UCPatientRaw.ADO
         public string BankCardCode { get; set; }
         public string SocialInsuranceNumberPatient { get; set; }
         public bool isKey6 { get; set; }
+        public bool isTypeHenKham { get; set; }
     }
 }

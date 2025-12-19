@@ -27,5 +27,5 @@ namespace HIS.UC.WorkPlace
 {
     public delegate void DelegatePlusClick();
     public delegate void ColumData(HIS_WORK_PLACE data, DevExpress.Utils.AppearanceObject appearanceObject);
-
+    public delegate void DelegateGetWorkPlaceId(HIS_WORK_PLACE data);
 }
