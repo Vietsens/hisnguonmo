@@ -230,6 +230,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     col14.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Like;
                     gridViewMediMaty.Columns.Add(col14);
 
+                    
+                    DevExpress.XtraGrid.Columns.GridColumn col15 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col15.FieldName = "DESCRIPTION";
+                    col15.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_DESCRIPTION",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col15.Width = 60;
+                    col15.VisibleIndex = 15;
+                    gridViewMediMaty.Columns.Add(col15);
+
                     gridViewMediMaty.GridControl.DataSource = dMediStock1s;
                     gridViewMediMaty.EndUpdate();
                 }
@@ -425,6 +436,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     col17.VisibleIndex = 2;
                     col17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
                     gridViewMediMaty.Columns.Add(col17);
+
+
+                    DevExpress.XtraGrid.Columns.GridColumn col18 = new DevExpress.XtraGrid.Columns.GridColumn();
+                    col18.FieldName = "DESCRIPTION";
+                    col18.Caption = Inventec.Common.Resource.Get.Value
+                        ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_DESCRIPTION",
+                        Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    col18.Width = 60;
+                    col18.VisibleIndex = 15;
+                    gridViewMediMaty.Columns.Add(col18);
+
 
                     gridViewMediMaty.GridControl.DataSource = dMediStock1s;
                     gridViewMediMaty.EndUpdate();
@@ -978,6 +1001,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     filter.MEDI_STOCK_IDs = mediStockIds;
                     this.ProcessFilterDontPresExpiredTime(ref filter);
                     this.mediMatyTypeAvailables = await new BackendAdapter(param).GetAsync<List<D_HIS_MEDI_STOCK_2>>(HisRequestUriStore.HIS_MEDISTOCKDISDO_GET1, ApiConsumers.MosConsumer, filter, ProcessLostToken, param);
+                    
                     this.ProcessResultDataMetyMatyTypeInStock(mediStockIds, false);
                 }
                 else
@@ -1013,6 +1037,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     this.ProcessFilterDontPresExpiredTime(ref filter);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter));
                     this.mediMatyTypeAvailables = new BackendAdapter(param).Get<List<D_HIS_MEDI_STOCK_2>>(HisRequestUriStore.HIS_MEDISTOCKDISDO_GET1, ApiConsumers.MosConsumer, filter, ProcessLostToken, param);
+                   
 
                     this.ProcessResultDataMetyMatyTypeInStock(mediStockIds, isTSD);
                 }
@@ -1079,7 +1104,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }
         }
 
-        void ProcessMapingDataForTSD(List<D_HIS_MEDI_STOCK_2> mediStockD1s, List<long> mediStockIds)
+        void ProcessMapingDataForTSD(List<D_HIS_MEDI_STOCK_2>  mediStockD1s, List<long> mediStockIds)
         {
             try
             {
@@ -1135,6 +1160,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 
                         item.LAST_EXP_PRICE = mtF.LAST_EXP_PRICE;
                         item.LAST_EXP_VAT_RATIO = mtF.LAST_EXP_VAT_RATIO;
+
+                        item.DESCRIPTION = mtF.DESCRIPTION;
                     }
                     else
                     {
@@ -1178,6 +1205,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             DMediStock1ADO dMediStock1ADO = new DMediStock1ADO();
                             dMediStock1ADO.ACTIVE_INGR_BHYT_CODE = item.ACTIVE_INGR_BHYT_CODE;
                             dMediStock1ADO.ACTIVE_INGR_BHYT_NAME = item.ACTIVE_INGR_BHYT_NAME;
+
+                            dMediStock1ADO.DESCRIPTION = item.DESCRIPTION;
+
                             dMediStock1ADO.ALERT_MAX_IN_PRESCRIPTION = item.ALERT_MAX_IN_PRESCRIPTION;
                             dMediStock1ADO.ALERT_MAX_IN_TREATMENT = item.ALERT_MAX_IN_TREATMENT;
                             dMediStock1ADO.ALERT_MIN_IN_STOCK = item.ALERT_MIN_IN_STOCK;
