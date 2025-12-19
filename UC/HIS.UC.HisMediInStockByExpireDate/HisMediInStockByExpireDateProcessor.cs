@@ -15,20 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.UC.HisMediInStockByExpireDate.ADO;
 using HIS.UC.HisMediInStockByExpireDate.GetListCheck;
 using HIS.UC.HisMediInStockByExpireDate.GetListTreeView;
 using HIS.UC.HisMediInStockByExpireDate.Reload;
 using HIS.UC.HisMediInStockByExpireDate.Run;
 using HIS.UC.HisMediInStockByExpireDate.Search;
-using HIS.UC.HisMediInStockByExpireDate.ADO;
 using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MOS.SDO;
 
 namespace HIS.UC.HisMediInStockByExpireDate
 {
@@ -87,11 +88,11 @@ namespace HIS.UC.HisMediInStockByExpireDate
         //    }
         //}
 
-        public void Reload(UserControl control, List<List<HisMedicineInStockSDO>> HisMediInStockByExpireDates, List<long> MedicineTypeIds)
+        public void Reload(UserControl control, List<List<HisMedicineInStockSDO>> HisMediInStockByExpireDates, List<long> MedicineTypeIds, List<V_HIS_MEDI_STOCK> MediStocks)
         {
             try
             {
-                IReload behavior = ReloadFactory.MakeIReload(param, (control == null ? (UserControl)uc : control), HisMediInStockByExpireDates, MedicineTypeIds);
+                IReload behavior = ReloadFactory.MakeIReload(param, (control == null ? (UserControl)uc : control), HisMediInStockByExpireDates, MedicineTypeIds, MediStocks);
                 if (behavior != null) behavior.Run();
             }
             catch (Exception ex)
