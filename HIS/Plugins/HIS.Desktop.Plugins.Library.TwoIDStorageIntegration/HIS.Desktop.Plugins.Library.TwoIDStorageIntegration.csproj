@@ -72,8 +72,10 @@
     <Compile Include="DateOnlyConverter.cs" />
     <Compile Include="StorageApiClient.cs" />
     <Compile Include="TwoIDApiRequestInput.cs" />
+    <Compile Include="TwoIDDownloadResponse.cs" />
     <Compile Include="TwoIDStorageIntegrationProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TwoIDUploadResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
