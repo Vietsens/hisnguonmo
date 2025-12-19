@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using Inventec.Core;
+using MOS.EFMODEL.DataModels;
 using MOS.SDO;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace HIS.UC.HisMediInStockByExpireDate.Reload
         UserControl control;
         List<List<HisMedicineInStockSDO>> HisMediInStockByExpireDates;
         List<long> MedicineTypeIds;
+        List<V_HIS_MEDI_STOCK> lstMediStock;
         public ReloadBehavior()
             : base()
         {
@@ -43,19 +45,20 @@ namespace HIS.UC.HisMediInStockByExpireDate.Reload
         //    this.HisMediInStockByExpireDates = HisMediInStockByExpireDates;
         //}
 
-        public ReloadBehavior(CommonParam param, UserControl data, List<List<HisMedicineInStockSDO>> HisMediInStockByExpireDates, List<long> MedicineTypeIds)
+        public ReloadBehavior(CommonParam param, UserControl data, List<List<HisMedicineInStockSDO>> HisMediInStockByExpireDates, List<long> MedicineTypeIds, List<V_HIS_MEDI_STOCK> lstMediStock)
             : base()
         {
             this.control = data;
             this.HisMediInStockByExpireDates = HisMediInStockByExpireDates;
             this.MedicineTypeIds = MedicineTypeIds;
+            this.lstMediStock = lstMediStock;
         }
 
         void IReload.Run()
         {
             try
             {
-                ((HIS.UC.HisMediInStockByExpireDate.Run.UCHisMediInStockByExpireDate)this.control).Reload(HisMediInStockByExpireDates, MedicineTypeIds);
+                ((HIS.UC.HisMediInStockByExpireDate.Run.UCHisMediInStockByExpireDate)this.control).Reload(HisMediInStockByExpireDates, MedicineTypeIds, lstMediStock);
             }
             catch (Exception ex)
             {

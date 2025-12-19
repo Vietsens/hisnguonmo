@@ -144,6 +144,7 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                 HisMateInStockByExpireDateADOs = new List<HisMateInStockByExpireDateADO>();
                 if (HisMateInStockByExpireDateADO.HisMateInStockByExpireDates != null)
                 {
+                    int kIndex = 1;
                     foreach (var listItem in HisMateInStockByExpireDateADO.HisMateInStockByExpireDates)
                     {
                         List<HisMateInStockByExpireDateADO> lstADO = new List<ADO.HisMateInStockByExpireDateADO>();
@@ -151,8 +152,9 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                         HisMateInStockByExpireDateADO parentAdo = new HisMateInStockByExpireDateADO();
                         if (itemExpriedDate != null && itemExpriedDate > 0)
                         {
-                            parentAdo.CONCRETE_ID__IN_DATE = Inventec.Common.DateTime.Convert.TimeNumberToDateString(itemExpriedDate.ToString());
+                            parentAdo.CONCRETE_ID__IN_DATE = Inventec.Common.DateTime.Convert.TimeNumberToDateString(itemExpriedDate.ToString()) + kIndex;
                             parentAdo.MATERIAL_TYPE_CODE = Inventec.Common.DateTime.Convert.TimeNumberToDateString(itemExpriedDate.ToString());
+                            kIndex++;
                             HisMateInStockByExpireDateADOs.Add(parentAdo);
                             var listParent = listItem.Where(o => String.IsNullOrEmpty(o.ParentNodeId)).ToList();
                             foreach (var parent in listParent)
@@ -172,6 +174,9 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                                     var mediStock = this.HisMateInStockByExpireDateADO.MediStocks.FirstOrDefault(o => o.ID == parent.MEDI_STOCK_ID.Value);
                                     if (mediStock != null)
                                     {
+                                        HisMateInStockByExpireDateADO parentLevel2 = new HisMateInStockByExpireDateADO(parent);
+                                        parentLevel2.CONCRETE_ID__IN_DATE = parentLevel1.CONCRETE_ID__IN_DATE + "_" + mediStock.ID;
+                                        parentLevel2.PARENT_ID__IN_DATE = parentLevel1.CONCRETE_ID__IN_DATE;
                                         parentLevel1.MEDI_STOCK_NAME = mediStock.MEDI_STOCK_NAME;
                                     }
                                 }
@@ -189,7 +194,7 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                             foreach (var parent in listParent)
                             {
                                 //if (this._MaterialTypeIds != null && this._MaterialTypeIds.Count > 0)
-                                //{
+                                //{   
                                 //    if (!this._MaterialTypeIds.Contains(parent.MATERIAL_TYPE_ID))
                                 //    {
                                 //        continue;
@@ -203,6 +208,9 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                                     var mediStock = this.HisMateInStockByExpireDateADO.MediStocks.FirstOrDefault(o => o.ID == parent.MEDI_STOCK_ID.Value);
                                     if (mediStock != null)
                                     {
+                                        HisMateInStockByExpireDateADO parentLevel2 = new HisMateInStockByExpireDateADO(parent);
+                                        parentLevel2.CONCRETE_ID__IN_DATE = parentLevel1.CONCRETE_ID__IN_DATE + "_" + mediStock.ID;
+                                        parentLevel2.PARENT_ID__IN_DATE = parentLevel1.CONCRETE_ID__IN_DATE;
                                         parentLevel1.MEDI_STOCK_NAME = mediStock.MEDI_STOCK_NAME;
                                     }
                                 }
@@ -244,6 +252,9 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                             var mediStock = this.HisMateInStockByExpireDateADO.MediStocks.FirstOrDefault(o => o.ID == listchild[child].MEDI_STOCK_ID.Value);
                             if (mediStock != null)
                             {
+                                HisMateInStockByExpireDateADO parentLevel2 = new HisMateInStockByExpireDateADO(listchild[child]);
+                                parentLevel2.CONCRETE_ID__IN_DATE = parentLevel1.CONCRETE_ID__IN_DATE + "_" + mediStock.ID;
+                                parentLevel2.PARENT_ID__IN_DATE = parentLevel1.CONCRETE_ID__IN_DATE;
                                 childAdo.MEDI_STOCK_NAME = mediStock.MEDI_STOCK_NAME;
                             }
                         }
@@ -307,7 +318,7 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                     }
                 }
 
-                if (HisMateInStockByExpireDateADO.ColumnButtonEdits != null && HisMateInStockByExpireDateADO.ColumnButtonEdits.Count > 0)
+                if (HisMateInStockByExpireDateADO.ColumnButtonEdits != null && HisMateInStockByExpireDateADO.ColumnButtonEdits.Count > 0) 
                 {
                     foreach (var svtr in HisMateInStockByExpireDateADO.ColumnButtonEdits)
                     {
