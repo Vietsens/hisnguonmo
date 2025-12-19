@@ -166,7 +166,7 @@ namespace HIS.UC.AddressCombo
         {
             try
             {
-                var province = ((List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>)cboProvince.Properties.DataSource).FirstOrDefault(o => o.PROVINCE_NAME == data.Province_Name || o.PROVINCE_NAME.ToLower().Replace("thành phố", "").Replace("tỉnh", "") == data.Province_Name.ToLower().Replace("thành phố", "").Replace("tỉnh", ""));
+                var province = ((List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>)cboProvince.Properties.DataSource).FirstOrDefault(o => o.PROVINCE_NAME == data.Province_Name || o.PROVINCE_NAME.ToLower().Replace("thành phố", "").Replace("tỉnh", "").Trim() == data.Province_Name.ToLower().Replace("thành phố", "").Replace("tỉnh", "").Trim());
                 if (province != null)
                 {
                     this.txtProvinceCode.Text = province.PROVINCE_CODE;
