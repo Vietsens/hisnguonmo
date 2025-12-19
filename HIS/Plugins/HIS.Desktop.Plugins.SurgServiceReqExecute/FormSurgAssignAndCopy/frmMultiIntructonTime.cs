@@ -282,6 +282,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                 CommonParam paramGet = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listTime), listTime));
                 HisDepartmentTranFilter filter = new HisDepartmentTranFilter();
+                HisTreatmentFilter filterTreatment = new HisTreatmentFilter();
                 filter.TREATMENT_ID = this.treatment.ID;
                 this.ListDepartmentTranCheckTime = new BackendAdapter(paramGet).Get<List<HIS_DEPARTMENT_TRAN>>("api/HisDepartmentTran/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
                 //danh sách các lần chuyển khoa
@@ -337,7 +338,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                     if (!hasTran && currentCo != null && currentCo.Count > 0)
                     {
                         currentCo = currentCo.OrderBy(o => o.START_TIME ?? 0).ToList();
-
                         long fromTime = 0;
                         long toTime = 0;
 
@@ -352,12 +352,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                             (toTime > 0 && toTime != long.MaxValue) ? " đến " + Inventec.Common.DateTime.Convert.TimeNumberToTimeString(toTime) : ""));
                         }
                     }
-
+                    hasTran = intructionTime > this.treatment.IN_TIME;  
                     if (!hasTran)
                     {
                         //XtraMessageBox.Show(string.Format(ResourceMessage.ThoiGianYLenhKhongThuocKhoangThoiGianTrongKhoa,
                         //   string.Join(",", times)), "Thông báo");
-                        XtraMessageBox.Show("Thời gian y lệnh phải nằm trong thời gian bệnh nhân hiện diện tại khoa", "Thông báo");
+                        XtraMessageBox.Show("Thời gian y lệnh phải lớn hơn thời gian vào viện", "Thông báo");
                         //this.isNotLoadWhileChangeInstructionTimeInFirst = true;
                         //this.dtInstructionTime.Focus();
                         //this.isNotLoadWhileChangeInstructionTimeInFirst = false;
