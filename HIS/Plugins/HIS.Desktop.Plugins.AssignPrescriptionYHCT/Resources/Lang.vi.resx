@@ -117,51 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_ACTIVE_INGR_BHYT_NAME" xml:space="preserve">
-    <value>Hoạt chất</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_AVAILABLE_AMOUNT" xml:space="preserve">
-    <value>Khả dụng</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MANUFACTURER_NAME" xml:space="preserve">
-    <value>Hãng sản xuất</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_NATIONAL_NAME" xml:space="preserve">
-    <value>Quốc gia</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_SERVICE_UNIT_NAME" xml:space="preserve">
-    <value>Đơn vị tính</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MATERIAL__GC_MATERIAL_TYPE_CODE" xml:space="preserve">
-    <value>Mã</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MATERIAL__GC_MATERIAL_TYPE_NAME" xml:space="preserve">
-    <value>Tên</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_TYPE_CODE" xml:space="preserve">
-    <value>Mã</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_TYPE_NAME" xml:space="preserve">
-    <value>Tên</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_USE_FROM_NAME" xml:space="preserve">
-    <value>Dạng dùng</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__KEY_WORD_NULL_VALUE" xml:space="preserve">
-    <value>Từ khóa tìm kiếm (F2)</value>
-  </data>
-  <data name="frmAssignPrescription.btnAdd.Text" xml:space="preserve">
-    <value>Bổ sung (Ctrl A)</value>
-  </data>
-  <data name="frmAssignPrescription.btnAdd.Text.Update" xml:space="preserve">
-    <value>Cập nhật</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_CONCENTRA" xml:space="preserve">
-    <value>Hàm lượng</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MEDI_STOCK" xml:space="preserve">
-    <value>Kho</value>
-  </data>
   <data name="frmAssignPrescription.bar1.Text" xml:space="preserve">
     <value>Tools</value>
   </data>
@@ -185,6 +140,12 @@
   </data>
   <data name="frmAssignPrescription.bbtnF3.Caption" xml:space="preserve">
     <value>F3</value>
+  </data>
+  <data name="frmAssignPrescription.btnAdd.Text" xml:space="preserve">
+    <value>Bổ sung (Ctrl A)</value>
+  </data>
+  <data name="frmAssignPrescription.btnAdd.Text.Update" xml:space="preserve">
+    <value>Cập nhật</value>
   </data>
   <data name="frmAssignPrescription.btnDiscash.Text" xml:space="preserve">
     <value>Bỏ qua</value>
@@ -351,11 +312,17 @@
   <data name="frmAssignPrescription.lciLoiDanBacSi.Text" xml:space="preserve">
     <value>Lời dặn:</value>
   </data>
+  <data name="frmAssignPrescription.lciluyKeTienThuoc.Text" xml:space="preserve">
+    <value>Lũy kế tiền thuốc:</value>
+  </data>
   <data name="frmAssignPrescription.lciMedicineUseForm.Text" xml:space="preserve">
     <value>Đường dùng:</value>
   </data>
   <data name="frmAssignPrescription.lciMediStockExpMest.Text" xml:space="preserve">
     <value>Kho xuất:</value>
+  </data>
+  <data name="frmAssignPrescription.lciPatientTypeName.Text" xml:space="preserve">
+    <value>Đối tượng:</value>
   </data>
   <data name="frmAssignPrescription.lciPriviousExpMest.Text" xml:space="preserve">
     <value>Đơn cũ:</value>
@@ -372,14 +339,8 @@
   <data name="frmAssignPrescription.lciToi.Text" xml:space="preserve">
     <value>Tối:</value>
   </data>
-  <data name="frmAssignPrescription.lciluyKeTienThuoc.Text" xml:space="preserve">
-    <value>Lũy kế tiền thuốc:</value>
-  </data>
   <data name="frmAssignPrescription.lciTongTien.Text" xml:space="preserve">
     <value>Tổng tiền:</value>
-  </data>
-  <data name="frmAssignPrescription.lciPatientTypeName.Text" xml:space="preserve">
-    <value>Đối tượng:</value>
   </data>
   <data name="frmAssignPrescription.lciTrua.Text" xml:space="preserve">
     <value>Trưa:</value>
@@ -450,6 +411,45 @@
   <data name="frmHisExpMestTemplateCreate.Text" xml:space="preserve">
     <value>Tạo mẫu</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_ACTIVE_INGR_BHYT_NAME" xml:space="preserve">
+    <value>Hoạt chất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_AVAILABLE_AMOUNT" xml:space="preserve">
+    <value>Khả dụng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_CONCENTRA" xml:space="preserve">
+    <value>Hàm lượng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MANUFACTURER_NAME" xml:space="preserve">
+    <value>Hãng sản xuất</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_MEDI_STOCK" xml:space="preserve">
+    <value>Kho</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_NATIONAL_NAME" xml:space="preserve">
+    <value>Quốc gia</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_SERVICE_UNIT_NAME" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MATERIAL__GC_MATERIAL_TYPE_CODE" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MATERIAL__GC_MATERIAL_TYPE_NAME" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_TYPE_CODE" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_TYPE_NAME" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MEDICINE_USE_FROM_NAME" xml:space="preserve">
+    <value>Dạng dùng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__KEY_WORD_NULL_VALUE" xml:space="preserve">
+    <value>Từ khóa tìm kiếm (F2)</value>
+  </data>
   <data name="frmAssignPrescription.btnTomLuocVienPhi.Text" xml:space="preserve">
     <value>Tóm lược viện phí</value>
   </data>
@@ -476,6 +476,87 @@
   </data>
   <data name="frmHisExpMestTemplateCreate.layoutControlItem5.Text" xml:space="preserve">
     <value>Công khai:</value>
+  </data>
+  <data name="FormMultiChooseDate__CaptionCalendaInput" xml:space="preserve">
+    <value>Ngày y lệnh:</value>
+  </data>
+  <data name="FormMultiChooseDate__CaptionText" xml:space="preserve">
+    <value>Chọn nhiều ngày y lệnh</value>
+  </data>
+  <data name="FormMultiChooseDate__CaptionTimeInput" xml:space="preserve">
+    <value>Giờ y lệnh:</value>
+  </data>
+  <data name="FormMultiChooseDate__CaptionBtnChoose" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="btnSelectPrescriptionPrevious__ToolTip" xml:space="preserve">
+    <value>Sử dụng đơn</value>
+  </data>
+  <data name="btnShowPrescriptionPrevious__ToolTip" xml:space="preserve">
+    <value>Xem chi tiết đơn</value>
+  </data>
+  <data name="gridControlPreviousprescription__gcolIntructionTime__Caption" xml:space="preserve">
+    <value>Mã y lệnh</value>
+  </data>
+  <data name="gridControlPreviousprescription__gcolIntructionUser__Caption" xml:space="preserve">
+    <value>Người chỉ định</value>
+  </data>
+  <data name="gBoxTreatmentFinishInfo__Text" xml:space="preserve">
+    <value>Kết thúc điều trị:        </value>
+  </data>
+  <data name="lciAppointmentTime__Text" xml:space="preserve">
+    <value>Thời gian HK:</value>
+  </data>
+  <data name="lciForchkAutoBK__Text" xml:space="preserve">
+    <value>In bảng kê:</value>
+  </data>
+  <data name="lciForchkAutoPrintGHK__Text" xml:space="preserve">
+    <value>In giấy hẹn:</value>
+  </data>
+  <data name="lciFordtEndTime__Text" xml:space="preserve">
+    <value>Thời gian ra:</value>
+  </data>
+  <data name="lciTreatmentEndType__Text" xml:space="preserve">
+    <value>Loại ra viện:</value>
+  </data>
+  <data name="gridControlTreatmentBedRoom__grdColBedName__Caption" xml:space="preserve">
+    <value>Giường</value>
+  </data>
+  <data name="gridControlTreatmentBedRoom__grdColDob__Caption" xml:space="preserve">
+    <value>Năm sinh</value>
+  </data>
+  <data name="gridControlTreatmentBedRoom__grdColPatientName__Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="gridControlTreatmentBedRoom__grdColSTT__Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="gridControlTreatmentBedRoom__grdColTreatmentCode__Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="frmAssignPrescription.Text.Cabinet.IsTreatmentIn" xml:space="preserve">
+    <value>Xuất thuốc tủ trực</value>
+  </data>
+  <data name="frmAssignPrescription.Text.Cabinet.IsTreatmentOut" xml:space="preserve">
+    <value>Xuất thuốc tủ trực (phòng khám)</value>
+  </data>
+  <data name="frmAssignPrescription.Text.IsTreatmentIn" xml:space="preserve">
+    <value>Dự trù thuốc (Nội trú)</value>
+  </data>
+  <data name="frmAssignPrescription.Text.IsTreatmentOut" xml:space="preserve">
+    <value>Kê đơn thuốc (phòng khám)</value>
+  </data>
+  <data name="frmAssignPrescription.lciTreatmentTypeName.Text" xml:space="preserve">
+    <value>Diện ĐT:</value>
+  </data>
+  <data name="frmAssignPrescription.lciTreatmentTypeName.Tooltip" xml:space="preserve">
+    <value>Diện đối tượng:</value>
+  </data>
+  <data name="TakeBeanThatBai" xml:space="preserve">
+    <value>Thuốc/vật tư {0} takebean thất bại</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_PARENT_NAME" xml:space="preserve">
+    <value>Nhóm cha</value>
   </data>
   <data name="FormAppointment.btnSave.Text" xml:space="preserve">
     <value>Lưu</value>
@@ -633,95 +714,14 @@
   <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_METHOD_NULL_VAUE" xml:space="preserve">
     <value>F5 để chọn thư viện nội dung</value>
   </data>
-  <data name="frmAssignPrescription.Text.Cabinet.IsTreatmentOut" xml:space="preserve">
-    <value>Xuất thuốc tủ trực (phòng khám)</value>
-  </data>
-  <data name="FormMultiChooseDate__CaptionBtnChoose" xml:space="preserve">
-    <value>Chọn</value>
-  </data>
-  <data name="FormMultiChooseDate__CaptionCalendaInput" xml:space="preserve">
-    <value>Ngày y lệnh:</value>
-  </data>
-  <data name="FormMultiChooseDate__CaptionText" xml:space="preserve">
-    <value>Chọn nhiều ngày y lệnh</value>
-  </data>
-  <data name="FormMultiChooseDate__CaptionTimeInput" xml:space="preserve">
-    <value>Giờ y lệnh:</value>
-  </data>
-  <data name="btnSelectPrescriptionPrevious__ToolTip" xml:space="preserve">
-    <value>Sử dụng đơn</value>
-  </data>
-  <data name="btnShowPrescriptionPrevious__ToolTip" xml:space="preserve">
-    <value>Xem chi tiết đơn</value>
-  </data>
-  <data name="gridControlPreviousprescription__gcolIntructionTime__Caption" xml:space="preserve">
-    <value>Mã y lệnh</value>
-  </data>
-  <data name="gridControlPreviousprescription__gcolIntructionUser__Caption" xml:space="preserve">
-    <value>Người chỉ định</value>
-  </data>
-  <data name="gBoxTreatmentFinishInfo__Text" xml:space="preserve">
-    <value>Kết thúc điều trị:        </value>
-  </data>
-  <data name="lciAppointmentTime__Text" xml:space="preserve">
-    <value>Thời gian HK:</value>
-  </data>
-  <data name="lciForchkAutoBK__Text" xml:space="preserve">
-    <value>In bảng kê:</value>
-  </data>
-  <data name="lciForchkAutoPrintGHK__Text" xml:space="preserve">
-    <value>In giấy hẹn:</value>
-  </data>
-  <data name="lciFordtEndTime__Text" xml:space="preserve">
-    <value>Thời gian ra:</value>
-  </data>
-  <data name="lciTreatmentEndType__Text" xml:space="preserve">
-    <value>Loại ra viện:</value>
-  </data>
-  <data name="gridControlTreatmentBedRoom__grdColBedName__Caption" xml:space="preserve">
-    <value>Giường</value>
-  </data>
-  <data name="gridControlTreatmentBedRoom__grdColDob__Caption" xml:space="preserve">
-    <value>Năm sinh</value>
-  </data>
-  <data name="gridControlTreatmentBedRoom__grdColPatientName__Caption" xml:space="preserve">
-    <value>Tên bệnh nhân</value>
-  </data>
-  <data name="gridControlTreatmentBedRoom__grdColSTT__Caption" xml:space="preserve">
-    <value>STT</value>
-  </data>
-  <data name="gridControlTreatmentBedRoom__grdColTreatmentCode__Caption" xml:space="preserve">
-    <value>Mã điều trị</value>
-  </data>
-  <data name="frmAssignPrescription.Text.Cabinet.IsTreatmentIn" xml:space="preserve">
-    <value>Xuất thuốc tủ trực</value>
-  </data>
-  <data name="frmAssignPrescription.Text.IsTreatmentIn" xml:space="preserve">
-    <value>Dự trù thuốc (Nội trú)</value>
-  </data>
-  <data name="frmAssignPrescription.Text.IsTreatmentOut" xml:space="preserve">
-    <value>Kê đơn thuốc (phòng khám)</value>
-  </data>
-  <data name="frmAssignPrescription.lciTreatmentTypeName.Text" xml:space="preserve">
-    <value>Diện ĐT:</value>
-  </data>
-  <data name="frmAssignPrescription.lciTreatmentTypeName.Tooltip" xml:space="preserve">
-    <value>Diện đối tượng:</value>
-  </data>
   <data name="UCPeriousExpMestList.BenhChinh__Text" xml:space="preserve">
     <value>Bệnh chính</value>
   </data>
   <data name="UCPeriousExpMestList.BenhPhu__Text" xml:space="preserve">
     <value>Bệnh phụ</value>
   </data>
-  <data name="TakeBeanThatBai" xml:space="preserve">
-    <value>Thuốc/vật tư {0} takebean thất bại</value>
-  </data>
   <data name="frmAssignPrescription.lciIcdCause.Text" xml:space="preserve">
     <value>Ng/nhân ngoài:</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_PARENT_NAME" xml:space="preserve">
-    <value>Nhóm cha</value>
   </data>
   <data name="frmAssignPrescription.chkYhct.Text" xml:space="preserve">
     <value>Kho YHCT</value>
@@ -755,5 +755,8 @@
   </data>
   <data name="UCPeriousExpMestList.lciCheckBox__Text" xml:space="preserve">
     <value>Không hiển thị đơn tủ trực</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_DESCRIPTION" xml:space="preserve">
+    <value>Ghi chú</value>
   </data>
 </root>

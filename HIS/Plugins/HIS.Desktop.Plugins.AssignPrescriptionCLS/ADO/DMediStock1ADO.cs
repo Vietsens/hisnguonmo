@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
 {
-    public class DMediStock1ADO : D_HIS_MEDI_STOCK_1
+    public class  DMediStock1ADO : D_HIS_MEDI_STOCK_1
     {
         public string MEDICINE_TYPE_CODE__UNSIGN { get; set; }
         public string MEDICINE_TYPE_NAME__UNSIGN { get; set; }

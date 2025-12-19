@@ -239,7 +239,7 @@ namespace HIS.UC.HisMediInStockByExpireDate.Run
                         HisMediInStockByExpireDateADO childAdo = new HisMediInStockByExpireDateADO(listchild[child]);
                         childAdo.CONCRETE_ID__IN_DATE = parentLevel1.CONCRETE_ID__IN_DATE + "_" + listchild[child].ID;
                         childAdo.PARENT_ID__IN_DATE = parentLevel1.CONCRETE_ID__IN_DATE;
-                        if (this.HisMediInStockByExpireDateADO.MediStocks != null && listchild[child].MEDI_STOCK_ID.HasValue)
+                        if (this.HisMediInStockByExpireDateADO.MediStocks != null && listchild[child].MEDI_STOCK_ID.HasValue) 
                         {
                             var mediStock = this.HisMediInStockByExpireDateADO.MediStocks.FirstOrDefault(o => o.ID == listchild[child].MEDI_STOCK_ID.Value);
                             if (mediStock != null)

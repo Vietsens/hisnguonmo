@@ -31,6 +31,7 @@ namespace HIS.UC.HisMateInStockByExpireDate.ADO
         public string CONCRETE_ID__IN_DATE { get; set; }
         public string PARENT_ID__IN_DATE { get; set; }
         public bool IS_MEDI_MATE { get; set; }
+        public string MEDI_STOCK_NAME { get; set; }
 
         public HisMateInStockByExpireDateADO()
         {

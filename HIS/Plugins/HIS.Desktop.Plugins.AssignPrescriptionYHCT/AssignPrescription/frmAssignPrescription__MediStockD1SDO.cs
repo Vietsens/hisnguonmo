@@ -32,7 +32,9 @@ using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
@@ -330,6 +332,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                                 dMediStock1ADO.MEDICINE_TYPE_NAME__UNSIGN = StringUtil.convertToUnSign3(item.MEDICINE_TYPE_NAME) + item.MEDICINE_TYPE_NAME;
                                 dMediStock1ADO.ACTIVE_INGR_BHYT_NAME__UNSIGN = StringUtil.convertToUnSign3(item.ACTIVE_INGR_BHYT_NAME) + item.ACTIVE_INGR_BHYT_NAME;
                                 dMediStock1ADO.DO_NOT_REQUIRED_USE_FORM = item.DO_NOT_REQUIRED_USE_FORM;
+                                dMediStock1ADO.DESCRIPTION = item.DESCRIPTION;
                                 //MestMetyUnitWorker.UpdateUnit(dMediStock1ADO, GlobalStore.HisMestMetyUnit);
                                 dMediStock1ADO.AMOUNT = item.AMOUNT;
 
@@ -447,7 +450,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         //dMediStock1ADO.IS_OUT_HOSPITAL = item.IS_OUT_HOSPITAL;
                         //dMediStock1ADO.IsAllowOdd = (item.IS_ALLOW_ODD == 1) ? true : false;
                         //dMediStock1ADO.IsAllowOddAndExportOdd = (item.IS_ALLOW_ODD == 1 && item.IS_ALLOW_EXPORT_ODD == 1) ? true : false;
-                        //dMediStock1ADO.DESCRIPTION = item.DESCRIPTION;
+                        dMediStock1ADO.DESCRIPTION = item.DESCRIPTION;
 
                         result.Add(dMediStock1ADO);
                     }
@@ -503,7 +506,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         //dMediStock1ADO.IS_OUT_HOSPITAL = item.IS_OUT_HOSPITAL;
                         //dMediStock1ADO.IsAllowOdd = (item.IS_ALLOW_ODD == 1) ? true : false;
                         //dMediStock1ADO.IsAllowOddAndExportOdd = (item.IS_ALLOW_ODD == 1 && item.IS_ALLOW_EXPORT_ODD == 1) ? true : false;
-                        //dMediStock1ADO.DESCRIPTION = item.DESCRIPTION;
+                        dMediStock1ADO.DESCRIPTION = item.DESCRIPTION;
 
                         result.Add(dMediStock1ADO);
                     }
@@ -697,6 +700,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 col9.VisibleIndex = 10;
                 gridViewMediMaty.Columns.Add(col9);
 
+                DevExpress.XtraGrid.Columns.GridColumn col14 = new DevExpress.XtraGrid.Columns.GridColumn();
+                col14.FieldName = "DESCRIPTION";
+                col14.Caption = Inventec.Common.Resource.Get.Value
+                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_DESCRIPTION",
+                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                col14.Width = 80;
+                col14.VisibleIndex = 11;
+                gridViewMediMaty.Columns.Add(col14);
 
                 //Phuc vu cho tim kiem khong dau
 

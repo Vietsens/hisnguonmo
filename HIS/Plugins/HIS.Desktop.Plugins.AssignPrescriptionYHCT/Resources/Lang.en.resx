@@ -558,4 +558,7 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_PARENT_NAME" xml:space="preserve">
     <value>Parent Name</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GC_DESCRIPTION" xml:space="preserve">
+    <value>Description</value>
+  </data>
 </root>

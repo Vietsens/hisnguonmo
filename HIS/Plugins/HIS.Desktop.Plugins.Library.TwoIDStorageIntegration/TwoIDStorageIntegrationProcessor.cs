@@ -11,86 +11,97 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
     {
       
         private readonly ConfigCFG.StorageConfig config;
+        private readonly string apiKey;
+        private readonly string baseUri;
         public TwoIDStorageIntegrationProcessor()
         {
             HIS.Desktop.LocalStorage.EmrConfig.ConfigLoader.Refresh();
             config = ConfigCFG.GetStorageConfig();
+
+            string baseUri = config.ApiBaseUrl;
+            string apiKey = config.ApiKey;
+            string secretKey = config.ApiSecret;
         }
 
         // Upload danh sách file
-        public TwoIDApiRequestInput UploadFiles(string citizenNumber, string apiKey, string transactionId, string hash)
+        public TwoIDApiRequestInput UploadFiles(string baseUri, string citizenNumber, object fingerprintFiles, object faceFiles, object handSignatureFiles, string apiKey, string transactionId, string hash)
         {
-            return TwoIDApiRequestInput.CallTwoIDApi<TwoIDApiRequestInput>(
-                config.ApiBaseUrl,
+            return StorageApiClient.CreateMultipartRequest<TwoIDApiRequestInput>(
+                baseUri,
                 "/api/v1/files/uploads",
                 citizenNumber,
-                null, null, null,
+                fingerprintFiles,
+                faceFiles,
+                handSignatureFiles,
                 apiKey,
                 transactionId,
-                hash,
-                "application/json"
-            );
+                 hash
+     );
         }
         // Lấy thông tin CCCD
-        public TwoIDApiRequestInput GetCitizenInfo(string citizenNumber, string apiKey, string transactionId, string hash)
+        
+
+
+        public TwoIDApiRequestInput GetCitizenInfo(string baseUri, string citizenNumber, string apiKey, string transactionId, string hash)
         {
-            return TwoIDApiRequestInput.CallTwoIDApi<TwoIDApiRequestInput>(
-                config.ApiBaseUrl,
-                "/api/v1/citizens",
-                citizenNumber,
-                null, null, null,
-                apiKey,
-                transactionId,
-                hash,
-                 "application/x-www-form-urlencoded"
-            );
+            var input = new TwoIDApiRequestInput
+            {
+                citizenNumber = citizenNumber,
+                apiKey = apiKey,
+                transactionId = transactionId,
+                hash = hash
+            };
+
+            return StorageApiClient.CreateRequest<TwoIDApiRequestInput>(baseUri,"/api/v1/citizens",input,"application/x-www-form-urlencoded");
         }
         //Download dữ liệu file
-        public TwoIDApiRequestInput DownloadFile(string citizenNumber, string apiKey, string transactionId, string hash)
+        public TwoIDApiRequestInput DownloadFile(string baseUri, string fileName, string apiKey, string transactionId, string hash)
         {
-            return TwoIDApiRequestInput.CallTwoIDApi<TwoIDApiRequestInput>(
-                config.ApiBaseUrl,
-                "/api/v1/files/download",
-                citizenNumber,
-                null, null, null,
-                apiKey,
-                transactionId,
-                hash,
-                "application/x-www-form-urlencoded"
 
-            );
+            var input = new TwoIDApiRequestInput
+            {
+                fileName = fileName,
+                apiKey = apiKey,
+                transactionId = transactionId,
+                hash = hash
+            };
+            return StorageApiClient.CreateRequest<TwoIDApiRequestInput>(baseUri,"/api/v1/files/download",input,"application/x-www-form-urlencoded");
         }
         // Đồng bộ dữ liệu cá nhân
-        public TwoIDApiRequestInput SyncPersonalData(
-            string citizenNumber,
-            List<string> fingerprint,
-            List<string> faceId,
-            List<string> handSignature,
-            string apiKey,
-            string transactionId,
-            string hash,
-            string contentType)
+        public TwoIDApiRequestInput SyncPersonalData(string baseUri,TwoIDApiRequestInput input,string apiKey,string transactionId,string hash)
         {
+
+            input.apiKey = apiKey;
+            input.transactionId = transactionId;
+            input.hash = hash;
+
             return TwoIDApiRequestInput.CallTwoIDApi<TwoIDApiRequestInput>(
-                config.ApiBaseUrl,
+                baseUri,
                 "/api/v1/citizens",
-                citizenNumber,
-                fingerprint,
-                faceId,
-                handSignature,
-                apiKey,
-                transactionId,
-                hash,
+                input,
                 "application/json"
             );
         }
 
+
         //check CCCD
-        public bool IsCitizenInfoExists(string citizenNumber, string apiKey, string transactionId, string hash)
+
+        public bool IsCitizenInfoExists(string baseUri,
+      string citizenNumber,
+      string apiKey,
+      string transactionId,
+      string hash)
         {
-            try
+            try 
             {
-                var info = GetCitizenInfo(citizenNumber, apiKey, transactionId, hash);
+                var info = GetCitizenInfo(
+                    baseUri,
+                    citizenNumber,
+                    apiKey,
+                    transactionId,
+                    hash
+                );
+                  
                 return info != null && !string.IsNullOrEmpty(info.citizenNumber);
             }
             catch (Exception ex)
@@ -101,76 +112,45 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         }
         // Lưu trữ thông tin CCCD 
         public bool StoreCitizenInfo(
-            string citizenNumber,
-            List<string> fingerprint,
-            List<string> faceId,
-            List<string> handSignature,
-            string apiKey,
-            string transactionId,
-            string hash)
+    string baseUri,
+    TwoIDApiRequestInput citizen,
+    object fingerprint,
+    object faceId,
+    object handSignature,
+    string apiKey,
+    string transactionId,
+    string hash)
         {
             try
             {
-                if (IsCitizenInfoExists(citizenNumber, apiKey, transactionId, hash))
-                {
-                  
-                    var uploadResult = UploadFiles(citizenNumber, apiKey, transactionId, hash);
-
-                  
-                    var syncResult = SyncPersonalData(
-                        citizenNumber,
+                var uploadResult =
+                    StorageApiClient.CreateMultipartRequest<TwoIDUploadResponse>(
+                        baseUri,
+                        "/api/v1/files/uploads",
+                        citizen.citizenNumber,
                         fingerprint,
                         faceId,
                         handSignature,
                         apiKey,
                         transactionId,
-                        hash,
-                        "application/json"
+                        hash
                     );
-                    
-                    return syncResult != null;
-                }
-                else
-                {
-                    
-                    var uploadResult = UploadFiles(citizenNumber, apiKey, transactionId, hash);
-                    return uploadResult != null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-                return false;
-            }
-        }
-        
-        public bool UpdateCitizenInfo(
-            string citizenNumber,
-            List<string> fingerprint,
-            List<string> faceId,
-            List<string> handSignature,
-            string apiKey,
-            string transactionId,
-            string hash)
-        {
-            try
-            {
-                
-                var uploadResult = UploadFiles(citizenNumber, apiKey, transactionId, hash);
 
-               
-                var syncResult = SyncPersonalData(
-                    citizenNumber,
-                    fingerprint,
-                    faceId,
-                    handSignature,
-                    apiKey,
-                    transactionId,
-                    hash,
+                if (uploadResult == null || !uploadResult.status)
+                    throw new Exception("UploadFiles failed");
+
+                citizen.fingerprint = uploadResult.GetUrl("FINGER_PRINT");
+                citizen.faceId = uploadResult.GetUrl("FACE_ID");
+                citizen.handSignature = uploadResult.GetUrl("HAND_SIGNATURE");
+
+                StorageApiClient.CreateRequest<object>(
+                    baseUri,
+                    "/api/v1/citizens",
+                    citizen,
                     "application/json"
                 );
 
-                return syncResult != null;
+                return true;
             }
             catch (Exception ex)
             {
@@ -178,41 +158,31 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 return false;
             }
         }
-        public bool CreateCitizenInfo(
-            string citizenNumber,
-            string apiKey,
-            string transactionId,
-            string hash)
+
+
+        public CitizenInfoWithImages GetCitizenInfoWithImages(string citizenNumber, string transactionId, string hash)
         {
             try
             {
-                var uploadResult = UploadFiles(citizenNumber, apiKey, transactionId, hash);
-                return uploadResult != null;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-                return false;
-            }
-        }
-        public CitizenInfoWithImages GetCitizenInfoWithImages(
-            string citizenNumber,
-            string apiKey,
-            string transactionId,
-            string hash)
-        {
-            try
-            {
-                var info = GetCitizenInfo(citizenNumber, apiKey, transactionId, hash);
+                var info = GetCitizenInfo(baseUri,citizenNumber, apiKey,transactionId, hash);
 
                 if (info != null)
                 {
                     return new CitizenInfoWithImages
                     {
                         CitizenInfo = info,
-                        FingerprintPaths = info.fingerprint ?? new List<string>(),
-                        FacePaths = info.faceId ?? new List<string>(),
-                        HandSignaturePaths = info.handSignature ?? new List<string>()
+
+                        FingerprintPaths = string.IsNullOrEmpty(info.fingerprint)
+                            ? new List<string>()
+                            : new List<string> { info.fingerprint },
+
+                        FacePaths = string.IsNullOrEmpty(info.faceId)
+                            ? new List<string>()
+                            : new List<string> { info.faceId },
+
+                        HandSignaturePaths = string.IsNullOrEmpty(info.handSignature)
+                            ? new List<string>()
+                            : new List<string> { info.handSignature }
                     };
                 }
 
@@ -225,47 +195,60 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
             }
         }
         public byte[] DownloadImageFromPath(
-        string citizenNumber,
-        string imagePath,
-        string apiKey,
-        string transactionId,
-        string hash)
+    string imagePath,
+    string transactionId,
+    string hash)
         {
             try
             {
                 if (string.IsNullOrEmpty(imagePath))
                     return null;
 
-                var downloadResult = DownloadFile(citizenNumber, apiKey, transactionId, hash);
+                var input = new TwoIDApiRequestInput
+                {
+                    fileName = imagePath,
+                    apiKey = this.apiKey,   // ✅ FIX
+                    transactionId = transactionId,
+                    hash = hash
+                };
 
-                if (downloadResult == null)
+                var result = StorageApiClient.CreateRequest<TwoIDDownloadResponse>(
+                    baseUri,
+                    "/api/v1/files/download",
+                    input,
+                    "application/x-www-form-urlencoded"
+                );
+
+                if (result == null || !result.status || string.IsNullOrEmpty(result.data))
                     return null;
 
-              
-                return new byte[0]; 
+                return Convert.FromBase64String(result.data);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return null; 
+                return null;
             }
         }
         public List<byte[]> GetAllFingerprintImages(
-            string citizenNumber,
-            string apiKey,
-            string transactionId,
-            string hash)
+    string citizenNumber,
+    string transactionId,
+    string hash)
         {
             try
             {
-                var citizenWithImages = GetCitizenInfoWithImages(citizenNumber, apiKey, transactionId, hash);
+                var citizenWithImages =
+                    GetCitizenInfoWithImages(citizenNumber, transactionId, hash);
+
                 var images = new List<byte[]>();
 
                 if (citizenWithImages?.FingerprintPaths != null)
                 {
                     foreach (var path in citizenWithImages.FingerprintPaths)
                     {
-                        var imageData = DownloadImageFromPath(citizenNumber, path, apiKey, transactionId, hash);
+                        var imageData =
+                            DownloadImageFromPath(path, transactionId, hash);
+
                         if (imageData != null)
                         {
                             images.Add(imageData);
@@ -282,6 +265,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
             }
         }
 
+
         // Lấy tất cả ảnh khuôn mặt
         public List<byte[]> GetAllFaceImages(
             string citizenNumber,
@@ -291,14 +275,14 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         {
             try
             {
-                var citizenWithImages = GetCitizenInfoWithImages(citizenNumber, apiKey, transactionId, hash);
+                var citizenWithImages = GetCitizenInfoWithImages(citizenNumber, transactionId, hash);
                 var images = new List<byte[]>();
 
                 if (citizenWithImages?.FacePaths != null)
                 {
                     foreach (var path in citizenWithImages.FacePaths)
                     {
-                        var imageData = DownloadImageFromPath(citizenNumber, path, apiKey, transactionId, hash);
+                        var imageData = DownloadImageFromPath(path, transactionId, hash);
                         if (imageData != null)
                         {
                             images.Add(imageData);
@@ -336,3 +320,4 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
 
     }
 }
+  

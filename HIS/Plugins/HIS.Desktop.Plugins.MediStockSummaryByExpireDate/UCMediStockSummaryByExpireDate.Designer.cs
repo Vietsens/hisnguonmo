@@ -45,10 +45,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCMediStockSummaryByExpireDate));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.chkMediStock = new DevExpress.XtraEditors.CheckEdit();
             this.dateEdit1 = new DevExpress.XtraEditors.DateEdit();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
@@ -72,6 +72,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutItem = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -91,13 +92,12 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
-            this.chkMediStock = new DevExpress.XtraEditors.CheckEdit();
-            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkMediStock.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
@@ -120,6 +120,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             ((System.ComponentModel.ISupportInitialize)(this.layoutItem)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
@@ -135,8 +136,6 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkMediStock.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -168,6 +167,16 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControl3.Size = new System.Drawing.Size(916, 610);
             this.layoutControl3.TabIndex = 5;
             this.layoutControl3.Text = "layoutControl3";
+            // 
+            // chkMediStock
+            // 
+            this.chkMediStock.Location = new System.Drawing.Point(637, 2);
+            this.chkMediStock.Name = "chkMediStock";
+            this.chkMediStock.Properties.Caption = "Hiển thị theo kho";
+            this.chkMediStock.Size = new System.Drawing.Size(103, 19);
+            this.chkMediStock.StyleController = this.layoutControl3;
+            this.chkMediStock.TabIndex = 12;
+            this.chkMediStock.CheckedChanged += new System.EventHandler(this.chkMediStock_CheckedChanged);
             // 
             // dateEdit1
             // 
@@ -300,6 +309,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.cboExpriedDate.Size = new System.Drawing.Size(180, 20);
             this.cboExpriedDate.StyleController = this.layoutControl3;
             this.cboExpriedDate.TabIndex = 9;
+            this.cboExpriedDate.SelectedIndexChanged += new System.EventHandler(this.cboExpriedDate_SelectedIndexChanged);
             this.cboExpriedDate.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExpriedDate_Closed);
             this.cboExpriedDate.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboExpriedDate_ButtonClick);
             this.cboExpriedDate.EditValueChanged += new System.EventHandler(this.cboExpriedDate_EditValueChanged);
@@ -438,6 +448,15 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControlItem12.Size = new System.Drawing.Size(158, 26);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
+            // 
+            // layoutControlItem15
+            // 
+            this.layoutControlItem15.Control = this.chkMediStock;
+            this.layoutControlItem15.Location = new System.Drawing.Point(635, 0);
+            this.layoutControlItem15.Name = "layoutControlItem15";
+            this.layoutControlItem15.Size = new System.Drawing.Size(107, 26);
+            this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem15.TextVisible = false;
             // 
             // layoutControl2
             // 
@@ -658,24 +677,6 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.imageCollection1.Images.SetKeyName(0, "add-button-inside-black-circle.png");
             this.imageCollection1.Images.SetKeyName(1, "add-button-inside-black-circle (1).png");
             // 
-            // chkMediStock
-            // 
-            this.chkMediStock.Location = new System.Drawing.Point(637, 2);
-            this.chkMediStock.Name = "chkMediStock";
-            this.chkMediStock.Properties.Caption = "Hiển thị theo kho";
-            this.chkMediStock.Size = new System.Drawing.Size(103, 19);
-            this.chkMediStock.StyleController = this.layoutControl3;
-            this.chkMediStock.TabIndex = 12;
-            // 
-            // layoutControlItem15
-            // 
-            this.layoutControlItem15.Control = this.chkMediStock;
-            this.layoutControlItem15.Location = new System.Drawing.Point(635, 0);
-            this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(107, 26);
-            this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem15.TextVisible = false;
-            // 
             // UCMediStockSummaryByExpireDate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -688,6 +689,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkMediStock.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dateEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).EndInit();
@@ -710,6 +712,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             ((System.ComponentModel.ISupportInitialize)(this.layoutItem)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
@@ -725,8 +728,6 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkMediStock.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             this.ResumeLayout(false);
 
         }

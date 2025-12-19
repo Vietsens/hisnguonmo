@@ -95,7 +95,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.chkBedAll = new DevExpress.XtraEditors.CheckEdit();
+            this.cboEmployee = new Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonAssign = new DevExpress.XtraBars.BarButtonItem();
@@ -104,6 +104,8 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
+            this.chkBedAll = new DevExpress.XtraEditors.CheckEdit();
             this.chkBHAll = new DevExpress.XtraEditors.CheckEdit();
             this.chkSplitByResult = new DevExpress.XtraEditors.CheckEdit();
             this.cboBedRoom = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -262,10 +264,13 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkBedAll.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboEmployee.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkBedAll.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBHAll.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSplitByResult.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBedRoom.Properties)).BeginInit();
@@ -365,10 +370,12 @@ namespace HIS.Desktop.Plugins.BedHistory
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.cboEmployee);
             this.layoutControl1.Controls.Add(this.chkBedAll);
             this.layoutControl1.Controls.Add(this.chkBHAll);
             this.layoutControl1.Controls.Add(this.chkSplitByResult);
@@ -396,16 +403,23 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // chkBedAll
+            // cboEmployee
             // 
-            this.chkBedAll.Location = new System.Drawing.Point(445, 2);
-            this.chkBedAll.MenuManager = this.barManager1;
-            this.chkBedAll.Name = "chkBedAll";
-            this.chkBedAll.Properties.Caption = "";
-            this.chkBedAll.Size = new System.Drawing.Size(60, 19);
-            this.chkBedAll.StyleController = this.layoutControl1;
-            this.chkBedAll.TabIndex = 25;
-            this.chkBedAll.CheckedChanged += new System.EventHandler(this.chkBedAll_CheckedChanged);
+            this.cboEmployee.Location = new System.Drawing.Point(669, 509);
+            this.cboEmployee.MenuManager = this.barManager1;
+            this.cboEmployee.Name = "cboEmployee";
+            this.cboEmployee.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboEmployee.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboEmployee.Properties.NullText = "";
+            this.cboEmployee.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboEmployee.Properties.View = this.customGridLookUpEditWithFilterMultiColumnNoFocus1View;
+            this.cboEmployee.Size = new System.Drawing.Size(159, 20);
+            this.cboEmployee.StyleController = this.layoutControl1;
+            this.cboEmployee.TabIndex = 26;
+            this.cboEmployee.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboEmployee_ButtonClick);
+            this.cboEmployee.EditValueChanged += new System.EventHandler(this.cboEmployee_EditValueChanged);
             // 
             // barManager1
             // 
@@ -477,6 +491,24 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 533);
             // 
+            // customGridLookUpEditWithFilterMultiColumnNoFocus1View
+            // 
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.Name = "customGridLookUpEditWithFilterMultiColumnNoFocus1View";
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsView.ShowGroupPanel = false;
+            // 
+            // chkBedAll
+            // 
+            this.chkBedAll.Location = new System.Drawing.Point(445, 2);
+            this.chkBedAll.MenuManager = this.barManager1;
+            this.chkBedAll.Name = "chkBedAll";
+            this.chkBedAll.Properties.Caption = "";
+            this.chkBedAll.Size = new System.Drawing.Size(60, 19);
+            this.chkBedAll.StyleController = this.layoutControl1;
+            this.chkBedAll.TabIndex = 25;
+            this.chkBedAll.CheckedChanged += new System.EventHandler(this.chkBedAll_CheckedChanged);
+            // 
             // chkBHAll
             // 
             this.chkBHAll.Location = new System.Drawing.Point(187, 2);
@@ -525,7 +557,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // LblInTime
             // 
             this.LblInTime.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.LblInTime.Location = new System.Drawing.Point(127, 211);
+            this.LblInTime.Location = new System.Drawing.Point(127, 202);
             this.LblInTime.Name = "LblInTime";
             this.LblInTime.Size = new System.Drawing.Size(201, 20);
             this.LblInTime.StyleController = this.layoutControl1;
@@ -534,7 +566,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // LblTreatmentDayCount
             // 
             this.LblTreatmentDayCount.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.LblTreatmentDayCount.Location = new System.Drawing.Point(867, 237);
+            this.LblTreatmentDayCount.Location = new System.Drawing.Point(867, 228);
             this.LblTreatmentDayCount.Name = "LblTreatmentDayCount";
             this.LblTreatmentDayCount.Size = new System.Drawing.Size(451, 20);
             this.LblTreatmentDayCount.StyleController = this.layoutControl1;
@@ -542,7 +574,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // 
             // ChkSplitDay
             // 
-            this.ChkSplitDay.Location = new System.Drawing.Point(1096, 509);
+            this.ChkSplitDay.Location = new System.Drawing.Point(1074, 509);
             this.ChkSplitDay.MenuManager = this.barManager1;
             this.ChkSplitDay.Name = "ChkSplitDay";
             this.ChkSplitDay.Properties.Caption = "";
@@ -555,7 +587,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // 
             this.DtOutTime.EditValue = null;
             this.DtOutTime.EnterMoveNextControl = true;
-            this.DtOutTime.Location = new System.Drawing.Point(457, 211);
+            this.DtOutTime.Location = new System.Drawing.Point(457, 202);
             this.DtOutTime.MenuManager = this.barManager1;
             this.DtOutTime.Name = "DtOutTime";
             this.DtOutTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -574,7 +606,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // 
             // CboTreatmentResult
             // 
-            this.CboTreatmentResult.Location = new System.Drawing.Point(507, 237);
+            this.CboTreatmentResult.Location = new System.Drawing.Point(507, 228);
             this.CboTreatmentResult.MenuManager = this.barManager1;
             this.CboTreatmentResult.Name = "CboTreatmentResult";
             this.CboTreatmentResult.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -598,7 +630,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // 
             // TxtTreatmentResultCode
             // 
-            this.TxtTreatmentResultCode.Location = new System.Drawing.Point(457, 237);
+            this.TxtTreatmentResultCode.Location = new System.Drawing.Point(457, 228);
             this.TxtTreatmentResultCode.MenuManager = this.barManager1;
             this.TxtTreatmentResultCode.Name = "TxtTreatmentResultCode";
             this.TxtTreatmentResultCode.Size = new System.Drawing.Size(50, 20);
@@ -608,7 +640,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // 
             // CboTreatmentEndType
             // 
-            this.CboTreatmentEndType.Location = new System.Drawing.Point(177, 237);
+            this.CboTreatmentEndType.Location = new System.Drawing.Point(177, 228);
             this.CboTreatmentEndType.MenuManager = this.barManager1;
             this.CboTreatmentEndType.Name = "CboTreatmentEndType";
             this.CboTreatmentEndType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -632,7 +664,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // 
             // TxtTreatmentEndTypeCode
             // 
-            this.TxtTreatmentEndTypeCode.Location = new System.Drawing.Point(127, 237);
+            this.TxtTreatmentEndTypeCode.Location = new System.Drawing.Point(127, 228);
             this.TxtTreatmentEndTypeCode.MenuManager = this.barManager1;
             this.TxtTreatmentEndTypeCode.Name = "TxtTreatmentEndTypeCode";
             this.TxtTreatmentEndTypeCode.Size = new System.Drawing.Size(50, 20);
@@ -642,7 +674,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // 
             // BtnSaveBedLog
             // 
-            this.BtnSaveBedLog.Location = new System.Drawing.Point(1212, 211);
+            this.BtnSaveBedLog.Location = new System.Drawing.Point(1212, 202);
             this.BtnSaveBedLog.Name = "BtnSaveBedLog";
             this.BtnSaveBedLog.Size = new System.Drawing.Size(106, 22);
             this.BtnSaveBedLog.StyleController = this.layoutControl1;
@@ -656,7 +688,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.ChkNotCountHours.MenuManager = this.barManager1;
             this.ChkNotCountHours.Name = "ChkNotCountHours";
             this.ChkNotCountHours.Properties.Caption = "";
-            this.ChkNotCountHours.Size = new System.Drawing.Size(70, 19);
+            this.ChkNotCountHours.Size = new System.Drawing.Size(48, 19);
             this.ChkNotCountHours.StyleController = this.layoutControl1;
             this.ChkNotCountHours.TabIndex = 11;
             this.ChkNotCountHours.CheckedChanged += new System.EventHandler(this.ChkNotCountHours_CheckedChanged);
@@ -666,7 +698,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.lblTotalServicePrice.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblTotalServicePrice.Location = new System.Drawing.Point(97, 509);
             this.lblTotalServicePrice.Name = "lblTotalServicePrice";
-            this.lblTotalServicePrice.Size = new System.Drawing.Size(731, 20);
+            this.lblTotalServicePrice.Size = new System.Drawing.Size(440, 20);
             this.lblTotalServicePrice.StyleController = this.layoutControl1;
             this.lblTotalServicePrice.TabIndex = 10;
             // 
@@ -683,7 +715,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // 
             // gridControlBedServiceReq
             // 
-            this.gridControlBedServiceReq.Location = new System.Drawing.Point(832, 261);
+            this.gridControlBedServiceReq.Location = new System.Drawing.Point(832, 252);
             this.gridControlBedServiceReq.MainView = this.gridViewBedServiceReq;
             this.gridControlBedServiceReq.Name = "gridControlBedServiceReq";
             this.gridControlBedServiceReq.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
@@ -693,7 +725,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.repositoryItemSpinEditAmountTemp,
             this.repositoryItemSpinEditAmountDis,
             this.repositoryItemSpinEditAmountTempDis});
-            this.gridControlBedServiceReq.Size = new System.Drawing.Size(486, 244);
+            this.gridControlBedServiceReq.Size = new System.Drawing.Size(486, 253);
             this.gridControlBedServiceReq.TabIndex = 6;
             this.gridControlBedServiceReq.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewBedServiceReq});
@@ -859,7 +891,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // 
             // gridControlBedServiceType
             // 
-            this.gridControlBedServiceType.Location = new System.Drawing.Point(2, 261);
+            this.gridControlBedServiceType.Location = new System.Drawing.Point(2, 252);
             this.gridControlBedServiceType.MainView = this.gridViewBedServiceType;
             this.gridControlBedServiceType.Name = "gridControlBedServiceType";
             this.gridControlBedServiceType.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
@@ -873,7 +905,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.repositoryItemDtIntructionTime,
             this.repositoryItemCboOtherPaySource,
             this.repositoryItemCboRequestUser});
-            this.gridControlBedServiceType.Size = new System.Drawing.Size(826, 244);
+            this.gridControlBedServiceType.Size = new System.Drawing.Size(826, 253);
             this.gridControlBedServiceType.TabIndex = 5;
             this.gridControlBedServiceType.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewBedServiceType});
@@ -1231,7 +1263,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.repEditFinishTimeDisable,
             this.repServiceCondition,
             this.repServiceConditionDis});
-            this.gridControlBedHistory.Size = new System.Drawing.Size(1316, 181);
+            this.gridControlBedHistory.Size = new System.Drawing.Size(1316, 172);
             this.gridControlBedHistory.TabIndex = 4;
             this.gridControlBedHistory.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewBedHistory});
@@ -1981,7 +2013,8 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.lciBedRoom,
             this.emptySpaceItem1,
             this.layoutControlItem8,
-            this.layoutControlItem10});
+            this.layoutControlItem10,
+            this.layoutControlItem11});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1993,25 +2026,25 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.layoutControlItem1.Control = this.gridControlBedHistory;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1320, 185);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1320, 176);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.gridControlBedServiceType;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 259);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 250);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(830, 248);
+            this.layoutControlItem2.Size = new System.Drawing.Size(830, 257);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.gridControlBedServiceReq;
-            this.layoutControlItem3.Location = new System.Drawing.Point(830, 259);
+            this.layoutControlItem3.Location = new System.Drawing.Point(830, 250);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(490, 248);
+            this.layoutControlItem3.Size = new System.Drawing.Size(490, 257);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -2031,7 +2064,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.lciTotalServicePrice.Control = this.lblTotalServicePrice;
             this.lciTotalServicePrice.Location = new System.Drawing.Point(0, 507);
             this.lciTotalServicePrice.Name = "lciTotalServicePrice";
-            this.lciTotalServicePrice.Size = new System.Drawing.Size(830, 26);
+            this.lciTotalServicePrice.Size = new System.Drawing.Size(539, 26);
             this.lciTotalServicePrice.Text = "Tổng tiền:";
             this.lciTotalServicePrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTotalServicePrice.TextSize = new System.Drawing.Size(90, 20);
@@ -2040,7 +2073,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.BtnSaveBedLog;
-            this.layoutControlItem4.Location = new System.Drawing.Point(1210, 209);
+            this.layoutControlItem4.Location = new System.Drawing.Point(1210, 200);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(110, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
@@ -2049,7 +2082,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(660, 209);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(660, 200);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
             this.emptySpaceItem2.Size = new System.Drawing.Size(550, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -2059,7 +2092,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.LciEndTime.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciEndTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciEndTime.Control = this.DtOutTime;
-            this.LciEndTime.Location = new System.Drawing.Point(330, 209);
+            this.LciEndTime.Location = new System.Drawing.Point(330, 200);
             this.LciEndTime.Name = "LciEndTime";
             this.LciEndTime.OptionsToolTip.ToolTip = "Thời gian ra viện dự kiến";
             this.LciEndTime.Size = new System.Drawing.Size(330, 26);
@@ -2073,7 +2106,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.LciTreatmentDayCount.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciTreatmentDayCount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciTreatmentDayCount.Control = this.LblTreatmentDayCount;
-            this.LciTreatmentDayCount.Location = new System.Drawing.Point(660, 235);
+            this.LciTreatmentDayCount.Location = new System.Drawing.Point(660, 226);
             this.LciTreatmentDayCount.Name = "LciTreatmentDayCount";
             this.LciTreatmentDayCount.OptionsToolTip.ToolTip = "Tổng số ngày điều trị dự kiến tính theo thông tư 39/2018/TT-BYT";
             this.LciTreatmentDayCount.Size = new System.Drawing.Size(660, 24);
@@ -2087,7 +2120,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.LciInTime.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciInTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciInTime.Control = this.LblInTime;
-            this.LciInTime.Location = new System.Drawing.Point(0, 209);
+            this.LciInTime.Location = new System.Drawing.Point(0, 200);
             this.LciInTime.Name = "LciInTime";
             this.LciInTime.Size = new System.Drawing.Size(330, 26);
             this.LciInTime.Text = "Thời gian vào viện:";
@@ -2100,7 +2133,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.LciEndType.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciEndType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciEndType.Control = this.TxtTreatmentEndTypeCode;
-            this.LciEndType.Location = new System.Drawing.Point(0, 235);
+            this.LciEndType.Location = new System.Drawing.Point(0, 226);
             this.LciEndType.Name = "LciEndType";
             this.LciEndType.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
             this.LciEndType.Size = new System.Drawing.Size(177, 24);
@@ -2112,7 +2145,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.CboTreatmentEndType;
-            this.layoutControlItem7.Location = new System.Drawing.Point(177, 235);
+            this.layoutControlItem7.Location = new System.Drawing.Point(177, 226);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem7.Size = new System.Drawing.Size(153, 24);
@@ -2124,7 +2157,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.LciTreatmentResult.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciTreatmentResult.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciTreatmentResult.Control = this.TxtTreatmentResultCode;
-            this.LciTreatmentResult.Location = new System.Drawing.Point(330, 235);
+            this.LciTreatmentResult.Location = new System.Drawing.Point(330, 226);
             this.LciTreatmentResult.Name = "LciTreatmentResult";
             this.LciTreatmentResult.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
             this.LciTreatmentResult.Size = new System.Drawing.Size(177, 24);
@@ -2136,7 +2169,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.CboTreatmentResult;
-            this.layoutControlItem9.Location = new System.Drawing.Point(507, 235);
+            this.layoutControlItem9.Location = new System.Drawing.Point(507, 226);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem9.Size = new System.Drawing.Size(153, 24);
@@ -2148,7 +2181,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.LciSplitDay.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciSplitDay.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciSplitDay.Control = this.ChkSplitDay;
-            this.LciSplitDay.Location = new System.Drawing.Point(999, 507);
+            this.LciSplitDay.Location = new System.Drawing.Point(977, 507);
             this.LciSplitDay.Name = "LciSplitDay";
             this.LciSplitDay.Size = new System.Drawing.Size(118, 26);
             this.LciSplitDay.Text = "Tách theo ngày:";
@@ -2163,7 +2196,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.LciNotCountHours.Control = this.ChkNotCountHours;
             this.LciNotCountHours.Location = new System.Drawing.Point(830, 507);
             this.LciNotCountHours.Name = "LciNotCountHours";
-            this.LciNotCountHours.Size = new System.Drawing.Size(169, 26);
+            this.LciNotCountHours.Size = new System.Drawing.Size(147, 26);
             this.LciNotCountHours.Text = "Tính theo ngày:";
             this.LciNotCountHours.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.LciNotCountHours.TextSize = new System.Drawing.Size(90, 20);
@@ -2172,12 +2205,12 @@ namespace HIS.Desktop.Plugins.BedHistory
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.chkSplitByResult;
-            this.layoutControlItem5.Location = new System.Drawing.Point(1117, 507);
+            this.layoutControlItem5.Location = new System.Drawing.Point(1095, 507);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.OptionsToolTip.ToolTip = "Tách theo thông tư 39 dựa trên kết quả ra viện dự kiến";
-            this.layoutControlItem5.Size = new System.Drawing.Size(129, 26);
+            this.layoutControlItem5.Size = new System.Drawing.Size(151, 26);
             this.layoutControlItem5.Text = "Tách theo KQ dự kiến";
-            this.layoutControlItem5.TextSize = new System.Drawing.Size(103, 13);
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(125, 13);
             // 
             // lciBedRoom
             // 
@@ -2229,6 +2262,15 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.layoutControlItem10.TextSize = new System.Drawing.Size(200, 20);
             this.layoutControlItem10.TextToControlDistance = 5;
             // 
+            // layoutControlItem11
+            // 
+            this.layoutControlItem11.Control = this.cboEmployee;
+            this.layoutControlItem11.Location = new System.Drawing.Point(539, 507);
+            this.layoutControlItem11.Name = "layoutControlItem11";
+            this.layoutControlItem11.Size = new System.Drawing.Size(291, 26);
+            this.layoutControlItem11.Text = "Người được chỉ định xử lý:";
+            this.layoutControlItem11.TextSize = new System.Drawing.Size(125, 13);
+            // 
             // FormBedHistory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2252,8 +2294,10 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkBedAll.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboEmployee.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkBedAll.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBHAll.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSplitByResult.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBedRoom.Properties)).EndInit();
@@ -2353,6 +2397,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2528,5 +2573,8 @@ namespace HIS.Desktop.Plugins.BedHistory
         private DevExpress.XtraGrid.Columns.GridColumn colSERVICE_CONDITION_IDUnb;
         private DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit repServiceConditionDis;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView6;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus cboEmployee;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus customGridLookUpEditWithFilterMultiColumnNoFocus1View;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
     }
 }

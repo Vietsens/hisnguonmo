@@ -50,9 +50,13 @@
     <Reference Include="Inventec.Common.SignLibrary">
       <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Inventec.WCF.JsonConvert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Integrate\Inventec.FingerPrintManager\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\Inventec.WCF.JsonConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -65,10 +69,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigCFG.cs" />
+    <Compile Include="DateOnlyConverter.cs" />
     <Compile Include="StorageApiClient.cs" />
     <Compile Include="TwoIDApiRequestInput.cs" />
+    <Compile Include="TwoIDDownloadResponse.cs" />
     <Compile Include="TwoIDStorageIntegrationProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TwoIDUploadResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

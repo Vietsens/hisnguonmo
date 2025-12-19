@@ -1110,5 +1110,27 @@ namespace HIS.Desktop.Plugins.BedHistory
 
             return result;
         }
+        private void InitComboEmployee()
+        {
+            try
+            {
+                lstEmployee = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 150, 1));
+                columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Họ và tên", 250, 1));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("TDL_USERNAME", "LOGINNAME", columnInfos, false, 400);
+                ControlEditorLoader.Load(cboEmployee, lstEmployee, controlEditorADO);
+                cboEmployee.Properties.ImmediatePopup = true;
+                cboEmployee.Properties.PopupFormMinSize = new Size(400, cboEmployee.Properties.PopupFormMinSize.Height);
+                if (!string.IsNullOrEmpty(loginName) && lstEmployee.FirstOrDefault(o => o.LOGINNAME == loginName) != null)
+                {
+                    cboEmployee.EditValue = loginName;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

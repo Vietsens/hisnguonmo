@@ -1876,4 +1876,7 @@ F6 to get the instructions from the prescribed menu. (F7 to set the condition to
   <data name="frmMissingIcd.labelControl2.Text" xml:space="preserve">
     <value>Services are contraindicated in the following diagnostic cases:</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_DESCRIPTION" xml:space="preserve">
+    <value>Description</value>
+  </data>
 </root>

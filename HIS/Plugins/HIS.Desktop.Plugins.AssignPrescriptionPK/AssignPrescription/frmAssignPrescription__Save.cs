@@ -47,6 +47,7 @@ using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MOS.LibraryHein.Bhyt.HeinRightRouteType;
 using MOS.SDO;
 using System;
 using System.Collections.Generic;
@@ -1185,7 +1186,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     if ((int.TryParse(HisConfigCFG.WarningOverTransfer, out warnMonths) && warnMonths > 0)
                         && currentTreatmentWithPatientType != null
                         && currentTreatmentWithPatientType.PROGRAM_ID != null
-                        && currentTreatmentWithPatientType.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN
+                       // && currentTreatmentWithPatientType.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN
+                       && currentTreatmentWithPatientType.RIGHT_ROUTE_TYPE_CODE == HeinRightRouteTypeCode.APPOINTMENT
                         && isDifferentExist
                         )
                     {
