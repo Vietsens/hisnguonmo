@@ -267,36 +267,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 var screen = Screen.PrimaryScreen.Bounds;
-                Inventec.Common.Logging.LogSystem.Debug("1366x768 qtcode bên ngoài");
                 if (screen.Width <= 1368 && screen.Height <= 770)
                 {
-                    Inventec.Common.Logging.LogSystem.Debug("1366x768 qtcode");
-                    emptySpaceItem8.Visibility =
-                        DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    emptySpaceItem3.Visibility =
-                         DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    emptySpaceItem6.Visibility =
-                        DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    lciProvisionalDianosis.SizeConstraintsType =
-                        DevExpress.XtraLayout.SizeConstraintsType.Custom;
-                    lciChuY.SizeConstraintsType =
-                        DevExpress.XtraLayout.SizeConstraintsType.Custom;
-                    lblCaptionDiagnostic.SizeConstraintsType =
-                      DevExpress.XtraLayout.SizeConstraintsType.Custom;
-                    lblCaptionConclude.SizeConstraintsType =
-                      DevExpress.XtraLayout.SizeConstraintsType.Custom;
-
-                    lciProvisionalDianosis.MinSize = new Size(0, 24);
-                    lciProvisionalDianosis.MaxSize = new Size(0, 24);
-
-                    lciChuY.MinSize = new Size(0, 24);
-                    lciChuY.MaxSize = new Size(0, 24);
-
-                    lblCaptionDiagnostic.MinSize = new Size(0, 24);
-                    lblCaptionDiagnostic.MaxSize = new Size(0, 24);
-
-                    lblCaptionConclude.MinSize = new Size(0, 24);
-                    lblCaptionConclude.MaxSize = new Size(0, 24);
+                    ApplyLowResolution();
                 }
                 this.SereServsCurrentTreatment = sereServCurrentTreatment;
                 this.HisServiceReqView = serviceReq;
@@ -313,7 +286,37 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void ApplyLowResolution()
+        {
+                this.txtHistoryAllergy.Properties.NullValuePrompt = "Dị ứng";
+                this.txtPathologicalHistoryFamily.Properties.NullValuePrompt = "Gia đình";
 
+                lciBloodPressure.TextSize = new Size(60, 20);
+                lciWeight.TextSize = new Size(60, 20);
+                lciHeight.TextSize = new Size(60, 20);
+                lciPulse.TextSize = new Size(60, 20);
+                lciNote.TextSize = new Size(60, 20);
+
+                emptySpaceItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                emptySpaceItem3.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                emptySpaceItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lciProvisionalDianosis.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                lciChuY.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                lblCaptionDiagnostic.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                lblCaptionConclude.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+
+                lciProvisionalDianosis.MinSize = new Size(0, 24);
+                lciProvisionalDianosis.MaxSize = new Size(0, 24);
+
+                lciChuY.MinSize = new Size(0, 24);
+                lciChuY.MaxSize = new Size(0, 24);
+
+                lblCaptionDiagnostic.MinSize = new Size(0, 24);
+                lblCaptionDiagnostic.MaxSize = new Size(0, 24);
+
+                lblCaptionConclude.MinSize = new Size(0, 24);
+                lblCaptionConclude.MaxSize = new Size(0, 24);
+        }
         private void ExamServiceReqExecuteControl_Load(object sender, EventArgs e)
         {
             try
