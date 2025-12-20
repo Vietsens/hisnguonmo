@@ -5122,7 +5122,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.layoutControlItem168.Control = this.cboMaternalComplication3;
             this.layoutControlItem168.Location = new System.Drawing.Point(326, 248);
             this.layoutControlItem168.Name = "layoutControlItem168";
-            this.layoutControlItem168.OptionsToolTip.ToolTip = "Loại tai biến sinh đẻ";
+            this.layoutControlItem168.OptionsToolTip.ToolTip = "Loại tai biến sản khoa";
             this.layoutControlItem168.Size = new System.Drawing.Size(253, 24);
             this.layoutControlItem168.Text = "Tai biến:";
             this.layoutControlItem168.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;

@@ -262,6 +262,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 List<KeyValueADO> newbornConditionData = CreateNewbornConditionDataSource();
                 InitComboKeyValue(cboNewbornCondition3, newbornConditionData);
 
+                // NEW: Combo Giới tính (từ HIS_GENDER) cho Trẻ
+                List<HIS_GENDER> genderData = GetGenderDataSource();
+                InitComboGender(cboChildGender3, genderData);
+
                 // Tab 4: Tránh thai
                 
                 // Combo Biện pháp tránh thai
@@ -964,6 +968,58 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 columnInfos.Add(new ColumnInfo("ETHNIC_NAME", "Tên", 200, 2));
 
                 ControlEditorADO controlEditorADO = new ControlEditorADO("ETHNIC_NAME", "ETHNIC_CODE", columnInfos, false, 280);
+                controlEditorADO.ImmediatePopup = true;
+
+                ControlEditorLoader.Load(combo, data, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
+
+        #region Init Combo Giới tính (HIS_GENDER)
+
+        /// <summary>
+        /// Lấy danh sách giới tính từ BackendDataWorker (HIS_GENDER)
+        /// </summary>
+        private List<HIS_GENDER> GetGenderDataSource()
+        {
+            List<HIS_GENDER> result = new List<HIS_GENDER>();
+            try
+            {
+                var genders = BackendDataWorker.Get<HIS_GENDER>();
+                if (genders != null && genders.Count > 0)
+                {
+                    result = genders
+                        .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                        .OrderBy(o => o.GENDER_NAME)
+                        .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Khởi tạo combo giới tính với data từ HIS_GENDER
+        /// </summary>
+        private void InitComboGender(GridLookUpEdit combo, List<HIS_GENDER> data)
+        {
+            try
+            {
+                if (combo == null) return;
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("GENDER_CODE", "Mã", 80, 1));
+                columnInfos.Add(new ColumnInfo("GENDER_NAME", "Tên", 200, 2));
+
+                ControlEditorADO controlEditorADO = new ControlEditorADO("GENDER_NAME", "GENDER_CODE", columnInfos, false, 280);
                 controlEditorADO.ImmediatePopup = true;
 
                 ControlEditorLoader.Load(combo, data, controlEditorADO);

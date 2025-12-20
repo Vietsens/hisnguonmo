@@ -1137,7 +1137,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                 if (dataSource != null && dataSource.Count > 0)
                 {
-                    dataSource = dataSource.OrderByDescending(o => o.EXECUTE_TIME).ToList();
+                    dataSource = dataSource.OrderByDescending(o => o.EXECUTE_TIME).ThenByDescending(o => o.ID).ToList();
                     gridControl1.DataSource = dataSource;
                     Inventec.Common.Logging.LogSystem.Debug("ReloadExamServiceGrid: Loaded " + dataSource.Count + " records");
                 }

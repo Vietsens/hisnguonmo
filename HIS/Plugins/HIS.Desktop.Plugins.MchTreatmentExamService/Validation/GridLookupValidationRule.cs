@@ -17,7 +17,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.Validate
             {
                 if (gridLookUpEdit == null)
                     return valid;
-                if (gridLookUpEdit.EditValue == null)
+                if (gridLookUpEdit.EditValue == null || gridLookUpEdit.EditValue == "")
                 {
                     ErrorText = "Trường dữ liệu bắt buộc";
                     ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;

@@ -90,7 +90,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     }
                     else if (e.Column.FieldName == "Edit")
                     {
-                        if (Treatment != null && data.TREATMENT_CODE == (Treatment != null && Treatment.ID > 0 ? Treatment.TREATMENT_CODE : ExamService.TREATMENT_CODE))
+                        if (Treatment != null && data.TREATMENT_CODE == (lblTreatmentCode.Text.Trim()))
                         {
                             e.RepositoryItem = repEditEna;
                         }
@@ -101,7 +101,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     }
                     else if (e.Column.FieldName == "Delete")
                     {
-                        if (Treatment != null && data.TREATMENT_CODE == (Treatment != null && Treatment.ID > 0 ? Treatment.TREATMENT_CODE : ExamService.TREATMENT_CODE))
+                        if (Treatment != null && data.TREATMENT_CODE == (lblTreatmentCode.Text.Trim()))
                         {
                             e.RepositoryItem = repDelEna;
                         }
