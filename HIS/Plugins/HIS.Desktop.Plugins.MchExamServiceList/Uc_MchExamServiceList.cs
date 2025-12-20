@@ -165,10 +165,10 @@ namespace HIS.Desktop.Plugins.MchExamServiceList
                                 filter.HAS_SYNC_STATUS = null;
                                 break;
                             case 1:
-                                filter.HAS_SYNC_STATUS = true;
-                                break;
-                            case 2:
                                 filter.HAS_SYNC_STATUS = false;
+                                break;
+                            case 2: 
+                                filter.HAS_SYNC_STATUS = true;
                                 break;
                             case 3:
                                 filter.SYNC_STATUS = 2;
