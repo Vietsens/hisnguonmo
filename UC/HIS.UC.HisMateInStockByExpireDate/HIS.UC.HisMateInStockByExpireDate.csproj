@@ -130,6 +130,7 @@
     <Compile Include="HisMateInStockByExpireDateColumn.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Run\UCHisMateInStockByExpireDate.resx">
       <DependentUpon>UCHisMateInStockByExpireDate.cs</DependentUpon>
     </EmbeddedResource>

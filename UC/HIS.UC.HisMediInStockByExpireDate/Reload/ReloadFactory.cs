@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using Inventec.Core;
+using MOS.EFMODEL.DataModels;
 using MOS.SDO;
 using System;
 using System.Collections.Generic;
@@ -52,14 +53,14 @@ namespace HIS.UC.HisMediInStockByExpireDate.Reload
         //    return result;
         //}
 
-        internal static IReload MakeIReload(CommonParam param, UserControl data, List<List<HisMedicineInStockSDO>> HisMediInStockByExpireDates, List<long> MedicineTypeIds)
+        internal static IReload MakeIReload(CommonParam param, UserControl data, List<List<HisMedicineInStockSDO>> HisMediInStockByExpireDates, List<long> MedicineTypeIds, List<V_HIS_MEDI_STOCK> MediStocks)
         {
             IReload result = null;
             try
             {
                 if (data is UserControl)
                 {
-                    result = new ReloadBehavior(param, (UserControl)data, HisMediInStockByExpireDates, MedicineTypeIds);
+                    result = new ReloadBehavior(param, (UserControl)data, HisMediInStockByExpireDates, MedicineTypeIds, MediStocks);
                 }
                 if (result == null) throw new NullReferenceException();
             }
