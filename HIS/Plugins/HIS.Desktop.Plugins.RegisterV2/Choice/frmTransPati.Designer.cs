@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.RegisterV2
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnClose = new DevExpress.XtraEditors.SimpleButton();
             this.ucTransPati1 = new HIS.UC.UCTransPati.UCTransPati();
@@ -53,7 +52,7 @@ namespace HIS.Desktop.Plugins.RegisterV2
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.barManagerUCTransPati = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManagerUCTransPati = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbntNhap = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
@@ -78,13 +77,13 @@ namespace HIS.Desktop.Plugins.RegisterV2
             this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(534, 194);
+            this.layoutControl1.Size = new System.Drawing.Size(534, 228);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(415, 170);
+            this.btnClose.Location = new System.Drawing.Point(415, 204);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(117, 22);
             this.btnClose.StyleController = this.layoutControl1;
@@ -97,7 +96,7 @@ namespace HIS.Desktop.Plugins.RegisterV2
             this.ucTransPati1.Location = new System.Drawing.Point(2, 2);
             this.ucTransPati1.Margin = new System.Windows.Forms.Padding(4);
             this.ucTransPati1.Name = "ucTransPati1";
-            this.ucTransPati1.Size = new System.Drawing.Size(530, 164);
+            this.ucTransPati1.Size = new System.Drawing.Size(530, 198);
             this.ucTransPati1.TabIndex = 4;
             // 
             // layoutControlGroup1
@@ -111,7 +110,7 @@ namespace HIS.Desktop.Plugins.RegisterV2
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(534, 194);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(534, 228);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -119,14 +118,14 @@ namespace HIS.Desktop.Plugins.RegisterV2
             this.layoutControlItem1.Control = this.ucTransPati1;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(534, 168);
+            this.layoutControlItem1.Size = new System.Drawing.Size(534, 202);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.btnClose;
-            this.layoutControlItem2.Location = new System.Drawing.Point(413, 168);
+            this.layoutControlItem2.Location = new System.Drawing.Point(413, 202);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Size = new System.Drawing.Size(121, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -135,7 +134,7 @@ namespace HIS.Desktop.Plugins.RegisterV2
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 168);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 202);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(413, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -190,7 +189,7 @@ namespace HIS.Desktop.Plugins.RegisterV2
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 223);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 257);
             this.barDockControlBottom.Size = new System.Drawing.Size(534, 0);
             // 
             // barDockControlLeft
@@ -198,20 +197,20 @@ namespace HIS.Desktop.Plugins.RegisterV2
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 194);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 228);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(534, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 194);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 228);
             // 
             // frmTransPati
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(534, 223);
+            this.ClientSize = new System.Drawing.Size(534, 257);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
