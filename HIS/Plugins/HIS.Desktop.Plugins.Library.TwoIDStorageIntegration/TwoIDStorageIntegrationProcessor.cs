@@ -141,7 +141,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         /// </summary>
         public bool StoreCitizenInfo(
             string baseUri,
-            TwoIDApiRequestInput citizen,
+            TwoIdRequestCitizens citizen,
             object fingerprint,
             object faceId,
             object handSignature,
@@ -192,36 +192,43 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 bool isExist = IsCitizenInfoExists(baseUri, citizen.citizenNumber, apiKey, transactionId, hash);
                 Inventec.Common.Logging.LogSystem.Info($"StoreCitizenInfo: CCCD {citizen.citizenNumber} đã tồn tại = {isExist}");
 
-                if (isExist)
-                {
-                    // Đã có thông tin → Cập nhật với path mới
-                    Inventec.Common.Logging.LogSystem.Info("StoreCitizenInfo: Cập nhật thông tin CCCD");
-                    
-                    // Gán path mới vào citizen
-                    citizen.fingerprint = fingerprintPath;
-                    citizen.faceId = faceIdPath;
-                    citizen.handSignature = handSignaturePath;
-                    citizen.apiKey = apiKey;
-                    citizen.hash = hash;
-                    citizen.transactionId = transactionId;
+                // Đã có thông tin → Cập nhật với path mới
+                Inventec.Common.Logging.LogSystem.Info("StoreCitizenInfo: Cập nhật thông tin CCCD");
 
-                    // Gọi API đồng bộ dữ liệu cá nhân (application/json)
-                    var syncResult = StorageApiClient.CreateRequest<object>(
-                        baseUri,
-                        "/api/v1/citizens",
-                        citizen,
-                        "application/json"
-                    );
+                // Gán path mới vào citizen
+                citizen.fingerPrintImage = fingerprintPath;
+                citizen.faceImage = faceIdPath;
+                citizen.handSignatureImage = handSignaturePath;
+                string header = "?apiKey=" + apiKey + "&transactionId=" + transactionId + "&hash=" + hash;
+                // Gọi API đồng bộ dữ liệu cá nhân (application/json)
+                var syncResult = StorageApiClient.CreateRequest<object>(
+                    baseUri,
+                    "/api/v1/citizens"+header,
+                    citizen,
+                    "application/json"
+                );
+                if( syncResult != null)
+                {
 
                     Inventec.Common.Logging.LogSystem.Info("StoreCitizenInfo: Đồng bộ dữ liệu thành công");
+                    return true;
                 }
                 else
                 {
-                    // Chưa có thông tin → Chỉ cần upload file (đã làm ở bước 1)
-                    Inventec.Common.Logging.LogSystem.Info("StoreCitizenInfo: Tạo mới thông tin CCCD - Chỉ upload file");
+                    return false;
                 }
 
-                return true;
+                //if (isExist)
+                //{
+                    
+                //}
+                //else
+                //{
+                //    // Chưa có thông tin → Chỉ cần upload file (đã làm ở bước 1)
+                //    Inventec.Common.Logging.LogSystem.Info("StoreCitizenInfo: Tạo mới thông tin CCCD - Chỉ upload file");
+                //}
+
+                //return true;
             }
             catch (Exception ex)
             {
