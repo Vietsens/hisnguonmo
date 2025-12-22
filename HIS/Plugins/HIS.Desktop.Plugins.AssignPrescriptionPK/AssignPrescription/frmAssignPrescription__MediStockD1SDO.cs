@@ -266,6 +266,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 col15.VisibleIndex = 16;
                 gridViewMediMaty.Columns.Add(col15);
 
+
+                DevExpress.XtraGrid.Columns.GridColumn colDes = new DevExpress.XtraGrid.Columns.GridColumn();
+                colDes.FieldName = "DESCRIPTION";
+                colDes.Caption = Inventec.Common.Resource.Get.Value
+                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_DESCRIPTION",
+                    Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                colDes.Width = 150;
+                colDes.VisibleIndex = 17;
+                gridViewMediMaty.Columns.Add(colDes);
+
+
+
                 if (HisConfigCFG.GroupOption)
                 {
                     DevExpress.XtraGrid.Columns.GridColumn col17 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -574,9 +587,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 gridViewMediMaty.Columns.Add(col16);
 
                 DevExpress.XtraGrid.Columns.GridColumn col15 = new DevExpress.XtraGrid.Columns.GridColumn();
-                col15.FieldName = "MATERIAL_TYPE_MAP_NAME";
+                col15.FieldName = "DESCRIPTION";
                 col15.Caption = Inventec.Common.Resource.Get.Value
-                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_MATERIAL_TYPE_MAP_NAME",
+                    ("IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_DESCRIPTION",
                     Resources.ResourceLanguageManager.LanguagefrmAssignPrescription,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 col15.Width = 150;
@@ -1675,6 +1688,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 dMediStock1ADO.MATERIAL_TYPE_MAP_ID = maty.MATERIAL_TYPE_MAP_ID;
                                 dMediStock1ADO.MATERIAL_TYPE_MAP_CODE = maty.MATERIAL_TYPE_MAP_CODE;
                                 dMediStock1ADO.MATERIAL_TYPE_MAP_NAME = maty.MATERIAL_TYPE_MAP_NAME;
+                                dMediStock1ADO.DESCRIPTION = maty.DESCRIPTION;
                                 dMediStock1ADO.IsAllowOdd = (maty.IS_ALLOW_ODD == 1) ? true : false;
                                 dMediStock1ADO.IsAllowOddAndExportOdd = (maty.IS_ALLOW_ODD == 1 && maty.IS_ALLOW_EXPORT_ODD == 1) ? true : false;
                                 dMediStock1ADO.ALERT_MAX_IN_DAY = maty.ALERT_MAX_IN_DAY;
@@ -1864,6 +1878,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                     dMediStock1ADO.MATERIAL_TYPE_MAP_ID = maty.MATERIAL_TYPE_MAP_ID;
                                     dMediStock1ADO.MATERIAL_TYPE_MAP_CODE = maty.MATERIAL_TYPE_MAP_CODE;
                                     dMediStock1ADO.MATERIAL_TYPE_MAP_NAME = maty.MATERIAL_TYPE_MAP_NAME;
+                                   
+
                                     dMediStock1ADO.IS_OUT_HOSPITAL = maty.IS_OUT_HOSPITAL;
                                     dMediStock1ADO.IsAllowOdd = (maty.IS_ALLOW_ODD == 1) ? true : false;
                                     dMediStock1ADO.IsAllowOddAndExportOdd = (maty.IS_ALLOW_ODD == 1 && maty.IS_ALLOW_EXPORT_ODD == 1) ? true : false;

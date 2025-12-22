@@ -641,9 +641,9 @@ namespace HIS.Desktop.Plugins.HisEmrForm
         {
             try
             {
-                ValidMaxlengthTextBox(txtEmrCode, 20);
+                ValidMaxlengthTextBox(txtEmrCode, 100);
                 ValidMaxlengthTextBox(txtEmrName, 500);
-                ValidOnlyMaxlengthTextBox(txtGroup, 100);
+                ValidOnlyMaxlengthTextBox(txtGroup, 200);
             }
             catch (Exception ex)
             {

@@ -145,6 +145,8 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
                 this.grdColModifyTime.ToolTip = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.grdColModifyTime.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColModifier.Caption = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.grdColModifier.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColModifier.ToolTip = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.grdColModifier.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColBudRelUnitCode.Caption = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.grdColBudRelUnitCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColBudRelUnitCode.ToolTip = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.grdColBudRelUnitCode.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtKeyword.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.txtKeyword.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcEditorInfo.Text = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.lcEditorInfo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnCancel.Text = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.btnCancel.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -157,6 +159,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
                 this.lciContactMobile.Text = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.lciContactMobile.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciTaxCode.Text = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.lciTaxCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciPhone.Text = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.lciPhone.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciBudRelUnitCode.Text = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.lciBudRelUnitCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 
                 this.lciWorkPlaceName.Text = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.lciWorkPlaceName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciAddress.Text = Inventec.Common.Resource.Get.Value("frmHisWorkPlace.lciAddress.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -534,7 +537,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
                     EnableControlChanged(this.ActionType);
 
                     //Disable nút sửa nếu dữ liệu đã bị khóa
-                    btnEdit.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                    btnEdit.Enabled = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
 
                     positionHandle = -1;
                     Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
@@ -559,6 +562,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
                     txtDirectorName.Text = data.DIRECTOR_NAME;
                     txtContactName.Text = data.CONTACT_NAME;
                     txtContactMobile.Text = data.CONTACT_MOBILE;
+                    txtBudRelUnitCode.Text = data.BUD_REL_UNIT_CODE;
                     txtPhone.Text = data.PHONE;
                     txtTaxCode.Text = data.TAX_CODE;
                 }
@@ -864,6 +868,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
                 currentDTO.WORK_PLACE_NAME = txtWorkPlaceName.Text.Trim();
                 currentDTO.ADDRESS = txtAddress.Text.Trim();
                 currentDTO.CONTACT_MOBILE = txtContactMobile.Text.Trim();
+                currentDTO.BUD_REL_UNIT_CODE = txtBudRelUnitCode.Text.Trim();
                 currentDTO.CONTACT_NAME = txtContactName.Text.Trim();
                 currentDTO.PHONE = txtPhone.Text.Trim();
                 currentDTO.TAX_CODE = txtTaxCode.Text.Trim();
@@ -884,7 +889,7 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             {
                 ValidationSingleControl(txtWorkPlaceCode);
                 ValidMaxlengthTextBox(txtWorkPlaceName, 500, true);
-
+                ValidateBudRelUnitCodeControl(txtBudRelUnitCode);
             }
             catch (Exception ex)
             {
@@ -892,6 +897,19 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             }
         }
 
+        void ValidateBudRelUnitCodeControl(DevExpress.XtraEditors.BaseEdit txtEdit)
+        {
+            try
+            {
+                ValidateBudRelUnitCode validateBudRelUnitCode = new ValidateBudRelUnitCode();
+                validateBudRelUnitCode.textEdit = txtEdit;
+                dxValidationProviderEditorInfo.SetValidationRule(txtEdit, validateBudRelUnitCode);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         void ValidMaxlengthTextBox(BaseEdit txtEdit, int? maxLength, bool isRequired)
         {
             try
@@ -1298,7 +1316,22 @@ namespace HIS.Desktop.Plugins.HisWorkPlace.HisWorkPlace
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    txtContactMobile.Focus();
+                    txtBudRelUnitCode.Focus();
+                    txtBudRelUnitCode.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtBudRelUnitCode_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
                     if (this.ActionType == GlobalVariables.ActionAdd)
                     {
                         btnAdd.Focus();

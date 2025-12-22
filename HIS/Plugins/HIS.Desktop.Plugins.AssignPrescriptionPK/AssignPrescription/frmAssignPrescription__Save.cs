@@ -47,6 +47,7 @@ using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MOS.LibraryHein.Bhyt.HeinRightRouteType;
 using MOS.SDO;
 using System;
 using System.Collections.Generic;
@@ -1179,7 +1180,38 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.patientSelectProcessor.ReloadStatePrescriptionPerious(this.ucPatientSelect);
                         this.OpionGroupSelectedChangedAsync();
                     }
+                    bool isDifferentExist = currentTreatmentWithPatientType != null && BackendDataWorker.Get<HIS_MEDI_ORG>().FirstOrDefault(p => p.MEDI_ORG_CODE != currentTreatmentWithPatientType.HEIN_MEDI_ORG_CODE) != null;
+                    int warnMonths;
 
+                    if ((int.TryParse(HisConfigCFG.WarningOverTransfer, out warnMonths) && warnMonths > 0)
+                        && currentTreatmentWithPatientType != null
+                        && currentTreatmentWithPatientType.PROGRAM_ID != null
+                       // && currentTreatmentWithPatientType.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN
+                       && currentTreatmentWithPatientType.RIGHT_ROUTE_TYPE_CODE == HeinRightRouteTypeCode.APPOINTMENT
+                        && isDifferentExist
+                        )
+                    {
+                        if (currentTreatmentWithPatientType.TRANSFER_IN_TIME_FROM.HasValue && currentTreatmentWithPatientType.TRANSFER_IN_TIME_FROM.Value > 0)
+                        {
+                            DateTime? surgeryBeginTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentTreatmentWithPatientType.TRANSFER_IN_TIME_FROM.Value);
+                            if (surgeryBeginTime.HasValue)
+                            {
+                                int monthDiff = (DateTime.Now.Year - surgeryBeginTime.Value.Year) * 12
+                                                + (DateTime.Now.Month - surgeryBeginTime.Value.Month);
+
+                                if (monthDiff >= warnMonths)
+                                {
+                                    string messErr = $"Thời gian chuyển tuyến của bệnh nhân đã được {monthDiff} tháng. Lưu ý bệnh nhân cần xin giấy chuyển tuyến mới";
+                                    if (DevExpress.XtraEditors.XtraMessageBox.Show(messErr + ". Bạn có muốn tiếp tục?",
+                                            HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                                            MessageBoxButtons.YesNo) == DialogResult.No)
+                                    {
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
                     this.FillDataToComboPriviousExpMest(this.currentTreatmentWithPatientType);
 
                     if (this.oldServiceReq != null)

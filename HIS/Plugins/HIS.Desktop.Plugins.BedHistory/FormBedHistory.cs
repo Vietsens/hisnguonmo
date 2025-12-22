@@ -54,12 +54,15 @@ using HIS.Desktop.Common;
 using DevExpress.XtraPrinting.Native;
 using static DevExpress.Data.Helpers.ExpressiveSortInfo;
 using Inventec.Common.Logging;
+using DevExpress.XtraEditors.Controls;
 
 namespace HIS.Desktop.Plugins.BedHistory
 {
     public partial class FormBedHistory : HIS.Desktop.Utility.FormBase
     {
         #region Declare
+        List<V_HIS_EMPLOYEE> lstEmployee { get; set; }
+
         private System.Globalization.CultureInfo cultureLang;
         private L_HIS_TREATMENT_BED_ROOM _TreatmentBedRoom { get; set; }
         private List<V_HIS_BED_LOG> lstBedLogChecks { get; set; }
@@ -157,6 +160,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             try
             {
                 WaitingManager.Show();
+                InitComboEmployee();
                 CheckWarningOverTotalPatientPrice();
                 EnableControl();
                 LoadKeysFromlanguage();
@@ -274,11 +278,6 @@ namespace HIS.Desktop.Plugins.BedHistory
                             btnAssigns.Enabled = false;
                         }
                     }
-                    if (_TreatmentBedRoom != null && _TreatmentBedRoom.BED_ROOM_ID != WorkPlaceSDO.BedRoomId)
-                    {
-                        BtnSaveBedLog.Enabled = false;
-                        btnAssigns.Enabled = false;
-                    }
                 }
                 CheckEnableChkSplitByResult();
 
@@ -370,6 +369,8 @@ namespace HIS.Desktop.Plugins.BedHistory
                     if (rv != null)
                         this.ListVBedRoom.Add(rv);
                 }
+
+                BtnSaveBedLog.Enabled = btnAssigns.Enabled = IsDisable ? false : !(ListVBedRoom == null || ListVBedRoom.Count == 0 || !ListVBedRoom.Exists(o => o.ID == _TreatmentBedRoom.BED_ROOM_ID));
             }
             catch (Exception ex)
             {
@@ -424,6 +425,8 @@ namespace HIS.Desktop.Plugins.BedHistory
                     GridCheckMarksSelection gridCheckMark = gridLookUpEdit.Properties.Tag as GridCheckMarksSelection;
                     gridCheckMark.Selection.Clear();
                     gridCheckMark.Selection.AddRange(selectFilter);
+
+                    BtnSaveBedLog.Enabled = btnAssigns.Enabled = IsDisable ? false : selectFilter.Exists(o => o.ID == _TreatmentBedRoom.BED_ROOM_ID);
                 }
                 gridLookUpEdit.Text = null;
             }
@@ -610,7 +613,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                 else
                 {
                     _Departments = LocalStorage.BackendData.BackendDataWorker.Get<HIS_DEPARTMENT>().Where(p => p.ID == departmentId && Codes.Contains(p.DEPARTMENT_CODE)).ToList();
-                    this.ListVBedRoom = LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => o.DEPARTMENT_ID == departmentId && o.ROOM_ID == this.WorkPlaceSDO.RoomId).ToList();
+                    this.ListVBedRoom = LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => o.DEPARTMENT_ID == departmentId && (_TreatmentBedRoom != null && _TreatmentBedRoom.BED_ROOM_ID > 0 ? o.ID == _TreatmentBedRoom.BED_ROOM_ID : o.ROOM_ID == this.WorkPlaceSDO.RoomId)).ToList();
                 }
 
                 var allData = LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().OrderByDescending(o => o.DEPARTMENT_ID == departmentId).ToList();
@@ -1681,7 +1684,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                         if (A == null || A.Count() == 0) return;
                         Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.3");
                         if (A.Exists(o => o.finishTime == null)) isWarning = true;
-                        else                        
+                        else
                         {
                             Inventec.Common.Logging.LogSystem.Debug("CheckWarningTimeOverLap. 2.2.4");
                             B = A.Where(o => o.finishTime > ado.startTime).ToList();
@@ -1823,7 +1826,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                 e.RepositoryItem = CheckEditDisable;
                             else
                                 e.RepositoryItem = (data.HasServiceReq || data.BED_SERVICE_TYPE_ID == null) ? CheckEditDisable : CheckEdit;
-                            if (_TreatmentBedRoom.BED_ROOM_ID != WorkPlaceSDO.BedRoomId)
+                            if (ListVBedRoom == null || ListVBedRoom.Count == 0 || !ListVBedRoom.Exists(o => o.ID == _TreatmentBedRoom.BED_ROOM_ID))
                             {
                                 e.RepositoryItem = CheckEditDisable;
                             }
@@ -1848,7 +1851,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                 }
                                 e.RepositoryItem = showbtn ? ButtonDelete : ButtonDeleteDisable;
                             }
-                            if (_TreatmentBedRoom.BED_ROOM_ID != WorkPlaceSDO.BedRoomId)
+                            if (ListVBedRoom == null || ListVBedRoom.Count == 0 || !ListVBedRoom.Exists(o => o.ID == _TreatmentBedRoom.BED_ROOM_ID))
                             {
                                 e.RepositoryItem = ButtonDeleteDisable;
                             }
@@ -1867,7 +1870,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                 e.RepositoryItem = DateDisable;
                             else
                                 e.RepositoryItem = (data.HasServiceReq) ? DateDisable : DateFinish;
-                            if (_TreatmentBedRoom.BED_ROOM_ID != WorkPlaceSDO.BedRoomId)
+                            if (ListVBedRoom == null || ListVBedRoom.Count == 0 || !ListVBedRoom.Exists(o => o.ID == _TreatmentBedRoom.BED_ROOM_ID))
                             {
                                 e.RepositoryItem = DateDisable;
                             }
@@ -1878,7 +1881,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                 e.RepositoryItem = DateDisable;
                             else
                                 e.RepositoryItem = (data.HasServiceReq) ? DateDisable : DateFinish;
-                            if (_TreatmentBedRoom.BED_ROOM_ID != WorkPlaceSDO.BedRoomId)
+                            if (ListVBedRoom == null || ListVBedRoom.Count == 0 || !ListVBedRoom.Exists(o => o.ID == _TreatmentBedRoom.BED_ROOM_ID))
                             {
                                 e.RepositoryItem = DateDisable;
                             }
@@ -1898,7 +1901,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                                 {
                                     e.RepositoryItem = repositoryItemBtnAddDisable;
                                 }
-                                if (_TreatmentBedRoom.BED_ROOM_ID != WorkPlaceSDO.BedRoomId)
+                                if (ListVBedRoom == null || ListVBedRoom.Count == 0 || !ListVBedRoom.Exists(o => o.ID == _TreatmentBedRoom.BED_ROOM_ID))
                                 {
                                     e.RepositoryItem = repositoryItemBtnAddDisable;
                                 }
@@ -4188,7 +4191,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                             {
                                 e.RepositoryItem = repositoryItemBtnDeleteServiceReqDisable;
                             }
-                            if (_TreatmentBedRoom.BED_ROOM_ID != WorkPlaceSDO.BedRoomId)
+                            if (ListVBedRoom == null || ListVBedRoom.Count == 0 || !ListVBedRoom.Exists(o => o.ID == _TreatmentBedRoom.BED_ROOM_ID))
                             {
                                 e.RepositoryItem = repositoryItemBtnDeleteServiceReqDisable;
                             }
@@ -4411,7 +4414,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                     LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisServiceReqCheckAssignSimultaneitySDO", sdo));
 
                     var CheckSereTimes = new BackendAdapter(paramCanhBao).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, paramCanhBao);
-                    LogSystem.Debug("Giá trj api trả về: " +  CheckSereTimes);
+                    LogSystem.Debug("Giá trj api trả về: " + CheckSereTimes);
                     LogSystem.Debug("Giá trj key: " + KeyhasService);
 
                     if (KeyhasService == "1" && !CheckSereTimes)
@@ -4463,7 +4466,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                     LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisServiceReqCheckAssignSimultaneitySDO", sdo));
 
                     var CheckSereTimes = new BackendAdapter(paramCanhBao2).Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo, paramCanhBao2);
-                    LogSystem.Debug("Giá trj api trả về: " +  CheckSereTimes);
+                    LogSystem.Debug("Giá trj api trả về: " + CheckSereTimes);
                     LogSystem.Debug("Giá trj key: " + keyNoService);
 
                     if (keyNoService == "1" && !CheckSereTimes)
@@ -4659,6 +4662,8 @@ namespace HIS.Desktop.Plugins.BedHistory
                         sdo.PrimaryPatientTypeId = bedService.PRIMARY_PATIENT_TYPE_ID;
                         sdo.OtherPaySourceId = bedService.OTHER_PAY_SOURCE_ID;
                         sdo.ServiceConditionId = bedService.SERVICE_CONDITION_ID;
+                        sdo.AssignedExecuteLoginName = cboEmployee.EditValue?.ToString();
+                        sdo.AssignedExecuteUserName = cboEmployee.Text;
                         bedSdo.ServiceReqDetails.Add(sdo);
                         HisServiceReqSDO.BedServices.Add(bedSdo);
                     }
@@ -4673,14 +4678,14 @@ namespace HIS.Desktop.Plugins.BedHistory
         private void ChkNotCountHours_CheckedChanged(object sender, EventArgs e)
         {
             try
-            {                
+            {
                 CountTimeBed();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }        
+        }
         #endregion
         #endregion
 
@@ -5745,6 +5750,30 @@ namespace HIS.Desktop.Plugins.BedHistory
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return valid;
+        }
+
+        private void cboEmployee_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            var cbo = sender as DevExpress.XtraEditors.GridLookUpEdit;
+            if (cbo.EditValue != null && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+            {
+                cbo.EditValue = null;
+            }
+        }
+
+        private void cboEmployee_EditValueChanged(object sender, EventArgs e)
+        {
+            var cbo = sender as DevExpress.XtraEditors.GridLookUpEdit;
+            if (cbo.Properties.Buttons.Count > 0)
+            {
+                foreach (EditorButton item in cbo.Properties.Buttons)
+                {
+                    if (item != null && item.Kind == ButtonPredefines.Delete)
+                    {
+                        item.Visible = cbo.EditValue != null;
+                    }
+                }
+            }
         }
     }
 }

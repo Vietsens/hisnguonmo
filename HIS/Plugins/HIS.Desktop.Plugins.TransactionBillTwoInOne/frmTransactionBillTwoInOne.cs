@@ -2197,13 +2197,21 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     txtCCCD.Text = "";
                     buyerIdentityType = null;
                 }
+                if (!string.IsNullOrWhiteSpace(data.TDL_PATIENT_BUD_REL_UNIT_CODE))
+                {
+                    txtBuyerSocialRelationsCode.Text = data.TDL_PATIENT_BUD_REL_UNIT_CODE;
+                }
                 HisPatientFilter ft = new HisPatientFilter();
                 ft.ID = data.PATIENT_ID; 
                 var listPatient = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, ft, new CommonParam());
                 if (listPatient != null && listPatient.Count > 0)
                 {
                     HIS_PATIENT a = listPatient.FirstOrDefault();
-                    txtBuyerEmail.Text = a.EMAIL; 
+                    txtBuyerEmail.Text = a.EMAIL;
+                    if (!string.IsNullOrWhiteSpace(a.BUD_REL_UNIT_CODE))
+                    {
+                        txtBuyerSocialRelationsCode.Text = a.BUD_REL_UNIT_CODE;
+                    }
                 }
 
                 if (data.TDL_PATIENT_TYPE_ID != null)
@@ -3212,9 +3220,15 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
-                var focus = (HIS_WORK_PLACE)cboBuyerOrganization.Properties.View.GetFocusedRow();
-                if (focus != null)
-                    txtBuyerTaxCode.Text = focus.TAX_CODE;
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    var focus = (HIS_WORK_PLACE)cboBuyerOrganization.Properties.View.GetFocusedRow();
+                    if (focus != null)
+                    {
+                        txtBuyerTaxCode.Text = focus.TAX_CODE;
+                        txtBuyerSocialRelationsCode.Text = focus.BUD_REL_UNIT_CODE;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -3226,9 +3240,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
-                var focus = (HIS_WORK_PLACE)cboBuyerOrganization2.Properties.View.GetFocusedRow();
-                if (focus != null)
-                    txtBuyerTaxCode2.Text = focus.TAX_CODE;
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    var focus = (HIS_WORK_PLACE)cboBuyerOrganization2.Properties.View.GetFocusedRow();
+                    if (focus != null)
+                    {
+                        txtBuyerTaxCode2.Text = focus.TAX_CODE;
+                    }
+                }
             }
             catch (Exception ex)
             {

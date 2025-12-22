@@ -179,6 +179,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 col12.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Like;
                 gridViewMediMaty.Columns.Add(col12);
 
+
+                DevExpress.XtraGrid.Columns.GridColumn col16 = new DevExpress.XtraGrid.Columns.GridColumn();
+                col16.FieldName = "DESCRIPTION";
+                col16.Caption = "Ghi chú";
+                col16.Width = 150;
+                col16.VisibleIndex = 9;
+                gridViewMediMaty.Columns.Add(col16);
+
+
                 this.currentMediMateTypeComboADOs = BackendDataWorker.Get<MedicineMaterialTypeComboADO>(false, true, false, false);
                 mediMateTypeComboADOs = new List<MedicineMaterialTypeComboADO>();
                 //Tại màn hình kê đơn, nếu phòng mà người dùng đang làm việc có "Giới hạn thuốc được phép sử dụng" (IS_RESTRICT_MEDICINE_TYPE trong HIS_ROOM bằng true) thì danh sách thuốc khi kê thuốc trong kho chỉ hiển thị các thuốc được khai cấu hình tương ứng với phòng đấy (dữ liệu lưu trong bảng HIS_MEDICINE_TYPE_ROOM)
@@ -502,6 +511,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 col14.Width = 100;
                 col14.VisibleIndex = 10;
                 gridViewMediMaty.Columns.Add(col14);
+
+                DevExpress.XtraGrid.Columns.GridColumn col16 = new DevExpress.XtraGrid.Columns.GridColumn();
+                col16.FieldName = "DESCRIPTION";
+                col16.Caption = "Ghi chú";
+                col16.Width = 150;
+                col16.VisibleIndex = 11;
+                gridViewMediMaty.Columns.Add(col16);
 
                 if (chkPDDT.Checked)
                 {

@@ -27,6 +27,7 @@ using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
 using HIS.Desktop.Common.BankQrCode;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.IsAdmin;
@@ -87,6 +88,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         bool IsLoadFirst { get; set; }
+        RefeshReference isShowTransation;
         public frmCreateTransReqQR(Inventec.Desktop.Common.Modules.Module currentModule, TransReqQRADO ado) : base(currentModule)
         {
             InitializeComponent();
@@ -94,6 +96,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             try
             {
                 this.inputTransReq = ado;
+                this.isShowTransation = ado.DelegteShow;
                 this.currentModule = currentModule;
                 this.SetDefaultDepositPrice = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>("HIS_RS.HIS_DEPOSIT.DEFAULT_PRICE_FOR_BHYT_OUT_PATIENT");
                 string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
@@ -2152,6 +2155,10 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
                 if (frmSubSc != null)
                     frmSubSc.Close();
+                if (isShowTransation != null)
+                {
+                    isShowTransation();
+                }
             }
             catch (Exception ex)
             {

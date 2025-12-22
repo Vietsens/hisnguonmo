@@ -1,4 +1,4 @@
-﻿using HIS.Desktop.LocalStorage.HisConfig;
+﻿//using HIS.Desktop.LocalStorage.HisConfig;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using HIS.Desktop.LocalStorage.EmrConfig;
+using Inventec.Common.SignLibrary;
 namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
 {
     internal class ConfigCFG
@@ -24,21 +26,21 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         {
             try
             {
-              
-                emr2IdStorageInfo = GetValue(CONFIG_KEY_EMR_2ID_STORAGE_INFO);
-               
+                HIS.Desktop.LocalStorage.EmrConfig.ConfigLoader.Refresh();
+                emr2IdStorageInfo = GetValueFromEmr(CONFIG_KEY_EMR_2ID_STORAGE_INFO);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("emr2IdStorageInfo  input:", emr2IdStorageInfo));
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
-        private static string GetValue(string key)
+        private static string GetValueFromEmr(string key)
         {
             try
             {
-                return HisConfigs.Get<string>(key);
+                return HIS.Desktop.LocalStorage.EmrConfig.EmrConfigs.Get<string>(key);
             }
             catch (Exception ex)
             {
@@ -46,6 +48,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
             }
             return "";
         }
+       
         public static StorageConfig GetStorageConfig()
         {
             if (string.IsNullOrEmpty(emr2IdStorageInfo))

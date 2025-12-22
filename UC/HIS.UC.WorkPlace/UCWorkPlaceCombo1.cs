@@ -41,6 +41,8 @@ using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraEditors;
 using HIS.UC.WorkPlace.Validate;
+using HIS.Desktop.LocalStorage.BackendData;
+using MOS.EFMODEL.DataModels;
 
 namespace HIS.UC.WorkPlace
 {
@@ -49,6 +51,7 @@ namespace HIS.UC.WorkPlace
         List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE> worlPlaces;
         DelegateFocusMoveout focusMoveout;
         HIS.UC.WorkPlace.DelegatePlusClick plusClick;
+        DelegateGetWorkPlaceId getId;
         string searchCode;
         int positionHandleControlPatientInfo = -1;
         public UCWorkPlaceCombo1(DelegateFocusMoveout focusMoveout, HIS.UC.WorkPlace.DelegatePlusClick plusClick, List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE> worlPlaces)
@@ -125,7 +128,52 @@ namespace HIS.UC.WorkPlace
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        public UCWorkPlaceCombo1(DelegateFocusMoveout focusMoveout, HIS.UC.WorkPlace.DelegatePlusClick plusClick, DelegateGetWorkPlaceId dlgId ,List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE> worlPlaces)
+        {
+            try
+            {
+                InitializeComponent();
+                Language_ucWorkPlaceCombo();
+                this.focusMoveout = focusMoveout;
+                this.plusClick = plusClick;
+                this.worlPlaces = worlPlaces;
+                this.getId = dlgId;
+                CommonParam param = new CommonParam();
+                LoadDataCombo(cboWorkPlace1, this.worlPlaces);
+                Language_ucWorkPlaceCombo1();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        public UCWorkPlaceCombo1(DelegateFocusMoveout focusMoveout, HIS.UC.WorkPlace.DelegatePlusClick plusClick, List<MOS.EFMODEL.DataModels.HIS_WORK_PLACE> worlPlaces, DelegateGetWorkPlaceId getId, bool validate)
+        {
+            try
+            {
+                InitializeComponent();
+                Language_ucWorkPlaceCombo();
+                this.focusMoveout = focusMoveout;
+                this.plusClick = plusClick;
+                this.worlPlaces = worlPlaces;
+                this.getId = getId;
+                CommonParam param = new CommonParam();
+                LoadDataCombo(cboWorkPlace1, this.worlPlaces);
+                Language_ucWorkPlaceCombo1();
+                if (validate)
+                {
+                    ValidationCombo(true);
+                }
+                else
+                {
+                    ValidationCombo(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void Language_ucWorkPlaceCombo()
         {
             try
@@ -488,6 +536,12 @@ namespace HIS.UC.WorkPlace
                 if (cboWorkPlace1.EditValue != null)
                 {
                     cboWorkPlace1.Properties.Buttons[2].Visible = true;
+                    var work = BackendDataWorker.Get<HIS_WORK_PLACE>().Where(o => o.ID == (long)(cboWorkPlace1.EditValue ?? 0)).FirstOrDefault();
+                    Inventec.Common.Logging.LogSystem.Warn("EDIT VALUE CHANGED ####################_______________________" + (long)(cboWorkPlace1.EditValue ?? 0));
+                    if(getId != null)
+                    {
+                        getId(work);
+                    }
                 }
             }
             catch (Exception ex)

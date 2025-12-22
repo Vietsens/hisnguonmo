@@ -158,6 +158,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX = "MOS.BHYT.ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX";
         private const string KEY_HIS_DESKTOP_PLUGINS_ASSIGNPRESCRIPTION_ALLOWKIDNEYPRESOUTPATIENT = "HIS.Desktop.Plugins.AssignPrescription.AllowKidneyPresOutPatient";
         internal const string TUTORIAL_FORMAT_DAY = "HIS.Desktop.Plugins.AssignPrescription.TutorialFormatSoNgay";
+        private const string KEY_WARNING_OVER_TRANSFER = "HIS.Desktop.Plugins.RegisterV2.WarningOverMonthsTransfer";
 
         internal static string AllowKidneyPresOutPatient;
         internal static string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix;
@@ -430,6 +431,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 
         internal static string IcdCodeToApplyRestrictPatientTypeByOtherSourcePaid;
         internal static string WarningHeinPatientTypeCode;
+        internal static string WarningOverTransfer;
 
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
@@ -627,6 +629,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 GroupOption = (GetValue(CONFIG_KEY__GroupOption) == "1");
                 IsReasonRequired = (GetValue(CONFIG_KEY__IS_REASON_REQUIRED) == "1");
                 IcdCodeToApplyRestrictPatientTypeByOtherSourcePaid = GetValue(CONFIG_KEY__ICD_CODE_TO_APPLY_RESTRICT_PATIENT_TYPE_BY_OTHER_SOURCE_PAID);
+                WarningOverTransfer = GetValue(KEY_WARNING_OVER_TRANSFER);
             }
             catch (Exception ex)
             {

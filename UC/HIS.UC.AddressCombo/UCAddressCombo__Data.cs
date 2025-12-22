@@ -27,6 +27,7 @@ using System.Windows.Forms;
 using HIS.UC.AddressCombo.ADO;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Utility;
+using HIS.Desktop.Plugins.Library.RegisterConfig;
 
 namespace HIS.UC.AddressCombo
 {
@@ -49,6 +50,19 @@ namespace HIS.UC.AddressCombo
                 {
                     if (data._FocusNextUserControl != null)
                         this.dlgFocusNextUserControl = data._FocusNextUserControl;
+                    if (HisConfigCFG.HideAddressLevel)
+                    {
+                        IsNotCheckToggleAddress = true;
+                        togChangeStructAdress.IsOn = true;
+                        this.workingCommuneADO = workingCommuneADONoDistrict;
+                        SetDefaultDataToControl(true);
+                        LoadSourceNoDistrict();
+                        IsNotCheckToggleAddress = false;
+                        if (dlgReloadData != null)
+                            dlgReloadData(IsChangeStrucAdreess);
+                        SetValueNew(data);
+                        return;
+                    }
                     if ((string.IsNullOrEmpty(data.District_Code) && string.IsNullOrEmpty(data.District_Name) && IsChangeStrucAdreess) || data.IsNoDistrict || (string.IsNullOrEmpty(data.District_Code) && !string.IsNullOrEmpty(data.Province_Code) && !string.IsNullOrEmpty(data.Commune_Code)))
                     {
                         if (!togChangeStructAdress.IsOn)
@@ -152,7 +166,7 @@ namespace HIS.UC.AddressCombo
         {
             try
             {
-                var province = ((List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>)cboProvince.Properties.DataSource).FirstOrDefault(o => o.PROVINCE_NAME == data.Province_Name || o.PROVINCE_NAME.ToLower().Replace("thành phố","").Replace("tỉnh","") == data.Province_Name.ToLower().Replace("thành phố", "").Replace("tỉnh", ""));
+                var province = ((List<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>)cboProvince.Properties.DataSource).FirstOrDefault(o => o.PROVINCE_NAME == data.Province_Name || o.PROVINCE_NAME.ToLower().Replace("thành phố", "").Replace("tỉnh", "").Trim() == data.Province_Name.ToLower().Replace("thành phố", "").Replace("tỉnh", "").Trim());
                 if (province != null)
                 {
                     this.txtProvinceCode.Text = province.PROVINCE_CODE;
@@ -160,7 +174,7 @@ namespace HIS.UC.AddressCombo
                 }
                 var commune = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o =>
                 ((o.INITIAL_NAME + " " + o.COMMUNE_NAME) == data.Commune_Name || o.COMMUNE_NAME == data.Commune_Name)
-                && o.PROVINCE_CODE == (this.cboProvince.EditValue != null ? this.cboProvince.EditValue.ToString() : "") &&  o.IS_NO_DISTRICT == 1);
+                && o.PROVINCE_CODE == (this.cboProvince.EditValue != null ? this.cboProvince.EditValue.ToString() : "") && o.IS_NO_DISTRICT == 1);
                 if (commune != null)
                 {
                     this.LoadXaCombo("", commune.PROVINCE_CODE, false, true);

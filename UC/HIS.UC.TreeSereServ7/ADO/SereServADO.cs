@@ -36,6 +36,9 @@ namespace HIS.UC.TreeSereServ7
         public bool? IsUsed { get; set; }
         public long? SAMPLE_TIME { get; set; }
         public long? RECEIVE_SAMPLE_TIME { get; set; }
+        public HIS_BABY Baby { get; set; }
+        public V_HIS_SERE_SERV_TEIN Tein { get; set; }
+        public bool IsLastLevel { get; set; }
         public SereServADO()
         {
         }

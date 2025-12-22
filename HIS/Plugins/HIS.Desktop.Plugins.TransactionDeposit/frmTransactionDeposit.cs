@@ -55,6 +55,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -1919,17 +1920,19 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<V_HIS_TRANSACTION>(UriStores.HIS_TRANSACTION_CREATE_DEPOSIT, ApiConsumers.MosConsumer, data, param);
+
                 if (rs != null)
+
                 {
                     success = true;
                     AddLastAccountToLocal();
-                   // this.resultTranDeposit = rs;
+                   this.resultTranDeposit = rs;
                     SetValueContronlDepositSuccess();
                     UpdateDictionaryNumOrderAccountBook(accountBook);
 
-                  
+                   
 
-                  
+
                     if (isLuuKy)
                     {
                         if (isCreateQRContinue && cboPayForm.EditValue != null && Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
@@ -3167,15 +3170,14 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             {
                 if (IsPayFormQR())
                 {
-                    var result = MessageBox.Show(
-                        "Thanh toán QR chưa thể tự động tạo hóa đơn điện tử bạn có muốn tiếp tục?",
+                    MessageBox.Show(
+                       "Không cho phép thanh toán QR với \"Lưu ký\".",
                         "Thông báo",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
                     );
-                    if (result != DialogResult.Yes)
-                        return;
-                }
+                    return;
+                } 
                 isSaveAndSign = true;
                 positionHandleControl = -1;
                 if (!btnSaveAndSign.Enabled || !dxValidationProvider1.Validate() || this.treatment == null)

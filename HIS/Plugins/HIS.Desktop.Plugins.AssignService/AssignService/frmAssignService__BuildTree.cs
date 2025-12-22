@@ -238,7 +238,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         item.TEST_SAMPLE_TYPE_NAME = null;
                         item.SereServEkipADO = null;
                         item.NumberOfTimes = 1;
-                        item.IS_MULTIPLE_EXECUTE = BackendDataWorker.Get<HIS_SERVICE>().Where(o => o.ID == item.SERVICE_ID).FirstOrDefault().IS_MULTIPLE_EXECUTE;
                     }
                 }
                 else

@@ -128,7 +128,8 @@ namespace HIS.Desktop.Modules.Config
                             item.KeyCode == "KEY__ACS_BASE_URI" ||
                             item.KeyCode == "KEY__FSS_BASE_URI" ||
                             item.KeyCode == "KEY__LIS_BASE_URI" ||
-                            item.KeyCode == "KEY__SCN_BASE_URI")
+                            item.KeyCode == "KEY__SCN_BASE_URI" ||
+                            item.KeyCode == "KEY__MCH_BASE_URI")
                         {
                             var ado = new ElementNodeADO();
                             Inventec.Common.Mapper.DataObjectMapper.Map<ElementNodeADO>(ado, item);

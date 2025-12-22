@@ -46,9 +46,11 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -217,7 +219,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                             }
                         }
                     }
-                }           
+                }
             }
             catch (Exception ex)
             {
@@ -294,7 +296,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
         private void FillImageFromModuleCamereToUC(object dataImage)
         {
             try
-            {                
+            {
                 if (dataImage != null)
                 {
                     var originalImg = (System.Drawing.Image)dataImage;
@@ -652,7 +654,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     this.currentCCCDInfo = info;
                     btnRelease.Enabled = true;
 
-                    XtraMessageBox.Show("Đọc CCCD thành công!", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Information);                   
+                    XtraMessageBox.Show("Đọc CCCD thành công!", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
@@ -680,7 +682,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     return;
                 }
 
-                if (picSignPatient.Image == null)
+                if (picSignPatient.Image == null || isDefaultImageLoaded)
                 {
                     Inventec.Common.Logging.LogSystem.Warn("picSignPatient.Image == null");
                     param.Messages.Add("Vui lòng ký và lưu chữ ký trước khi phát hành chứng thư.");
@@ -754,6 +756,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     WaitingManager.Show();
                     success = true;
                     Inventec.Common.Logging.LogSystem.Info("Phát hành chứng thư thành công. ID = " + result.ID);
+                    ProcessStore2IDStorage(result, sdo);
                     XtraMessageBox.Show("Phát hành chứng thư thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     WaitingManager.Hide();
                     btnRelease.Enabled = false;
@@ -772,5 +775,285 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 XtraMessageBox.Show("Có lỗi khi phát hành chứng thư: " + ex.Message, "Thông báo");
             }
         }
+
+        private DateTime? Parse2IDDate(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input)) return null;
+
+            input = input.Trim();
+
+            // Một số format hay gặp
+            string[] formats =
+            {
+        "yyyy-MM-dd",
+        "yyyy/MM/dd",
+        "dd/MM/yyyy",
+        "d/M/yyyy",
+        "yyyyMMdd",
+        "yyyy-MM-ddTHH:mm:ss",
+        "yyyy-MM-ddTHH:mm:ss.fff",
+        "o" // ISO 8601
+            };
+
+            if (DateTime.TryParseExact(input, formats, CultureInfo.InvariantCulture,
+                    DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal, out var dt))
+                return dt;
+
+            // fallback nếu input là kiểu "0001-01-01T00:00:00" hoặc format lạ
+            if (DateTime.TryParse(input, CultureInfo.InvariantCulture,
+                    DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal, out dt))
+                return dt;
+
+            return null;
+        }
+
+        private void ProcessStore2IDStorage(EMR_PATIENT_CERTIFICATE certificate, EmrPatientCertificateRegisterSDO sdo)
+        {
+            try
+            {
+
+                HIS.Desktop.LocalStorage.EmrConfig.ConfigLoader.Refresh();
+                var cfgStorage = HIS.Desktop.LocalStorage.EmrConfig.EmrConfigs.Get<string>("EMR.2ID.STORAGE_INFO");
+                //.Where(o => o.KEY == "EMR.2ID.STORAGE_INFO")
+                //.FirstOrDefault();
+
+                if (cfgStorage == null || string.IsNullOrWhiteSpace(cfgStorage))
+                {
+                    Inventec.Common.Logging.LogSystem.Info("ProcessStore2IDStorage: Không tìm thấy config EMR.2ID.STORAGE_INFO, tiếp tục xử lý như hiện tại");
+                    return;
+                }
+
+                Inventec.Common.Logging.LogSystem.Info("ProcessStore2IDStorage: Tìm thấy config EMR.2ID.STORAGE_INFO, bắt đầu lưu trữ 2ID");
+
+                // Tách giá trị từ config theo định dạng: <URL>|<keyAuth>|<secretKey>
+                string[] configParts = cfgStorage.Split('|');
+                if (configParts.Length < 3)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format("ProcessStore2IDStorage - Config không đúng định dạng. Expected: <URL>|<keyAuth>|<secretKey>. Received: {0}", cfgStorage));
+                    return;
+                }
+
+                string storageUrl = configParts[0].Trim();
+                string keyAuth = configParts[1].Trim();
+                string secretKey = configParts[2].Trim();
+
+                Inventec.Common.Logging.LogSystem.Info(string.Format("ProcessStore2IDStorage - Config: URL={0}, KeyAuth={1}, SecretKey=***", storageUrl, keyAuth));
+
+                // Validate URL
+                if (string.IsNullOrWhiteSpace(storageUrl) ||
+                    (!storageUrl.StartsWith("http://") && !storageUrl.StartsWith("https://")))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("ProcessStore2IDStorage: URL không hợp lệ: " + storageUrl);
+                    return;
+                }
+
+                // Khởi tạo thư viện TwoIDStorageIntegration
+                var processor = new HIS.Desktop.Plugins.Library.TwoIDStorageIntegration.TwoIDStorageIntegrationProcessor();
+
+                // Tạo transactionId và hash
+                string transactionId = Guid.NewGuid().ToString();
+                //string hash = GenerateHash(sdo.citizenIdentify, transactionId, secretKey);
+                string hash = GenerateExactHash(keyAuth /* apiKey */, transactionId, secretKey);
+
+                Inventec.Common.Logging.LogSystem.Info(string.Format("ProcessStore2IDStorage - TransactionId={0}, Hash={1}", transactionId, hash.Substring(0, 10) + "..."));
+
+                // Chuẩn bị danh sách đường dẫn file
+                List<string> faceImages = new List<string>();
+                List<string> fingerprints = new List<string>();
+                List<string> handSignatures = new List<string>();
+
+                // Convert base64 images sang file tạm
+                string tempFolder = Path.Combine(Path.GetTempPath(), "2IDStorage_" + DateTime.Now.ToString("yyyyMMdd"));
+                if (!Directory.Exists(tempFolder))
+                {
+                    Directory.CreateDirectory(tempFolder);
+                }
+                if (!string.IsNullOrWhiteSpace(sdo.faceImage))
+                {
+                    // Nếu base64 có prefix data:image/...;base64, thì cắt đi
+                    string faceBase64 = NormalizeBase64(sdo.faceImage);
+
+                    faceImages.Add(faceBase64);
+
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "ProcessStore2IDStorage: Added face image base64, length=" + faceBase64.Length);
+                }
+                if (!string.IsNullOrWhiteSpace(sdo.signatureImage))
+                {
+                    string signatureBase64 = NormalizeBase64(sdo.signatureImage);
+
+                    handSignatures.Add(signatureBase64);
+
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "ProcessStore2IDStorage: Added signature base64, length=" + signatureBase64.Length);
+                }
+
+                //Lưu ảnh khuôn mặt
+                //if (!string.IsNullOrWhiteSpace(sdo.faceImage))
+                //{
+                //    string facePath = SaveBase64ToFile(sdo.faceImage, tempFolder, sdo.citizenIdentify + "_face.jpg");
+                //    if (!string.IsNullOrWhiteSpace(facePath))
+                //    {
+                //        faceImages.Add(facePath);
+                //        Inventec.Common.Logging.LogSystem.Debug("ProcessStore2IDStorage: Saved face image to " + facePath);
+                //    }
+                //}
+
+                //Lưu chữ ký
+                //if (!string.IsNullOrWhiteSpace(sdo.signatureImage))
+                //{
+                //    string signaturePath = SaveBase64ToFile(sdo.signatureImage, tempFolder, sdo.citizenIdentify + "_signature.png");
+                //    if (!string.IsNullOrWhiteSpace(signaturePath))
+                //    {
+                //        handSignatures.Add(signaturePath);
+                //        Inventec.Common.Logging.LogSystem.Debug("ProcessStore2IDStorage: Saved signature image to " + signaturePath);
+                //    }
+                //}
+                var dob = Parse2IDDate(sdo.dateOfBirth) ?? DateTime.MinValue;
+                var issue = Parse2IDDate(sdo.dateOfProvide) ?? DateTime.MinValue;
+                var exp = Parse2IDDate(sdo.dateOfExpired) ?? DateTime.MinValue;
+
+                var citizenInput = new HIS.Desktop.Plugins.Library.TwoIDStorageIntegration.TwoIDApiRequestInput()
+                {
+                    citizenNumber = sdo.citizenIdentify,
+                    fullName = sdo.fullName,
+                    dateOfBirth = dob,
+                    residencePlace = sdo.placeOfProvide,
+                    issueDate = issue,
+                    expiredDate = exp,
+                    idCardVerifyResult = "VERIFIED"
+                };
+                bool storeResult = processor.StoreCitizenInfo(
+                    storageUrl,
+                    citizenInput,
+                    fingerprints,
+                    faceImages,
+                    handSignatures,
+                    keyAuth,
+                    transactionId,
+                    hash
+                );
+
+                // Xóa file tạm
+                CleanupTempFiles(faceImages);
+                CleanupTempFiles(handSignatures);
+
+                if (storeResult)
+                {
+                    Inventec.Common.Logging.LogSystem.Info(string.Format("ProcessStore2IDStorage: Lưu trữ 2ID thành công cho certificate ID={0}, CCCD={1}", certificate.ID, sdo.citizenIdentify));
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format("ProcessStore2IDStorage: Lưu trữ 2ID thất bại cho certificate ID={0}, CCCD={1}", certificate.ID, sdo.citizenIdentify));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error("ProcessStore2IDStorage: Lỗi khi xử lý lưu trữ 2ID", ex);
+                // Không throw exception để không ảnh hưởng đến luồng phát hành chứng thư chính
+            }
+        }
+        private string NormalizeBase64(string base64)
+        {
+            if (string.IsNullOrWhiteSpace(base64))
+                return base64;
+
+            int commaIndex = base64.IndexOf(',');
+            if (base64.StartsWith("data:", StringComparison.OrdinalIgnoreCase)
+                && commaIndex > 0)
+            {
+                return base64.Substring(commaIndex + 1);
+            }
+
+            return base64;
+        }
+        private string SaveBase64ToFile(string base64Data, string folderPath, string fileName)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(base64Data))
+                    return null;
+
+                // Xóa prefix data:image nếu có
+                string base64Clean = base64Data;
+                if (base64Data.Contains(","))
+                {
+                    base64Clean = base64Data.Substring(base64Data.IndexOf(",") + 1);
+                }
+
+                // Remove whitespace
+                base64Clean = base64Clean.Replace("\r", "").Replace("\n", "").Replace(" ", "");
+
+                byte[] imageBytes = Convert.FromBase64String(base64Clean);
+                string filePath = Path.Combine(folderPath, fileName);
+
+                File.WriteAllBytes(filePath, imageBytes);
+
+                return filePath;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error("SaveBase64ToFile error: " + fileName, ex);
+                return null;
+            }
+        }
+
+        private void CleanupTempFiles(List<string> filePaths)
+        {
+            if (filePaths == null || filePaths.Count == 0)
+                return;
+
+            foreach (var filePath in filePaths)
+            {
+                try
+                {
+                    if (!string.IsNullOrWhiteSpace(filePath) && File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                        Inventec.Common.Logging.LogSystem.Debug("CleanupTempFiles: Deleted " + filePath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("CleanupTempFiles: Cannot delete " + filePath, ex);
+                }
+            }
+        }
+
+
+        private string GenerateExactHash(string apiKey, string transaction, string secretKey)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(transaction) || string.IsNullOrEmpty(secretKey))
+                    return string.Empty;
+
+                // String message = String.format("%s_%s", apiKey, transaction);
+                string message = string.Format("{0}_{1}", apiKey, transaction);
+
+                byte[] keyBytes = Encoding.UTF8.GetBytes(secretKey);
+                byte[] dataBytes = Encoding.UTF8.GetBytes(message);
+
+                using (var hmac = new HMACSHA512(keyBytes))
+                {
+                    byte[] result = hmac.ComputeHash(dataBytes);
+
+                    // Java: sb.append(String.format("%02x", b & 0xff));
+                    var sb = new StringBuilder(result.Length * 2);
+                    foreach (byte b in result)
+                    {
+                        sb.Append((b & 0xff).ToString("x2")); // lowercase hex
+                    }
+                    return sb.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error("GenerateExactHash error", ex);
+                return string.Empty;
+            }
+        }
+
     }
+
 }

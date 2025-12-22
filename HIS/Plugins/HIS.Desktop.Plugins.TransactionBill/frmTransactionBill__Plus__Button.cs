@@ -129,8 +129,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 this.positionHandleControl = -1;
                 if (!btnSaveAndSign.Enabled)
                     return;
-                if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show("Thanh toán QR chưa thể tự động tạo hóa đơn điện tử bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
-                    return;
+                //if (cboPayForm.EditValue != null && Int64.Parse(cboPayForm.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR && MessageBox.Show("Thanh toán QR chưa thể tự động tạo hóa đơn điện tử bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                //    return;
                 //if (cboPayForm.EditValue != null && Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
                 //{
                 //    btnQr.Enabled = true;

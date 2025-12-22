@@ -50,7 +50,7 @@ namespace HIS.UC.TreeSereServ7.Run
             try
             {
                 SereServADOs = new List<SereServADO>();
-                if (sereServInputs != null)
+                if (sereServInputs != null && sereServInputs.Count > 0)
                 {
                     List<HIS_SERVICE_REQ> listServiceReq = new List<HIS_SERVICE_REQ>();
                     CommonParam param_ = new CommonParam();
@@ -67,6 +67,16 @@ namespace HIS.UC.TreeSereServ7.Run
                     if (data_ != null && data_.Data.Count() > 0)
                     {
                         listServiceReq = data_.Data;
+                    }
+                    List<V_HIS_SERE_SERV_TEIN> dataTein = new List<V_HIS_SERE_SERV_TEIN>();
+                    if (this.IsGetOtherData)
+                    {
+                        CommonParam paramTein = new CommonParam();
+                        HisSereServTeinFilter filterTein = new HisSereServTeinFilter();
+                        filterTein.SERE_SERV_IDs = sereServInputs.Select(o => o.ID).Distinct().ToList();
+                        filterTein.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                        dataTein = new BackendAdapter(paramTein).Get<List<V_HIS_SERE_SERV_TEIN>>("api/HisSereServTein/GetView", ApiConsumers.MosConsumer, filterTein, paramTein);
+
                     }
                     var sereServs = (from r in sereServInputs select new SereServADO(r, listServiceReq)).ToList();
                     List<SereServADO> sereServResults = new List<SereServADO>();
@@ -99,6 +109,7 @@ namespace HIS.UC.TreeSereServ7.Run
                         SereServADO ssRootSety = new SereServADO();
                         ssRootSety.CONCRETE_ID__IN_SETY = listBySety.First().TDL_SERVICE_TYPE_ID + "";
                         ssRootSety.TDL_SERVICE_CODE = listBySety.First().SERVICE_TYPE_NAME;
+                        ssRootSety.AMOUNT = listBySety.Count;
                         SereServADOs.Add(ssRootSety);
                         int d = 0;
                         foreach (var item in listBySety)
@@ -122,10 +133,81 @@ namespace HIS.UC.TreeSereServ7.Run
                                 item.NOTE_ADO = "";
                             }
                             SereServADOs.Add(item);
+                            //Kết quả xét nghiệm
+                            if (this.IsGetOtherData)
+                            {
+                                var teinResults = dataTein.Where(o => o.SERE_SERV_ID == item.ID).ToList();
+                                if (teinResults != null && teinResults.Count > 0)
+                                {
+                                    foreach (var tein in teinResults)
+                                    {
+                                        SereServADO childResult = new SereServADO();
+                                        childResult.TDL_SERVICE_CODE = "     " + tein.TEST_INDEX_CODE;
+                                        childResult.TDL_SERVICE_NAME = "     " + tein.TEST_INDEX_NAME;
+                                        childResult.NOTE_ADO = String.Format("Kết quả xét nghiệm: {0}", tein.VALUE);
+                                        childResult.PARENT_ID__IN_SETY = item.CONCRETE_ID__IN_SETY;
+                                        childResult.CONCRETE_ID__IN_SETY = item.CONCRETE_ID__IN_SETY + "_" + tein.ID;
+                                        childResult.Tein = tein;
+                                        SereServADOs.Add(childResult);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+                List<HIS_BABY> dataBaby = new List<HIS_BABY>();
+                if (this.IsGetOtherData && Treatment != null && Treatment.ID > 0)
+                {
+                    CommonParam paramTein = new CommonParam();
+                    HisBabyFilter filterbaby = new HisBabyFilter();
+                    filterbaby.TREATMENT_ID = Treatment.ID;
+                    dataBaby = new BackendAdapter(paramTein).Get<List<HIS_BABY>>("api/HisBaby/Get", ApiConsumers.MosConsumer, filterbaby, paramTein);
+                    if (dataBaby != null && dataBaby.Count > 0)
+                    {
+                        dataBaby = dataBaby.OrderBy(o => o.BABY_ORDER).ToList();
+                        SereServADO ssRootChild = new SereServADO();
+                        ssRootChild.CONCRETE_ID__IN_SETY = Guid.NewGuid().ToString();
+                        ssRootChild.TDL_SERVICE_CODE = "Thông tin trẻ sơ sinh";
+                        ssRootChild.AMOUNT = dataBaby.Count;
+                        ssRootChild.IsLastLevel = true;
+                        SereServADOs.Add(ssRootChild);
+                        int d = 0;
+                        foreach (var item in dataBaby)
+                        {
+                            SereServADO child = new SereServADO();
+                            d++;
+                            child.CONCRETE_ID__IN_SETY = ssRootChild.CONCRETE_ID__IN_SETY + "_" + d;
+                            child.PARENT_ID__IN_SETY = ssRootChild.CONCRETE_ID__IN_SETY;
+                            child.IsLeaf = true;
+                            child.IsLastLevel = true;
+                            // Gắn thông tin trẻ sơ sinh vào SereServADO
+                            string genderText = item.GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE ? "Nam" :
+                                               item.GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__FEMALE ? "Nữ" : "";
+
+                            child.TDL_SERVICE_CODE = item.BABY_ORDER != null ? String.Format("Con {0}", item.BABY_ORDER ?? 0) : "";
+                            child.TDL_SERVICE_NAME = String.Format("{0} ({2}) - {1}",
+                                !String.IsNullOrEmpty(item.BABY_NAME) ? item.BABY_NAME : "Chưa đặt tên",
+                                genderText, Inventec.Common.DateTime.Convert.TimeNumberToDateString(item.BORN_TIME ?? 0));
+                            child.AMOUNT = 1;
+                            List<string> babyInfo = new List<string>();
+                            if (item.WEIGHT.HasValue)
+                                babyInfo.Add(String.Format("Cân nặng: {0} g", item.WEIGHT.Value));
+                            if (item.HEAD.HasValue)
+                                babyInfo.Add(String.Format("Vòng đầu: {0} cm", item.HEAD.Value));
+                            if (item.HEIGHT.HasValue)
+                                babyInfo.Add(String.Format("Chiều cao: {0} cm", item.HEIGHT.Value));
+                            child.NOTE_ADO = String.Join(" - ", babyInfo) + ". " + item.NOTE;
+                            child.Baby = item;
+                            SereServADOs.Add(child);
+
                         }
                     }
                 }
-                SereServADOs = SereServADOs.OrderBy(o => o.PARENT_ID__IN_SETY).ThenBy(p => p.TDL_SERVICE_CODE).ThenBy(o => o.TDL_SERVICE_NAME).ToList();
+
+
+                SereServADOs = SereServADOs.OrderBy(p => p.IsLastLevel).ThenBy(o => o.PARENT_ID__IN_SETY).ThenBy(o=>o.TDL_SERVICE_CODE).ThenBy(o => o.TDL_SERVICE_NAME).ToList();
                 records = new BindingList<SereServADO>(SereServADOs);
                 trvService.DataSource = records;
                 trvService.ExpandAll();

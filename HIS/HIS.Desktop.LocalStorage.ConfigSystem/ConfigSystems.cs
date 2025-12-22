@@ -50,5 +50,6 @@ namespace HIS.Desktop.LocalStorage.ConfigSystem
         public static string URI_API_CRM = "";
         public static string URI_API_FSS_FOR_CRM = "";
         public static string URI_API_HPS = "";
+        public static string URI_API_MCH = "";
     }
 }

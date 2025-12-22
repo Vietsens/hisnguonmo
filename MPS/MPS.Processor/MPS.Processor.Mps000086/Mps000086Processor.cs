@@ -29,7 +29,6 @@ using MPS.Processor.Mps000086.PDO;
 using FlexCel.Report;
 using MPS.ProcessorBase;
 using Inventec.Common.Logging;
-using HIS.Desktop.LocalStorage.HisConfig;
 
 namespace MPS.Processor.Mps000086
 {
@@ -417,7 +416,7 @@ namespace MPS.Processor.Mps000086
                                 ado.OTHER_PAY_SOURCE_NAME = data.OTHER_PAY_SOURCE_NAME;
                                 if (rdo._MedicineUserForms != null && rdo._MedicineUserForms.Count > 0)
                                 {
-                                    ado.MEDICINE_USE_FORM_NUM_ORDER = rdo._MedicineUserForms.Where(o => o.ID == data.MEDICINE_USE_FORM_ID).First().NUM_ORDER;
+                                    ado.MEDICINE_USE_FORM_NUM_ORDER = rdo._MedicineUserForms.Where(o => o.ID == data.MEDICINE_USE_FORM_ID).FirstOrDefault()!= null ? rdo._MedicineUserForms.Where(o => o.ID == data.MEDICINE_USE_FORM_ID).FirstOrDefault().NUM_ORDER : 0;
                                 }
 
                             }

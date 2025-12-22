@@ -15,31 +15,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraGrid.Views.Base;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Plugins.MediStockSummaryByExpireDate.ADO;
+using HIS.Desktop.Plugins.MediStockSummaryByExpireDate.Base;
+using HIS.UC.HisBloodTypeInStock;
+using HIS.UC.HisMateInStockByExpireDate;
+using HIS.UC.HisMediInStockByExpireDate;
+using Inventec.Common.Adapter;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.SDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.UC.HisMediInStockByExpireDate;
-using HIS.Desktop.LocalStorage.BackendData;
-using MOS.EFMODEL.DataModels;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using Inventec.Desktop.Common.Message;
-using Inventec.Common.Adapter;
-using Inventec.Core;
-using HIS.Desktop.ApiConsumer;
-using MOS.SDO;
-using HIS.UC.HisMateInStockByExpireDate;
-using HIS.Desktop.Plugins.MediStockSummaryByExpireDate.ADO;
-using HIS.UC.HisBloodTypeInStock;
-using HIS.Desktop.Plugins.MediStockSummaryByExpireDate.Base;
-using Inventec.Desktop.Common.LanguageManager;
-using System.Resources;
 
 namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
 {
@@ -68,6 +69,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        List<V_HIS_MEDI_STOCK> dataMediStocks = new List<V_HIS_MEDI_STOCK>();
 
         public UCMediStockSummaryByExpireDate(Inventec.Desktop.Common.Modules.Module _moduleData)
             : base(_moduleData)
@@ -89,7 +91,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+          
         private void UCMediStockSummaryByExpireDate_Load(object sender, EventArgs e)
         {
             try
@@ -101,6 +103,19 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 LoadDataGridMediStock();
               
                 ShowUCControl();
+                chkMediStock.CheckedChanged += chkMediStock_CheckedChanged;
+                cboExpriedDate.SelectedIndexChanged += cboExpriedDate_SelectedIndexChanged;
+                // Ensure control state is saved when the form is closing or this control is disposed
+                try
+                {
+                    var form = this.FindForm();
+                    if (form != null)
+                    {
+                        form.FormClosing += (s, ev) => { try { SaveControlState(); } catch { } };
+                    }
+                }
+                catch { }
+                this.Disposed += (s, ev) => { try { SaveControlState(); } catch { } };
             }
             catch (Exception ex)
             {
@@ -143,11 +158,83 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
 
                             }
                         }
+                        if (item.KEY == chkMediStock.Name)
+                        {
+                            chkMediStock.Checked = item.VALUE == "1";
+                        }
                        
                     }
                 }
 
                 isNotLoadWhileChangeControlStateInFirst = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SaveControlState()
+        {
+            try
+            {
+                if (this.currentControlStateRDO == null)
+                    this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                // helper to add or update entry with MODULE_LINK set
+                Action<string, string> upsert = (key, value) =>
+                {
+                    var existing = this.currentControlStateRDO.FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == ModuleLinkName);
+                    if (existing != null)
+                    {
+                        existing.VALUE = value;
+                    }
+                    else
+                    {
+                        var rdo = new HIS.Desktop.Library.CacheClient.ControlStateRDO
+                        {
+                            KEY = key,
+                            VALUE = value,
+                            MODULE_LINK = ModuleLinkName
+                        };
+                        this.currentControlStateRDO.Add(rdo);
+                    }
+                };
+
+                upsert(cboExpriedDate.Name, cboExpriedDate.SelectedIndex.ToString());
+                upsert(chkMediStock.Name, chkMediStock.Checked ? "1" : "0");
+
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkMediStock_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!isNotLoadWhileChangeControlStateInFirst)
+                {
+                    SaveControlState();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboExpriedDate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!isNotLoadWhileChangeControlStateInFirst)
+                {
+                    SaveControlState();
+                }
             }
             catch (Exception ex)
             {
@@ -311,14 +398,19 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 packageNumberCol.VisibleIndex = 17;
                 ado.HisMediInStockByExpireDateColumns.Add(packageNumberCol);
 
+                //Column kho
+                HisMediInStockByExpireDateColumn mediStockCol = new HisMediInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDI_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "MEDI_STOCK_NAME", 100, false);
+                mediStockCol.VisibleIndex = 18;
+                ado.HisMediInStockByExpireDateColumns.Add(mediStockCol);
+
                 //Column số đăng ký
                 HisMediInStockByExpireDateColumn registerNumberCol = new HisMediInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_REGISTER_NUMBER", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "REGISTER_NUMBER", 100, false);
-                registerNumberCol.VisibleIndex = 18;
+                registerNumberCol.VisibleIndex = 19;
                 ado.HisMediInStockByExpireDateColumns.Add(registerNumberCol);
 
                 //Column nhà cung cấp
                 HisMediInStockByExpireDateColumn supplierNameCol = new HisMediInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SUPPLIER_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "SUPPLIER_NAME", 100, false);
-                supplierNameCol.VisibleIndex = 19;
+                supplierNameCol.VisibleIndex = 20;
                 ado.HisMediInStockByExpireDateColumns.Add(supplierNameCol);
                 //Column số lượng cảnh báo
                 //HisMediInStockByExpireDateColumn alertMinInStockCol = new HisMediInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_ALERT_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "ALERT_MIN_IN_STOCK", 100, false);
@@ -403,10 +495,12 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 impPriceCol.Format.FormatString = "#,##0.0000";
                 impPriceCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.HisMateInStockByExpireDateColumns.Add(impPriceCol);
+
                 //Column VAT %
                 HisMateInStockByExpireDateColumn impVatRatioCol = new HisMateInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_IMP_VAT_RATIO", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "IMP_VAT_RATIO_DISPLAY", 100, false);
                 impVatRatioCol.VisibleIndex = 8;
                 ado.HisMateInStockByExpireDateColumns.Add(impVatRatioCol);
+
                 //Column thành tiền
                 HisMateInStockByExpireDateColumn totalPriceCol = new HisMateInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_TOTAL_PRICE", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TOTAL_PRICE", 100, false);
                 totalPriceCol.VisibleIndex = 9;
@@ -414,6 +508,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 totalPriceCol.Format.FormatString = "#,##0.0000";
                 totalPriceCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.HisMateInStockByExpireDateColumns.Add(totalPriceCol);
+
                 //Column hạn sử dụng
                 //HisMateInStockByExpireDateColumn expriredDateCol = new HisMateInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_EXPIRED_DATE", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "EXPIRED_DATE_DISPLAY", 100, false);
                 //expriredDateCol.VisibleIndex = 8;
@@ -422,14 +517,22 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 HisMateInStockByExpireDateColumn bidNumberCol = new HisMateInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_BID_NUMBER", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "BID_NUMBER", 100, false);
                 bidNumberCol.VisibleIndex = 10;
                 ado.HisMateInStockByExpireDateColumns.Add(bidNumberCol);
+
                 //Column số lô
                 HisMateInStockByExpireDateColumn packageNumberCol = new HisMateInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_PACKAGE_NUMBER", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "PACKAGE_NUMBER", 100, false);
                 packageNumberCol.VisibleIndex = 11;
                 ado.HisMateInStockByExpireDateColumns.Add(packageNumberCol);
+
+                //Column kho
+                HisMateInStockByExpireDateColumn mediStockCol = new HisMateInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDI_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "MEDI_STOCK_NAME", 100, false);
+                mediStockCol.VisibleIndex = 11;
+                ado.HisMateInStockByExpireDateColumns.Add(mediStockCol);
+
                 //Column số đăng ký
                 HisMateInStockByExpireDateColumn registerNumberCol = new HisMateInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_REGISTER_NUMBER", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "REGISTER_NUMBER", 100, false);
                 registerNumberCol.VisibleIndex = 12;
                 ado.HisMateInStockByExpireDateColumns.Add(registerNumberCol);
+
                 //Column nhà cung cấp
                 HisMateInStockByExpireDateColumn supplierNameCol = new HisMateInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SUPPLIER_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "SUPPLIER_NAME", 100, false);
                 supplierNameCol.VisibleIndex = 13;
@@ -512,11 +615,27 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
 
                         //Thuốc
                         MOS.Filter.HisMedicineStockViewFilter mediFilter = new MOS.Filter.HisMedicineStockViewFilter();
+                        if (chkMediStock.Checked)
+                        {
+                            mediFilter.INCLUDE_MEDI_STOCK = true;
+                        }
+                        else
+                        {
+                            mediFilter.INCLUDE_MEDI_STOCK = false;
+                        }
+
                         mediFilter.INCLUDE_EMPTY = chkViewLineZero.Checked;
                         mediFilter.MEDI_STOCK_IDs = this.mediStockIds;
                         mediFilter.INCLUDE_BASE_AMOUNT = isIncludeBaseAmount;
                         var lstMediInStocks = new BackendAdapter(param).Get<List<List<HisMedicineInStockSDO>>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE_BY_EXPIRED_DATE, ApiConsumers.MosConsumer, mediFilter, param);
                         List<long> _MedicineTypeIds = new List<long>();
+                        List<V_HIS_MEDI_STOCK> lstMediStock = new List<V_HIS_MEDI_STOCK>();
+                        if (chkMediStock.Checked)
+                        {
+                            List<long> MediStockIds = lstMediInStocks.SelectMany(x => x).Select(x => x.MEDI_STOCK_ID ?? 0).Distinct().ToList();
+                            lstMediStock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => MediStockIds.Contains(p.ID)).ToList();
+                        }
+
                         if (lstMediInStocks != null && lstMediInStocks.Count > 0 && timeToTal > 0)
                         {
 
@@ -574,14 +693,14 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                             }
                         }
                         
-                        hisMediInStockProcessor.Reload(ucMedicineInfo, lstParent, _MedicineTypeIds);
+                        hisMediInStockProcessor.Reload(ucMedicineInfo, lstParent, _MedicineTypeIds, lstMediStock);
                         var list = hisMediInStockProcessor.GetListTreeView(ucMedicineInfo);
                         count =list !=null && list.Count > 0 ? list.Where(o => o.IS_MEDI_MATE).ToList().Count():0;
                   
                     }
                 }
                 else if (chkMaterial.Checked)
-                {
+                { 
                     if (this.ucMaterialInfo != null)
                     {
                         this.panelControlMediMate.Controls.Add(this.ucMaterialInfo);
@@ -589,13 +708,27 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
 
                         //Vật tư
                         MOS.Filter.HisMaterialStockViewFilter mateFilter = new MOS.Filter.HisMaterialStockViewFilter();
+                        if (chkMediStock.Checked)
+                        {
+                            mateFilter.INCLUDE_MEDI_STOCK = true;
+                        }
+                        else
+                        {
+                            mateFilter.INCLUDE_MEDI_STOCK = false;
+                        }
+
                         mateFilter.INCLUDE_EMPTY = chkViewLineZero.Checked;
                         mateFilter.MEDI_STOCK_IDs = this.mediStockIds;
                         mateFilter.INCLUDE_BASE_AMOUNT = isIncludeBaseAmount;
                         var lstMateInStocks = new BackendAdapter(param).Get<List<List<HisMaterialInStockSDO>>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE_EXPRIRED_DATE, ApiConsumers.MosConsumer, mateFilter, param);
 
                         List<long> _MaterialTypeIds = new List<long>();
-
+                        List<V_HIS_MEDI_STOCK> lstMediStock = new List<V_HIS_MEDI_STOCK>();
+                        if (chkMediStock.Checked)
+                        {
+                            List<long> MediStockIds = lstMateInStocks.SelectMany(x => x).Select(x => x.MEDI_STOCK_ID ?? 0).Distinct().ToList();
+                            lstMediStock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => MediStockIds.Contains(p.ID)).ToList();
+                        }
                         if (lstMateInStocks != null && lstMateInStocks.Count > 0 && timeToTal > 0)
                         {
                             if (key == 0 || key == 4)
@@ -654,7 +787,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                             }
                         }
                         
-                        hisMateInStockProcessor.Reload(ucMaterialInfo, lstParent, _MaterialTypeIds);
+                        hisMateInStockProcessor.Reload(ucMaterialInfo, lstParent, _MaterialTypeIds, lstMediStock);
                         var list = hisMateInStockProcessor.GetListTreeView(ucMaterialInfo);
                         count = list != null && list.Count > 0 ? list.Where(o => o.IS_MEDI_MATE).ToList().Count() : 0;
                     }
@@ -678,16 +811,25 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 var _WorkPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.RoomId);
                 if (_WorkPlace != null)
                 {
-                    var _MediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => p.DEPARTMENT_ID == _WorkPlace.DepartmentId).OrderBy(p => p.MEDI_STOCK_NAME).ToList();
-                    if (_MediStocks != null && _MediStocks.Count > 0)
+
+                    var datas = BackendDataWorker.Get<V_HIS_USER_ROOM>().Where(p => p.LOGINNAME.Trim() == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName().Trim() && _WorkPlace.BranchId == p.BRANCH_ID).ToList();
+                    
+                    if (datas != null)
                     {
-                        gridControlMediStock.DataSource = _MediStocks;
-                        var data = _MediStocks.FirstOrDefault(p => p.ROOM_ID == this.RoomId);
+                        List<long> roomIds = datas.Select(p => p.ROOM_ID).ToList();
+                        dataMediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => roomIds.Contains(p.ROOM_ID)).ToList();
+                    }
+
+                    //var _MediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => p.ROOM_ID == _WorkPlace.RoomId).OrderBy(p => p.MEDI_STOCK_NAME).ToList();
+                    if (dataMediStocks != null && dataMediStocks.Count > 0)
+                    {
+                        gridControlMediStock.DataSource = dataMediStocks;
+                        var data = dataMediStocks.FirstOrDefault(p => p.ROOM_ID == this.RoomId);
                         if (data != null)
                         {
                             this.mediStockIds.Clear();
                             this.mediStockIds.Add(data.ID);
-                            int index = _MediStocks.FindIndex(a => a.ID == data.ID);
+                            int index = dataMediStocks.FindIndex(a => a.ID == data.ID);
                             gridViewMediStock.SelectRow(index);
                         }
                     }
@@ -922,8 +1064,8 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             {
                 this.mediStockIds = new List<long>();
                 LoadDataGridMediStock();
-                hisMediInStockProcessor.Reload(ucMedicineInfo, null, null);
-                hisMateInStockProcessor.Reload(ucMaterialInfo, null, null);
+                hisMediInStockProcessor.Reload(ucMedicineInfo, null, null, null);
+                hisMateInStockProcessor.Reload(ucMaterialInfo, null, null, null);
                 hisBloodProcessor.Reload(ucBloodInfo, null);
             }
             catch (Exception ex)
@@ -1100,5 +1242,48 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void txtSearch_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text;
+                SearchClick(strValue);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SearchClick(string keyword)
+        {
+            try
+            {
+                List<V_HIS_MEDI_STOCK> listResult;
+
+                if (!string.IsNullOrWhiteSpace(keyword))
+                {
+                    keyword = keyword.Trim();
+
+                    listResult = this.dataMediStocks.Where(o => (!string.IsNullOrEmpty(o.DEPARTMENT_NAME) &&o.DEPARTMENT_NAME.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
+                                                             || (!string.IsNullOrEmpty(o.MEDI_STOCK_CODE) && o.MEDI_STOCK_CODE.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0) 
+                                                             || (!string.IsNullOrEmpty(o.MEDI_STOCK_NAME) && o.MEDI_STOCK_NAME.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)).OrderBy(o => o.MEDI_STOCK_CODE).Distinct().ToList();
+                }
+                else
+                {
+                    listResult = this.dataMediStocks.OrderBy(o => o.MEDI_STOCK_CODE).ToList();
+                }
+
+                gridControlMediStock.BeginUpdate();
+                gridControlMediStock.DataSource = listResult;
+                gridControlMediStock.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
     }
 }

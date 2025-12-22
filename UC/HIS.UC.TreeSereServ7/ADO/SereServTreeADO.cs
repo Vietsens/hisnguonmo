@@ -61,6 +61,10 @@ namespace HIS.UC.TreeSereServ7
         public string ParentFieldName { get; set; }
         public string Keyword_NullValuePrompt { get; set; }
         public long? DepartmentID { get; set; }
+        public bool IsNotShowComboFilter { get; set; }
+        public bool IsGetOtherData { get; set; }
+        public bool IsBaby { get; set; }
+        public long TreatmentId { get; set; }
 
     }
 }
