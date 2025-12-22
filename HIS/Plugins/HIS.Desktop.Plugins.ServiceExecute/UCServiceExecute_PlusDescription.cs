@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         private DocumentRange[] RangeAllService;
         private string ViewPacsUrlFormat = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ServiceExecuteCFG.ViewPacsUrlFormat);
         private string ViewPacsSecretKey = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ServiceExecuteCFG.ViewPacsSecretKey);
+        private long? MachineIdChoose = null;
 
         private void ProcessChoiceSereServTempl(MOS.EFMODEL.DataModels.HIS_SERE_SERV_TEMP data)
         {
@@ -111,16 +112,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
-                    // Đảm bảo sereServExt có MACHINE_ID đúng trước khi fill template
-                    if (this.sereServExt != null && this.sereServ != null)
-                    {
-                        // Nếu sereServ.MACHINE_ID đã có, cập nhật lại vào sereServExt
-                        if (this.sereServ.MACHINE_ID.HasValue)
-                        {
-                            this.sereServExt.MACHINE_ID = this.sereServ.MACHINE_ID;
-                        }
-                    }
-
                     ProcessDescriptionContent();
 
                     positionProtect = "";
@@ -416,7 +407,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                         if (this.dicImage != null && this.dicImage.Count > 0)
                             processImageTag.ProcessData(store, this.dicImage);
-                       
+
                         doc.EndUpdate();
                     }
                 }
@@ -769,7 +760,19 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     dicParam[ServiceExecuteCFG.SingleKeyAllInOne] = this.sereServ.TDL_SERVICE_NAME;
                 }
+                dicParam["MACHINE_NAME"] = currentServiceReq.MACHINE_NAMES;
+                if (this.MachineIdChoose.HasValue)
+                {
+                    var machine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>().FirstOrDefault(o => o.ID == MachineIdChoose.Value);
 
+                    Inventec.Common.Logging.LogSystem.Info(MachineIdChoose + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => machine), machine));
+                    if (machine != null)
+                    {
+                        dicParam["MACHINE_NAME"] = machine.MACHINE_NAME;
+                        dicParam["MACHINE_NAMES"] = machine.MACHINE_NAME;
+                    }
+                    Inventec.Common.Logging.LogSystem.Info(machine.MACHINE_NAME );
+                }
                 if (this.sereServExt != null)
                 {
                     //không thêm key để khi sửa vẫn giữ lại key trên template.
@@ -786,15 +789,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     //else
                     //    dicParam["BEGIN_TIME_FULL_STR"] = MPS.ProcessorBase.GlobalQuery.GetCurrentTimeSeparateNoSecond(
                     //            Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.sereServExt.BEGIN_TIME ?? 0) ?? DateTime.Now);
-
-                    if (this.sereServExt.MACHINE_ID.HasValue)
-                    {
-                        var machine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>().FirstOrDefault(o => o.ID == this.sereServExt.MACHINE_ID.Value);
-                        if (machine != null)
-                        {
-                            dicParam["MACHINE_NAME"] = machine.MACHINE_NAME;
-                        }
-                    }
 
                     if (sereServExt.END_TIME.HasValue)
                     {
@@ -820,10 +814,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                 dicParam.Add("USER_NAME", UserName);
 
-                if (sereServExt != null && sereServExt.GPBL_STORE_CODE != null)
-                {
-                    dicParam.Add("GPBL_STORE_CODE", sereServExt.GPBL_STORE_CODE);
-                }
+                //if (sereServExt != null && sereServExt.GPBL_STORE_CODE != null)
+                //{
+                //    dicParam.Add("GPBL_STORE_CODE", sereServExt.GPBL_STORE_CODE);
+                //}
 
                 if (!isPressButtonSave)
                 {

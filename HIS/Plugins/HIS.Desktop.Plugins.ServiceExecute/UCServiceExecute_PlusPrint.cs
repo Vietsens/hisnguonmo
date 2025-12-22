@@ -812,15 +812,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 ProcessDicParam();
 
-                if (this.sereServExt.MACHINE_ID.HasValue)
-                {
-                    var machine = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>().FirstOrDefault(o => o.ID == this.sereServExt.MACHINE_ID.Value);
-                    if (machine != null)
-                    {
-                        dicParam["MACHINE_NAME"] = machine.MACHINE_NAME;
-                    }
-                }
-
                 //bổ sung các key nhóm cha của dv
                 var service = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
                 if (service.PARENT_ID.HasValue)

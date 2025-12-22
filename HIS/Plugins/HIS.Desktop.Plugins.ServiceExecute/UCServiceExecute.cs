@@ -279,7 +279,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 GetDataFromRam();
                 isNotLoadWhileChangeControlStateInFirst = true;
                 LoadKeysFromlanguage();
-                ProcessDicParam();
                 Inventec.Common.Logging.LogSystem.Debug("UCServiceExecute_Load.2");
                 this.LoadExecuteRoleUser();
                 timerLoadEkip.Enabled = true;
@@ -1322,35 +1321,35 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                                 ado.MustHavePressBeforeExecute = true;
                             }
                         }
-                        // Bổ sung logic xử lý GPBL_STORE_CODE
-                        if (gpblStoreCodeOption == "1"
-                            && currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL 
-                            && item.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL)
-                        {
-                            if (ext == null || ext.GPBL_STORE_CODE == null)
-                            {
-                                string roomCode = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentServiceReq.EXECUTE_ROOM_ID).ROOM_CODE;
+                        //// Bổ sung logic xử lý GPBL_STORE_CODE
+                        //if (gpblStoreCodeOption == "1"
+                        //    && currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL 
+                        //    && item.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL)
+                        //{
+                        //    if (ext == null || ext.GPBL_STORE_CODE == null)
+                        //    {
+                        //        string roomCode = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentServiceReq.EXECUTE_ROOM_ID).ROOM_CODE;
 
-                                GpblStoreCodeSDO gpblPayload = new GpblStoreCodeSDO
+                        //        GpblStoreCodeSDO gpblPayload = new GpblStoreCodeSDO
 
-                                {
-                                    //ServiceReqConstruct.START_TIME
-                                    seedCodeTime = currentServiceReq.START_TIME ?? 0,
-                                    seedCode = roomCode,
-                                    formatOption = long.Parse(gpblStoreCodeOption)
-                                };
-                                string storeCode = CallGpblStoreCodeApi(gpblPayload); // Gọi API sinh số lưu trữ
-                                if (!string.IsNullOrEmpty(storeCode))
-                                {
-                                    ado.GPBL_STORE_CODE = storeCode;
-                                }
-                            }
-                            else
-                            {
-                                // Trường hợp dữ liệu HIS_SERE_SERV_EXT đã có GPBL_STORE_CODE
-                                ado.GPBL_STORE_CODE = ext.GPBL_STORE_CODE; // Hiển thị số lưu trữ sẵn có
-                            }
-                        }
+                        //        {
+                        //            //ServiceReqConstruct.START_TIME
+                        //            seedCodeTime = currentServiceReq.START_TIME ?? 0,
+                        //            seedCode = roomCode,
+                        //            formatOption = long.Parse(gpblStoreCodeOption)
+                        //        };
+                        //        string storeCode = CallGpblStoreCodeApi(gpblPayload); // Gọi API sinh số lưu trữ
+                        //        if (!string.IsNullOrEmpty(storeCode))
+                        //        {
+                        //            ado.GPBL_STORE_CODE = storeCode;
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        // Trường hợp dữ liệu HIS_SERE_SERV_EXT đã có GPBL_STORE_CODE
+                        //        ado.GPBL_STORE_CODE = ext.GPBL_STORE_CODE; // Hiển thị số lưu trữ sẵn có
+                        //    }
+                        //}
                         listServiceADO.Add(ado);
                     }
 
@@ -1502,26 +1501,27 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                     Inventec.Common.Logging.LogSystem.Debug("3.2.1");
 
+                    this.MachineIdChoose = sereServExt != null ? sereServExt.MACHINE_ID : null;
                     ProcessLoadSereServExt(sereServ, ref sereServExt);
+                    ProcessDescriptionContent();
                     ProcessLoadSereServExtDescriptionPrint(sereServExt);
 
                     Inventec.Common.Logging.LogSystem.Debug("3.2.2");
 
                     var result = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
 
-                    if (sereServExt != null && !string.IsNullOrEmpty(sereServExt.GPBL_STORE_CODE))
-                    {
-                        txtGPBL.Text = sereServExt.GPBL_STORE_CODE;
-                    }
-                    else if (!string.IsNullOrEmpty(sereServ.GPBL_STORE_CODE))
-                    {
-                        txtGPBL.Text = sereServ.GPBL_STORE_CODE;
-                    }
-                    else
-                    {
-                        txtGPBL.Text = "";
-                    }
-
+                    //if (sereServExt != null && !string.IsNullOrEmpty(sereServExt.GPBL_STORE_CODE))
+                    //{
+                    //    txtGPBL.Text = sereServExt.GPBL_STORE_CODE;
+                    //}
+                    //else if (!string.IsNullOrEmpty(sereServ.GPBL_STORE_CODE))
+                    //{
+                    //    txtGPBL.Text = sereServ.GPBL_STORE_CODE;
+                    //}
+                    //else
+                    //{
+                    //    txtGPBL.Text = "";
+                    //}
 
                     if (result != null && result.FILM_SIZE_ID > 0 && (sereServExt == null || sereServExt.FILM_SIZE_ID == null))
                     {
@@ -3377,6 +3377,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 Inventec.Common.Logging.LogSystem.Debug("SaveSSPtttInfoClick sereServExt DESCRIPTION " + Inventec.Common.Logging.LogUtil.TraceData("", sereServExt.DESCRIPTION));
                 if (this.sereServExt != null)
                 {
+                    this.MachineIdChoose = this.sereServExt.MACHINE_ID;
                     if (this.dicSereServExt != null && this.dicSereServExt.ContainsKey(this.sereServExt.SERE_SERV_ID))
                     {
                         this.dicSereServExt[this.sereServExt.SERE_SERV_ID] = this.sereServExt;
@@ -4469,6 +4470,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 SaveAllImage();
 
                 this.sereServExt = dicSereServExt.ContainsKey(sereServ.ID) ? dicSereServExt[sereServ.ID] : new HIS_SERE_SERV_EXT() { SERE_SERV_ID = sereServ.ID };
+                this.MachineIdChoose = this.sereServExt.MACHINE_ID;
                 if (!this.sereServExt.SUBCLINICAL_PRES_ID.HasValue && chkKeTieuHao.Checked == true)
                 {
                     long idReturn = Library.MediStockExpend.MediStockExpendProcessor.GetMediStock(moduleData.RoomId, false) ?? 0;
@@ -4489,6 +4491,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     if (dataSubclinicalPresResultSDO != null && dataSubclinicalPresResultSDO.SereServExt != null && dataSubclinicalPresResultSDO.SereServExt.ID > 0)
                     {
                         this.sereServExt = dataSubclinicalPresResultSDO.SereServExt;
+                        this.MachineIdChoose = this.sereServExt.MACHINE_ID;
                     }
                     else if (dataSubclinicalPresResultSDO == null && DevExpress.XtraEditors.XtraMessageBox.Show(paramSereServ.GetMessage() + "Phần mềm sẽ không tự động \"Kê phiếu thuốc/vật tư tiêu hao\" Bạn có muốn tiếp tục lưu thông tin xử lý không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                         return;
@@ -4505,16 +4508,16 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     this.sereServExt.NUMBER_OF_FILM = null;
                 }
-                if (!String.IsNullOrEmpty(txtGPBL.Text.Trim()))
-                {
-                    this.sereServExt.GPBL_STORE_CODE = txtGPBL.Text;
-                }
-                else
-                {
-                    this.sereServExt.GPBL_STORE_CODE = null;
-                }
+                //if (!String.IsNullOrEmpty(txtGPBL.Text.Trim()))
+                //{
+                //    this.sereServExt.GPBL_STORE_CODE = txtGPBL.Text;
+                //}
+                //else
+                //{
+                //    this.sereServExt.GPBL_STORE_CODE = null;
+                //}
                 this.sereServExt.FILM_SIZE_ID = cboSizeOfFilm.EditValue != null ? (long?)cboSizeOfFilm.EditValue : null;
-                ProcessDescriptionContent();
+
 
                 List<FileHolder> listFileHolder = new List<FileHolder>();
 
@@ -4525,13 +4528,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     this.sereServExt.MACHINE_CODE = machine.MACHINE_CODE;
                     this.sereServExt.MACHINE_ID = machine.ID;
+                    this.MachineIdChoose = machine.ID;
                 }
                 else
                 {
                     Inventec.Common.Logging.LogSystem.Debug("MACHINE_ID: " + sereServ.MACHINE_ID);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListMachine), ListMachine));
                 }
-
+                ProcessDescriptionContent();
                 if (dtBeginTime.EditValue != null)
                     this.sereServExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
                 else
@@ -4611,6 +4615,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     LoadSuim(true);
                     this.sereServExt = apiResult.SereServExt;
+                    this.MachineIdChoose = this.sereServExt.MACHINE_ID;
                     if (dicSereServExt.ContainsKey(apiResult.SereServExt.SERE_SERV_ID))
                     {
                         this.sereServ.NUMBER_OF_FILM = apiResult.SereServExt.NUMBER_OF_FILM;
@@ -4625,6 +4630,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         dicSereServExt.Add(apiResult.SereServExt.SERE_SERV_ID, apiResult.SereServExt);
                         dicSarPrint[apiResult.SereServExt.ID] = GetListPrintByDescriptionPrint(apiResult.SereServExt);
                     }
+                    currentServiceReq = null;
+                    LoadCurrentServiceReq();
                     this.currentServiceReq.EXECUTE_LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                     this.currentServiceReq.EXECUTE_USERNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
                     this.sereServExt.MODIFY_TIME = Inventec.Common.DateTime.Get.Now();
@@ -4665,6 +4672,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     ProcessLoadSereServFile(listServiceADO.Select(s => s.ID).Distinct().ToList());
                     //ẩn trước khi lưu đóng tránh bị dừng pm
                     Inventec.Desktop.Common.Message.WaitingManager.Hide();
+
+
+                    ProcessDescriptionContent();
                     //lưu và ký và đóng
                     if (chkSign.Checked)
                     {
@@ -4704,11 +4714,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         TabControlBaseProcess.CloseSelectedTabPage(SessionManager.GetTabControlMain());
                     }
                 }
-
-                // BỔ SUNG ĐOẠN NÀY ĐỂ HIỂN THỊ LẠI KẾT QUẢ VÀ MẪU
-                ProcessDicParam();
-                ProcessDescriptionContent();
-                ProcessLoadTemplate(sereServ); // nếu muốn load lại mẫu
 
                 #region Process has exception
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
@@ -4964,6 +4969,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     if (apiResult != null)
                     {
                         this.sereServExt = apiResult.SereServExt;
+                        this.MachineIdChoose = this.sereServExt.MACHINE_ID;
                         if (dicSereServExt.ContainsKey(apiResult.SereServExt.SERE_SERV_ID))
                         {
                             sereServ.NUMBER_OF_FILM = apiResult.SereServExt.NUMBER_OF_FILM;
@@ -6321,7 +6327,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     var asereServ = (ADO.ServiceADO)gridViewSereServ.GetFocusedRow();
                     var cbo = sender as GridLookUpEdit;
                     long machineId = Inventec.Common.TypeConvert.Parse.ToInt64((cbo.EditValue ?? "0").ToString());
-                    Inventec.Common.Logging.LogSystem.Info(machineId.ToString());
+                    this.MachineIdChoose = machineId;
                     ProcessDicExecuteRoomMachine(machineId);
                     if ((Config.AppConfigKeys.IsMachineWarningOption == "1" || Config.AppConfigKeys.IsMachineWarningOption == "2") && ((AppConfigKeys.IsPatientTypeOption == "1" && asereServ.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) || AppConfigKeys.IsPatientTypeOption != "1") && GlobalVariables.MachineCounterSdos != null && GlobalVariables.MachineCounterSdos.Count > 0)
                     {
@@ -6338,10 +6344,12 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             if ((Config.AppConfigKeys.IsMachineWarningOption == "1" && DevExpress.XtraEditors.XtraMessageBox.Show(mess, ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) || (Config.AppConfigKeys.IsMachineWarningOption == "2" && DevExpress.XtraEditors.XtraMessageBox.Show(mess, ResourceMessage.ThongBao, MessageBoxButtons.OK) == DialogResult.OK))
                             {
                                 cbo.EditValue = null;
+                                this.MachineIdChoose = null;
                                 cbo.ShowPopup();
                             }
                         }
                     }
+                    ProcessDescriptionContent();
                 }
             }
             catch (Exception ex)
@@ -6359,6 +6367,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     var asereServ = (ADO.ServiceADO)gridViewSereServ.GetFocusedRow();
                     var cbo = sender as GridLookUpEdit;
                     long machineId = Inventec.Common.TypeConvert.Parse.ToInt64((cbo.EditValue ?? "0").ToString());
+                    this.MachineIdChoose = machineId;
                     ProcessDicExecuteRoomMachine(machineId);
                     if ((Config.AppConfigKeys.IsMachineWarningOption == "1" || Config.AppConfigKeys.IsMachineWarningOption == "2") && ((AppConfigKeys.IsPatientTypeOption == "1" && asereServ.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) || AppConfigKeys.IsPatientTypeOption != "1") && GlobalVariables.MachineCounterSdos != null && GlobalVariables.MachineCounterSdos.Count > 0)
                     {
@@ -6374,10 +6383,12 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             if ((Config.AppConfigKeys.IsMachineWarningOption == "1" && DevExpress.XtraEditors.XtraMessageBox.Show(mess, ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) || (Config.AppConfigKeys.IsMachineWarningOption == "2" && DevExpress.XtraEditors.XtraMessageBox.Show(mess, ResourceMessage.ThongBao, MessageBoxButtons.OK) == DialogResult.OK))
                             {
                                 cbo.EditValue = null;
+                                this.MachineIdChoose = null;
                                 cbo.ShowPopup();
                             }
                         }
                     }
+                    ProcessDescriptionContent();
                 }
             }
             catch (Exception ex)
@@ -7700,29 +7711,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     var edit = sender as GridLookUpEdit;
                     edit.EditValue = null;
-                }
+                    this.MachineIdChoose = null;
 
-
-                // --- BỔ SUNG ĐOẠN NÀY ---
-                // Lấy dòng đang chọn
-                var asereServ = (ADO.ServiceADO)gridViewSereServ.GetFocusedRow();
-                if (asereServ != null)
-                {
-                    // Gán lại MACHINE_ID cho sereServExt (nếu có)
-                    if (dicSereServExt != null && dicSereServExt.ContainsKey(asereServ.ID))
-                    {
-                        dicSereServExt[asereServ.ID].MACHINE_ID = asereServ.MACHINE_ID;
-                    }
-                    // Nếu đang xử lý 1 dòng duy nhất
-                    if (sereServExt != null && sereServ != null && sereServ.ID == asereServ.ID)
-                    {
-                        sereServExt.MACHINE_ID = asereServ.MACHINE_ID;
-                    }
-                    // Cập nhật lại dữ liệu hiển thị
-                    ProcessDicParam();
                     ProcessDescriptionContent();
                 }
-                // --- KẾT THÚC BỔ SUNG ---
             }
             catch (Exception ex)
             {
