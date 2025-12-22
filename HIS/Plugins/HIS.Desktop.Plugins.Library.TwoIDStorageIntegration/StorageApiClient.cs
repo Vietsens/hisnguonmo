@@ -27,17 +27,45 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                     string fullUrl = baseUri + requestUri;
 
                     client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Add("Accept", contentType);
+                    client.DefaultRequestHeaders.Add("Accept", "application/json");
                     client.Timeout = new TimeSpan(0, 0, 90);
 
-                    string sendJsonData = JsonConvert.SerializeObject(sendData);
-                    Inventec.Common.Logging.LogSystem.Info("_____sendJsonData : " + sendJsonData);
+                    HttpContent content = null;
+                    
+                    // Kiểm tra contentType để quyết định cách gửi dữ liệu
+                    if (contentType == "application/x-www-form-urlencoded")
+                    {
+                        // Gửi dữ liệu dạng form-urlencoded
+                        var properties = sendData.GetType().GetProperties();
+                        var formData = new List<KeyValuePair<string, string>>();
+                        
+                        foreach (var prop in properties)
+                        {
+                            var value = prop.GetValue(sendData);
+                            if (value != null)
+                            {
+                                formData.Add(new KeyValuePair<string, string>(prop.Name, value.ToString()));
+                            }
+                        }
+                        
+                        content = new FormUrlEncodedContent(formData);
+                        Inventec.Common.Logging.LogSystem.Info("_____sendFormData : " + string.Join("&", formData.Select(x => $"{x.Key}={x.Value}")));
+                    }
+                    else
+                    {
+                        // Gửi dữ liệu dạng JSON
+                        string sendJsonData = JsonConvert.SerializeObject(sendData);
+                        Inventec.Common.Logging.LogSystem.Info("_____sendJsonData : " + sendJsonData);
+                        content = new StringContent(sendJsonData, Encoding.UTF8, contentType);
+                    }
 
-                    HttpResponseMessage resp = client.PostAsync(fullUrl, new StringContent(sendJsonData, Encoding.UTF8, contentType)).Result;
+                    HttpResponseMessage resp = client.PostAsync(fullUrl, content).Result;
 
                     if (resp == null || !resp.IsSuccessStatusCode)
                     {
                         int statusCode = resp == null ? 0 : (int)resp.StatusCode;
+                        string errorContent = resp != null ? resp.Content.ReadAsStringAsync().Result : "";
+                        Inventec.Common.Logging.LogSystem.Error($"API Error: {fullUrl}, StatusCode: {statusCode}, ErrorContent: {errorContent}");
                         throw new Exception(string.Format("Lỗi khi gọi API: {0}. StatusCode: {1}", fullUrl, statusCode));
                     }
 
@@ -137,10 +165,14 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 foreach (var file in byteFiles)
                 {
                     var content = new ByteArrayContent(file);
-                    content.Headers.ContentType =
-                        new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                    
+                    // Set ContentType theo loại file
+                    if (paramName == "handSignature" || paramName == "fingerprint")
+                        content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");
+                    else
+                        content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg");
 
-                    string ext = paramName == "handSignature" ? ".png" : ".jpg"; ;
+                    string ext = (paramName == "handSignature" || paramName == "fingerprint") ? ".png" : ".jpg";
                     string fileName = paramName + "_" + index + ext;
                     form.Add(content, paramName, fileName);
                     index++;
@@ -152,19 +184,34 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 foreach (var base64 in base64Files)
                 {
                     if (string.IsNullOrWhiteSpace(base64)) continue;
+                    
                     byte[] file;
                     try
                     {
-                        file = Convert.FromBase64String(base64);
+                        // Loại bỏ prefix base64 nếu có
+                        string cleanBase64 = base64
+                            .Replace("data:image/png;base64,", "")
+                            .Replace("data:image/jpeg;base64,", "")
+                            .Replace("data:image/jpg;base64,", "")
+                            .Replace("\r", "").Replace("\n", "").Replace(" ", "");
+                        
+                        file = Convert.FromBase64String(cleanBase64);
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        Inventec.Common.Logging.LogSystem.Warn("Invalid base64 for " + paramName + ": " + ex.Message);
                         continue; // skip invalid base64
                     }
+                    
                     var content = new ByteArrayContent(file);
-                    content.Headers.ContentType =
-                        new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-                    string ext = paramName == "handSignature" ? ".png" : ".jpg";
+                    
+                    // Set ContentType theo loại file
+                    if (paramName == "handSignature" || paramName == "fingerprint")
+                        content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");
+                    else
+                        content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg");
+                    
+                    string ext = (paramName == "handSignature" || paramName == "fingerprint") ? ".png" : ".jpg";
                     string fileName = paramName + "_" + index + ext;
                     form.Add(content, paramName, fileName);
                     index++;
