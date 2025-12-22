@@ -128,6 +128,8 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         //qtcode
         private const string CONFIG_KEY__WarningHeinPatientTypeCode = "HIS.Desktop.Plugins.RegisterV2.WarningHeinPatientTypeCode"; 
         private const string CONFIG_KEY__HideAddressLevel = "HIS.Desktop.Plugins.Register.HideAddressLevel";
+        private const string CONFIG_KEY__WarningOverMonth = "HIS.Desktop.Plugins.RegisterV2.WarningOverMonthsTransfer";
+
         public static bool HideAddressLevel;
         public static string CHECK_DUPLICATION;
         public static string MODULELINKS;
@@ -180,6 +182,8 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         /// 1: Các trường "Người nhà", "Quan hệ", "CMND", "Địa chỉ" đều bắt buộc nhập. 2: Chỉ bắt buộc nhập với trường "Người nhà
         /// </summary>
         public static string RelativesInforOption;
+        public static long WarnOverMonthsTransfer;
+
         /// <summary>
         /// Cấu hình Kiểm tra hồ sơ điều trị gần nhất của bn. Nếu có ngày ra = ngày hiện tại thì cảnh báo. 
         /// 1: có, 0: không
@@ -414,7 +418,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
                 ValueAutoCallRegisterReq = Int64.Parse(GetValue(CONFIG_KEY_AUTO_CALL_REGISTER_REQ));
 
                 NumOrderIssueOption = GetValue(CONFIG_KEY_NUM_ORDER_ISSUE_OPTION);
-
+                WarnOverMonthsTransfer = HisConfigs.Get<long>(CONFIG_KEY__WarningOverMonth);
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

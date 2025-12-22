@@ -33,18 +33,19 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         //Sync
 
         public string fullName { get; set; }
-        [JsonConverter(typeof(DateOnlyConverter))]
-        public DateTime dateOfBirth { get; set; }
+        //[JsonConverter(typeof(DateOnlyConverter))]
+        public string dateOfBirth { get; set; }
         //public DateTime dateOfBirth { get; set; }
         public string residencePlace { get; set; }
-        [JsonConverter(typeof(DateOnlyConverter))]
-        public DateTime issueDate { get; set; }
+        //[JsonConverter(typeof(DateOnlyConverter))]
+        public string issueDate { get; set; }
 
-        [JsonConverter(typeof(DateOnlyConverter))]
-        public DateTime expiredDate { get; set; }
+        //[JsonConverter(typeof(DateOnlyConverter))]
+        public string expiredDate { get; set; }
         public object idCardVerifyResult { get; set; }
 
-
+        public string gender { get; set; }
+        public string status { get; set; }
 
 
         public TwoIDApiRequestInput()

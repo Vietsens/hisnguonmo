@@ -1058,6 +1058,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         cboIdentityType.EditValue = null;
                     }
 
+                    if (currentTreatment?.TDL_PATIENT_BUD_REL_UNIT_CODE != null || patient?.BUD_REL_UNIT_CODE != null)
+                    {
+                        txtBudRelUnitCode.Text = currentTreatment.TDL_PATIENT_BUD_REL_UNIT_CODE ?? patient.BUD_REL_UNIT_CODE;
+                    }    
                     txtBuyerPhone.Text = patient?.PHONE ?? expMest.TDL_PATIENT_PHONE ?? "";
                     txtAddress.Text = expMest.TDL_PATIENT_ADDRESS ?? "";
 
@@ -1095,6 +1099,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                             {
                                 txtBuyerTaxCode1.Text = workPlaceBuyer.TAX_CODE;
                             }
+                            if (workPlaceBuyer != null && !string.IsNullOrEmpty(workPlaceBuyer.BUD_REL_UNIT_CODE) && string.IsNullOrEmpty(txtBudRelUnitCode.Text))
+                            {
+                                txtBudRelUnitCode.Text = workPlaceBuyer.BUD_REL_UNIT_CODE;
+                            }
                         }
                     }
                 }
@@ -1131,6 +1139,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                             if (workPlaceBuyer != null && !string.IsNullOrEmpty(workPlaceBuyer.TAX_CODE) && string.IsNullOrEmpty(txtBuyerTaxCode.Text))
                             {
                                 txtBuyerTaxCode.Text = workPlaceBuyer.TAX_CODE;
+                            }
+                            if (workPlaceBuyer != null && !string.IsNullOrEmpty(workPlaceBuyer.BUD_REL_UNIT_CODE) && string.IsNullOrEmpty(txtBudRelUnitCode1.Text))
+                            {
+                                txtBudRelUnitCode1.Text = workPlaceBuyer.BUD_REL_UNIT_CODE;
                             }
                         }
                     }
@@ -1247,6 +1259,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         HIS_TRANSACTION tran = new HIS_TRANSACTION();
                         Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
                         adoqr.Transaction = tran;
+                        adoqr.IssueInvoice = true;
+                        adoqr.NotDisplayedInvoice = (chkHideHddt != null && chkHideHddt.Checked);
                         adoqr.TransReqId = CreateReqType.Transaction;
                         listArgs.Add(adoqr);
                         HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
@@ -1266,6 +1280,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     HIS_TRANSACTION tran = new HIS_TRANSACTION();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
                     adoqr.Transaction = tran;
+                    adoqr.IssueInvoice = true;
+                    adoqr.NotDisplayedInvoice = (chkHideHddt != null && chkHideHddt.Checked);
                     adoqr.TransReqId = CreateReqType.Transaction;
                     listArgs.Add(adoqr);
                     LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
@@ -1308,7 +1324,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                             transferAmount = value;
                         }
                         else
-                        {
+                        {   
                             transferAmount = 0;
                         }
 
@@ -1380,8 +1396,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                                 data.HisTransaction.BUYER_WORK_PLACE_ID = null;
                                 data.HisTransaction.BUYER_ORGANIZATION = cboBuyerOrganization.Text;
                             }
+                            data.HisTransaction.BUYER_SOCIAL_RELATIONS_CODE = txtBudRelUnitCode.Text;
                             data.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode1.Text;
-
                             data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
                             data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
                             data.HisTransaction.BUYER_EMAIL = txtEmail.Text;
@@ -1452,9 +1468,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                                     data.HisTransaction.BUYER_ORGANIZATION = null;
                                 }
                             }
-
-
-
+                            data.HisTransaction.BUYER_SOCIAL_RELATIONS_CODE = txtBudRelUnitCode1.Text;
                             data.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
                             data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
                             data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
@@ -1549,15 +1563,6 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         {
                             data.HisTransaction.TREATMENT_ID = this.currentTreatment.ID;
                         }
-
-                        //data.HisTransaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountCode.Text;
-                        //data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
-                        //data.HisTransaction.BUYER_NAME = txtName.Text;
-                        //data.HisTransaction.BUYER_EMAIL = txtEmail.Text;
-                        //data.HisTransaction.BUYER_ORGANIZATION = txtBuyerOgranization.Text;
-                        //data.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
-                        //data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
-
                         if (checkOverTime.Checked)
                         {
                             data.HisTransaction.IS_NOT_IN_WORKING_TIME = 1;
@@ -1598,8 +1603,9 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                             data.OriginalTransactionId = Inventec.Common.TypeConvert.Parse.ToInt64(cboOriginalTransaction.EditValue.ToString());
                             data.ReplaceReason = txtReplaceReason.Text;
                         }
+                Inventec.Common.Logging.LogSystem.Info("Call API api/HisTransaction/CreateBillWithBillGood | InputData=" + Inventec.Common.Logging.LogUtil.TraceData("data", data));
 
-                        this.transactionBillResult = new BackendAdapter(param).Post<V_HIS_TRANSACTION>("api/HisTransaction/CreateBillWithBillGood", ApiConsumers.MosConsumer, data, param);
+                this.transactionBillResult = new BackendAdapter(param).Post<V_HIS_TRANSACTION>("api/HisTransaction/CreateBillWithBillGood", ApiConsumers.MosConsumer, data, param);
 
                         if (this.transactionBillResult != null)
                         {
@@ -1619,7 +1625,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                                 delegateSelectData(this.transactionBillResult);
                             }
 
-                            if (isLuuKy && InvoiceTypeCreate == invoiceTypeCreate__CreateInvoiceVnpt)
+                            if (isLuuKy && InvoiceTypeCreate == invoiceTypeCreate__CreateInvoiceVnpt && Convert.ToInt64(cboPayFrom.EditValue.ToString()) != 8)
                             {
                                 HIS_TRANSACTION tran = new HIS_TRANSACTION();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
@@ -1662,7 +1668,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                                         btnSavePrint.Enabled = false;
                                         BtnSaveSign.Enabled = false;
                                         ddBtnPrint.Enabled = true;
-                                        btnQR.Enabled = true;
+                                        //btnQR.Enabled = true;
                                         if (delegateSelectData != null)
                                         {
                                             delegateSelectData(this.transactionBillResult);
@@ -1674,7 +1680,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         txtTreatmentCode.Focus();
                         txtTreatmentCode.SelectAll();
                         WaitingManager.Hide();
-                        MessageManager.Show(this.ParentForm, param, success);
+                        if (!isLuuKy && Convert.ToInt64(cboPayFrom.EditValue.ToString()) != 8)
+                        {
+                            MessageManager.Show(this.ParentForm, param, success);
+                        }
                         SessionManager.ProcessTokenLost(param);
                     
                 
@@ -2714,9 +2723,13 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 {
                     if (!chkHideHddt.Checked)
                     {
-                        //Nothing
+                        if(Convert.ToInt64(cboPayFrom.EditValue.ToString()) != 8)
+                        {
+                            System.Threading.Thread.Sleep(2000);
+                            this.onClickInHoaDonDienTu(null, null);
+                        }    
                         System.Threading.Thread.Sleep(2000);
-                        this.onClickInHoaDonDienTu(null, null);
+                        //this.onClickInHoaDonDienTu(null, null);
                     }
                 }
                 if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
@@ -2891,6 +2904,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         HIS_TRANSACTION tran = new HIS_TRANSACTION();
                         Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
                         adoqr.Transaction = tran;
+                        adoqr.IssueInvoice = true;
+                        adoqr.NotDisplayedInvoice = (chkHideHddt != null && chkHideHddt.Checked);
                         adoqr.TransReqId = CreateReqType.Transaction;
                         listArgs.Add(adoqr);
                         HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
@@ -2935,6 +2950,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                                 HIS.Desktop.ADO.TransReqQRADO adoqr = new TransReqQRADO();
                                 adoqr.TreatmentId = 0;
                                 adoqr.ConfigValue = selectedConfig;
+                                adoqr.IssueInvoice = true;
+                                adoqr.NotDisplayedInvoice = (chkHideHddt != null && chkHideHddt.Checked);
                                 adoqr.TransReqId = CreateReqType.Transaction;
                                 HIS_TRANSACTION tran = new HIS_TRANSACTION();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
@@ -2960,6 +2977,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         HIS_TRANSACTION tran = new HIS_TRANSACTION();
                         Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
                         adoqr.Transaction = tran;
+                        adoqr.IssueInvoice = true;
+                        adoqr.NotDisplayedInvoice = (chkHideHddt != null && chkHideHddt.Checked);
                         adoqr.TransReqId = CreateReqType.Transaction;
                         listArgs.Add(adoqr);
                         LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
@@ -3006,6 +3025,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         layoutControlItem26.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         layoutControlItem30.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                         layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                        layoutControlItem38.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
                         layoutControlItem15.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                         layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
@@ -3017,6 +3037,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         layoutControlItem35.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                         layoutControlItem36.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                         layoutControlItem26.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                        layoutControlItem37.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 
                         chkKhac.Checked = false;
 
@@ -3025,56 +3046,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         layoutControl1.EndUpdate();
                         ValidateForm();
                         SetBuyerInfo();
-                        //if (selectedRadio == "CaNhan" && this.ExpMests != null && this.ExpMests.Count > 0)
-                        //{
-                        //    var expMest = ExpMests.FirstOrDefault();
-                        //    long patientId = expMest.TDL_PATIENT_ID ?? 0;
-                        //    var patientFilter = new HisPatientFilter { ID = patientId };
-                        //    var patients = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, patientFilter, null);
-                        //    var patient = patients?.FirstOrDefault();
-                        //    if (rdoCaNhan.Checked)
-                        //    {
-                        //        // Cá nhân
-                        //        txtName.Text = expMest.TDL_PATIENT_NAME;
-                        //        //txtIdentityType.Text = expMest.TDL_PATIENT_CCCD_NUMBER ?? expMest.TDL_PATIENT_CMND_NUMBER ?? expMest.TDL_PATIENT_PASSPORT_NUMBER ?? patient.CCCD_NUMBER ?? patient.CMND_NUMBER ?? patient.PASSPORT_NUMBER;
-                        //        if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_CMND_NUMBER) || !string.IsNullOrWhiteSpace(patient?.CMND_NUMBER))
-                        //        {
-                        //            txtIdentityType.Text = expMest.TDL_PATIENT_CMND_NUMBER ?? patient?.CMND_NUMBER;
-                        //            cboIdentityType.EditValue = 1;
-                        //        }
-                        //        else if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_CCCD_NUMBER) || !string.IsNullOrWhiteSpace(patient?.CCCD_NUMBER))
-                        //        {
-                        //            txtIdentityType.Text = expMest.TDL_PATIENT_CCCD_NUMBER ?? patient?.CCCD_NUMBER;
-                        //            cboIdentityType.EditValue = 2;
-                        //        }
-                        //        else if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_PASSPORT_NUMBER) || !string.IsNullOrWhiteSpace(patient?.PASSPORT_NUMBER))
-                        //        {
-                        //            txtIdentityType.Text = expMest.TDL_PATIENT_PASSPORT_NUMBER ?? patient?.PASSPORT_NUMBER;
-                        //            cboIdentityType.EditValue = 3;
-                        //        }
-                        //        else
-                        //        {
-                        //            txtIdentityType.Text = "";
-                        //            cboIdentityType.EditValue = null;
-                        //        }
-                        //        //txtBuyerPhone.Text = expMest.TDL_PATIENT_MOBILE ?? expMest.TDL_PATIENT_PHONE;
-                        //        txtBuyerPhone.Text = patient?.PHONE ?? expMest.TDL_PATIENT_PHONE;
-                        //        txtAddress.Text = expMest.TDL_PATIENT_ADDRESS;
-                        //        if (chkBHYT.Checked)
-                        //        {
-                        //            var patientTypeAlter = GetPatientTypeAlter(expMest.TDL_PATIENT_ID ?? 0);
-                        //            if (patientTypeAlter != null)
-                        //                txtAddress.Text = patientTypeAlter.ADDRESS;
-                        //        }
-                        //        txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0);
-                        //    }
-                        //    ValidateForm();
-                        ////}
                     }
-                    //else
-                    //{
-                    //    rdoCaNhan.Checked = true; // Giữ trạng thái chọn
-                    //}
                 }
             }
             catch (Exception ex)
@@ -3085,14 +3057,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
 
         private void rdoCoQuan_CheckedChanged(object sender, EventArgs e)
         {
-            // Ngăn chặn thay đổi nếu đang ở trạng thái hiện tại
-            //if (rdoCoQuan.Checked && selectedRadio == "CoQuan") 
-            //{
-            //    return; // Không làm gì, giữ nguyên trạng thái
-            //}
             if (rdoCoQuan.Checked)
             {
-                //if (selectedRadio != "CoQuan") // Chỉ cập nhật nếu chưa ở trạng thái này
                 {
                     selectedRadio = "CoQuan";
                     rdoCaNhan.Checked = false;
@@ -3101,12 +3067,10 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     layoutControlItem15.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem29.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-
                     layoutControlItem26.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    //layoutControlItem27.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    //layoutControlItem34.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem35.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem36.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem37.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
                     layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     layoutControlItem30.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
@@ -3115,57 +3079,13 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     layoutControlItem20.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     layoutControlItem31.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     layoutControlItem25.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    layoutControlItem38.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 
                     layoutControlGroup2.BestFit();
                     layoutControl1.EndUpdate();
                     ValidateForm();
                     SetBuyerInfo();
-                    //if (selectedRadio == "CoQuan" && this.ExpMests != null && this.ExpMests.Count > 0)
-                    //{
-                    //    var expMest = ExpMests.FirstOrDefault();
-                    //    // Cơ quan
-                    //    long patientId = expMest.TDL_PATIENT_ID ?? 0;
-                    //    var patientFilter = new HisPatientFilter { ID = patientId };
-                    //    var patients = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, patientFilter, null);
-                    //    var patient = patients?.FirstOrDefault();
-
-                    //    if (patient != null && patient.WORK_PLACE_ID.HasValue)
-                    //    {
-                    //        long workPlaceId = patient.WORK_PLACE_ID.Value;
-                    //        var workPlaceFilter = new HisWorkPlaceFilter { ID = workPlaceId };
-                    //        var workPlaces = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, workPlaceFilter, null);
-                    //        var workPlace = workPlaces?.FirstOrDefault();
-
-                    //        if (workPlace != null)
-                    //        {
-                    //            cboBuyerOrganization1.EditValue = workPlace.ID;
-                    //        }
-                    //        else
-                    //        {
-                    //            txtBuyerOrganization1.Text = expMest.TDL_PATIENT_WORK_PLACE;
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        txtBuyerOrganization1.Text = expMest.TDL_PATIENT_WORK_PLACE;
-                    //    }
-                    //    txtBuyerTaxCode.Text = patient?.TAX_CODE;
-                    //    txtBuyerPhone.Text = patient?.PHONE;
-                    //    txtAddress.Text = expMest.TDL_PATIENT_ADDRESS;
-                    //    if (chkBHYT.Checked)
-                    //    {
-                    //        var patientTypeAlter = GetPatientTypeAlter(expMest.TDL_PATIENT_ID ?? 0);
-                    //        if (patientTypeAlter != null)
-                    //            txtAddress.Text = patientTypeAlter.ADDRESS;
-                    //    }
-                    //    txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0);
-
-                    ////}
                 }
-                //else
-                //{
-                //    rdoCoQuan.Checked = true; // Giữ trạng thái chọn
-                //}
             }
         }
 
@@ -3240,6 +3160,18 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 {
                     txtBuyerTaxCode1.Text = workPlace.TAX_CODE;
                 }
+                else if(workPlace.TAX_CODE == null)
+                {
+                    txtBuyerTaxCode1.Text = "";
+                }
+                if (workPlace != null && !string.IsNullOrEmpty(workPlace.BUD_REL_UNIT_CODE))
+                {
+                    txtBudRelUnitCode.Text = workPlace.BUD_REL_UNIT_CODE;
+                }
+                else if (workPlace.BUD_REL_UNIT_CODE == null)
+                {
+                    txtBudRelUnitCode.Text = "";
+                }    
             }
             catch (Exception ex)    
             {
@@ -3253,6 +3185,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             {
                 cboBuyerOrganization.Visible = false;
                 txtBuyerOrganization.Visible = true;
+                txtBuyerTaxCode1.Text = "";
+                txtBudRelUnitCode.Text = "";
             }
             else
             {
@@ -3267,6 +3201,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             {
                 cboBuyerOrganization1.Visible = false;
                 txtBuyerOrganization1.Visible = true;
+                txtBuyerTaxCode.Text = "";
+                txtBudRelUnitCode1.Text = "";
             }
             else
             {
@@ -3287,6 +3223,18 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 if (workPlace.TAX_CODE != null)
                 {
                     txtBuyerTaxCode.Text = workPlace.TAX_CODE;
+                }
+                else if (workPlace.TAX_CODE == null)
+                {
+                    txtBuyerTaxCode.Text = "";
+                }
+                if (workPlace != null && !string.IsNullOrEmpty(workPlace.BUD_REL_UNIT_CODE))
+                {
+                    txtBudRelUnitCode1.Text = workPlace.BUD_REL_UNIT_CODE;
+                }
+                else if (workPlace.BUD_REL_UNIT_CODE == null)
+                {
+                    txtBudRelUnitCode1.Text = "";
                 }
             }
             catch (Exception ex)

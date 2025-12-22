@@ -1256,7 +1256,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 columnInfos.Add(new ColumnInfo("ACCOUNT_BOOK_CODE", "", 100, 1));
                 columnInfos.Add(new ColumnInfo("ACCOUNT_BOOK_NAME", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("ACCOUNT_BOOK_NAME", "ID", columnInfos, false, 350);
-                //ControlEditorLoader.Load(cboDepositBook, ListAccountBookDeposit, controlEditorADO);
+                ControlEditorLoader.Load(cboDepositBook, ListAccountBookDeposit, controlEditorADO);
                 ControlEditorLoader.Load(cboAccountBook, ListAccountBookDeposit, controlEditorADO);
 
                 SetDefaultAccountBookDeposit();
