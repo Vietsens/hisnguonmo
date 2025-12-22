@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
 {
@@ -52,7 +53,30 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 hash = hash
             };
 
-            return StorageApiClient.CreateRequest<TwoIDApiRequestInput>(baseUri, "/api/v1/citizens", input, "application/x-www-form-urlencoded");
+            var result = StorageApiClient.CreateRequest<TwoIDApiResult>(baseUri, "/api/v1/citizens/info", input, "application/x-www-form-urlencoded");
+            
+            if (result != null && result.status && result.data != null)
+            {
+                // Map TwoIDCitizenData sang TwoIDApiRequestInput
+                return new TwoIDApiRequestInput
+                {
+                    citizenNumber = result.data.citizenNumber,
+                    fullName = result.data.fullName,
+                    dateOfBirth = result.data.dateOfBirth,
+                    gender = result.data.gender,
+                    residencePlace = result.data.residencePlace,
+                    issueDate = result.data.issueDate,
+                    expiredDate = result.data.expiredDate,
+                    status = "ACTIVE",
+                    
+                    // Map path ảnh
+                    fingerprint = result.data.fingerPrintImage,
+                    faceId = result.data.faceImage,
+                    handSignature = result.data.handSignatureImage
+                };
+            }
+            
+            return null;
         }
         //Download dữ liệu file
         public TwoIDApiRequestInput DownloadFile(string baseUri, string fileName, string apiKey, string transactionId, string hash)
@@ -110,57 +134,98 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 return false;
             }
         }
-        // Lưu trữ thông tin CCCD 
+        /// <summary>
+        /// Lưu trữ thông tin CCCD
+        /// - Nếu đã có thông tin: Upload file mới → Lấy path → Đồng bộ dữ liệu với path mới
+        /// - Nếu chưa có: Chỉ upload file
+        /// </summary>
         public bool StoreCitizenInfo(
-    string baseUri,
-    TwoIDApiRequestInput citizen,
-    object fingerprint,
-    object faceId,
-    object handSignature,
-    string apiKey,
-    string transactionId,
-    string hash)
+            string baseUri,
+            TwoIDApiRequestInput citizen,
+            object fingerprint,
+            object faceId,
+            object handSignature,
+            string apiKey,
+            string transactionId,
+            string hash)
         {
             try
             {
                 Inventec.Common.Logging.LogSystem.Info(
-    $"StoreCitizenInfo Input: citizenNumber={citizen.citizenNumber}, " +
-    $"fingerprint={Newtonsoft.Json.JsonConvert.SerializeObject(fingerprint)}, " +
-    $"faceId={Newtonsoft.Json.JsonConvert.SerializeObject(faceId)}, " +
-    $"handSignature={Newtonsoft.Json.JsonConvert.SerializeObject(handSignature)}, " +
-    $"apiKey={apiKey}, transactionId={transactionId}, hash={hash}");
-                var uploadResult =
-                    StorageApiClient.CreateMultipartRequest<TwoIDUploadResponse>(
-                        baseUri,
-                        "/api/v1/files/uploads",
-                        citizen.citizenNumber,
-                        fingerprint,
-                        faceId,
-                        handSignature,
-                        apiKey,
-                        transactionId,
-                        hash
-                    );
+                    $"StoreCitizenInfo Input: citizenNumber={citizen.citizenNumber}, " +
+                    $"fingerprint={Newtonsoft.Json.JsonConvert.SerializeObject(fingerprint)}, " +
+                    $"faceId={Newtonsoft.Json.JsonConvert.SerializeObject(faceId)}, " +
+                    $"handSignature={Newtonsoft.Json.JsonConvert.SerializeObject(handSignature)}, " +
+                    $"apiKey={apiKey}, transactionId={transactionId}, hash={hash}");
+
+                // Bước 1: Upload file để tạo path (multipart/form-data với file ảnh)
+                Inventec.Common.Logging.LogSystem.Info("StoreCitizenInfo: Bắt đầu upload file");
+                var uploadResult = StorageApiClient.CreateMultipartRequest<TwoIDUploadResponse>(
+                    baseUri,
+                    "/api/v1/files/uploads",
+                    citizen.citizenNumber,
+                    fingerprint,
+                    faceId,
+                    handSignature,
+                    apiKey,
+                    transactionId,
+                    hash
+                );
 
                 if (uploadResult == null || !uploadResult.status)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("StoreCitizenInfo: Upload file thất bại");
                     throw new Exception("UploadFiles failed");
+                }
 
-                citizen.fingerprint = uploadResult.GetUrl("FINGER_PRINT");
-                citizen.faceId = uploadResult.GetUrl("FACE_ID");
-                citizen.handSignature = uploadResult.GetUrl("HAND_SIGNATURE");
+                Inventec.Common.Logging.LogSystem.Info("StoreCitizenInfo: Upload file thành công");
+                Inventec.Common.Logging.LogSystem.Debug("uploadResult: " + Newtonsoft.Json.JsonConvert.SerializeObject(uploadResult));
 
-                StorageApiClient.CreateRequest<object>(
-                    baseUri,
-                    "/api/v1/citizens",
-                    citizen,
-                    "application/json"
-                );
+                // Lấy các path từ kết quả upload
+                string fingerprintPath = uploadResult.GetUrl("FINGER_PRINT");
+                string faceIdPath = uploadResult.GetUrl("FACE_ID");
+                string handSignaturePath = uploadResult.GetUrl("HAND_SIGNATURE");
+
+                Inventec.Common.Logging.LogSystem.Info($"StoreCitizenInfo: Paths - fingerprint={fingerprintPath}, faceId={faceIdPath}, handSignature={handSignaturePath}");
+
+                // Bước 2: Kiểm tra xem đã có thông tin CCCD hay chưa
+                bool isExist = IsCitizenInfoExists(baseUri, citizen.citizenNumber, apiKey, transactionId, hash);
+                Inventec.Common.Logging.LogSystem.Info($"StoreCitizenInfo: CCCD {citizen.citizenNumber} đã tồn tại = {isExist}");
+
+                if (isExist)
+                {
+                    // Đã có thông tin → Cập nhật với path mới
+                    Inventec.Common.Logging.LogSystem.Info("StoreCitizenInfo: Cập nhật thông tin CCCD");
+                    
+                    // Gán path mới vào citizen
+                    citizen.fingerprint = fingerprintPath;
+                    citizen.faceId = faceIdPath;
+                    citizen.handSignature = handSignaturePath;
+                    citizen.apiKey = apiKey;
+                    citizen.hash = hash;
+                    citizen.transactionId = transactionId;
+
+                    // Gọi API đồng bộ dữ liệu cá nhân (application/json)
+                    var syncResult = StorageApiClient.CreateRequest<object>(
+                        baseUri,
+                        "/api/v1/citizens",
+                        citizen,
+                        "application/json"
+                    );
+
+                    Inventec.Common.Logging.LogSystem.Info("StoreCitizenInfo: Đồng bộ dữ liệu thành công");
+                }
+                else
+                {
+                    // Chưa có thông tin → Chỉ cần upload file (đã làm ở bước 1)
+                    Inventec.Common.Logging.LogSystem.Info("StoreCitizenInfo: Tạo mới thông tin CCCD - Chỉ upload file");
+                }
 
                 return true;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error("StoreCitizenInfo: Lỗi - " + ex.ToString());
                 return false;
             }
         }
@@ -203,7 +268,8 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         public byte[] DownloadImageFromPath(
     string imagePath,
     string transactionId,
-    string hash)
+    string hash, 
+    string type)
         {
             try
             {
@@ -215,7 +281,8 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                     fileName = imagePath,
                     apiKey = this.apiKey,   // ✅ FIX
                     transactionId = transactionId,
-                    hash = hash
+                    hash = hash,
+                    type = type
                 };
 
                 var result = StorageApiClient.CreateRequest<TwoIDDownloadResponse>(
@@ -253,7 +320,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                     foreach (var path in citizenWithImages.FingerprintPaths)
                     {
                         var imageData =
-                            DownloadImageFromPath(path, transactionId, hash);
+                            DownloadImageFromPath(path, transactionId, hash, "base64");
 
                         if (imageData != null)
                         {
@@ -288,7 +355,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 {
                     foreach (var path in citizenWithImages.FacePaths)
                     {
-                        var imageData = DownloadImageFromPath(path, transactionId, hash);
+                        var imageData = DownloadImageFromPath(path, transactionId, hash, "base64");
                         if (imageData != null)
                         {
                             images.Add(imageData);
