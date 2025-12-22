@@ -988,24 +988,28 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                                         HisSereServBillFilter ssBillFilter = new HisSereServBillFilter();
                                         ssBillFilter.BILL_IDs = transactionPrintList.Select(o => o.ID).ToList();
                                         hisSSBills = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV_BILL>>("api/HisSereServBill/Get", ApiConsumers.MosConsumer, ssBillFilter, null);
-                                        if (hisSSBills == null || hisSSBills.Count <= 0)
+                                        //if (hisSSBills == null || hisSSBills.Count <= 0)
+                                        //{
+                                        //    return;
+                                        //}
+                                        if (hisSSBills != null && hisSSBills.Count > 0)
                                         {
-                                            return;
-                                        }
-                                        HisSereServFilter ssfilter = new HisSereServFilter();
-                                        ssfilter.IDs = hisSSBills.Select(o => o.SERE_SERV_ID).ToList();
-                                        sereServs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, ssfilter, null);
-                                        if (sereServs != null && sereServs.Count > 0 && sereServs.Exists(o => o.SERVICE_REQ_ID.HasValue))
-                                        {
-                                            HisServiceReqViewFilter filter = new HisServiceReqViewFilter();
-                                            filter.IDs = sereServs.Select(o => o.SERVICE_REQ_ID ?? 0).Distinct().ToList();
-                                            var serviceReq = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>("/api/HisServiceReq/GetView", ApiConsumers.MosConsumer, filter, null);
-                                            if (serviceReq != null && serviceReq.Count > 0)
+                                            HisSereServFilter ssfilter = new HisSereServFilter();
+                                            ssfilter.IDs = hisSSBills.Select(o => o.SERE_SERV_ID).ToList();
+                                            sereServs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, ssfilter, null);
+                                            if (sereServs != null && sereServs.Count > 0 && sereServs.Exists(o => o.SERVICE_REQ_ID.HasValue))
                                             {
-                                                HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor proc = new Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(serviceReq, currentModule.RoomId);
-                                                proc.Print("Mps000276", true);
+                                                HisServiceReqViewFilter filter = new HisServiceReqViewFilter();
+                                                filter.IDs = sereServs.Select(o => o.SERVICE_REQ_ID ?? 0).Distinct().ToList();
+                                                var serviceReq = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>("/api/HisServiceReq/GetView", ApiConsumers.MosConsumer, filter, null);
+                                                if (serviceReq != null && serviceReq.Count > 0)
+                                                {
+                                                    HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor proc = new Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(serviceReq, currentModule.RoomId);
+                                                    proc.Print("Mps000276", true);
+                                                }
                                             }
                                         }
+
                                     }
                                     else
                                     {
@@ -1085,9 +1089,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     ShowQR();
                     SendData();
                     timerReloadTransReq.Start();
-                    ExportInvoiceIfNeeded();
+                    //ExportInvoiceIfNeeded();
                 }
-                
+
                 InitPopupMenuOther();
             }
             catch (Exception ex)
@@ -2403,25 +2407,30 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         {
             if (chkExportHDDT.Checked && transactionPrint != null)
             {
-                //var trans = inputTransReq.Transactions.FirstOrDefault();
-                // Chỉ xuất hóa đơn cho giao dịch thanh toán
                 if (transactionPrint.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
                 {
                     CommonParam param = new CommonParam();
                     bool result = XuatHoaDonDienTu(false, ref param);
+
                     if (!result)
                     {
-                        MessageBox.Show("Xuất hóa đơn điện tử không thành công: " + param.GetMessage(), "Thông báo");
+                        XtraMessageBox.Show(
+                            "Xuất hóa đơn điện tử không thành công: " + param.GetMessage(),
+                            "Thông báo"
+                        );
                     }
                     else
                     {
-                        MessageBox.Show("Xuất hóa đơn điện tử thành công!", "Thông báo");
+                        CommonParam successParam = new CommonParam();
+                        successParam.Messages.Add("Xuất hóa đơn điện tử thành công!");
+
+                        XtraMessageBox.Show("Xuất hóa đơn điện tử thành công!");
 
                         if (chkPrintHDDT.Checked)
                         {
-                            PrintEInvoice();
+                            printPDFWithAcrobat();
                         }
-                        if (!chkNotDisplayedHDDT.Checked)
+                        else if (!chkNotDisplayedHDDT.Checked)
                         {
                             ShowEInvoiceView();
                         }
@@ -2429,7 +2438,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 }
             }
         }
-        // Stub: Hàm in hóa đơn điện tử
+
         private void PrintEInvoice()
         {
             try
@@ -2563,19 +2572,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     }
                 }
 
-                // Chỉ hiển thị view hóa đơn nếu checkbox Không hiển thị HDDT chưa được check
-                if (!chkNotDisplayedHDDT.Checked)
-                {
-                    this.onClickInHoaDonDienTu();
-                }
-
-                // Tự động in nếu cần
-                if (chkPrintHDDT.Checked)
-                {
-                    int sleepTime = (int)(HisConfigCFG.ElectronicInvoicePublishingDelayTime * 1000);
-                    System.Threading.Thread.Sleep(sleepTime);
-                    printPDFWithAcrobat();
-                }
+                this.onClickInHoaDonDienTu();
             }
             catch (Exception ex)
             {
