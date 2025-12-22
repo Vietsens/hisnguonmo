@@ -45,8 +45,20 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SurgTreatmentListUC));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.cboRequestDepartment = new HIS.Desktop.Utilities.Extensions.CustomGridLookUpEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.bar1 = new DevExpress.XtraBars.Bar();
+            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.gridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExecuteDepartment = new HIS.Desktop.Utilities.Extensions.CustomGridLookUpEdit();
+            this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.toggleSwitch1 = new DevExpress.XtraEditors.ToggleSwitch();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.txtServiceReqCode = new DevExpress.XtraEditors.TextEdit();
@@ -97,6 +109,14 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.navBarGroupControlContainer5 = new DevExpress.XtraNavBar.NavBarGroupControlContainer();
+            this.layoutControl6 = new DevExpress.XtraLayout.LayoutControl();
+            this.DtTdlIntructionTimeTo = new DevExpress.XtraEditors.DateEdit();
+            this.DtTdlIntructionTimeFrom = new DevExpress.XtraEditors.DateEdit();
+            this.layoutControlGroup6 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.navBarGroup2 = new DevExpress.XtraNavBar.NavBarGroup();
             this.BarTreatmentType = new DevExpress.XtraNavBar.NavBarGroup();
             this.BarServiceType = new DevExpress.XtraNavBar.NavBarGroup();
             this.navBarGroup1 = new DevExpress.XtraNavBar.NavBarGroup();
@@ -112,9 +132,12 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcTreatmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvSS_GcServiceReqCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvSS_GcPatientName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GvSS_GcDob = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GvSS_GcPatientType = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvSS_GcPtttMethodCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvSS_GcPtttGroupName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvSS_GcPtttPriority = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GvSS_GcIntructionTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvSS_GcEndTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvSS_GcExecuteLoginname = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvSS_GcEmotionlessMethodName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -130,9 +153,12 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcExecuteRoleName10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvSS_GcServiceCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvSS_GcServiceName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GvSS_GcHeinServiceBhytCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GvSS_GcBeginTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GvSS_GcEndTime2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemChkDisable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.toolTipController = new DevExpress.Utils.ToolTipController();
+            this.toolTipController = new DevExpress.Utils.ToolTipController(this.components);
             this.TxtKeyword = new DevExpress.XtraEditors.TextEdit();
             this.cboIs_Gather_Data = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -152,18 +178,18 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.imageListCheck = new System.Windows.Forms.ImageList();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.bar1 = new DevExpress.XtraBars.Bar();
-            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            this.imageListCheck = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cboRequestDepartment.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExecuteDepartment.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtServiceReqCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CboPtttPriorityName.Properties)).BeginInit();
@@ -218,6 +244,16 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
+            this.navBarGroupControlContainer5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).BeginInit();
+            this.layoutControl6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DtTdlIntructionTimeTo.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DtTdlIntructionTimeTo.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DtTdlIntructionTimeFrom.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DtTdlIntructionTimeFrom.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridControlSereServ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridViewSereServ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkGatherData)).BeginInit();
@@ -242,13 +278,16 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.cboRequestDepartment);
+            this.layoutControl1.Controls.Add(this.cboExecuteDepartment);
             this.layoutControl1.Controls.Add(this.toggleSwitch1);
             this.layoutControl1.Controls.Add(this.btnSave);
             this.layoutControl1.Controls.Add(this.txtServiceReqCode);
@@ -270,6 +309,112 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControl1.Size = new System.Drawing.Size(1320, 571);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // cboRequestDepartment
+            // 
+            this.cboRequestDepartment.Location = new System.Drawing.Point(97, 170);
+            this.cboRequestDepartment.MenuManager = this.barManager1;
+            this.cboRequestDepartment.Name = "cboRequestDepartment";
+            this.cboRequestDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboRequestDepartment.Properties.NullText = "";
+            this.cboRequestDepartment.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboRequestDepartment.Properties.View = this.gridLookUpEdit2View;
+            this.cboRequestDepartment.Size = new System.Drawing.Size(151, 20);
+            this.cboRequestDepartment.StyleController = this.layoutControl1;
+            this.cboRequestDepartment.TabIndex = 19;
+            this.cboRequestDepartment.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboRequestDepartment_CustomDisplayText);
+            // 
+            // barManager1
+            // 
+            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
+            this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
+            this.barManager1.Form = this;
+            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+            this.barButtonItem1});
+            this.barManager1.MaxItemId = 1;
+            // 
+            // bar1
+            // 
+            this.bar1.BarName = "Tools";
+            this.bar1.DockCol = 0;
+            this.bar1.DockRow = 0;
+            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
+            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem1)});
+            this.bar1.Text = "Tools";
+            this.bar1.Visible = false;
+            // 
+            // barButtonItem1
+            // 
+            this.barButtonItem1.Caption = "Ctrl S";
+            this.barButtonItem1.Id = 0;
+            this.barButtonItem1.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
+            this.barButtonItem1.Name = "barButtonItem1";
+            this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1320, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 600);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 571);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 571);
+            // 
+            // gridLookUpEdit2View
+            // 
+            this.gridLookUpEdit2View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridLookUpEdit2View.Name = "gridLookUpEdit2View";
+            this.gridLookUpEdit2View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridLookUpEdit2View.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExecuteDepartment
+            // 
+            this.cboExecuteDepartment.Location = new System.Drawing.Point(97, 146);
+            this.cboExecuteDepartment.MenuManager = this.barManager1;
+            this.cboExecuteDepartment.Name = "cboExecuteDepartment";
+            this.cboExecuteDepartment.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboExecuteDepartment.Properties.AutoComplete = false;
+            this.cboExecuteDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboExecuteDepartment.Properties.NullText = "";
+            this.cboExecuteDepartment.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboExecuteDepartment.Properties.View = this.gridView4;
+            this.cboExecuteDepartment.Size = new System.Drawing.Size(151, 20);
+            this.cboExecuteDepartment.StyleController = this.layoutControl1;
+            this.cboExecuteDepartment.TabIndex = 18;
+            this.cboExecuteDepartment.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboExecuteDepartment_CustomDisplayText);
+            // 
+            // gridView4
+            // 
+            this.gridView4.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView4.Name = "gridView4";
+            this.gridView4.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView4.OptionsView.ShowGroupPanel = false;
             // 
             // toggleSwitch1
             // 
@@ -359,15 +504,17 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer2);
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer3);
             this.navBarControl1.Controls.Add(this.navBarGroupControlContainer4);
+            this.navBarControl1.Controls.Add(this.navBarGroupControlContainer5);
             this.navBarControl1.Groups.AddRange(new DevExpress.XtraNavBar.NavBarGroup[] {
             this.BarIntructionTime,
+            this.navBarGroup2,
             this.BarTreatmentType,
             this.BarServiceType,
             this.navBarGroup1});
-            this.navBarControl1.Location = new System.Drawing.Point(2, 146);
+            this.navBarControl1.Location = new System.Drawing.Point(2, 194);
             this.navBarControl1.Name = "navBarControl1";
             this.navBarControl1.OptionsNavPane.ExpandedWidth = 246;
-            this.navBarControl1.Size = new System.Drawing.Size(246, 369);
+            this.navBarControl1.Size = new System.Drawing.Size(246, 321);
             this.navBarControl1.TabIndex = 9;
             this.navBarControl1.Text = "navBarControl1";
             // 
@@ -375,6 +522,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // 
             this.BarIntructionTime.Caption = "Ngày thực hiện";
             this.BarIntructionTime.ControlContainer = this.navBarGroupControlContainer1;
+            this.BarIntructionTime.Expanded = true;
             this.BarIntructionTime.GroupClientHeight = 56;
             this.BarIntructionTime.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
             this.BarIntructionTime.Name = "BarIntructionTime";
@@ -385,7 +533,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.navBarGroupControlContainer1.Appearance.Options.UseBackColor = true;
             this.navBarGroupControlContainer1.Controls.Add(this.layoutControl2);
             this.navBarGroupControlContainer1.Name = "navBarGroupControlContainer1";
-            this.navBarGroupControlContainer1.Size = new System.Drawing.Size(222, 52);
+            this.navBarGroupControlContainer1.Size = new System.Drawing.Size(238, 52);
             this.navBarGroupControlContainer1.TabIndex = 0;
             // 
             // layoutControl2
@@ -396,7 +544,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControl2.Location = new System.Drawing.Point(0, 0);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.layoutControlGroup2;
-            this.layoutControl2.Size = new System.Drawing.Size(222, 52);
+            this.layoutControl2.Size = new System.Drawing.Size(238, 52);
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl2";
             // 
@@ -414,7 +562,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.DtIntructionTimeTo.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.DtIntructionTimeTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.DtIntructionTimeTo.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.DtIntructionTimeTo.Size = new System.Drawing.Size(123, 20);
+            this.DtIntructionTimeTo.Size = new System.Drawing.Size(139, 20);
             this.DtIntructionTimeTo.StyleController = this.layoutControl2;
             this.DtIntructionTimeTo.TabIndex = 5;
             // 
@@ -432,7 +580,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.DtIntructionTimeFrom.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.DtIntructionTimeFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.DtIntructionTimeFrom.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.DtIntructionTimeFrom.Size = new System.Drawing.Size(123, 20);
+            this.DtIntructionTimeFrom.Size = new System.Drawing.Size(139, 20);
             this.DtIntructionTimeFrom.StyleController = this.layoutControl2;
             this.DtIntructionTimeFrom.TabIndex = 4;
             // 
@@ -446,7 +594,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(222, 52);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(238, 52);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // LciIntructionTimeFrom
@@ -456,7 +604,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.LciIntructionTimeFrom.Control = this.DtIntructionTimeFrom;
             this.LciIntructionTimeFrom.Location = new System.Drawing.Point(0, 0);
             this.LciIntructionTimeFrom.Name = "LciIntructionTimeFrom";
-            this.LciIntructionTimeFrom.Size = new System.Drawing.Size(222, 24);
+            this.LciIntructionTimeFrom.Size = new System.Drawing.Size(238, 24);
             this.LciIntructionTimeFrom.Text = "Từ:";
             this.LciIntructionTimeFrom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.LciIntructionTimeFrom.TextSize = new System.Drawing.Size(90, 20);
@@ -469,7 +617,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.LciIntructionTimeTo.Control = this.DtIntructionTimeTo;
             this.LciIntructionTimeTo.Location = new System.Drawing.Point(0, 24);
             this.LciIntructionTimeTo.Name = "LciIntructionTimeTo";
-            this.LciIntructionTimeTo.Size = new System.Drawing.Size(222, 28);
+            this.LciIntructionTimeTo.Size = new System.Drawing.Size(238, 28);
             this.LciIntructionTimeTo.Text = "Đến:";
             this.LciIntructionTimeTo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.LciIntructionTimeTo.TextSize = new System.Drawing.Size(90, 20);
@@ -481,7 +629,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.navBarGroupControlContainer2.Appearance.Options.UseBackColor = true;
             this.navBarGroupControlContainer2.Controls.Add(this.layoutControl3);
             this.navBarGroupControlContainer2.Name = "navBarGroupControlContainer2";
-            this.navBarGroupControlContainer2.Size = new System.Drawing.Size(222, 52);
+            this.navBarGroupControlContainer2.Size = new System.Drawing.Size(238, 52);
             this.navBarGroupControlContainer2.TabIndex = 1;
             // 
             // layoutControl3
@@ -492,7 +640,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControl3.Location = new System.Drawing.Point(0, 0);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup3;
-            this.layoutControl3.Size = new System.Drawing.Size(222, 52);
+            this.layoutControl3.Size = new System.Drawing.Size(238, 52);
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
             // 
@@ -502,7 +650,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.ChkInTreat.Name = "ChkInTreat";
             this.ChkInTreat.Properties.Caption = "Nội trú";
             this.ChkInTreat.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.ChkInTreat.Size = new System.Drawing.Size(123, 19);
+            this.ChkInTreat.Size = new System.Drawing.Size(139, 19);
             this.ChkInTreat.StyleController = this.layoutControl3;
             this.ChkInTreat.TabIndex = 5;
             this.ChkInTreat.CheckedChanged += new System.EventHandler(this.ChkInTreat_CheckedChanged);
@@ -513,7 +661,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.ChkOutTreat.Name = "ChkOutTreat";
             this.ChkOutTreat.Properties.Caption = "Ngoại trú";
             this.ChkOutTreat.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.ChkOutTreat.Size = new System.Drawing.Size(123, 19);
+            this.ChkOutTreat.Size = new System.Drawing.Size(139, 19);
             this.ChkOutTreat.StyleController = this.layoutControl3;
             this.ChkOutTreat.TabIndex = 4;
             this.ChkOutTreat.CheckedChanged += new System.EventHandler(this.ChkOutTreat_CheckedChanged);
@@ -528,7 +676,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(222, 52);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(238, 52);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem7
@@ -536,7 +684,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem7.Control = this.ChkOutTreat;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(222, 24);
+            this.layoutControlItem7.Size = new System.Drawing.Size(238, 24);
             this.layoutControlItem7.Text = " ";
             this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem7.TextSize = new System.Drawing.Size(90, 20);
@@ -547,7 +695,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem8.Control = this.ChkInTreat;
             this.layoutControlItem8.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(222, 28);
+            this.layoutControlItem8.Size = new System.Drawing.Size(238, 28);
             this.layoutControlItem8.Text = " ";
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(90, 20);
@@ -559,7 +707,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.navBarGroupControlContainer3.Appearance.Options.UseBackColor = true;
             this.navBarGroupControlContainer3.Controls.Add(this.layoutControl4);
             this.navBarGroupControlContainer3.Name = "navBarGroupControlContainer3";
-            this.navBarGroupControlContainer3.Size = new System.Drawing.Size(222, 176);
+            this.navBarGroupControlContainer3.Size = new System.Drawing.Size(238, 176);
             this.navBarGroupControlContainer3.TabIndex = 2;
             // 
             // layoutControl4
@@ -575,7 +723,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControl4.Location = new System.Drawing.Point(0, 0);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup4;
-            this.layoutControl4.Size = new System.Drawing.Size(222, 176);
+            this.layoutControl4.Size = new System.Drawing.Size(238, 176);
             this.layoutControl4.TabIndex = 0;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -584,7 +732,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.chkGPBL.Location = new System.Drawing.Point(97, 146);
             this.chkGPBL.Name = "chkGPBL";
             this.chkGPBL.Properties.Caption = "Giải phẫu bệnh lý";
-            this.chkGPBL.Size = new System.Drawing.Size(123, 19);
+            this.chkGPBL.Size = new System.Drawing.Size(139, 19);
             this.chkGPBL.StyleController = this.layoutControl4;
             this.chkGPBL.TabIndex = 10;
             // 
@@ -593,7 +741,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.chkTDCN.Location = new System.Drawing.Point(97, 122);
             this.chkTDCN.Name = "chkTDCN";
             this.chkTDCN.Properties.Caption = "Thăm dò chức năng";
-            this.chkTDCN.Size = new System.Drawing.Size(123, 19);
+            this.chkTDCN.Size = new System.Drawing.Size(139, 19);
             this.chkTDCN.StyleController = this.layoutControl4;
             this.chkTDCN.TabIndex = 9;
             // 
@@ -603,7 +751,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.ChkSA.Name = "ChkSA";
             this.ChkSA.Properties.Caption = "Siêu âm";
             this.ChkSA.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.ChkSA.Size = new System.Drawing.Size(123, 19);
+            this.ChkSA.Size = new System.Drawing.Size(139, 19);
             this.ChkSA.StyleController = this.layoutControl4;
             this.ChkSA.TabIndex = 8;
             this.ChkSA.CheckedChanged += new System.EventHandler(this.ChkSA_CheckedChanged);
@@ -614,7 +762,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.ChkNS.Name = "ChkNS";
             this.ChkNS.Properties.Caption = "Nội soi";
             this.ChkNS.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.ChkNS.Size = new System.Drawing.Size(123, 19);
+            this.ChkNS.Size = new System.Drawing.Size(139, 19);
             this.ChkNS.StyleController = this.layoutControl4;
             this.ChkNS.TabIndex = 7;
             this.ChkNS.CheckedChanged += new System.EventHandler(this.ChkNS_CheckedChanged);
@@ -625,7 +773,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.ChkCDHA.Name = "ChkCDHA";
             this.ChkCDHA.Properties.Caption = "CĐHA";
             this.ChkCDHA.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.ChkCDHA.Size = new System.Drawing.Size(123, 19);
+            this.ChkCDHA.Size = new System.Drawing.Size(139, 19);
             this.ChkCDHA.StyleController = this.layoutControl4;
             this.ChkCDHA.TabIndex = 6;
             this.ChkCDHA.ToolTip = "Chẩn đoán hình ảnh";
@@ -637,7 +785,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.ChkTT.Name = "ChkTT";
             this.ChkTT.Properties.Caption = "Thủ thuật";
             this.ChkTT.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.ChkTT.Size = new System.Drawing.Size(123, 19);
+            this.ChkTT.Size = new System.Drawing.Size(139, 19);
             this.ChkTT.StyleController = this.layoutControl4;
             this.ChkTT.TabIndex = 5;
             this.ChkTT.CheckedChanged += new System.EventHandler(this.ChkTT_CheckedChanged);
@@ -648,7 +796,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.ChkPT.Name = "ChkPT";
             this.ChkPT.Properties.Caption = "Phẫu thuật";
             this.ChkPT.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.ChkPT.Size = new System.Drawing.Size(123, 19);
+            this.ChkPT.Size = new System.Drawing.Size(139, 19);
             this.ChkPT.StyleController = this.layoutControl4;
             this.ChkPT.TabIndex = 4;
             this.ChkPT.CheckedChanged += new System.EventHandler(this.ChkPT_CheckedChanged);
@@ -668,7 +816,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup4.Size = new System.Drawing.Size(222, 176);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(238, 176);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // layoutControlItem9
@@ -676,7 +824,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem9.Control = this.ChkPT;
             this.layoutControlItem9.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(222, 24);
+            this.layoutControlItem9.Size = new System.Drawing.Size(238, 24);
             this.layoutControlItem9.Text = " ";
             this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem9.TextSize = new System.Drawing.Size(90, 20);
@@ -687,7 +835,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem10.Control = this.ChkTT;
             this.layoutControlItem10.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(222, 24);
+            this.layoutControlItem10.Size = new System.Drawing.Size(238, 24);
             this.layoutControlItem10.Text = " ";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem10.TextSize = new System.Drawing.Size(90, 20);
@@ -698,7 +846,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem15.Control = this.ChkCDHA;
             this.layoutControlItem15.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(222, 24);
+            this.layoutControlItem15.Size = new System.Drawing.Size(238, 24);
             this.layoutControlItem15.Text = " ";
             this.layoutControlItem15.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem15.TextSize = new System.Drawing.Size(90, 20);
@@ -709,7 +857,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem16.Control = this.ChkNS;
             this.layoutControlItem16.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(222, 24);
+            this.layoutControlItem16.Size = new System.Drawing.Size(238, 24);
             this.layoutControlItem16.Text = " ";
             this.layoutControlItem16.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem16.TextSize = new System.Drawing.Size(90, 20);
@@ -720,7 +868,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem17.Control = this.ChkSA;
             this.layoutControlItem17.Location = new System.Drawing.Point(0, 96);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(222, 24);
+            this.layoutControlItem17.Size = new System.Drawing.Size(238, 24);
             this.layoutControlItem17.Text = " ";
             this.layoutControlItem17.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem17.TextSize = new System.Drawing.Size(90, 20);
@@ -731,7 +879,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem11.Control = this.chkTDCN;
             this.layoutControlItem11.Location = new System.Drawing.Point(0, 120);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(222, 24);
+            this.layoutControlItem11.Size = new System.Drawing.Size(238, 24);
             this.layoutControlItem11.Text = " ";
             this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem11.TextSize = new System.Drawing.Size(90, 20);
@@ -742,7 +890,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem12.Control = this.chkGPBL;
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 144);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(222, 32);
+            this.layoutControlItem12.Size = new System.Drawing.Size(238, 32);
             this.layoutControlItem12.Text = " ";
             this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem12.TextSize = new System.Drawing.Size(90, 20);
@@ -850,6 +998,119 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem19.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem19.TextToControlDistance = 5;
             // 
+            // navBarGroupControlContainer5
+            // 
+            this.navBarGroupControlContainer5.Appearance.BackColor = System.Drawing.SystemColors.Control;
+            this.navBarGroupControlContainer5.Appearance.Options.UseBackColor = true;
+            this.navBarGroupControlContainer5.Controls.Add(this.layoutControl6);
+            this.navBarGroupControlContainer5.Name = "navBarGroupControlContainer5";
+            this.navBarGroupControlContainer5.Size = new System.Drawing.Size(238, 76);
+            this.navBarGroupControlContainer5.TabIndex = 4;
+            // 
+            // layoutControl6
+            // 
+            this.layoutControl6.Controls.Add(this.DtTdlIntructionTimeTo);
+            this.layoutControl6.Controls.Add(this.DtTdlIntructionTimeFrom);
+            this.layoutControl6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControl6.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl6.Name = "layoutControl6";
+            this.layoutControl6.Root = this.layoutControlGroup6;
+            this.layoutControl6.Size = new System.Drawing.Size(238, 76);
+            this.layoutControl6.TabIndex = 0;
+            this.layoutControl6.Text = "layoutControl6";
+            // 
+            // DtTdlIntructionTimeTo
+            // 
+            this.DtTdlIntructionTimeTo.EditValue = null;
+            this.DtTdlIntructionTimeTo.Location = new System.Drawing.Point(97, 26);
+            this.DtTdlIntructionTimeTo.MenuManager = this.barManager1;
+            this.DtTdlIntructionTimeTo.Name = "DtTdlIntructionTimeTo";
+            this.DtTdlIntructionTimeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.DtTdlIntructionTimeTo.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.DtTdlIntructionTimeTo.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.DtTdlIntructionTimeTo.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.DtTdlIntructionTimeTo.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.DtTdlIntructionTimeTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.DtTdlIntructionTimeTo.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.DtTdlIntructionTimeTo.Size = new System.Drawing.Size(139, 20);
+            this.DtTdlIntructionTimeTo.StyleController = this.layoutControl6;
+            this.DtTdlIntructionTimeTo.TabIndex = 5;
+            // 
+            // DtTdlIntructionTimeFrom
+            // 
+            this.DtTdlIntructionTimeFrom.EditValue = null;
+            this.DtTdlIntructionTimeFrom.Location = new System.Drawing.Point(97, 2);
+            this.DtTdlIntructionTimeFrom.MenuManager = this.barManager1;
+            this.DtTdlIntructionTimeFrom.Name = "DtTdlIntructionTimeFrom";
+            this.DtTdlIntructionTimeFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.DtTdlIntructionTimeFrom.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.DtTdlIntructionTimeFrom.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.DtTdlIntructionTimeFrom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.DtTdlIntructionTimeFrom.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.DtTdlIntructionTimeFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.DtTdlIntructionTimeFrom.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.DtTdlIntructionTimeFrom.Size = new System.Drawing.Size(139, 20);
+            this.DtTdlIntructionTimeFrom.StyleController = this.layoutControl6;
+            this.DtTdlIntructionTimeFrom.TabIndex = 4;
+            // 
+            // layoutControlGroup6
+            // 
+            this.layoutControlGroup6.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroup6.GroupBordersVisible = false;
+            this.layoutControlGroup6.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem24,
+            this.layoutControlItem25});
+            this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup6.Name = "layoutControlGroup6";
+            this.layoutControlGroup6.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.layoutControlGroup6.Size = new System.Drawing.Size(238, 76);
+            this.layoutControlGroup6.TextVisible = false;
+            // 
+            // layoutControlItem24
+            // 
+            this.layoutControlItem24.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem24.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem24.Control = this.DtTdlIntructionTimeFrom;
+            this.layoutControlItem24.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem24.MaxSize = new System.Drawing.Size(0, 24);
+            this.layoutControlItem24.MinSize = new System.Drawing.Size(149, 24);
+            this.layoutControlItem24.Name = "layoutControlItem24";
+            this.layoutControlItem24.Size = new System.Drawing.Size(238, 24);
+            this.layoutControlItem24.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem24.Text = "Từ:";
+            this.layoutControlItem24.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem24.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem24.TextToControlDistance = 5;
+            // 
+            // layoutControlItem25
+            // 
+            this.layoutControlItem25.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem25.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem25.Control = this.DtTdlIntructionTimeTo;
+            this.layoutControlItem25.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem25.MaxSize = new System.Drawing.Size(0, 24);
+            this.layoutControlItem25.MinSize = new System.Drawing.Size(149, 24);
+            this.layoutControlItem25.Name = "layoutControlItem25";
+            this.layoutControlItem25.Size = new System.Drawing.Size(238, 52);
+            this.layoutControlItem25.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem25.Text = "Đến:";
+            this.layoutControlItem25.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem25.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem25.TextToControlDistance = 5;
+            // 
+            // navBarGroup2
+            // 
+            this.navBarGroup2.Caption = "Ngày chỉ định";
+            this.navBarGroup2.ControlContainer = this.navBarGroupControlContainer5;
+            this.navBarGroup2.Expanded = true;
+            this.navBarGroup2.GroupClientHeight = 80;
+            this.navBarGroup2.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
+            this.navBarGroup2.Name = "navBarGroup2";
+            // 
             // BarTreatmentType
             // 
             this.BarTreatmentType.Caption = "Đối tượng";
@@ -870,7 +1131,6 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // 
             this.navBarGroup1.Caption = "Trạng thái";
             this.navBarGroup1.ControlContainer = this.navBarGroupControlContainer4;
-            this.navBarGroup1.Expanded = true;
             this.navBarGroup1.GroupClientHeight = 80;
             this.navBarGroup1.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
             this.navBarGroup1.Name = "navBarGroup1";
@@ -920,9 +1180,12 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcTreatmentCode,
             this.GvSS_GcServiceReqCode,
             this.GvSS_GcPatientName,
+            this.GvSS_GcDob,
+            this.GvSS_GcPatientType,
             this.GvSS_GcPtttMethodCode,
             this.GvSS_GcPtttGroupName,
             this.GvSS_GcPtttPriority,
+            this.GvSS_GcIntructionTime,
             this.GvSS_GcEndTime,
             this.GvSS_GcExecuteLoginname,
             this.GvSS_GcEmotionlessMethodName,
@@ -938,6 +1201,9 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcExecuteRoleName10,
             this.GvSS_GcServiceCode,
             this.GvSS_GcServiceName,
+            this.GvSS_GcHeinServiceBhytCode,
+            this.GvSS_GcBeginTime,
+            this.GvSS_GcEndTime2,
             this.gridColumn1});
             this.GridViewSereServ.GridControl = this.GridControlSereServ;
             this.GridViewSereServ.GroupCount = 1;
@@ -1017,7 +1283,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcTreatmentCode.OptionsColumn.AllowEdit = false;
             this.GvSS_GcTreatmentCode.Visible = true;
             this.GvSS_GcTreatmentCode.VisibleIndex = 2;
-            this.GvSS_GcTreatmentCode.Width = 80;
+            this.GvSS_GcTreatmentCode.Width = 100;
             // 
             // GvSS_GcServiceReqCode
             // 
@@ -1027,7 +1293,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcServiceReqCode.OptionsColumn.AllowEdit = false;
             this.GvSS_GcServiceReqCode.Visible = true;
             this.GvSS_GcServiceReqCode.VisibleIndex = 3;
-            this.GvSS_GcServiceReqCode.Width = 80;
+            this.GvSS_GcServiceReqCode.Width = 100;
             // 
             // GvSS_GcPatientName
             // 
@@ -1038,6 +1304,26 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcPatientName.Visible = true;
             this.GvSS_GcPatientName.VisibleIndex = 4;
             this.GvSS_GcPatientName.Width = 120;
+            // 
+            // GvSS_GcDob
+            // 
+            this.GvSS_GcDob.Caption = "Ngày sinh";
+            this.GvSS_GcDob.FieldName = "TDL_PATIENT_DOB_STR";
+            this.GvSS_GcDob.Name = "GvSS_GcDob";
+            this.GvSS_GcDob.OptionsColumn.AllowEdit = false;
+            this.GvSS_GcDob.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.GvSS_GcDob.Visible = true;
+            this.GvSS_GcDob.VisibleIndex = 5;
+            // 
+            // GvSS_GcPatientType
+            // 
+            this.GvSS_GcPatientType.Caption = "Đối tượng";
+            this.GvSS_GcPatientType.FieldName = "PATIENT_TYPE_NAME";
+            this.GvSS_GcPatientType.Name = "GvSS_GcPatientType";
+            this.GvSS_GcPatientType.OptionsColumn.AllowEdit = false;
+            this.GvSS_GcPatientType.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.GvSS_GcPatientType.Visible = true;
+            this.GvSS_GcPatientType.VisibleIndex = 6;
             // 
             // GvSS_GcPtttMethodCode
             // 
@@ -1056,7 +1342,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcPtttGroupName.OptionsColumn.AllowEdit = false;
             this.GvSS_GcPtttGroupName.ToolTip = "Loại phẫu thuật thủ thuật";
             this.GvSS_GcPtttGroupName.Visible = true;
-            this.GvSS_GcPtttGroupName.VisibleIndex = 5;
+            this.GvSS_GcPtttGroupName.VisibleIndex = 7;
             this.GvSS_GcPtttGroupName.Width = 45;
             // 
             // GvSS_GcPtttPriority
@@ -1067,8 +1353,20 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcPtttPriority.OptionsColumn.AllowEdit = false;
             this.GvSS_GcPtttPriority.ToolTip = "Hình thức phẫu thuật thủ thuật";
             this.GvSS_GcPtttPriority.Visible = true;
-            this.GvSS_GcPtttPriority.VisibleIndex = 6;
+            this.GvSS_GcPtttPriority.VisibleIndex = 8;
             this.GvSS_GcPtttPriority.Width = 45;
+            // 
+            // GvSS_GcIntructionTime
+            // 
+            this.GvSS_GcIntructionTime.Caption = "Ngày chỉ định";
+            this.GvSS_GcIntructionTime.FieldName = "TDL_INTRUCTION_TIME_STR";
+            this.GvSS_GcIntructionTime.Name = "GvSS_GcIntructionTime";
+            this.GvSS_GcIntructionTime.OptionsColumn.AllowEdit = false;
+            this.GvSS_GcIntructionTime.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.GvSS_GcIntructionTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.GvSS_GcIntructionTime.Visible = true;
+            this.GvSS_GcIntructionTime.VisibleIndex = 9;
+            this.GvSS_GcIntructionTime.Width = 130;
             // 
             // GvSS_GcEndTime
             // 
@@ -1081,8 +1379,8 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcEndTime.Name = "GvSS_GcEndTime";
             this.GvSS_GcEndTime.OptionsColumn.AllowEdit = false;
             this.GvSS_GcEndTime.Visible = true;
-            this.GvSS_GcEndTime.VisibleIndex = 7;
-            this.GvSS_GcEndTime.Width = 120;
+            this.GvSS_GcEndTime.VisibleIndex = 10;
+            this.GvSS_GcEndTime.Width = 130;
             // 
             // GvSS_GcExecuteLoginname
             // 
@@ -1099,7 +1397,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcEmotionlessMethodName.Name = "GvSS_GcEmotionlessMethodName";
             this.GvSS_GcEmotionlessMethodName.OptionsColumn.AllowEdit = false;
             this.GvSS_GcEmotionlessMethodName.Visible = true;
-            this.GvSS_GcEmotionlessMethodName.VisibleIndex = 8;
+            this.GvSS_GcEmotionlessMethodName.VisibleIndex = 11;
             this.GvSS_GcEmotionlessMethodName.Width = 200;
             // 
             // GvSS_GcExecuteRoleName1
@@ -1108,7 +1406,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcExecuteRoleName1.Name = "GvSS_GcExecuteRoleName1";
             this.GvSS_GcExecuteRoleName1.OptionsColumn.AllowEdit = false;
             this.GvSS_GcExecuteRoleName1.Visible = true;
-            this.GvSS_GcExecuteRoleName1.VisibleIndex = 9;
+            this.GvSS_GcExecuteRoleName1.VisibleIndex = 12;
             // 
             // GvSS_GcExecuteRoleName2
             // 
@@ -1116,7 +1414,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcExecuteRoleName2.Name = "GvSS_GcExecuteRoleName2";
             this.GvSS_GcExecuteRoleName2.OptionsColumn.AllowEdit = false;
             this.GvSS_GcExecuteRoleName2.Visible = true;
-            this.GvSS_GcExecuteRoleName2.VisibleIndex = 10;
+            this.GvSS_GcExecuteRoleName2.VisibleIndex = 13;
             // 
             // GvSS_GcExecuteRoleName3
             // 
@@ -1124,7 +1422,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcExecuteRoleName3.Name = "GvSS_GcExecuteRoleName3";
             this.GvSS_GcExecuteRoleName3.OptionsColumn.AllowEdit = false;
             this.GvSS_GcExecuteRoleName3.Visible = true;
-            this.GvSS_GcExecuteRoleName3.VisibleIndex = 11;
+            this.GvSS_GcExecuteRoleName3.VisibleIndex = 14;
             // 
             // GvSS_GcExecuteRoleName4
             // 
@@ -1132,7 +1430,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcExecuteRoleName4.Name = "GvSS_GcExecuteRoleName4";
             this.GvSS_GcExecuteRoleName4.OptionsColumn.AllowEdit = false;
             this.GvSS_GcExecuteRoleName4.Visible = true;
-            this.GvSS_GcExecuteRoleName4.VisibleIndex = 12;
+            this.GvSS_GcExecuteRoleName4.VisibleIndex = 15;
             // 
             // GvSS_GcExecuteRoleName5
             // 
@@ -1140,7 +1438,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcExecuteRoleName5.Name = "GvSS_GcExecuteRoleName5";
             this.GvSS_GcExecuteRoleName5.OptionsColumn.AllowEdit = false;
             this.GvSS_GcExecuteRoleName5.Visible = true;
-            this.GvSS_GcExecuteRoleName5.VisibleIndex = 13;
+            this.GvSS_GcExecuteRoleName5.VisibleIndex = 16;
             // 
             // GvSS_GcExecuteRoleName6
             // 
@@ -1148,7 +1446,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcExecuteRoleName6.Name = "GvSS_GcExecuteRoleName6";
             this.GvSS_GcExecuteRoleName6.OptionsColumn.AllowEdit = false;
             this.GvSS_GcExecuteRoleName6.Visible = true;
-            this.GvSS_GcExecuteRoleName6.VisibleIndex = 14;
+            this.GvSS_GcExecuteRoleName6.VisibleIndex = 17;
             // 
             // GvSS_GcExecuteRoleName7
             // 
@@ -1156,7 +1454,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcExecuteRoleName7.Name = "GvSS_GcExecuteRoleName7";
             this.GvSS_GcExecuteRoleName7.OptionsColumn.AllowEdit = false;
             this.GvSS_GcExecuteRoleName7.Visible = true;
-            this.GvSS_GcExecuteRoleName7.VisibleIndex = 15;
+            this.GvSS_GcExecuteRoleName7.VisibleIndex = 18;
             // 
             // GvSS_GcExecuteRoleName8
             // 
@@ -1164,7 +1462,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcExecuteRoleName8.Name = "GvSS_GcExecuteRoleName8";
             this.GvSS_GcExecuteRoleName8.OptionsColumn.AllowEdit = false;
             this.GvSS_GcExecuteRoleName8.Visible = true;
-            this.GvSS_GcExecuteRoleName8.VisibleIndex = 16;
+            this.GvSS_GcExecuteRoleName8.VisibleIndex = 19;
             // 
             // GvSS_GcExecuteRoleName9
             // 
@@ -1172,7 +1470,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcExecuteRoleName9.Name = "GvSS_GcExecuteRoleName9";
             this.GvSS_GcExecuteRoleName9.OptionsColumn.AllowEdit = false;
             this.GvSS_GcExecuteRoleName9.Visible = true;
-            this.GvSS_GcExecuteRoleName9.VisibleIndex = 17;
+            this.GvSS_GcExecuteRoleName9.VisibleIndex = 20;
             // 
             // GvSS_GcExecuteRoleName10
             // 
@@ -1180,7 +1478,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcExecuteRoleName10.Name = "GvSS_GcExecuteRoleName10";
             this.GvSS_GcExecuteRoleName10.OptionsColumn.AllowEdit = false;
             this.GvSS_GcExecuteRoleName10.Visible = true;
-            this.GvSS_GcExecuteRoleName10.VisibleIndex = 18;
+            this.GvSS_GcExecuteRoleName10.VisibleIndex = 21;
             // 
             // GvSS_GcServiceCode
             // 
@@ -1189,7 +1487,7 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcServiceCode.Name = "GvSS_GcServiceCode";
             this.GvSS_GcServiceCode.OptionsColumn.AllowEdit = false;
             this.GvSS_GcServiceCode.Visible = true;
-            this.GvSS_GcServiceCode.VisibleIndex = 19;
+            this.GvSS_GcServiceCode.VisibleIndex = 22;
             this.GvSS_GcServiceCode.Width = 100;
             // 
             // GvSS_GcServiceName
@@ -1199,8 +1497,42 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.GvSS_GcServiceName.Name = "GvSS_GcServiceName";
             this.GvSS_GcServiceName.OptionsColumn.AllowEdit = false;
             this.GvSS_GcServiceName.Visible = true;
-            this.GvSS_GcServiceName.VisibleIndex = 20;
+            this.GvSS_GcServiceName.VisibleIndex = 23;
             this.GvSS_GcServiceName.Width = 500;
+            // 
+            // GvSS_GcHeinServiceBhytCode
+            // 
+            this.GvSS_GcHeinServiceBhytCode.Caption = "Mã BHYT";
+            this.GvSS_GcHeinServiceBhytCode.FieldName = "TDL_HEIN_SERVICE_BHYT_CODE";
+            this.GvSS_GcHeinServiceBhytCode.Name = "GvSS_GcHeinServiceBhytCode";
+            this.GvSS_GcHeinServiceBhytCode.OptionsColumn.AllowEdit = false;
+            this.GvSS_GcHeinServiceBhytCode.Visible = true;
+            this.GvSS_GcHeinServiceBhytCode.VisibleIndex = 24;
+            this.GvSS_GcHeinServiceBhytCode.Width = 100;
+            // 
+            // GvSS_GcBeginTime
+            // 
+            this.GvSS_GcBeginTime.Caption = "Thời gian bắt đầu";
+            this.GvSS_GcBeginTime.FieldName = "BEGIN_TIME_STR";
+            this.GvSS_GcBeginTime.Name = "GvSS_GcBeginTime";
+            this.GvSS_GcBeginTime.OptionsColumn.AllowEdit = false;
+            this.GvSS_GcBeginTime.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.GvSS_GcBeginTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.GvSS_GcBeginTime.Visible = true;
+            this.GvSS_GcBeginTime.VisibleIndex = 25;
+            this.GvSS_GcBeginTime.Width = 130;
+            // 
+            // GvSS_GcEndTime2
+            // 
+            this.GvSS_GcEndTime2.Caption = "Thời gian kết thúc";
+            this.GvSS_GcEndTime2.FieldName = "END_TIME_STR";
+            this.GvSS_GcEndTime2.Name = "GvSS_GcEndTime2";
+            this.GvSS_GcEndTime2.OptionsColumn.AllowEdit = false;
+            this.GvSS_GcEndTime2.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.GvSS_GcEndTime2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.GvSS_GcEndTime2.Visible = true;
+            this.GvSS_GcEndTime2.VisibleIndex = 26;
+            this.GvSS_GcEndTime2.Width = 130;
             // 
             // gridColumn1
             // 
@@ -1298,7 +1630,9 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.lcIs_Fee,
             this.layoutControlItem3,
             this.layoutControlItem20,
-            this.layoutControlItem21});
+            this.layoutControlItem21,
+            this.layoutControlItem22,
+            this.layoutControlItem23});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1344,9 +1678,9 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.navBarControl1;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 144);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 192);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(250, 373);
+            this.layoutControlItem6.Size = new System.Drawing.Size(250, 325);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -1443,6 +1777,32 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.layoutControlItem21.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem21.TextVisible = false;
             // 
+            // layoutControlItem22
+            // 
+            this.layoutControlItem22.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem22.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem22.Control = this.cboExecuteDepartment;
+            this.layoutControlItem22.Location = new System.Drawing.Point(0, 144);
+            this.layoutControlItem22.Name = "layoutControlItem22";
+            this.layoutControlItem22.Size = new System.Drawing.Size(250, 24);
+            this.layoutControlItem22.Text = "Khoa thực hiện:";
+            this.layoutControlItem22.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem22.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem22.TextToControlDistance = 5;
+            // 
+            // layoutControlItem23
+            // 
+            this.layoutControlItem23.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem23.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem23.Control = this.cboRequestDepartment;
+            this.layoutControlItem23.Location = new System.Drawing.Point(0, 168);
+            this.layoutControlItem23.Name = "layoutControlItem23";
+            this.layoutControlItem23.Size = new System.Drawing.Size(250, 24);
+            this.layoutControlItem23.Text = "Khoa chỉ định:";
+            this.layoutControlItem23.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem23.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem23.TextToControlDistance = 5;
+            // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
@@ -1470,64 +1830,6 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.imageListCheck.Images.SetKeyName(4, "uncheck.png");
             this.imageListCheck.Images.SetKeyName(5, "Select.png");
             // 
-            // barManager1
-            // 
-            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
-            this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
-            this.barManager1.Form = this;
-            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.barButtonItem1});
-            this.barManager1.MaxItemId = 1;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1320, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 600);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 571);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 571);
-            // 
-            // bar1
-            // 
-            this.bar1.BarName = "Tools";
-            this.bar1.DockCol = 0;
-            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem1)});
-            this.bar1.Text = "Tools";
-            // 
-            // barButtonItem1
-            // 
-            this.barButtonItem1.Caption = "Ctrl S";
-            this.barButtonItem1.Id = 0;
-            this.barButtonItem1.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
-            this.barButtonItem1.Name = "barButtonItem1";
-            this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
-            // 
             // SurgTreatmentListUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1542,6 +1844,11 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             this.Load += new System.EventHandler(this.SurgTreatmentListUC_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cboRequestDepartment.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExecuteDepartment.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtServiceReqCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CboPtttPriorityName.Properties)).EndInit();
@@ -1596,6 +1903,16 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
+            this.navBarGroupControlContainer5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).EndInit();
+            this.layoutControl6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DtTdlIntructionTimeTo.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DtTdlIntructionTimeTo.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DtTdlIntructionTimeFrom.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DtTdlIntructionTimeFrom.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridControlSereServ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridViewSereServ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkGatherData)).EndInit();
@@ -1620,9 +1937,10 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1746,5 +2064,25 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
+        private Utilities.Extensions.CustomGridLookUpEdit cboRequestDepartment;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit2View;
+        private Utilities.Extensions.CustomGridLookUpEdit cboExecuteDepartment;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem22;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
+        private DevExpress.XtraGrid.Columns.GridColumn GvSS_GcDob;
+        private DevExpress.XtraGrid.Columns.GridColumn GvSS_GcPatientType;
+        private DevExpress.XtraGrid.Columns.GridColumn GvSS_GcBeginTime;
+        private DevExpress.XtraGrid.Columns.GridColumn GvSS_GcEndTime2;
+        private DevExpress.XtraGrid.Columns.GridColumn GvSS_GcIntructionTime;
+        private DevExpress.XtraGrid.Columns.GridColumn GvSS_GcHeinServiceBhytCode;
+        private DevExpress.XtraNavBar.NavBarGroup navBarGroup2;
+        private DevExpress.XtraNavBar.NavBarGroupControlContainer navBarGroupControlContainer5;
+        private DevExpress.XtraLayout.LayoutControl layoutControl6;
+        private DevExpress.XtraEditors.DateEdit DtTdlIntructionTimeTo;
+        private DevExpress.XtraEditors.DateEdit DtTdlIntructionTimeFrom;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup6;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem24;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem25;
     }
 }
