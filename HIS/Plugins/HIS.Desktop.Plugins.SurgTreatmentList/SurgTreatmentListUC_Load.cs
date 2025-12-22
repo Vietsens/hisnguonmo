@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Columns;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -148,6 +149,14 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                 }
                 CboPtttPriorityName.Focus();
                 TxtKeyword.Focus();
+                ResetCombo(cboExecuteDepartment);
+                cboExecuteDepartment.EditValue = null;
+                cboExecuteDepartment.Text = "";
+                ResetCombo(cboRequestDepartment);
+                cboRequestDepartment.EditValue = null;
+                cboRequestDepartment.Text = "";
+                DtTdlIntructionTimeFrom.EditValue = null;
+                DtTdlIntructionTimeTo.EditValue = null;
                 //CboPtttPriorityName.EditValue = null;
                 //ListPtttPriority = new List<HIS_PTTT_PRIORITY>();
                 toggleTooltip();
@@ -371,6 +380,19 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                     serviceReqStt.Add(3);
                 if (serviceReqStt.Count > 0)
                     filter.SERVICE_REQ_STT_IDs = serviceReqStt;
+
+                if (DtTdlIntructionTimeFrom.EditValue != null && DtTdlIntructionTimeFrom.DateTime != DateTime.MinValue && DtTdlIntructionTimeFrom.Text != "")
+                    filter.INTRUCTION_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(DtTdlIntructionTimeFrom.DateTime.ToString("yyyyMMddHHmm") + "00");
+
+                if (DtTdlIntructionTimeTo.EditValue != null && DtTdlIntructionTimeTo.DateTime != DateTime.MinValue)
+                    filter.INTRUCTION_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(DtTdlIntructionTimeTo.DateTime.ToString("yyyyMMddHHmm") + "59");
+
+                if (_ExecuteDepartmentSelecteds != null && _ExecuteDepartmentSelecteds.Count > 0)
+                    filter.TDL_EXECUTE_DEPARTMENT_IDs = _ExecuteDepartmentSelecteds.Select(o => o.ID).ToList();
+
+                if (_RequestDepartmentSelecteds != null && _RequestDepartmentSelecteds.Count > 0)
+                    filter.TDL_REQUEST_DEPARTMENT_IDs = _RequestDepartmentSelecteds.Select(o => o.ID).ToList();
+
             }
             catch (Exception ex)
             {
@@ -875,6 +897,115 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        private void InitCheckDepartment(GridLookUpEdit cbo, GridCheckMarksSelection.SelectionChangedEventHandler eventSelect)
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cbo.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(eventSelect);
+                cbo.Properties.Tag = gridCheck;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cbo.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboDepartment(GridLookUpEdit cbo, object data, string DisplayValue, string ValueMember)
+        {
+            try
+            {
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = DisplayValue;
+                cbo.Properties.ValueMember = ValueMember;
+                DevExpress.XtraGrid.Columns.GridColumn col2 = cbo.Properties.View.Columns.AddField(DisplayValue);
+
+                col2.VisibleIndex = 1;
+                col2.Width = 200;
+                col2.Caption = "Tất cả";
+                cbo.Properties.PopupFormWidth = 200;
+                cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.SelectAll(cbo.Properties.DataSource);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
+        private void GetDataCombo()
+        {
+            try
+            {
+                listDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+        private void SelectionGrid__ExecuteDepartment(object sender, EventArgs e)
+        {
+            try
+            {
+                _ExecuteDepartmentSelecteds = new List<HIS_DEPARTMENT>();
+                foreach (HIS_DEPARTMENT rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        _ExecuteDepartmentSelecteds.Add(rv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void SelectionGrid__RequestDepartment(object sender, EventArgs e)
+        {
+            try
+            {
+                _RequestDepartmentSelecteds = new List<HIS_DEPARTMENT>();
+                foreach (HIS_DEPARTMENT rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        _RequestDepartmentSelecteds.Add(rv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ResetCombo(GridLookUpEdit cbo)
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.SelectAll(/*cbo.Properties.DataSource*/null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
         }
     }
 }

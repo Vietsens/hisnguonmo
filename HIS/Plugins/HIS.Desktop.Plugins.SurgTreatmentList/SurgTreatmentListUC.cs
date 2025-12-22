@@ -22,6 +22,7 @@ using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using HIS.Desktop.Library.CacheClient;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Utilities.Extensions;
@@ -77,6 +78,9 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
         private bool isInternalChange = false;
         bool isCheckAllGatherData = true;
         bool isCheckAllFee = true;
+        List<HIS_DEPARTMENT> listDepartment;
+        List<HIS_DEPARTMENT> _ExecuteDepartmentSelecteds;
+        List<HIS_DEPARTMENT> _RequestDepartmentSelecteds;
         #endregion
         public SurgTreatmentListUC()
         {
@@ -114,6 +118,14 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                 InitCheck(cboIs_Fee, SelectionGridFees);
                 InitCombo(cboIs_Fee);
 
+                GetDataCombo();
+                //Khoa thuc hien
+                InitCheckDepartment(cboExecuteDepartment, SelectionGrid__ExecuteDepartment);
+                InitComboDepartment(cboExecuteDepartment, listDepartment, "DEPARTMENT_NAME", "ID");
+                //Khoa chi dinh
+                InitCheckDepartment(cboRequestDepartment, SelectionGrid__RequestDepartment);
+                InitComboDepartment(cboRequestDepartment, listDepartment, "DEPARTMENT_NAME", "ID");
+
                 ProcessColumnRole();
 
                 SetFormatColumn();
@@ -129,7 +141,6 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
 
                 repositoryItemChkDisable.Enabled = false;
                 SetEnableCombo();
-
             }
             catch (Exception ex)
             {
@@ -386,6 +397,28 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                         if (e.Column.FieldName == "STT")
                         {
                             e.Value = e.ListSourceRowIndex + 1 + startPage;
+                        }
+                        else if (e.Column.FieldName == GvSS_GcDob.FieldName)
+                        {
+                            e.Value = GetBirthYear(data.TDL_PATIENT_DOB);// chi lay nam sinh
+                        }
+                        else if (e.Column.FieldName == GvSS_GcBeginTime.FieldName)
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.BEGIN_TIME ?? 0);
+                        }
+                        else if (e.Column.FieldName == GvSS_GcEndTime2.FieldName)
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.END_TIME ?? 0);
+                        }
+                        else if (e.Column.FieldName == GvSS_GcIntructionTime.FieldName)
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.TDL_INTRUCTION_TIME);
+                        }
+                        else if (e.Column.FieldName == GvSS_GcPatientType.FieldName)
+                        {
+                            var patientTypes = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>();
+                            //var patientType = patientTypes.FirstOrDefault(o => o.ID == data.PATIENT_TYPE_ID);
+                            e.Value = patientTypes.FirstOrDefault(o => o.ID == data.PATIENT_TYPE_ID).PATIENT_TYPE_NAME;
                         }
                         //else if (e.Column.FieldName == GvSS_GcEndTime.FieldName)
                         //{
@@ -1199,6 +1232,73 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void cboExecuteDepartment_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string executeDepartment = "";
+                if (_ExecuteDepartmentSelecteds != null && _ExecuteDepartmentSelecteds.Count > 0)
+                {
+                    foreach (var item in _ExecuteDepartmentSelecteds)
+                    {
+                        executeDepartment += item.DEPARTMENT_NAME + ", ";
+                    }
+                }
+
+                e.DisplayText = executeDepartment;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboRequestDepartment_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string requestDepartment = "";
+                if (_RequestDepartmentSelecteds != null && _RequestDepartmentSelecteds.Count > 0)
+                {
+                    foreach (var item in _RequestDepartmentSelecteds)
+                    {
+                        requestDepartment += item.DEPARTMENT_NAME + ", ";
+                    }
+                }
+
+                e.DisplayText = requestDepartment;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public static int? GetBirthYear(long? dateValue)
+        {
+            if (!dateValue.HasValue)
+                return null;
+
+            // Chuyển sang chuỗi để xử lý
+            string dateStr = dateValue.Value.ToString();
+
+            if (dateStr.Length < 4)
+                return null;
+
+            if (!int.TryParse(dateStr.Substring(0, 4), out int year))
+                return null;
+
+            int currentYear = DateTime.Now.Year;
+
+            // mốc nghiệp vụ HIS
+            if (year < 1800 || year > currentYear)
+                return null;
+
+            return year;
         }
     }
 }
