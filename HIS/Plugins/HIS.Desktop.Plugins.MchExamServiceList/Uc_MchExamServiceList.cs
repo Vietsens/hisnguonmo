@@ -1,4 +1,5 @@
 ﻿using DevExpress.Data;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.ApiConsumer;
@@ -258,15 +259,15 @@ namespace HIS.Desktop.Plugins.MchExamServiceList
                         {
                             if (data.SYNC_STATUS == 1)
                             {
-                                e.Value = "Thành công";
+                                e.Value = "Đã tiếp nhận";
                             }
                             else if (data.SYNC_STATUS == 2)
                             {
                                 e.Value = "Thất bại";
                             }
-                            else
+                            else if (data.SYNC_STATUS == 0)
                             {
-                                e.Value = "";
+                                e.Value = "Gửi thành công";
                             }
                         }
                         else if (e.Column.FieldName == "DOB_STR")
@@ -356,14 +357,14 @@ namespace HIS.Desktop.Plugins.MchExamServiceList
             try
             {
                 var selectedRows = gridViewExamService.GetSelectedRows();
-                List<long> selectedIds = new List<long>();
+                List<V_MCH_EXAM_SERVICE> selectedIds = new List<V_MCH_EXAM_SERVICE>();
 
                 foreach (int rowHandle in selectedRows)
                 {
                     var data = (V_MCH_EXAM_SERVICE)gridViewExamService.GetRow(rowHandle);
                     if (data != null)
                     {
-                        selectedIds.Add(data.ID);
+                        selectedIds.Add(data);
                     }
                 }
 
@@ -371,17 +372,25 @@ namespace HIS.Desktop.Plugins.MchExamServiceList
                 {
                     bool success = false;
 
-                    Inventec.Common.Logging.LogSystem.Info("Selected IDs: " + string.Join(",", selectedIds));
-
-                    var data = new BackendAdapter(new CommonParam()).Post<V_MCH_EXAM_SERVICE>("api/MchExamService/SyncData", ApiConsumers.MchConsumer, selectedIds, new CommonParam());
-
-                    if (data != null)
+                    List<string> StringCodes = new List<string>();
+                    foreach (var item in selectedIds)
                     {
-                        success = true;
+                        CommonParam param = new CommonParam();
+                        var data = new BackendAdapter(param).Post<V_MCH_EXAM_SERVICE>("api/MchExamService/SyncData", ApiConsumers.MchConsumer, item.ID, param);
+                        if (data == null)
+                            StringCodes.Add(string.Format("- {0}: {1}", item.TREATMENT_CODE, param.GetMessage()));
                     }
 
-                    SessionManager.ProcessTokenLost(new CommonParam());
-                    Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, new CommonParam(), success);
+                    if (StringCodes == null || StringCodes.Count == 0)
+                    {
+                        success = true;
+                        FillDataToGrid();
+                        Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, new CommonParam(), success);
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show(string.Format("Xử lý thất bại\r\n{0}", string.Join("\r\n", StringCodes)));
+                    }
                 }
                 else
                 {
@@ -413,13 +422,15 @@ namespace HIS.Desktop.Plugins.MchExamServiceList
             try
             {
                 var row = (V_MCH_EXAM_SERVICE)gridViewExamService.GetFocusedRow();
-                if (row != null)
+                if (row != null && XtraMessageBox.Show("Bạn có muốn xóa dữ liệu không","Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     WaitingManager.Show();
 
                     CommonParam param = new CommonParam();
 
                     bool rs = new BackendAdapter(param).Post<bool>("api/MchExamService/Delete", ApiConsumers.MchConsumer, row.ID, param);
+                    if(rs)
+                        FillDataToGrid();
 
                     WaitingManager.Hide();
                     MessageManager.Show(this.ParentForm, param, rs);
@@ -657,7 +668,7 @@ namespace HIS.Desktop.Plugins.MchExamServiceList
                     gridViewExamService.FocusedRowHandle = hit.RowHandle;
 
                 // reuse existing logic
-                repositoryItemButtonEditDeleteEnable_Click(sender, EventArgs.Empty);
+                //repositoryItemButtonEditDeleteEnable_Click(sender, EventArgs.Empty);
             }
             catch (Exception ex)
             {
@@ -676,12 +687,37 @@ namespace HIS.Desktop.Plugins.MchExamServiceList
                     gridViewExamService.FocusedRowHandle = hit.RowHandle;
 
                 // reuse existing logic
-                repositoryItemButtonEditUpdate_Click(sender, EventArgs.Empty);
+                //repositoryItemButtonEditUpdate_Click(sender, EventArgs.Empty);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void gridViewExamService_RowCellClick(object sender, RowCellClickEventArgs e)
+        {
+            try
+            {
+                var data = (V_MCH_EXAM_SERVICE)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                if (e.Column.FieldName == "DELETE")
+                {
+                    string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    if (loginName == data.CREATOR)
+                    {
+                        repositoryItemButtonEditDeleteEnable_Click(sender, EventArgs.Empty);
+                    }
+                }
+                else if (e.Column.FieldName == "UPDATE")
+                {
+                    repositoryItemButtonEditUpdate_Click(sender, EventArgs.Empty);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
     }
 }

@@ -27,7 +27,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 btnNew_Click(null, null);
                 // Kiểm tra nếu đã có ExamService thì không cần gọi API lấy Treatment
                 bool hasExamService = ExamService != null && ExamService.ID > 0;
-                V_MCH_EXAM_SERVICE examDisplay = null;
+                V_MCH_EXAM_SERVICE examDisplay = ExamService;
+                ExamServiceEdit = ExamService;
                 if (!hasExamService)
                 {
                     // Chỉ xử lý khi chưa có ExamService
@@ -188,6 +189,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     examDisplay.EXECUTE_LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 // Set mặc định ngày khám và người khám cho nút Edit
                 SetDefaultExamDateAndUser(examDisplay);
+                xtraTabControl1.SelectedTabPageIndex = GetTabIndexFromExamServiceTypeId(examDisplay.EXAM_SERVICE_TYPE_ID);
             }
             catch (Exception ex)
             {
@@ -276,7 +278,12 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 // Lấy thông tin giới tính và tuổi (tháng) theo thứ tự ưu tiên
                 long? genderId = null;
                 long dob = 0;
-
+                xtraTabPage2.PageEnabled = true;
+                xtraTabPage3.PageEnabled = true;
+                xtraTabPage4.PageEnabled = true;
+                xtraTabPage5.PageEnabled = true;
+                xtraTabPage6.PageEnabled = true;
+                xtraTabPage7.PageEnabled = true;
                 // Ưu tiên 1: V_MCH_EXAM_SERVICE
                 if (ExamService != null && ExamService.ID > 0)
                 {
@@ -330,6 +337,15 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                     return false;
                 }
+                if(isMale)
+                {
+                    xtraTabPage2.PageEnabled = false;
+                    xtraTabPage3.PageEnabled = false;
+                    xtraTabPage4.PageEnabled = false;
+                    xtraTabPage5.PageEnabled = false;
+                    xtraTabPage6.PageEnabled = false;
+                    xtraTabPage7.PageEnabled = false;
+                }    
 
                 // Enable nút lưu nếu hợp lệ
                 if (btnSave != null)
@@ -532,14 +548,14 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     // Reload lại danh sách V_MCH_EXAM_SERVICE
                     ReloadExamServiceGrid(new MCH.EFMODEL.DataModels.V_MCH_EXAM_SERVICE() { ID = examService.ID, PATIENT_CODE = _patient.PATIENT_CODE });
+                    btnSave.Enabled = false;
+                    //// Clear ExamServiceEdit để lần sau là Create
+                    //ExamServiceEdit = null;
 
-                    // Clear ExamServiceEdit để lần sau là Create
-                    ExamServiceEdit = null;
-
-                    // Clear dữ liệu form các tab
-                    ClearAllTabsData();
-                    InitAllSpinEditDefaultValue();
-                    SetDefaultExamDateAndUser(new V_MCH_EXAM_SERVICE() { IN_TIME = _treatment.IN_TIME, EXECUTE_LOGINNAME = examService.EXECUTE_LOGINNAME });
+                    //// Clear dữ liệu form các tab
+                    //ClearAllTabsData();
+                    //InitAllSpinEditDefaultValue();
+                    //SetDefaultExamDateAndUser(new V_MCH_EXAM_SERVICE() { IN_TIME = _treatment.IN_TIME, EXECUTE_LOGINNAME = examService.EXECUTE_LOGINNAME });
                     // Focus vào row vừa lưu trong grid
                     FocusToSavedRow(examService.ID);
 
@@ -860,6 +876,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     _treatment.LIVE_AREA_CODE = ExamServiceEdit.LIVE_AREA_CODE;
                     _treatment.PAID_6_MONTH = ExamServiceEdit.PAID_6_MONTH;
 
+                    _treatment.DIRECTOR_LOGINNAME = ExamServiceEdit.DIRECTOR_LOGINNAME;
+                    _treatment.DIRECTOR_USERNAME = ExamServiceEdit.DIRECTOR_USERNAME;
                     Inventec.Common.Logging.LogSystem.Debug("MapMchTreatment: Using ExamServiceEdit data");
                 }
                 // Ưu tiên 2: ExamService
@@ -892,7 +910,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     _treatment.JOIN_5_YEAR = ExamService.JOIN_5_YEAR;
                     _treatment.LIVE_AREA_CODE = ExamService.LIVE_AREA_CODE;
                     _treatment.PAID_6_MONTH = ExamService.PAID_6_MONTH;
-
+                    _treatment.DIRECTOR_LOGINNAME = ExamService.DIRECTOR_LOGINNAME;
+                    _treatment.DIRECTOR_USERNAME = ExamService.DIRECTOR_USERNAME;
                     Inventec.Common.Logging.LogSystem.Debug("MapMchTreatment: Using ExamService data");
                 }
                 // Ưu tiên 3: _treatment (đã có sẵn từ query MCH)
@@ -921,19 +940,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     {
                         _treatment.BRANCH_MEDI_ORG_CODE = branch.BRANCH_CODE;
                         _treatment.BRANCH_MEDI_ORG_NAME = branch.BRANCH_NAME;
+                        _treatment.DIRECTOR_LOGINNAME = branch.DIRECTOR_LOGINNAME;
+                        _treatment.DIRECTOR_USERNAME = branch.DIRECTOR_USERNAME;
                     }
-
-                    var director = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EMPLOYEE>()
-                        .FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
-                    if (director != null)
-                    {
-                        _treatment.DIRECTOR_LOGINNAME = director.LOGINNAME;
-                        _treatment.DIRECTOR_USERNAME = director.TDL_USERNAME;
-                    }
-
                     _treatment.IN_TIME = Treatment.IN_TIME;
                     _treatment.IN_DATE = Treatment.IN_DATE;
-
                     if (Treatment != null && Treatment.ID > 0)
                         LoadLatestPatientTypeAlter(Treatment.ID);
 
@@ -959,7 +970,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     _examService.EXECUTE_LOGINNAME = ExamServiceEdit.EXECUTE_LOGINNAME;
                     _examService.EXECUTE_USERNAME = ExamServiceEdit.EXECUTE_USERNAME;
                     _examService.EXECUTE_TYPE = ExamServiceEdit.EXECUTE_TYPE;
-
+                    _examService.SYNC_STATUS = null;
+                    _examService.SYNC_TIME = null;
+                    _examService.SYNC_DESCRIPTION = null;
                     if (ExamServiceEdit.EXAM_SERVICE_TYPE_ID > 0)
                     {
                         _examService.EXAM_SERVICE_TYPE_ID = ExamServiceEdit.EXAM_SERVICE_TYPE_ID;
@@ -976,7 +989,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     _examService.EXECUTE_LOGINNAME = ExamService.EXECUTE_LOGINNAME;
                     _examService.EXECUTE_USERNAME = ExamService.EXECUTE_USERNAME;
                     _examService.EXECUTE_TYPE = ExamService.EXECUTE_TYPE;
-
+                    _examService.SYNC_STATUS = null;
+                    _examService.SYNC_TIME = null;
+                    _examService.SYNC_DESCRIPTION = null;
                     if (ExamService.EXAM_SERVICE_TYPE_ID > 0)
                     {
                         _examService.EXAM_SERVICE_TYPE_ID = ExamService.EXAM_SERVICE_TYPE_ID;
@@ -990,8 +1005,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     var branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == Treatment.BRANCH_ID);
                     if (branch != null)
                     {
-                        _examService.MEDI_ORG_CODE = branch.BRANCH_CODE;
-                        _examService.MEDI_ORG_NAME = branch.BRANCH_NAME;
+                        _examService.MEDI_ORG_CODE = branch.HEIN_MEDI_ORG_CODE;
+                        _examService.MEDI_ORG_NAME = BackendDataWorker.Get<HIS_MEDI_ORG>().FirstOrDefault(o=>o.MEDI_ORG_CODE == branch.HEIN_MEDI_ORG_CODE).MEDI_ORG_NAME;
                     }
 
                     Inventec.Common.Logging.LogSystem.Debug("MapMchExamService: Using HIS_TREATMENT data");

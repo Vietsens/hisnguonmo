@@ -3088,6 +3088,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.cboMedicalHistoryInternal2.Size = new System.Drawing.Size(176, 20);
             this.cboMedicalHistoryInternal2.StyleController = this.layoutControl4;
             this.cboMedicalHistoryInternal2.TabIndex = 9;
+            this.cboMedicalHistoryInternal2.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboMedicalHistoryInternal2_CustomDisplayText);
             // 
             // gridView4
             // 
@@ -7425,12 +7426,13 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             // gridColumn3
             // 
             this.gridColumn3.Caption = "gridColumn3";
-            this.gridColumn3.FieldName = "SYNC_STATUS";
+            this.gridColumn3.FieldName = "SYNC_STATUS_STR";
             this.gridColumn3.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn3.MaxWidth = 30;
             this.gridColumn3.MinWidth = 30;
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.ShowCaption = false;
+            this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 2;
             this.gridColumn3.Width = 30;

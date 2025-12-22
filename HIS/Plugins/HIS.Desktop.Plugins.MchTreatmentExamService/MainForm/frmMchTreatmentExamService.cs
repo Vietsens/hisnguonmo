@@ -19,6 +19,7 @@ using DevExpress.XtraEditors;
 using HIS.Desktop.Plugins.MchTreatmentExamService.UCAdress;
 using HIS.UC.SecondaryIcd;
 using HIS.UC.TreeSereServ7;
+using Inventec.Desktop.Common.Message;
 using MCH.EFMODEL.DataModels;
 using MOS.EFMODEL.DataModels;
 using System;
@@ -138,11 +139,31 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 SafeInitUc();
                 InitUcAddress();
                 FillDataToForm();
+                FillEditData();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void FillEditData()
+        {
+            if (ExamServiceEdit == null || ExamServiceEdit.ID <= 0)
+                return;
+            bool loadSuccess = LoadExamServiceDetailData(ExamServiceEdit);
+
+            WaitingManager.Hide();
+
+            if (!loadSuccess)
+            {
+                XtraMessageBox.Show("Không thể tải dữ liệu. Vui lòng thử lại!", "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return;
+            }
+
+            SwitchToTabAndFillData(ExamServiceEdit.EXAM_SERVICE_TYPE_ID);
+            SetDefaultExamDateAndUser(ExamServiceEdit);
         }
 
         #endregion
@@ -153,7 +174,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             {
                 // Clear ExamServiceEdit để chuyển sang chế độ tạo mới
                 ExamServiceEdit = null;
-                
+                btnSave.Enabled = true;
                 // Clear toàn bộ dữ liệu các tab NGOẠI TRỪ: Ngày khám, Người khám, Trình độ
                 ClearAllTabsDataExceptExamInfo();
                 
@@ -182,6 +203,29 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboMedicalHistoryInternal2_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string roomName = "";
+                if (this.MedicalHistoryInternal2Selected != null && this.MedicalHistoryInternal2Selected.Count > 0)
+                {
+                    foreach (var item in this.MedicalHistoryInternal2Selected)
+                    {
+                        roomName += item.NAME + ", ";
+
+                    }
+                }
+                e.DisplayText = roomName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+
             }
         }
     }

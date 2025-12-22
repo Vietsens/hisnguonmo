@@ -19,21 +19,21 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             bool result = true;
             try
             {
-                //string branchCode = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == WorkPlace.GetBranchId()).BRANCH_CODE;
-                //if (string.IsNullOrEmpty(branchCode))
-                //{
-                //    Inventec.Common.Logging.LogSystem.Warn("Branch code is empty");
-                //    return false;
-                //}
+                string branchCode = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == WorkPlace.GetBranchId()).BRANCH_CODE;
+                if (string.IsNullOrEmpty(branchCode))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Branch code is empty");
+                    return false;
+                }
 
-                //CommonParam param = new CommonParam();
-                //result = new BackendAdapter(param)
-                //    .Post<bool>("api/MchLicense/Check", ApiConsumers.MchConsumer, branchCode, param);
+                CommonParam param = new CommonParam();
+                result = new BackendAdapter(param)
+                    .Post<bool>("api/MchLicense/Check", ApiConsumers.MchConsumer, branchCode, param);
 
-                //if (!result)
-                //{
-                //    Inventec.Common.Logging.LogSystem.Info("MCH License check failed for branch: " + branchCode);
-                //}
+                if (!result)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("MCH License check failed for branch: " + branchCode);
+                }
             }
             catch (Exception ex)
             {

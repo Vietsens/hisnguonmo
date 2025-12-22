@@ -1,10 +1,13 @@
-﻿using System;
+﻿using DevExpress.XtraEditors;
+using HIS.Desktop.Plugins.MchTreatmentExamService.ADO;
+using HIS.Desktop.Utilities.Extensions;
+using MCH.EFMODEL.DataModels;
+using MOS.EFMODEL.DataModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DevExpress.XtraEditors;
-using MCH.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 {
@@ -68,8 +71,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 
                 var birthPredictionValue = GetRadioGroupValue("BirthPrediction");
                 _antenatalVisit.BIRTH_PREDICTION = birthPredictionValue.HasValue ? birthPredictionValue.Value.ToString() : null;
-                
-                _antenatalVisit.MEDICAL_HISTORY_INTERNAL = GetComboValue(cboMedicalHistoryInternal2);
+
+                _antenatalVisit.MEDICAL_HISTORY_INTERNAL = MedicalHistoryInternal2Selected != null && MedicalHistoryInternal2Selected.Count > 0 ? string.Join(";", MedicalHistoryInternal2Selected.Select(o => o.CODE).ToList()) : null;// GetComboValue(cboMedicalHistoryInternal2);
             }
             catch (Exception ex)
             {
@@ -141,7 +144,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     if (!string.IsNullOrEmpty(_antenatalVisit.BIRTH_PREDICTION))
                         SetRadioGroupValue("BirthPrediction", short.Parse(_antenatalVisit.BIRTH_PREDICTION));
                     
-                    SetComboValue(cboMedicalHistoryInternal2, _antenatalVisit.MEDICAL_HISTORY_INTERNAL);
+                    GridCheckMarksSelection gridCheckChiSo = cboMedicalHistoryInternal2.Properties.Tag as GridCheckMarksSelection;
+                    if (_antenatalVisit.MEDICAL_HISTORY_INTERNAL != null && cboMedicalHistoryInternal2.Properties.Tag != null)
+                    {
+                        ProcessSelect(_antenatalVisit.MEDICAL_HISTORY_INTERNAL.ToString(), gridCheckChiSo);
+                    }
                 }
             }
             catch (Exception ex)
@@ -150,6 +157,32 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             }
         }
 
+        private void ProcessSelect(string p, GridCheckMarksSelection gridCheckMark)
+        {
+            try
+            {
+                List<KeyValueADO> ds = cboMedicalHistoryInternal2.Properties.DataSource as List<KeyValueADO>;
+                string[] arrays = p.Split(';');
+                if (arrays != null && arrays.Length > 0)
+                {
+                    List<KeyValueADO> selects = new List<KeyValueADO>();
+                    foreach (var item in arrays)
+                    {
+                        var row = ds != null ? ds.FirstOrDefault(o => o.CODE.ToString() == item) : null;
+                        if (row != null)
+                        {
+                            selects.Add(row);
+                            MedicalHistoryInternal2Selected.Add(row);
+                        }
+                    }
+                    gridCheckMark.SelectAll(selects);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraEditors;
+using HIS.Desktop.Utilities.Extensions;
 using System;
 using System.Windows.Forms;
 
@@ -69,13 +70,13 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     examDate1 = dteExam1.EditValue as DateTime?;
                 }
-                
+
                 object user1 = null;
                 if (cboUser1 != null)
                 {
                     user1 = cboUser1.EditValue;
                 }
-                
+
                 object diploma1 = null;
                 if (cboDiploma1 != null)
                 {
@@ -87,13 +88,13 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     examDate2 = dteExam2.EditValue as DateTime?;
                 }
-                
+
                 object user2 = null;
                 if (cboUser2 != null)
                 {
                     user2 = cboUser2.EditValue;
                 }
-                
+
                 object diploma2 = null;
                 if (cboDiploma2 != null)
                 {
@@ -105,13 +106,13 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     examDate3 = dteExam3.EditValue as DateTime?;
                 }
-                
+
                 object user3 = null;
                 if (cboUser3 != null)
                 {
                     user3 = cboUser3.EditValue;
                 }
-                
+
                 object diploma3 = null;
                 if (cboDiploma3 != null)
                 {
@@ -123,13 +124,13 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     examDate4 = dteExam4.EditValue as DateTime?;
                 }
-                
+
                 object user4 = null;
                 if (cboUser4 != null)
                 {
                     user4 = cboUser4.EditValue;
                 }
-                
+
                 object diploma4 = null;
                 if (cboDiploma4 != null)
                 {
@@ -141,13 +142,13 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     examDate5 = dteExam5.EditValue as DateTime?;
                 }
-                
+
                 object user5 = null;
                 if (cboUser5 != null)
                 {
                     user5 = cboUser5.EditValue;
                 }
-                
+
                 object diploma5 = null;
                 if (cboDiploma5 != null)
                 {
@@ -197,7 +198,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                         {
                             ClearControlsInContainer(tabPage);
                         }
-                        
+
                         Inventec.Common.Logging.LogSystem.Debug("ClearAllTabsDataExceptExamInfo: Cleared xtraTabControl2 (Mother & Child tabs)");
                     }
                     catch (Exception ex)
@@ -276,6 +277,15 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     cboDiploma5.EditValue = diploma5;
                 }
 
+
+                GridCheckMarksSelection gridCheckMarkChiSo = cboMedicalHistoryInternal2.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMarkChiSo != null)
+                {
+                    gridCheckMarkChiSo.ClearSelection(cboMedicalHistoryInternal2.Properties.View);
+                    MedicalHistoryInternal2Selected = new System.Collections.Generic.List<ADO.KeyValueADO>();
+                    cboMedicalHistoryInternal2.Focus();
+                    btnNew.Select();
+                }
                 // Đặt lại giá trị mặc định cho các radio group bắt buộc
                 SetDefaultRequiredRadioGroups();
                 InitAllSpinEditDefaultValue();
@@ -362,7 +372,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     }
                     // QUAN TRỌNG: Set về null, KHÔNG phải 0
                     spinEdit.EditValue = null;
-                    
+
                 }
                 else if (control is DateEdit)
                 {

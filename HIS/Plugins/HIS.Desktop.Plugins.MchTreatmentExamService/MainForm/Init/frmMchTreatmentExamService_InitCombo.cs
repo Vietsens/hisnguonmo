@@ -1,13 +1,14 @@
 ﻿using DevExpress.XtraEditors;
-using HIS.Desktop.Plugins.MchTreatmentExamService.ADO;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Plugins.MchTreatmentExamService.ADO;
+using HIS.Desktop.Utilities.Extensions;
 using Inventec.Common.Controls.EditorLoader;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MOS.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 {
@@ -223,11 +224,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 // Tab 2: Khám thai
                 
                 // Combo Tiền sử nội khoa
-                List<KeyValueADO> medicalHistoryInternalData = CreateMedicalHistoryInternalDataSource();
-                InitComboKeyValue(cboMedicalHistoryInternal2, medicalHistoryInternalData);
+                InitComboMedicalHistoryInternalCheck();
+                InitComboMedicalHistoryInternal();
 
                 // Tab 3: Sinh đẻ (Mẹ)
-                
+
                 // Combo Nơi đẻ
                 List<KeyValueADO> birthplaceTypeData = CreateBirthplaceTypeDataSource();
                 InitComboKeyValue(cboBirthplaceType3, birthplaceTypeData);
@@ -289,6 +290,79 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InitComboMedicalHistoryInternal()
+        {
+            try
+            {
+                cboMedicalHistoryInternal2.Properties.DataSource = CreateMedicalHistoryInternalDataSource();
+                cboMedicalHistoryInternal2.Properties.DisplayMember = "NAME";
+                cboMedicalHistoryInternal2.Properties.ValueMember = "CODE";
+                DevExpress.XtraGrid.Columns.GridColumn column = cboMedicalHistoryInternal2.Properties.View.Columns.AddField("NAME");
+                column.VisibleIndex = 1;
+                column.Width = 200;
+                column.Caption = "Tất cả";
+                cboMedicalHistoryInternal2.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cboMedicalHistoryInternal2.Properties.View.OptionsSelection.MultiSelect = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboMedicalHistoryInternalCheck()
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboMedicalHistoryInternal2.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_Check);
+                cboMedicalHistoryInternal2.Properties.Tag = gridCheck;
+                cboMedicalHistoryInternal2.Properties.View.OptionsSelection.MultiSelect = true;
+                GridCheckMarksSelection gridCheckMark = cboMedicalHistoryInternal2.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboMedicalHistoryInternal2.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        List<KeyValueADO> MedicalHistoryInternal2Selected = new List<KeyValueADO>();
+        private void Event_Check(object sender, EventArgs e)
+        {
+
+            try
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                MedicalHistoryInternal2Selected = new List<KeyValueADO>();
+                if (gridCheckMark != null)
+                {
+                    List<KeyValueADO> erSelectedNews = new List<KeyValueADO>();
+                    foreach (KeyValueADO er in (sender as GridCheckMarksSelection).Selection)
+                    {
+                        if (er != null)
+                        {
+                            if (sb.ToString().Length > 0) { sb.Append(", "); }
+                            sb.Append(er.NAME);
+                            erSelectedNews.Add(er);
+                        }
+                    }
+                    this.MedicalHistoryInternal2Selected = new List<KeyValueADO>();
+                    this.MedicalHistoryInternal2Selected.AddRange(erSelectedNews);
+                }
+                this.cboMedicalHistoryInternal2.Text = sb.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

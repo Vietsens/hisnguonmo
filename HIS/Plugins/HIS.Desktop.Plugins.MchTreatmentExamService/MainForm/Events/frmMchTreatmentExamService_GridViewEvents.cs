@@ -77,9 +77,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 var data = gridView1.GetRow(e.RowHandle) as MCH.EFMODEL.DataModels.V_MCH_EXAM_SERVICE;
                 if (data != null)
                 {
-                    if (e.Column.FieldName == "SYNC_STATUS")
+                    if (e.Column.FieldName == "SYNC_STATUS_STR")
                     {
-                        if (data.SYNC_STATUS == 1)
+                        if (data.SYNC_STATUS == 0)
                         {
                             e.RepositoryItem = repY;
                         }

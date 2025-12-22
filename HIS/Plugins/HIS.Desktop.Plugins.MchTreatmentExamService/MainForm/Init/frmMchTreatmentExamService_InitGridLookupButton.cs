@@ -1,5 +1,6 @@
-using DevExpress.XtraEditors;
+Ôªøusing DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using HIS.Desktop.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +19,13 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         {
             try
             {
-                // Tab 1: S‡ng l?c ung th? c? t? cung
+                // Tab 1: S√†ng l?c ung th? c? t? cung
                 AddDeleteButtonToGridLookUp(cboUser1);
                 AddDeleteButtonToGridLookUp(cboDiploma1);
                 AddDeleteButtonToGridLookUp(cboCervicalCancerDx1);
                 AddDeleteButtonToGridLookUp(cboPreCervicalCancerTreat1);
 
-                // Tab 2: Kh·m thai
+                // Tab 2: Kh√°m thai
                 AddDeleteButtonToGridLookUp(cboUser2);
                 AddDeleteButtonToGridLookUp(cboDiploma2);
                 AddDeleteButtonToGridLookUp(cboMedicalHistoryInternal2);
@@ -43,13 +44,13 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 AddDeleteButtonToGridLookUp(cboEthnic3);
                 AddDeleteButtonToGridLookUp(cboNewbornCondition3);
 
-                // Tab 4: Tr·nh thai
+                // Tab 4: Tr√°nh thai
                 AddDeleteButtonToGridLookUp(cboUser4);
                 AddDeleteButtonToGridLookUp(cboDiploma4);
                 AddDeleteButtonToGridLookUp(cboContraceptionMethod4);
                 AddDeleteButtonToGridLookUp(cboContraceptionComplication4);
 
-                // Tab 5: Ph· thai
+                // Tab 5: Ph√° thai
                 AddDeleteButtonToGridLookUp(cboUser5);
                 AddDeleteButtonToGridLookUp(cboDiploma5);
                 AddDeleteButtonToGridLookUp(cboAbortionMethod5);
@@ -62,7 +63,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         }
 
         /// <summary>
-        /// ThÍm button Delete v‡o GridLookUpEdit
+        /// Th√™m button Delete v√†o GridLookUpEdit
         /// </summary>
         private void AddDeleteButtonToGridLookUp(GridLookUpEdit gridLookUp)
         {
@@ -70,7 +71,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             {
                 if (gridLookUp == null) return;
 
-                // Ki?m tra xem ?„ cÛ button Delete ch?a
+                // Ki?m tra xem ?√£ c√≥ button Delete ch?a
                 bool hasDeleteButton = false;
                 foreach (EditorButton btn in gridLookUp.Properties.Buttons)
                 {
@@ -81,15 +82,15 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     }
                 }
 
-                // N?u ch?a cÛ thÏ thÍm button Delete
+                // N?u ch?a c√≥ th√¨ th√™m button Delete
                 if (!hasDeleteButton)
                 {
                     EditorButton deleteButton = new EditorButton(ButtonPredefines.Delete);
-                    deleteButton.ToolTip = "XÛa l?a ch?n";
+                    deleteButton.ToolTip = "X√≥a l·ª±a ch·ªçn";
                     gridLookUp.Properties.Buttons.Add(deleteButton);
                 }
 
-                // ??ng k˝ s? ki?n ButtonClick n?u ch?a cÛ
+                // ??ng k√Ω s? ki?n ButtonClick n?u ch?a c√≥
                 gridLookUp.Properties.ButtonClick -= GridLookUp_ButtonClick;
                 gridLookUp.Properties.ButtonClick += GridLookUp_ButtonClick;
             }
@@ -100,7 +101,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         }
 
         /// <summary>
-        /// X? l˝ s? ki?n click button Delete trong GridLookUpEdit
+        /// X? l√Ω s? ki?n click button Delete trong GridLookUpEdit
         /// </summary>
         private void GridLookUp_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
@@ -113,6 +114,15 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     {
                         gridLookUp.EditValue = null;
                         gridLookUp.Properties.NullText = string.Empty;
+                        if(gridLookUp.Name == cboMedicalHistoryInternal2.Name)
+                        {
+                            GridCheckMarksSelection gridCheckMarkChiSo = cboMedicalHistoryInternal2.Properties.Tag as GridCheckMarksSelection;
+                            if (gridCheckMarkChiSo != null)
+                            {
+                                gridCheckMarkChiSo.ClearSelection(cboMedicalHistoryInternal2.Properties.View);
+                                MedicalHistoryInternal2Selected = new System.Collections.Generic.List<ADO.KeyValueADO>();
+                            }
+                        }    
                     }
                 }
             }
