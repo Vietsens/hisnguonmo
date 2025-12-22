@@ -151,7 +151,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     {
                         uriRequest = "api/HisExpMest/SaleCreateBillList";
                         InitListDataToSaleCreate(ref listSaleSDO);
-                        //Inventec.Common.Logging.LogSystem.Debug("API Result Of list: " + Inventec.Common.Logging.LogUtil.TraceData("dangth:", saleSDO));
+                        Inventec.Common.Logging.LogSystem.Debug("DANGTH: " + Inventec.Common.Logging.LogUtil.TraceData("dangth:", saleSDO));
                     }
                 }
 

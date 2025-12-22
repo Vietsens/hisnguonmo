@@ -814,8 +814,6 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
 
                 HIS.Desktop.LocalStorage.EmrConfig.ConfigLoader.Refresh();
                 var cfgStorage = HIS.Desktop.LocalStorage.EmrConfig.EmrConfigs.Get<string>("EMR.2ID.STORAGE_INFO");
-                //.Where(o => o.KEY == "EMR.2ID.STORAGE_INFO")
-                //.FirstOrDefault();
 
                 if (cfgStorage == null || string.IsNullOrWhiteSpace(cfgStorage))
                 {
