@@ -30,6 +30,7 @@ using Inventec.Common.QrCodeBHYT;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.UC.UCImageInfo.ADO;
 using MOS.SDO;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Run2
 {
@@ -126,7 +127,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				{
 					AutoSetTreatmentTypeCombo(treatmentTypeId);
 				}
-
 
 				this.ucAddressCombo1.SetDelegateSetAddressUCHein(this.SetDelegateSetAddressUCHein);
 				this.ucAddressCombo1.SetDelegateSetAddressUCPlusInfo(this.SetDelegateSetAddressUCProvinceOfBirth);
@@ -530,6 +530,18 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 			catch (Exception ex)
 			{
 				Inventec.Common.Logging.LogSystem.Warn(ex);
+			}
+		}
+
+		private void SetDelegateSetWorkPlace(object data)
+		{
+			try
+			{
+				this.ucPlusInfo1.setWorkPlace(data);
+			}
+			catch (Exception ex)
+			{
+				LogSystem.Warn(ex);
 			}
 		}
 

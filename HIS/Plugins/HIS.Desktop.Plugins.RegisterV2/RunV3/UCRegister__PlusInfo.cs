@@ -113,7 +113,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 dataPatient.HOUSEHOLD_CODE = _currentPatientSDO.HOUSEHOLD_CODE;
                 dataPatient.HOUSEHOLD_RELATION_NAME = _currentPatientSDO.HOUSEHOLD_RELATION_NAME;
                 dataPatient.TAX_CODE = _currentPatientSDO.TAX_CODE;
-
+                dataPatient.BUD_REL_UNIT_CODE = _currentPatientSDO.BUD_REL_UNIT_CODE;
                 
                 this.ucPlusInfo1.SetValue(dataPatient);
             }

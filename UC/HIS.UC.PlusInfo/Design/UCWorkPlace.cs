@@ -42,12 +42,13 @@ namespace HIS.UC.PlusInfo.Design
         WorkPlaceInitADO workPlaceInitADO;
         Inventec.Desktop.Common.Modules.Module currentModule;
         DelegateFocusMoveout dlgFocusNextUserControl;
+        DelegateGetWorkPlaceId dlgWorkPlace;
 
         #endregion
 
         #region Constructor - Load
 
-        public UCWorkPlace(Inventec.Desktop.Common.Modules.Module module, DelegateFocusMoveout __dlgFocusNextUserControl)
+        public UCWorkPlace(Inventec.Desktop.Common.Modules.Module module, DelegateFocusMoveout __dlgFocusNextUserControl, DelegateGetWorkPlaceId delegateGetWorkPlaceId)
             : base("UCPlusInfo", "UCWorkPlace")
         {
             try
@@ -55,6 +56,7 @@ namespace HIS.UC.PlusInfo.Design
                 InitializeComponent();
                 this.currentModule = module;
                 dlgFocusNextUserControl = __dlgFocusNextUserControl;
+                dlgWorkPlace = delegateGetWorkPlaceId;
                 InitWorkPlaceControl();
             }
             catch (Exception ex)
@@ -114,6 +116,7 @@ namespace HIS.UC.PlusInfo.Design
                 workPlaceInitADO.FocusMoveout = this.dlgFocusNextUserControl;
                 workPlaceInitADO.PlusClick = WorkPlacePlusClick;
                 workPlaceInitADO.WorlPlaces = datas.Where(p => p.IS_ACTIVE == 1).ToList();
+                workPlaceInitADO.GetWorkPlaceId = dlgWorkPlace;
                 this.ucWorkPlace = (await this.workPlaceProcessor.Generate(workPlaceInitADO).ConfigureAwait(false)) as UserControl;
                 if (this.ucWorkPlace != null)
                 {
@@ -128,7 +131,7 @@ namespace HIS.UC.PlusInfo.Design
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        
         void WorkPlacePlusClick()
         {
             try

@@ -172,6 +172,7 @@ namespace HIS.UC.UCTransPati
                     this.panel1.Controls.Add(this.ucSubIcd);
                     this.ucSubIcd.Dock = DockStyle.Fill;
                 }
+
             }
             catch (Exception ex)
             {
@@ -817,6 +818,22 @@ namespace HIS.UC.UCTransPati
             }
         }
 
+        private void dtFromTime_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Nếu checkbox được check và ngày từ có giá trị thì tự động tính ngày đến
+                if (chk1Year.Checked && dtFromTime.EditValue != null && dtFromTime.DateTime != DateTime.MinValue)
+                {
+                    dtToTime.DateTime = dtFromTime.DateTime.AddDays(365);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void cboReviews_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
@@ -828,6 +845,25 @@ namespace HIS.UC.UCTransPati
             {
 
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chk1Year_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chk1Year.Checked)
+                {
+                    // Nếu check và có giá trị Từ thì tự động fill Ngày đến
+                    if (dtFromTime.EditValue != null && dtFromTime.DateTime != DateTime.MinValue)
+                    {
+                        dtToTime.DateTime = dtFromTime.DateTime.AddDays(365);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

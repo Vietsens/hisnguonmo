@@ -147,6 +147,9 @@ namespace HIS.UC.PlusInfo
                         case ChoiceControl.ucTaxCode:
 
                             break;
+                        case ChoiceControl.UCBudRelUnitCode:
+
+                            break;
                         default:
                             break;
 
@@ -245,6 +248,10 @@ namespace HIS.UC.PlusInfo
                 {
                     valid = valid && this.ucNational1.ValidateRequiredField();
                 }
+                if (this.UCBudRelUnitCode != null)
+                {
+                    valid = valid && this.UCBudRelUnitCode.ValidateRequiredField();
+                }
             }
             catch (Exception ex)
             {
@@ -310,6 +317,10 @@ namespace HIS.UC.PlusInfo
                 if (this.ucNational1 != null)
                 {
                     this.ucNational1.ResetRequiredField();
+                }
+                if (this.UCBudRelUnitCode != null)
+                {
+                    this.UCBudRelUnitCode.ResetRequiredField();
                 }
             }
             catch (Exception ex)

@@ -504,6 +504,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.ADO
                     this.PresNumber = expMest.PRES_NUMBER;
                     this.TDL_PATIENT_NAME = expMest.TDL_PATIENT_NAME;
                     this.NUM_ORDER = material.NUM_ORDER;
+                    this.TUTORIAL = material.TUTORIAL;
                 }
             }
             catch (Exception ex)
@@ -650,6 +651,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.ADO
                     this.PresNumber = expMest.PRES_NUMBER;
                     this.TDL_PATIENT_NAME = expMest.TDL_PATIENT_NAME;
                     this.NUM_ORDER = medicine.NUM_ORDER;
+                    this.TUTORIAL = medicine.TUTORIAL;
                     V_HIS_MEDICINE_TYPE medicineType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == (medicine.TDL_MEDICINE_TYPE_ID ?? 0));
                     if (medicineType != null)
                     {

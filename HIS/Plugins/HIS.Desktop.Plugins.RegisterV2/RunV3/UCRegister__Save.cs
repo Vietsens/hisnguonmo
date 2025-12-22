@@ -194,8 +194,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             case UCServiceRequestRegisterFactorySaveType.REGISTER:
                                 this.currentHisExamServiceReqResultSDO = delegacy.Execute<HisServiceReqExamRegisterResultSDO>();
                                 Inventec.Common.Logging.LogSystem.Debug("Save.1");
-
-
                                 if (this.currentHisExamServiceReqResultSDO != null
                                     && this.currentHisExamServiceReqResultSDO.HisPatientProfile != null
                                     && this.currentHisExamServiceReqResultSDO.ServiceReqs != null
@@ -209,6 +207,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                         frm.ShowDialog();
                                     }
                                     ServiceReqList = currentHisExamServiceReqResultSDO.ServiceReqs;
+                                    // Lưu thông tin chuyển tuyến vào hồ sơ
+                                    if (this.transPatiADO != null && this.transPatiADO.TRANSFER_IN_TIME_FROM.HasValue)
+                                    {
+                                        Inventec.Common.Logging.LogSystem.Info("Saved transfer info: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.transPatiADO), this.transPatiADO));
+                                    }
                                     //Cau hinh in tu dong sau khi luu thanh cong
                                     this.isPrintNow = printNow;
 
@@ -263,6 +266,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                                 if (this.resultHisPatientProfileSDO != null)
                                 {
+                                    // Lưu thông tin chuyển tuyến vào hồ sơ
+                                    if (this.transPatiADO != null && this.transPatiADO.TRANSFER_IN_TIME_FROM.HasValue)
+                                    {
+                                        Inventec.Common.Logging.LogSystem.Info("Saved transfer info: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.transPatiADO), this.transPatiADO));
+                                    }
                                     this.PatientProfileSuccess(param);
                                     success = true;
                                 }
@@ -403,6 +411,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             bool validGuarantee = true;
             bool validIsBlockBhyt = true;
             bool validHeinPatientTypeCode = true;
+            bool validMonthTrans = true;
             try
             {
                 long patientTypeId = GetPatientTypeId();
@@ -543,7 +552,12 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     && validIsBlockBhyt
                     && CheckRRCodeTTFee(true);
 
-                valid = valid && this.AlertExpriedTimeHeinCardBhyt();
+                valid = valid && this.CheckTransferInTimeWarning();
+                UCPatientRawADO patientRawADO = ucPatientRaw1.GetValue();
+                if (patientRawADO.isTypeHenKham)
+                {
+                    valid = valid && this.AlertExpriedTimeHeinCardBhyt();
+                }
 
                 try
                 {
@@ -567,6 +581,78 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             }
 
             return valid;
+        }
+        private bool CheckTransferInTimeWarning()
+        {
+            bool valid = true;
+            try
+            {
+                // Kiểm tra cấu hình
+                if (HisConfigCFG.WarnOverMonthsTransfer <= 0)
+                    return true;
+
+                // Lấy dữ liệu từ các UC control
+                var heinInfoValue = ucHeinInfo1.GetValue();
+                var plusInfoValue = ucPlusInfo1.GetValue();
+                
+                // Kiểm tra có tham gia chương trình
+                if (plusInfoValue == null || plusInfoValue.PROGRAM_ID <= 0)
+                    return true;
+                
+                // Kiểm tra loại đúng tuyến hẹn khám
+                if (heinInfoValue == null || heinInfoValue.HisPatientTypeAlter == null 
+                    || heinInfoValue.HisPatientTypeAlter.RIGHT_ROUTE_TYPE_CODE != MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.APPOINTMENT)
+                    return true;
+                
+                // Kiểm tra nơi ĐKKCB ban đầu khác với cơ sở của viện
+                string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+                if (string.IsNullOrEmpty(heinInfoValue.HisPatientTypeAlter.HEIN_MEDI_ORG_CODE)
+                    || heinInfoValue.HisPatientTypeAlter.HEIN_MEDI_ORG_CODE == branchHeinMediOrgCode)
+                    return true;
+                
+                // Kiểm tra thời gian chuyển tuyến từ
+                if (this.transPatiADO == null || !this.transPatiADO.TRANSFER_IN_TIME_FROM.HasValue)
+                    return true;
+
+                
+                // Tính số tháng từ thời gian chuyển tuyến đến hiện tại
+                DateTime transferInTimeFrom = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.transPatiADO.TRANSFER_IN_TIME_FROM.Value) ?? DateTime.Now;
+                DateTime currentDate = DateTime.Now;
+                
+                int monthsDiff = CalculateMonthsDifference(transferInTimeFrom, currentDate);
+                
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "CheckTransferInTimeWarning - transferDate: {0:dd/MM/yyyy}, currentDate: {1:dd/MM/yyyy}, monthsDiff: {2}, warningMonths: {3}",
+                    transferInTimeFrom, currentDate, monthsDiff, HisConfigCFG.WarnOverMonthsTransfer));
+                
+                // So sánh với ngưỡng cảnh báo
+                if (monthsDiff >= HisConfigCFG.WarnOverMonthsTransfer)
+                {
+                    string message = string.Format(
+                        "Thời gian chuyển tuyến của bệnh nhân đã được {0} tháng. Lưu ý bệnh nhân cần xin giấy chuyển tuyến mới. Bạn có muốn tiếp tục?",
+                        monthsDiff);
+                    
+                    if (MessageBox.Show(message, ResourceMessage.TieuDeCuaSoThongBaoLaCanhBao, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.No)
+                    {
+                        valid = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            
+            return valid;
+        }
+
+        private int CalculateMonthsDifference(DateTime fromDate, DateTime toDate)
+        {
+            if (toDate < fromDate)
+                return 0;
+
+            return (toDate.Year - fromDate.Year) * 12
+                   + (toDate.Month - fromDate.Month);
         }
 
         private bool BlockingInvalidBhyt()

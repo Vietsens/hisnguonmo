@@ -9,7 +9,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
 {
     public class TwoIDStorageIntegrationProcessor
     {
-      
+
         private readonly ConfigCFG.StorageConfig config;
         private readonly string apiKey;
         private readonly string baseUri;
@@ -18,9 +18,9 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
             HIS.Desktop.LocalStorage.EmrConfig.ConfigLoader.Refresh();
             config = ConfigCFG.GetStorageConfig();
 
-            string baseUri = config.ApiBaseUrl;
-            string apiKey = config.ApiKey;
-            string secretKey = config.ApiSecret;
+            this.baseUri = config.ApiBaseUrl;
+            this.apiKey = config.ApiKey;
+            //this.secretKey = config.ApiSecret;
         }
 
         // Upload danh sách file
@@ -39,7 +39,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
      );
         }
         // Lấy thông tin CCCD
-        
+
 
 
         public TwoIDApiRequestInput GetCitizenInfo(string baseUri, string citizenNumber, string apiKey, string transactionId, string hash)
@@ -52,7 +52,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 hash = hash
             };
 
-            return StorageApiClient.CreateRequest<TwoIDApiRequestInput>(baseUri,"/api/v1/citizens",input,"application/x-www-form-urlencoded");
+            return StorageApiClient.CreateRequest<TwoIDApiRequestInput>(baseUri, "/api/v1/citizens", input, "application/x-www-form-urlencoded");
         }
         //Download dữ liệu file
         public TwoIDApiRequestInput DownloadFile(string baseUri, string fileName, string apiKey, string transactionId, string hash)
@@ -65,10 +65,10 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 transactionId = transactionId,
                 hash = hash
             };
-            return StorageApiClient.CreateRequest<TwoIDApiRequestInput>(baseUri,"/api/v1/files/download",input,"application/x-www-form-urlencoded");
+            return StorageApiClient.CreateRequest<TwoIDApiRequestInput>(baseUri, "/api/v1/files/download", input, "application/x-www-form-urlencoded");
         }
         // Đồng bộ dữ liệu cá nhân
-        public TwoIDApiRequestInput SyncPersonalData(string baseUri,TwoIDApiRequestInput input,string apiKey,string transactionId,string hash)
+        public TwoIDApiRequestInput SyncPersonalData(string baseUri, TwoIDApiRequestInput input, string apiKey, string transactionId, string hash)
         {
 
             input.apiKey = apiKey;
@@ -92,7 +92,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
       string transactionId,
       string hash)
         {
-            try 
+            try
             {
                 var info = GetCitizenInfo(
                     baseUri,
@@ -101,7 +101,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                     transactionId,
                     hash
                 );
-                  
+
                 return info != null && !string.IsNullOrEmpty(info.citizenNumber);
             }
             catch (Exception ex)
@@ -123,6 +123,12 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Info(
+    $"StoreCitizenInfo Input: citizenNumber={citizen.citizenNumber}, " +
+    $"fingerprint={Newtonsoft.Json.JsonConvert.SerializeObject(fingerprint)}, " +
+    $"faceId={Newtonsoft.Json.JsonConvert.SerializeObject(faceId)}, " +
+    $"handSignature={Newtonsoft.Json.JsonConvert.SerializeObject(handSignature)}, " +
+    $"apiKey={apiKey}, transactionId={transactionId}, hash={hash}");
                 var uploadResult =
                     StorageApiClient.CreateMultipartRequest<TwoIDUploadResponse>(
                         baseUri,
@@ -164,7 +170,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         {
             try
             {
-                var info = GetCitizenInfo(baseUri,citizenNumber, apiKey,transactionId, hash);
+                var info = GetCitizenInfo(baseUri, citizenNumber, apiKey, transactionId, hash);
 
                 if (info != null)
                 {
@@ -320,4 +326,3 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
 
     }
 }
-  

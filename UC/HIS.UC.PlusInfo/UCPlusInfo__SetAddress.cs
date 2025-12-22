@@ -25,6 +25,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.Desktop.Utility;
+using Inventec.Common.Logging;
 
 namespace HIS.UC.PlusInfo
 {
@@ -50,6 +51,21 @@ namespace HIS.UC.PlusInfo
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public void setWorkPlace(object data)
+        {
+            try
+            {
+                if(this.UCBudRelUnitCode != null && data.GetType() == typeof(MOS.EFMODEL.DataModels.HIS_WORK_PLACE))
+                {
+                    this.UCBudRelUnitCode.SetValueDelegate(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
             }
         }
 
