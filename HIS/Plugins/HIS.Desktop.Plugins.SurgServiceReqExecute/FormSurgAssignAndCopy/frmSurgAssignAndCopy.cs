@@ -349,7 +349,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
         {
             try
             {
-               
+                
                 V_HIS_SERVICE currentVHisService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
                 if (currentVHisService.ALLOW_SIMULTANEITY != 1)
                 {
@@ -372,6 +372,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                     if (Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1"
                         || Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
                     {
+                        ekipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
                         HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
                         
                         CommonParam paramHisServiceReq = new CommonParam();
@@ -497,6 +498,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                     if (Config.HisConfigKeys.CHECK_SIMULTANEITY_OPTION == "1"
                         || Config.HisConfigKeys.CHECK_SIMULTANEITY_OPTION == "2")
                     {
+                        ekipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
                         HisSurgServiceReqUpdateListSDO hisSurgResultSDO = new MOS.SDO.HisSurgServiceReqUpdateListSDO();
                         hisSurgResultSDO.SurgUpdateSDOs = new List<SurgUpdateSDO>();
                         SurgUpdateSDO singleData = new SurgUpdateSDO();

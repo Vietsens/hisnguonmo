@@ -247,6 +247,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                             return;
                         }
                     }
+                    else
+                    {
+                        WaitingManager.Hide();
+                        bool isValidTimeInTime = CheckTimeInTime(listTime);
+                        if (!isValidTimeInTime)
+                        {
+                            return; 
+                        }
+                    }
 
 
                     System.DateTime today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 2);
@@ -272,6 +281,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private bool CheckTimeInTime(List<long> listTime)
+        {
+            bool result = true; 
+            foreach(var intructionTime in listTime)
+            {
+                if (intructionTime < this.treatment.IN_TIME)
+                {
+                        XtraMessageBox.Show("Thời gian y lệnh phải lớn hơn thời gian vào viện", "Thông báo");
+                        return false;
+                }
+            }
+            return result;
+        }
+
         private bool CheckTimeInDepartment(List<long> listTime)
         {
             bool result = true;
@@ -282,7 +305,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                 CommonParam paramGet = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listTime), listTime));
                 HisDepartmentTranFilter filter = new HisDepartmentTranFilter();
-                HisTreatmentFilter filterTreatment = new HisTreatmentFilter();
                 filter.TREATMENT_ID = this.treatment.ID;
                 this.ListDepartmentTranCheckTime = new BackendAdapter(paramGet).Get<List<HIS_DEPARTMENT_TRAN>>("api/HisDepartmentTran/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
                 //danh sách các lần chuyển khoa
@@ -352,12 +374,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                             (toTime > 0 && toTime != long.MaxValue) ? " đến " + Inventec.Common.DateTime.Convert.TimeNumberToTimeString(toTime) : ""));
                         }
                     }
-                    hasTran = intructionTime > this.treatment.IN_TIME;  
                     if (!hasTran)
                     {
                         //XtraMessageBox.Show(string.Format(ResourceMessage.ThoiGianYLenhKhongThuocKhoangThoiGianTrongKhoa,
                         //   string.Join(",", times)), "Thông báo");
-                        XtraMessageBox.Show("Thời gian y lệnh phải lớn hơn thời gian vào viện", "Thông báo");
+                        XtraMessageBox.Show("Thời gian y lệnh phải nằm trong thời gian bệnh nhân hiện diện tại khoa", "Thông báo");
                         //this.isNotLoadWhileChangeInstructionTimeInFirst = true;
                         //this.dtInstructionTime.Focus();
                         //this.isNotLoadWhileChangeInstructionTimeInFirst = false;
