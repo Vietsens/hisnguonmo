@@ -437,7 +437,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
             {
                 string text = this.ElectronicBillDataInput.TemplateCode + this.ElectronicBillDataInput.SymbolCode;
                 IssueCreateV2 invoice = this.GetInvoiceDetailV2();
-                ResultDataV2 response = this.processV2.CreateInvoice(invoice);
+                ResultDataV2 response = this.processV2.CreateInvoice(invoice); // gọi api
                 if (response != null && response.InvoiceResult != null && response.InvoiceResult.Count == 1)
                 {
                     electronicBillResult.Success = true;
@@ -474,6 +474,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                     invoiceV.CusBankName = "";
                     invoiceV.CusBankNo = data.BuyerAccountNumber;
                     invoiceV.CusPhone = data.BuyerPhone;
+                    invoiceV.CusCode = data.BuyerCode; 
                     //invoiceV.CusName = (data.BuyerName ?? data.BuyerOrganization);
                     string cusName = (data.BuyerName ?? data.BuyerOrganization);
                     //qtcode

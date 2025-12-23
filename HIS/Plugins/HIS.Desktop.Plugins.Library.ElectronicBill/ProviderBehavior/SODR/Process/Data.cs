@@ -52,6 +52,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR.Proce
         public List<ProductV2> Products { get; set; }
         //qtcode
         public string BuyerName { get; set; }
+        public string CusCode { get; set; }
     }
     public class ProductV2
     {
