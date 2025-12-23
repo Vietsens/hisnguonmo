@@ -265,6 +265,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 if(this.ActionType == GlobalVariables.ActionAdd)
                 {
                     btnRefresh_Click(null, null);
+                    SetCauHinhFromData(
+                        new V_HIS_MEDICINE_TYPE(),
+                        new V_HIS_SERVICE()
+                    );
                 }
                 Inventec.Common.Logging.LogAction.Info(this.module.ModuleLink + ": [StartTimer - Load du lieu len cac combobox]");
                 WaitingManager.Hide();
