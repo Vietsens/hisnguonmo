@@ -85,7 +85,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.TwoIDStorageIntegration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.TwoIDStorageIntegration.dll</HintPath>
+      <HintPath>..\..\HIS.Desktop\bin\Debug\Plugins\Module\HIS.Desktop.Plugins.Library.TwoIDStorageIntegration.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
