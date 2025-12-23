@@ -28,6 +28,7 @@ using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.EmrConfig;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.Library.TwoIDStorageIntegration;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
@@ -776,37 +777,6 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
             }
         }
 
-        private DateTime? Parse2IDDate(string input)
-        {
-            if (string.IsNullOrWhiteSpace(input)) return null;
-
-            input = input.Trim();
-
-            // Một số format hay gặp
-            string[] formats =
-            {
-        "yyyy-MM-dd",
-        "yyyy/MM/dd",
-        "dd/MM/yyyy",
-        "d/M/yyyy",
-        "yyyyMMdd",
-        "yyyy-MM-ddTHH:mm:ss",
-        "yyyy-MM-ddTHH:mm:ss.fff",
-        "o" // ISO 8601
-            };
-
-            if (DateTime.TryParseExact(input, formats, CultureInfo.InvariantCulture,
-                    DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal, out var dt))
-                return dt;
-
-            // fallback nếu input là kiểu "0001-01-01T00:00:00" hoặc format lạ
-            if (DateTime.TryParse(input, CultureInfo.InvariantCulture,
-                    DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal, out dt))
-                return dt;
-
-            return null;
-        }
-
         private void ProcessStore2IDStorage(EMR_PATIENT_CERTIFICATE certificate, EmrPatientCertificateRegisterSDO sdo)
         {
             try
@@ -886,44 +856,21 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                         "ProcessStore2IDStorage: Added signature base64, length=" + signatureBase64.Length);
                 }
 
-                //Lưu ảnh khuôn mặt
-                //if (!string.IsNullOrWhiteSpace(sdo.faceImage))
-                //{
-                //    string facePath = SaveBase64ToFile(sdo.faceImage, tempFolder, sdo.citizenIdentify + "_face.jpg");
-                //    if (!string.IsNullOrWhiteSpace(facePath))
-                //    {
-                //        faceImages.Add(facePath);
-                //        Inventec.Common.Logging.LogSystem.Debug("ProcessStore2IDStorage: Saved face image to " + facePath);
-                //    }
-                //}
-
-                //Lưu chữ ký
-                //if (!string.IsNullOrWhiteSpace(sdo.signatureImage))
-                //{
-                //    string signaturePath = SaveBase64ToFile(sdo.signatureImage, tempFolder, sdo.citizenIdentify + "_signature.png");
-                //    if (!string.IsNullOrWhiteSpace(signaturePath))
-                //    {
-                //        handSignatures.Add(signaturePath);
-                //        Inventec.Common.Logging.LogSystem.Debug("ProcessStore2IDStorage: Saved signature image to " + signaturePath);
-                //    }
-                //}
-                var dob = Parse2IDDate(sdo.dateOfBirth) ?? DateTime.MinValue;
-                var issue = Parse2IDDate(sdo.dateOfProvide) ?? DateTime.MinValue;
-                var exp = Parse2IDDate(sdo.dateOfExpired) ?? DateTime.MinValue;
-
-                var citizenInput = new HIS.Desktop.Plugins.Library.TwoIDStorageIntegration.TwoIDApiRequestInput()
+                TwoIDStorageIntegrationProcessor processorInput = new TwoIDStorageIntegrationProcessor();
+                TwoIdRequestCitizens identify = new TwoIdRequestCitizens
                 {
-                    citizenNumber = sdo.citizenIdentify,
                     fullName = sdo.fullName,
-                    dateOfBirth = dob,
-                    residencePlace = sdo.placeOfProvide,
-                    issueDate = issue,
-                    expiredDate = exp,
-                    idCardVerifyResult = "VERIFIED"
+                    citizenNumber = sdo.citizenIdentify,
+                    residencePlace = sdo.placeOfResidence,
+                    dateOfBirth = DateTime.ParseExact(sdo.dateOfBirth, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"),
+                    gender = sdo.gender == "Nam" ? "MALE" : "FEMALE",
+                    issueDate = DateTime.ParseExact(sdo.dateOfProvide, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"),
+                    expiredDate = DateTime.ParseExact(sdo.dateOfExpired, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"),
+                    idCardVerifyResult = currentCCCDInfo.isPass ? "SUCCESS" : "FALSE"
                 };
                 bool storeResult = processor.StoreCitizenInfo(
                     storageUrl,
-                    citizenInput,
+                    identify,
                     fingerprints,
                     faceImages,
                     handSignatures,
@@ -931,10 +878,6 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     transactionId,
                     hash
                 );
-
-                // Xóa file tạm
-                CleanupTempFiles(faceImages);
-                CleanupTempFiles(handSignatures);
 
                 if (storeResult)
                 {
