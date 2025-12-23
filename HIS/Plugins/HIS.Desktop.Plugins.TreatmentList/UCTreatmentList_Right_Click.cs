@@ -110,6 +110,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         case PopupMenuProcessor.ItemType.BornInfo:
                             btnBornInfoClick();
                             break;
+                        case PopupMenuProcessor.ItemType.MchTreatmentExamService:
+                            btnMchTreatmentExamServiceClick();
+                            break;
                         case PopupMenuProcessor.ItemType.DeathInfo:
                             btnDeathInfoClick();
                             break;
@@ -1905,6 +1908,41 @@ namespace HIS.Desktop.Plugins.TreatmentList
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnMchTreatmentExamServiceClick()
+        {
+            try
+            {
+                if (this.currentTreatment != null)
+                {
+                    WaitingManager.Show();
+
+                    // Map dữ liệu từ V_HIS_TREATMENT_4 sang HIS_TREATMENT
+                    HIS_TREATMENT treatment = new HIS_TREATMENT();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(treatment, this.currentTreatment);
+                    treatment.ID = this.currentTreatment.ID;
+
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(treatment);
+
+                    // Gọi Plugin theo ModuleLink được yêu cầu
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                        "HIS.Desktop.Plugins.MchTreatmentExamService",
+                        this.currentModule.RoomId,
+                        this.currentModule.RoomTypeId,
+                        listArgs
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                WaitingManager.Hide();
             }
         }
 
