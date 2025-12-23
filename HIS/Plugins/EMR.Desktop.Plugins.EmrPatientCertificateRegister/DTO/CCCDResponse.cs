@@ -43,7 +43,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister.DTO
         public string phone { get; set; }
         public string mrz { get; set; }
         public string dsCert { get; set; }
-        public bool? isPass { get; set; }
+        public bool isPass { get; set; }
         public double? score { get; set; }
 
         // Các cặp dữ liệu base64 (ảnh / dữ liệu DG)
