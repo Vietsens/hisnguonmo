@@ -67,6 +67,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             Bo,
             print,
             BornInfo,
+            MchTreatmentExamService,
             DeathInfo,
             AssignService, 
             AssignPan,
@@ -357,6 +358,25 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 bbtnBornInfo.Tag = ItemType.BornInfo;
                 bbtnBornInfo.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                 subDieuTri.ItemLinks.Add(bbtnBornInfo);
+
+                //Thông tin sức khỏe sinh sản
+                // Kiểm tra điều kiện: Nữ (ID thường là 2) HOẶC Tuổi <= 6
+                // Lưu ý: Kiểm tra logic tính tuổi dựa trên TDL_PATIENT_DOB của hệ thống bạn
+                int patientAge = 0;
+                if (_TreatmentPoppupPrint.TDL_PATIENT_DOB > 0)
+                {
+                    int yearOfBirth = int.Parse(_TreatmentPoppupPrint.TDL_PATIENT_DOB.ToString().Substring(0, 4));
+                    patientAge = DateTime.Now.Year - yearOfBirth;
+                }
+
+                if (_TreatmentPoppupPrint.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__FEMALE || patientAge <= 6)
+                {
+                    BarButtonItem bbtnMchTreatment = new BarButtonItem(this._BarManager, "Thông tin sức khỏe sinh sản", 7);
+                    bbtnMchTreatment.Tag = ItemType.MchTreatmentExamService;
+                    bbtnMchTreatment.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                    subDieuTri.ItemLinks.Add(bbtnMchTreatment);
+                }
+
                 //Thông tin tử vong
                 BarButtonItem bbtnDeathInfo = new BarButtonItem(this._BarManager, "Thông tin tử vong", 7);
                 bbtnDeathInfo.Tag = ItemType.DeathInfo;

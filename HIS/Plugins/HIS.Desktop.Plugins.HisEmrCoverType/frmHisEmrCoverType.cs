@@ -272,9 +272,9 @@ namespace HIS.Desktop.Plugins.HisEmrCoverType
             try
             {
                 ValidMaxlengthTextBox(txtEmrCode, 20);
-                ValidMaxlengthTextBox(txtEmrName, 500);
+                ValidMaxlengthTextBox(txtEmrName, 200);
                 ValidMaxlengthTextBox(txtNum, int.MaxValue);
-                ValidOnlyMaxlengthTextBox(txtGroup, 100);
+                ValidOnlyMaxlengthTextBox(txtGroup, 200);
             }
             catch (Exception ex)
             {
