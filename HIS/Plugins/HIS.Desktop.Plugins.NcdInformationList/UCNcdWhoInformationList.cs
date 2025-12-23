@@ -46,6 +46,9 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
         {
             InitializeComponent();
             this.currentModule = module;
+
+            this.bbtnSearch.ItemShortcut = null;
+            this.bbtnRefresh.ItemShortcut = null;
         }
 
         private void UCNcdWhoInformationList_Load(object sender, EventArgs e)
@@ -201,68 +204,96 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
         }
 
+        private bool checkDigit(string s)
+        {
+            foreach (char c in s)
+            {
+                if (!char.IsDigit(c)) return false;
+            }
+            return true;
+        }
+
         private void SetFilter(ref HisTreatmentFilter filter)
         {
             try
             {
-                // 1. MÃ ĐIỀU TRỊ
+                filter.ORDER_FIELD = "OUT_TIME";
+                filter.ORDER_DIRECTION = "DESC";
+
                 if (!string.IsNullOrEmpty(txtTreatmentCode.Text))
                 {
-                    string treatmentCode = txtTreatmentCode.Text.Trim();
-                    if (treatmentCode.Length < 12)
+                    string code = txtTreatmentCode.Text.Trim();
+
+                    if (checkDigit(code))
                     {
-                        treatmentCode = treatmentCode.PadLeft(12, '0');
-                        txtTreatmentCode.Text = treatmentCode;
+                        code = string.Format("{0:000000000000}", Convert.ToInt64(code));
+                        txtTreatmentCode.Text = code;
+                        filter.TREATMENT_CODE__EXACT = code;
                     }
-                    filter.TREATMENT_CODE__EXACT = treatmentCode;
+                    else
+                    {
+                        filter.TREATMENT_CODE__EXACT = code;
+                    }
+                    return;
                 }
 
-                // 2. MÃ BỆNH NHÂN
                 if (!string.IsNullOrEmpty(txtPatientCode.Text))
                 {
-                    string patientCode = txtPatientCode.Text.Trim();
-                    if (patientCode.Length < 10)
+                    string code = txtPatientCode.Text.Trim();
+                    if (checkDigit(code))
                     {
-                        patientCode = patientCode.PadLeft(10, '0');
-                        txtPatientCode.Text = patientCode;
+                        code = string.Format("{0:0000000000}", Convert.ToInt64(code));
+                        txtPatientCode.Text = code;
                     }
-                    filter.TDL_PATIENT_CODE__EXACT = patientCode;
+                    var patientFilter = new HisPatientFilter();
+                    patientFilter.PATIENT_CODE__EXACT = code;
+
+                    var patientList = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>(
+                        "api/HisPatient/Get",
+                        ApiConsumers.MosConsumer,
+                        patientFilter,
+                        new CommonParam());
+
+                    if (patientList != null && patientList.Count > 0)
+                    {
+                        filter.PATIENT_ID = patientList[0].ID;
+
+                        filter.OUT_TIME_FROM = null;
+                        filter.OUT_TIME_TO = null;
+                        return;
+                    }
+                    else
+                    {
+                        filter.ID = -1;
+                        return;
+                    }
                 }
 
-                // 3. Tên bệnh nhân
                 if (!string.IsNullOrEmpty(txtPatientName.Text))
+                {
                     filter.PATIENT_NAME = txtPatientName.Text.Trim();
+                }
 
-                // 4. Ngày ra viện
                 if (dtBornTimeFrom.EditValue != null && dtBornTimeFrom.DateTime != DateTime.MinValue)
                     filter.OUT_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtBornTimeFrom.EditValue).ToString("yyyyMMdd") + "000000");
 
                 if (dtBornTimeTo.EditValue != null && dtBornTimeTo.DateTime != DateTime.MinValue)
                     filter.OUT_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(dtBornTimeTo.EditValue).ToString("yyyyMMdd") + "235959");
 
-                // 5. Trạng thái NCD (SỬA LẠI LOGIC CHUẨN)
                 if (cboSYNC_RESULT_TYPE.EditValue != null)
                 {
                     switch (cboSYNC_RESULT_TYPE.SelectedIndex)
                     {
-                        case 1: // Chưa đồng bộ
-                            filter.HAS_NCD_WHO_RESULT = false;
-                            break;
-                        case 2: // Đã đồng bộ
-                            filter.NCD_WHO_RESULT = 1;
-                            break;
-                        case 3: // Thất bại
-                            filter.NCD_WHO_RESULT = 2;
-                            break;
-                        default: // Tất cả
-                            break;
+                        case 1: filter.HAS_NCD_WHO_RESULT = false; break;
+                        case 2: filter.NCD_WHO_RESULT = 1; break;
+                        case 3: filter.NCD_WHO_RESULT = 2; break;
                     }
                 }
-
-                filter.ORDER_FIELD = "OUT_TIME";
-                filter.ORDER_DIRECTION = "DESC";
             }
-            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void SetDefaultControl()
@@ -570,20 +601,16 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             return new List<V_HIS_EXP_MEST_MEDICINE>();
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        public void Search()
         {
-            if (keyData == (Keys.Control | Keys.F))
-            {
-                btnSearch_Click(null, null);
-                return true;
-            }
-            if (keyData == (Keys.Control | Keys.R))
-            {
-                btnRefresh_Click(null, null);
-                return true;
-            }
-            return base.ProcessCmdKey(ref msg, keyData);
+            btnSearch_Click(null, null);
         }
+
+        public new void Refresh()
+        {
+            btnRefresh_Click(null, null);
+        }
+    
         private void gridView1_DoubleClick(object sender, EventArgs e)
         {
             try
