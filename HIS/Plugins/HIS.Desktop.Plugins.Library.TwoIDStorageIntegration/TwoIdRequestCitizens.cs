@@ -1,7 +1,4 @@
-﻿using HIS.Desktop.Plugins.Library.TwoIDStorageIntegration;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,16 +6,10 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
 {
-
-
-    public class TwoIDApiRequestInput
+    public class TwoIdRequestCitizens
     {
         // URL ảnh (sau Upload)
         public string citizenNumber { get; set; }
-        public string fingerprint { get; set; }
-        public string faceId { get; set; }
-        public string handSignature { get; set; }
-
         //common
 
         public string apiKey { get; set; }
@@ -52,19 +43,16 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         public string faceImage { get; set; }
         public string handSignatureImage { get; set; }
 
-        public TwoIDApiRequestInput()
+        public TwoIdRequestCitizens()
         {
 
         }
 
-        public TwoIDApiRequestInput(TwoIDApiRequestInput data)
+        public TwoIdRequestCitizens(TwoIdRequestCitizens data)
         {
             if (data != null)
             {
                 this.citizenNumber = data.citizenNumber;
-                this.fingerprint = data.fingerprint;
-                this.faceId = data.faceId;
-                this.handSignature = data.handSignature;
                 this.apiKey = data.apiKey;
                 this.transactionId = data.transactionId;
                 this.hash = data.hash;
@@ -84,12 +72,12 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         }
 
 
-
-
         public static T CallTwoIDApi<T>(string baseUri, string requestUri, TwoIDApiRequestInput input, string contentType)
         {
             return StorageApiClient.CreateRequest<T>(baseUri, requestUri, input, contentType);
         }
 
     }
+
+
 }
