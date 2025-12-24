@@ -82,10 +82,10 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.AnalyzeMedicalImage">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Plugins\Module\HIS.Desktop.Plugins.AnalyzeMedicalImage.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\Plugins\Module\HIS.Desktop.Plugins.AnalyzeMedicalImage.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.InformationAllowGoHome">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Plugins\Module\HIS.Desktop.Plugins.InformationAllowGoHome.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\Plugins\Module\HIS.Desktop.Plugins.InformationAllowGoHome.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -104,10 +104,10 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintOtherForm\HIS.Desktop.Plugins.Library.PrintOtherForm.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintPatientUpdate">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPatientUpdate.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPatientUpdate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintPrescription">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintPublicMedicines">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.Plugins.Library.PrintPublicMedicines.dll</HintPath>
@@ -129,7 +129,7 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintTreatmentFinish\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCCauseOfDeath, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -256,13 +256,13 @@
       <HintPath>..\..\..\..\LIB\LIS\LIS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.WebView2.Core">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Microsoft.Web.WebView2.Core.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\Microsoft.Web.WebView2.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.WebView2.WinForms">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Microsoft.Web.WebView2.WinForms.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\Microsoft.Web.WebView2.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.WebView2.Wpf">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Microsoft.Web.WebView2.Wpf.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\Microsoft.Web.WebView2.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -294,7 +294,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000010.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000011.PDO">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000011.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000011.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000026.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000026.PDO.dll</HintPath>
@@ -326,7 +326,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000389.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000399.PDO">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000399.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000399.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000434.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000434.PDO.dll</HintPath>
