@@ -512,7 +512,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                             {
                                 MOS.EFMODEL.DataModels.HIS_EKIP_USER ekipUser = new HIS_EKIP_USER();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EKIP_USER>(ekipUser, data);
-                                if (ekipUser != null && ekipUser.EXECUTE_ROLE_ID != 0)
+                                if (ekipUser != null && ekipUser.EXECUTE_ROLE_ID != 0 && !string.IsNullOrWhiteSpace(ekipUser.LOGINNAME))
                                     ekipUsers.Add(ekipUser);
                             }
                         //singleData.EkipUsers = ekipUsers;
