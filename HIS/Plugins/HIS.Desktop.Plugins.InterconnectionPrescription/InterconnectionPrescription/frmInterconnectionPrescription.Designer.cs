@@ -53,10 +53,6 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barBtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnRefresh = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.chkAll = new DevExpress.XtraEditors.CheckEdit();
             this.btnPost = new DevExpress.XtraEditors.SimpleButton();
@@ -96,6 +92,12 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             this.lciStatus = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.btnUpdateSale = new DevExpress.XtraEditors.SimpleButton();
+            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -124,6 +126,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             ((System.ComponentModel.ISupportInitialize)(this.lciStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -140,6 +143,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.btnUpdateSale);
             this.layoutControl2.Controls.Add(this.cboStatus);
             this.layoutControl2.Controls.Add(this.chkAll);
             this.layoutControl2.Controls.Add(this.btnPost);
@@ -176,10 +180,6 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barBtnSearch,
@@ -214,34 +214,6 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             this.barBtnRefresh.Name = "barBtnRefresh";
             this.barBtnRefresh.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnRefresh_ItemClick);
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1753, 38);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 699);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1753, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 661);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1753, 38);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 661);
-            // 
             // gridLookUpEdit1View
             // 
             this.gridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
@@ -251,21 +223,21 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             // 
             // chkAll
             // 
-            this.chkAll.Location = new System.Drawing.Point(1175, 3);
+            this.chkAll.Location = new System.Drawing.Point(1148, 3);
             this.chkAll.Margin = new System.Windows.Forms.Padding(4);
             this.chkAll.MenuManager = this.barManager1;
             this.chkAll.Name = "chkAll";
             this.chkAll.Properties.Caption = "Tất cả";
-            this.chkAll.Size = new System.Drawing.Size(129, 21);
+            this.chkAll.Size = new System.Drawing.Size(82, 20);
             this.chkAll.StyleController = this.layoutControl2;
             this.chkAll.TabIndex = 13;
             // 
             // btnPost
             // 
-            this.btnPost.Location = new System.Drawing.Point(1603, 3);
+            this.btnPost.Location = new System.Drawing.Point(1463, 3);
             this.btnPost.Margin = new System.Windows.Forms.Padding(4);
             this.btnPost.Name = "btnPost";
-            this.btnPost.Size = new System.Drawing.Size(141, 27);
+            this.btnPost.Size = new System.Drawing.Size(110, 27);
             this.btnPost.StyleController = this.layoutControl2;
             this.btnPost.TabIndex = 12;
             this.btnPost.Text = "Đẩy dữ liệu";
@@ -273,10 +245,10 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(1457, 3);
+            this.btnReset.Location = new System.Drawing.Point(1347, 3);
             this.btnReset.Margin = new System.Windows.Forms.Padding(4);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(140, 27);
+            this.btnReset.Size = new System.Drawing.Size(110, 27);
             this.btnReset.StyleController = this.layoutControl2;
             this.btnReset.TabIndex = 11;
             this.btnReset.Text = "Làm lại (Ctrl R)";
@@ -284,10 +256,10 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(1310, 3);
+            this.btnSearch.Location = new System.Drawing.Point(1236, 3);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(4);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(141, 27);
+            this.btnSearch.Size = new System.Drawing.Size(105, 27);
             this.btnSearch.StyleController = this.layoutControl2;
             this.btnSearch.TabIndex = 10;
             this.btnSearch.Text = "Tìm (Ctrl F)";
@@ -296,14 +268,14 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             // dtTimeTo
             // 
             this.dtTimeTo.EditValue = null;
-            this.dtTimeTo.Location = new System.Drawing.Point(977, 3);
+            this.dtTimeTo.Location = new System.Drawing.Point(964, 3);
             this.dtTimeTo.Margin = new System.Windows.Forms.Padding(4);
             this.dtTimeTo.Name = "dtTimeTo";
             this.dtTimeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtTimeTo.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtTimeTo.Size = new System.Drawing.Size(192, 22);
+            this.dtTimeTo.Size = new System.Drawing.Size(178, 22);
             this.dtTimeTo.StyleController = this.layoutControl2;
             this.dtTimeTo.TabIndex = 9;
             // 
@@ -317,7 +289,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtTimeFrom.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtTimeFrom.Size = new System.Drawing.Size(177, 22);
+            this.dtTimeFrom.Size = new System.Drawing.Size(164, 22);
             this.dtTimeFrom.StyleController = this.layoutControl2;
             this.dtTimeFrom.TabIndex = 8;
             // 
@@ -380,6 +352,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             this.gridView1.OptionsView.ShowGroupPanel = false;
             this.gridView1.OptionsView.ShowIndicator = false;
             this.gridView1.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridView1_RowCellStyle);
+            this.gridView1.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.gridView1_SelectionChanged);
             this.gridView1.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridView1_CustomUnboundColumnData);
             // 
             // gridColumn1
@@ -552,7 +525,8 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             this.layoutControlItem9,
             this.layoutControlItem10,
             this.layoutControlItem11,
-            this.lciStatus});
+            this.lciStatus,
+            this.layoutControlItem5});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Size = new System.Drawing.Size(1747, 655);
@@ -592,7 +566,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             this.layoutControlItem6.Control = this.dtTimeFrom;
             this.layoutControlItem6.Location = new System.Drawing.Point(601, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(278, 33);
+            this.layoutControlItem6.Size = new System.Drawing.Size(265, 33);
             this.layoutControlItem6.Text = "Từ:";
             this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem6.TextSize = new System.Drawing.Size(90, 20);
@@ -603,9 +577,9 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem7.Control = this.dtTimeTo;
-            this.layoutControlItem7.Location = new System.Drawing.Point(879, 0);
+            this.layoutControlItem7.Location = new System.Drawing.Point(866, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(293, 33);
+            this.layoutControlItem7.Size = new System.Drawing.Size(279, 33);
             this.layoutControlItem7.Text = "Đến:";
             this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem7.TextSize = new System.Drawing.Size(90, 20);
@@ -614,36 +588,36 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.btnSearch;
-            this.layoutControlItem8.Location = new System.Drawing.Point(1307, 0);
+            this.layoutControlItem8.Location = new System.Drawing.Point(1233, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(147, 33);
+            this.layoutControlItem8.Size = new System.Drawing.Size(111, 33);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnReset;
-            this.layoutControlItem9.Location = new System.Drawing.Point(1454, 0);
+            this.layoutControlItem9.Location = new System.Drawing.Point(1344, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(146, 33);
+            this.layoutControlItem9.Size = new System.Drawing.Size(116, 33);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnPost;
-            this.layoutControlItem10.Location = new System.Drawing.Point(1600, 0);
+            this.layoutControlItem10.Location = new System.Drawing.Point(1460, 0);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(147, 33);
+            this.layoutControlItem10.Size = new System.Drawing.Size(116, 33);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.chkAll;
-            this.layoutControlItem11.Location = new System.Drawing.Point(1172, 0);
+            this.layoutControlItem11.Location = new System.Drawing.Point(1145, 0);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(135, 33);
+            this.layoutControlItem11.Size = new System.Drawing.Size(88, 33);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
@@ -679,6 +653,55 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             this.layoutControlItem1.Size = new System.Drawing.Size(1753, 661);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlTop.Size = new System.Drawing.Size(1753, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 699);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1753, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 661);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1753, 38);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 661);
+            // 
+            // btnUpdateSale
+            // 
+            this.btnUpdateSale.Enabled = false;
+            this.btnUpdateSale.Location = new System.Drawing.Point(1579, 3);
+            this.btnUpdateSale.Name = "btnUpdateSale";
+            this.btnUpdateSale.Size = new System.Drawing.Size(165, 27);
+            this.btnUpdateSale.StyleController = this.layoutControl2;
+            this.btnUpdateSale.TabIndex = 15;
+            this.btnUpdateSale.Text = "Cập nhật SL bán";
+            this.btnUpdateSale.ToolTip = "Cập nhật số lượng đã bán";
+            this.btnUpdateSale.Click += new System.EventHandler(this.btnUpdateSale_Click);
+            // 
+            // layoutControlItem5
+            // 
+            this.layoutControlItem5.Control = this.btnUpdateSale;
+            this.layoutControlItem5.Location = new System.Drawing.Point(1576, 0);
+            this.layoutControlItem5.Name = "layoutControlItem5";
+            this.layoutControlItem5.Size = new System.Drawing.Size(171, 33);
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem5.TextVisible = false;
             // 
             // frmInterconnectionPrescription
             // 
@@ -728,6 +751,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             ((System.ComponentModel.ISupportInitialize)(this.lciStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -785,5 +809,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn15;
+        private DevExpress.XtraEditors.SimpleButton btnUpdateSale;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
     }
 }
