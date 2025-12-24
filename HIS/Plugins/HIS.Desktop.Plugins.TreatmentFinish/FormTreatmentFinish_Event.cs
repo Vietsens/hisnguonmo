@@ -253,6 +253,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             {
                 //hisTreatmentFinishSDO = treatmentFinish; // Sửa để gán vào hisTreatmentFinishSDO
                 hisTreatmentFinishSDO_process = treatmentFinish;
+                txtMethod.Text = treatmentFinish.TreatmentMethod; 
             }
             catch (Exception ex)
             {
@@ -608,6 +609,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 hisTreatmentFinishSDO.EyesightRight = txtEyesightRight.Text;
                 hisTreatmentFinishSDO.EyeTensionLeft = txtEyeTensionLeft.Text;
                 hisTreatmentFinishSDO.EyeTensionRight = txtEyeTensionRight.Text;
+
+                hisTreatmentFinishSDO.TreatmentMethod = txtMethod.Text; 
 
                 if (lciOutPatientDateFrom.Enabled == true
                 && lciOutPatientDateTo.Enabled == true)

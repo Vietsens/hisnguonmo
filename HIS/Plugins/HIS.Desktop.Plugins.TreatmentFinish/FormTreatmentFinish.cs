@@ -2179,7 +2179,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             return;
                         }
                     }
-
+                    currentHisTreatment.TREATMENT_METHOD = txtMethod.Text;
+                    hisTreatmentFinishSDO_process.TreatmentMethod = txtMethod.Text; 
                     FormTransfer = new CloseTreatment.FormTransfer(this.module, currentHisTreatment);
                     FormTransfer.MyGetData = new CloseTreatment.FormTransfer.GetString(TranPatiDataTreatmentFinish);
 
