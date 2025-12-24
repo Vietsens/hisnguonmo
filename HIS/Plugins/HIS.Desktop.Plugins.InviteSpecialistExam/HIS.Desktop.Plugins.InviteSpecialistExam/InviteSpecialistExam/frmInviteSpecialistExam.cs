@@ -232,6 +232,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                     cboPhongKham.EditValue = specialistExam.EXAM_EXECUTE_DEPARMENT_ID;
                     memContent.Text = specialistExam.INVITE_CONTENT;
                     chkExamInBed.Checked = specialistExam.IS__EXAM_BED == 1 ? true : false;
+                    chkIsExamAnesthesia.Checked = specialistExam.IS_EXAM_ANESTHESIA == 1;
                     cboBacSiKham.EditValue = lstEmployee.FirstOrDefault(o => o.LOGINNAME == specialistExam.EXAM_EXECUTE_LOGINNAME)?.ID;
                     cboBacSi.EditValue = lstEmployee.FirstOrDefault(o => o.LOGINNAME == specialistExam.INVITE_DOCTOR_LOGINNAME)?.ID;                    
                 }
@@ -523,6 +524,7 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 else
                     hIS_SPECIALIST_EXAM.IS__EXAM_BED = null;
 
+                hIS_SPECIALIST_EXAM.IS_EXAM_ANESTHESIA = chkIsExamAnesthesia.Checked ? 1 : (short?)null;
                 hIS_SPECIALIST_EXAM.INVITE_CONTENT = memContent.Text;
                 hIS_SPECIALIST_EXAM.INVITE_TYPE = 1;
                 if (bedRoom != null)
