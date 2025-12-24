@@ -6,6 +6,7 @@ using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MCH.EFMODEL.DataModels;
+using MCH.Filter;
 using MCH.SDO;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
@@ -20,6 +21,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 {
     public partial class UCMchTreatmentExamService : HIS.Desktop.Utility.FormBase
     {
+        HIS_PATIENT Patient = new HIS_PATIENT();
         private void FillDataToForm()
         {
             try
@@ -29,81 +31,57 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 bool hasExamService = ExamService != null && ExamService.ID > 0;
                 V_MCH_EXAM_SERVICE examDisplay = ExamService;
                 ExamServiceEdit = ExamService;
-                if (!hasExamService)
+
+                // Tự động điền đủ 12 ký tự cho mã hồ sơ điều trị
+                string treatmentCode = !string.IsNullOrEmpty(txtTreatmentCode.Text.Trim()) ? txtTreatmentCode.Text.Trim().PadLeft(12, '0') : null;
+                txtTreatmentCode.Text = treatmentCode;
+                // Tự động điền đủ 10 ký tự cho mã bệnh nhân
+                string patientCode = string.IsNullOrEmpty(treatmentCode) && !string.IsNullOrEmpty(txtPatientCode.Text.Trim()) ? txtPatientCode.Text.Trim().PadLeft(10, '0') : null;
+                txtPatientCode.Text = patientCode;
+
+                if (hasExamService)
                 {
-                    // Chỉ xử lý khi chưa có ExamService
-                    // Tự động điền đủ 12 ký tự cho mã hồ sơ điều trị
-                    string treatmentCode = !string.IsNullOrEmpty(txtTreatmentCode.Text.Trim()) ? txtTreatmentCode.Text.Trim().PadLeft(12, '0') : null;
-                    txtTreatmentCode.Text = treatmentCode;
-                    // Tự động điền đủ 10 ký tự cho mã bệnh nhân
-                    string patientCode = string.IsNullOrEmpty(treatmentCode) && !string.IsNullOrEmpty(txtPatientCode.Text.Trim()) ? txtPatientCode.Text.Trim().PadLeft(10, '0') : null;
-                    txtPatientCode.Text = patientCode;
-                    try
-                    {
-                        if (!string.IsNullOrEmpty(treatmentCode) || !string.IsNullOrEmpty(patientCode))
-                        {
-                            CommonParam paramMch = new CommonParam();
-                            MCH.Filter.MchExamServiceViewFilter mchFilter = new MCH.Filter.MchExamServiceViewFilter();
-                            mchFilter.TREATMENT_CODE = treatmentCode;
-                            // Note: Nếu MCH_TREATMENT có field PATIENT_CODE thì uncomment dòng dưới
-                            mchFilter.PATIENT_CODE = patientCode;
-
-                            var examDisplays = new BackendAdapter(paramMch).Get<List<V_MCH_EXAM_SERVICE>>(
-                                "api/MchExamService/GetView",
-                                ApiConsumers.MchConsumer,
-                                mchFilter,
-                                paramMch);
-
-                            if (examDisplays != null && examDisplays.Count > 0)
-                            {
-                                examDisplay = examDisplays.OrderByDescending(o => o.ID).ToList()[0];
-                                MCH.Filter.MchPatientFilter mchPatientFilter = new MCH.Filter.MchPatientFilter();
-                                mchPatientFilter.PATIENT_CODE = examDisplay.PATIENT_CODE;
-                                _patient = new BackendAdapter(paramMch).Get<List<MCH_PATIENT>>(
-                                    "api/MchPatient/Get",
-                                    ApiConsumers.MchConsumer,
-                                    mchPatientFilter,
-                                     paramMch).FirstOrDefault();
-                                MCH.Filter.MchTreatmentFilter mchTreatmentFilter = new MCH.Filter.MchTreatmentFilter();
-                                mchTreatmentFilter.TREATMENT_CODE = examDisplay.TREATMENT_CODE;
-                                _treatment = new BackendAdapter(paramMch).Get<List<MCH_TREATMENT>>(
-                                    "api/MchTreatment/Get",
-                                    ApiConsumers.MchConsumer,
-                                    mchTreatmentFilter,
-                                    paramMch).FirstOrDefault();
-
-                            }
-                        }
-                    }
-                    catch (Exception exMch)
-                    {
-                        Inventec.Common.Logging.LogSystem.Warn("Error loading MCH_TREATMENT: " + exMch.Message);
-                    }
-                    // Bước 2: Nếu không tìm thấy trong MCH_TREATMENT, mới tìm trong HIS_TREATMENT
-                    if (examDisplay == null)
-                    {
-                        _patient = null;
-                        _treatment = null;
-                        CommonParam param = new CommonParam();
-                        HisTreatmentFilter filter = new HisTreatmentFilter();
-                        filter.TREATMENT_CODE__EXACT = treatmentCode;
-                        filter.TDL_PATIENT_CODE__EXACT = patientCode;
-
-                        var apiResult = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>(
-                            "api/HisTreatment/Get",
-                            ApiConsumers.MosConsumer,
-                            filter,
-                            param);
-
-                        if (apiResult != null && apiResult.Count > 0)
-                        {
-                            // Gắn Treatment với hồ sơ có ID lớn nhất
-                            Treatment = apiResult.OrderByDescending(o => o.ID).FirstOrDefault();
-                            Inventec.Common.Logging.LogSystem.Debug("Found HIS_TREATMENT - TreatmentCode: " + treatmentCode);
-                        }
-                    }
+                    LoadMch(ExamService);
                 }
 
+
+                // Bước 2: Luon goi lai sang his de lay du lieu moi 
+                if (!string.IsNullOrEmpty(treatmentCode) || !string.IsNullOrEmpty(patientCode) || Treatment != null)
+                {
+                    CommonParam param = new CommonParam();
+                    HisTreatmentFilter filter = new HisTreatmentFilter();
+
+                    if (!string.IsNullOrEmpty(treatmentCode) || !string.IsNullOrEmpty(patientCode))
+                    {
+                        filter.TREATMENT_CODE__EXACT = treatmentCode;
+                        filter.TDL_PATIENT_CODE__EXACT = patientCode;
+                    }
+                    else if (Treatment != null && Treatment.ID > 0)
+                    {
+                        filter.ID = Treatment.ID;
+                    }
+                    var apiResult = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>(
+                        "api/HisTreatment/Get",
+                        ApiConsumers.MosConsumer,
+                        filter,
+                        param);
+
+                    if (apiResult != null && apiResult.Count > 0)
+                    {
+                        // Gắn Treatment với hồ sơ có ID lớn nhất
+                        Treatment = apiResult.OrderByDescending(o => o.ID).FirstOrDefault();
+                        HisPatientFilter pfilter = new HisPatientFilter();
+                        pfilter.PATIENT_CODE__EXACT = Treatment.TDL_PATIENT_CODE;
+
+                        var patients = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_PATIENT>>(
+                            "api/HisPatient/Get",
+                            ApiConsumers.MosConsumer,
+                            pfilter,
+                            param);
+                        if (patients != null && patients.Count > 0)
+                            Patient = patients[0];
+                    }
+                }
                 // Kiểm tra có dữ liệu để hiển thị không
                 if ((Treatment == null || Treatment.ID < 0) && (ExamService == null || ExamService.ID < 0) && (examDisplay == null || examDisplay.ID < 0))
                 {
@@ -122,37 +100,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     HIS_TREATMENT treatmentForTree = null;
                     long treatmentId = 0;
-
-                    if ((ExamService != null && ExamService.TREATMENT_ID > 0) || (examDisplay != null && examDisplay.ID > 0))
-                    {
-                        // Cần tìm TREATMENT_ID trong HIS từ TREATMENT_CODE của MCH
-
-                        CommonParam param = new CommonParam();
-                        HisTreatmentFilter filter = new HisTreatmentFilter();
-                        filter.TREATMENT_CODE__EXACT = examDisplay != null && examDisplay.ID > 0 ? examDisplay.TREATMENT_CODE : ExamService.TREATMENT_CODE;
-
-                        var hisTreatments = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>(
-                            "api/HisTreatment/Get",
-                            ApiConsumers.MosConsumer,
-                            filter,
-                            param);
-
-                        if (hisTreatments != null && hisTreatments.Count > 0)
-                        {
-                            var hisTreatment = hisTreatments.OrderByDescending(o => o.ID).FirstOrDefault();
-                            treatmentId = hisTreatment.ID;
-
-                            // Gán luôn vào Treatment để dùng cho các mục đích khác
-                            if (Treatment == null || Treatment.ID <= 0)
-                            {
-                                Treatment = hisTreatment;
-                            }
-
-                            Inventec.Common.Logging.LogSystem.Debug("TreeSereServ: Using MCH_TREATMENT -> HIS_TREATMENT.ID = " + treatmentId);
-                        }
-                    }
-                    // Ưu tiên 3: Lấy từ HIS_TREATMENT
-                    else if (Treatment != null && Treatment.ID > 0)
+                    if (Treatment != null && Treatment.ID > 0)
                     {
                         treatmentId = Treatment.ID;
                         Inventec.Common.Logging.LogSystem.Debug("TreeSereServ: Using HIS_TREATMENT.ID = " + treatmentId);
@@ -189,14 +137,32 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     examDisplay.EXECUTE_LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 // Set mặc định ngày khám và người khám cho nút Edit
                 SetDefaultExamDateAndUser(examDisplay);
-                xtraTabControl1.SelectedTabPageIndex = GetTabIndexFromExamServiceTypeId(examDisplay.EXAM_SERVICE_TYPE_ID);
+                xtraTabControl1.SelectedTabPageIndex = GetTabIndexFromExamServiceTypeId(!hasExamService ? 5 : examDisplay.EXAM_SERVICE_TYPE_ID);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void LoadMch(V_MCH_EXAM_SERVICE ExamService)
+        {
+            CommonParam param = new CommonParam();
+            MchTreatmentFilter filter = new MchTreatmentFilter();
+            filter.TREATMENT_CODE = ExamService.TREATMENT_CODE;
+            _treatment = new BackendAdapter(param).Get<List<MCH_TREATMENT>>(
+               "api/MchTreatment/Get",
+               ApiConsumers.MchConsumer,
+               filter,
+               param).FirstOrDefault();
 
+            MchPatientFilter pfilter = new MchPatientFilter();
+            pfilter.PATIENT_CODE = ExamService.PATIENT_CODE;
+            _patient = new BackendAdapter(param).Get<List<MCH_PATIENT>>(
+               "api/MchPatient/Get",
+               ApiConsumers.MchConsumer,
+               pfilter,
+               param).FirstOrDefault();
+        }
         private void DisplayTreatmentInfo(V_MCH_EXAM_SERVICE examDisplay)
         {
             try
@@ -337,7 +303,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                     return false;
                 }
-                if(isMale)
+                if (isMale)
                 {
                     xtraTabPage2.PageEnabled = false;
                     xtraTabPage3.PageEnabled = false;
@@ -345,7 +311,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     xtraTabPage5.PageEnabled = false;
                     xtraTabPage6.PageEnabled = false;
                     xtraTabPage7.PageEnabled = false;
-                }    
+                }
 
                 // Enable nút lưu nếu hợp lệ
                 if (btnSave != null)
@@ -478,6 +444,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     // TH Update: Gọi api/MchExamService/UpdateBySdo
                     MCH.SDO.MchExamServiceUpdateBySDO examServiceUpdateBySDO = new MCH.SDO.MchExamServiceUpdateBySDO();
+                    examServiceUpdateBySDO.Patient = _patient;
+                    examServiceUpdateBySDO.Treatment = _treatment;
                     examServiceUpdateBySDO.ExamService = _examService;
                     examServiceUpdateBySDO.Screening = _screening;
                     examServiceUpdateBySDO.Child = _child;
@@ -494,9 +462,12 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                         examServiceUpdateBySDO,
                         param);
                     apiResult = apiResultUpdate != null;
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => apiResultUpdate), apiResultUpdate));
                     if (apiResult)
                     {
                         examService = apiResultUpdate.ExamService;
+                        _patient = apiResultUpdate.Patient;
+                        _treatment = apiResultUpdate.Treatment;
                     }
                 }
                 else
@@ -525,6 +496,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                         examServiceCreateBySDO,
                         param);
                     apiResult = apiResultUpdate != null;
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => apiResultUpdate), apiResultUpdate));
                     if (apiResult)
                     {
                         examService = apiResultUpdate.ExamService;
@@ -721,235 +694,21 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     _patient = new MCH_PATIENT();
                 }
-
-                // Ưu tiên 1: ExamServiceEdit
-                if (hasExamServiceEdit)
-                {
-                    if (ExamServiceEdit.PATIENT_ID > 0)
-                    {
-                        _patient.ID = ExamServiceEdit.PATIENT_ID;
-                    }
-
-                    _patient.PATIENT_CODE = ExamServiceEdit.PATIENT_CODE;
-                    _patient.FIRST_NAME = ExamServiceEdit.FIRST_NAME;
-                    _patient.LAST_NAME = ExamServiceEdit.LAST_NAME;
-                    _patient.DOB = ExamServiceEdit.DOB;
-                    _patient.IS_HAS_NOT_DAY_DOB = ExamServiceEdit.IS_HAS_NOT_DAY_DOB;
-                    _patient.GENDER_CODE = ExamServiceEdit.GENDER_CODE;
-                    _patient.GENDER_NAME = ExamServiceEdit.GENDER_NAME;
-                    _patient.CCCD_NUMBER = ExamServiceEdit.CCCD_NUMBER;
-                    _patient.CCCD_DATE = ExamServiceEdit.CCCD_DATE;
-                    _patient.CCCD_PLACE = ExamServiceEdit.CCCD_PLACE;
-                    _patient.ETHNIC_CODE = ExamServiceEdit.ETHNIC_CODE;
-                    _patient.ETHNIC_NAME = ExamServiceEdit.ETHNIC_NAME;
-                    _patient.CAREER_CODE = ExamServiceEdit.CAREER_CODE;
-                    _patient.CAREER_NAME = ExamServiceEdit.CAREER_NAME;
-                    _patient.ADDRESS = ExamServiceEdit.ADDRESS;
-                    _patient.COMMUNE_CODE = ExamServiceEdit.COMMUNE_CODE;
-                    _patient.COMMUNE_NAME = ExamServiceEdit.COMMUNE_NAME;
-                    _patient.DISTRICT_CODE = ExamServiceEdit.DISTRICT_CODE;
-                    _patient.DISTRICT_NAME = ExamServiceEdit.DISTRICT_NAME;
-                    _patient.PROVINCE_CODE = ExamServiceEdit.PROVINCE_CODE;
-                    _patient.PROVINCE_NAME = ExamServiceEdit.PROVINCE_NAME;
-                    _patient.PHONE_NUMBER = ExamServiceEdit.PHONE_NUMBER;
-                    _patient.HT_ADDRESS = ExamServiceEdit.HT_ADDRESS;
-                    _patient.HT_COMMUNE_CODE = ExamServiceEdit.HT_COMMUNE_CODE;
-                    _patient.HT_COMMUNE_NAME = ExamServiceEdit.HT_COMMUNE_NAME;
-                    _patient.HT_DISTRICT_CODE = ExamServiceEdit.HT_DISTRICT_CODE;
-                    _patient.HT_DISTRICT_NAME = ExamServiceEdit.HT_DISTRICT_NAME;
-                    _patient.HT_PROVINCE_CODE = ExamServiceEdit.HT_PROVINCE_CODE;
-                    _patient.HT_PROVINCE_NAME = ExamServiceEdit.HT_PROVINCE_NAME;
-
-                    Inventec.Common.Logging.LogSystem.Debug("MapMchPatient: Using ExamServiceEdit data");
-                }
-                // Ưu tiên 2: ExamService
-                else if (hasExamService)
-                {
-                    if (ExamService.PATIENT_ID > 0)
-                    {
-                        _patient.ID = ExamService.PATIENT_ID;
-                    }
-
-                    _patient.PATIENT_CODE = ExamService.PATIENT_CODE;
-                    _patient.FIRST_NAME = ExamService.FIRST_NAME;
-                    _patient.LAST_NAME = ExamService.LAST_NAME;
-                    _patient.DOB = ExamService.DOB;
-                    _patient.IS_HAS_NOT_DAY_DOB = ExamService.IS_HAS_NOT_DAY_DOB;
-                    _patient.GENDER_CODE = ExamService.GENDER_CODE;
-                    _patient.GENDER_NAME = ExamService.GENDER_NAME;
-                    _patient.CCCD_NUMBER = ExamService.CCCD_NUMBER;
-                    _patient.CCCD_DATE = ExamService.CCCD_DATE;
-                    _patient.CCCD_PLACE = ExamService.CCCD_PLACE;
-                    _patient.ETHNIC_CODE = ExamService.ETHNIC_CODE;
-                    _patient.ETHNIC_NAME = ExamService.ETHNIC_NAME;
-                    _patient.CAREER_CODE = ExamService.CAREER_CODE;
-                    _patient.CAREER_NAME = ExamService.CAREER_NAME;
-                    _patient.ADDRESS = ExamService.ADDRESS;
-                    _patient.COMMUNE_CODE = ExamService.COMMUNE_CODE;
-                    _patient.COMMUNE_NAME = ExamService.COMMUNE_NAME;
-                    _patient.DISTRICT_CODE = ExamService.DISTRICT_CODE;
-                    _patient.DISTRICT_NAME = ExamService.DISTRICT_NAME;
-                    _patient.PROVINCE_CODE = ExamService.PROVINCE_CODE;
-                    _patient.PROVINCE_NAME = ExamService.PROVINCE_NAME;
-                    _patient.PHONE_NUMBER = ExamService.PHONE_NUMBER;
-                    _patient.HT_ADDRESS = ExamService.HT_ADDRESS;
-                    _patient.HT_COMMUNE_CODE = ExamService.HT_COMMUNE_CODE;
-                    _patient.HT_COMMUNE_NAME = ExamService.HT_COMMUNE_NAME;
-                    _patient.HT_DISTRICT_CODE = ExamService.HT_DISTRICT_CODE;
-                    _patient.HT_DISTRICT_NAME = ExamService.HT_DISTRICT_NAME;
-                    _patient.HT_PROVINCE_CODE = ExamService.HT_PROVINCE_CODE;
-                    _patient.HT_PROVINCE_NAME = ExamService.HT_PROVINCE_NAME;
-
-                    Inventec.Common.Logging.LogSystem.Debug("MapMchPatient: Using ExamService data");
-                }
-                // Ưu tiên 3: _patient (đã có sẵn từ query MCH)
-                else if (hasMchPatient)
-                {
-                    // Không cần map lại, _patient đã có dữ liệu
-                    Inventec.Common.Logging.LogSystem.Debug("MapMchPatient: Using existing MCH_PATIENT data");
-                }
-                // Ưu tiên 4: Treatment
-                else if (hasHisTreatment)
-                {
-                    _patient.PATIENT_CODE = Treatment.TDL_PATIENT_CODE;
-                    _patient.FIRST_NAME = Treatment.TDL_PATIENT_FIRST_NAME;
-                    _patient.LAST_NAME = Treatment.TDL_PATIENT_LAST_NAME;
-                    _patient.DOB = Treatment.TDL_PATIENT_DOB;
-                    _patient.IS_HAS_NOT_DAY_DOB = Treatment.TDL_PATIENT_IS_HAS_NOT_DAY_DOB;
-                    var gender = BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.ID == Treatment.TDL_PATIENT_GENDER_ID);
-                    _patient.GENDER_CODE = gender != null ? gender.GENDER_CODE : null;
-                    _patient.GENDER_NAME = Treatment.TDL_PATIENT_GENDER_NAME;
-                    _patient.CCCD_NUMBER = Treatment.TDL_PATIENT_CCCD_NUMBER;
-                    _patient.CCCD_DATE = Treatment.TDL_PATIENT_CCCD_DATE;
-                    _patient.CCCD_PLACE = Treatment.TDL_PATIENT_CCCD_PLACE;
-                    var ethenic = BackendDataWorker.Get<SDA_ETHNIC>().FirstOrDefault(o => o.ETHNIC_NAME == Treatment.TDL_PATIENT_ETHNIC_NAME);
-                    _patient.ETHNIC_CODE = ethenic != null ? ethenic.ETHNIC_CODE : null;
-                    _patient.ETHNIC_NAME = Treatment.TDL_PATIENT_ETHNIC_NAME;
-                    _patient.CAREER_CODE = Treatment.TDL_PATIENT_CAREER_CODE;
-                    _patient.CAREER_NAME = Treatment.TDL_PATIENT_CAREER_NAME;
-                    _patient.ADDRESS = Treatment.TDL_PATIENT_ADDRESS;
-                    _patient.COMMUNE_CODE = Treatment.TDL_PATIENT_COMMUNE_CODE;
-                    _patient.COMMUNE_NAME = Treatment.TDL_PATIENT_COMMUNE_NAME;
-                    _patient.DISTRICT_CODE = Treatment.TDL_PATIENT_DISTRICT_CODE;
-                    _patient.DISTRICT_NAME = Treatment.TDL_PATIENT_DISTRICT_NAME;
-                    _patient.PROVINCE_CODE = Treatment.TDL_PATIENT_PROVINCE_CODE;
-                    _patient.PROVINCE_NAME = Treatment.TDL_PATIENT_PROVINCE_NAME;
-                    _patient.PHONE_NUMBER = Treatment.TDL_PATIENT_PHONE;
-
-                    Inventec.Common.Logging.LogSystem.Debug("MapMchPatient: Using HIS_TREATMENT data");
-                }
-
+                var PatientId = _patient.ID;
+                Inventec.Common.Mapper.DataObjectMapper.Map<MCH_PATIENT>(_patient, Patient);
+                _patient.GENDER_CODE = BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.ID == Patient.GENDER_ID).GENDER_CODE;
+                _patient.GENDER_NAME = Treatment.TDL_PATIENT_GENDER_NAME;
+                _patient.ID = PatientId;
                 // ============ Map MCH_TREATMENT ============
                 if (_treatment == null)
                 {
                     _treatment = new MCH_TREATMENT();
                 }
-
-                // Ưu tiên 1: ExamServiceEdit
-                if (hasExamServiceEdit)
-                {
-                    if (ExamServiceEdit.PATIENT_ID > 0)
-                    {
-                        _treatment.PATIENT_ID = ExamServiceEdit.PATIENT_ID;
-                    }
-                    else if (_patient != null && _patient.ID > 0)
-                    {
-                        _treatment.PATIENT_ID = _patient.ID;
-                    }
-
-                    _treatment.TREATMENT_CODE = ExamServiceEdit.TREATMENT_CODE;
-                    _treatment.BRANCH_MEDI_ORG_CODE = ExamServiceEdit.BRANCH_MEDI_ORG_CODE;
-                    _treatment.BRANCH_MEDI_ORG_NAME = ExamServiceEdit.BRANCH_MEDI_ORG_NAME;
-                    _treatment.DIRECTOR_LOGINNAME = ExamServiceEdit.DIRECTOR_LOGINNAME;
-                    _treatment.DIRECTOR_USERNAME = ExamServiceEdit.DIRECTOR_USERNAME;
-                    _treatment.HOSP_SUBS_DIRECTOR_LOGINNAME = ExamServiceEdit.HOSP_SUBS_DIRECTOR_LOGINNAME;
-                    _treatment.HOSP_SUBS_DIRECTOR_USERNAME = ExamServiceEdit.HOSP_SUBS_DIRECTOR_USERNAME;
-                    _treatment.IN_TIME = ExamServiceEdit.IN_TIME;
-                    _treatment.IN_DATE = ExamServiceEdit.IN_DATE;
-                    _treatment.HEIN_CARD_ADDRESS = ExamServiceEdit.HEIN_CARD_ADDRESS;
-                    _treatment.HEIN_CARD_FROM_TIME = ExamServiceEdit.HEIN_CARD_FROM_TIME;
-                    _treatment.HEIN_CARD_NUMBER = ExamServiceEdit.HEIN_CARD_NUMBER;
-                    _treatment.HEIN_CARD_TO_TIME = ExamServiceEdit.HEIN_CARD_TO_TIME;
-                    _treatment.HEIN_MEDI_ORG_CODE = ExamServiceEdit.HEIN_MEDI_ORG_CODE;
-                    _treatment.HEIN_MEDI_ORG_NAME = ExamServiceEdit.HEIN_MEDI_ORG_NAME;
-                    _treatment.JOIN_5_YEAR = ExamServiceEdit.JOIN_5_YEAR;
-                    _treatment.LIVE_AREA_CODE = ExamServiceEdit.LIVE_AREA_CODE;
-                    _treatment.PAID_6_MONTH = ExamServiceEdit.PAID_6_MONTH;
-
-                    _treatment.DIRECTOR_LOGINNAME = ExamServiceEdit.DIRECTOR_LOGINNAME;
-                    _treatment.DIRECTOR_USERNAME = ExamServiceEdit.DIRECTOR_USERNAME;
-                    Inventec.Common.Logging.LogSystem.Debug("MapMchTreatment: Using ExamServiceEdit data");
-                }
-                // Ưu tiên 2: ExamService
-                else if (hasExamService)
-                {
-                    if (ExamService.PATIENT_ID > 0)
-                    {
-                        _treatment.PATIENT_ID = ExamService.PATIENT_ID;
-                    }
-                    else if (_patient != null && _patient.ID > 0)
-                    {
-                        _treatment.PATIENT_ID = _patient.ID;
-                    }
-
-                    _treatment.TREATMENT_CODE = ExamService.TREATMENT_CODE;
-                    _treatment.BRANCH_MEDI_ORG_CODE = ExamService.BRANCH_MEDI_ORG_CODE;
-                    _treatment.BRANCH_MEDI_ORG_NAME = ExamService.BRANCH_MEDI_ORG_NAME;
-                    _treatment.DIRECTOR_LOGINNAME = ExamService.DIRECTOR_LOGINNAME;
-                    _treatment.DIRECTOR_USERNAME = ExamService.DIRECTOR_USERNAME;
-                    _treatment.HOSP_SUBS_DIRECTOR_LOGINNAME = ExamService.HOSP_SUBS_DIRECTOR_LOGINNAME;
-                    _treatment.HOSP_SUBS_DIRECTOR_USERNAME = ExamService.HOSP_SUBS_DIRECTOR_USERNAME;
-                    _treatment.IN_TIME = ExamService.IN_TIME;
-                    _treatment.IN_DATE = ExamService.IN_DATE;
-                    _treatment.HEIN_CARD_ADDRESS = ExamService.HEIN_CARD_ADDRESS;
-                    _treatment.HEIN_CARD_FROM_TIME = ExamService.HEIN_CARD_FROM_TIME;
-                    _treatment.HEIN_CARD_NUMBER = ExamService.HEIN_CARD_NUMBER;
-                    _treatment.HEIN_CARD_TO_TIME = ExamService.HEIN_CARD_TO_TIME;
-                    _treatment.HEIN_MEDI_ORG_CODE = ExamService.HEIN_MEDI_ORG_CODE;
-                    _treatment.HEIN_MEDI_ORG_NAME = ExamService.HEIN_MEDI_ORG_NAME;
-                    _treatment.JOIN_5_YEAR = ExamService.JOIN_5_YEAR;
-                    _treatment.LIVE_AREA_CODE = ExamService.LIVE_AREA_CODE;
-                    _treatment.PAID_6_MONTH = ExamService.PAID_6_MONTH;
-                    _treatment.DIRECTOR_LOGINNAME = ExamService.DIRECTOR_LOGINNAME;
-                    _treatment.DIRECTOR_USERNAME = ExamService.DIRECTOR_USERNAME;
-                    Inventec.Common.Logging.LogSystem.Debug("MapMchTreatment: Using ExamService data");
-                }
-                // Ưu tiên 3: _treatment (đã có sẵn từ query MCH)
-                else if (hasMchTreatment)
-                {
-                    // Không cần map lại, _treatment đã có dữ liệu
-                    // Chỉ cần map PATIENT_ID nếu có
-                    if (_patient != null && _patient.ID > 0)
-                    {
-                        _treatment.PATIENT_ID = _patient.ID;
-                    }
-                    Inventec.Common.Logging.LogSystem.Debug("MapMchTreatment: Using existing MCH_TREATMENT data");
-                }
-                // Ưu tiên 4: Treatment
-                else if (hasHisTreatment)
-                {
-                    _treatment.TREATMENT_CODE = Treatment.TREATMENT_CODE;
-
-                    if (_patient != null && _patient.ID > 0)
-                    {
-                        _treatment.PATIENT_ID = _patient.ID;
-                    }
-
-                    var branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == Treatment.BRANCH_ID);
-                    if (branch != null)
-                    {
-                        _treatment.BRANCH_MEDI_ORG_CODE = branch.BRANCH_CODE;
-                        _treatment.BRANCH_MEDI_ORG_NAME = branch.BRANCH_NAME;
-                        _treatment.DIRECTOR_LOGINNAME = branch.DIRECTOR_LOGINNAME;
-                        _treatment.DIRECTOR_USERNAME = branch.DIRECTOR_USERNAME;
-                    }
-                    _treatment.IN_TIME = Treatment.IN_TIME;
-                    _treatment.IN_DATE = Treatment.IN_DATE;
-                    if (Treatment != null && Treatment.ID > 0)
-                        LoadLatestPatientTypeAlter(Treatment.ID);
-
-                    Inventec.Common.Logging.LogSystem.Debug("MapMchTreatment: Using HIS_TREATMENT data");
-                }
+                var TreatmentId = _treatment.ID;
+                Inventec.Common.Mapper.DataObjectMapper.Map<MCH_TREATMENT>(_treatment, Treatment);
+                _treatment.ID = TreatmentId;
+                _treatment.PATIENT_ID = PatientId;
+                LoadLatestPatientTypeAlter(Treatment.ID);
 
                 // ============ Map MCH_EXAM_SERVICE ============
                 if (_examService == null)
@@ -1006,7 +765,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     if (branch != null)
                     {
                         _examService.MEDI_ORG_CODE = branch.HEIN_MEDI_ORG_CODE;
-                        _examService.MEDI_ORG_NAME = BackendDataWorker.Get<HIS_MEDI_ORG>().FirstOrDefault(o=>o.MEDI_ORG_CODE == branch.HEIN_MEDI_ORG_CODE).MEDI_ORG_NAME;
+                        _examService.MEDI_ORG_NAME = BackendDataWorker.Get<HIS_MEDI_ORG>().FirstOrDefault(o => o.MEDI_ORG_CODE == branch.HEIN_MEDI_ORG_CODE).MEDI_ORG_NAME;
+                        _treatment.BRANCH_MEDI_ORG_CODE = branch.HEIN_MEDI_ORG_CODE;
+                        _treatment.BRANCH_MEDI_ORG_NAME = _examService.MEDI_ORG_NAME;
+                        _treatment.DIRECTOR_LOGINNAME = branch.DIRECTOR_LOGINNAME;
+                        _treatment.DIRECTOR_USERNAME = branch.DIRECTOR_USERNAME;
                     }
 
                     Inventec.Common.Logging.LogSystem.Debug("MapMchExamService: Using HIS_TREATMENT data");
@@ -1133,6 +896,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 else if (_patient != null && !string.IsNullOrEmpty(_patient.PATIENT_CODE))
                 {
                     patientCode = _patient.PATIENT_CODE;
+                }
+                else if (Treatment != null && !string.IsNullOrEmpty(Treatment.TDL_PATIENT_CODE))
+                {
+                    patientCode = Treatment.TDL_PATIENT_CODE;
                 }
 
                 if (string.IsNullOrEmpty(patientCode))

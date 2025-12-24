@@ -289,6 +289,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     dxValidationProvider.RemoveControlError(sender as DevExpress.XtraEditors.BaseEdit);
                 }
+                var cbo = sender as DevExpress.XtraEditors.GridLookUpEdit;
+                if(cbo != null && cbo.Name == cboDiploma3.Name)
+                {
+                    txtDeliveryAssistant3.Text = cboDiploma3.Text;
+                }
             }
             catch (Exception ex)
             {

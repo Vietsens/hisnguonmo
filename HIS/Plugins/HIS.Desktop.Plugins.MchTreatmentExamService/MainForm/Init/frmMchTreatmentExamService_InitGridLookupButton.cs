@@ -89,7 +89,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     deleteButton.ToolTip = "Xóa lựa chọn";
                     gridLookUp.Properties.Buttons.Add(deleteButton);
                 }
-
+                gridLookUp.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
                 // ??ng ký s? ki?n ButtonClick n?u ch?a có
                 gridLookUp.Properties.ButtonClick -= GridLookUp_ButtonClick;
                 gridLookUp.Properties.ButtonClick += GridLookUp_ButtonClick;
