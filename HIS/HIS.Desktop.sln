@@ -1159,6 +1159,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.NcdWhoI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.InviteSpecialistExam", "Plugins\HIS.Desktop.Plugins.InviteSpecialistExam\HIS.Desktop.Plugins.InviteSpecialistExam\HIS.Desktop.Plugins.InviteSpecialistExam.csproj", "{89833235-6CCD-4CDD-90F2-A53CDD601ED5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.HisExpMestMediMate", "Plugins\HIS.Desktop.Plugins.HisExpMestMediMate\HIS.Desktop.Plugins.HisExpMestMediMate.csproj", "{4BDCCA80-26F3-480F-8EB6-E0DA8DD24F68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.DrugUsageAnalysis", "Plugins\HIS.Desktop.Plugins.DrugUsageAnalysis\HIS.Desktop.Plugins.DrugUsageAnalysis.csproj", "{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -4617,6 +4621,22 @@ Global
 		{89833235-6CCD-4CDD-90F2-A53CDD601ED5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{89833235-6CCD-4CDD-90F2-A53CDD601ED5}.Release|x86.ActiveCfg = Release|Any CPU
 		{89833235-6CCD-4CDD-90F2-A53CDD601ED5}.Release|x86.Build.0 = Release|Any CPU
+		{4BDCCA80-26F3-480F-8EB6-E0DA8DD24F68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BDCCA80-26F3-480F-8EB6-E0DA8DD24F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BDCCA80-26F3-480F-8EB6-E0DA8DD24F68}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4BDCCA80-26F3-480F-8EB6-E0DA8DD24F68}.Debug|x86.Build.0 = Debug|Any CPU
+		{4BDCCA80-26F3-480F-8EB6-E0DA8DD24F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BDCCA80-26F3-480F-8EB6-E0DA8DD24F68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BDCCA80-26F3-480F-8EB6-E0DA8DD24F68}.Release|x86.ActiveCfg = Release|Any CPU
+		{4BDCCA80-26F3-480F-8EB6-E0DA8DD24F68}.Release|x86.Build.0 = Release|Any CPU
+		{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7}.Debug|x86.Build.0 = Debug|Any CPU
+		{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7}.Release|x86.ActiveCfg = Release|Any CPU
+		{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -5186,6 +5206,8 @@ Global
 		{7D67C5F3-8D9F-41FC-9C40-3041780A6C07} = {175DC528-0C72-41B9-A295-C4E6D4E62A55}
 		{3E233E88-102F-4692-97E0-143E2598B11A} = {68A720E5-8D49-4154-9D36-185E8191F3F3}
 		{89833235-6CCD-4CDD-90F2-A53CDD601ED5} = {436CA54F-2E28-4F98-B76A-12974D589A7D}
+		{4BDCCA80-26F3-480F-8EB6-E0DA8DD24F68} = {F4AC4A92-33BB-4BF3-9CCE-CBED841842CD}
+		{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7} = {9CA3460F-6F5C-4EAF-899E-163FB2ECB416}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B8CBF9E-8615-4AF0-9894-C15CB4B6FC6B}
