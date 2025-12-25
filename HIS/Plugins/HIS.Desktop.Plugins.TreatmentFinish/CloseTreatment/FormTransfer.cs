@@ -965,6 +965,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             try
             {
                 this.positionHandle = -1;
+                ValidationMaxLength(txtClinicalSigns, 4000);
+
                 if (!dxValidationProvider.Validate()) return;
 
                 currentTreatmentFinishSDO.TreatmentId = hisTreatment.ID;
