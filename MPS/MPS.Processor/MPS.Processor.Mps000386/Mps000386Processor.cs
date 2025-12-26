@@ -71,6 +71,11 @@ namespace MPS.Processor.Mps000386
                 {
                     AddObjectKeyIntoListkey<HIS_SERVICE_REQ>(rdo.ServiceReq, false);
                 }
+
+                if (rdo != null && rdo.SereServViex != null)
+                {
+                    AddObjectKeyIntoListkey<HIS_SERE_SERV_VIEX>(rdo.SereServViex, false);
+                }
             }
             catch (Exception ex)
             {
