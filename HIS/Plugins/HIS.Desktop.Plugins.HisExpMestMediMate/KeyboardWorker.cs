@@ -26,8 +26,8 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.HisExpMestMediMate
 {
-    [KeyboardAction("Search", "HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate.UC_HistoryMedicine", "Search", KeyStroke = XKeys.Control | XKeys.F)]
-    [KeyboardAction("Export", "HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate.UC_HistoryMedicine", "Export", KeyStroke = XKeys.Control | XKeys.O)]
+    [KeyboardAction("Search", "HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate.UCHistoryMedicine", "Search", KeyStroke = XKeys.Control | XKeys.F)]
+    [KeyboardAction("Export", "HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate.UCHistoryMedicine", "Export", KeyStroke = XKeys.Control | XKeys.O)]
     [ExtensionOf(typeof(DesktopToolExtensionPoint))]
     public sealed class KeyboardWorker : Tool<DesktopToolContext>
     {
