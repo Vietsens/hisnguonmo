@@ -45,7 +45,7 @@
     </Reference>
     <Reference Include="HIS.ERXConnect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\HIS\HIS.ERXConnect\HIS.ERXConnect.dll</HintPath>
+      <HintPath>..\..\..\..\..\Common\common\HISUTIL\HIS.ERXConnect\bin\Debug\HIS.ERXConnect.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -111,14 +111,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Controls.EditorLoader\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Common\common\HISUTIL\HIS.ERXConnect\bin\Debug\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
