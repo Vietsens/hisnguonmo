@@ -365,6 +365,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 this.labelControl10.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.labelControl10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.labelControl9.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.labelControl9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtBMI.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.txtBMI.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem70.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControlItem70.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem75.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControlItem75.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem76.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControlItem76.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem77.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControlItem77.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());

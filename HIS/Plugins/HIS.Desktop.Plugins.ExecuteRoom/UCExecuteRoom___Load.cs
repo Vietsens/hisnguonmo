@@ -872,6 +872,17 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     lblIcdText.Text = (!String.IsNullOrEmpty(serviceReq.ICD_SUB_CODE) || !String.IsNullOrEmpty(serviceReq.ICD_TEXT)) ? serviceReq.ICD_SUB_CODE + " - " + serviceReq.ICD_TEXT : "";
                     // lblCardNumber.Text = serviceReq.TDL_HEIN_CARD_NUMBER;
                     //lblKCBBD.Text = serviceReq.TDL_HEIN_MEDI_ORG_CODE;
+                    var abo = (serviceReq.TDL_PATIENT_BLOOD_ABO_CODE ?? string.Empty).Trim();
+                    var rh = (serviceReq.TDL_PATIENT_BLOOD_RH_CODE ?? string.Empty).Trim();
+
+                    if (!string.IsNullOrEmpty(abo) && !string.IsNullOrEmpty(rh))
+                    {
+                        lblBloodType.Text = $"{abo}; RH({rh})";
+                    }
+                    else
+                    {
+                        lblBloodType.Text = string.Empty;
+                    }
 
                     var IsExamRoom = lstExecuteRoom.Where(o => o.ROOM_ID == this.roomId && o.IS_EXAM == 1).ToList();
                     if (IsExamRoom != null && IsExamRoom.Count > 0)
