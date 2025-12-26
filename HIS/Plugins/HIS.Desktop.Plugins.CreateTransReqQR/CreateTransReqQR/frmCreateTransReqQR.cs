@@ -16,22 +16,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.Utils.Menu;
-using DevExpress.XtraBars.Docking2010.Views;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraEditors.DXErrorProvider;
-using DevExpress.XtraEditors.ViewInfo;
-using DevExpress.XtraGrid.Columns;
-using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Common.BankQrCode;
-using HIS.Desktop.Controls.Session;
 using HIS.Desktop.IsAdmin;
-using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
@@ -44,30 +37,21 @@ using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.DocumentViewer;
 using Inventec.Common.Logging;
-using Inventec.Common.QRCoder;
-using Inventec.Common.SignLibrary.ADO;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
-using MOS.TDO;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Printing;
-using System.Globalization;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
-using System.Resources;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static DevExpress.Data.Helpers.ExpressiveSortInfo;
 
 namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
 {
@@ -2143,6 +2127,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     if (XtraMessageBox.Show("Bạn có muốn tắt chức năng và hủy yêu cầu thanh toán hay không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         btnNew_Click(null, null);
+                        CommonParam param = new CommonParam();
+                        MessageManager.Show(this.ParentForm, param, true);
                     }
                     else
                     {
@@ -2169,6 +2155,48 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+        private void AttachClosedForNewlyOpenedForm(HashSet<IntPtr> beforeHandles, Action onClosed, int timeoutMs = 5000)
+        {
+            int elapsed = 0;
+            var timer = new System.Windows.Forms.Timer { Interval = 100 };
+
+            timer.Tick += (s, e) =>
+            {
+                elapsed += timer.Interval;
+                Form newForm = null;
+                foreach (Form f in Application.OpenForms)
+                {
+                    if (f != null && f.IsHandleCreated && !beforeHandles.Contains(f.Handle))
+                    {
+                        newForm = f;
+                        break;
+                    }
+                }
+
+                if (newForm != null)
+                {
+                    timer.Stop();
+                    timer.Dispose();
+
+                    newForm.FormClosed += (ss, ee) =>
+                    {
+                        if (this.IsHandleCreated)
+                            this.BeginInvoke(new Action(() => onClosed?.Invoke()));
+                        else
+                            onClosed?.Invoke();
+                    };
+                    return;
+                }
+
+                if (elapsed >= timeoutMs)
+                {
+                    timer.Stop();
+                    timer.Dispose();
+                }
+            };
+
+            timer.Start();
         }
 
         private void PRINT_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -2421,11 +2449,6 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     }
                     else
                     {
-                        CommonParam successParam = new CommonParam();
-                        successParam.Messages.Add("Xuất hóa đơn điện tử thành công!");
-
-                        XtraMessageBox.Show("Xuất hóa đơn điện tử thành công!");
-
                         if (chkPrintHDDT.Checked)
                         {
                             printPDFWithAcrobat();
@@ -2695,7 +2718,17 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 {
                     type = (Inventec.Common.DocumentViewer.ViewType.Platform)(HisConfigCFG.PlatformOption - 1);
                 }
+                var before = new HashSet<IntPtr>(
+                    Application.OpenForms.Cast<Form>()
+                        .Where(f => f != null && f.IsHandleCreated)
+                        .Select(f => f.Handle)
+                );
 
+                AttachClosedForNewlyOpenedForm(before, () =>
+                {
+                    CommonParam param = new CommonParam();
+                    MessageManager.Show(this.ParentForm, param, true);
+                });
                 viewManager.Run(ado, type);
             }
             catch (Exception ex)
