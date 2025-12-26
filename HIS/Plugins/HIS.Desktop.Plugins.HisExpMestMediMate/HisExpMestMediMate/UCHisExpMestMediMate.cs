@@ -355,7 +355,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
         {
             try
             {
-                SearchHistory();
+                Search();
             }
             catch (Exception ex)
             {
@@ -363,7 +363,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             }
         }
 
-        public void SearchHistory()
+        public void Search()
         {
             try
             {
@@ -430,12 +430,19 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
         {
             try
             {
+                StringBuilder sb = new StringBuilder();
                 _StatusSelecteds = new List<HIS_EXP_MEST_STT>();
                 foreach (HIS_EXP_MEST_STT rv in (sender as GridCheckMarksSelection).Selection)
                 {
                     if (rv != null)
+                    {
                         _StatusSelecteds.Add(rv);
+                        if (sb.ToString().Length > 0) { sb.Append(", "); }
+                        sb.Append(rv.EXP_MEST_STT_NAME.ToString());
+                    }
                 }
+                this.cboSTT.Text = sb.ToString().Trim(' ', ',');
+
             }
             catch (Exception ex)
             {
@@ -448,12 +455,19 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
         {
             try
             {
+                StringBuilder sb = new StringBuilder();
                 _DepartmentSelecteds = new List<HIS_DEPARTMENT>();
                 foreach (HIS_DEPARTMENT rv in (sender as GridCheckMarksSelection).Selection)
                 {
                     if (rv != null)
+                    {
                         _DepartmentSelecteds.Add(rv);
+                        if (sb.ToString().Length > 0) { sb.Append(", "); }
+                        sb.Append(rv.DEPARTMENT_NAME.ToString());
+                    }
                 }
+                this.cboDepartment.Text = sb.ToString().Trim(' ', ',');
+
             }
             catch (Exception ex)
             {
@@ -484,12 +498,19 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
         {
             try
             {
+                StringBuilder sb = new StringBuilder();
                 _ExpMediStockSelecteds = new List<V_HIS_MEDI_STOCK>();
                 foreach (V_HIS_MEDI_STOCK rv in (sender as GridCheckMarksSelection).Selection)
                 {
                     if (rv != null)
+                    {
                         _ExpMediStockSelecteds.Add(rv);
+                        if (sb.ToString().Length > 0) { sb.Append(", "); }
+                        sb.Append(rv.MEDI_STOCK_NAME.ToString());
+                    }
                 }
+                this.cboExpMediStock.Text = sb.ToString().Trim(' ', ',');
+
             }
             catch (Exception ex)
             {
@@ -502,12 +523,19 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
         {
             try
             {
+                StringBuilder sb = new StringBuilder();
+
                 _ExpMestTypeSelecteds = new List<HIS_EXP_MEST_TYPE>();
                 foreach (HIS_EXP_MEST_TYPE rv in (sender as GridCheckMarksSelection).Selection)
                 {
                     if (rv != null)
+                    {
                         _ExpMestTypeSelecteds.Add(rv);
+                        if (sb.ToString().Length > 0) { sb.Append(", "); }
+                        sb.Append(rv.EXP_MEST_TYPE_NAME.ToString());
+                    }
                 }
+                this.cboExpMestType.Text = sb.ToString().Trim(' ', ',');
             }
             catch (Exception ex)
             {
@@ -534,7 +562,15 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
-                    gridCheckMark.SelectAll(cbo.Properties.DataSource);
+                    if (cbo.Name == cboExpMediStock.Name)
+                    {
+                        var select = ((List<V_HIS_MEDI_STOCK>)data).Where(p => p.IS_ACTIVE == 1 && p.ROOM_ID == this._Module.RoomId).ToList();
+                        gridCheckMark.SelectAll(select);
+                    }
+                    else
+                    {
+                        gridCheckMark.SelectAll(cbo.Properties.DataSource);
+                    }
                 }
             }
             catch (Exception ex)
@@ -593,7 +629,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                     }
                 }
 
-                e.DisplayText = statusName;
+                e.DisplayText = statusName.Trim(' ', ',');
             }
             catch (Exception ex)
             {
@@ -615,7 +651,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                     }
                 }
 
-                e.DisplayText = statusName;
+                e.DisplayText = statusName.Trim(' ', ',');
             }
             catch (Exception ex)
             {
@@ -637,7 +673,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                     }
                 }
 
-                e.DisplayText = statusName;
+                e.DisplayText = statusName.Trim(' ', ',');
             }
             catch (Exception ex)
             {
@@ -659,7 +695,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                     }
                 }
 
-                e.DisplayText = statusName;
+                e.DisplayText = statusName.Trim(' ', ',');
             }
             catch (Exception ex)
             {
@@ -681,7 +717,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                     }
                 }
 
-                e.DisplayText = statusName;
+                e.DisplayText = statusName.Trim(' ', ',');
             }
             catch (Exception ex)
             {
@@ -1038,11 +1074,31 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 }
                 rowCount = 0;
                 dataTotal = 0;
-                SearchHistory();
+                Search();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtSearchMediMate_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void txtSearchMediMate_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                try
+                {
+                    Search();
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
             }
         }
     }

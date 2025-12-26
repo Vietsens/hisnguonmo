@@ -244,7 +244,7 @@
     <value>Lịch sử xuất nhập thuốc</value>
   </data>
   <data name="UCHisExpMestMediMate.btnSearch.Text" xml:space="preserve">
-    <value>Tìm (Ctrl R)</value>
+    <value>Tìm (Ctrl F)</value>
   </data>
   <data name="UCHisExpMestMediMate.chkHistoryMaterial.Properties.Caption" xml:space="preserve">
     <value>Vật tư</value>
