@@ -583,7 +583,88 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return valid;
+        }   
+
+        private void FocusTreatmentExtField(string fieldName)
+        {
+            if (fieldName == "CLINICAL_NOTE")
+            {
+                if (txtPathologicalProcess != null)
+                {
+                    txtPathologicalProcess.Focus();
+                    txtPathologicalProcess.SelectAll();
+                }
+            }
+            else
+            {
+                if (txtSubclinical != null)
+                {
+                    txtSubclinical.Focus();
+                    txtSubclinical.SelectAll();
+                }
+            }
         }
+        private bool ValidateTreatmentExtMaxLength(ExamTreatmentFinishResult finishResult)
+        {
+            string overField = null;
+            string clinicalNote = finishResult?.TreatmentFinishSDO?.ClinicalNote;
+            string subclinicalResult = finishResult?.TreatmentFinishSDO?.SubclinicalResult;
+
+            if (string.IsNullOrEmpty(clinicalNote))
+            {
+                clinicalNote = txtPathologicalProcess.Text;
+            }
+            if (string.IsNullOrEmpty(subclinicalResult))
+            {
+                subclinicalResult = txtSubclinical.Text;
+            }
+
+            if (!string.IsNullOrEmpty(clinicalNote) && clinicalNote.Length > MAX_CLINICAL_LENGTH)
+            {
+                overField = "CLINICAL_NOTE";
+            }
+            else if (!string.IsNullOrEmpty(subclinicalResult) && subclinicalResult.Length > MAX_CLINICAL_LENGTH)
+            {
+                overField = "SUBCLINICAL_RESULT";
+            }
+
+            if (overField == null)
+            {
+                return true;
+            }
+
+            var opt = HisConfigCFG.IsCheckValueMaxlengthOption;
+            if (opt == "1")
+            {
+                var dlg = XtraMessageBox.Show(
+                    "Dữ liệu trường quá trình bệnh lý, tóm tắt kết quả vượt quá 4000 ký tự. Bạn có muốn sửa không?",
+                    "Thông báo",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (dlg == DialogResult.Yes)
+                {
+                    FocusTreatmentExtField(overField);
+                    return false;
+                }
+
+                return true; 
+            }
+
+            if (opt == "2")
+            {
+                XtraMessageBox.Show(
+                    "Dữ liệu trường quá trình bệnh lý, tóm tắt kết quả vượt quá 4000 ký tự.",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                FocusTreatmentExtField(overField);
+                return false;
+            }
+            return true;
+        }
+
         public bool isWarning = true;
         private bool ValidIcd(bool isSave)
         {
