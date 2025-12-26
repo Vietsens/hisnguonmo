@@ -196,12 +196,12 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 ExpFilter.KEY_WORD = this.txtSearchMediMate.Text;
                 if (dtFrom.EditValue != null && dtFrom.DateTime != DateTime.MinValue)
                 {
-                    ExpFilter.EXP_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
+                    ExpFilter.CREATE_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
                         Convert.ToDateTime(dtFrom.EditValue).ToString("yyyyMMdd") + "000000");
                 }
                 if (dtTo.EditValue != null && dtTo.DateTime != DateTime.MinValue)
                 {
-                    ExpFilter.EXP_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
+                    ExpFilter.CREATE_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
                         Convert.ToDateTime(dtTo.EditValue).ToString("yyyyMMdd") + "235959");
                 }
                 if (this._StatusSelecteds != null && this._StatusSelecteds.Count > 0)

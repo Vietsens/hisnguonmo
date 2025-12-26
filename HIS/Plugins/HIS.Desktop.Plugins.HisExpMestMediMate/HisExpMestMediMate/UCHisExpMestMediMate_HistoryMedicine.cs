@@ -223,18 +223,16 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 ExpFilter.ORDER_FIELD = "EXP_TIME";
                 ExpFilter.ORDER_DIRECTION = "DESC";
                 ExpFilter.KEY_WORD = this.txtSearchMediMate.Text;
-                //ExpFilter.TDL_MEDICINE_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboMedicineType.EditValue.ToString());
                 if (dtFrom.EditValue != null && dtFrom.DateTime != DateTime.MinValue)
                 {
-                    ExpFilter.EXP_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
+                    ExpFilter.CREATE_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
                         Convert.ToDateTime(dtFrom.EditValue).ToString("yyyyMMdd") + "000000");
                 }
                 if (dtTo.EditValue != null && dtTo.DateTime != DateTime.MinValue)
                 {
-                    ExpFilter.EXP_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
+                    ExpFilter.CREATE_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
                         Convert.ToDateTime(dtTo.EditValue).ToString("yyyyMMdd") + "235959");
                 }
-
                 if (!string.IsNullOrEmpty(txtPakageNumber.Text.Trim()))
                 {
                     ExpFilter.PACKAGE_NUMBER__EXACT = txtPakageNumber.Text.Trim();
@@ -254,7 +252,6 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                     ExpFilter.MEDI_STOCK_IDs = new List<long>();
                     ExpFilter.MEDI_STOCK_IDs = this._ExpMediStockSelecteds.Select(p => p.ID).ToList();
                 }
-
                 if (this._ExpMestTypeSelecteds != null && this._ExpMestTypeSelecteds.Count > 0)
                 {
                     ExpFilter.EXP_MEST_TYPE_IDs = new List<long>();
