@@ -55,7 +55,25 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 				{
 					gcPassMedicine.DataSource = lstTab5;
 				}
-			}
+                gcPassMedicine.BeginInvoke(new Action(() =>
+                {
+                    try
+                    {
+                        gvPassMedicine.Focus();
+                        gvPassMedicine.FocusedRowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle;
+
+                        gvPassMedicine.FocusedColumn = gridColumn6;
+
+                        gvPassMedicine.ShowEditor();
+                        var ed = gvPassMedicine.ActiveEditor as DevExpress.XtraEditors.BaseEdit;
+                        ed?.SelectAll();
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }));
+            }
 			catch (Exception ex)
 			{
 				Inventec.Common.Logging.LogSystem.Error(ex);

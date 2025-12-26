@@ -42,17 +42,30 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 	public partial class frmPrepareAndExport
 	{
 		private List<HIS_EXP_MEST> listResultTextTab2 { get; set; }
+		private Action myaction;
 
 		private async Task LoadTab2()
 		{
 			try
 			{
-				Action myaction = () =>
+				if (chkNotPrint.Checked)
 				{
-					lstTab2 = new List<HIS_EXP_MEST>();
-					lstTab2.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM == 1 && o.PRIORITY > 0).OrderByDescending(o => o.PRIORITY).ThenBy(o => o.NUM_ORDER).ToList());
-					lstTab2.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM == 1 && (o.PRIORITY == 0 || o.PRIORITY == null)).OrderBy(o => o.NUM_ORDER).ToList());
-				};
+                    myaction = () =>
+                    {
+                        lstTab2 = new List<HIS_EXP_MEST>();
+                        lstTab2.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.PRIORITY > 0).OrderByDescending(o => o.PRIORITY).ThenBy(o => o.NUM_ORDER).ToList());
+                        lstTab2.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && (o.PRIORITY == 0 || o.PRIORITY == null)).OrderBy(o => o.NUM_ORDER).ToList());
+                    };
+                }
+				else
+				{
+					myaction = () =>
+					{
+						lstTab2 = new List<HIS_EXP_MEST>();
+						lstTab2.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM == 1 && o.PRIORITY > 0).OrderByDescending(o => o.PRIORITY).ThenBy(o => o.NUM_ORDER).ToList());
+						lstTab2.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM == 1 && (o.PRIORITY == 0 || o.PRIORITY == null)).OrderBy(o => o.NUM_ORDER).ToList());
+					};
+				}
 				Task task = new Task(myaction);
 				task.Start();
 				await task;
