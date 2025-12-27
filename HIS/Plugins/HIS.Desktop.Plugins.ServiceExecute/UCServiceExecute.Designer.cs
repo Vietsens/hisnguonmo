@@ -2213,6 +2213,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.tileViewColumnSTTImage});
             this.tileView1.ColumnSet.CheckedColumn = this.tileViewIsChecked;
             contextButton1.Alignment = DevExpress.Utils.ContextItemAlignment.NearCenter;
+            contextButton1.Glyph = ((System.Drawing.Image)(resources.GetObject("contextButton1.Glyph")));
             contextButton1.Id = new System.Guid("88ea6d15-29a4-41d6-acba-c6d819c9d374");
             contextButton1.Name = "btnDelete";
             contextButton1.Visibility = DevExpress.Utils.ContextItemVisibility.Visible;
